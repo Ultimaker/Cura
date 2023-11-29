@@ -23,14 +23,14 @@ body:
 - type: input
   attributes:
     label: Cura Version
-    placeholder: 5.3.1
+    placeholder: 5.6.0
   validations:
     required: true
 - type: markdown
   attributes:
     value: |
-      We work hard on improving our slicing crashes. Our most recent release is 5.3.1.
-      If you are not on the latest version of Cura, [you can download it here](https://github.com/Ultimaker/Cura/releases/tag/5.3.1)
+      We work hard on improving our slicing crashes. Our most recent release is 5.6.0.
+      If you are not on the latest version of Cura, [you can download it here](https://github.com/Ultimaker/Cura/releases/latest)
 - type: input
   attributes:
     label: Operating System

@@ -41,7 +41,7 @@ Item
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeSelection: arrangeSelectionAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -60,6 +60,7 @@ Item
     property alias showProfileFolder: showProfileFolderAction
     property alias documentation: documentationAction
     property alias showTroubleshooting: showTroubleShootingAction
+    property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction
@@ -88,6 +89,13 @@ Item
         id: showTroubleShootingAction
         onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
         text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
+    }
+
+    Action
+    {
+        id: openSponsershipPageAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-cura/sponsor/")
+        text: catalog.i18nc("@action:inmenu", "Sponsor Cura")
     }
 
     Action
@@ -454,9 +462,10 @@ Item
 
     Action
     {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection()
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        onTriggered: Printer.arrangeAllInGrid()
+        shortcut: "Shift+Ctrl+R"
     }
 
     Action
@@ -483,6 +492,13 @@ Item
         // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
         // enabled instead, and Ctrl+O is assigned to the local file provider
         shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange Selection")
+        onTriggered: Printer.arrangeSelection()
     }
 
     Action

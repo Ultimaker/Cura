@@ -16,9 +16,9 @@ from .MeshFormatHandler import MeshFormatHandler
 class ExportFileJob(WriteFileJob):
     """Job that exports the build plate to the correct file format for the target cluster."""
 
-    def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str) -> None:
-
-        self._mesh_format_handler = MeshFormatHandler(file_handler, firmware_version)
+    def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str,
+                 print_type: str) -> None:
+        self._mesh_format_handler = MeshFormatHandler(file_handler, firmware_version, print_type)
         if not self._mesh_format_handler.is_valid:
             Logger.log("e", "Missing file or mesh writer!")
             return

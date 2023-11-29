@@ -45,17 +45,17 @@ class PreviewPass(RenderPass):
     This is useful to get a preview image of a scene taken from a different location as the active camera.
     """
 
-    def __init__(self, width: int, height: int) -> None:
+    def __init__(self, width: int, height: int, *, root: CuraSceneNode = None) -> None:
         super().__init__("preview", width, height, 0)
 
-        self._camera = None  # type: Optional[Camera]
+        self._camera: Optional[Camera] = None
 
         self._renderer = Application.getInstance().getRenderer()
 
-        self._shader = None  # type: Optional[ShaderProgram]
-        self._non_printing_shader = None  # type: Optional[ShaderProgram]
-        self._support_mesh_shader = None  # type: Optional[ShaderProgram]
-        self._scene = Application.getInstance().getController().getScene()
+        self._shader: Optional[ShaderProgram] = None
+        self._non_printing_shader: Optional[ShaderProgram] = None
+        self._support_mesh_shader: Optional[ShaderProgram] = None
+        self._root = Application.getInstance().getController().getScene().getRoot() if root is None else root
 
     #   Set the camera to be used by this render pass
     #   if it's None, the active camera is used
@@ -96,7 +96,7 @@ class PreviewPass(RenderPass):
         batch_support_mesh = RenderBatch(self._support_mesh_shader)
 
         # Fill up the batch with objects that can be sliced.
-        for node in DepthFirstIterator(self._scene.getRoot()):
+        for node in DepthFirstIterator(self._root):
             if hasattr(node, "_outside_buildarea") and not getattr(node, "_outside_buildarea"):
                 if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                     per_mesh_stack = node.callDecoration("getStack")
