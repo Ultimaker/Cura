@@ -20,7 +20,7 @@
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
         "cool_min_layer_time": { "value": 10 },
         "gantry_height": { "value": 40 },
-        "jerk_enabled": { "value": false },
+        
         "jerk_print": { "value": 8 },
         "jerk_travel": { "value": "jerk_print" },
         "jerk_travel_layer_0": { "value": "jerk_travel" },
