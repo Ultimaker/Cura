@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S5",
+    "name": "UltiMaker S5",
     "inherits": "ultimaker",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
@@ -38,7 +38,8 @@
             -10
         ],
         "platform_texture": "UltimakerS5backplate.png",
-        "preferred_quality_type": "fast",
+        "preferred_material": "ultimaker_pla_blue",
+        "preferred_quality_type": "draft",
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
