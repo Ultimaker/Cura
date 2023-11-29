@@ -6596,18 +6596,17 @@
                 "prime_tower_mode":
                 {
                     "label": "Prime Tower",
-                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Bucket:</b> generate a solid prime bucket in which secondary materials are primed</li><li><b>Sparse bucket:</b> generate a prime bucket while trying to waste as less material as possible</li><li><b>Sparse:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
+                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Bucket:</b> generate a bucket in which secondary materials are primed</li><li><b>Sparse:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
                     "type": "enum",
+                    "value": "'optimized' if all(material_type == extruderValues('material_type')[0] for material_type in extruderValues('material_type')) else 'optimized_consistent'",
                     "options":
                     {
                         "none": "None",
-                        "default": "Bucket",
-                        "optimized_consistent": "Sparse bucket",
+                        "optimized_consistent": "Bucket",
                         "optimized": "Sparse"
                     },
-                    "default_value": "default",
+                    "default_value": "none",
                     "enabled": "extruders_enabled_count > 1",
-                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
