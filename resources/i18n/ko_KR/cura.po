@@ -866,7 +866,7 @@ msgstr "호환 서포트 재료"
 
 msgctxt "@header"
 msgid "Compatible with Material Station"
-msgstr "재료 스테이션과 호환 가능"
+msgstr "Material Station과 호환 가능"
 
 msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
