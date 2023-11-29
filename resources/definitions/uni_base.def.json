@@ -47,9 +47,7 @@
         "infill_enable_travel_optimization": { "value": "True" },
         "infill_line_width": { "value": "round(line_width * 1.1, 2)" },
         "infill_pattern": { "value": "'gyroid'" },
-        
         "layer_height_0": { "value": "layer_height" },
-        
         "machine_buildplate_type": { "value": "'glass'" },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 220 },
