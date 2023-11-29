@@ -313,7 +313,7 @@ class DigitalFactoryApiClient:
                        error_callback = on_error,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
-    def requestUploadUFP(self, request: DFPrintJobUploadRequest,
+    def requestUploadMeshFile(self, request: DFPrintJobUploadRequest,
                          on_finished: Callable[[DFPrintJobUploadResponse], Any],
                          on_error: Optional[Callable[["QNetworkReply", "QNetworkReply.NetworkError"], None]] = None) -> None:
         """Requests the Digital Factory to register the upload of a file in a library project.

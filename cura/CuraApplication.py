@@ -5,6 +5,8 @@ import os
 import sys
 import tempfile
 import time
+import platform
+from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
@@ -49,11 +51,11 @@ from UM.Settings.Validator import Validator
 from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
+from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
-from cura.Arranging.Nest2DArrange import arrange
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -114,6 +116,7 @@ from . import CameraAnimation
 from . import CuraActions
 from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
+from .Arranging.Nest2DArrange import Nest2DArrange
 from .AutoSave import AutoSave
 from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
@@ -205,6 +208,8 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
+        self._backend_plugins: List[BackendPlugin] = []
+
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
         self._material_management_model = None
         self._quality_management_model = None
@@ -264,6 +269,9 @@ class CuraApplication(QtApplication):
         from UM.CentralFileStorage import CentralFileStorage
         CentralFileStorage.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
         Resources.setIsEnterprise(ApplicationMetadata.IsEnterpriseVersion)
+
+        self._conan_installs = ApplicationMetadata.CONAN_INSTALLS
+        self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
@@ -359,6 +367,10 @@ class CuraApplication(QtApplication):
 
         Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
         if not hasattr(sys, "frozen"):
+            cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
+            if cura_data_root:
+                Resources.addSearchPath(str(Path(cura_data_root).joinpath("resources")))
+
             Resources.addSearchPath(os.path.join(os.path.abspath(os.path.dirname(__file__)), "..", "resources"))
 
             # local Conan cache
@@ -408,7 +420,9 @@ class CuraApplication(QtApplication):
 
         SettingFunction.registerOperator("extruderValue", self._cura_formula_functions.getValueInExtruder)
         SettingFunction.registerOperator("extruderValues", self._cura_formula_functions.getValuesInAllExtruders)
-        SettingFunction.registerOperator("anyExtruderNrWithOrDefault", self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
+        SettingFunction.registerOperator("anyExtruderWithMaterial", self._cura_formula_functions.getExtruderPositionWithMaterial)
+        SettingFunction.registerOperator("anyExtruderNrWithOrDefault",
+                                         self._cura_formula_functions.getAnyExtruderPositionWithOrDefault)
         SettingFunction.registerOperator("resolveOrValue", self._cura_formula_functions.getResolveOrValue)
         SettingFunction.registerOperator("defaultExtruderPosition", self._cura_formula_functions.getDefaultExtruderPosition)
         SettingFunction.registerOperator("valueFromContainer", self._cura_formula_functions.getValueFromContainerAtIndex)
@@ -494,6 +508,36 @@ class CuraApplication(QtApplication):
     def startSplashWindowPhase(self) -> None:
         """Runs preparations that needs to be done before the starting process."""
 
+        self.setRequiredPlugins([
+            # Misc.:
+            "ConsoleLogger",  # You want to be able to read the log if something goes wrong.
+            "CuraEngineBackend",  # Cura is useless without this one since you can't slice.
+            "FileLogger",  # You want to be able to read the log if something goes wrong.
+            "XmlMaterialProfile",  # Cura crashes without this one.
+            "Marketplace",
+            # This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "PrepareStage",  # Cura is useless without this one since you can't load models.
+            "PreviewStage",  # This shows the list of the plugin views that are installed in Cura.
+            "MonitorStage",  # Major part of Cura's functionality.
+            "LocalFileOutputDevice",  # Major part of Cura's functionality.
+            "LocalContainerProvider",  # Cura is useless without any profiles or setting definitions.
+
+            # Views:
+            "SimpleView",  # Dependency of SolidView.
+            "SolidView",  # Displays models. Cura is useless without it.
+
+            # Readers & Writers:
+            "GCodeWriter",  # Cura is useless if it can't write its output.
+            "STLReader",  # Most common model format, so disabling this makes Cura 90% useless.
+            "3MFWriter",  # Required for writing project files.
+
+            # Tools:
+            "CameraTool",  # Needed to see the scene. Cura is useless without it.
+            "SelectionTool",  # Dependency of the rest of the tools.
+            "TranslateTool",  # You'll need this for almost every print.
+        ])
+        # Plugins need to be set here, since in the super the check is done if they are actually loaded.
+
         super().startSplashWindowPhase()
 
         if not self.getIsHeadLess():
@@ -502,33 +546,7 @@ class CuraApplication(QtApplication):
             except FileNotFoundError:
                 Logger.log("w", "Unable to find the window icon.")
 
-        self.setRequiredPlugins([
-            # Misc.:
-            "ConsoleLogger", #You want to be able to read the log if something goes wrong.
-            "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "FileLogger", #You want to be able to read the log if something goes wrong.
-            "XmlMaterialProfile", #Cura crashes without this one.
-            "Marketplace", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
-            "PrepareStage", #Cura is useless without this one since you can't load models.
-            "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
-            "MonitorStage", #Major part of Cura's functionality.
-            "LocalFileOutputDevice", #Major part of Cura's functionality.
-            "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
 
-            # Views:
-            "SimpleView", #Dependency of SolidView.
-            "SolidView", #Displays models. Cura is useless without it.
-
-            # Readers & Writers:
-            "GCodeWriter", #Cura is useless if it can't write its output.
-            "STLReader", #Most common model format, so disabling this makes Cura 90% useless.
-            "3MFWriter", #Required for writing project files.
-
-            # Tools:
-            "CameraTool", #Needed to see the scene. Cura is useless without it.
-            "SelectionTool", #Dependency of the rest of the tools.
-            "TranslateTool", #You'll need this for almost every print.
-        ])
         self._i18n_catalog = i18nCatalog("cura")
 
         self._update_platform_activity_timer = QTimer()
@@ -609,6 +627,16 @@ class CuraApplication(QtApplication):
 
     def _onEngineCreated(self):
         self._qml_engine.addImageProvider("print_job_preview", PrintJobPreviewImageProvider.PrintJobPreviewImageProvider())
+        version = Version(self.getVersion())
+        if hasattr(sys, "frozen") and version.hasPostFix() and "beta" not in version.getPostfixType():
+            self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
+            message = Message(
+                self._i18n_catalog.i18nc("@info:warning",
+                                         f"This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"),
+                lifetime = 0,
+                title = self._i18n_catalog.i18nc("@info:title", "Nightly build"),
+                message_type = Message.MessageType.WARNING)
+            message.show()
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
@@ -792,6 +820,7 @@ class CuraApplication(QtApplication):
 
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
+        self._plugin_registry.addType("backend_plugin", self._addBackendPlugin)
 
         if Platform.isLinux():
             lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
@@ -828,11 +857,10 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
-        if len(ApplicationMetadata.DEPENDENCY_INFO) > 0:
-            Logger.debug("Using Conan managed dependencies: " + ", ".join(
-                [dep["recipe"]["id"] for dep in ApplicationMetadata.DEPENDENCY_INFO["installed"] if dep["recipe"]["version"] != "latest"]))
-        else:
-            Logger.warning("Could not find conan_install_info.json")
+        self._log_hardware_info()
+
+        Logger.debug("Using conan dependencies: {}", str(self.conanInstalls))
+        Logger.debug("Using python dependencies: {}", str(self.pythonInstalls))
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
@@ -900,6 +928,14 @@ class CuraApplication(QtApplication):
         self._auto_save.initialize()
 
         self.exec()
+
+    def _log_hardware_info(self):
+        hardware_info = platform.uname()
+        Logger.info(f"System: {hardware_info.system}")
+        Logger.info(f"Release: {hardware_info.release}")
+        Logger.info(f"Version: {hardware_info.version}")
+        Logger.info(f"Processor name: {hardware_info.processor}")
+        Logger.info(f"CPU Cores: {os.cpu_count()}")
 
     def __setUpSingleInstanceServer(self):
         if self._use_single_instance:
@@ -1427,6 +1463,13 @@ class CuraApplication(QtApplication):
     # Single build plate
     @pyqtSlot()
     def arrangeAll(self) -> None:
+        self._arrangeAll(grid_arrangement = False)
+
+    @pyqtSlot()
+    def arrangeAllInGrid(self) -> None:
+        self._arrangeAll(grid_arrangement = True)
+
+    def _arrangeAll(self, *, grid_arrangement: bool) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
         locked_nodes = []
@@ -1456,17 +1499,17 @@ class CuraApplication(QtApplication):
                         locked_nodes.append(node)
                     else:
                         nodes_to_arrange.append(node)
-        self.arrange(nodes_to_arrange, locked_nodes)
+        self.arrange(nodes_to_arrange, locked_nodes, grid_arrangement = grid_arrangement)
 
-    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
+    def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], *,  grid_arrangement: bool = False) -> None:
         """Arrange a set of nodes given a set of fixed nodes
 
         :param nodes: nodes that we have to place
         :param fixed_nodes: nodes that are placed in the arranger before finding spots for nodes
+        :param grid_arrangement: If set to true if objects are to be placed in a grid
         """
-
         min_offset = self.getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8))
+        job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8), grid_arrange = grid_arrangement)
         job.start()
 
     @pyqtSlot()
@@ -1512,15 +1555,14 @@ class CuraApplication(QtApplication):
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
 
         for file_name, nodes in objects_in_filename.items():
-            for node in nodes:
-                file_path = os.path.normpath(os.path.dirname(file_name))
-                job = ReadMeshJob(file_name, add_to_recent_files = file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
-                job._node = node  # type: ignore
-                job.finished.connect(self._reloadMeshFinished)
-                if has_merged_nodes:
-                    job.finished.connect(self.updateOriginOfMergedMeshes)
-
-                job.start()
+            file_path = os.path.normpath(os.path.dirname(file_name))
+            job = ReadMeshJob(file_name,
+                              add_to_recent_files=file_path != tempfile.gettempdir())  # Don't add temp files to the recent files list
+            job._nodes = nodes  # type: ignore
+            job.finished.connect(self._reloadMeshFinished)
+            if has_merged_nodes:
+                job.finished.connect(self.updateOriginOfMergedMeshes)
+            job.start()
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1692,9 +1734,10 @@ class CuraApplication(QtApplication):
 
     def _reloadMeshFinished(self, job) -> None:
         """
-        Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
+        Function called when ReadMeshJob finishes reloading a file in the background, then update node objects in the
         scene from its source file. The function gets all the nodes that exist in the file through the job result, and
-        then finds the scene node that it wants to refresh by its object id. Each job refreshes only one node.
+        then finds the scene nodes that need to be refreshed by their name. Each job refreshes all nodes of a file.
+        Nodes that are not present in the updated file are kept in the scene.
 
         :param job: The :py:class:`Uranium.UM.ReadMeshJob.ReadMeshJob` running in the background that reads all the
         meshes in a file
@@ -1704,21 +1747,37 @@ class CuraApplication(QtApplication):
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        object_found = False
-        mesh_data = None
+        renamed_nodes = {} # type: Dict[str, int]
         # Find the node to be refreshed based on its id
         for job_result_node in job_result:
-            if job_result_node.getId() == job._node.getId():
-                mesh_data = job_result_node.getMeshData()
-                object_found = True
-                break
-        if not object_found:
-            Logger.warning("The object with id {} no longer exists! Keeping the old version in the scene.".format(job_result_node.getId()))
-            return
-        if not mesh_data:
-            Logger.log("w", "Could not find a mesh in reloaded node.")
-            return
-        job._node.setMeshData(mesh_data)
+            mesh_data = job_result_node.getMeshData()
+            if not mesh_data:
+                Logger.log("w", "Could not find a mesh in reloaded node.")
+                continue
+
+            # Solves issues with object naming
+            result_node_name = job_result_node.getName()
+            if not result_node_name:
+                result_node_name = os.path.basename(mesh_data.getFileName())
+            if result_node_name in renamed_nodes:  # objects may get renamed by ObjectsModel._renameNodes() when loaded
+                renamed_nodes[result_node_name] += 1
+                result_node_name = "{0}({1})".format(result_node_name, renamed_nodes[result_node_name])
+            else:
+                renamed_nodes[job_result_node.getName()] = 0
+
+            # Find the matching scene node to replace
+            scene_node = None
+            for replaced_node in job._nodes:
+                if replaced_node.getName() == result_node_name:
+                    scene_node = replaced_node
+                    break
+
+            if scene_node:
+                scene_node.setMeshData(mesh_data)
+            else:
+                # Current node is a new one in the file, or it's name has changed
+                # TODO: Load this mesh into the scene. Also alter the "_reloadJobFinished" action in UM.Scene
+                Logger.log("w", "Could not find matching node for object '{0}' in the scene.".format(result_node_name))
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
@@ -1729,6 +1788,13 @@ class CuraApplication(QtApplication):
 
     def _addProfileWriter(self, profile_writer):
         pass
+
+    def _addBackendPlugin(self, backend_plugin: "BackendPlugin") -> None:
+        self._container_registry.addAdditionalSettingDefinitionsAppender(backend_plugin)
+        self._backend_plugins.append(backend_plugin)
+
+    def getBackendPlugins(self) -> List["BackendPlugin"]:
+        return self._backend_plugins
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
@@ -1898,7 +1964,8 @@ class CuraApplication(QtApplication):
                     node.scale(original_node.getScale())
 
             node.setSelectable(True)
-            node.setName(os.path.basename(file_name))
+            if not node.getName():
+                node.setName(os.path.basename(file_name))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
@@ -1953,7 +2020,8 @@ class CuraApplication(QtApplication):
             if select_models_on_load:
                 Selection.add(node)
         try:
-            arrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger = Nest2DArrange(nodes_to_arrange, self.getBuildVolume(), fixed_nodes)
+            arranger.arrange()
         except:
             Logger.logException("e", "Failed to arrange the models")
 
@@ -2084,3 +2152,11 @@ class CuraApplication(QtApplication):
     @pyqtProperty(bool, constant=True)
     def isEnterprise(self) -> bool:
         return ApplicationMetadata.IsEnterpriseVersion
+
+    @pyqtProperty("QVariant", constant=True)
+    def conanInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._conan_installs
+
+    @pyqtProperty("QVariant", constant=True)
+    def pythonInstalls(self) -> Dict[str, Dict[str, str]]:
+        return self._python_installs

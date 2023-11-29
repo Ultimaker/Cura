@@ -57,8 +57,9 @@ class IntentSelectionModel(ListModel):
 
         self._onChange()
 
-    _default_intent_categories = ["default", "visual", "engineering", "quick", "annealing"]
-    _icons = {"default": "GearCheck", "visual": "Visual", "engineering": "Nut", "quick": "SpeedOMeter", "annealing": "Anneal"}
+    _default_intent_categories = ["default", "visual", "engineering", "quick", "annealing", "solid"]
+    _icons = {"default": "GearCheck", "visual": "Visual", "engineering": "Nut", "quick": "SpeedOMeter",
+              "annealing": "Anneal", "solid": "Hammer"}
 
     def _onContainerChange(self, container: ContainerInterface) -> None:
         """Updates the list of intents if an intent profile was added or removed."""
@@ -71,15 +72,15 @@ class IntentSelectionModel(ListModel):
 
     def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
-
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        cura_application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = cura_application.getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
         # Check for material compatibility
-        if not cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
+        if not cura_application.getMachineManager().activeMaterialsCompatible():
             Logger.log("d", "No active material compatibility, set quality profile model as empty.")
             self.setItems([])
             return
@@ -101,17 +102,18 @@ class IntentSelectionModel(ListModel):
             else:
                 # There can be multiple intents with the same category, use one of these
                 # intent-metadata's for the icon/description defintions for the intent
-                intent_metadata = cura.CuraApplication.CuraApplication \
-                    .getInstance() \
-                    .getContainerRegistry() \
-                    .findContainersMetadata(type="intent", definition=global_stack.definition.getId(),
-                                            intent_category=category)[0]
+
+
+
+                intent_metadata = cura_application.getContainerRegistry().findContainersMetadata(type="intent",
+                                                                                                 definition=global_stack.findInstanceContainerDefinitionId(global_stack.definition),
+                                                                                                 intent_category=category)[0]
 
                 intent_name = intent_metadata.get("name", category.title())
                 icon = intent_metadata.get("icon", None)
                 description = intent_metadata.get("description", None)
 
-                if icon is not None:
+                if icon is not None and icon != '':
                     try:
                         icon = QUrl.fromLocalFile(
                             Resources.getPath(cura.CuraApplication.CuraApplication.ResourceTypes.ImageFiles, icon))

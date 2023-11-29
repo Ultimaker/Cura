@@ -1,16 +1,16 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-11-24 12:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -62,7 +62,7 @@ msgstr "別の部品内に完全に囲まれた部品は、別の部品の内側
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr ""
+msgstr "枝がサポートポイントからどれくらい移動できるかについての推奨値。枝は、目的地（ビルドプレートまたはモデルの平らな部分）に到達するためであればこの値に違反することができます。この値を小さくすることで、サポートをより頑丈にすることができますが、枝の量が増加します（材料の使用量やプリント時間も増加します）。"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -118,7 +118,7 @@ msgstr "サポート材のルーフとフロアの密度を調整します　大
 
 msgctxt "support_tree_top_rate description"
 msgid "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top."
-msgstr ""
+msgstr "枝の先端を生成するために使用されるサポート構造の密度を調整します。大きな値ではオーバーハングが良くなりますが、サポート材が除去しにくくなります。非常に大きな値を指定するにはサポートルーフを使用するか、上部のサポート密度が同様に高くなるようにしてください。"
 
 msgctxt "support_infill_rate description"
 msgid "Adjusts the density of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
@@ -179,10 +179,6 @@ msgstr "常にアクティブなツールを書き込む"
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "移動して外側のウォールをプリントする際、毎回引き戻しをします。"
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "各穴のすべてのポリゴンに適用されるオフセットの量。正の値は穴のサイズを大きくします。負の値は穴のサイズを小さくします。"
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -266,7 +262,7 @@ msgstr "両方"
 
 msgctxt "support_interface_priority option nothing"
 msgid "Both overlap"
-msgstr ""
+msgstr "両方重ねる"
 
 msgctxt "bottom_layers label"
 msgid "Bottom Layers"
@@ -290,15 +286,15 @@ msgstr "底面厚さ"
 
 msgctxt "support_tree_top_rate label"
 msgid "Branch Density"
-msgstr ""
+msgstr "枝密度"
 
 msgctxt "support_tree_branch_diameter label"
 msgid "Branch Diameter"
-msgstr ""
+msgstr "枝直径"
 
 msgctxt "support_tree_branch_diameter_angle label"
 msgid "Branch Diameter Angle"
-msgstr ""
+msgstr "枝直径角度"
 
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
@@ -459,6 +455,10 @@ msgstr "初期レイヤーのビルドプレート温度"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "造形温度"
+
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "この設定を有効にすると、モデルにはない場合でもプライムタワーにブリムが付きます。高いタワーのためにより頑丈なベースが必要な場合は、ベースの高さを増やすことができます。"
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -710,11 +710,11 @@ msgstr "直径"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model label"
 msgid "Diameter Increase To Model"
-msgstr ""
+msgstr "モデルと接続される枝の直径増加"
 
 msgctxt "support_tree_bp_diameter description"
 msgid "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion."
-msgstr ""
+msgstr "ビルドプレートに到達したときに、すべての枝が達成しようとする直径。ベッドの接着性が向上します。"
 
 msgctxt "adhesion_type description"
 msgid "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model."
@@ -745,16 +745,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "印刷されたサポート材の間隔。この設定は、サポート材の密度によって算出されます。"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "印刷物とサポート材底部までの距離。"
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "プリントからサポートの底までの距離。これは次のレイヤーの高さに切り上げられることに注意してください。"
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "サポートの上部から印刷物までの距離。"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "サポート材のトップ/ボトム部分と印刷物との距離。この幅がプリント後のサポート材を除去する隙間を作ります。値は積層ピッチの倍数にて計算されます。"
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "サポート構造の上部/下部からプリントまでの距離です。このギャップは、モデル印刷後にサポートを取り除くためのクリアランスを提供します。モデルの下にある最上層のサポート層は、通常のレイヤーの一部分かもしれません。"
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -779,6 +779,14 @@ msgstr "X/Y方向におけるオーバーハングからサポートまでの距
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "印刷物からX/Y方向へのサポート材との距離。"
+
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "パスを滑らかにするため、距離点が移動されます"
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "パスを滑らかにするため、距離点が移動されます"
 
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
@@ -827,6 +835,10 @@ msgstr "円錐サポートを有効にする"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "ドラフトシールドを有効にする"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr "フルイドモーションを有効にする"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -887,6 +899,10 @@ msgstr "トラベルジャークを有効にする"
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "モデルの周りに壁（ooze shield）を作る。これを生成することで、一つ目のノズルの高さと2つ目のノズルが同じ高さであったとき、2つ目のノズルを綺麗にします。"
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr "最上位のスキンレイヤー（空気にさらされている）上の小さな（最大「小さな上部/下部幅」）領域を、デフォルトパターンの代わりに壁で埋められるようにします。"
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1080,6 +1096,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "最外壁のフロー補正。"
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "最外の壁ラインにおける流量補正。"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "最外のラインを除く、全ての壁ラインにおけるトップサーフェス壁ラインのフロー補正"
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "上面/下面のフロー補正。"
@@ -1099,6 +1123,18 @@ msgstr "壁のフロー補正。"
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "流れの補修: 押出されるマテリアルの量は、この値から乗算されます。"
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr "フローモーション角度"
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr "フルイドモーション（移動距離）"
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr "フルイドモーション（近距離）"
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1256,6 +1292,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "外壁をグループ化"
+
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "ジャイロイド"
@@ -1298,7 +1338,7 @@ msgstr "穴の水平展開"
 
 msgctxt "hole_xy_offset_max_diameter label"
 msgid "Hole Horizontal Expansion Max Diameter"
-msgstr ""
+msgstr "穴の水平展開の最大直径"
 
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
@@ -1378,15 +1418,19 @@ msgstr "プリンタ起動gcodeスクリプト完了時に、各エクストル�
 
 msgctxt "support_interface_priority description"
 msgid "How support interface and support will interact when they overlap. Currently only implemented for support roof."
-msgstr ""
+msgstr "サポートインターフェイスとサポートが重なる場合にどのように相互作用するかを示します。現在、サポートルーフにのみ実装されています。"
 
 msgctxt "support_tree_min_height_to_model description"
 msgid "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof."
-msgstr ""
+msgstr "モデル上に枝を配置する場合、どれくらいの高さが必要かを示します。サポート材が小さな塊になることを防止します。枝がサポートルーフを支えている場合、この設定は無視されます。"
 
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "対象領域に対してこのパーセンテージ未満のスキン領域がサポートされている場合、ブリッジ設定で印刷します。それ以外の場合は、通常のスキン設定で印刷します。"
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr "ツールパスセグメントが一般的な動きからこの角度よりも大きく逸脱している場合、セグメントは平滑化されます。"
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -1530,7 +1574,7 @@ msgstr "初期レイヤーの底面フロー"
 
 msgctxt "support_tree_bp_diameter label"
 msgid "Initial Layer Diameter"
-msgstr ""
+msgstr "初期レイヤー直径"
 
 msgctxt "material_flow_layer_0 label"
 msgid "Initial Layer Flow"
@@ -1634,11 +1678,11 @@ msgstr "内側から外側へ"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
-msgstr ""
+msgstr "インターフェイスラインを優先"
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
-msgstr ""
+msgstr "インターフェイスを優先"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1698,7 +1742,7 @@ msgstr "中心位置"
 
 msgctxt "material_is_support_material label"
 msgid "Is support material"
-msgstr ""
+msgstr "サポート材かどうか"
 
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
@@ -1706,7 +1750,7 @@ msgstr "この材料は加熱時にきれいに分解するタイプ (結晶性)
 
 msgctxt "material_is_support_material description"
 msgid "Is this material typically used as a support material during printing."
-msgstr ""
+msgstr "この素材が一般的にプリント時のサポート材として使用されるかどうかを示します。"
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
@@ -1774,11 +1818,11 @@ msgstr "ライトニングインフィルサポート角度"
 
 msgctxt "support_tree_limit_branch_reach label"
 msgid "Limit Branch Reach"
-msgstr ""
+msgstr "枝到達距離制限"
 
 msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
-msgstr ""
+msgstr "各枝がサポートポイントからどれくらい移動するかを制限します。これにより、サポートをより頑丈にすることができますが、枝の量が増加します（材料の使用量やプリント時間も増加します）。"
 
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
@@ -1930,7 +1974,7 @@ msgstr "最大加速度Z"
 
 msgctxt "support_tree_angle label"
 msgid "Maximum Branch Angle"
-msgstr ""
+msgstr "最大枝角度"
 
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
@@ -2086,7 +2130,7 @@ msgstr "最小送り速度"
 
 msgctxt "support_tree_min_height_to_model label"
 msgid "Minimum Height To Model"
-msgstr ""
+msgstr "モデルに対する最小高さ"
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -2338,11 +2382,11 @@ msgstr "エクストルーダーのオフセット"
 
 msgctxt "support_tree_rest_preference option buildplate"
 msgid "On buildplate when possible"
-msgstr ""
+msgstr "可能な場合はビルドプレート上に配置"
 
 msgctxt "support_tree_rest_preference option graceful"
 msgid "On model if required"
-msgstr ""
+msgstr "必要に応じてモデル上に配置"
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
@@ -2370,7 +2414,7 @@ msgstr "Ooze Shield距離"
 
 msgctxt "support_tree_branch_reach_limit label"
 msgid "Optimal Branch Range"
-msgstr ""
+msgstr "最適な枝範囲"
 
 msgctxt "optimize_wall_printing_order label"
 msgid "Optimize Wall Printing Order"
@@ -2416,6 +2460,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "外壁移動距離"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "同じレイヤー内の異なる島の外壁は順次印刷されます。有効にすると、壁は1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島の壁がグループ化されるため、島間の移動回数が減少します。"
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "外側から内側へ"
@@ -2458,7 +2506,7 @@ msgstr "この量よりも小さい円周を持つスライスレイヤーのポ
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
-msgstr ""
+msgstr "希望枝角度"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2469,8 +2517,20 @@ msgid "Prime Tower Acceleration"
 msgstr "プライムタワー加速度"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "プライムタワーブリム"
+msgid "Prime Tower Base"
+msgstr "プライムタワーベース"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "プライムタワーベースの高さ"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "プライムタワーベースのサイズ"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "プライムタワーベースの傾斜"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2488,6 +2548,10 @@ msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "プライムタワー最小容積"
 
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "プライムタワーラフトライン間隔"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "プライムタワーのサイズ"
@@ -2503,10 +2567,6 @@ msgstr "プライムタワーX位置"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "プライムタワーY位置"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "モデルがない場合でも、プライムタワーには、ブリムによって与えられる追加の付着が必要なことがあります。現在は「ラフト」密着型では使用できません。"
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -2580,7 +2640,7 @@ msgstr "初期レイヤー印刷温度"
 
 msgctxt "skirt_height description"
 msgid "Printing the innermost skirt line with multiple layers makes it easy to remove the skirt."
-msgstr ""
+msgstr "最も内側のスカートラインを複数のレイヤーに分けてプリントすることで、スカートを取り外しやすくします。"
 
 msgctxt "alternate_extra_perimeter description"
 msgid "Prints an extra wall at every other layer. This way infill gets caught between these extra walls, resulting in stronger prints."
@@ -2820,7 +2880,7 @@ msgstr "上部/下部パターンの最も外側の部分を同心円の線で�
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
-msgstr ""
+msgstr "希望配置"
 
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
@@ -2968,7 +3028,7 @@ msgstr "スカート距離"
 
 msgctxt "skirt_height label"
 msgid "Skirt Height"
-msgstr ""
+msgstr "スカート高さ"
 
 msgctxt "skirt_line_count label"
 msgid "Skirt Line Count"
@@ -3016,7 +3076,7 @@ msgstr "小型形体の最大長さ"
 
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr ""
+msgstr "小さな機能の速度"
 
 msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
@@ -3026,9 +3086,13 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "小さいレイヤーのプリント温度"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr "表面の小さな上部/下部"
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
-msgstr ""
+msgstr "小さい上下幅"
 
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
@@ -3039,12 +3103,12 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "小型形体は通常のプリント速度に対してこの割合でプリントされます。低速でプリントすると、接着と精度が向上します。"
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr ""
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
+msgstr "小さな上部/下部領域は、デフォルトの上部/下部パターンの代わりに壁で埋められます。これにより、ぎくしゃくした動きを防げます。デフォルトでは最上位の（空気にさらされている）レイヤーはオフになっています（「表面の小さな上部/下部」を参照）。"
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr ""
+msgstr "スマートブリム"
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3284,7 +3348,7 @@ msgstr "サポートインタフェースパターン"
 
 msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
-msgstr ""
+msgstr "サポートインターフェイスの優先順位"
 
 msgctxt "support_interface_skip_height label"
 msgid "Support Interface Resolution"
@@ -3424,11 +3488,11 @@ msgstr "サポートZ距離"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
-msgstr ""
+msgstr "サポートラインを優先"
 
 msgctxt "support_interface_priority option support_area_overwrite_interface_area"
 msgid "Support preferred"
-msgstr ""
+msgstr "サポートを優先"
 
 msgctxt "support_supported_skin_fan_speed label"
 msgid "Supported Skin Fan Speed"
@@ -3456,7 +3520,7 @@ msgstr "表面エネルギー。"
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
-msgstr ""
+msgstr "最も内側のブリムラインと2番目に内側のブリムラインのプリント順序を入れ替えます。これにより、ブリムを取り外しやすくします。"
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -3576,6 +3640,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "ラフトのトップ印刷時の加速度。"
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される際の加速度"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "上面の最外壁が印刷される際の加速度"
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "ウォールをプリントする際の加速度。"
@@ -3682,7 +3754,7 @@ msgstr "ツリーサポートの最も細い枝の直径。枝は太いほど丈
 
 msgctxt "support_tree_tip_diameter description"
 msgid "The diameter of the top of the tip of the branches of tree support."
-msgstr ""
+msgstr "ツリーサポートの枝の上部先端の直径。"
 
 msgctxt "machine_feeder_wheel_diameter description"
 msgid "The diameter of the wheel that drives the material in the feeder."
@@ -3715,6 +3787,10 @@ msgstr "中間ラフト層とラフト線の間の距離。中央の間隔はか
 msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "上のラフト層とラフト線の間の距離。間隔は線の幅と同じにして、サーフェスがソリッドになるようにします。"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "プライムタワーラフト層の独自のラフトライン間の距離です。間隔が広いと、ラフトをビルドプレートから簡単に取り除くことができます。"
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3912,6 +3988,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "初期レイヤーの高さ（mm）。厚い初期層はビルドプレートへの接着を容易にする。"
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "プライムタワーベースの高さです。この値を増やすと、ベースが広くなるためプライムタワーがより頑丈になります。この設定が低すぎると、プライムタワーは頑丈なベースを持たなくなります。"
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "モデルにのっている階段状のサポートの底のステップの高さ。値を小さくするとサポートを除去するのが困難になりますが、値が大きすぎるとサポートの構造が不安定になる可能性があります。ゼロに設定すると、階段状の動作をオフにします。"
@@ -3984,6 +4064,10 @@ msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "引き戻されるマテリアルの長さ。"
 
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "プライムタワーベースの傾斜に使用される倍率係数です。この値を増やすと、ベースが細くなります。減らすと、ベースが厚くなります。"
+
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
 msgstr "プリンターに取り付けられているビルドプレートの材料です。"
@@ -4002,7 +4086,7 @@ msgstr "印刷可能になったオーバーハングの最大角度。 0°の�
 
 msgctxt "support_tree_angle description"
 msgid "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-msgstr ""
+msgstr "モデルを中心に枝を伸ばす際の枝の最大角度。枝を垂直で安定したものにするためには小さい角度を使用します。高さを得るためには大きい角度を使用します。"
 
 msgctxt "conical_overhang_hole_size description"
 msgid "The maximum area of a hole in the base of the model before it's removed by Make Overhang Printable.  Holes smaller than this will be retained.  A value of 0 mm² will fill all holes in the models base."
@@ -4075,6 +4159,14 @@ msgstr "スカートとブリムがプリントされる最大瞬時速度の変
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "サポート材の印刷時の最大瞬間速度の変更。"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "上面最外壁が印刷される際の最大瞬間速度変化。"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "上面内壁が印刷される際の最大瞬間速度変化。"
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4178,7 +4270,7 @@ msgstr "プライムタワーの各層の最小容積。"
 
 msgctxt "support_tree_max_diameter_increase_by_merges_when_support_to_model description"
 msgid "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model"
-msgstr ""
+msgstr "モデルに接続する必要がある枝の直径は、ビルドプレートに到達する可能性のある枝とマージされて大きくなる可能性があります。この値を大きくするとプリント時間は短縮されますが、モデル上のサポート領域が大きくなります。"
 
 msgctxt "machine_name description"
 msgid "The name of your 3D printer model."
@@ -4306,11 +4398,11 @@ msgstr "レイヤー内の各パーツの印刷を開始する場所付近の位
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
-msgstr ""
+msgstr "モデルを回避する必要がない場合の枝の希望角度。枝を垂直で安定したものにするためには小さい角度を使用します。迅速にマージするには枝の角度を大きくします。"
 
 msgctxt "support_tree_rest_preference description"
 msgid "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model."
-msgstr ""
+msgstr "サポート構造の配置希望場所。構造物を希望の場所に配置できない場合は、別の場所に配置されます（モデル上に配置することになったとしても）。"
 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
@@ -4460,6 +4552,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "トップラフト層が印刷される速度。この値はノズルが隣接するサーフェスラインをゆっくりと滑らかにするために、少し遅く印刷する必要があります。"
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される速度"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "上面の最外壁が印刷される速度"
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Z 軸ホップに対して垂直 Z 軸方向の動きが行われる速度。これは通常、ビルドプレートまたはマシンのガントリーが動きにくいため、印刷速度よりも低くなります。"
@@ -4521,8 +4621,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "印刷終了直前に冷却を開始する温度。"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "最初のレイヤーを印刷する温度。初期レイヤーのみ特別設定が必要ない場合は 0 に設定します。"
+msgid "The temperature used for printing the first layer."
+msgstr "最初の層を印刷するために使用される温度です。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4600,6 +4700,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "インターロック構造ビームの幅。"
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "プライムタワーブリム/ベースの幅。ベースを大きくするとビルドプレートへの接着が強化されますが、有効な印刷エリアも減少します。"
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "プライムタワーの幅。"
@@ -4642,7 +4746,7 @@ msgstr "これにより、モデルの周囲に壁ができ、熱を閉じ込め
 
 msgctxt "support_tree_tip_diameter label"
 msgid "Tip Diameter"
-msgstr ""
+msgstr "先端直径"
 
 msgctxt "material_shrinkage_percentage_xy description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor in the XY-direction (horizontally)."
@@ -4667,6 +4771,38 @@ msgstr "上面展開距離"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "上面除去幅"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "上面内壁加速度"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "上面最外壁の最大瞬間速度変化"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "上面内壁速度"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "上面内壁の流れ"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "上面外壁加速度"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "上面最外壁の流れ"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "上面内壁の最大瞬間速度変化"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "上面の最外壁速度"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -4826,7 +4962,7 @@ msgstr "トライアングル"
 
 msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
-msgstr ""
+msgstr "本体直径"
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -4964,6 +5100,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "サポートの上下にモデルがあるかどうか確認するには、特定のサポートの高さを見ます。低い値はスライスに時間がかかり、高い値にするとサポートのインターフェイスがある場所に通常のサポートを印刷する可能性があります。"
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr "有効にすると、スムーズモーションプランナーを備えたプリンターのツールパスが補正されます。一般的なツールパスの方向から逸脱する小さな動きが滑らかになり、フルイドモーションが改善されます。"
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "有効化すると、移動距離が減少するようにインフィルラインをプリントする順序が最適化されます。移動時間の削減は、スライスするモデル、インフィルパターン、密度などに大きく依存します。特に、インフィルを行う小さなエリアが多数あるモデルの場合、モデルをスライスする時間が大きく増えることがあります。"
@@ -4982,7 +5122,11 @@ msgstr "ゼロを超える場合、この距離より長い移動量をコーミ
 
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
-msgstr ""
+msgstr "0より大きい場合、穴の水平展開が小さい穴に対して徐々に適用されます（小さい穴はさらに展開されます）。0に設定すると、すべての穴に穴の水平展開が適用されます。穴の水平展開の最大直径より大きい穴は展開されません。"
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
+msgstr "ゼロより大きい場合、穴の水平方向の拡張は、レイヤーごとにすべての穴に適用されるオフセットの量になります。プラスの値を指定すると穴のサイズが大きくなり、マイナスの値を指定すると穴のサイズが小さくなります。この設定を有効にすると、さらに穴の水平方向の拡張最大直径で微調整できます。"
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5348,244 +5492,42 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "移動"
 
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "補正"
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "段階的なフローの変化におけるステップごとの時間"
 
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "上向きの線の上端に小さな結び目を作成し、連続する水平レイヤーを接着力を高めます。ワイヤ印刷のみに適用されます。"
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "段階的なフローの変化を有効にできます。有効にすると、フローは目標フローまで段階的に増減します。これは、押し出しモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
 
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "下降後の遅延時間。ワイヤ印刷のみに適用されます。"
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "この値より長い移動の場合、素材フローは目標フローにリセットされます。"
 
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "上向きの線が硬くなるように、上向きの動きの後の時間を遅らせる。ワイヤ印刷のみに適用されます。"
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "段階的なフローの離散化ステップのサイズ"
 
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "2つの水平セグメント間の遅延時間。このような遅延を挿入すると、前のレイヤーとの接着性が向上することがありますが、遅延が長すぎると垂れ下がりが発生します。ワイヤ印刷のみに適用されます。"
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "段階的なフローが有効"
 
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "ノズルと水平方向に下向きの線間の距離。大きな隙間がある場合、急な角度で斜め下方線となり、次の層が上方接続しずらくなる。ワイヤ印刷にのみ適用されます。"
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "段階的なフローの最大加速度"
 
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr "半分の速度で押出される上方への移動距離。過度にマテリアルを加熱することなく、前の層とのより良い接着を作ります。ワイヤ印刷のみに適用されます。"
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "初期層の最大フロー加速度"
 
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "上向き押出後にマテリアルが落下する距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "フローを段階的に変化させるための最大加速度"
 
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "斜め下方への押出に伴い上向き押出しているマテリアルが引きずられる距離。この距離は補正される。ワイヤ印刷のみに適用されます。"
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "第1層のフローを段階的に変化させるための最低速度"
 
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "上下に動くときの吐出補正。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "フラットラインを印刷する際の吐出補正。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "流れ補正：押出されたマテリアルの量はこの値の乗算になります。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "枝がモデルに接触するところで確保する枝の間隔。この間隔を小さくするとツリーサポートがモデルに接触する点が増え、支える効果が高まりますが、サポートの取り外しが難しくなります。"
-
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "ノット"
-
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "水平方向の直線部分で覆われた斜めに下降線の割合です。これは上向きラインのほとんどのポイント、上部のたるみを防ぐことができます。ワイヤ印刷にのみ適用されます。"
-
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "薄い空気中に印刷し、疎なウエブ構造で外面のみを印刷します。これは、上向きおよび斜め下向きの線を介して接続された所定のZ間隔でモデルの輪郭を水平に印刷することによって実現される。"
-
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "モデルに干渉しないようにする衝突計算の精細度。小さい値を設定すると、失敗の少ない正確なツリーが生成されますが、スライス時間は大きく増加します。"
-
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "引き戻し"
-
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "マテリアルを押し出すときにノズルが動く速度。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "斜め下方に線を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "薄い空気の中で上向きに線を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "ブルドプラットフォームに接触する第1層の印刷速度。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "モデルの水平輪郭を印刷する速度。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "各接続ポイントで2つの連続したレイヤーが密着していることを確認するためのストラテジー。収縮すると上向きの線が正しい位置で硬化しますが、フィラメントの研削が行われる可能性があります。上向きの線の終わりに結び目をつけて接続する機会を増やし、線を冷やすことができます。ただし、印刷速度が遅くなることがあります。別の方法は、上向きの線の上端のたるみを補償することである。しかし、予測どおりにラインが必ずしも落ちるとは限りません。"
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "枝の角度。枝を垂直で安定したものにするためには小さい角度を使用します。高さを得るためには大きい角度を使用します。"
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "ルーフから内側に輪郭を描くときの距離。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "ルーフの外側の輪郭に戻る際に引きずる内側ラインの終わり部分の距離。この距離は補正されていてワイヤ印刷のみ適用されます。"
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "水平ルーフが ”薄い空気”に印刷され落ちる距離。この距離は補正されています。ワイヤ印刷に適用されます。"
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "2つの水平なパーツ間の、上向きおよび斜め下向きの線の高さ。これは、ネット構造の全体密度を決定します。ワイヤ印刷のみに適用されます。"
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "トップレイヤーにある穴の外側に掛ける時間。長い時間の方はより良い密着を得られます。ワイヤ印刷にのみ適用されます。"
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "ツリーサポート枝角度"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "ツリーサポート枝直径"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "ツリーサポート枝直径角度"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "ツリーサポート枝間隔"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "ツリーサポート衝突精細度"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "ツリーをサポートする本体の直径"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "WP底面遅延"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "WP底面印字速度"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "WP接続フロー"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "WPの高さ"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "WP下向き印字速度"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "WP引きづり距離"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "WP低速移動距離"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "WP落下距離"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "WP水平遅延"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "WPフラットフロー"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "WPフロー"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "WP水平印字速度"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "WPノットサイズ"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "WPノズル隙間"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "WPルーフ引きずり距離"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "WPルーフ落下距離"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "WPルーフ距離のオフセット"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "WPルーフ外側処理時間"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "WP速度"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "WP下向き直線ライン"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "WPストラテジー"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "WP上面遅延"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "WP上向き印字速度"
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "ワイヤ印刷"
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "フロー期間をリセット"
