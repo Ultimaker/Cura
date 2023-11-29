@@ -1,8 +1,5 @@
 # Copyright (c) 2017 Ghostkeeper
 # The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
-# Altered by GregValiant (Greg Foresi) February, 2023.
-#    Added option for a layer search with a Start Layer and an End layer.
-#    Added 'Ignore StartUp G-code' and 'Ignore Ending G-code' options
 
 import re #To perform the search and replace.
 from ..Script import Script
