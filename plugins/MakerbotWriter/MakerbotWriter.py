@@ -50,59 +50,6 @@ class MakerbotWriter(MeshWriter):
         {"prefix": "thumbnail", "width": 90, "height": 90},
     ]
     _META_VERSION = "3.0.0"
-    _PRINT_NAME_MAP = {
-        "UltiMaker Method": "fire_e",
-        "UltiMaker Method X": "lava_f",
-        "UltiMaker Method XL": "magma_10",
-    }
-    _EXTRUDER_NAME_MAP = {
-        "1XA": "mk14_hot",
-        "2XA": "mk14_hot_s",
-        "1C": "mk14_c",
-        "1A": "mk14",
-        "2A": "mk14_s",
-    }
-    _MATERIAL_MAP = {"2780b345-577b-4a24-a2c5-12e6aad3e690": "abs",
-                     "88c8919c-6a09-471a-b7b6-e801263d862d": "abs-wss1",
-                     "416eead4-0d8e-4f0b-8bfc-a91a519befa5": "asa",
-                     "85bbae0e-938d-46fb-989f-c9b3689dc4f0": "nylon-cf",
-                     "283d439a-3490-4481-920c-c51d8cdecf9c": "nylon",
-                     "62414577-94d1-490d-b1e4-7ef3ec40db02": "pc",
-                     "69386c85-5b6c-421a-bec5-aeb1fb33f060": "petg",
-                     "0ff92885-617b-4144-a03c-9989872454bc": "pla",
-                     "a4255da2-cb2a-4042-be49-4a83957a2f9a": "pva",
-                     "a140ef8f-4f26-4e73-abe0-cfc29d6d1024": "wss1",
-                     "77873465-83a9-4283-bc44-4e542b8eb3eb": "sr30",
-                     "96fca5d9-0371-4516-9e96-8e8182677f3c": "im-pla",
-                     "9f52c514-bb53-46a6-8c0c-d507cd6ee742": "abs",
-                     "0f9a2a91-f9d6-4b6b-bd9b-a120a29391be": "abs",
-                     "d3e972f2-68c0-4d2f-8cfd-91028dfc3381": "abs",
-                     "495a0ce5-9daf-4a16-b7b2-06856d82394d": "abs-cf10",
-                     "cb76bd6e-91fd-480c-a191-12301712ec77": "abs-wss1",
-                     "a017777e-3f37-4d89-a96c-dc71219aac77": "abs-wss1",
-                     "4d96000d-66de-4d54-a580-91827dcfd28f": "abs-wss1",
-                     "0ecb0e1a-6a66-49fb-b9ea-61a8924e0cf5": "asa",
-                     "efebc2ea-2381-4937-926f-e824524524a5": "asa",
-                     "b0199512-5714-4951-af85-be19693430f8": "asa",
-                     "b9f55a0a-a2b6-4b8d-8d48-07802c575bd1": "pla",
-                     "c439d884-9cdc-4296-a12c-1bacae01003f": "pla",
-                     "16a723e3-44df-49f4-82ec-2a1173c1e7d9": "pla",
-                     "74d0f5c2-fdfd-4c56-baf1-ff5fa92d177e": "pla",
-                     "64dcb783-470d-4400-91b1-7001652f20da": "pla",
-                     "3a1b479b-899c-46eb-a2ea-67050d1a4937": "pla",
-                     "4708ac49-5dde-4cc2-8c0a-87425a92c2b3": "pla",
-                     "4b560eda-1719-407f-b085-1c2c1fc8ffc1": "pla",
-                     "e10a287d-0067-4a58-9083-b7054f479991": "im-pla",
-                     "01a6b5b0-fab1-420c-a5d9-31713cbeb404": "im-pla",
-                     "f65df4ad-a027-4a48-a51d-975cc8b87041": "im-pla",
-                     "f48739f8-6d96-4a3d-9a2e-8505a47e2e35": "im-pla",
-                     "5c7d7672-e885-4452-9a78-8ba90ec79937": "petg",
-                     "91e05a6e-2f5b-4964-b973-d83b5afe6db4": "petg",
-                     "bdc7dd03-bf38-48ee-aeca-c3e11cee799e": "petg",
-                     "54f66c89-998d-4070-aa60-1cb0fd887518": "nylon",
-                     "002c84b3-84ac-4b5a-b57d-fe1f555a6351": "pva",
-                     "e4da5fcb-f62d-48a2-aaef-0b645aa6973b": "wss1",
-                     "77f06146-6569-437d-8380-9edb0d635a32": "sr30"}
 
     # must be called from the main thread because of OpenGL
     @staticmethod
@@ -197,7 +144,7 @@ class MakerbotWriter(MeshWriter):
 
         meta = dict()
 
-        meta["bot_type"] = MakerbotWriter._PRINT_NAME_MAP.get((name := global_stack.definition.name), name)
+        meta["bot_type"] = global_stack.definition.getMetaDataEntry("reference_machine_id")
 
         bounds: Optional[AxisAlignedBox] = None
         for node in nodes:
@@ -239,12 +186,7 @@ class MakerbotWriter(MeshWriter):
 
         meta["uuid"] = print_information.slice_uuid
 
-        materials = []
-        for extruder in extruders:
-            guid = extruder.material.getMetaData().get("GUID")
-            material_name = extruder.material.getMetaData().get("material")
-            material = self._MATERIAL_MAP.get(guid, material_name)
-            materials.append(material)
+        materials = [extruder.material.getMetaData().get("reference_material_id") for extruder in extruders]
 
         meta["material"] = materials[0]
         meta["materials"] = materials
@@ -256,8 +198,7 @@ class MakerbotWriter(MeshWriter):
 
         meta["model_counts"] = [{"count": 1, "name": node.getName()} for node in nodes]
 
-        tool_types = [MakerbotWriter._EXTRUDER_NAME_MAP.get((name := extruder.variant.getName()), name) for extruder in
-                      extruders]
+        tool_types = [extruder.variant.getMetaDataEntry("reference_extruder_id") for extruder in extruders]
         meta["tool_type"] = tool_types[0]
         meta["tool_types"] = tool_types
 

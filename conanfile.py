@@ -25,7 +25,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
 
     # FIXME: Remove specific branch once merged to main
-    python_requires = "translationextractor/[>=2.1.1]@ultimaker/stable"
+    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
 
     options = {
         "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
@@ -51,6 +51,10 @@ class CuraConan(ConanFile):
     def set_version(self):
         if not self.version:
             self.version = self.conan_data["version"]
+
+    @property
+    def _i18n_options(self):
+        return self.conf.get("user.i18n:options", default = {"extract": True, "build": True}, check_type = dict)
 
     @property
     def _pycharm_targets(self):
@@ -257,7 +261,7 @@ class CuraConan(ConanFile):
         with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
@@ -308,7 +312,7 @@ class CuraConan(ConanFile):
             self.options["curaengine_grpc_definitions"].shared = True
 
     def validate(self):
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
@@ -329,7 +333,7 @@ class CuraConan(ConanFile):
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
-            self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
+            self.tool_requires("gettext/0.21", force_host_context = True)
 
     def layout(self):
         self.folders.source = "."
@@ -402,7 +406,7 @@ class CuraConan(ConanFile):
                 entitlements_file=entitlements_file if self.settings.os == "Macos" else "None"
             )
 
-        if self.options.get_safe("enable_i18n", False):
+        if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
             # Update the po and pot files
             vb = VirtualBuildEnv(self)
             vb.generate()
@@ -413,7 +417,7 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.options.get_safe("enable_i18n", False):
+        if self.options.get_safe("enable_i18n", False) and self._i18n_options["build"]:
             for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
                 mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
@@ -437,7 +441,7 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
 
         # Generate the GitHub Action version info Environment
-        version = self.conf_info.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
         activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
