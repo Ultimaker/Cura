@@ -57,8 +57,9 @@ class IntentSelectionModel(ListModel):
 
         self._onChange()
 
-    _default_intent_categories = ["default", "visual", "engineering", "quick", "annealing"]
-    _icons = {"default": "GearCheck", "visual": "Visual", "engineering": "Nut", "quick": "SpeedOMeter", "annealing": "Anneal"}
+    _default_intent_categories = ["default", "visual", "engineering", "quick", "annealing", "solid"]
+    _icons = {"default": "GearCheck", "visual": "Visual", "engineering": "Nut", "quick": "SpeedOMeter",
+              "annealing": "Anneal", "solid": "Hammer"}
 
     def _onContainerChange(self, container: ContainerInterface) -> None:
         """Updates the list of intents if an intent profile was added or removed."""
