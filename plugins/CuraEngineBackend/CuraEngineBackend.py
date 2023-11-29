@@ -1101,10 +1101,7 @@ class CuraEngineBackend(QObject, Backend):
             if auto_slice:
                 self._change_timer.start()
         elif preference == "info/send_engine_crash":
-            if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash"):
-                os.environ["use_sentry"] = str(1)
-            else:
-                os.environ["use_sentry"] = str(0)
+            os.environ["use_sentry"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""
