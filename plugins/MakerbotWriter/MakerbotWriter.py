@@ -144,7 +144,7 @@ class MakerbotWriter(MeshWriter):
 
         meta = dict()
 
-        meta["bot_type"] = global_stack.definition.getMetaDataEntry("bot_machine_id")
+        meta["bot_type"] = global_stack.definition.getMetaDataEntry("reference_machine_id")
 
         bounds: Optional[AxisAlignedBox] = None
         for node in nodes:
@@ -186,7 +186,7 @@ class MakerbotWriter(MeshWriter):
 
         meta["uuid"] = print_information.slice_uuid
 
-        materials = [extruder.material.getMetaData().get("bot_material_id") for extruder in extruders]
+        materials = [extruder.material.getMetaData().get("reference_material_id") for extruder in extruders]
 
         meta["material"] = materials[0]
         meta["materials"] = materials
@@ -198,7 +198,7 @@ class MakerbotWriter(MeshWriter):
 
         meta["model_counts"] = [{"count": 1, "name": node.getName()} for node in nodes]
 
-        tool_types = [extruder.variant.getMetaDataEntry("bot_extruder_id") for extruder in extruders]
+        tool_types = [extruder.variant.getMetaDataEntry("reference_extruder_id") for extruder in extruders]
         meta["tool_type"] = tool_types[0]
         meta["tool_types"] = tool_types
 

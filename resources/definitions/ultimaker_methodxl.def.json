@@ -9,7 +9,7 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_xl_platform.stl",
-        "bot_machine_id": "magma_10",
+      "reference_machine_id": "magma_10",
         "has_machine_materials": true,
         "has_machine_quality": true,
         "has_materials": true,

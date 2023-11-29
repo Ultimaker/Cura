@@ -19,7 +19,7 @@ class VariantDatabaseHandler(DatabaseMetadataContainerController):
                 "definition": "text",
                 "version": "text",
                 "setting_version": "text",
-                "bot_extruder_id": "text",
+                "reference_extruder_id": "text",
             },
         ))
         self._container_type = InstanceContainer
