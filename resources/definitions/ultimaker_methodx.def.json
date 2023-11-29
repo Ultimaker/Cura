@@ -9,7 +9,6 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_platform.stl",
-      "reference_machine_id": "lava_f",
         "exclude_materials": [
             "dsm_",
             "Essentium_",
@@ -76,6 +75,7 @@
         "preferred_material": "ultimaker_absr_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "1XA",
+        "reference_machine_id": "lava_f",
         "supports_network_connection": true,
         "supports_usb_connection": false,
         "variant_definition": "ultimaker_methodx",
