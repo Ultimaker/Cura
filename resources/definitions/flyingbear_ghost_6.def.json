@@ -12,7 +12,6 @@
     },
     "overrides":
     {
-	    "machine_name": { "default_value": "Flying Bear Ghost 6" },
         "acceleration_enabled": { "value": false },
         "acceleration_print": { "value": 1500 },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
@@ -25,7 +24,6 @@
         "machine_acceleration": { "value": 1500 },
         "machine_depth": { "default_value": 210 },
         "machine_height": { "default_value": 210 },
-		"machine_width": { "default_value": 255 },
         "machine_max_acceleration_e": { "value": 80000 },
         "machine_max_acceleration_x": { "value": 1000 },
         "machine_max_acceleration_y": { "value": 1000 },
@@ -42,7 +40,8 @@
         "machine_steps_per_mm_x": { "default_value": 160 },
         "machine_steps_per_mm_y": { "default_value": 160 },
         "machine_steps_per_mm_z": { "default_value": 800 },
-		"retraction_amount": { "value": 0.8 },
+        "machine_width": { "default_value": 255 },
+        "retraction_amount": { "value": 0.8 },
         "retraction_extrusion_window": { "value": 1.5 },
         "retraction_speed": { "default_value": 35 }
     }
