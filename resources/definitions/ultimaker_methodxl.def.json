@@ -25,6 +25,7 @@
         ],
         "platform_texture": "MakerbotMethod.png",
         "preferred_quality_type": "draft",
+        "reference_machine_id": "magma_10",
         "supports_network_connection": true,
         "supports_usb_connection": false,
         "variants_name": "Extruder",

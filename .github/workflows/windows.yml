@@ -118,9 +118,6 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
-      - name: Set GH service account for remote cura-conan-dev
-        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
-
       - name: Use Conan download cache (Powershell)
         run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
 
@@ -143,13 +140,13 @@ jobs:
           .\cura_inst\Scripts\activate_github_actions_env.ps1
           .\cura_inst\Scripts\activate_github_actions_version_env.ps1
 
-      - name: Install OpenSSL shared
-        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
-
-      - name: Copy OpenSSL shared (Powershell)
-        run: |
-          cp openssl/bin/*.dll ./cura_inst/Scripts/
-          cp openssl/lib/*.lib ./cura_inst/Lib/
+#      - name: Install OpenSSL shared
+#        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
+#
+#      - name: Copy OpenSSL shared (Powershell)
+#        run: |
+#          cp openssl/bin/*.dll ./cura_inst/Scripts/
+#          cp openssl/lib/*.lib ./cura_inst/Lib/
 
       - name: Create the Cura dist
         run: pyinstaller ./cura_inst/UltiMaker-Cura.spec

@@ -24,7 +24,8 @@
 #           - Example line on LCD:  1/479 | ET 2h13m
 #           - Time to Pauses changes the M117/M118 lines to countdown to the next pause as  1/479 | TP 2h36m
 #           - 'Add M118 Line' is available with either option.  M118 will bounce the message back to a remote print server through the USB connection.
-#           - Enable 'Finish-Time' Message - when enabled, takes the Print Time, adds 15 minutes for print start-up, and calculates when the print will end.  It takes into account the Time Fudge Factor.  The user may enter a print start time.  This is also available for Display Filename.
+#           - 'Add M73 Line' is used by 'Display Progress' only.  There are options to incluse M73 P(percent) and M73 R(time remaining)
+#           - Enable 'Finish-Time' Message - when enabled, takes the Print Time and calculates when the print will end.  It takes into account the Time Fudge Factor.  The user may enter a print start time.  This is also available for Display Filename.
 
 from ..Script import Script
 from UM.Application import Application
@@ -34,6 +35,7 @@ import configparser
 from UM.Preferences import Preferences
 import time
 import datetime
+import math
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
@@ -118,14 +120,38 @@ class DisplayInfoOnLCD(Script):
                 "add_m118_line":
                 {
                     "label": "Add M118 Line",
-                    "description": "Adds M118 in addition to the M117.  It will bounce the message back through the USB port to a computer print server (if a printer server is enabled).",
+                    "description": "Adds M118 in addition to the M117.  It will bounce the message back through the USB port to a computer print server (if a printer server like Octoprint or Pronterface is in use).",
                     "type": "bool",
                     "default_value": false
+                },
+                "add_m73_line":
+                {
+                    "label": "Add M73 Line(s)",
+                    "description": "Adds M73 in addition to the M117.  For some firmware this will set the printers time and or percentage.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "display_option == 'display_progress'"
+                },
+                "add_m73_percent":
+                {
+                    "label": "     Add M73 Percentage",
+                    "description": "Adds M73 with the P parameter.  For some firmware this will set the printers 'percentage' of layers completed and it will count upward.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "add_m73_line and display_option == 'display_progress'"
+                },
+                "add_m73_time":
+                {
+                    "label": "     Add M73 Time",
+                    "description": "Adds M73 with the R parameter.  For some firmware this will set the printers 'print time' and it will count downward.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "add_m73_line and display_option == 'display_progress'"
                 },
                 "speed_factor":
                 {
                     "label": "Time Fudge Factor %",
-                    "description": "When using 'Display Progress' tweak this value to get better estimates. ([Actual Print Time]/[Cura Estimate]) x 100 = Time Fudge Factor.  If Cura estimated 9hr and the print actually took 10hr30min then enter 117 here to adjust any estimate closer to reality.  This Fudge Factor is also used to calculate the time that the print will end if you were to start it 15 minutes after slicing.",
+                    "description": "When using 'Display Progress' tweak this value to get better estimates. ([Actual Print Time]/[Cura Estimate]) x 100 = Time Fudge Factor.  If Cura estimated 9hr and the print actually took 10hr30min then enter 117 here to adjust any estimate closer to reality.  This Fudge Factor is also used to calculate the print finish time.",
                     "type": "float",
                     "unit": "%",
                     "default_value": 100,
@@ -134,7 +160,7 @@ class DisplayInfoOnLCD(Script):
                 "countdown_to_pause":
                 {
                     "label": "Countdown to Pauses",
-                    "description": "When enabled - DisplayInfoOnLCD must run AFTER all PauseAtHeight and Filament Change scripts.  Instead of layer number and remaining print time the LCD will show 'layers remaining before pause/filament change and the time to pause/filament change' (TP).",
+                    "description": "Instead of the remaining print time the LCD will show the estimated time to pause (TP).",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "display_option == 'display_progress'"
@@ -142,7 +168,7 @@ class DisplayInfoOnLCD(Script):
                 "enable_end_message":
                 {
                     "label": "Enable 'Finish-Time' Message",
-                    "description": "Get a message when you save a fresh slice.  It will show the estimated date and time that the print would finish (with a 15 minute lag from the end of slicing to the start of the print).",
+                    "description": "Get a message when you save a fresh slice.  It will show the estimated date and time that the print would finish.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
@@ -150,7 +176,7 @@ class DisplayInfoOnLCD(Script):
                 "print_start_time":
                 {
                     "label": "Print Start Time (Ex 16:45)",
-                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print start will 15 minutes after slicing.",
+                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print will start Now.  If you enter a guesstimate of your printer start time and that time is before 'Now' the guesstimate will consider that the print will start tomorrow at the entered time.  ",
                     "type": "str",
                     "default_value": "",
                     "unit": "hrs  ",
@@ -163,7 +189,10 @@ class DisplayInfoOnLCD(Script):
     def execute(self, data):
         display_option = self.getSettingValueByKey("display_option")
         add_m118_line = self.getSettingValueByKey("add_m118_line")
-    
+        add_m73_line = self.getSettingValueByKey("add_m73_line")
+        add_m73_time = self.getSettingValueByKey("add_m73_time")
+        add_m73_percent = self.getSettingValueByKey("add_m73_percent")
+
     # This is Display Filename and Layer on LCD---------------------------------------------------------
         if display_option == "filename_layer":
             max_layer = 0
@@ -217,6 +246,12 @@ class DisplayInfoOnLCD(Script):
             display_total_layers = self.getSettingValueByKey("display_total_layers")
             display_remaining_time = self.getSettingValueByKey("display_remaining_time")
             speed_factor = self.getSettingValueByKey("speed_factor") / 100
+            m73_time = False
+            m73_percent = False
+            if add_m73_line and add_m73_time:
+                m73_time = True
+            if add_m73_line and add_m73_percent:
+                m73_percent = True
         # initialize global variables
             first_layer_index = 0
             time_total = 0
@@ -235,27 +270,26 @@ class DisplayInfoOnLCD(Script):
                     mmm = round((hhh % 1) * 60)
                     orig_hhh = cura_time/3600
                     orig_hr = round(orig_hhh // 1)
-                    orig_min = int((cura_time - (orig_hr * 3600))/60) # Not rounded up
-                    orig_mmm = round((orig_hhh % 1) * 60) # Rounded up
-                    orig_sec = round(cura_time - orig_hr * 3600 - orig_min * 60)
+                    orig_mmm = math.floor((orig_hhh % 1) * 60)
+                    orig_sec = round((((orig_hhh % 1) * 60) % 1) * 60)
                     if add_m118_line: lines.insert(tindex + 3,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
                     lines.insert(tindex + 3,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
-                    # If Countdown to pause is enabled then count the pauses and/or filament changes
+                    # add M73 line at beginning
+                    mins = int(60 * hr + mmm)
+                    if m73_time:
+                        lines.insert(tindex + 3, "M73 R{}".format(mins))
+                    if m73_percent:
+                        lines.insert(tindex + 3, "M73 P0")
+                    # If Countdonw to pause is enabled then count the pauses
                     pause_str = ""
                     if bool(self.getSettingValueByKey("countdown_to_pause")):
                         pause_count = 0
-                        filament_change_count = 0
                         for num in range(2,len(data) - 1, 1):
                             if "PauseAtHeight.py" in data[num]:
                                 pause_count += 1
-                            if "M600" in data[num]:
-                                filament_change_count += 1
-                        if pause_count > 0:
                             pause_str = f" with {pause_count} pause(s)"
-                        if filament_change_count > 0:
-                            pause_str += f" and {filament_change_count} filament change(s)"
                     # This line goes in to convert seconds to hours and minutes
-                    lines.insert(tindex + 3, f";Cura Time Estimate:  {cura_time}sec = {orig_hr}hr {orig_min}min {orig_sec}sec {pause_str}")
+                    lines.insert(tindex + 3, f";Cura Time Estimate:  {cura_time}sec = {orig_hr}hr {orig_mmm}min {orig_sec}sec {pause_str}")
                     data[0] = "\n".join(lines)
                     data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
                     if add_m118_line: data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
@@ -322,6 +356,12 @@ class DisplayInfoOnLCD(Script):
                 for l_index, line in enumerate(lines):
                     if line.startswith(";LAYER:"):
                         lines[l_index] += "\nM117 " + display_text
+                        # add M73 line
+                        mins = int(60 * h + m)
+                        if m73_time:
+                            lines[l_index] += "\nM73 R{}".format(mins)
+                        if m73_percent:
+                            lines[l_index] += "\nM73 P" + str(round(int(current_layer) / int(number_of_layers) * 100))
                         if add_m118_line:
                             lines[l_index] += "\nM118 " + display_text
                         break
@@ -344,7 +384,7 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith(";TIME_ELAPSED:"):
                             this_time = (float(line.split(":")[1]))*speed_factor
                             time_list.append(str(this_time))
-                            if "PauseAtHeight.py" in layer or "M600" in layer:
+                            if "PauseAtHeight.py" in layer:
                                 for qnum in range(num - 1, pause_index, -1):
                                     time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
                                 pause_index = num-1
@@ -380,7 +420,7 @@ class DisplayInfoOnLCD(Script):
         return data
 
     def message_to_user(self, speed_factor: float):
-        # Message the user of the projected finish time of the print (figuring a 15 minute delay from end-of-slice to start-of-print
+        # Message the user of the projected finish time of the print
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
         print_start_time = self.getSettingValueByKey("print_start_time")
         # If the user entered a print start time make sure it is in the correct format or ignore it.
@@ -391,12 +431,10 @@ class DisplayInfoOnLCD(Script):
             hr = int(print_start_time.split(":")[0])
             min = int(print_start_time.split(":")[1])
             sec = 0
-            fifteen_minute_delay = 0
         else:
             hr = int(time.strftime("%H"))
             min = int(time.strftime("%M"))
             sec = int(time.strftime("%S"))
-            fifteen_minute_delay = 900
 
         #Get the current data/time info
         yr = int(time.strftime("%Y"))
@@ -409,7 +447,7 @@ class DisplayInfoOnLCD(Script):
         pr_min = int(print_time.split(":")[1])
         pr_sec = int(print_time.split(":")[2])
         #Adjust the print time if none was entered
-        print_seconds = pr_hr*3600 + pr_min*60 + pr_sec + fifteen_minute_delay
+        print_seconds = pr_hr*3600 + pr_min*60 + pr_sec
         #Adjust the total seconds by the Fudge Factor
         adjusted_print_time = print_seconds * speed_factor
         #Break down the adjusted seconds back into hh:mm:ss
@@ -435,13 +473,13 @@ class DisplayInfoOnLCD(Script):
             show_hr = str(new_time.strftime("%H")) + ":"
             show_ampm = " AM"
         if print_start_time == "":
-            start_str = "and a 15 minute lag between saving the file and starting the print."
+            start_str = "Now"
         else:
             start_str = "and your entered 'print start time' of " + print_start_time + "hrs."
         if print_start_time != "":
             print_start_str = "Print Start Time................." + str(print_start_time) + "hrs"
         else:
-            print_start_str = "Print Start Time.................15 minutes from now."
+            print_start_str = "Print Start Time.................Now."
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
         finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)

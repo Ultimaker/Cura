@@ -322,7 +322,7 @@ class CuraConan(ConanFile):
         self.requires("curaengine_grpc_definitions/0.1.0")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
-        self.requires("dulcificum/(latest)@ultimaker/stable")
+        self.requires("dulcificum/0.1.0-beta.1")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
@@ -338,7 +338,7 @@ class CuraConan(ConanFile):
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
-            self.tool_requires("gettext/0.21@ultimaker/testing", force_host_context = True)
+            self.tool_requires("gettext/0.21", force_host_context = True)
 
     def layout(self):
         self.folders.source = "."
