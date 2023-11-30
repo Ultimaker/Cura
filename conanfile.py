@@ -307,10 +307,10 @@ class CuraConan(ConanFile):
         self.options["pynest2d"].shared = True
         self.options["dulcificum"].shared = self.settings.os != "Windows"
         self.options["cpython"].shared = True
-        self.options["openssl"].shared = True
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
+            self.options["openssl"].shared = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
