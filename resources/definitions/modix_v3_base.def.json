@@ -82,6 +82,6 @@
         "travel_avoid_supports": { "value": true },
         "travel_retract_before_outer_wall": { "value": true },
         "wall_thickness": { "value": "line_width * 2" },
-        "z_seam_corner": { "value": "z_seam_corner_weighted" }
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" }
     }
 }

@@ -41,12 +41,12 @@ on:
     branches:
       - main
       - 'CURA-*'
-      - '[1-9].[0-9]'
-      - '[1-9].[0-9][0-9]'
+      - '[0-9].[0-9]'
+      - '[0-9].[0-9][0-9]'
     tags:
-      - '[1-9].[0-9].[0-9]*'
-      - '[1-9].[0-9].[0-9]'
-      - '[1-9].[0-9][0-9].[0-9]*'
+      - '[0-9].[0-9].[0-9]*'
+      - '[0-9].[0-9].[0-9]'
+      - '[0-9].[0-9][0-9].[0-9]*'
 
 env:
   CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -102,7 +102,7 @@ jobs:
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt update
           sudo apt upgrade
-          sudo apt install efibootmgr build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison g++-12 gcc-12 -y
+          sudo apt install efibootmgr build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config flex bison libxcb-cursor-dev g++-12 gcc-12 -y
 
       - name: Install GCC-13
         run: |
@@ -118,9 +118,6 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
-      - name: Set GH service account for remote cura-conan-dev
-        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
-
       - name: Create the Packages
         run: conan create . ${{ needs.conan-recipe-version.outputs.recipe_id_full }} --build=missing --update -o ${{ needs.conan-recipe-version.outputs.project_name }}:devtools=True -o ${{ needs.conan-recipe-version.outputs.project_name }}:enable_i18n=True -c tools.build:skip_test=True
 
@@ -132,9 +129,7 @@ jobs:
         if: always()
         run: |
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura --all -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_full }} -r cura-conan-dev --all -c
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
-          conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-conan-dev -c
 
   notify-create:
     if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
