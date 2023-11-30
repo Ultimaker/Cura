@@ -1163,10 +1163,10 @@ class CuraApplication(QtApplication):
             )
             result_message.show()
 
-            if self._plugins_loaded:
-                self._openFile(event.file())
-            else:
-                self._open_file_queue.append(event.file())
+            # if self._plugins_loaded:
+            #     self._openFile(event.file())
+            # else:
+            #     self._open_file_queue.append(event.file())
 
         if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
             # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
