@@ -30,7 +30,8 @@ class CuraConan(ConanFile):
     options = {
         "enterprise": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
         "staging": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
-        "devtools": [True, False],  # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
+        "devtools": [True, False],
+        # FIXME: Split this up in testing and (development / build (pyinstaller) / system installer) tools
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
@@ -72,7 +73,7 @@ class CuraConan(ConanFile):
         self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
         self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
         if not self.in_local_cache:
-            self._cura_env.define(  "CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
+            self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
 
         if self.settings.os == "Linux":
             self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
@@ -163,7 +164,7 @@ class CuraConan(ConanFile):
         python_ins_cmd = f"python -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
         from six import StringIO
         buffer = StringIO()
-        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+        self.run(python_ins_cmd, run_environment=True, env="conanrun", output=buffer)
 
         packages = str(buffer.getvalue()).split("-----------------\n")
         packages = packages[1].strip('\r\n').split(";")
@@ -179,7 +180,7 @@ class CuraConan(ConanFile):
 
         # If you want a specific Cura version to show up on the splash screen add the user configuration `user.cura:version=VERSION`
         # the global.conf, profile, package_info (of dependency) or via the cmd line `-c user.cura:version=VERSION`
-        cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
+        cura_version = Version(self.conf.get("user.cura:version", default=self.version, check_type=str))
         pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
         build_tag = f"+{cura_version.build}" if cura_version.build else ""
         internal_tag = f"+internal" if self.options.internal else ""
@@ -187,16 +188,16 @@ class CuraConan(ConanFile):
 
         with open(os.path.join(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
-                cura_app_name = self.name,
-                cura_app_display_name = self._app_name,
-                cura_version = cura_version,
-                cura_build_type = "Enterprise" if self._enterprise else "",
-                cura_debug_mode = self.options.cura_debug_mode,
-                cura_cloud_api_root = self.conan_data["urls"][self._urls]["cloud_api_root"],
-                cura_cloud_api_version = self.options.cloud_api_version,
-                cura_cloud_account_api_root = self.conan_data["urls"][self._urls]["cloud_account_api_root"],
-                cura_marketplace_root = self.conan_data["urls"][self._urls]["marketplace_root"],
-                cura_digital_factory_url = self.conan_data["urls"][self._urls]["digital_factory_url"],
+                cura_app_name=self.name,
+                cura_app_display_name=self._app_name,
+                cura_version=cura_version,
+                cura_build_type="Enterprise" if self._enterprise else "",
+                cura_debug_mode=self.options.cura_debug_mode,
+                cura_cloud_api_root=self.conan_data["urls"][self._urls]["cloud_api_root"],
+                cura_cloud_api_version=self.options.cloud_api_version,
+                cura_cloud_account_api_root=self.conan_data["urls"][self._urls]["cloud_account_api_root"],
+                cura_marketplace_root=self.conan_data["urls"][self._urls]["marketplace_root"],
+                cura_digital_factory_url=self.conan_data["urls"][self._urls]["digital_factory_url"],
                 cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
                 conan_installs=self._conan_installs(),
                 python_installs=self._python_installs(),
@@ -261,37 +262,43 @@ class CuraConan(ConanFile):
         with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default=self.version, check_type=str)
         cura_version = Version(version)
 
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
-                name = str(self.options.display_name).replace(" ", "-"),
-                display_name = self._app_name,
-                entrypoint = entrypoint_location,
-                datas = datas,
-                binaries = binaries,
-                venv_script_path = str(self._script_dir),
-                hiddenimports = pyinstaller_metadata["hiddenimports"],
-                collect_all = pyinstaller_metadata["collect_all"],
-                icon = icon_path,
-                entitlements_file = entitlements_file,
-                osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
-                upx = str(self.settings.os == "Windows"),
-                strip = False,  # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
-                target_arch = self._pyinstaller_spec_arch,
-                macos = self.settings.os == "Macos",
-                version = f"'{version}'",
-                short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
+                name=str(self.options.display_name).replace(" ", "-"),
+                display_name=self._app_name,
+                entrypoint=entrypoint_location,
+                datas=datas,
+                binaries=binaries,
+                venv_script_path=str(self._script_dir),
+                hiddenimports=pyinstaller_metadata["hiddenimports"],
+                collect_all=pyinstaller_metadata["collect_all"],
+                icon=icon_path,
+                entitlements_file=entitlements_file,
+                osx_bundle_identifier="'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
+                upx=str(self.settings.os == "Windows"),
+                strip=False,
+                # This should be possible on Linux and MacOS but, it can also cause issues on some distributions. Safest is to disable it for now
+                target_arch=self._pyinstaller_spec_arch,
+                macos=self.settings.os == "Macos",
+                version=f"'{version}'",
+                short_version=f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
     def export_sources(self):
-        copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
-        copy(self, "*", os.path.join(self.recipe_folder, "resources"), os.path.join(self.export_sources_folder, "resources"), excludes = "*.mo")
+        copy(self, "*", os.path.join(self.recipe_folder, "plugins"),
+             os.path.join(self.export_sources_folder, "plugins"))
+        copy(self, "*", os.path.join(self.recipe_folder, "resources"),
+             os.path.join(self.export_sources_folder, "resources"), excludes="*.mo")
         copy(self, "*", os.path.join(self.recipe_folder, "tests"), os.path.join(self.export_sources_folder, "tests"))
-        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
-        copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
-        copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"),
+             excludes="CuraVersion.py")
+        copy(self, "*", os.path.join(self.recipe_folder, "packaging"),
+             os.path.join(self.export_sources_folder, "packaging"))
+        copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"),
+             os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "requirements.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "requirements-dev.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "requirements-ultimaker.txt", self.recipe_folder, self.export_sources_folder)
@@ -310,11 +317,11 @@ class CuraConan(ConanFile):
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
-        if self.conf.get("user.curaengine:sentry_url", "", check_type = str) != "":
+        if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
             self.options["curaengine"].enable_sentry = True
 
     def validate(self):
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default=self.version, check_type=str)
         if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
@@ -340,7 +347,7 @@ class CuraConan(ConanFile):
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
-            self.tool_requires("gettext/0.21", force_host_context = True)
+            self.tool_requires("gettext/0.21", force_host_context=True)
 
     def layout(self):
         self.folders.source = "."
@@ -349,11 +356,12 @@ class CuraConan(ConanFile):
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
-        self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
+        self.cpp.package.resdirs = ["resources", "plugins", "packaging",
+                                    "pip_requirements"]  # pip_requirements should be the last item in the list
 
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
-        cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
+        cura_run_envvars = self._cura_run_env.vars(self, scope="run")
         ext = ".ps1" if self.settings.os == "Windows" else ".sh"
         cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
 
@@ -365,30 +373,32 @@ class CuraConan(ConanFile):
         if not self.in_local_cache:
             # Copy CuraEngine.exe to bindirs of Virtual Python Environment
             curaengine = self.dependencies["curaengine"].cpp_info
-            copy(self, "CuraEngine.exe", curaengine.bindirs[0], self.source_folder, keep_path = False)
-            copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path = False)
+            copy(self, "CuraEngine.exe", curaengine.bindirs[0], self.source_folder, keep_path=False)
+            copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path=False)
 
             # Copy the external plugins that we want to bundle with Cura
-            rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
+            rmdir(self, str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
             curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path = False)
-            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
+            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0],
+                 str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path=True)
+            copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path=False)
+            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1],
+                 str(self.source_path.joinpath("resources", "bundled_packages")), keep_path=False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
-        copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path = True)
-        copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path = True)
+        copy(self, "*", cura_binary_data.resdirs[0], str(self._share_dir.joinpath("cura")), keep_path=True)
+        copy(self, "*", cura_binary_data.resdirs[1], str(self._share_dir.joinpath("uranium")), keep_path=True)
         if self.settings.os == "Windows":
-            copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path = True)
+            copy(self, "*", cura_binary_data.resdirs[2], str(self._share_dir.joinpath("windows")), keep_path=True)
 
         for dependency in self.dependencies.host.values():
             for bindir in dependency.cpp_info.bindirs:
-                copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
+                copy(self, "*.dll", bindir, str(self._site_packages), keep_path=False)
             for libdir in dependency.cpp_info.libdirs:
-                copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
-                copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
-                copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
+                copy(self, "*.pyd", libdir, str(self._site_packages), keep_path=False)
+                copy(self, "*.pyi", libdir, str(self._site_packages), keep_path=False)
+                copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path=False)
 
         # Copy materials (flat)
         rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
@@ -401,7 +411,8 @@ class CuraConan(ConanFile):
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
+            entitlements_file = "'{}'".format(
+                os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
             self._generate_pyinstaller_spec(
                 location=self.generators_folder,
                 entrypoint_location="'{}'".format(
@@ -430,64 +441,87 @@ class CuraConan(ConanFile):
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
                 mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                 cpp_info = self.dependencies["gettext"].cpp_info
-                self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
+                self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild",
+                         ignore_errors=True)
 
     def deploy(self):
-        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.install_folder, "packaging"), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]),
+             os.path.join(self.install_folder, "packaging"), keep_path=True)
 
         # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
-        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
-        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.libdirs[0]), str(self._site_packages.joinpath("cura")), keep_path = True)
-        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]), str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
-        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]), str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir),
+             keep_path=False)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.libdirs[0]),
+             str(self._site_packages.joinpath("cura")), keep_path=True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]),
+             str(self._share_dir.joinpath("cura", "resources")), keep_path=True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]),
+             str(self._share_dir.joinpath("cura", "plugins")), keep_path=True)
 
         # Copy resources of Uranium (keep folder structure)
         uranium = self.dependencies["uranium"].cpp_info
-        copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
-        copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
-        copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
+        copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path=True)
+        copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path=True)
+        copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path=True)
 
         # Generate the GitHub Action version info Environment
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
+        version = self.conf.get("user.cura:version", default=self.version, check_type=str)
         cura_version = Version(version)
         env_prefix = "Env:" if self.settings.os == "Windows" else ""
-        activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
+        activate_github_actions_version_env = (Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
 echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
-        """).render(cura_version_major = cura_version.major,
-                    cura_version_minor = cura_version.minor,
-                    cura_version_patch = cura_version.patch,
-                    cura_version_build = cura_version.build if cura_version.build != "" else "0",
-                    cura_version_full = self.version,
-                    cura_app_name = self._app_name,
-                    env_prefix = env_prefix)
+echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV""")
+        .render(
+            cura_version_major=cura_version.major,
+            cura_version_minor=cura_version.minor,
+            cura_version_patch=cura_version.patch,
+            cura_version_build=cura_version.build if cura_version.build != "" else "0",
+            cura_version_full=self.version,
+            cura_app_name=self._app_name,
+            env_prefix=env_prefix,
+        )
+        )
 
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"
-        save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
+        save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"),
+             activate_github_actions_version_env)
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
-        self._generate_pyinstaller_spec(location = self._base_dir,
-                                        entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
-                                        icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
-                                        entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
+        self._generate_pyinstaller_spec(location=self._base_dir,
+                                        entrypoint_location="'{}'".format(
+                                            os.path.join(self.package_folder, self.cpp_info.bindirs[0],
+                                                         self.conan_data["pyinstaller"]["runinfo"][
+                                                             "entrypoint"])).replace("\\", "\\\\"),
+                                        icon_path="'{}'".format(
+                                            os.path.join(self.package_folder, self.cpp_info.resdirs[2],
+                                                         self.conan_data["pyinstaller"]["icon"][
+                                                             str(self.settings.os)])).replace("\\", "\\\\"),
+                                        entitlements_file=entitlements_file if self.settings.os == "Macos" else "None")
 
     def package(self):
-        copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
-        copy(self, "*", src = os.path.join(self.source_folder, "cura"), dst = os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
-        copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        copy(self, "cura_app.py", src=self.source_folder,
+             dst=os.path.join(self.package_folder, self.cpp.package.bindirs[0]))
+        copy(self, "*", src=os.path.join(self.source_folder, "cura"),
+             dst=os.path.join(self.package_folder, self.cpp.package.libdirs[0]))
+        copy(self, "*", src=os.path.join(self.source_folder, "resources"),
+             dst=os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
         copy(self, "*.mo", os.path.join(self.build_folder, "resources"), os.path.join(self.package_folder, "resources"))
-        copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
-        copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
-        copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
+        copy(self, "*", src=os.path.join(self.source_folder, "plugins"),
+             dst=os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
+        copy(self, "requirement*.txt", src=self.source_folder,
+             dst=os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
+        copy(self, "*", src=os.path.join(self.source_folder, "packaging"),
+             dst=os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
 
         # Remove the CuraEngineGradualFlow plugin from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[1], "CuraEngineGradualFlow"))
-        rm(self, "bundled_*.json", os.path.join(self.package_folder, self.cpp.package.resdirs[0], "bundled_packages"), recursive = False)
+        rm(self, "bundled_*.json", os.path.join(self.package_folder, self.cpp.package.resdirs[0], "bundled_packages"),
+           recursive=False)
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
