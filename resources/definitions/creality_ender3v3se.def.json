@@ -20,15 +20,18 @@
     },
     "overrides":
     {
-        "gantry_height": { "value": 25 },
+        "gantry_height": { "value": 38 },
         "machine_depth": { "default_value": 220 },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [-20, 10],
-                [10, 10],
-                [10, -10],
-                [-20, -10]
+                [-36, -18],
+                [-20, -42],
+                [6, -42],
+                [30, -18],
+                [30, 52],
+                [-3, 56],
+                [-36, 52]
             ]
         },
         "machine_heated_bed": { "default_value": true },

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
+"POT-Creation-Date: 2023-11-24 12:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -456,6 +456,10 @@ msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Temperatur Druckabmessung"
 
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Durch Aktivieren dieser Einstellung erhält Ihr Prime-Turm einen Rand, auch wenn das Modell keinen hat. Wenn Sie eine stabilere Basis für einen hohen Turm möchten, können Sie die Basis-Höhe erhöhen."
+
 msgctxt "center_object label"
 msgid "Center Object"
 msgstr "Objekt zentrieren"
@@ -742,7 +746,7 @@ msgstr "Der Abstand zwischen den gedruckten Stützstrukturlinien. Diese Einstell
 
 msgctxt "support_bottom_distance description"
 msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
-msgstr ""
+msgstr "Abstand vom Druck zum Boden der Stütze. Beachten Sie, dass dies auf die nächste Schichthöhe aufgerundet wird."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
@@ -750,7 +754,7 @@ msgstr "Der Abstand von der Oberseite der Stützstruktur zum gedruckten Objekt."
 
 msgctxt "support_z_distance description"
 msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
-msgstr ""
+msgstr "Abstand von der Ober-/Unterseite der Stützstruktur zum Druck. Diese Lücke ermöglicht es, die Stützen nach dem Drucken des Modells zu entfernen. Die oberste Stützschicht unter dem Modell könnte ein Bruchteil der normalen Schichten sein."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -1938,7 +1942,7 @@ msgstr "Marlin (Volumetrisch)"
 
 msgctxt "material description"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 msgctxt "material label"
 msgid "Material"
@@ -2514,19 +2518,19 @@ msgstr "Beschleunigung Einzugsturm"
 
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
-msgstr ""
-
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
+msgstr "Grundfläche des Prime-Turms"
 
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
-msgstr ""
+msgstr "Höhe der Prime-Turm-Basis"
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
-msgstr ""
+msgstr "Größe der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Neigung der Prime-Turm-Basis"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2546,7 +2550,7 @@ msgstr "Mindestvolumen Einzugsturm"
 
 msgctxt "prime_tower_raft_base_line_spacing label"
 msgid "Prime Tower Raft Line Spacing"
-msgstr ""
+msgstr "Linienabstand des Prime-Turm-Floßes"
 
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
@@ -2563,10 +2567,6 @@ msgstr "X-Position des Einzugsturm"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "Y-Position des Einzugsturms"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -3786,7 +3786,7 @@ msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der
 
 msgctxt "prime_tower_raft_base_line_spacing description"
 msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr ""
+msgstr "Der Abstand zwischen den Floßlinien für die einzigartige Prime-Turm-Floßschicht. Ein großer Abstand erleichtert das Entfernen des Floßes von der Bauplatte."
 
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
@@ -3985,8 +3985,8 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "Die Dicke der ersten Schicht in mm. Eine dicke erste Schicht erleichtert die Haftung am Druckbett."
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
-msgstr ""
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Die Höhe der Prime-Turm-Basis. Eine Erhöhung dieses Wertes führt zu einem stabileren Prime-Turm, da die Basis breiter wird. Ist dieser Wert zu niedrig, hat der Prime-Turm keine stabile Basis."
 
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
@@ -4061,8 +4061,8 @@ msgid "The length of material retracted during a retraction move."
 msgstr "Die Länge des Materials, das während der Einzugsbewegung eingezogen wird."
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
-msgstr ""
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Größenfaktor, der für die Neigung der Prime-Turm-Basis verwendet wird. Wenn Sie diesen Wert erhöhen, wird die Basis schlanker. Wenn Sie ihn verringern, wird die Basis dicker."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4618,7 +4618,7 @@ msgstr "Die Temperatur, bei der das Abkühlen bereits beginnen kann, bevor der D
 
 msgctxt "material_print_temperature_layer_0 description"
 msgid "The temperature used for printing the first layer."
-msgstr ""
+msgstr "Die Temperatur, die für den Druck der ersten Schicht verwendet wird."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4697,8 +4697,8 @@ msgid "The width of the interlocking structure beams."
 msgstr "Die Breite der Balken in der ineinandergreifenden Struktur."
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
-msgstr ""
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Die Breite des Prime-Turm-Randes/Basis. Eine größere Basis verbessert die Haftung auf der Bauplatte, verringert jedoch auch den effektiven Druckbereich."
 
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
@@ -5488,62 +5488,42 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "Bewegungen"
 
-#~ msgctxt "support_bottom_distance description"
-#~ msgid "Distance from the print to the bottom of the support."
-#~ msgstr "Der Abstand vom gedruckten Objekt bis zur Unterseite der Stützstruktur."
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Dauer der einzelnen Schritte bei der stufenweisen Änderung des Flusses"
 
-#~ msgctxt "support_z_distance description"
-#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-#~ msgstr "Der Abstand der Ober-/Unterseite der Stützstruktur vom Druck. So wird ein Zwischenraum geschaffen, der die Entfernung der Stützstrukturen nach dem Drucken des Modells ermöglicht. Dieser Wert wird auf ein Vielfaches der Schichtdicke aufgerundet."
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Aktivieren Sie stufenweise Flussänderungen. Wenn diese Option aktiviert ist, wird der Fluss stufenweise auf den Sollwert des Flusses erhöht bzw. verringert. Dies ist bei Druckern mit Bowden-Röhren sinnvoll, bei denen der Fluss nicht sofort geändert wird, sobald der Extrudermotor startet/stoppt."
 
-#~ msgctxt "gradual_flow_discretisation_step_size description"
-#~ msgid "Duration of each step in the gradual flow change"
-#~ msgstr "Dauer der einzelnen Schritte bei der stufenweisen Änderung des Flusses"
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
 
-#~ msgctxt "gradual_flow_enabled description"
-#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-#~ msgstr "Aktivieren Sie stufenweise Flussänderungen. Wenn diese Option aktiviert ist, wird der Fluss stufenweise auf den Sollwert des Flusses erhöht bzw. verringert. Dies ist bei Druckern mit Bowden-Röhren sinnvoll, bei denen der Fluss nicht sofort geändert wird, sobald der Extrudermotor startet/stoppt."
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Schrittgröße der stufenweisen Fluss-Diskretisierung"
 
-#~ msgctxt "reset_flow_duration description"
-#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-#~ msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Stufenweiser Fluss aktiviert"
 
-#~ msgctxt "gradual_flow_discretisation_step_size label"
-#~ msgid "Gradual flow discretisation step size"
-#~ msgstr "Schrittgröße der stufenweisen Fluss-Diskretisierung"
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Maximale Beschleunigung bei stufenweisem Fluss"
 
-#~ msgctxt "gradual_flow_enabled label"
-#~ msgid "Gradual flow enabled"
-#~ msgstr "Stufenweiser Fluss aktiviert"
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Maximale Flussbeschleunigung bei erster Schicht"
 
-#~ msgctxt "max_flow_acceleration label"
-#~ msgid "Gradual flow max acceleration"
-#~ msgstr "Maximale Beschleunigung bei stufenweisem Fluss"
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Maximale Beschleunigung für stufenweise Änderung des Flusses"
 
-#~ msgctxt "layer_0_max_flow_acceleration label"
-#~ msgid "Initial layer max flow acceleration"
-#~ msgstr "Maximale Flussbeschleunigung bei erster Schicht"
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Mindestgeschwindigkeit für stufenweise Änderung des Flusses in der ersten Schicht"
 
-#~ msgctxt "max_flow_acceleration description"
-#~ msgid "Maximum acceleration for gradual flow changes"
-#~ msgstr "Maximale Beschleunigung für stufenweise Änderung des Flusses"
-
-#~ msgctxt "layer_0_max_flow_acceleration description"
-#~ msgid "Minimum speed for gradual flow changes for the first layer"
-#~ msgstr "Mindestgeschwindigkeit für stufenweise Änderung des Flusses in der ersten Schicht"
-
-#~ msgctxt "prime_tower_brim_enable label"
-#~ msgid "Prime Tower Brim"
-#~ msgstr "Brim Einzugsturm"
-
-#~ msgctxt "prime_tower_brim_enable description"
-#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-#~ msgstr "Einzugstürme benötigen möglicherweise zusätzliche Haftung in Form eines Brims, auch wenn das Modell selbst dies nicht benötigt. Kann derzeit nicht mit dem „Raft“-Haftungstyp verwendet werden."
-
-#~ msgctxt "reset_flow_duration label"
-#~ msgid "Reset flow duration"
-#~ msgstr "Flussdauer zurücksetzen"
-
-#~ msgctxt "material_print_temperature_layer_0 description"
-#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-#~ msgstr "Die Temperatur, die für das Drucken der ersten Schicht verwendet wird. Wählen Sie hier 0, um eine spezielle Behandlung der ersten Schicht zu deaktivieren."
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Flussdauer zurücksetzen"

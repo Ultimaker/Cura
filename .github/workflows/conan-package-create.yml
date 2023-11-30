@@ -139,7 +139,10 @@ jobs:
           conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
 
       - name: Add Cura private Artifactory remote
-        run: conan remote add cura-private https://ultimaker.jfrog.io/artifactory/api/conan/cura-private True
+        run: conan remote add cura-private-conan-dev https://cura.jfrog.io/artifactory/api/conan/cura-private-conan-dev True
+
+      - name: Set GH service account for remote cura-conan-dev
+        run: conan user -p ${{ secrets.CONAN_GH_RUNNER_PASS }} -r cura-private-conan-dev "${{ secrets.CONAN_GH_RUNNER_USER }}"
 
       - name: Create the Packages
         run: conan install ${{ inputs.recipe_id_full }} --build=missing --update -c tools.build:skip_test=True
@@ -150,4 +153,4 @@ jobs:
 
       - name: Upload the Package(s) to the private Artifactory
         if: ${{ always() && ! inputs.conan_upload_community }}
-        run: conan upload ${{ inputs.recipe_id_full }} -r cura-private --all -c
+        run: conan upload ${{ inputs.recipe_id_full }} -r cura-private-conan-dev --all -c
