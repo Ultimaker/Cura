@@ -161,7 +161,7 @@
 
         <!--Url Scheme-->
         <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER">
-            <RegistryKey Root="HKCR" Key="cura" Action="createAndRemoveOnUninstall">
+            <RegistryKey Root="HKCR" Key="cura">
                 <RegistryValue Type="string" Value="URL:Cura Protocol"/>
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
                 <RegistryValue Type="string" Key="DefaultIcon" Value="[INSTALLFOLDER]\CuraEngine.exe,1"/>
@@ -170,7 +170,7 @@
         </Component>
 
         <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER">
-            <RegistryKey Root="HKCR" Key="slicer" Action="createAndRemoveOnUninstall">
+            <RegistryKey Root="HKCR" Key="slicer">
                 <RegistryValue Type="string" Value="URL:Slicer Protocol"/>
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
                 <RegistryValue Type="string" Key="DefaultIcon" Value="[INSTALLFOLDER]\CuraEngine.exe,1"/>
