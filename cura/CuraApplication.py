@@ -8,9 +8,11 @@ import time
 import platform
 from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
+import re
+import requests
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
+from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -249,7 +251,7 @@ class CuraApplication(QtApplication):
         self._additional_components = {}  # Components to add to certain areas in the interface
 
         self._open_file_queue = []  # A list of files to open (after the application has started)
-
+        self._open_url_queue = []  # A list of urls to open (after the application has started)
         self._update_platform_activity_timer = None
 
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
@@ -946,6 +948,8 @@ class CuraApplication(QtApplication):
             self.callLater(self._openFile, file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self.callLater(self._openFile, file_name)
+        for url in self._open_url_queue:
+            self.callLater(self._openUrl, url)
 
     initializationFinished = pyqtSignal()
     showAddPrintersUncancellableDialog = pyqtSignal()  # Used to show the add printers dialog with a greyed background
@@ -1154,19 +1158,16 @@ class CuraApplication(QtApplication):
         """Handle Qt events"""
 
         if event.type() == QEvent.Type.FileOpen:
-
-            result_message = Message(
-                f"file: {str(event.file())}, url: {str(event.url())}",
-                lifetime=0,
-                title="OPENING FILE",
-                message_type=Message.MessageType.NEUTRAL,
-            )
-            result_message.show()
-
-            # if self._plugins_loaded:
-            #     self._openFile(event.file())
-            # else:
-            #     self._open_file_queue.append(event.file())
+            if self._plugins_loaded:
+                if event.file():
+                    self._openFile(event.file())
+                if event.url():
+                    self._openUrl(event.url())
+            else:
+                if event.file():
+                    self._open_file_queue.append(event.file())
+                if event.url():
+                    self._open_url_queue.append(event.url())
 
         if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
             # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
@@ -1550,7 +1551,7 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        objects_in_filename = {}  # type: Dict[str, List[CuraSceneNode]]
+        objects_in_filename: Dict[str, List[CuraSceneNode]] = {}
         for node in nodes:
             mesh_data = node.getMeshData()
             if mesh_data:
@@ -1790,6 +1791,46 @@ class CuraApplication(QtApplication):
 
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
+
+    def _openUrl(self, url: QUrl) -> None:
+        supported_schemes = ["cura", "slicer"]
+        if url.scheme() not in supported_schemes:
+            # only handle cura:// and slicer:// urls schemes
+            return
+
+        match url.host() + url.path():
+            case "open":
+                query = QUrlQuery(url.query())
+                model_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
+                response = requests.get(model_url.url())
+                if response.status_code is not 200:
+                    Logger.log("e", "Could not download file from {0}".format(model_url.url()))
+                    return
+
+                content_disposition = response.headers.get('Content-Disposition')
+                if content_disposition is None:
+                    Logger.log("w",
+                               "Could not find Content-Disposition header in response from {0}".format(model_url.url()))
+                    # Use the last part of the url as the filename, and assume it is an STL file
+                    filename = model_url.path().split("/")[-1] + ".stl"
+                else:
+                    # content_disposition is in the following format
+                    # ```
+                    # content_disposition attachment; "filename=[FILENAME]"
+                    # ```
+                    # Use a regex to extract the filename
+                    # content_disposition = response.headers.get('Content-Disposition')
+                    content_disposition_match = re.match(r'attachment; filename="(?P<filename>.*)"',
+                                                         content_disposition)
+                    assert content_disposition_match is not None
+                    filename = content_disposition_match.group("filename")
+
+                tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
+                with open(tmp.name, "wb") as f:
+                    f.write(response.content)
+                self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+            case path:
+                Logger.log("w", "Unsupported url scheme path: {0}".format(path))
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
