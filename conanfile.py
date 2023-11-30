@@ -307,6 +307,7 @@ class CuraConan(ConanFile):
         self.options["pynest2d"].shared = True
         self.options["dulcificum"].shared = self.settings.os != "Windows"
         self.options["cpython"].shared = True
+        self.options["openssl"].shared = True
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
@@ -329,7 +330,8 @@ class CuraConan(ConanFile):
         self.requires("curaengine_plugin_gradual_flow/0.1.0")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
-        self.requires("cpython/3.10.4")
+        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("openssl/3.2.0")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@internal/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
