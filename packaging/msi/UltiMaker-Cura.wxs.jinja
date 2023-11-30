@@ -160,7 +160,7 @@
         </DirectoryRef>
 
         <!--Url Scheme-->
-        <Component Id="CuraRegistration" Guid="*">
+        <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER">
             <RegistryKey Root="HKCR" Key="cura" Action="createAndRemoveOnUninstall">
                 <RegistryValue Type="string" Value="URL:Cura Protocol"/>
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
@@ -169,7 +169,7 @@
             </RegistryKey>
         </Component>
 
-        <Component Id="SlicerRegistration" Guid="*">
+        <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER">
             <RegistryKey Root="HKCR" Key="slicer" Action="createAndRemoveOnUninstall">
                 <RegistryValue Type="string" Value="URL:Slicer Protocol"/>
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
