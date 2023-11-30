@@ -1154,6 +1154,15 @@ class CuraApplication(QtApplication):
         """Handle Qt events"""
 
         if event.type() == QEvent.Type.FileOpen:
+
+            result_message = Message(
+                f"file: {str(event.file())}, url: {str(event.url())}",
+                lifetime=0,
+                title="OPENING FILE",
+                message_type=Message.MessageType.NEUTRAL,
+            )
+            result_message.show()
+
             if self._plugins_loaded:
                 self._openFile(event.file())
             else:
