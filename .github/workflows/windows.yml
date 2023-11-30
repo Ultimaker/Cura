@@ -125,7 +125,7 @@ jobs:
         run: conan config set storage.download_cache="C:\Users\runneradmin\.conan\conan_download_cache"
 
       - name: Create the Packages (Powershell)
-        run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING -c tools.build:skip_test=True
+        run: conan install $Env:CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$Env:ENTERPRISE -o cura:staging=$Env:STAGING -o cura:enable_sentry=True -c tools.build:skip_test=True
 
       - name: Remove internal packages before uploading
         run: |
