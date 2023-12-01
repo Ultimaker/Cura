@@ -327,7 +327,7 @@ class CuraConan(ConanFile):
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
         self.requires("curaengine_plugin_gradual_flow/0.1.0")
-        self.requires("uranium/(latest)@ultimaker/testing")
+        self.requires("uranium/latest@ultimaker/cura_11288")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4")
         if self.options.internal:
@@ -358,7 +358,7 @@ class CuraConan(ConanFile):
         vr = VirtualRunEnv(self)
         vr.generate()
 
-        self._generate_cura_version(os.path.join(self.source_folder, "cura"))
+        # self._generate_cura_version(os.path.join(self.source_folder, "cura"))
 
         if not self.in_local_cache:
             # Copy CuraEngine.exe to bindirs of Virtual Python Environment
@@ -466,7 +466,7 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         ext = ".sh" if self.settings.os != "Windows" else ".ps1"
         save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
-        self._generate_cura_version(os.path.join(self._site_packages, "cura"))
+        # self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
