@@ -310,6 +310,7 @@ class CuraConan(ConanFile):
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
+            self.options["openssl"].shared = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -326,7 +327,8 @@ class CuraConan(ConanFile):
                 if "fdm_materials" in req:
                     continue
                 self.requires(req)
-        self.requires("cpython/3.10.4")
+        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("fmt/9.0.0")
         self.requires("zlib/1.2.13")
