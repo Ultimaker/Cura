@@ -606,7 +606,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setIntentName(intent_name)
+        self._dialog.setIntentName(intent_category)
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
@@ -1259,7 +1259,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
                 if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
                     machine_manager.setIntentByCategory(self._intent_category_to_apply)
-
+                else:
+                    # if no intent is provided, reset to the default (balanced) intent
+                    machine_manager.resetIntents()
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 

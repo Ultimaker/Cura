@@ -106,20 +106,12 @@ jobs:
             $HOME/.conan/conan_download_cache
           key: conan-${{ runner.os }}-${{ runner.arch }}-installer-cache
 
-      - name: Hack needed specifically for ubuntu-22.04 from mid-Feb 2023 onwards
-        if: ${{ startsWith(inputs.operating_system, 'ubuntu-22.04') }}
-        run: sudo apt remove libodbc2 libodbcinst2 unixodbc-common -y
-
-      # NOTE: Due to what are probably github issues, we have to remove the cache and reconfigure before the rest.
-      #       This is maybe because grub caches the disk it uses last time, which is recreated each time.
       - name: Install Linux system requirements
         run: |
-          sudo rm /var/cache/debconf/config.dat
-          sudo dpkg --configure -a
           sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
           sudo apt update
           sudo apt upgrade
-          sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf squashfs-tools strace util-linux zsync -y
+          sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev pkg-config binutils coreutils desktop-file-utils fakeroot fuse libgdk-pixbuf2.0-dev patchelf squashfs-tools strace util-linux zsync libxcb-cursor-dev -y
           
           # Get the AppImage tool
           wget --no-check-certificate --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
@@ -155,7 +147,12 @@ jobs:
         run: conan config set storage.download_cache="$HOME/.conan/conan_download_cache"
 
       - name: Create the Packages (Bash)
-        run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING --json "cura_inst/conan_install_info.json"
+        run: conan install $CURA_CONAN_VERSION ${{ inputs.conan_args }} --build=missing --update -if cura_inst -g VirtualPythonEnv -o cura:enterprise=$ENTERPRISE -o cura:staging=$STAGING -c tools.build:skip_test=True
+
+      - name: Remove internal packages before uploading
+        run: |
+          conan remove "*@internal/*" -f || true
+          conan remove "cura_private_data*" -f || true
 
       - name: Upload the Package(s)
         if: always()
@@ -165,20 +162,7 @@ jobs:
       - name: Set Environment variables for Cura (bash)
         run: |
           . ./cura_inst/bin/activate_github_actions_env.sh
-          . ./cura_inst/bin/activate_github_actions_version_env.sh
-
-        # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
-        #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
-        #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
-        #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
-
-      - name: Install OpenSSL shared
-        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
-
-      - name: Copy OpenSSL shared (Bash)
-        run: |
-          cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
-          cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
+          . ./cura_inst/bin/activate_github_actions_version_env.sh            
 
       - name: Create the Cura dist
         run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
@@ -199,19 +183,12 @@ jobs:
               f.write(content)
               f.writelines(f"INSTALLER_FILENAME={installer_filename}\n")
 
-      - name: Summarize the used Conan dependencies
+      - name: Summarize the used dependencies
         shell: python
         run: |
           import os
-          import json
-          from pathlib import Path
           
-          conan_install_info_path = Path("cura_inst/conan_install_info.json")
-          conan_info = {"installed": []}
-          if os.path.exists(conan_install_info_path):
-              with open(conan_install_info_path, "r") as f:
-                  conan_info = json.load(f)
-          sorted_deps = sorted([dep["recipe"]["id"].replace('#', r' rev: ') for dep in conan_info["installed"]])
+          from cura.CuraVersion import ConanInstalls, PythonInstalls
           
           summary_env = os.environ["GITHUB_STEP_SUMMARY"]
           content = ""
@@ -223,25 +200,12 @@ jobs:
               f.write(content)
               f.writelines("# ${{ steps.filename.outputs.INSTALLER_FILENAME }}\n")
               f.writelines("## Conan packages:\n")
-              for dep in sorted_deps:
-                  f.writelines(f"`{dep}`\n")
+              for dep_name, dep_info in ConanInstalls.items():
+                  f.writelines(f"`{dep_name} {dep_info['version']} {dep_info['revision']}`\n")
 
-      - name: Summarize the used Python modules
-        shell: python
-        run: |
-          import os
-          import pkg_resources
-          summary_env = os.environ["GITHUB_STEP_SUMMARY"]
-          content = ""
-          if os.path.exists(summary_env):
-              with open(summary_env, "r") as f:
-                  content = f.read()
-          
-          with open(summary_env, "w") as f:
-              f.write(content)
               f.writelines("## Python modules:\n")
-              for package in pkg_resources.working_set:
-                  f.writelines(f"`{package.key}/{package.version}`\n")
+              for dep_name, dep_info in PythonInstalls.items():
+                  f.writelines(f"`{dep_name} {dep_info['version']}`\n")
 
       - name: Create the Linux AppImage (Bash)
         run: |

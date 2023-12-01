@@ -1,22 +1,16 @@
-# Cura
-# Copyright (C) 2022 UltiMaker.
-# This file is distributed under the same license as the Cura package.
-# Ultimaker <plugins@ultimaker.com>, 2022.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 5.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 14:03+0000\n"
-"PO-Revision-Date: 2022-07-15 11:06+0200\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -492,7 +486,7 @@ msgstr "当模型以米而不是毫米为单位时，模型可能会在打印平
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "退火"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -558,7 +552,11 @@ msgstr "编位所有的模型"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
-msgstr ""
+msgstr "排列网格中的所有模型"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr "排列选择"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -623,6 +621,10 @@ msgstr "备份并同步您的 Cura 设置。"
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "备份"
+
+msgctxt "@label"
+msgid "Balanced"
+msgstr "平衡"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -973,7 +975,7 @@ msgstr "将所有修改值复制到所有挤出机"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "复制到剪贴板"
 
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
@@ -1008,6 +1010,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "无法解释服务器的响应。"
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr "无法加载 GCodeWriter 插件。尝试重新启用插件。"
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "无法连接到市场。"
@@ -1040,6 +1046,8 @@ msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "No permission to execute process."
 msgstr ""
+"无法启用 EnginePlugin：{self._plugin_id}\n"
+"没有执行进程的权限。"
 
 #, python-brace-format
 msgctxt "@info:plugin_failed"
@@ -1047,6 +1055,8 @@ msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Operating system is blocking it (antivirus?)"
 msgstr ""
+"无法启用 EnginePlugin：{self._plugin_id}\n"
+"操作系统正在阻止它（杀毒软件？）"
 
 #, python-brace-format
 msgctxt "@info:plugin_failed"
@@ -1054,6 +1064,8 @@ msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Resource is temporarily unavailable"
 msgstr ""
+"无法启用 EnginePlugin：{self._plugin_id}\n"
+"资源暂时不可用"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1166,11 +1178,11 @@ msgstr "CuraEngine 后端"
 
 msgctxt "description"
 msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr ""
+msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
 
 msgctxt "name"
 msgid "CuraEngineGradualFlow"
-msgstr ""
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1218,7 +1230,7 @@ msgstr "自定义配置文件"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Cut"
-msgstr ""
+msgstr "剪切"
 
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
@@ -1250,11 +1262,7 @@ msgstr "拒绝并从帐户中删除"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
-
-msgctxt "@label"
-msgid "Default"
-msgstr ""
+msgstr "默认"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
@@ -1452,7 +1460,7 @@ msgstr "启用挤出机"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
-msgstr ""
+msgstr "启用打印边缘或浮边。这将在物体周围或下面添加一个平坦区域，方便之后切断。默认情况下，禁用它会在对象周围形成一个裙边。"
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1472,11 +1480,11 @@ msgstr "熔丝 3D 打印技术的的端对端解决方案。"
 
 msgctxt "@info:title"
 msgid "EnginePlugin"
-msgstr ""
+msgstr "EnginePlugin"
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "工程"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -1577,7 +1585,7 @@ msgstr "失败"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr ""
+msgstr "无法连接 Digital Factory，不能与某些打印机同步材料。"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
@@ -1872,7 +1880,7 @@ msgstr "图形用户界面"
 
 msgctxt "@label"
 msgid "Grid Placement"
-msgstr ""
+msgstr "网格放置"
 
 #, python-brace-format
 msgctxt "@label"
@@ -2061,11 +2069,11 @@ msgstr "安装包"
 
 msgctxt "@action:button"
 msgid "Install Packages"
-msgstr ""
+msgstr "安装程序包"
 
 msgctxt "@header"
 msgid "Install Packages"
-msgstr ""
+msgstr "安装程序包"
 
 msgctxt "@header"
 msgid "Install Plugins"
@@ -2073,15 +2081,15 @@ msgstr "安装插件"
 
 msgctxt "@action:button"
 msgid "Install missing packages"
-msgstr ""
+msgstr "安装缺失程序包"
 
 msgctxt "@title"
 msgid "Install missing packages"
-msgstr ""
+msgstr "安装缺失程序包"
 
 msgctxt "@label"
 msgid "Install missing packages from project file."
-msgstr ""
+msgstr "安装项目文件缺失的程序包。"
 
 msgctxt "@button"
 msgid "Install pending updates"
@@ -2101,7 +2109,7 @@ msgstr "正在安装..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "目的"
 
 msgctxt "@label"
 msgid "Interface"
@@ -2221,7 +2229,7 @@ msgstr "了解有关将打印机添加到 Cura 的更多信息"
 
 msgctxt "@label"
 msgid "Learn more about project packages."
-msgstr ""
+msgstr "详细了解项目程序包。"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
@@ -2343,6 +2351,22 @@ msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印机配置。当前 G-code 文件可能不准确。"
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr "Makerbot 打印文件"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Makerbot 打印文件编写器"
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr "MakerbotWriter 无法保存至指定路径。"
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr "MakerbotWriter 不支持文本模式。"
+
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "管理材料..."
@@ -2393,11 +2417,11 @@ msgstr "在此处管理您的 UltiMaker Cura 插件和材料配置文件。请�
 
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr ""
+msgstr "管理应用程序扩展，允许从  UltiMaker 网站浏览扩展。"
 
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr ""
+msgstr "管理  UltiMaker 联网打印机的网络连接。"
 
 msgctxt "@label"
 msgid "Manufacturer"
@@ -2550,7 +2574,7 @@ msgstr[0] "复制所选模型"
 
 msgctxt "@info"
 msgid "Multiply selected item and place them in a grid of build plate."
-msgstr ""
+msgstr "选择多项，将它们放置在构建板的网格中。"
 
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
@@ -2617,7 +2641,7 @@ msgstr "下一步"
 
 msgctxt "@info:title"
 msgid "Nightly build"
-msgstr ""
+msgstr "夜间构建"
 
 msgctxt "@info"
 msgid "No"
@@ -2899,7 +2923,7 @@ msgstr "解析 G-code"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
-msgstr ""
+msgstr "从剪贴板粘贴"
 
 msgctxt "@label"
 msgid "Pause"
@@ -2990,7 +3014,7 @@ msgstr "请为此配置文件提供名称。"
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr "请提供新名称。"
+msgstr "请提供一个新名称。"
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3377,7 +3401,7 @@ msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
 
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr ""
+msgstr "为 Ultimaker 车床提供机器操作（例如车床调平向导、选择升级等）。"
 
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
@@ -3409,7 +3433,7 @@ msgstr "提供对读取 AMF 文件的支持。"
 
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "为读取 Ultimaker 格式包提供支持。"
 
 msgctxt "description"
 msgid "Provides support for reading X3D files."
@@ -3424,8 +3448,12 @@ msgid "Provides support for writing 3MF files."
 msgstr "提供对写入 3MF 文件的支持。"
 
 msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "提供对写入 MakerBot 格式包的支持。"
+
+msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr ""
+msgstr "为写入 Ultimaker 格式包提供支持。"
 
 msgctxt "description"
 msgid "Provides the Per Model Settings."
@@ -3518,7 +3546,7 @@ msgstr "刷新列表"
 
 msgctxt "@button"
 msgid "Refreshing..."
-msgstr ""
+msgstr "正在刷新..."
 
 msgctxt "@label"
 msgid "Release Notes"
@@ -3973,7 +4001,7 @@ msgstr "保存项目时显示摘要对话框"
 
 msgctxt "@tooltip:button"
 msgid "Show your support for Cura with a donation."
-msgstr ""
+msgstr "通过捐赠表达您对 Cura 的支持。"
 
 msgctxt "@button"
 msgid "Sign Out"
@@ -4075,15 +4103,15 @@ msgstr ""
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
-msgstr ""
+msgstr "Cura 目前未安装项目中使用的一些程序包，这可能产生不理想的打印效果。我们强烈建议从 Marketplace 安装所有必需包。"
 
 msgctxt "@info:title"
 msgid "Some required packages are not installed"
-msgstr ""
+msgstr "一些必需程序包未安装"
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "在 <b>%1</b> 中定义的一些设置值已被覆盖。"
 
 msgctxt "@tooltip"
 msgid ""
@@ -4117,11 +4145,11 @@ msgstr "速度"
 
 msgctxt "@action:inmenu"
 msgid "Sponsor Cura"
-msgstr ""
+msgstr "赞助 Cura"
 
 msgctxt "@label:button"
 msgid "Sponsor Cura"
-msgstr ""
+msgstr "赞助 Cura"
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4294,7 +4322,7 @@ msgstr "要应用到图像的平滑量。"
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "退火轮廓需要在打印完成后在烘箱中进行后处理。这种轮廓可在退火后保留打印部件的尺寸精度，提高强度、刚度和耐热性。"
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4304,6 +4332,10 @@ msgstr[0] "分配的打印机 %1 需要以下配置更改："
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "备份超过了最大文件大小。"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "平衡配置旨在在生产力、表面质量、机械性能和尺寸精度之間取得平衡。"
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -4355,7 +4387,7 @@ msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩
 
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr "工程配置文件用于打印功能性原型和最终用途部件，可提高准确性和减小公差。"
+msgstr "工程參数是设计來打印較高精度和較小公差的功能性原型和实际使用零件。"
 
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
@@ -4447,7 +4479,7 @@ msgstr "穿透 1 毫米厚的打印件的光线百分比。降低此值将增大
 
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
-msgstr ""
+msgstr "在 Ultimaker Marketplace 上找不到与 Cura 项目关联的插件。由于可能需要插件对项目进行切片，因此可能无法正确切片文件。"
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4601,7 +4633,7 @@ msgstr "此配置文件使用打印机指定的默认值，因此在下面的列
 
 msgctxt "@label"
 msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
-msgstr ""
+msgstr "此项目包含 Cura 目前未安装的材料或插件。<br/>请安装缺失程序包，然后重新打开项目。"
 
 msgctxt "@label"
 msgid ""
@@ -4646,7 +4678,7 @@ msgstr "此设置与挤出器特定值不同："
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
-msgstr ""
+msgstr "此版本不用作生产用途。如果您遇到任何问题，请在我们的 GitHub 页面报告，并注明完整版本 {self.getVersion()}"
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4780,7 +4812,7 @@ msgstr "UltiMaker 格式包"
 
 msgctxt "name"
 msgid "UltiMaker Network Connection"
-msgstr ""
+msgstr "UltiMaker 网络连接"
 
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
@@ -4792,7 +4824,7 @@ msgstr "UltiMaker 验证插件"
 
 msgctxt "name"
 msgid "UltiMaker machine actions"
-msgstr ""
+msgstr "UltiMaker 车床操作"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4821,7 +4853,7 @@ msgstr "无法在成形空间体积内放下全部模型"
 #, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
-msgstr ""
+msgstr "无法为以下对象找到本地 EnginePlugin 服务器可执行文件：{self._plugin_id}"
 
 #, python-brace-format
 msgctxt "@info:plugin_failed"
@@ -4829,6 +4861,8 @@ msgid ""
 "Unable to kill running EnginePlugin: {self._plugin_id}\n"
 "Access is denied."
 msgstr ""
+"无法关闭正在运行的 EnginePlugin：{self._plugin_id}\n"
+"访问被拒。"
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -5076,11 +5110,11 @@ msgstr "将配置从 Cura 5.2 版本升级至 5.3 版本。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "将配置从 Cura 5.3 升级到 Cura 5.4。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr ""
+msgstr "将配置从 Cura 5.4 升级到 Cura 5.5。"
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5212,11 +5246,11 @@ msgstr "版本自 5.2 升级到 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "版本 5.3 升级到 5.4"
 
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
-msgstr ""
+msgstr "版本 5.4 升级到 5.5"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5409,7 +5443,7 @@ msgstr[0] ""
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "您正在尝试连接未运行 UltiMaker Connect 的打印机。请将打印机升级到最新固件。"
 
 #, python-brace-format
 msgctxt "@info:status"
@@ -5529,64 +5563,9 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} 个插件下载失败"
 
-#, python-brace-format
-#~ msgctxt "info:{0} gets replaced by a number of printers"
-#~ msgid "... and {0} other"
-#~ msgid_plural "... and {0} others"
-#~ msgstr[0] "... 和另外 {0} 台"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange Selection"
-#~ msgstr "为所选模型编位"
-
-#~ msgctxt "@tooltip:button"
-#~ msgid "Become a 3D printing expert with UltiMaker e-learning."
-#~ msgstr "通过 UltiMaker 线上课程教学，成为 3D 打印专家。"
-
-#~ msgctxt "@info:status"
-#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
-#~ msgstr "启用“单线打印”后，Cura 将无法准确地显示打印层。"
-
 #~ msgctxt "@label"
-#~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-#~ msgstr "允许打印 Brim 或 Raft。这将在您的对象周围或下方添加一个容易切断的平面区域。"
+#~ msgid "Default"
+#~ msgstr "默认"
 
-#~ msgctxt "@error:zip"
-#~ msgid "Error writing 3mf file."
-#~ msgstr "写入 3mf 文件时出错。"
-
-#~ msgctxt "@label"
-#~ msgid "Hex"
-#~ msgstr "六角"
-
-#~ msgctxt "@action:button"
-#~ msgid "Install Materials"
-#~ msgstr "安装材料"
-
-#~ msgctxt "@title"
-#~ msgid "Install missing Materials"
-#~ msgstr "安装缺少的材料"
-
-#~ msgctxt "@action:button"
-#~ msgid "Install missing material"
-#~ msgstr "安装缺少的材料"
-
-#~ msgctxt "@info:title"
-#~ msgid "Material profiles not installed"
-#~ msgstr "材料配置文件未安装"
-
-#~ msgctxt "@info:title"
-#~ msgid "Simulation View"
-#~ msgstr "仿真视图"
-
-#~ msgctxt "@label"
-#~ msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-#~ msgstr "该项目使用的材料当前未安装在 Cura 中。<br/>安装材料配置文件并重新打开项目。"
-
-#~ msgctxt "@info:status"
-#~ msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-#~ msgstr "此项目使用的材料依赖于一些 Cura 中不存在的材料定义，这可能会造成打印效果不如预期。强烈建议安装从 Marketplace 获得的完整材料包。"
-
-#~ msgctxt "@error:zip"
-#~ msgid "The operating system does not allow saving a project file to this location or with this file name."
-#~ msgstr "操作系统不允许向此位置或用此文件名保存项目文件。"
+#~ msgid "Provides support for exporting Cura profiles."
+#~ msgstr "为导出 Cura 配置文件提供支持。"
