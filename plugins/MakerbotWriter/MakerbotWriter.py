@@ -21,7 +21,14 @@ from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
-from cura.CuraVersion import ConanInstalls
+try:
+    from cura.CuraVersion import ConanInstalls
+    if type(ConanInstalls) == dict:
+        CONAN_INSTALLS = ConanInstalls
+    else:
+        CONAN_INSTALLS = {}
+except ImportError:
+    CONAN_INSTALLS = {}
 
 catalog = i18nCatalog("cura")
 
@@ -215,11 +222,11 @@ class MakerbotWriter(MeshWriter):
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
         version_info = dict()
-        cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
+        cura_engine_info = CONAN_INSTALLS.get("curaengine", {"version": "unknown", "revision": "unknown"})
         version_info["curaengine_version"] = cura_engine_info["version"]
         version_info["curaengine_commit_hash"] = cura_engine_info["revision"]
 
-        dulcificum_info = ConanInstalls.get("dulcificum", {"version": "unknown", "revision": "unknown"})
+        dulcificum_info = CONAN_INSTALLS.get("dulcificum", {"version": "unknown", "revision": "unknown"})
         version_info["dulcificum_version"] = dulcificum_info["version"]
         version_info["dulcificum_commit_hash"] = dulcificum_info["revision"]
 
@@ -227,7 +234,7 @@ class MakerbotWriter(MeshWriter):
         version_info["pyDulcificum_version"] = du.__version__
 
         # Add engine plugin information to the metadata
-        for name, package_info in ConanInstalls.items():
+        for name, package_info in CONAN_INSTALLS.items():
             if not name.startswith("curaengine_"):
                 continue
             version_info[f"{name}_version"] = package_info["version"]
