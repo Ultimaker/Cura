@@ -2,17 +2,18 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
+import re
 import sys
 import tempfile
 import time
 import platform
 from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
-import re
 import requests
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
+from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication, \
+    QByteArray
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -1802,33 +1803,43 @@ class CuraApplication(QtApplication):
             case "open":
                 query = QUrlQuery(url.query())
                 model_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
-                response = requests.get(model_url.url())
-                if response.status_code is not 200:
-                    Logger.log("e", "Could not download file from {0}".format(model_url.url()))
+
+                def on_finish(response):
+                    content_disposition_header_key = QByteArray("content-disposition".encode())
+
+                    if not response.hasRawHeader(content_disposition_header_key):
+                        Logger.log("w", "Could not find Content-Disposition header in response from {0}".format(
+                            model_url.url()))
+                        # Use the last part of the url as the filename, and assume it is an STL file
+                        filename = model_url.path().split("/")[-1] + ".stl"
+                    else:
+                        # content_disposition is in the format
+                        # ```
+                        # content_disposition attachment; "filename=[FILENAME]"
+                        # ```
+                        # Use a regex to extract the filename
+                        content_disposition = str(response.rawHeader(content_disposition_header_key).data(),
+                                                  encoding='utf-8')
+                        content_disposition_match = re.match(r'attachment; filename="(?P<filename>.*)"',
+                                                             content_disposition)
+                        assert content_disposition_match is not None
+                        filename = content_disposition_match.group("filename")
+
+                    tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
+                    with open(tmp.name, "wb") as f:
+                        f.write(response.readAll())
+
+                    self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+
+                def on_error():
+                    Logger.log("w", "Could not download file from {0}".format(model_url.url()))
                     return
 
-                content_disposition = response.headers.get('Content-Disposition')
-                if content_disposition is None:
-                    Logger.log("w",
-                               "Could not find Content-Disposition header in response from {0}".format(model_url.url()))
-                    # Use the last part of the url as the filename, and assume it is an STL file
-                    filename = model_url.path().split("/")[-1] + ".stl"
-                else:
-                    # content_disposition is in the following format
-                    # ```
-                    # content_disposition attachment; "filename=[FILENAME]"
-                    # ```
-                    # Use a regex to extract the filename
-                    # content_disposition = response.headers.get('Content-Disposition')
-                    content_disposition_match = re.match(r'attachment; filename="(?P<filename>.*)"',
-                                                         content_disposition)
-                    assert content_disposition_match is not None
-                    filename = content_disposition_match.group("filename")
-
-                tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
-                with open(tmp.name, "wb") as f:
-                    f.write(response.content)
-                self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+                self.getHttpRequestManager().get(
+                    model_url.url(),
+                    callback=on_finish,
+                    error_callback=on_error,
+                )
             case path:
                 Logger.log("w", "Unsupported url scheme path: {0}".format(path))
 
