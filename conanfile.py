@@ -50,7 +50,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.7.0-alpha"
+            self.version = self.conan_data["version"]
 
     @property
     def _i18n_options(self):
@@ -318,25 +318,21 @@ class CuraConan(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def requirements(self):
-        self.requires("boost/1.82.0")
-        self.requires("fmt/9.0.0")
-        self.requires("curaengine_grpc_definitions/0.1.0")
-        self.requires("zlib/1.2.13")
-        self.requires("pyarcus/5.3.0")
-        self.requires("dulcificum/0.1.0-beta.1")
-        self.requires("curaengine/(latest)@ultimaker/testing")
-        self.requires("pysavitar/5.3.0")
-        self.requires("pynest2d/5.3.0")
-        self.requires("curaengine_plugin_gradual_flow/0.1.0")
-        self.requires("uranium/(latest)@ultimaker/cura_11137")  # FIXME: Use `testing` once the branch is merged
-        self.requires("cura_binary_data/(latest)@ultimaker/testing")
+        for req in self.conan_data["requirements"]:
+            if self.options.internal and "fdm_materials" in req:
+                continue
+            self.requires(req)
+        if self.options.internal:
+            for req in self.conan_data["requirements_internal"]:
+                if "fdm_materials" in req:
+                    continue
+                self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
         self.requires("openssl/3.2.0")
-        if self.options.internal:
-            self.requires("cura_private_data/(latest)@internal/testing")
-            self.requires("fdm_materials/(latest)@internal/testing")
-        else:
-            self.requires("fdm_materials/(latest)@ultimaker/testing")
+        self.requires("boost/1.82.0")
+        self.requires("spdlog/1.12.0")
+        self.requires("fmt/10.1.1")
+        self.requires("zlib/1.2.13")
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
@@ -515,6 +511,7 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.cloud_api_version
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
+        self.options.rm_safe("enable_i18n")
 
         # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
         #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't
