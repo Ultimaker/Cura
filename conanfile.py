@@ -310,6 +310,7 @@ class CuraConan(ConanFile):
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
+            self.options["openssl"].shared = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -330,7 +331,8 @@ class CuraConan(ConanFile):
         self.requires("curaengine_plugin_gradual_flow/0.1.0")
         self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
-        self.requires("cpython/3.10.4")
+        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("openssl/3.2.0")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@internal/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
