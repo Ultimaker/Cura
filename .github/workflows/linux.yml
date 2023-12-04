@@ -1,4 +1,4 @@
-name: Linux installers
+name: Linux Installer
 run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
 
 on:

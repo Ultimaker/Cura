@@ -1,4 +1,4 @@
-name: MacOS installers
+name: MacOS Installer
 run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
 
 on:
