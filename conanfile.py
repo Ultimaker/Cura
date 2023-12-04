@@ -34,7 +34,7 @@ class CuraConan(ConanFile):
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
-        "internal": [True, False],
+        "internal": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
         "enable_i18n": [True, False],
     }
     default_options = {
@@ -44,7 +44,7 @@ class CuraConan(ConanFile):
         "cloud_api_version": "1",
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
-        "internal": False,
+        "internal": "False",
         "enable_i18n": False,
     }
 
@@ -82,6 +82,10 @@ class CuraConan(ConanFile):
 
     @property
     def _enterprise(self):
+        return self.options.enterprise in ["True", 'true']
+
+    @property
+    def _internal(self):
         return self.options.enterprise in ["True", 'true']
 
     @property
@@ -182,7 +186,7 @@ class CuraConan(ConanFile):
         cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
         pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
         build_tag = f"+{cura_version.build}" if cura_version.build else ""
-        internal_tag = f"+internal" if self.options.internal else ""
+        internal_tag = f"+internal" if self._internal else ""
         cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
 
         with open(os.path.join(location, "CuraVersion.py"), "w") as f:
@@ -206,7 +210,7 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
-            if not self.options.internal and data.get("internal", False):
+            if not self._internal and data.get("internal", False):
                 continue
 
             if "package" in data:  # get the paths from conan package
@@ -319,10 +323,10 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         for req in self.conan_data["requirements"]:
-            if self.options.internal and "fdm_materials" in req:
+            if self._internal and "fdm_materials" in req:
                 continue
             self.requires(req)
-        if self.options.internal:
+        if self._internal:
             for req in self.conan_data["requirements_internal"]:
                 if "fdm_materials" in req:
                     continue
@@ -392,7 +396,7 @@ class CuraConan(ConanFile):
         copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
 
         # Copy internal resources
-        if self.options.internal:
+        if self._internal:
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
