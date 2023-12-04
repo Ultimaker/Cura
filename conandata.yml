@@ -5,7 +5,7 @@ requirements:
   - "cura_binary_data/(latest)@ultimaker/cura_10831"
   - "fdm_materials/(latest)@ultimaker/cura_10831"
   - "curaengine_plugin_gradual_flow/0.1.0"
-  - "dulcificum/0.1.0-beta.1"
+  - "dulcificum/latest@ultimaker/cura_10831"
   - "pyarcus/5.3.0"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
