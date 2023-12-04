@@ -1,6 +1,6 @@
 version: "5.7.0-alpha.0"
 requirements:
-  - "uranium/(latest)@ultimaker/cura_10831"
+  - "uranium/(latest)@ultimaker/cura_11137"
   - "curaengine/(latest)@ultimaker/cura_10831"
   - "cura_binary_data/(latest)@ultimaker/cura_10831"
   - "fdm_materials/(latest)@ultimaker/cura_10831"
