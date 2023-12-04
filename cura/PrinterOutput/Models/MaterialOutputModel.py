@@ -43,7 +43,7 @@ class MaterialOutputModel(QObject):
                         }
 
 
-        if guid is None and brand is not "empty" and type in _MATERIAL_MAP:
+        if guid is None and brand != "empty" and type in _MATERIAL_MAP:
             name = _MATERIAL_MAP[type]["name"]
             guid = _MATERIAL_MAP[type]["guid"]
         return name, guid
