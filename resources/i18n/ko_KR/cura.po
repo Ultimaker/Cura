@@ -556,7 +556,7 @@ msgstr "모든 모델을 그리드에 정렬하기"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr ""
+msgstr "배열 선택"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -1012,7 +1012,7 @@ msgstr "서버의 응답을 해석할 수 없습니다."
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "GCodeWriter 플러그인을 불러올 수 없습니다. 플러그인을 다시 활성화해보세요."
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -2353,19 +2353,19 @@ msgstr "파일을 보내기 전에 g-코드가 프린터 및 프린터 구성에
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
-msgstr ""
+msgstr "Makerbot 프린트파일"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr ""
+msgstr "Makerbot 프린트파일 작성기"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
-msgstr ""
+msgstr "MakerbotWriter가 지정된 경로에 저장할 수 없습니다."
 
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
-msgstr ""
+msgstr "MakerbotWriter는 텍스트 모드를 지원하지 않습니다."
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3012,7 +3012,7 @@ msgstr "이 프로파일에 대한 이름을 제공하십시오."
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "새로운 이름을 입력해주세요."
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3447,7 +3447,7 @@ msgstr "3MF 파일 작성 지원을 제공합니다."
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr ""
+msgstr "MakerBot 포맷 패키지 작성을 지원합니다."
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3584,7 +3584,7 @@ msgstr "이름 바꾸기"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "이름 변경"
 
 msgctxt "@title:window"
 msgid "Rename Profile"

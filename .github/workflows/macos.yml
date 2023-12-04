@@ -145,7 +145,7 @@ jobs:
           p12-password: ${{ secrets.MACOS_CERT_PASSPHRASE }}
 
       - name: Remove private Artifactory
-        run: conan remote remove cura-conan-private || true
+        run: conan remote remove cura-private-conan-dev || true
 
       - name: Get Conan configuration
         run: |
@@ -176,18 +176,6 @@ jobs:
         run: security unlock -p $TEMP_KEYCHAIN_PASSWORD signing_temp.keychain
         env:
           TEMP_KEYCHAIN_PASSWORD: ${{  steps.macos-keychain-developer-cert.outputs.keychain-password }}
-
-        # FIXME: This is a workaround to ensure that we use and pack a shared library for OpenSSL 1.1.1l. We currently compile
-        #  OpenSSL statically for CPython, but our Python Dependenies (such as PyQt6) require a shared library.
-        #  Because Conan won't allow for building the same library with two different options (easily) we need to install it explicitly
-        #  and do a manual copy to the VirtualEnv, such that Pyinstaller can find it.
-      - name: Install OpenSSL shared
-        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
-
-      - name: Copy OpenSSL shared (Bash)
-        run: |
-          cp ./openssl/lib/*.so* ./cura_inst/bin/ || true
-          cp ./openssl/lib/*.dylib* ./cura_inst/bin/ || true                    
 
       - name: Create the Cura dist
         run: pyinstaller ./cura_inst/UltiMaker-Cura.spec

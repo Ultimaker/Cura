@@ -140,14 +140,6 @@ jobs:
           .\cura_inst\Scripts\activate_github_actions_env.ps1
           .\cura_inst\Scripts\activate_github_actions_version_env.ps1
 
-      - name: Install OpenSSL shared
-        run: conan install openssl/1.1.1l@_/_ --build=missing --update -o openssl:shared=True -g deploy
-
-      - name: Copy OpenSSL shared (Powershell)
-        run: |
-          cp openssl/bin/*.dll ./cura_inst/Scripts/
-          cp openssl/lib/*.lib ./cura_inst/Lib/
-
       - name: Create the Cura dist
         run: pyinstaller ./cura_inst/UltiMaker-Cura.spec
 
