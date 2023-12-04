@@ -31,15 +31,15 @@ class AuthorizationService:
     account information.
     """
 
-    # Emit signal when authentication is completed.
-    onAuthStateChanged = Signal()
-
-    # Emit signal when authentication failed.
-    onAuthenticationError = Signal()
-
-    accessTokenChanged = Signal()
-
     def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
+        # Emit signal when authentication is completed.
+        self.onAuthStateChanged = Signal()
+
+        # Emit signal when authentication failed.
+        self.onAuthenticationError = Signal()
+
+        self.accessTokenChanged = Signal()
+
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
