@@ -6,6 +6,7 @@ on:
     types: [ completed ]
 
 jobs:
+  # FIXME: Use `main` instead of `CURA-10831` once merged
   publish-test-results:
     uses: ultimaker/cura-workflows/.github/workflows/unit-test-post.yml@CURA-10831
     with:
