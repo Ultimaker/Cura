@@ -56,3 +56,4 @@ jobs:
       conan_extra_args: '-o cura:devtools=True -c tools.build:skip_test=False'
       unit_test_cmd: 'pytest --junitxml=junit_cura.xml'
       unit_test_dir: 'tests'
+      conan_generator_dir: './venv/bin'
