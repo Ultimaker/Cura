@@ -13,7 +13,7 @@
         "acceleration_travel": { "value": 2000 },
         "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 220 },
-        "machine_end_gcode": { "default_value": "END_PRINT" },
+        "machine_end_gcode": { "default_value": "END_PRINT\n" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
