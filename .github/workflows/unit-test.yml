@@ -55,7 +55,7 @@ jobs:
     needs: [ conan-recipe-version ]
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      conan_extra_args: '-o cura:devtools=True -c tools.build:skip_test=False'
-      unit_test_cmd: '../venv/bin/pytest --junitxml=junit_cura.xml'
+      conan_extra_args: '-g VirtualPythonEnv -o cura:devtools=True -c tools.build:skip_test=False'
+      unit_test_cmd: 'pytest --junitxml=junit_cura.xml'
       unit_test_dir: 'tests'
       conan_generator_dir: './venv/bin'
