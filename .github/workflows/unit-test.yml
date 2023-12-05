@@ -45,12 +45,14 @@ env:
   CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
 
 jobs:
+  # FIXME: Change to `main` instead of `CURA-10831` once merged
   conan-recipe-version:
     uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@CURA-10831
     with:
       project_name: cura
 
   testing:
+    # FIXME: Change to `main` instead of `CURA-10831` once merged
     uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@CURA-10831
     needs: [ conan-recipe-version ]
     with:
