@@ -4,7 +4,7 @@ from pathlib import Path
 from jinja2 import Template
 
 from conan import ConanFile
-from conan.tools.files import copy, rmdir, save, mkdir, rm
+from conan.tools.files import copy, rmdir, save, mkdir, rm, update_conandata
 from conan.tools.microsoft import unix_path
 from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
@@ -288,6 +288,9 @@ class CuraConan(ConanFile):
                 version = f"'{version}'",
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
+
+    def export(self):
+        update_conandata(self, {"version": self.version})
 
     def export_sources(self):
         copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
