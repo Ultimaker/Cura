@@ -276,6 +276,8 @@ class CuraApplication(QtApplication):
         self._conan_installs = ApplicationMetadata.CONAN_INSTALLS
         self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
 
+        self._supported_url_schemes: List[str] = ["cura", "slicer"]
+
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
         return UltimakerCloudConstants.CuraCloudAPIRoot
@@ -328,7 +330,11 @@ class CuraApplication(QtApplication):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
 
         for filename in self._cli_args.file:
-            self._files_to_open.append(os.path.abspath(filename))
+            url = QUrl(filename)
+            if url.scheme() in self._supported_url_schemes:
+                self._open_url_queue.append(url)
+            else:
+                self._files_to_open.append(os.path.abspath(filename))
 
     def initialize(self) -> None:
         self.__addExpectedResourceDirsAndSearchPaths()  # Must be added before init of super
@@ -1794,8 +1800,7 @@ class CuraApplication(QtApplication):
         self.readLocalFile(QUrl.fromLocalFile(filename))
 
     def _openUrl(self, url: QUrl) -> None:
-        supported_schemes = ["cura", "slicer"]
-        if url.scheme() not in supported_schemes:
+        if url.scheme() not in self._supported_url_schemes:
             # only handle cura:// and slicer:// urls schemes
             return
 
