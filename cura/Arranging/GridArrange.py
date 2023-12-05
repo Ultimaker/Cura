@@ -244,7 +244,7 @@ class GridArrange(Arranger):
         bounding_box = node.getBoundingBox()
         center_node_z = bounding_box.height / 2
 
-        return TranslateOperation(node, Vector(center_grid_x, center_node_z, center_grid_y), True)
+        return TranslateOperation(node, Vector(center_grid_x, center_node_z, center_grid_y), set_position = True)
 
     def _getGridCornerPoints(
             self,
