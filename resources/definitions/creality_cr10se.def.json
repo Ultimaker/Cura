@@ -41,7 +41,7 @@
 		"bridge_settings_enabled": { "value": true },
 		"bridge_wall_min_length": { "value": 2 },
 		"carve_multiple_volumes": { "value": true },
-		"jerk_enabled": { "value": false },
+		
 		"retraction_combing": { "value": "'all'" },
 		"support_enable": { "value": true },
 		"acceleration_print": { "value": 5000 },
