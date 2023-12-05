@@ -52,6 +52,7 @@ jobs:
 
   testing:
     uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@CURA-10831
+    needs: [ conan-recipe-version ]
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       conan_extra_args: '-o cura:devtools=True -c tools.build:skip_test=False'
