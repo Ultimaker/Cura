@@ -748,6 +748,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+               "minimal_segment_length":
+                {
+                    "label": "The minimal length a straight line segment should have.",
+                    "description": "When approximating curves by straight lines (e.g. in the spiral z-hop) the discretization will be done done based on this value.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": false,
+                    "default_value": 0.5,
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
@@ -4277,7 +4289,7 @@
                         "infill": "Within Infill"
                     },
                     "default_value": "all",
-                    "value": "'no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count')))) else 'all'",
+                    "value": "'no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count'))))  else 'off' if resolveOrValue('z_hop_type') == 'spiral' else 'all'",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else ('no_outer_surfaces' if 'no_outer_surfaces' in extruderValues('retraction_combing') else 'off')))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -8302,6 +8314,51 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
+                },
+                "z_hop_type": 
+                {
+                    "label": "Z Hop Type",
+                    "description": "How to lift the nozzle, when changing from an extrusion to a travel. The spiral z hop will automatically disable combing. If desired it can be turned on again. Turning off combing will smooth motion of the printer but increase stringing.",
+                    "type": "enum",
+                    "options": 
+                    {
+                        "normal": "Vertical Hop",
+                        "spiral": "Spiral Hop"
+                    },
+                    "enabled": true,
+                    "default_value": "normal",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "children": 
+                    {
+                        "spiral_radius": 
+                        {
+                            "label": "Z Hop Radius",
+                            "description": "Radius of the spiral z hop.",
+                            "unit": "mm",
+                            "default_value": 10,
+                            "minimum_value": "1",
+                            "maximum_value": "70",
+                            "maximum_value_warning": "30",
+                            "type": "float",
+                            "enabled": "resolveOrValue('z_hop_type') == 'spiral'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        },
+                        "retract_during_spiral": 
+                        {
+                            "label": "Retract While Spiral",
+                            "description": "Do the retraction while simultaneously performing the spiral z hop (and not as a separate command before). Please note, that in case of a very fast or very small retraction, the retraction speed set in the UI, might then only serve as an upper limit.",
+                            "type": "bool",
+                            "default_value": true,
+                            "enabled": "resolveOrValue('z_hop_type') == 'spiral'",
+                            "settable_per_extruder": false,
+                            "settable_per_mesh": false,
+                            "settable_per_meshgroup": false
+                        }
+                    }
                 }
             }
         },
