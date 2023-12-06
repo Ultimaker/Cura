@@ -1805,7 +1805,7 @@ class CuraApplication(QtApplication):
             return
 
         match url.host() + url.path():
-            case "open":
+            case "open" | "open/":
                 query = QUrlQuery(url.query())
                 model_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
 
