@@ -72,7 +72,7 @@ class CuraConan(ConanFile):
         self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
         self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
         if not self.in_local_cache:
-            self._cura_env.define(  "CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
+            self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
 
         if self.settings.os == "Linux":
             self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
@@ -311,6 +311,8 @@ class CuraConan(ConanFile):
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
             self.options["openssl"].shared = True
+        if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
+            self.options["curaengine"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -324,7 +326,7 @@ class CuraConan(ConanFile):
         self.requires("curaengine_grpc_definitions/0.1.0")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
-        self.requires("dulcificum/0.1.0-beta.2")
+        self.requires("dulcificum/(latest)@ultimaker/stable")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
