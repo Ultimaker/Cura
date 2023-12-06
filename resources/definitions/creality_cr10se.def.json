@@ -45,7 +45,7 @@
 		"retraction_combing": { "value": "'all'" },
 		"support_enable": { "value": true },
 		"acceleration_print": { "value": 5000 },
-		"acceleration_print_layer_0": { "value": 50000 },
+		"acceleration_print_layer_0": { "value": 5000 },
 		"acceleration_topbottom": { "value": 3000 },
 		"acceleration_travel_layer_0": { "value": 2000 },
 		"acceleration_wall_0": { "value": 5000 },
