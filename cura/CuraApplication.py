@@ -332,7 +332,7 @@ class CuraApplication(QtApplication):
         for filename in self._cli_args.file:
             url = QUrl(filename)
             if url.scheme() in self._supported_url_schemes:
-                self._open_url_queue.append(filename)
+                self._open_url_queue.append(url)
             else:
                 self._files_to_open.append(os.path.abspath(filename))
 
