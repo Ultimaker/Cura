@@ -42,8 +42,7 @@ class MaterialOutputModel(QObject):
                             "tpu"		:{"name" :"tpu_175"       ,"guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"}
                         }
 
-
-        if guid is None and brand is not "empty" and type in _MATERIAL_MAP:
+        if guid is None and brand != "empty" and type in _MATERIAL_MAP:
             name = _MATERIAL_MAP[type]["name"]
             guid = _MATERIAL_MAP[type]["guid"]
         return name, guid
