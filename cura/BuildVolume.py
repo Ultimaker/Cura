@@ -120,6 +120,8 @@ class BuildVolume(SceneNode):
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
+        # Number of toplevel printable meshes. If there is more than one, the build volume needs to take account of the gantry height in One at a Time printing.
+        self._root_printable_object_count = 0
 
         self._scene_change_timer = QTimer()
         self._scene_change_timer.setInterval(200)
@@ -151,6 +153,7 @@ class BuildVolume(SceneNode):
     def _onSceneChangeTimerFinished(self):
         root = self._application.getController().getScene().getRoot()
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
+
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
                 self._updateNodeListeners(node)
@@ -166,6 +169,26 @@ class BuildVolume(SceneNode):
             self.rebuild()
 
             self._scene_objects = new_scene_objects
+
+        # This also needs to be called when objects are grouped/ungrouped,
+        # which is not reflected in a change in self._scene_objects
+        self._updateRootPrintableObjectCount()
+
+    def _updateRootPrintableObjectCount(self):
+        # Get the number of models in the scene root, excluding modifier meshes and counting grouped models as 1
+        root = self._application.getController().getScene().getRoot()
+        scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable") or node.callDecoration("isGroup"))
+
+        new_root_printable_object_count = len(list(node for node in scene_objects if node.getParent() == root and not (
+            node_stack := node.callDecoration("getStack") and (
+                node.callDecoration("getStack").getProperty("anti_overhang_mesh", "value") or
+                node.callDecoration("getStack").getProperty("support_mesh", "value") or
+                node.callDecoration("getStack").getProperty("cutting_mesh", "value") or
+                node.callDecoration("getStack").getProperty("infill_mesh", "value")
+            ))
+        ))
+        if new_root_printable_object_count != self._root_printable_object_count:
+            self._root_printable_object_count = new_root_printable_object_count
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
 
     def _updateNodeListeners(self, node: SceneNode):
@@ -489,20 +512,20 @@ class BuildVolume(SceneNode):
         if not self._disallowed_areas:
             return None
 
+        bounding_box = Polygon(numpy.array([[min_w, min_d], [min_w, max_d], [max_w, max_d], [max_w, min_d]], numpy.float32))
+
         mb = MeshBuilder()
         color = self._disallowed_area_color
         for polygon in self._disallowed_areas:
-            points = polygon.getPoints()
-            if len(points) == 0:
+            intersection = polygon.intersectionConvexHulls(bounding_box)
+            points = numpy.flipud(intersection.getPoints())
+            if len(points) < 3:
                 continue
 
-            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                           self._clamp(points[0][1], min_d, max_d))
-            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                    self._clamp(points[0][1], min_d, max_d))
-            for point in points:
-                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                   self._clamp(point[1], min_d, max_d))
+            first = Vector(points[0][0], disallowed_area_height, points[0][1])
+            previous_point = Vector(points[1][0], disallowed_area_height, points[1][1])
+            for point in points[2:]:
+                new_point = Vector(point[0], disallowed_area_height, point[1])
                 mb.addFace(first, previous_point, new_point, color=color)
                 previous_point = new_point
 
@@ -650,7 +673,7 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and self._root_printable_object_count > 1:
                 new_height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
 
                 if self._height > new_height:
@@ -692,9 +715,12 @@ class BuildVolume(SceneNode):
         update_extra_z_clearance = True
 
         for setting_key in self._changed_settings_since_last_rebuild:
+            if setting_key in ["print_sequence", "support_mesh", "infill_mesh", "cutting_mesh", "anti_overhang_mesh"]:
+                self._updateRootPrintableObjectCount()
+
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
-                if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+                if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and self._root_printable_object_count > 1:
                     new_height = min(
                         self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z,
                         machine_height)
