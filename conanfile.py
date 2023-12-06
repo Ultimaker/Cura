@@ -335,6 +335,7 @@ class CuraConan(ConanFile):
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
             self.requires("fdm_materials/(latest)@ultimaker/testing")
+        self.requires("spdlog/1.12.0@_/_")
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
