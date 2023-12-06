@@ -14,7 +14,7 @@ from UM.Math.Quaternion import Quaternion
 from UM.Math.Vector import Vector
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
-from UM.Operations.RotateOperation import RotateOperation
+from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 from cura.Arranging.Arranger import Arranger
 
@@ -140,13 +140,17 @@ class Nest2DArrange(Arranger):
                 grouped_operation.addOperation(AddSceneNodeOperation(node, scene_root))
 
             if node_item.binId() == 0:
-                # We found a spot for it
                 rotation_matrix = Matrix()
                 rotation_matrix.setByRotationAxis(node_item.rotation(), Vector(0, -1, 0))
-                grouped_operation.addOperation(RotateOperation(node, Quaternion.fromMatrix(rotation_matrix)))
+
+                orientation = node.getWorldOrientation() * Quaternion.fromMatrix(rotation_matrix)
+                translation = node.getWorldPosition().preMultiply(rotation_matrix) + Vector(
+                    node_item.translation().x() / self._factor,
+                    0,
+                    node_item.translation().y() / self._factor
+                )
                 grouped_operation.addOperation(
-                    TranslateOperation(node, Vector(node_item.translation().x() / self._factor, 0,
-                                                    node_item.translation().y() / self._factor)))
+                    SetTransformOperation(node, orientation=orientation, translation=translation))
             else:
                 # We didn't find a spot
                 grouped_operation.addOperation(
