@@ -72,7 +72,7 @@ class CuraConan(ConanFile):
         self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
         self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
         if not self.in_local_cache:
-            self._cura_env.define(  "CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
+            self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
 
         if self.settings.os == "Linux":
             self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
@@ -310,6 +310,9 @@ class CuraConan(ConanFile):
         self.options["boost"].header_only = True
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
+            self.options["openssl"].shared = True
+        if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
+            self.options["curaengine"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -318,18 +321,21 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         self.requires("boost/1.82.0")
-        self.requires("fmt/9.0.0")
+        self.requires("spdlog/1.12.0")
+        self.requires("fmt/10.1.1")
         self.requires("curaengine_grpc_definitions/0.1.0")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
         self.requires("dulcificum/(latest)@ultimaker/testing")
+        self.requires("dulcificum/(latest)@ultimaker/stable")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
         self.requires("curaengine_plugin_gradual_flow/0.1.0")
-        self.requires("uranium/latest@ultimaker/cura_11288")
+        self.requires("uranium/latest@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
-        self.requires("cpython/3.10.4")
+        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("openssl/3.2.0")
         if self.options.internal:
             self.requires("cura_private_data/(latest)@internal/testing")
             self.requires("fdm_materials/(latest)@internal/testing")
