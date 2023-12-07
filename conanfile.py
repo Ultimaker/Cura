@@ -86,7 +86,7 @@ class CuraConan(ConanFile):
 
     @property
     def _internal(self):
-        return self.options.enterprise in ["True", 'true']
+        return self.options.internal in ["True", 'true']
 
     @property
     def _app_name(self):
