@@ -322,6 +322,7 @@ class CuraConan(ConanFile):
         self.requires("curaengine_grpc_definitions/0.1.0")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
+        self.requires("spdlog/1.12.0")
         self.requires("dulcificum/0.1.0-beta.1")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
