@@ -42,7 +42,7 @@
         "machine_max_feedrate_y": { "value": 300 },
         "machine_max_feedrate_z": { "value": 30 },
         "machine_name": { "default_value": "Pulse XE E-444M" },
-        "machine_start_gcode": { "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 ; home axes\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG29 ; mesh bed leveling\n\nG92 E0\nG1 X5 Y5 Z0.8 F1800\nG1 X100 Z0.3 E25 F900\nG92 E0\nG1 E-2 F2400" },
+        "machine_start_gcode": { "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nG28 ; home axes\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG29 E; mesh bed leveling comment out if already done and saved\n\nG92 E0\nG1 X5 Y5 Z0.8 F1800\nG1 X100 Z0.3 E25 F900\nG92 E0\nG1 E-2 F2400" },
         "machine_steps_per_mm_e": { "value": 415 },
         "machine_steps_per_mm_x": { "value": 80 },
         "machine_steps_per_mm_y": { "value": 80 },
