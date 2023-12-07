@@ -326,13 +326,12 @@ class CuraConan(ConanFile):
         self.requires("curaengine_grpc_definitions/0.1.0")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
-        self.requires("dulcificum/(latest)@ultimaker/testing")
         self.requires("dulcificum/(latest)@ultimaker/stable")
         self.requires("curaengine/(latest)@ultimaker/testing")
         self.requires("pysavitar/5.3.0")
         self.requires("pynest2d/5.3.0")
         self.requires("curaengine_plugin_gradual_flow/0.1.0")
-        self.requires("uranium/latest@ultimaker/testing")
+        self.requires("uranium/(latest)@ultimaker/testing")
         self.requires("cura_binary_data/(latest)@ultimaker/testing")
         self.requires("cpython/3.10.4@ultimaker/stable")
         self.requires("openssl/3.2.0")
@@ -341,7 +340,6 @@ class CuraConan(ConanFile):
             self.requires("fdm_materials/(latest)@internal/testing")
         else:
             self.requires("fdm_materials/(latest)@ultimaker/testing")
-        self.requires("spdlog/1.12.0@_/_")
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
