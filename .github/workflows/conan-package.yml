@@ -31,16 +31,15 @@ env:
   CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
   CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
 
-# FIXME: point to `main` once merged
 jobs:
   conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
       project_name: cura
 
   conan-package-export:
     needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}

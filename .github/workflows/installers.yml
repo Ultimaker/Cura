@@ -42,16 +42,15 @@ env:
 
 jobs:
   default_values:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       latest_release: '5.6'
       latest_release_schedule_hour: 4
       latest_release_tag: 'nightly'
 
-  #  FIXME: point to `main` once merged
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -62,9 +61,8 @@ jobs:
       operating_system: windows-2022
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -75,9 +73,8 @@ jobs:
       operating_system: ubuntu-22.04
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -88,9 +85,8 @@ jobs:
       operating_system: self-hosted-X64
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   macos-arm-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
