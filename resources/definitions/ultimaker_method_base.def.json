@@ -329,6 +329,7 @@
         "machine_name": { "default_value": "UltiMaker Method" },
         "machine_nozzle_cool_down_speed": { "value": 0.8 },
         "machine_nozzle_heat_up_speed": { "value": 3.5 },
+        "machine_scale_fan_speed_zero_to_one": { "value": true },
         "machine_start_gcode": { "default_value": "" },
         "material_bed_temperature": { "enabled": "machine_heated_bed" },
         "material_bed_temperature_layer_0": { "enabled": "machine_heated_bed" },
