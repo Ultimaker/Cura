@@ -79,7 +79,7 @@ class SimulationView(CuraView):
         self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
 
         self._current_feedrates = {}
-        self._visible_lengths ={}
+        self._lengths_of_polyline ={}
         self._busy = False
         self._simulation_running = False
 
@@ -403,7 +403,9 @@ class SimulationView(CuraView):
         return self._max_feedrate
 
     def getSimulationTime(self) -> list:
-        return self._visible_lengths[self._current_layer_num] / self._current_feedrates[self._current_layer_num]
+        if len(self._lengths_of_polyline) > 0 and len(self._lengths_of_polyline) == len(self._current_feedrates):
+            return self._lengths_of_polyline[self._current_layer_num] / self._current_feedrates[self._current_layer_num]
+        return numpy.zeros(0)
 
     def getMinThickness(self) -> float:
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
@@ -529,10 +531,10 @@ class SimulationView(CuraView):
                     visible_indicies_with_extrusion = numpy.where(numpy.isin(polyline.types, visible_line_types_with_extrusion))[0]
                     if visible_indices.size == 0:  # No items to take maximum or minimum of.
                         continue
-                    self._visible_lengths[layer_index] = numpy.take(polyline.lineLengths, visible_indices)
+                    self._lengths_of_polyline[layer_index] = polyline.lineLengths
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
-                    self._current_feedrates[layer_index] = visible_feedrates
+                    self._current_feedrates[layer_index] = polyline.lineFeedrates
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
                     visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)

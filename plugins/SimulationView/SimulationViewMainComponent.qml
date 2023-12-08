@@ -136,10 +136,9 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: parseFloat(UM.SimulationView.getSimulationTime[pathNumber]).toFixed(2)
+        interval: UM.SimulationView.simulationTime
         running: false
         repeat: true
-        property int pathNumber : 0
         onTriggered:
         {
             var currentPath = UM.SimulationView.currentPath
@@ -154,12 +153,10 @@ Item
                 if (currentPath >= numPaths)
                 {
                     UM.SimulationView.setCurrentPath(0)
-                    pathNumber =0
                 }
                 else
                 {
                     UM.SimulationView.setCurrentPath(currentPath + 1)
-                    pathNumber = 0
                 }
             }
             // If the simulation is already playing and we reach the end of a layer, then it automatically
@@ -187,7 +184,6 @@ Item
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
             // correctly, because part of the logic is in this trigger function.
             isSimulationPlaying = true
-            pathNumber += 1
         }
     }
 
