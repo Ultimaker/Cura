@@ -6,7 +6,6 @@ import numpy
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
-from UM.Logger import Logger
 
 if TYPE_CHECKING:
     from .SimulationView import SimulationView
