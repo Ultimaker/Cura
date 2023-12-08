@@ -45,6 +45,16 @@ UM.Dialog
             anchors.centerIn: parent
         }
 
+        Image
+        {
+            id: enterpriseLogo
+            visible: CuraApplication.isEnterprise
+            source: UM.Theme.getImage("enterprise")
+            fillMode: Image.PreserveAspectFit
+
+            anchors.bottom: parent.bottom
+        }
+
         UM.Label
         {
             id: version
