@@ -333,8 +333,6 @@ class CuraConan(ConanFile):
             self.requires(req)
         if self._internal:
             for req in self.conan_data["requirements_internal"]:
-                if "fdm_materials" in req:
-                    continue
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
         self.requires("openssl/3.2.0")
