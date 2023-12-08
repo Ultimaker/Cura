@@ -1,18 +1,18 @@
 version: "5.7.0-alpha.0"
 requirements:
-  - "uranium/(latest)@ultimaker/latest"
-  - "curaengine/(latest)@ultimaker/latest"
-  - "cura_binary_data/(latest)@ultimaker/latest"
-  - "fdm_materials/(latest)@ultimaker/latest"
+  - "uranium/(latest)@ultimaker/testing"
+  - "curaengine/(latest)@ultimaker/testing"
+  - "cura_binary_data/(latest)@ultimaker/testing"
+  - "fdm_materials/(latest)@ultimaker/testing"
   - "curaengine_plugin_gradual_flow/(latest)@ultimaker/stable"
-  - "dulcificum/(latest)@ultimaker/latest"
+  - "dulcificum/(latest)@ultimaker/testing"
   - "pyarcus/5.3.0"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
-  - "curaengine_grpc_definitions/(latest)@ultimaker/latest"
+  - "curaengine_grpc_definitions/(latest)@ultimaker/testing"
 requirements_internal:
-  - "fdm_materials/(latest)@internal/latest"
-  - "cura_private_data/(latest)@internal/latest"
+  - "fdm_materials/(latest)@internal/testing"
+  - "cura_private_data/(latest)@internal/testing"
 urls:
     default:
         cloud_api_root: "https://api.ultimaker.com"
