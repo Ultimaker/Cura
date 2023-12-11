@@ -118,6 +118,5 @@
         "support_z_distance": { "default_value": 0.17 },
         "top_bottom_thickness": { "value": "layer_height * 6" },
         "wall_thickness": { "value": "line_width * 3" },
-        "xy_offset_layer_0": { "value": -0.1 }
     }
 }
