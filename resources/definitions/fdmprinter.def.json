@@ -8311,7 +8311,7 @@
             "type": "category",
             "icon": "DocumentFilled",
             "description": "Reporting events that go out of set thresholds",
-            "visible": true,
+            "enabled": "(machine_name == \"Ultimaker S5\") or  (machine_name == \"Ultimaker S7\") or  (machine_name == \"Ultimaker Colorado\")",
             "children":
             {
                 "ppr_enable":
@@ -8319,7 +8319,9 @@
                     "label": "Enable Print Process Reporting",
                     "description": "Enable print process reporting for setting threshold values for possible fault detection.",
                     "type": "bool",
+                    "enabled": "(machine_name == \"Ultimaker S5\") or  (machine_name == \"Ultimaker S7\") or  (machine_name == \"Ultimaker Colorado\")",
                     "default_value": false,
+                    "value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
