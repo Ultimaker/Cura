@@ -64,9 +64,7 @@ class SimulationViewProxy(QObject):
         # We multiply the time with 100 to make it to ms from s.(Should be 1000 in real time). This scaling makes the simulation time 10x faster than the real time.
         simulationTimeOfpath =self._simulation_view.getSimulationTime()[0][self._simulation_view.getCurrentPath()] * 100
         # Since the timer cannot process time less than 1 ms, we put a lower limit here
-        if simulationTimeOfpath < 1:
-            return 1
-        return int(simulationTimeOfpath)
+        return int(max(1, simulationTimeOfpath))
 
     @pyqtProperty(int, notify=currentPathChanged)
     def minimumPath(self):
