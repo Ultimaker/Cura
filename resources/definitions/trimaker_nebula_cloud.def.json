@@ -37,7 +37,7 @@
         "machine_acceleration": { "default_value": 1500 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 230 },
-        "machine_end_gcode": { "default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X0 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n" },
+        "machine_end_gcode": { "default_value": ";Trimaker Nebula End Code\n M107; Apagamos fan\n G90\n G92 E0\n G1 X200 Y200\n G91\n G1 Z5\n G92 E0\n M140 S0; Enfriamos\n M104 S0; Enfriamos\n M84\n G90\n M117 Impresion finalizada\n M300 S440 P700\n" },
         "machine_extruder_count": { "default_value": 1 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_heated_bed": { "default_value": true },
