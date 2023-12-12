@@ -402,13 +402,14 @@ class SimulationView(CuraView):
     def getMaxFeedrate(self) -> float:
         return self._max_feedrate
 
-    def getSimulationTime(self, currentIndex) -> list:
+    def getSimulationTime(self, currentIndex) -> float:
         try:
-            return self._lengths_of_polyline[self._current_layer_num][currentIndex] / self._current_feedrates[self._current_layer_num][currentIndex]
+            return (self._lengths_of_polyline[self._current_layer_num][currentIndex] / self._current_feedrates[self._current_layer_num][currentIndex])[0]
+
         except:
             # In case of change in layers, currentIndex comes one more than the items in the lengths_of_polyline
             # We give 1 second time for layer change
-            return 1
+            return 1.0
 
     def getMinThickness(self) -> float:
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
