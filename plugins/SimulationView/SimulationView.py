@@ -538,8 +538,6 @@ class SimulationView(CuraView):
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
                     self._current_feedrates[layer_index] = polyline.lineFeedrates
-                    # if len(polyline.lineLengths) > 0 and len(polyline.lineLengths) == len(polyline.lineFeedrates):
-                    #     self._simulation_time[layer_index] = polyline.lineLengths / polyline.lineFeedrates
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
                     visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
