@@ -402,10 +402,13 @@ class SimulationView(CuraView):
     def getMaxFeedrate(self) -> float:
         return self._max_feedrate
 
-    def getSimulationTime(self) -> list:
-        if len(self._lengths_of_polyline) > 0 and len(self._lengths_of_polyline) == len(self._current_feedrates):
-            return self._lengths_of_polyline[self._current_layer_num] / self._current_feedrates[self._current_layer_num]
-        return numpy.zeros(0)
+    def getSimulationTime(self, currentIndex) -> list:
+        try:
+            return self._lengths_of_polyline[self._current_layer_num][currentIndex] / self._current_feedrates[self._current_layer_num][currentIndex]
+        except:
+            # In case of change in layers, currentIndex comes one more than the items in the lengths_of_polyline
+            # We give 1 second time for layer change
+            return 1
 
     def getMinThickness(self) -> float:
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
@@ -535,6 +538,8 @@ class SimulationView(CuraView):
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
                     visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
                     self._current_feedrates[layer_index] = polyline.lineFeedrates
+                    # if len(polyline.lineLengths) > 0 and len(polyline.lineLengths) == len(polyline.lineFeedrates):
+                    #     self._simulation_time[layer_index] = polyline.lineLengths / polyline.lineFeedrates
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
                     visible_linewidths_with_extrusion = numpy.take(polyline.lineWidths, visible_indicies_with_extrusion)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)

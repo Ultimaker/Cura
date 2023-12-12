@@ -57,12 +57,9 @@ class SimulationViewProxy(QObject):
 
     @pyqtProperty(int, notify=currentPathChanged)
     def simulationTime(self):
-        # This if is activated when there is a layer change
-        if numpy.all(self._simulation_view.getSimulationTime()==0) or len(self._simulation_view.getSimulationTime()) <= self._simulation_view.getCurrentPath():
-            return 100
-        # Extracts the currents paths simulation time (in seconds) from the dict of simulation time of the current layer.
+        # Extracts the currents paths simulation time (in seconds) for the current path from the dict of simulation time of the current layer.
         # We multiply the time with 100 to make it to ms from s.(Should be 1000 in real time). This scaling makes the simulation time 10x faster than the real time.
-        simulationTimeOfpath =self._simulation_view.getSimulationTime()[0][self._simulation_view.getCurrentPath()] * 100
+        simulationTimeOfpath = self._simulation_view.getSimulationTime(self._simulation_view.getCurrentPath()) * 100
         # Since the timer cannot process time less than 1 ms, we put a lower limit here
         return int(max(1, simulationTimeOfpath))
 
