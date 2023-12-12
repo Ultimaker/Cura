@@ -4,7 +4,7 @@ from pathlib import Path
 from jinja2 import Template
 
 from conan import ConanFile
-from conan.tools.files import copy, rmdir, save, mkdir, rm
+from conan.tools.files import copy, rmdir, save, mkdir, rm, update_conandata
 from conan.tools.microsoft import unix_path
 from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
@@ -34,7 +34,7 @@ class CuraConan(ConanFile):
         "cloud_api_version": "ANY",
         "display_name": "ANY",  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
-        "internal": [True, False],
+        "internal": ["True", "False", "true", "false"],  # Workaround for GH Action passing boolean as lowercase string
         "enable_i18n": [True, False],
     }
     default_options = {
@@ -44,7 +44,7 @@ class CuraConan(ConanFile):
         "cloud_api_version": "1",
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
-        "internal": False,
+        "internal": "False",
         "enable_i18n": False,
     }
 
@@ -72,7 +72,7 @@ class CuraConan(ConanFile):
         self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
         self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
         if not self.in_local_cache:
-            self._cura_env.define(  "CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
+            self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
 
         if self.settings.os == "Linux":
             self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
@@ -83,6 +83,10 @@ class CuraConan(ConanFile):
     @property
     def _enterprise(self):
         return self.options.enterprise in ["True", 'true']
+
+    @property
+    def _internal(self):
+        return self.options.internal in ["True", 'true']
 
     @property
     def _app_name(self):
@@ -182,7 +186,7 @@ class CuraConan(ConanFile):
         cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
         pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
         build_tag = f"+{cura_version.build}" if cura_version.build else ""
-        internal_tag = f"+internal" if self.options.internal else ""
+        internal_tag = f"+internal" if self._internal else ""
         cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
 
         with open(os.path.join(location, "CuraVersion.py"), "w") as f:
@@ -206,7 +210,7 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
-            if not self.options.internal and data.get("internal", False):
+            if not self._internal and data.get("internal", False):
                 continue
 
             if "package" in data:  # get the paths from conan package
@@ -285,6 +289,9 @@ class CuraConan(ConanFile):
                 short_version = f"'{cura_version.major}.{cura_version.minor}.{cura_version.patch}'",
             ))
 
+    def export(self):
+        update_conandata(self, {"version": self.version})
+
     def export_sources(self):
         copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
         copy(self, "*", os.path.join(self.recipe_folder, "resources"), os.path.join(self.export_sources_folder, "resources"), excludes = "*.mo")
@@ -311,6 +318,8 @@ class CuraConan(ConanFile):
         if self.settings.os == "Linux":
             self.options["curaengine_grpc_definitions"].shared = True
             self.options["openssl"].shared = True
+        if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
+            self.options["curaengine"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -319,13 +328,11 @@ class CuraConan(ConanFile):
 
     def requirements(self):
         for req in self.conan_data["requirements"]:
-            if self.options.internal and "fdm_materials" in req:
+            if self._internal and "fdm_materials" in req:
                 continue
             self.requires(req)
-        if self.options.internal:
+        if self._internal:
             for req in self.conan_data["requirements_internal"]:
-                if "fdm_materials" in req:
-                    continue
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
         self.requires("openssl/3.2.0")
@@ -392,7 +399,7 @@ class CuraConan(ConanFile):
         copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
 
         # Copy internal resources
-        if self.options.internal:
+        if self._internal:
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 

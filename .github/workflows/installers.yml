@@ -39,57 +39,18 @@ env:
   CONAN_ARGS: ${{ inputs.conan_args || '' }}
   ENTERPRISE: ${{ inputs.enterprise || false }}
   STAGING: ${{ inputs.staging || false }}
-  LATEST_RELEASE: '5.6'
-  LATEST_RELEASE_SCHEDULE_HOUR: 4
 
 jobs:
   default_values:
-    runs-on: ubuntu-latest
-    outputs:
-      cura_conan_version: ${{ steps.default.outputs.cura_conan_version  }}
-      release_tag: ${{ steps.default.outputs.release_tag  }}
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@main
+    with:
+      cura_conan_version: ${{ inputs.cura_conan_version }}
+      latest_release: '5.6'
+      latest_release_schedule_hour: 4
+      latest_release_tag: 'nightly'
 
-    steps:
-      - name: Output default values
-        id: default
-        shell: python
-        run: |
-          import os
-          import datetime
-          
-          if "${{ github.event_name }}" != "schedule":
-              cura_conan_version = "${{ github.event.inputs.cura_conan_version }}"
-          else:
-              now = datetime.datetime.now()
-              cura_conan_version = "cura/latest@ultimaker/stable" if now.hour == int(os.environ['LATEST_RELEASE_SCHEDULE_HOUR']) else "cura/latest@ultimaker/testing"
-          
-          release_tag = f"nightly-{os.environ['LATEST_RELEASE']}" if "/stable" in cura_conan_version else "nightly"
-          
-          # Set cura_conan_version environment variable
-          output_env = os.environ["GITHUB_OUTPUT"]
-          content = ""
-          if os.path.exists(output_env):
-              with open(output_env, "r") as f:
-                  content = f.read()
-          with open(output_env, "w") as f:
-              f.write(content)
-              f.writelines(f"cura_conan_version={cura_conan_version}\n")
-              f.writelines(f"release_tag={release_tag}\n")
-          
-          summary_env = os.environ["GITHUB_STEP_SUMMARY"]
-          content = ""
-          if os.path.exists(summary_env):
-              with open(summary_env, "r") as f:
-                  content = f.read()
-          
-          with open(summary_env, "w") as f:
-              f.write(content)
-              f.writelines(f"# cura_conan_version = {cura_conan_version}\n")
-              f.writelines(f"# release_tag = {release_tag}\n")
-
-  #  FIXME: point to `main` once merged
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -100,9 +61,8 @@ jobs:
       operating_system: windows-2022
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -113,9 +73,8 @@ jobs:
       operating_system: ubuntu-22.04
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -126,9 +85,8 @@ jobs:
       operating_system: self-hosted-X64
     secrets: inherit
 
-  #  FIXME: point to `main` once merged
   macos-arm-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10831
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
