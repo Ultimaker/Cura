@@ -8305,6 +8305,88 @@
                 }
             }
         },
+        "ppr":
+        {
+            "label": "Print Process Reporting",
+            "type": "category",
+            "icon": "DocumentFilled",
+            "description": "Reporting events that go out of set thresholds",
+            "enabled": false,
+            "children":
+            {
+                "ppr_enable":
+                {
+                    "label": "Enable Print Process Reporting",
+                    "description": "Enable print process reporting for setting threshold values for possible fault detection.",
+                    "type": "bool",
+                    "enabled": false,
+                    "default_value": false,
+                    "value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "flow_warn_limit":
+                {
+                    "label": "Flow Warning Detection Limit",
+                    "description": "Limit on the flow warning for detection.",
+                    "default_value": "15.0",
+                    "enabled": "ppr_enable",
+                    "unit": "%",
+                    "type": "float",
+                    "settable_per_extruder": true
+                },
+                "flow_anomaly_limit":
+                {
+                    "label": "Flow Anomaly Detection Limit",
+                    "description": "Limit on flow anomaly for detection.",
+                    "default_value": "25.0",
+                    "enabled": "ppr_enable",
+                    "unit": "%",
+                    "type": "float",
+                    "settable_per_extruder": true
+                },
+                "print_temp_warn_limit":
+                {
+                    "label": "Print temperature Warning Detection Limit",
+                    "description": "Limit on Print temperature warning for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "3.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": true
+                },
+                "print_temp_anomaly_limit":
+                {
+                    "label": "Print temperature Anomaly Detection Limit",
+                    "description": "Limit on Print Temperature anomaly for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "7.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": true
+                },
+                "bv_temp_warn_limit":
+                {
+                    "label": "Build Volume temperature Warning Detection Limit",
+                    "description": "Limit on Build Volume Temperature warning for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "7.5",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": false
+                },
+                "bv_temp_anomaly_limit":
+                {
+                    "label": "Build Volume temperature Anomaly Detection Limit",
+                    "description": "Limit on Build Volume temperature Anomaly for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "10.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": false
+                }
+            }
+        },
         "command_line_settings":
         {
             "label": "Command Line Settings",
