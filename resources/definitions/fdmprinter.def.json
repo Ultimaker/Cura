@@ -8327,7 +8327,7 @@
                 },
                 "flow_warn_limit":
                 {
-                    "label": "Flow Warning Detection Limit",
+                    "label": "Flow Warning",
                     "description": "Limit on the flow warning for detection.",
                     "default_value": "15.0",
                     "enabled": "ppr_enable",
@@ -8337,7 +8337,7 @@
                 },
                 "flow_anomaly_limit":
                 {
-                    "label": "Flow Anomaly Detection Limit",
+                    "label": "Flow Limit",
                     "description": "Limit on flow anomaly for detection.",
                     "default_value": "25.0",
                     "enabled": "ppr_enable",
@@ -8347,7 +8347,7 @@
                 },
                 "print_temp_warn_limit":
                 {
-                    "label": "Print temperature Warning Detection Limit",
+                    "label": "Print temperature Warning",
                     "description": "Limit on Print temperature warning for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
@@ -8357,7 +8357,7 @@
                 },
                 "print_temp_anomaly_limit":
                 {
-                    "label": "Print temperature Anomaly Detection Limit",
+                    "label": "Print temperature Limit",
                     "description": "Limit on Print Temperature anomaly for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
@@ -8367,7 +8367,7 @@
                 },
                 "bv_temp_warn_limit":
                 {
-                    "label": "Build Volume temperature Warning Detection Limit",
+                    "label": "Build Volume temperature Warning",
                     "description": "Limit on Build Volume Temperature warning for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
@@ -8377,7 +8377,7 @@
                 },
                 "bv_temp_anomaly_limit":
                 {
-                    "label": "Build Volume temperature Anomaly Detection Limit",
+                    "label": "Build Volume temperature Limit",
                     "description": "Limit on Build Volume temperature Anomaly for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
