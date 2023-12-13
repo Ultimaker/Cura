@@ -3,9 +3,9 @@
 
 import copy
 import io
-import json #To parse the product-to-id mapping file.
-import os.path #To find the product-to-id mapping.
-from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
+import json # To parse the product-to-id mapping file.
+import os.path #T o find the product-to-id mapping.
+from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
 from UM.PluginRegistry import PluginRegistry

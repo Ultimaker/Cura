@@ -3,7 +3,6 @@
 
 import json
 from json import JSONDecodeError
-import re
 from time import time
 from typing import List, Any, Optional, Union, Type, Tuple, Dict, cast, TypeVar, Callable
 
