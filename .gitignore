@@ -102,6 +102,7 @@ Ultimaker-Cura.spec
 .run/
 /printer-linter/src/printerlinter.egg-info/
 /plugins/CuraEngineGradualFlow
+/plugins/NativeCADplugin
 /resources/bundled_packages/bundled_*.json
 curaengine_plugin_gradual_flow
 curaengine_plugin_gradual_flow.exe
