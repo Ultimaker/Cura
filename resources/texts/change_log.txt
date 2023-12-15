@@ -2,10 +2,12 @@
 
 * New features and improvements:
 - Introduced the MethodX and MethodXL printers with their materials and the option to write to .makerbot
+- Support for widely used CAD files (Only for UltiMaker Professional or Excellence subscriptions using Cura Enterprise)
 - Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower's sturdiness
 - Introduced the setting for Raft Line Spacing, but for the prime tower
 - The Start and End gcodes now accept variables, and math including those variables
 - Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
+- Updated OpenSSL from version 1.1.1 to 3.2.0 to stay on top of the latest security benefits.
 
 * Bug fixes:
 - Fixed a crash for some linux users when trying to open the file menu
