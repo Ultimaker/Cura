@@ -45,17 +45,17 @@ class AddCoolingProfile(Script):
                     "enabled": true,
                     "default_value": true
                 },
-                "fan_start_layer":
+                "feature_fan_start_layer":
                 {
                     "label": "Starting Layer",
-                    "description": "Layer to start the insertion at.",
+                    "description": "Layer to start the insertion at. Use the Cura preview numbers.  Changes will begin at the start of that layer.",
                     "type": "int",
                     "default_value": 5,
                     "minimum_value": 1,
                     "unit": "Lay#   ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_end_layer":
+                "feature_fan_end_layer":
                 {
                     "label": "Ending Layer",
                     "description": "Layer to complete the insertion at.  Enter '-1' for the entire file or enter a layer number.  Insertions will stop at the END of this layer.  If you set an End Layer then you should set the Final % that will finish the file",
@@ -65,7 +65,7 @@ class AddCoolingProfile(Script):
                     "unit": "Lay#   ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_1st":
+                "layer_fan_1st":
                 {
                     "label": "Layer/Percent #1",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -74,7 +74,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_2nd":
+                "layer_fan_2nd":
                 {
                     "label": "Layer/Percent #2",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -83,7 +83,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_3rd":
+                "layer_fan_3rd":
                 {
                     "label": "Layer/Percent #3",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -92,7 +92,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_4th":
+                "layer_fan_4th":
                 {
                     "label": "Layer/Percent #4",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -101,7 +101,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_5th":
+                "layer_fan_5th":
                 {
                     "label": "Layer/Percent #5",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -110,7 +110,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_6th":
+                "layer_fan_6th":
                 {
                     "label": "Layer/Percent #6",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -119,7 +119,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_7th":
+                "layer_fan_7th":
                 {
                     "label": "Layer/Percent #7",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -128,7 +128,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_8th":
+                "layer_fan_8th":
                 {
                     "label": "Layer/Percent #8",
                     "description": "Enter as: 'LAYER / Percent' Ex: 57/100 with the layer first, then a '/' to delimit, and then the fan percentage.",
@@ -137,7 +137,7 @@ class AddCoolingProfile(Script):
                     "unit": "L#/%    ",
                     "enabled": "fan_layer_or_feature == 'by_layer'"
                 },
-                "fan_skirt":
+                "feature_fan_skirt":
                 {
                     "label": "Skirt/Brim/Ooze Shield %",
                     "description": "Enter the fan percentage for skirt/brim.  If you are starting at a layer above 1 then this setting only affects Ooze Shields and from the Start layer up.",
@@ -148,7 +148,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_wall_inner":
+                "feature_fan_wall_inner":
                 {
                     "label": "Inner Walls %",
                     "description": "Enter the fan percentage for the Wall-Inner.",
@@ -159,7 +159,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_wall_outer":
+                "feature_fan_wall_outer":
                 {
                     "label": "Outer Walls %",
                     "description": "Enter the fan percentage for the Wall-Outer.",
@@ -170,7 +170,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_fill":
+                "feature_fan_fill":
                 {
                     "label": "Infill %",
                     "description": "Enter the fan percentage for the Infill.",
@@ -181,7 +181,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_skin":
+                "feature_fan_skin":
                 {
                     "label": "Top/Bottom (Skin) %",
                     "description": "Enter the fan percentage for the Skins.",
@@ -192,7 +192,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_support":
+                "feature_fan_support":
                 {
                     "label": "Support %",
                     "description": "Enter the fan percentage for the Supports.",
@@ -203,7 +203,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_support_interface":
+                "feature_fan_support_interface":
                 {
                     "label": "Support Interface %",
                     "description": "Enter the fan percentage for the Support Interface.",
@@ -214,7 +214,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_prime_tower":
+                "feature_fan_prime_tower":
                 {
                     "label": "Prime Tower %",
                     "description": "Enter the fan percentage for the Prime Tower (whether it's used or not).",
@@ -225,7 +225,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_bridge":
+                "feature_fan_bridge":
                 {
                     "label": "Bridge %",
                     "description": "Enter the fan percentage for any Bridging (whether it's used on not).",
@@ -236,7 +236,7 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_layer_or_feature == 'by_feature'"
                 },
-                "fan_combing":
+                "feature_fan_combing":
                 {
                     "label": "Fan 'OFF' during Combing:",
                     "description": "When checked will set the fan to 0% for combing moves over 5 lines long in the gcode. When un-checked the fan speed during combing is whatever the previous speed is set to.",
@@ -244,7 +244,7 @@ class AddCoolingProfile(Script):
                     "enabled": "fan_layer_or_feature == 'by_feature'",
                     "default_value": true
                 },
-                "fan_feature_final":
+                "feature_fan_feature_final":
                 {
                     "label": "Final %",
                     "description": "If you choose an 'End Layer' then this is the fan speed that will carry through to the end of the gcode file.  It will go into effect at the 'END' of your end layer.",
@@ -253,7 +253,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "(int(fan_end_layer) != -1) and (fan_layer_or_feature == 'by_feature')"
+                    "enabled": "(int(feature_fan_end_layer) != -1) and (fan_layer_or_feature == 'by_feature')"
                 },
                 "fan_enable_raft":
                 {
@@ -282,17 +282,17 @@ class AddCoolingProfile(Script):
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
         #Get some information from Cura-----------------------------------
-        extrud = Application.getInstance().getGlobalContainerStack().extruderList
+        extruder = Application.getInstance().getGlobalContainerStack().extruderList
 
         #This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
         fan_mode = True
 
         #For 4.x versions that don't have the 0-1 option------------------
         try:
-            fan_mode = not bool(extrud[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
+            fan_mode = not bool(extruder[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
         except:
             pass
-        bed_adhesion = (extrud[0].getProperty("adhesion_type", "value"))
+        bed_adhesion = (extruder[0].getProperty("adhesion_type", "value"))
         extruder_count = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
         print_sequence = str(Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value"))
 
@@ -300,18 +300,18 @@ class AddCoolingProfile(Script):
         if extruder_count == 1:
             is_multi_fan = False
             is_multi_extr_print = False
-            if int((extrud[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
-                t0_fan = " P" + str((extrud[0].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if int((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
+                t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
             else:
         #No P parameter if there is a single fan circuit------------------
                 t0_fan = ""
         elif extruder_count > 1:
             is_multi_fan = True
-            t0_fan = " P" + str((extrud[0].getProperty("machine_extruder_cooling_fan_number", "value")))
+            t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
         if is_multi_fan:
-            if extruder_count > 1: t1_fan = " P" + str((extrud[1].getProperty("machine_extruder_cooling_fan_number", "value")))
-            if extruder_count > 2: t2_fan = " P" + str((extrud[2].getProperty("machine_extruder_cooling_fan_number", "value")))
-            if extruder_count > 3: t3_fan = " P" + str((extrud[3].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if extruder_count > 1: t1_fan = " P" + str((extruder[1].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if extruder_count > 2: t2_fan = " P" + str((extruder[2].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if extruder_count > 3: t3_fan = " P" + str((extruder[3].getProperty("machine_extruder_cooling_fan_number", "value")))
 
         #Initialize the fan_list with defaults----------------------------
         fan_list = []
@@ -323,46 +323,46 @@ class AddCoolingProfile(Script):
         by_layer_or_feature = self.getSettingValueByKey("fan_layer_or_feature")
         if  by_layer_or_feature == "by_layer":
             #By layer doesn't do any feature search
-            fan_combing = False
+            feature_fan_combing = False
 
             #If there is no delimiter then ignore the line else put the settings in a list
-            fan_1st = self.getSettingValueByKey("fan_1st")
-            if "/" in fan_1st:
-                fan_list[0] = check_layer.layer_checker(fan_1st, "l", fan_mode)
-                fan_list[1] = check_layer.layer_checker(fan_1st, "p", fan_mode)
-            fan_2nd = self.getSettingValueByKey("fan_2nd")
-            if "/" in fan_2nd:
-                fan_list[2] = check_layer.layer_checker(fan_2nd, "l", fan_mode)
-                fan_list[3] = check_layer.layer_checker(fan_2nd, "p", fan_mode)
-            fan_3rd = self.getSettingValueByKey("fan_3rd")
-            if "/" in fan_3rd:
-                fan_list[4] = check_layer.layer_checker(fan_3rd, "l", fan_mode)
-                fan_list[5] = check_layer.layer_checker(fan_3rd, "p", fan_mode)
-            fan_4th = self.getSettingValueByKey("fan_4th")
-            if "/" in fan_4th:
-                fan_list[6] = check_layer.layer_checker(fan_4th, "l", fan_mode)
-                fan_list[7] = check_layer.layer_checker(fan_4th, "p", fan_mode)
-            fan_5th = self.getSettingValueByKey("fan_5th")
-            if "/" in fan_5th:
-                fan_list[8] = check_layer.layer_checker(fan_5th, "l", fan_mode)
-                fan_list[9] = check_layer.layer_checker(fan_5th, "p", fan_mode)
-            fan_6th = self.getSettingValueByKey("fan_6th")
-            if "/" in fan_6th:
-                fan_list[10] = check_layer.layer_checker(fan_6th, "l", fan_mode)
-                fan_list[11] = check_layer.layer_checker(fan_6th, "p", fan_mode)
-            fan_7th = self.getSettingValueByKey("fan_7th")
-            if "/" in fan_7th:
-                fan_list[12] = check_layer.layer_checker(fan_7th, "l", fan_mode)
-                fan_list[13] = check_layer.layer_checker(fan_7th, "p", fan_mode)
-            fan_8th = self.getSettingValueByKey("fan_8th")
-            if "/" in fan_8th:
-                fan_list[14] = check_layer.layer_checker(fan_8th, "l", fan_mode)
-                fan_list[15] = check_layer.layer_checker(fan_8th, "p", fan_mode)
+            layer_fan_1st = self.getSettingValueByKey("layer_fan_1st")
+            if "/" in layer_fan_1st:
+                fan_list[0] = check_layer.layer_checker(layer_fan_1st, "l", fan_mode)
+                fan_list[1] = check_layer.layer_checker(layer_fan_1st, "p", fan_mode)
+            layer_fan_2nd = self.getSettingValueByKey("layer_fan_2nd")
+            if "/" in layer_fan_2nd:
+                fan_list[2] = check_layer.layer_checker(layer_fan_2nd, "l", fan_mode)
+                fan_list[3] = check_layer.layer_checker(layer_fan_2nd, "p", fan_mode)
+            layer_fan_3rd = self.getSettingValueByKey("layer_fan_3rd")
+            if "/" in layer_fan_3rd:
+                fan_list[4] = check_layer.layer_checker(layer_fan_3rd, "l", fan_mode)
+                fan_list[5] = check_layer.layer_checker(layer_fan_3rd, "p", fan_mode)
+            layer_fan_4th = self.getSettingValueByKey("layer_fan_4th")
+            if "/" in layer_fan_4th:
+                fan_list[6] = check_layer.layer_checker(layer_fan_4th, "l", fan_mode)
+                fan_list[7] = check_layer.layer_checker(layer_fan_4th, "p", fan_mode)
+            layer_fan_5th = self.getSettingValueByKey("layer_fan_5th")
+            if "/" in layer_fan_5th:
+                fan_list[8] = check_layer.layer_checker(layer_fan_5th, "l", fan_mode)
+                fan_list[9] = check_layer.layer_checker(layer_fan_5th, "p", fan_mode)
+            layer_fan_6th = self.getSettingValueByKey("layer_fan_6th")
+            if "/" in layer_fan_6th:
+                fan_list[10] = check_layer.layer_checker(layer_fan_6th, "l", fan_mode)
+                fan_list[11] = check_layer.layer_checker(layer_fan_6th, "p", fan_mode)
+            layer_fan_7th = self.getSettingValueByKey("layer_fan_7th")
+            if "/" in layer_fan_7th:
+                fan_list[12] = check_layer.layer_checker(layer_fan_7th, "l", fan_mode)
+                fan_list[13] = check_layer.layer_checker(layer_fan_7th, "p", fan_mode)
+            layer_fan_8th = self.getSettingValueByKey("layer_fan_8th")
+            if "/" in layer_fan_8th:
+                fan_list[14] = check_layer.layer_checker(layer_fan_8th, "l", fan_mode)
+                fan_list[15] = check_layer.layer_checker(layer_fan_8th, "p", fan_mode)
 
         #Assign the variable values if "By Feature"-----------------------
         elif by_layer_or_feature == "by_feature":
-            the_start_layer = self.getSettingValueByKey("fan_start_layer") - 1
-            the_end_layer = self.getSettingValueByKey("fan_end_layer")
+            the_start_layer = self.getSettingValueByKey("feature_fan_start_layer") - 1
+            the_end_layer = self.getSettingValueByKey("feature_fan_end_layer")
             try:
                 if int(the_end_layer) != -1:
                     #Catch a possible input error.
@@ -373,17 +373,17 @@ class AddCoolingProfile(Script):
                 the_end_layer = -1
 
             #Get the speed for each feature-------------------------------
-            fan_sp_skirt = check_feature.feature_checker(self.getSettingValueByKey("fan_skirt"), fan_mode)
-            fan_sp_wall_inner = check_feature.feature_checker(self.getSettingValueByKey("fan_wall_inner"), fan_mode)
-            fan_sp_wall_outer = check_feature.feature_checker(self.getSettingValueByKey("fan_wall_outer"), fan_mode)
-            fan_sp_fill = check_feature.feature_checker(self.getSettingValueByKey("fan_fill"), fan_mode)
-            fan_sp_skin = check_feature.feature_checker(self.getSettingValueByKey("fan_skin"), fan_mode)
-            fan_sp_support = check_feature.feature_checker(self.getSettingValueByKey("fan_support"), fan_mode)
-            fan_sp_support_interface = check_feature.feature_checker(self.getSettingValueByKey("fan_support_interface"), fan_mode)
-            fan_sp_prime_tower = check_feature.feature_checker(self.getSettingValueByKey("fan_prime_tower"), fan_mode)
-            fan_sp_bridge = check_feature.feature_checker(self.getSettingValueByKey("fan_bridge"), fan_mode)
-            fan_sp_feature_final = check_feature.feature_checker(self.getSettingValueByKey("fan_feature_final"), fan_mode)
-            fan_combing = self.getSettingValueByKey("fan_combing")
+            fan_sp_skirt = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_skirt"), fan_mode)
+            fan_sp_wall_inner = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_wall_inner"), fan_mode)
+            fan_sp_wall_outer = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_wall_outer"), fan_mode)
+            fan_sp_fill = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_fill"), fan_mode)
+            fan_sp_skin = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_skin"), fan_mode)
+            fan_sp_support = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_support"), fan_mode)
+            fan_sp_support_interface = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_support_interface"), fan_mode)
+            fan_sp_prime_tower = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_prime_tower"), fan_mode)
+            fan_sp_bridge = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_bridge"), fan_mode)
+            fan_sp_feature_final = check_feature.feature_checker(self.getSettingValueByKey("feature_fan_feature_final"), fan_mode)
+            feature_fan_combing = self.getSettingValueByKey("feature_fan_combing")
             if the_end_layer > -1 and by_layer_or_feature == "by_feature":
                 #Required so the final speed input can be determined------
                 the_end_is_enabled = True
@@ -425,20 +425,11 @@ class AddCoolingProfile(Script):
                     T2_used = True
                 if "T3" in lines:
                     T3_used = True
-            if T0_used and (T1_used or T2_used or T3_used):
-                is_multi_extr_print = True
-            elif T1_used and (T0_used or T2_used or T3_used):
-                is_multi_extr_print = True
-            elif T2_used and (T0_used or T1_used or T3_used):
-                is_multi_extr_print = True
-            elif T3_used and (T0_used or T1_used or T2_used):
-                is_multi_extr_print = True
-            else:
-                is_multi_extr_print = False
+            is_multi_extr_print = True if sum([T0_used, T1_used, T2_used, T3_used]) > 1 else False
 
             #On a multi-extruder printer and single extruder print find out which extruder starts the file.
             init_fan = t0_fan
-            if is_multi_fan and not is_multi_extr_print:
+            if not is_multi_extr_print:
                 startup = data[1]
                 lines = startup.split("\n")
                 for line in lines:
@@ -448,7 +439,7 @@ class AddCoolingProfile(Script):
                         t0_fan = t2_fan
                     elif line == "T3":
                         t0_fan = t3_fan
-            elif is_multi_fan and is_multi_extr_print:
+            elif is_multi_extr_print:
             #On a multi-extruder printer and multi extruder print find out which extruder starts the file.
                 startup = data[1]
                 lines = startup.split("\n")
@@ -479,7 +470,7 @@ class AddCoolingProfile(Script):
             start_from = int(raft_start_index)
         else:
             if by_layer_or_feature == "by_layer":
-                altered_start_layer = "999999999"
+                altered_start_layer = str(len(data))
                 #The fan list layers don't need to be in ascending order.  Get the lowest.
                 for num in range(0,15,2):
                     if int(fan_list[num]) < int(altered_start_layer):
@@ -490,8 +481,8 @@ class AddCoolingProfile(Script):
 
         #Strip the M106 and M107 lines from the file----------------------
         for l_index in range(start_from, len(data) - 1, 1):
-            data[l_index] = re.sub(re.compile("M106(.*)\n"), "", data[l_index])
-            data[l_index] = re.sub(re.compile("M107(.*)\n"), "", data[l_index])
+            data[l_index] = re.sub(re.compile("M106(\s\w\d*)\n"), "", data[l_index])
+            data[l_index] = re.sub(re.compile("M107(\w*)\n"), "", data[l_index])
 
         #Deal with a raft and with One-At-A-Time--------------------------
         if raft_enabled and bed_adhesion == "raft":
@@ -526,7 +517,8 @@ class AddCoolingProfile(Script):
             for r_index in range(2,len(data)-2,1):
                 lines = data[r_index].split("\n")
                 if ";LAYER:0" in data[r_index] or ";LAYER:-" in data[r_index]:
-                    lines.insert(1, "M106 S0" + str(t0_fan))
+                    if not "0" in fan_list:
+                        lines.insert(1, "M106 S0" + str(t0_fan))
                 data[r_index] = "\n".join(lines)
 
         #Turn off all fans at the end of data[1]--------------------------
@@ -539,9 +531,9 @@ class AddCoolingProfile(Script):
             if extruder_count > 3 and t3_fan != t2_fan and t3_fan != t1_fan and t3_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t3_fan))
         data[1] = "\n".join(temp_startup)
 
-        #Add additional 'MESH:NONMESH' lines for travel moves over 5 lines long if 'fan_combing' is True
+        #Add additional 'MESH:NONMESH' lines for travel moves over 5 lines long if 'feature_fan_combing' is True
         #The "MESH:NONMESH" line changed in Cura 5.3.0.  It changed back in 5.3.1.
-        if fan_combing:
+        if feature_fan_combing:
             for layer_num in range(2,len(data)):
                 layer = data[layer_num]
                 data[layer_num] = re.sub(";MESH:NOMESH", ";MESH:NONMESH", layer)
@@ -569,7 +561,7 @@ class AddCoolingProfile(Script):
             current_fan_speed = "0"
             prev_fan = str(t0_fan)
             this_fan = str(t0_fan)
-            start_index = "999999999"
+            start_index = str(len(data))
             for num in range(0,15,2):
             #The fan_list may not be in ascending order.  Get the lowest layer number
                 if int(fan_list[num]) < int(start_index):
@@ -650,7 +642,7 @@ class AddCoolingProfile(Script):
                         elif ";TYPE:SUPPORT-INTERFACE" in line:
                             modified_data += fan_sp_support_interface + t0_fan + "\n"
                         elif ";MESH:NOMESH" in line or ";MESH:NONMESH" in line:  #compatibility with 5.3.0 'NOMESH'
-                            if fan_combing == True:
+                            if feature_fan_combing == True:
                                 modified_data += "M106 S0" + t0_fan + "\n"
                         elif ";TYPE:PRIME-TOWER" in line:
                             modified_data += fan_sp_prime_tower + t0_fan + "\n"
@@ -755,7 +747,7 @@ class AddCoolingProfile(Script):
                             modified_data += fan_sp_support_interface + this_fan + "\n"
                             current_fan_speed = str(fan_sp_support_interface.split("S")[1])
                         elif ";MESH:NOMESH" in line or ";MESH:NONMESH" in line:  #compatibility with 5.3.0 'NOMESH'
-                            if fan_combing == True:
+                            if feature_fan_combing == True:
                                 modified_data += line + "\n"
                                 modified_data += "M106 S0" + this_fan + "\n"
                                 current_fan_speed = "0"
@@ -795,9 +787,9 @@ class check_layer():
         fan_string_l = str(fan_string.split("/")[0])
         try:
             if int(fan_string_l) <= 1: fan_string_l = "1"
-            if fan_string_l == "": fan_string_l = "999999999"
+            if fan_string_l == "": fan_string_l = str(len(data))
         except ValueError:
-            fan_string_l = "999999999"
+            fan_string_l = str(len(data))
         fan_string_l = str(int(fan_string_l) - 1)
         fan_string_p = str(fan_string.split("/")[1])
         if fan_string_p == "": fan_string_p = "0"
