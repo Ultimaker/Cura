@@ -27,7 +27,7 @@ from .ExportFileJob import ExportFileJob
 class DFFileExportAndUploadManager:
     """
     Class responsible for exporting the scene and uploading the exported data to the Digital Factory Library. Since 3mf
-    and UFP files may need to be uploaded at the same time, this class keeps a single progress and success message for
+    and (UFP or makerbot) files may need to be uploaded at the same time, this class keeps a single progress and success message for
     both files and updates those messages according to the progress of both the file job uploads.
     """
     def __init__(self, file_handlers: Dict[str, FileHandler],
@@ -118,7 +118,7 @@ class DFFileExportAndUploadManager:
                 library_project_id = self._library_project_id,
                 source_file_id = self._source_file_id
         )
-        self._api.requestUploadUFP(request, on_finished = self._uploadFileData, on_error = self._onRequestUploadPrintFileFailed)
+        self._api.requestUploadMeshFile(request, on_finished = self._uploadFileData, on_error = self._onRequestUploadPrintFileFailed)
 
     def _uploadFileData(self, file_upload_response: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse]) -> None:
         """Uploads the exported file data after the file or print job upload has been registered at the Digital Factory
@@ -279,22 +279,25 @@ class DFFileExportAndUploadManager:
         This means that something went wrong with the initial request to create a "file" entry in the digital library.
         """
         reply_string = bytes(reply.readAll()).decode()
-        filename_ufp = self._file_name + ".ufp"
-        Logger.log("d", "An error occurred while uploading the print job file '{}' to the Digital Library project '{}': {}".format(filename_ufp, self._library_project_id, reply_string))
+        if "ufp" in self._formats:
+            filename_meshfile = self._file_name + ".ufp"
+        elif "makerbot" in self._formats:
+            filename_meshfile = self._file_name + ".makerbot"
+        Logger.log("d", "An error occurred while uploading the print job file '{}' to the Digital Library project '{}': {}".format(filename_meshfile, self._library_project_id, reply_string))
         with self._message_lock:
             # Set the progress to 100% when the upload job fails, to avoid having the progress message stuck
-            self._file_upload_job_metadata[filename_ufp]["upload_status"] = "failed"
-            self._file_upload_job_metadata[filename_ufp]["upload_progress"] = 100
+            self._file_upload_job_metadata[filename_meshfile]["upload_status"] = "failed"
+            self._file_upload_job_metadata[filename_meshfile]["upload_progress"] = 100
 
             human_readable_error = self.extractErrorTitle(reply_string)
-            self._file_upload_job_metadata[filename_ufp]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
+            self._file_upload_job_metadata[filename_meshfile]["file_upload_failed_message"] = getBackwardsCompatibleMessage(
                     title = "File upload error",
-                    text = "Failed to upload the file '{}' to '{}'. {}".format(filename_ufp, self._library_project_name, human_readable_error),
+                    text = "Failed to upload the file '{}' to '{}'. {}".format(filename_meshfile, self._library_project_name, human_readable_error),
                     message_type_str = "ERROR",
                     lifetime = 30
             )
         self._on_upload_error()
-        self._onFileUploadFinished(filename_ufp)
+        self._onFileUploadFinished(filename_meshfile)
 
     @staticmethod
     def extractErrorTitle(reply_body: Optional[str]) -> str:
@@ -407,4 +410,28 @@ class DFFileExportAndUploadManager:
             job_ufp = ExportFileJob(self._file_handlers["ufp"], self._nodes, self._file_name, "ufp")
             job_ufp.finished.connect(self._onPrintFileExported)
             self._upload_jobs.append(job_ufp)
+
+        if "makerbot" in self._formats and "makerbot" in self._file_handlers and self._file_handlers["makerbot"]:
+            filename_makerbot = self._file_name + ".makerbot"
+            metadata[filename_makerbot] = {
+                "export_job_output"   : None,
+                "upload_progress"     : -1,
+                "upload_status"       : "",
+                "file_upload_response": None,
+                "file_upload_success_message": getBackwardsCompatibleMessage(
+                    text = "'{}' was uploaded to '{}'.".format(filename_makerbot, self._library_project_name),
+                    title = "Upload successful",
+                    message_type_str = "POSITIVE",
+                    lifetime = 30,
+                ),
+                "file_upload_failed_message": getBackwardsCompatibleMessage(
+                    text = "Failed to upload the file '{}' to '{}'.".format(filename_makerbot, self._library_project_name),
+                    title = "File upload error",
+                    message_type_str = "ERROR",
+                    lifetime = 30
+                )
+            }
+            job_makerbot = ExportFileJob(self._file_handlers["makerbot"], self._nodes, self._file_name, "makerbot")
+            job_makerbot.finished.connect(self._onPrintFileExported)
+            self._upload_jobs.append(job_makerbot)
         return metadata

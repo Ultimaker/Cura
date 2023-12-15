@@ -606,7 +606,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setIntentName(intent_name)
+        self._dialog.setIntentName(intent_category)
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
@@ -1095,7 +1095,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getProperty(key, "settable_per_extruder"):
                     values_to_set_for_extruders[key] = value
                 else:
-                    global_stack.definitionChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        global_stack.definitionChanges.setProperty(key, "value", value)
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1109,7 +1110,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.definitionChanges.setProperty(key, "value", value)
             if parser is not None:
                 for key, value in parser["values"].items():
-                    extruder_stack.definitionChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        extruder_stack.definitionChanges.setProperty(key, "value", value)
 
     def _applyUserChanges(self, global_stack, extruder_stack_dict):
         values_to_set_for_extruder_0 = {}
@@ -1119,7 +1121,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if global_stack.getProperty(key, "settable_per_extruder"):
                     values_to_set_for_extruder_0[key] = value
                 else:
-                    global_stack.userChanges.setProperty(key, "value", value)
+                    if not self._settingIsFromMissingPackage(key, value):
+                        global_stack.userChanges.setProperty(key, "value", value)
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1133,7 +1136,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         extruder_stack.userChanges.setProperty(key, "value", value)
                 if parser is not None:
                     for key, value in parser["values"].items():
-                        extruder_stack.userChanges.setProperty(key, "value", value)
+                        if not self._settingIsFromMissingPackage(key, value):
+                            extruder_stack.userChanges.setProperty(key, "value", value)
 
     def _applyVariants(self, global_stack, extruder_stack_dict):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
@@ -1208,6 +1212,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
+    def _settingIsFromMissingPackage(self, key, value):
+        # Check if the key and value pair is from the missing package
+        for package in self._dialog.missingPackages:
+            if value.startswith("PLUGIN::"):
+                if (package['id'] + "@" + package['package_version']) in value:
+                    Logger.log("w", f"Ignoring {key} value {value} from missing package")
+                    return True
+        return False
+
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
@@ -1246,7 +1259,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
                 if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
                     machine_manager.setIntentByCategory(self._intent_category_to_apply)
-
+                else:
+                    # if no intent is provided, reset to the default (balanced) intent
+                    machine_manager.resetIntents()
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 
@@ -1327,3 +1342,4 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 missing_packages.append(package)
 
         return missing_packages
+

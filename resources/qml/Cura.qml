@@ -628,7 +628,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        fileMode: FileDialog.FileMode.ExistingFile
+        fileMode: FileDialog.FileMode.OpenFiles
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
@@ -822,12 +822,26 @@ UM.MainWindow
         }
     }
 
-    Cura.WizardDialog
+    property var wizardDialog
+    Component
     {
-        id: addMachineDialog
-        title: catalog.i18nc("@title:window", "Add Printer")
-        model: CuraApplication.getAddPrinterPagesModel()
-        progressBarVisible: false
+        id: addMachineDialogLoader
+
+        Cura.WizardDialog
+        {
+            title: catalog.i18nc("@title:window", "Add Printer")
+            maximumWidth: Screen.width * 2
+            maximumHeight: Screen.height * 2
+            model: CuraApplication.getAddPrinterPagesModel()
+            progressBarVisible: false
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    wizardDialog = null
+                }
+            }
+        }
     }
 
     Cura.WizardDialog
@@ -852,9 +866,8 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
-            // Make sure to show from the first page when the dialog shows up.
-            addMachineDialog.resetModelState()
-            addMachineDialog.show()
+            wizardDialog = addMachineDialogLoader.createObject()
+            wizardDialog.show()
         }
     }
 
