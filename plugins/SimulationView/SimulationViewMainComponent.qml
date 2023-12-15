@@ -136,7 +136,7 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: 100
+        interval: UM.SimulationView.simulationTime
         running: false
         repeat: true
         onTriggered:
