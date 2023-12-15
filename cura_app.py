@@ -44,21 +44,9 @@ parser.add_argument("--debug",
 known_args = vars(parser.parse_known_args()[0])
 
 if with_sentry_sdk:
-    sentry_env = "unknown"  # Start off with a "IDK"
-    if hasattr(sys, "frozen"):
-        sentry_env = "production"  # A frozen build has the possibility to be a "real" distribution.
-
-    if ApplicationMetadata.CuraVersion == "master":
-        sentry_env = "development"  # Master is always a development version.
-    elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
-        sentry_env = "beta"
-    elif "alpha" in ApplicationMetadata.CuraVersion or "ALPHA" in ApplicationMetadata.CuraVersion:
-        sentry_env = "alpha"
-    try:
-        if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
-            sentry_env = "nightly"
-    except IndexError:
-        pass
+    sentry_env = "development"
+    if hasattr(sys, "frozen") and "+" not in ApplicationMetadata.CuraVersion and "alpha" not in ApplicationMetadata.CuraVersion:
+        sentry_env = "production"
 
     # Errors to be ignored by Sentry
     ignore_errors = [KeyboardInterrupt, MemoryError]
@@ -66,7 +54,7 @@ if with_sentry_sdk:
         sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
                         before_send = CrashHandler.sentryBeforeSend,
                         environment = sentry_env,
-                        release = "cura%s" % ApplicationMetadata.CuraVersion,
+                        release = f"cura@{ApplicationMetadata.CuraVersion}",
                         default_integrations = False,
                         max_breadcrumbs = 300,
                         server_name = "cura",
