@@ -220,6 +220,8 @@ class CuraConan(ConanFile):
                     else:
                         src_path = os.path.join(self.source_folder, data["src"])
                 else:
+                    if data["package"] not in self.deps_cpp_info:
+                        continue
                     src_path = os.path.join(self.deps_cpp_info[data["package"]].rootpath, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
