@@ -49,7 +49,7 @@ class Snapshot:
         """
 
         if node is None:
-            root = Application.getInstance().getController().getScene().getRoot()
+            node = Application.getInstance().getController().getScene().getRoot()
 
         # the direction the camera is looking at to create the isometric view
         iso_view_dir = Vector(-1, -1, -1).normalized()

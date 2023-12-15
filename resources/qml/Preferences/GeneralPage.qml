@@ -120,6 +120,10 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("info/send_slice_info")
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+
+        UM.Preferences.resetPreference("info/send_engine_crash")
+        sendEngineCrashCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
 
@@ -855,6 +859,21 @@ UM.PreferencesPage
                 font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+
+                UM.CheckBox
+                {
+                    id: sendEngineCrashCheckbox
+                    text: catalog.i18nc("@option:check","Send (anonymous) engine crash reports")
+                    checked: boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+                    onCheckedChanged: UM.Preferences.setValue("info/send_engine_crash", checked)
+                }
+            }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
