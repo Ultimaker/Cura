@@ -331,7 +331,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return False
 
         [printer, *_] = self._printers
-        return printer.pinterType in ("ultimaker_methodx", "ultimaker_methodxl")
+        return printer.name in ("ultimaker_methodx", "ultimaker_methodxl")
 
     @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:
