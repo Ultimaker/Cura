@@ -1,19 +1,18 @@
 # Copyright (c) 2023 GregValiant (Greg Foresi)
-#   This Post-Processing Plugin is released under the terms of the AGPLv3 or higher.
-#   This post processor adds most of the Cura settings to the end of the Gcode file independent of quality changes.
-#   A single extruder print will add about 308 lines to the gcode.  A dual extruder print will add about 420 lines.
-#   My thanks to @AHoeben and @Dustin for their help.
+#   This post processor adds most of the Cura settings (~400) to the end of the Gcode file.  Which settings are added depends on things like the Extruder Count, Cura setup, etc.
 
 from UM.Application import Application
 import UM.Util
 from ..Script import Script
 import time
+import re
 from UM.Qt.Duration import DurationFormat
 import configparser
 from UM.Preferences import Preferences
+from UM.Message import Message
 
 class AddCuraSettings(Script):
-    """Add Cura settings to the g-code.
+    """Add the Cura settings as a post-script to the g-code.
     """
 
     def getSettingDataString(self):
@@ -27,7 +26,7 @@ class AddCuraSettings(Script):
                 "all_or_some":
                 {
                     "label": "All or Some...",
-                    "description": "Include all categories or you can pick which categories to include.  Selecting All will add about 310 lines for a single extruder print and about 420 lines for a dual extruder print.  This post processor should be the last on the Post Process list.",
+                    "description": "Include all categories or you can pick which categories to include.  Selecting 'All' will add about 360 lines for a single extruder print and about 440 lines for a dual extruder print.",
                     "type": "enum",
                     "options": {
                         "all_settings": "All Categories",
@@ -97,6 +96,14 @@ class AddCuraSettings(Script):
                     "type": "bool",
                     "default_value": false,
                     "enabled": "all_or_some == 'pick_settings'"
+                },
+                "speed_set_max_min_calc":
+                {
+                    "label": "  Max/Min speeds in the gcode",
+                    "description": "Goes through the gcode and determines the Max and Min Travel Speeds' and the 'Max and Min Print Speeds'.  This has been separated from the Speed settings because calculations can be time intensive for large prints and it adds Statistics rather than Settings.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": true
                 },
                 "travel_set":
                 {
@@ -181,7 +188,7 @@ class AddCuraSettings(Script):
         all_or_some = str(self.getSettingValueByKey("all_or_some"))
         machine_extruder_count = int(mycura.getProperty("machine_extruder_count", "value"))
         setting_data = ";\n;  <<< Cura User Settings >>>\n"
-        #Extruder Assignments-------------------------------------------------------
+        ##Extruder Assignments-------------------------------------------------------
         wall_extruder_nr = int(mycura.getProperty("wall_extruder_nr", "value"))
         if wall_extruder_nr == -1: wall_extruder_nr = 0
         wall_0_extruder_nr = int(mycura.getProperty("wall_0_extruder_nr", "value"))
@@ -206,7 +213,7 @@ class AddCuraSettings(Script):
         if support_roof_extruder_nr == -1: support_roof_extruder_nr = 0
         support_bottom_extruder_nr = int(mycura.getProperty("support_bottom_extruder_nr", "value"))
         if support_bottom_extruder_nr == -1: support_bottom_extruder_nr = 0
-        #Compatibility problem with 4.x-------------------------------------------------------
+        ## For Compatibility with 4.x-------------------------------------------------------
         try:
             skirt_brim_extruder_nr = int(mycura.getProperty("skirt_brim_extruder_nr", "value"))
             if skirt_brim_extruder_nr == -1: skirt_brim_extruder_nr = 0
@@ -230,7 +237,7 @@ class AddCuraSettings(Script):
             filament_wt = Application.getInstance().getPrintInformation().materialWeights
             filament_cost = Application.getInstance().getPrintInformation().materialCosts
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Filament Type: " + str(extruder[num].material.getMetaDataEntry("material", "")) + "\n"
                 setting_data += ";  Filament Name: " + str(extruder[num].material.getMetaDataEntry("name", "")) + "\n"
                 setting_data += ";  Filament Brand: " + str(extruder[num].material.getMetaDataEntry("brand", "")) + "\n"
@@ -259,7 +266,7 @@ class AddCuraSettings(Script):
             setting_data += ";Machine Extruder Count: " + str(mycura.getProperty("machine_extruder_count", "value")) + "\n"
             enabled_list = list([mycura.isEnabled for mycura in mycura.extruderList])
             for num in range(0,len(enabled_list)):
-                setting_data += ";  Extruder #" + str(num+1) + " Enabled: " + str(enabled_list[num]) + "\n"
+                setting_data += ";  Extruder " + str(num + 1) + " (T" + str(num) + ") Enabled: " + str(enabled_list[num]) + "\n"
             setting_data += ";Enable Nozzle Temperature Control: " + str(mycura.getProperty("machine_nozzle_temp_enabled", "value")) + "\n"
             setting_data += ";Heat Up Speed: " + str(mycura.getProperty("machine_nozzle_heat_up_speed", "value")) + "\n"
             setting_data += ";Cool Down Speed: " + str(mycura.getProperty("machine_nozzle_cool_down_speed", "value")) + "\n"
@@ -287,7 +294,7 @@ class AddCuraSettings(Script):
             setting_data += ";Gantry Height: " + str(mycura.getProperty("gantry_height", "value")) + "\n"
             setting_data += ";Nozzle Identifier: " + str(mycura.getProperty("machine_nozzle_id", "value")) + "\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder #" + str(num+1) + " Nozzle Size: " + str(extruder[num].getProperty("machine_nozzle_size", "value")) + "\n"
+                setting_data += ";Extruder " + str(num +1 ) + " (T" + str(num) + ") Nozzle Size: " + str(extruder[num].getProperty("machine_nozzle_size", "value")) + "\n"
             setting_data += ";Offset Extruder: " + str(mycura.getProperty("machine_use_extruder_offset_to_offset_coords", "value")) + "\n"
             setting_data += ";Extruder Prime Z: " + str(mycura.getProperty("extruder_prime_pos_z", "value")) + "\n"
             setting_data += ";Absolute Extruder Prime: " + str(mycura.getProperty("extruder_prime_pos_abs", "value")) + "\n"
@@ -311,21 +318,21 @@ class AddCuraSettings(Script):
             setting_data += ";Layer Height: " + str(mycura.getProperty("layer_height", "value")) + "mm\n"
             setting_data += ";Initial Layer Height: " + str(mycura.getProperty("layer_height_0", "value")) + "mm\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Line Width: " + str(extruder[num].getProperty("line_width", "value")) + "mm\n"
-            setting_data += ";Wall Line Width (Ext" + str(wall_extruder_nr+1) + "): " + str(extruder[wall_extruder_nr].getProperty("wall_line_width", "value")) + "mm\n"
-            setting_data += ";Outer-Wall Line Width (Ext" + str(wall_0_extruder_nr+1) + "): " + str(extruder[wall_0_extruder_nr].getProperty("wall_line_width_0", "value")) + "mm\n"
-            setting_data += ";Inner-Wall Line Width (Ext" + str(wall_x_extruder_nr+1) + "): " + str(extruder[wall_x_extruder_nr].getProperty("wall_line_width_x", "value")) + "mm\n"
-            setting_data += ";Skin Line Width (Ext" + str(top_bottom_extruder_nr+1) + "): " + str(extruder[top_bottom_extruder_nr].getProperty("skin_line_width", "value")) + "mm\n"
-            setting_data += ";Infill Line Width (Ext" + str(infill_extruder_nr+1) + "): " + str(extruder[infill_extruder_nr].getProperty("infill_line_width", "value")) + "mm\n"
+            setting_data += ";Wall Line Width (Ext" + str(wall_extruder_nr + 1) + "): " + str(extruder[wall_extruder_nr].getProperty("wall_line_width", "value")) + "mm\n"
+            setting_data += ";Outer-Wall Line Width (Ext" + str(wall_0_extruder_nr + 1) + "): " + str(extruder[wall_0_extruder_nr].getProperty("wall_line_width_0", "value")) + "mm\n"
+            setting_data += ";Inner-Wall Line Width (Ext" + str(wall_x_extruder_nr + 1) + "): " + str(extruder[wall_x_extruder_nr].getProperty("wall_line_width_x", "value")) + "mm\n"
+            setting_data += ";Skin Line Width (Ext" + str(top_bottom_extruder_nr + 1) + "): " + str(extruder[top_bottom_extruder_nr].getProperty("skin_line_width", "value")) + "mm\n"
+            setting_data += ";Infill Line Width (Ext" + str(infill_extruder_nr + 1) + "): " + str(extruder[infill_extruder_nr].getProperty("infill_line_width", "value")) + "mm\n"
             try:
-                setting_data += ";Skirt/Brim Line Width (Ext" + str(skirt_brim_extruder_nr+1) + "): " + str(extruder[skirt_brim_extruder_nr].getProperty("skirt_brim_line_width", "value")) + "mm\n"
+                setting_data += ";Skirt/Brim Line Width (Ext" + str(skirt_brim_extruder_nr + 1) + "): " + str(extruder[skirt_brim_extruder_nr].getProperty("skirt_brim_line_width", "value")) + "mm\n"
             except:
                 pass
-            setting_data += ";Support Line Width (Ext" + str(support_extruder_nr+1) + "): " + str(extruder[support_extruder_nr].getProperty("support_line_width", "value")) + "mm\n"
-            setting_data += ";Support Interface Line Width (Ext" + str(support_interface_extruder_nr+1) + "): " + str(extruder[support_interface_extruder_nr].getProperty("support_interface_line_width", "value")) + "mm\n"
-            setting_data += ";Support Roof Line Width (Ext" + str(support_roof_extruder_nr+1) + "): " + str(extruder[support_roof_extruder_nr].getProperty("support_roof_line_width", "value")) + "mm\n"
-            setting_data += ";Support Floor Line Width (Ext" + str(support_bottom_extruder_nr+1) + "): " + str(extruder[support_bottom_extruder_nr].getProperty("support_bottom_line_width", "value")) + "mm\n"
+            setting_data += ";Support Line Width (Ext" + str(support_extruder_nr + 1) + "): " + str(extruder[support_extruder_nr].getProperty("support_line_width", "value")) + "mm\n"
+            setting_data += ";Support Interface Line Width (Ext" + str(support_interface_extruder_nr + 1) + "): " + str(extruder[support_interface_extruder_nr].getProperty("support_interface_line_width", "value")) + "mm\n"
+            setting_data += ";Support Roof Line Width (Ext" + str(support_roof_extruder_nr + 1) + "): " + str(extruder[support_roof_extruder_nr].getProperty("support_roof_line_width", "value")) + "mm\n"
+            setting_data += ";Support Floor Line Width (Ext" + str(support_bottom_extruder_nr + 1) + "): " + str(extruder[support_bottom_extruder_nr].getProperty("support_bottom_line_width", "value")) + "mm\n"
             if bool(mycura.getProperty("prime_tower_enable", "value")) and machine_extruder_count>1:
                 setting_data += ";Prime Tower Line Width: " + str(mycura.getProperty("prime_tower_line_width", "value")) + "mm\n"
             setting_data += ";Init Layer Line Width: " + str(mycura.getProperty("initial_layer_line_width_factor", "value")) + "%\n"
@@ -333,9 +340,9 @@ class AddCuraSettings(Script):
         #Wall Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("wall_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Walls]\n"
-            setting_data += ";Wall Extruder Nr: " + str(wall_extruder_nr) + "\n"
-            setting_data += ";Outer-Wall Extruder Nr: " + str(wall_0_extruder_nr) + "\n"
-            setting_data += ";Inner-Wall Extruder Nr: " + str(wall_x_extruder_nr) + "\n"
+            setting_data += ";Wall Extruder: " + str(wall_extruder_nr + 1) + " (T" + str(wall_extruder_nr) + ")\n"
+            setting_data += ";Outer-Wall Extruder: " + str(wall_0_extruder_nr + 1) + " (T" + str(wall_0_extruder_nr) + ")\n"
+            setting_data += ";Inner-Wall Extruder: " + str(wall_x_extruder_nr + 1) + " (T" + str(wall_x_extruder_nr) + ")\n"
             setting_data += ";Wall Thickness: " + str(round(mycura.getProperty("wall_thickness", "value"),2)) + "mm\n"
             setting_data += ";Wall Line Count: " + str(mycura.getProperty("wall_line_count", "value")) + "\n"
             setting_data += ";Outer-Wall Wipe Dist: " + str(mycura.getProperty("wall_0_wipe_dist", "value")) + "mm\n"
@@ -356,13 +363,13 @@ class AddCuraSettings(Script):
         #Top/Bottom Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("topbot_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Top/Bottom]\n"
-            setting_data += ";Top Surface Skin Extruder: " + str(roofing_extruder_nr) + "\n"
+            setting_data += ";Top Surface Skin Extruder: " + str(roofing_extruder_nr + 1) + " (T" + str(roofing_extruder_nr) + ")\n"
             setting_data += ";Top Surface Skin Count: " + str(mycura.getProperty("roofing_layer_count", "value")) + "\n"
             setting_data += ";Top Surface Skin Line Width: " + str(extruder[roofing_extruder_nr].getProperty("roofing_line_width", "value")) + "mm\n"
             setting_data += ";Top Surface Skin Pattern: " + str(mycura.getProperty("roofing_pattern", "value")) + "\n"
             setting_data += ";Top Surface Monotonic: " + str(mycura.getProperty("roofing_monotonic", "value")) + "\n"
             setting_data += ";Top Surface Skin Line Directions: " + str(extruder[roofing_extruder_nr].getProperty("roofing_angles", "value")) + "°\n"
-            setting_data += ";Top/Bottom Extruder: " + str(top_bottom_extruder_nr) + "\n"
+            setting_data += ";Top/Bottom Extruder: " + str(top_bottom_extruder_nr + 1) + " (T" + str(top_bottom_extruder_nr) + ")\n"
             setting_data += ";Top/Bottom Thickness: " + str(round(mycura.getProperty("top_bottom_thickness", "value"),2)) + "mm\n"
             setting_data += ";Top Thickness: " + str(round(mycura.getProperty("top_thickness", "value"),2)) + "mm\n"
             setting_data += ";Top Layers: " + str(mycura.getProperty("top_layers", "value")) + "\n"
@@ -379,12 +386,14 @@ class AddCuraSettings(Script):
                 setting_data += ";  Ironing Top Layer Only: " + str(extruder[0].getProperty("ironing_only_highest_layer", "value")) + "\n"
                 setting_data += ";  Ironing Pattern: " + str(mycura.getProperty("ironing_pattern", "value")) + "\n"
                 setting_data += ";  Ironing Monotonic: " + str(extruder[top_bottom_extruder_nr].getProperty("ironing_monotonic", "value")) + "\n"
+                setting_data += ";  Ironing Spacing: " + str(extruder[top_bottom_extruder_nr].getProperty("ironing_line_spacing", "value")) + "mm\n"
                 setting_data += ";  Ironing Flow: " + str(extruder[top_bottom_extruder_nr].getProperty("ironing_flow", "value")) + "%\n"
+                setting_data += ";  Ironing Speed: " + str(round(extruder[top_bottom_extruder_nr].getProperty("speed_ironing", "value"),2)) + "mm/sec\n"
 
         #Infill Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("infill_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Infill]\n"
-            setting_data += ";Infill Extruder: " + str(infill_extruder_nr) + "\n"
+            setting_data += ";Infill Extruder: " + str(infill_extruder_nr + 1) + " (T" + str(infill_extruder_nr) + ")\n"
             setting_data += ";Infill Density: " + str(extruder[infill_extruder_nr].getProperty("infill_sparse_density", "value")) + "%\n"
             setting_data += ";Infill Pattern: " + str(extruder[infill_extruder_nr].getProperty("infill_pattern", "value")) + "\n"
             setting_data += ";Infill Line Directions: " + str(extruder[infill_extruder_nr].getProperty("infill_angles", "value")) + "°\n"
@@ -407,7 +416,7 @@ class AddCuraSettings(Script):
             setting_data += ";Print Bed Temperature: " + str(mycura.getProperty("material_bed_temperature", "value")) + "°\n"
             setting_data += ";Print Bed Temperature Initial Layer: " + str(mycura.getProperty("material_bed_temperature_layer_0", "value")) + "°\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Print Temperature: " + str(extruder[num].getProperty("material_print_temperature", "value")) + "°\n"
                 setting_data += ";  Print Temperature Initial Layer: " + str(extruder[num].getProperty("material_print_temperature_layer_0", "value")) + "°\n"
                 setting_data += ";  Print Initial Temp: " + str(extruder[num].getProperty("material_initial_print_temperature", "value")) + "°\n"
@@ -436,7 +445,7 @@ class AddCuraSettings(Script):
         if bool(self.getSettingValueByKey("speed_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Speed]\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Speed Print: " + str(extruder[num].getProperty("speed_print", "value")) + "mm/sec\n"
                 setting_data += ";  Speed Infill: " + str(extruder[num].getProperty("speed_infill", "value")) + "mm/sec\n"
                 setting_data += ";  Speed Walls: " + str(extruder[num].getProperty("speed_wall", "value")) + "mm/sec\n"
@@ -449,6 +458,7 @@ class AddCuraSettings(Script):
                 setting_data += ";  Speed Print Initial Layer: " + str(extruder[num].getProperty("speed_print_layer_0", "value")) + "mm/sec\n"
                 setting_data += ";  Speed Travel Initial Layer: " + str(extruder[num].getProperty("speed_travel_layer_0", "value")) + "mm/sec\n"
                 setting_data += ";  Speed Z-Hop: " + str(extruder[num].getProperty("speed_z_hop", "value")) + "mm/sec\n"
+                setting_data += ";  Flow Equalization Ratio: " + str(extruder[num].getProperty("speed_equalize_flow_width_factor", "value")) + "%\n"
                 setting_data += ";  Acceleration Enabled: " + str(extruder[num].getProperty("acceleration_enabled", "value")) + "\n"
                 setting_data += ";  Acceleration Print: " + str(extruder[num].getProperty("acceleration_print", "value")) + "mm/sec²\n"
                 setting_data += ";  Acceleration Travel: " + str(extruder[num].getProperty("acceleration_travel", "value")) + "mm/sec²\n"
@@ -460,20 +470,60 @@ class AddCuraSettings(Script):
             setting_data += ";Speed Support Interface: " + str(extruder[support_interface_extruder_nr].getProperty("speed_support_interface", "value")) + "mm/sec\n"
             setting_data += ";Speed Support Interface Roof: " + str(extruder[support_roof_extruder_nr].getProperty("speed_support_roof", "value")) + "mm/sec\n"
             setting_data += ";Speed Support Interface Bottom: " + str(extruder[support_bottom_extruder_nr].getProperty("speed_support_bottom", "value")) + "mm/sec\n"
-            #Compatibility problem with 4.x--------------------------------------------------------------
-            try:
+            try: ## For compatibility with 4.x-----------------------------------------------------------
                 setting_data += ";Speed Skirt/Brim: " + str(extruder[skirt_brim_extruder_nr].getProperty("skirt_brim_speed", "value")) + "mm/sec\n"
             except:
                 pass
             if bool(mycura.getProperty("prime_tower_enable", "value")) and machine_extruder_count >1:
                 setting_data += ";Speed Prime Tower: " + str(mycura.getProperty("speed_prime_tower", "value")) + "mm/sec\n"
             setting_data += ";Slower Initial Layers: " + str(mycura.getProperty("speed_slowdown_layers", "value")) + "\n"
+        if self.getSettingValueByKey("speed_set_max_min_calc"):
+            ## Get the actual speeds from the gcode
+            f_extrusion_speed_hi = 0.0
+            f_extrusion_speed_lo = 100000.0
+            f_travel_speed_hi = 0.0
+            f_travel_speed_lo = 100000.0
+            for num in range(2, len(data)-1):
+                layer = data[num]
+                lines = layer.split("\n")
+                for line in lines:
+                    ## If a line is a Z-hop or a retraction then ignore it.
+                    if re.match("G1 F(\d*) Z", line) is not None or re.match("G1 F(\d*) E", line) is not None:
+                        continue
+                    if line.startswith("G"):
+                        cmd = self.getValue(line, "G")
+                        if cmd is not None:
+                            ##  Extrusion speeds
+                            if cmd in [1, 2, 3]:
+                                if " X" in line and " Y" in line and " E" in line and " F" in line:
+                                    f_temp = int(self.getValue(line, "F"))
+                                    if f_temp > int(f_extrusion_speed_hi):
+                                        f_extrusion_speed_hi = int(f_temp)
+                                    if f_temp < int(f_extrusion_speed_lo):
+                                        f_extrusion_speed_lo = f_temp
+                            ## Travel speeds
+                            elif cmd == 0:
+                                if " X" in line and " Y" in line and " F" in line and not " Z" in line:
+                                    f_temp = int(self.getValue(line, "F"))
+                                    if f_temp > int(f_travel_speed_hi):
+                                        f_travel_speed_hi = f_temp
+                                    if f_temp < int(f_travel_speed_lo):
+                                        f_travel_speed_lo = f_temp
+            setting_data += ";The speed ranges for this print:\n"
+            setting_data += f";  Maximum Travel Speed: {round(f_travel_speed_hi / 60)} mm/sec\n;  Minimum Travel Speed: {round(f_travel_speed_lo / 60)} mm/sec\n"
+            setting_data += f";  Maximum Extrusion Speed: {round(f_extrusion_speed_hi / 60, 1)} mm/sec\n;  Minimum Extrusion Speed: {round(f_extrusion_speed_lo / 60, 1)} mm/sec\n"
+            msg_text = ";The speed ranges for this print:\n"
+            msg_text += f";  Maximum Travel Speed: {round(f_travel_speed_hi / 60)} mm/sec\n;  Minimum Travel Speed: {round(f_travel_speed_lo / 60)} mm/sec\n"
+            msg_text += f";  Maximum Extrusion Speed: {round(f_extrusion_speed_hi / 60, 1)} mm/sec\n;  Minimum Extrusion Speed: {round(f_extrusion_speed_lo / 60, 1)} mm/sec\n"
+            Message(title = "[Add Cura Settings]", text = msg_text).show()
+        else:
+            setting_data += ";The speed ranges for this print:\n;  Calculation is not enabled\n"
 
         #Travel Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("travel_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Travel]\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Retraction Enabled: " + str(extruder[num].getProperty("retraction_enable", "value")) + "\n"
                 setting_data += ";  Retraction at Layer Change: " + str(extruder[num].getProperty("retract_at_layer_change", "value")) + "\n"
                 setting_data += ";  Retraction Distance: " + str(extruder[num].getProperty("retraction_amount", "value")) + "mm\n"
@@ -486,16 +536,18 @@ class AddCuraSettings(Script):
                 setting_data += ";  Travel Avoid Parts: " + str(extruder[num].getProperty("travel_avoid_other_parts", "value")) + "\n"
                 setting_data += ";  Travel Avoid Supports: " + str(extruder[num].getProperty("travel_avoid_supports", "value")) + "\n"
                 setting_data += ";  Z-Hops Enabled: " + str(extruder[num].getProperty("retraction_hop_enabled", "value")) + "\n"
-                setting_data += ";  Z-Hop Only Over Printed Parts: " + str(extruder[num].getProperty("retraction_hop_only_when_collides", "value")) + "\n"
-                setting_data += ";  Z-Hop Height: " + str(extruder[num].getProperty("retraction_hop", "value")) + "mm\n"
-                setting_data += ";  Z-Hop After Extruder Switch: " + str(extruder[num].getProperty("retraction_hop_after_extruder_switch", "value")) + "\n"
-                setting_data += ";  Z-Hop Height After Extruder Switch: " + str(extruder[num].getProperty("retraction_hop_after_extruder_switch_height", "value")) + "mm\n"
+                if bool(extruder[num].getProperty("retraction_hop_enabled", "value")):
+                    setting_data += ";  Z-Hop Only Over Printed Parts: " + str(extruder[num].getProperty("retraction_hop_only_when_collides", "value")) + "\n"
+                    setting_data += ";  Z-Hop Height: " + str(extruder[num].getProperty("retraction_hop", "value")) + "mm\n"
+                if machine_extruder_count > 1:
+                    setting_data += ";  Z-Hop After Extruder Switch: " + str(extruder[num].getProperty("retraction_hop_after_extruder_switch", "value")) + "\n"
+                    setting_data += ";  Z-Hop Height After Extruder Switch: " + str(extruder[num].getProperty("retraction_hop_after_extruder_switch_height", "value")) + "mm\n"
 
         #Cooling Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("cooling_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Cooling]\n"
             for num in range(0,machine_extruder_count):
-                setting_data += ";Extruder " + str(num+1) + "\n"
+                setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + "):\n"
                 setting_data += ";  Cooling Enabled: " + str(extruder[num].getProperty("cool_fan_enabled", "value")) + "\n"
                 if bool(extruder[num].getProperty("cool_fan_enabled", "value")):
                     setting_data += ";  Cooling Fan Number: " + str((extruder[num].getProperty("machine_extruder_cooling_fan_number", "value"))) + "\n"
@@ -517,12 +569,12 @@ class AddCuraSettings(Script):
             setting_data += ";Enable Support: " + str(mycura.getProperty("support_enable", "value")) + "\n"
             if bool(mycura.getProperty("support_enable", "value")):
                 if machine_extruder_count > 1:
-                    setting_data += ";Support Extruder: " + str(support_extruder_nr) + "\n"
-                    setting_data += ";Support Infill Extruder: " + str(support_infill_extruder_nr) + "\n"
-                    setting_data += ";Support Initial Layer Extruder: " + str(support_extruder_nr_layer_0) + "\n"
-                    setting_data += ";Support Interface Extruder: " + str(support_interface_extruder_nr) + "\n"
-                    setting_data += ";Support Interface Roof Extruder: " + str(support_roof_extruder_nr) + "\n"
-                    setting_data += ";Support Interface Bottom Extruder: " + str(support_bottom_extruder_nr) + "\n"
+                    setting_data += ";Support Extruder: " + str(support_extruder_nr + 1) + " (T" + str(support_extruder_nr) + ")\n"
+                    setting_data += ";Support Infill Extruder: " + str(support_infill_extruder_nr + 1) + " (T" + str(support_infill_extruder_nr) + ")\n"
+                    setting_data += ";Support Initial Layer Extruder: " + str(support_extruder_nr_layer_0 + 1) + " (T" + str(support_extruder_nr_layer_0) + ")\n"
+                    setting_data += ";Support Interface Extruder: " + str(support_interface_extruder_nr + 1) + " (T" + str(support_interface_extruder_nr) + ")\n"
+                    setting_data += ";Support Interface Roof Extruder: " + str(support_roof_extruder_nr + 1) + " (T" + str(support_roof_extruder_nr) + ")\n"
+                    setting_data += ";Support Interface Bottom Extruder: " + str(support_bottom_extruder_nr + 1) + " (T" + str(support_bottom_extruder_nr) + ")\n"
                 setting_data += ";Support Structure: " + str(extruder[support_extruder_nr].getProperty("support_structure", "value")) + "\n"
                 setting_data += ";Support Type: " + str(extruder[support_extruder_nr].getProperty("support_type", "value")) + "\n"
                 setting_data += ";Support Overhang Angle: " + str(extruder[support_extruder_nr].getProperty("support_angle", "value")) + "°\n"
@@ -537,7 +589,7 @@ class AddCuraSettings(Script):
                 setting_data += ";Support Top Distance: " + str(extruder[support_extruder_nr].getProperty("support_top_distance", "value")) + "mm\n"
                 setting_data += ";Support Bottom Distance: " + str(extruder[support_extruder_nr].getProperty("support_bottom_distance", "value")) + "mm\n"
                 setting_data += ";Support XY Distance: " + str(extruder[support_extruder_nr].getProperty("support_xy_distance", "value")) + "mm\n"
-                setting_data += ";Support XY Overrides Z: " + str(extruder[support_extruder_nr].getProperty("upport_xy_overrides_z", "value")) + "\n"
+                setting_data += ";Support XY Overrides Z: " + str(extruder[support_extruder_nr].getProperty("support_xy_overrides_z", "value")) + "\n"
                 setting_data += ";Support Horizontal Expansion: " + str(extruder[support_extruder_nr].getProperty("support_offset", "value")) + "mm\n"
                 setting_data += ";Support Infill Layer Thickness: " + str(extruder[support_infill_extruder_nr].getProperty("support_infill_sparse_thickness", "value")) + "mm\n"
                 setting_data += ";Support Minimum Support Area: " + str(extruder[support_extruder_nr].getProperty("minimum_support_area", "value")) + "mm²\n"
@@ -566,9 +618,9 @@ class AddCuraSettings(Script):
             setting_data += ";Adhesion Type: " + str(mycura.getProperty("adhesion_type", "value")) + "\n"
             if str(mycura.getProperty("adhesion_type", "value")) != "none":
                 if machine_extruder_count > 1:
-                    setting_data += ";Adhesion Extruder Number: " + str(adhesion_extruder_nr) + "\n"
+                    setting_data += ";Adhesion Extruder Number: " + str(adhesion_extruder_nr + 1) + " (T" + str(adhesion_extruder_nr) + ")\n"
                     try:
-                        setting_data += ";Adhesion Skirt/Brim Extruder: " + str(skirt_brim_extruder_nr) + "\n"
+                        setting_data += ";Adhesion Skirt/Brim Extruder: " + str(skirt_brim_extruder_nr + 1) + " (T" + str(skirt_brim_extruder_nr) + ")\n"
                     except:
                         pass
                 if str(mycura.getProperty("adhesion_type", "value")) == "skirt":
@@ -592,7 +644,7 @@ class AddCuraSettings(Script):
         #Dual Extrusion Settings-------------------------------------------------------
         if (bool(self.getSettingValueByKey("dualext_set")) or all_or_some == "all_settings") and machine_extruder_count > 1:
             setting_data += ";\n;  [Dual Extrusion]\n"
-            setting_data += ";Initial Extruder Nr: " + str(extruderMgr.getInitialExtruderNr()) + "\n"
+            setting_data += ";Initial Extruder Number: " + "(T)" + str(extruderMgr.getInitialExtruderNr()) + "\n"
             setting_data += ";Prime Tower Enable: " + str(mycura.getProperty("prime_tower_enable", "value")) + "\n"
             if bool(mycura.getProperty("prime_tower_enable", "value")):
                 setting_data += ";  Prime Tower Size: " + str(mycura.getProperty("prime_tower_size", "value")) + "\n"
@@ -657,7 +709,8 @@ class AddCuraSettings(Script):
             setting_data += ";Make Overhang Printable: " + str(mycura.getProperty("conical_overhang_enabled", "value")) + "\n"
             setting_data += ";Coasting Enable: " + str(mycura.getProperty("coasting_enable", "value")) + "\n"
             setting_data += ";Fuzzy Skin Enable: " + str(mycura.getProperty("magic_fuzzy_skin_enabled", "value")) + "\n"
-            setting_data += ";Flow Rate Compensation: " + str(mycura.getProperty("flow_rate_extrusion_offset_factor", "value")) + "%\n"
+            setting_data += ";Flow Rate Compensation Max Extrusion Offset: " + str(mycura.getProperty("flow_rate_max_extrusion_offset", "value")) + "mm\n"
+            setting_data += ";Flow Rate Compensation Factor: " + str(mycura.getProperty("flow_rate_extrusion_offset_factor", "value")) + "%\n"
             setting_data += ";Adaptive Layers: " + str(mycura.getProperty("adaptive_layer_height_enabled", "value")) + "\n"
             if bool(mycura.getProperty("adaptive_layer_height_enabled", "value")):
                 setting_data += ";  Adaptive Height Variation: " + str(mycura.getProperty("adaptive_layer_height_variation", "value")) + "\n"
@@ -686,7 +739,34 @@ class AddCuraSettings(Script):
                     setting_data += ";      Bridge Skin Density 3: " + str(mycura.getProperty("bridge_skin_density_3", "value")) + "%\n"
                     setting_data += ";      Bridge Fan Speed 3: " + str(mycura.getProperty("bridge_fan_speed_3", "value")) + "%\n"
             setting_data += ";Alternate Wall Directions: " + str(mycura.getProperty("material_alternate_walls", "value")) + "\n"
-
+            for num in range(0, machine_extruder_count):
+                if bool(extruder[num].getProperty("clean_between_layers", "value")):
+                    setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + ") Wipe Between Layers: " + str(extruder[num].getProperty("clean_between_layers", "value")) + "\n"
+                    setting_data += ";  Material Volume Between Wipes: " + str(extruder[num].getProperty("max_extrusion_before_wipe", "value")) + "mm³\n"
+                    setting_data += ";  Wipe Retraction Enable: " + str(mycura.getProperty("wipe_retraction_enable", "value")) + "\n"
+                    setting_data += ";  Wipe Retraction Distance: " + str(mycura.getProperty("wipe_retraction_amount", "value")) + "mm\n"
+                    setting_data += ";  Wipe Retraction Extra Prime Amount: " + str(mycura.getProperty("wipe_retraction_extra_prime_amount", "value")) + "mm³\n"
+                    setting_data += ";  Wipe Retraction Speed: " + str(mycura.getProperty("wipe_retraction_speed", "value")) + "mm/sec\n"
+                    setting_data += ";    Wipe Retraction Retract Speed: " + str(mycura.getProperty("wipe_retraction_retract_speed", "value")) + "mm/sec\n"
+                    setting_data += ";    Wipe Retraction Prime Speed: " + str(mycura.getProperty("wipe_retraction_prime_speed", "value")) + "mm/sec\n"
+                    setting_data += ";  Wipe Pause: " + str(mycura.getProperty("wipe_pause", "value")) + "\n"
+                    setting_data += ";  Wipe Z Hop: " + str(mycura.getProperty("wipe_hop_enable", "value")) + "\n"
+                    if bool(mycura.getProperty("wipe_hop_enable", "value")):
+                        setting_data += ";    Wipe Z Hop Height: " + str(mycura.getProperty("wipe_hop_amount", "value")) + "mm\n"
+                        setting_data += ";    Wipe Hop Speed: " + str(mycura.getProperty("wipe_hop_speed", "value")) + "mm/sec\n"
+                    setting_data += ";  Wipe Brush X Position: " + str(mycura.getProperty("wipe_brush_pos_x", "value")) + "\n"
+                    setting_data += ";  Wipe Repeat Count: " + str(mycura.getProperty("wipe_repeat_count", "value")) + "\n"
+                    setting_data += ";  Wipe Move Distance: " + str(mycura.getProperty("wipe_move_distance", "value")) + "mm\n"
+                else:
+                    setting_data += ";Extruder " + str(num + 1) + " (T" + str(num) + ") Wipe Between Layers: " + str(extruder[num].getProperty("clean_between_layers", "value")) + "\n"
+            try:
+                setting_data += ";Small Hole Max Size: " + str(extruder[0].getProperty("small_hole_max_size", "value")) + "\n"
+                setting_data += ";Small Feature Max Length: " + str(round(extruder[0].getProperty("small_feature_max_length", "value"), 2)) + "\n"
+                setting_data += ";Small Feature Speed: " + str(extruder[0].getProperty("small_feature_speed_factor", "value")) + "\n"
+                setting_data += ";Small Feature Speed Initial Layer: " + str(extruder[0].getProperty("small_feature_speed_factor_0", "value")) + "\n"
+                setting_data += ";Group Outer Walls: " + str(mycura.getProperty("group_outer_walls", "value")) + "\n"
+            except:
+                pass
         #PostProcessor Settings-------------------------------------------------------
         if bool(self.getSettingValueByKey("postprocess_set")) or all_or_some == "all_settings":
             setting_data += ";\n;  [Post-Processors]\n"
@@ -694,6 +774,7 @@ class AddCuraSettings(Script):
             for script_str in scripts_list.split("\n"):
                 script_str = script_str.replace(r"\\\n", "\n;  ").replace("\n;  \n;  ", "\n")
                 setting_data += ";" + str(script_str)
+
         #End of Settings-------------------------------------------------------------------------------
         setting_data += ";\n;  <<< End of Cura Settings >>>\n;\n"
         data[len(data)-1] += setting_data
