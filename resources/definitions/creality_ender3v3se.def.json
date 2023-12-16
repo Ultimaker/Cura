@@ -58,7 +58,7 @@
         "acceleration_travel_layer_0": { "value": 500 },
         "acceleration_travel": { "value": 2500 },
         "acceleration_prime_tower": { "value": "acceleration_wall" },
-        "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
+        
         "acceleration_support_interface": { "value": "acceleration_wall_0" },
         "acceleration_support": { "value": "acceleration_wall" },
         "acceleration_topbottom": { "value": "acceleration_wall_0" },
