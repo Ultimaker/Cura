@@ -146,15 +146,6 @@ SectionEnd
 
 Section UrlProtocol
 
-!macro APP_ASSOCIATE extension progid description commandname command
-  WriteRegStr HKCR "${extension}" "" "${description}"
-  WriteRegStr HKCR "${extension}" "URL Protocol" ""
-  WriteRegStr HKCR "${extension}\DefaultIcon" "" "${commandname},1"
-  WriteRegStr HKCR "${extension}\shell" "" "open"
-  WriteRegStr HKCR "${extension}\shell\open\command" "" '"${command}" "%1"'
-  !insertmacro APP_ASSOCIATE_SHORTCUT "${extension}" "${progid}" "${description}" "${command}"
-!macroend
-
 WriteRegStr HKCR "cura" "" "URL:cura"
 WriteRegStr HKCR "cura" "URL Protocol" ""
 WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
@@ -166,23 +157,6 @@ WriteRegStr HKCR "slicer" "URL Protocol" ""
 WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
 WriteRegStr HKCR "slicer\shell" "" "open"
 WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
-
-; Set the uninstall section flag for this section
-SetSectionFlags ${SECTION_UNINSTALL}
-
-; Define file associations for 'cura' protocol
-StrCpy $0 "cura"
-StrCpy $1 "URL:cura"
-StrCpy $2 "CURA Protocol"
-StrCpy $3 "$INSTDIR\${MAIN_APP_EXE},1"
-Call APP_ASSOCIATE
-
-; Define file associations for 'slicer' protocol
-StrCpy $0 "slicer"
-StrCpy $1 "URL:slicer"
-StrCpy $2 "SLICER Protocol"
-StrCpy $3 "$INSTDIR\${MAIN_APP_EXE},1"
-Call APP_ASSOCIATE
 
 SectionEnd
 ######################################################################
@@ -231,12 +205,10 @@ RmDir "$SMPROGRAMS\{{ app_name }}"
 !insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
 
 ; Unassociate file associations for 'cura' protocol
-StrCpy $0 "cura"
-Call APP_UNASSOCIATE
+DeleteRegKey HKCR "cura"
 
 ; Unassociate file associations for 'slicer' protocol
-StrCpy $0 "slicer"
-Call APP_UNASSOCIATE
+DeleteRegKey HKCR "slicer"
 
 DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
 DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
