@@ -6,6 +6,12 @@
     {
         "visible": true,
         "author": "mastercaution",
+        "platform": "elegoo_platform_max.3mf",
+        "platform_offset": [
+            -2.1,
+            -0.2,
+            0
+        ],
         "quality_definition": "elegoo_neptune_4"
     },
     "overrides":
