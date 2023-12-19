@@ -33,6 +33,8 @@ message Slice
     repeated Extruder extruders = 3; // The settings sent to each extruder object
     repeated SettingExtruder limit_to_extruder = 4; // From which stack the setting would inherit if not defined per object
     repeated EnginePlugin engine_plugins = 5;
+    string sentry_id = 6; // The anonymized Sentry user id that requested the slice
+    string cura_version = 7; // The version of Cura that requested the slice
 }
 
 message Extruder
