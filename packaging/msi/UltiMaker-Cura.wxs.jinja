@@ -160,24 +160,47 @@
         </DirectoryRef>
 
         <!--Url Scheme-->
-        <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+
+        <Component Id="CuraRegistration" Directory="APPLICATIONFOLDER" Guid="*">
+        <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}" />
+
+        <ProgId Id="Cura" Description="{{ app_name }}" Icon="ICO_Cura" Advertise="yes">
+            <ProgId Id="3mf" Advertise="yes">
+                <Extension Id="3mf" ContentType="application/3mf">
+                    <Verb Id="open_3mf" Command="Open" Argument='"%1"' />
+                    <MIME Advertise="yes" ContentType="application/3mf" Default="yes" />
+                </Extension>
+            </ProgId>
+            <ProgId Id="stl" Advertise="yes">
+                <Extension Id="stl" ContentType="application/stl">
+                    <Verb Id="open_stl" Command="Open" Argument='"%1"' />
+                    <MIME Advertise="yes" ContentType="application/stl" Default="yes" />
+                </Extension>
+            </ProgId>
+        </ProgId>
+
+            <fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_UltiMaker_Cura_exe" IgnoreFailure="yes">
+                <fw:RemoteAddress>127.0.0.1</fw:RemoteAddress>
+            </fw:FirewallException>
+        </Component>
+
+        <Component Id="CuraRegistration" Guid="*">
             <RegistryKey Root="HKCR" Key="cura">
                 <RegistryValue Type="string" Value="URL:Cura Protocol"/>
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-                <RegistryValue Type="string" Key="DefaultIcon" Value="$[APPLICATIONFOLDER]\{{ main_app }},1"/>
-                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;$[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
             </RegistryKey>
         </Component>
 
-        <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+        <Component Id="SlicerRegistration" Guid="*">
             <RegistryKey Root="HKCR" Key="slicer">
-                <RegistryValue Type="string" Value="URL:Slicer Protocol"/>
-                <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-                <RegistryValue Type="string" Key="DefaultIcon" Value="$[APPLICATIONFOLDER]\{{ main_app }},1"/>
-                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;$[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+                <RegistryValue Type="string" Value="URL:Slicer Protocol" />
+                <RegistryValue Type="string" Name="URL Protocol" Value="" />
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1" />
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
-
         <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER">
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
             <ComponentRef Id="CMP_CuraEngine_exe" />
