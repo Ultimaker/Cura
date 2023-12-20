@@ -127,6 +127,7 @@ Item
         function resumeSimulation()
         {
             UM.SimulationView.setSimulationRunning(true)
+            UM.SimulationView.setCurrentPath(UM.SimulationView.currentPath)
             simulationTimer.start()
             layerSlider.manuallyChanged = false
             pathSlider.manuallyChanged = false
@@ -136,7 +137,7 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: 1000 / 60
+        interval: 1000 / 30
         running: false
         repeat: true
         onTriggered:

@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+import math
 import sys
 
 from PyQt6.QtCore import Qt
@@ -58,6 +58,7 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
+    SIMULATION_FACTOR = 5
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
@@ -97,6 +98,7 @@ class SimulationView(CuraView):
         self._min_line_width = sys.float_info.max
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
+        self._cumulative_line_duration ={}
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -196,21 +198,21 @@ class SimulationView(CuraView):
         left_i = 0
         right_i = self._max_paths - 1
 
-        total_duration, cumulative_line_duration = self.cumulativeLineDuration()
+        total_duration = self.cumulativeLineDuration()
 
         # make an educated guess about where to start
         i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
 
         # binary search for the correct path
         while left_i < right_i:
-            if cumulative_line_duration[i] <= self._current_time:
+            if self._cumulative_line_duration[self.getCurrentLayer()][i] <= self._current_time:
                 left_i = i + 1
             else:
                 right_i = i
             i = int((left_i + right_i) / 2)
 
-        left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
-        right_value = cumulative_line_duration[i]
+        left_value = self._cumulative_line_duration[self.getCurrentLayer()][i - 1] if i > 0 else 0.0
+        right_value = self._cumulative_line_duration[self.getCurrentLayer()][i]
 
         assert (left_value <= self._current_time <= right_value)
 
@@ -225,10 +227,7 @@ class SimulationView(CuraView):
         :param time_increase: The amount of time to advance (in seconds).
         :return: True if the time was advanced, False if the end of the simulation was reached.
         """
-        total_duration, cumulative_line_duration = self.cumulativeLineDuration()
-
-        # time ratio
-        time_increase = time_increase
+        total_duration = self.cumulativeLineDuration()
 
         if self._current_time + time_increase > total_duration:
             # If we have reached the end of the simulation, go to the next layer.
@@ -244,15 +243,20 @@ class SimulationView(CuraView):
             self.setTime(self._current_time + time_increase)
         return True
 
-    def cumulativeLineDuration(self) -> Tuple[float, List[float]]:
-        # TODO: cache the total duration and cumulative line duration at each layer change event
-        cumulative_line_duration = []
-        total_duration = 0.0
-        for polyline in self.getLayerData().polygons:
-            for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
-                total_duration += line_duration
-                cumulative_line_duration.append(total_duration)
-        return total_duration, cumulative_line_duration
+    def cumulativeLineDuration(self) -> float:
+        # Make sure _cumulative_line_duration is initialized properly
+        if self.getCurrentLayer() not in self._cumulative_line_duration:
+            self._cumulative_line_duration[self.getCurrentLayer()] = []
+            total_duration = 0.0
+            for polyline in self.getLayerData().polygons:
+                for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
+                    total_duration += line_duration / SimulationView.SIMULATION_FACTOR
+                    self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+
+        # Calculate the total duration using numpy.sum
+        total_duration = (self._cumulative_line_duration[self.getCurrentLayer()][-1])
+
+        return total_duration
 
     def getLayerData(self) -> Optional["LayerData"]:
         scene = self.getController().getScene()
@@ -360,6 +364,9 @@ class SimulationView(CuraView):
         if self._current_path_num != value:
             self._current_path_num = min(max(value, 0), self._max_paths)
             self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
+            # update _current time when the path is changed by user
+            if self.getCurrentLayer() in self._cumulative_line_duration  and self._current_path_num < self._max_paths and round(self._current_path_num)== self._current_path_num:
+                self._current_time = self._cumulative_line_duration[self.getCurrentLayer()][int(self._current_path_num)]
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
