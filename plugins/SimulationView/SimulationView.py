@@ -243,7 +243,7 @@ class SimulationView(CuraView):
             self.setTime(self._current_time + time_increase)
         return True
 
-    def cumulativeLineDuration(self) -> list:
+    def cumulativeLineDuration(self) -> List[float]:
         # Make sure _cumulative_line_duration is initialized properly
         if self.getCurrentLayer() not in self._cumulative_line_duration:
             #clear cache
