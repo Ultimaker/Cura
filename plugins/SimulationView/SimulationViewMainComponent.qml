@@ -137,12 +137,12 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: 1000 / 30
+        interval: 1000 / 15
         running: false
         repeat: true
         onTriggered:
         {
-            // divide by 1000 to accont for ms to s conversion
+            // divide by 1000 to account for ms to s conversion
             const advance_time = simulationTimer.interval / 1000.0;
             if (!UM.SimulationView.advanceTime(advance_time)) {
                 playButton.pauseSimulation();

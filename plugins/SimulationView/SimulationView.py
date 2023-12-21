@@ -98,7 +98,7 @@ class SimulationView(CuraView):
         self._min_line_width = sys.float_info.max
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration ={}
+        self._cumulative_line_duration = {}
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -253,7 +253,7 @@ class SimulationView(CuraView):
                     total_duration += line_duration / SimulationView.SIMULATION_FACTOR
                     self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
 
-        # Calculate the total duration using numpy.sum
+        # total duration for a layer to simulate is the last element of the list
         total_duration = (self._cumulative_line_duration[self.getCurrentLayer()][-1])
 
         return total_duration
@@ -572,6 +572,7 @@ class SimulationView(CuraView):
         self._max_thickness = sys.float_info.min
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
+        self._cumulative_line_duration = {}
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
