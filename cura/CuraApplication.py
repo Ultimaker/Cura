@@ -1837,7 +1837,7 @@ class CuraApplication(QtApplication):
 
                     self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
 
-                def on_error():
+                def on_error(*args, **kwargs):
                     Logger.log("w", "Could not download file from {0}".format(model_url.url()))
                     return
 
