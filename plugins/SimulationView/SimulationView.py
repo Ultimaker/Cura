@@ -1,6 +1,5 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import math
 import sys
 
 from PyQt6.QtCore import Qt
@@ -40,7 +39,7 @@ from .SimulationViewProxy import SimulationViewProxy
 import numpy
 import os.path
 
-from typing import Optional, TYPE_CHECKING, List, Tuple, cast
+from typing import Optional, TYPE_CHECKING, List, cast
 
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
