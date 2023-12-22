@@ -57,7 +57,7 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
-    SIMULATION_FACTOR = 5
+    SIMULATION_FACTOR = 3
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
@@ -192,33 +192,30 @@ class SimulationView(CuraView):
         return self._current_path_num
 
     def setTime(self, time: float) -> None:
-        self._current_time = time
-
-        left_i = 0
-        right_i = self._max_paths - 1
-
         cumulative_line_duration = self.cumulativeLineDuration()
-        total_duration = cumulative_line_duration[-1]
+        if len(cumulative_line_duration) > 0:
+            self._current_time = time
+            left_i = 0
+            right_i = self._max_paths - 1
+            total_duration = cumulative_line_duration[-1]
+            # make an educated guess about where to start
+            i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
+            # binary search for the correct path
+            while left_i < right_i:
+                if cumulative_line_duration[i] <= self._current_time:
+                    left_i = i + 1
+                else:
+                    right_i = i
+                i = int((left_i + right_i) / 2)
 
-        # make an educated guess about where to start
-        i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
+            left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
+            right_value = cumulative_line_duration[i]
 
-        # binary search for the correct path
-        while left_i < right_i:
-            if cumulative_line_duration[i] <= self._current_time:
-                left_i = i + 1
-            else:
-                right_i = i
-            i = int((left_i + right_i) / 2)
+            assert (left_value <= self._current_time <= right_value)
 
-        left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
-        right_value = cumulative_line_duration[i]
+            fractional_value = (self._current_time - left_value) / (right_value - left_value)
 
-        assert (left_value <= self._current_time <= right_value)
-
-        fractional_value = (self._current_time - left_value) / (right_value - left_value)
-
-        self.setPath(i + fractional_value)
+            self.setPath(i + fractional_value)
 
     def advanceTime(self, time_increase: float) -> bool:
         """
@@ -227,7 +224,9 @@ class SimulationView(CuraView):
         :param time_increase: The amount of time to advance (in seconds).
         :return: True if the time was advanced, False if the end of the simulation was reached.
         """
-        total_duration = self.cumulativeLineDuration()[-1]
+        total_duration = 0.0
+        if len(self.cumulativeLineDuration()) > 0:
+            total_duration = self.cumulativeLineDuration()[-1]
 
         if self._current_time + time_increase > total_duration:
             # If we have reached the end of the simulation, go to the next layer.
@@ -250,10 +249,12 @@ class SimulationView(CuraView):
             self._cumulative_line_duration = {}
             self._cumulative_line_duration[self.getCurrentLayer()] = []
             total_duration = 0.0
-            for polyline in self.getLayerData().polygons:
-                for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
-                    total_duration += line_duration / SimulationView.SIMULATION_FACTOR
-                    self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+            polylines = self.getLayerData()
+            if polylines is not None:
+                for polyline in polylines.polygons:
+                    for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
+                        total_duration += line_duration / SimulationView.SIMULATION_FACTOR
+                        self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
 
         return self._cumulative_line_duration[self.getCurrentLayer()]
 
