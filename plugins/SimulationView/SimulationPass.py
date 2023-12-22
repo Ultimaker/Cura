@@ -35,7 +35,7 @@ class SimulationPass(RenderPass):
         self._nozzle_shader = None
         self._disabled_shader = None
         self._old_current_layer = 0
-        self._old_current_path = 0
+        self._old_current_path: float = 0.0
         self._switching_layers = True  # Tracking whether the user is moving across layers (True) or across paths (False). If false, lower layers render as shadowy.
         self._gl = OpenGL.getInstance().getBindingsObject()
         self._scene = Application.getInstance().getController().getScene()
@@ -139,7 +139,7 @@ class SimulationPass(RenderPass):
                     continue
 
                 # Render all layers below a certain number as line mesh instead of vertices.
-                if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
+                if self._layer_view.getCurrentLayer() > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
                     element_counts = layer_data.getElementCounts()
@@ -147,7 +147,7 @@ class SimulationPass(RenderPass):
                         # In the current layer, we show just the indicated paths
                         if layer == self._layer_view._current_layer_num:
                             # We look for the position of the head, searching the point of the current path
-                            index = self._layer_view._current_path_num
+                            index = int(self._layer_view.getCurrentPath())
                             offset = 0
                             for polygon in layer_data.getLayer(layer).polygons:
                                 # The size indicates all values in the two-dimension array, and the second dimension is
@@ -157,23 +157,33 @@ class SimulationPass(RenderPass):
                                     offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
                                     continue
                                 # The head position is calculated and translated
-                                head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
+                                ratio = self._layer_view.getCurrentPath() - index
+                                pos_a = Vector(polygon.data[index + offset][0], polygon.data[index + offset][1],
+                                               polygon.data[index + offset][2])
+                                if ratio > 0.0001:
+                                    pos_b = Vector(polygon.data[index + offset + 1][0],
+                                                   polygon.data[index + offset + 1][1],
+                                                   polygon.data[index + offset + 1][2])
+                                    vec = pos_a * (1.0 - ratio) + pos_b * ratio
+                                    head_position = vec + node.getWorldPosition()
+                                else:
+                                    head_position = pos_a + node.getWorldPosition()
                                 break
                             break
-                        if self._layer_view._minimum_layer_num > layer:
+                        if self._layer_view.getMinimumLayer() > layer:
                             start += element_counts[layer]
                         end += element_counts[layer]
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end
-                    current_layer_end = end + self._layer_view._current_path_num * 2 # Because each point is used twice
+                    current_layer_end = end + int( self._layer_view.getCurrentPath()) * 2  # Because each point is used twice
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first
-                    if self._old_current_path != self._layer_view._current_path_num:
+                    if self._old_current_path != self._layer_view.getCurrentPath():
                         self._current_shader = self._layer_shadow_shader
                         self._switching_layers = False
-                    if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
+                    if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view.getCurrentLayer():
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
 
@@ -193,8 +203,8 @@ class SimulationPass(RenderPass):
                     current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
                     current_layer_batch.render(self._scene.getActiveCamera())
 
-                    self._old_current_layer = self._layer_view._current_layer_num
-                    self._old_current_path = self._layer_view._current_path_num
+                    self._old_current_layer = self._layer_view.getCurrentLayer()
+                    self._old_current_path = self._layer_view.getCurrentPath()
 
                 # Create a new batch that is not range-limited
                 batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
@@ -230,4 +240,4 @@ class SimulationPass(RenderPass):
         if changed_object.callDecoration("getLayerData"):  # Any layer data has changed.
             self._switching_layers = True
             self._old_current_layer = 0
-            self._old_current_path = 0
+            self._old_current_path = 0.0
