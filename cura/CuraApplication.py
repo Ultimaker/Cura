@@ -1837,8 +1837,11 @@ class CuraApplication(QtApplication):
 
                     self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
 
-                def on_error():
+                def on_error(*args, **kwargs):
                     Logger.log("w", "Could not download file from {0}".format(model_url.url()))
+                    Message("Could not download file: " + str(model_url.url()),
+                            title= "Loading Model failed",
+                            message_type=Message.MessageType.ERROR).show()
                     return
 
                 self.getHttpRequestManager().get(
