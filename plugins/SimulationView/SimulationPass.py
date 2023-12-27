@@ -160,7 +160,7 @@ class SimulationPass(RenderPass):
                                 ratio = self._layer_view.getCurrentPath() - index
                                 pos_a = Vector(polygon.data[index + offset][0], polygon.data[index + offset][1],
                                                polygon.data[index + offset][2])
-                                if ratio <= 0.0001 or index + offset == len(polygon.data):
+                                if ratio <= 0.0001 or index + offset < len(polygon.data):
                                     head_position = pos_a + node.getWorldPosition()
                                 else:
                                     pos_b = Vector(polygon.data[index + offset + 1][0],
