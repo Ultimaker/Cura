@@ -45,7 +45,7 @@ env:
   STAGING: ${{ inputs.staging || false }}
 
 jobs:
-  windows-installer:
+  installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}

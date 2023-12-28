@@ -11,11 +11,6 @@ if TYPE_CHECKING:
 
 
 class SimulationViewProxy(QObject):
-
-    S_TO_MS = 1000
-    SPEED_OF_SIMULATION = 10
-    FACTOR = S_TO_MS/SPEED_OF_SIMULATION
-
     def __init__(self, simulation_view: "SimulationView", parent=None) -> None:
         super().__init__(parent)
         self._simulation_view = simulation_view
@@ -55,17 +50,13 @@ class SimulationViewProxy(QObject):
     def numPaths(self):
         return self._simulation_view.getMaxPaths()
 
-    @pyqtProperty(int, notify=currentPathChanged)
+    @pyqtProperty(float, notify=currentPathChanged)
     def currentPath(self):
         return self._simulation_view.getCurrentPath()
 
-    @pyqtProperty(int, notify=currentPathChanged)
-    def simulationTime(self):
-        # Extracts the currents paths simulation time (in seconds) for the current path from the dict of simulation time of the current layer.
-        # We multiply the time with 100 to make it to ms from s.(Should be 1000 in real time). This scaling makes the simulation time 10x faster than the real time.
-        simulationTimeOfpath = self._simulation_view.getSimulationTime(self._simulation_view.getCurrentPath()) * SimulationViewProxy.FACTOR
-        # Since the timer cannot process time less than 1 ms, we put a lower limit here
-        return int(max(1, simulationTimeOfpath))
+    @pyqtSlot(float, result=bool)
+    def advanceTime(self, duration: float) -> bool:
+        return self._simulation_view.advanceTime(duration)
 
     @pyqtProperty(int, notify=currentPathChanged)
     def minimumPath(self):
@@ -91,8 +82,8 @@ class SimulationViewProxy(QObject):
     def setMinimumLayer(self, layer_num):
         self._simulation_view.setMinimumLayer(layer_num)
 
-    @pyqtSlot(int)
-    def setCurrentPath(self, path_num):
+    @pyqtSlot(float)
+    def setCurrentPath(self, path_num: float):
         self._simulation_view.setPath(path_num)
 
     @pyqtSlot(int)
@@ -228,4 +219,3 @@ class SimulationViewProxy(QObject):
             self._simulation_view.activityChanged.disconnect(self._onActivityChanged)
             self._simulation_view.globalStackChanged.disconnect(self._onGlobalStackChanged)
             self._simulation_view.preferencesChanged.disconnect(self._onPreferencesChanged)
-
