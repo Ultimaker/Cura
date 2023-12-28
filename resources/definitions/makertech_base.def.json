@@ -100,7 +100,7 @@
         "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         
-        "support_brim_enable": { "value": true },
+        
         "support_brim_width": { "value": 3 },
 
         "support_interface_enable": { "value": true },
