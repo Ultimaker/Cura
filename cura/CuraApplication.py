@@ -2,15 +2,18 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import enum
 import os
+import re
 import sys
 import tempfile
 import time
 import platform
 from pathlib import Path
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
+import requests
 
 import numpy
-from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication
+from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication, \
+    QByteArray
 from PyQt6.QtGui import QColor, QIcon
 from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
@@ -179,6 +182,7 @@ class CuraApplication(QtApplication):
         self._use_single_instance = False
 
         self._single_instance = None
+        self._open_project_mode: Optional[str] = None
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
@@ -249,7 +253,7 @@ class CuraApplication(QtApplication):
         self._additional_components = {}  # Components to add to certain areas in the interface
 
         self._open_file_queue = []  # A list of files to open (after the application has started)
-
+        self._open_url_queue = []  # A list of urls to open (after the application has started)
         self._update_platform_activity_timer = None
 
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
@@ -272,6 +276,8 @@ class CuraApplication(QtApplication):
 
         self._conan_installs = ApplicationMetadata.CONAN_INSTALLS
         self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
+
+        self._supported_url_schemes: List[str] = ["cura", "slicer"]
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
@@ -325,7 +331,11 @@ class CuraApplication(QtApplication):
             assert not "This crash is triggered by the trigger_early_crash command line argument."
 
         for filename in self._cli_args.file:
-            self._files_to_open.append(os.path.abspath(filename))
+            url = QUrl(filename)
+            if url.scheme() in self._supported_url_schemes:
+                self._open_url_queue.append(url)
+            else:
+                self._files_to_open.append(os.path.abspath(filename))
 
     def initialize(self) -> None:
         self.__addExpectedResourceDirsAndSearchPaths()  # Must be added before init of super
@@ -946,6 +956,8 @@ class CuraApplication(QtApplication):
             self.callLater(self._openFile, file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self.callLater(self._openFile, file_name)
+        for url in self._open_url_queue:
+            self.callLater(self._openUrl, url)
 
     initializationFinished = pyqtSignal()
     showAddPrintersUncancellableDialog = pyqtSignal()  # Used to show the add printers dialog with a greyed background
@@ -1155,9 +1167,15 @@ class CuraApplication(QtApplication):
 
         if event.type() == QEvent.Type.FileOpen:
             if self._plugins_loaded:
-                self._openFile(event.file())
+                if event.file():
+                    self._openFile(event.file())
+                if event.url():
+                    self._openUrl(event.url())
             else:
-                self._open_file_queue.append(event.file())
+                if event.file():
+                    self._open_file_queue.append(event.file())
+                if event.url():
+                    self._open_url_queue.append(event.url())
 
         if int(event.type()) == 20:  # 'QEvent.Type.Quit' enum isn't there, even though it should be according to docs.
             # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
@@ -1541,7 +1559,7 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        objects_in_filename = {}  # type: Dict[str, List[CuraSceneNode]]
+        objects_in_filename: Dict[str, List[CuraSceneNode]] = {}
         for node in nodes:
             mesh_data = node.getMeshData()
             if mesh_data:
@@ -1782,6 +1800,58 @@ class CuraApplication(QtApplication):
     def _openFile(self, filename):
         self.readLocalFile(QUrl.fromLocalFile(filename))
 
+    def _openUrl(self, url: QUrl) -> None:
+        if url.scheme() not in self._supported_url_schemes:
+            # only handle cura:// and slicer:// urls schemes
+            return
+
+        match url.host() + url.path():
+            case "open" | "open/":
+                query = QUrlQuery(url.query())
+                model_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
+
+                def on_finish(response):
+                    content_disposition_header_key = QByteArray("content-disposition".encode())
+
+                    if not response.hasRawHeader(content_disposition_header_key):
+                        Logger.log("w", "Could not find Content-Disposition header in response from {0}".format(
+                            model_url.url()))
+                        # Use the last part of the url as the filename, and assume it is an STL file
+                        filename = model_url.path().split("/")[-1] + ".stl"
+                    else:
+                        # content_disposition is in the format
+                        # ```
+                        # content_disposition attachment; "filename=[FILENAME]"
+                        # ```
+                        # Use a regex to extract the filename
+                        content_disposition = str(response.rawHeader(content_disposition_header_key).data(),
+                                                  encoding='utf-8')
+                        content_disposition_match = re.match(r'attachment; filename="(?P<filename>.*)"',
+                                                             content_disposition)
+                        assert content_disposition_match is not None
+                        filename = content_disposition_match.group("filename")
+
+                    tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
+                    with open(tmp.name, "wb") as f:
+                        f.write(response.readAll())
+
+                    self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+
+                def on_error(*args, **kwargs):
+                    Logger.log("w", "Could not download file from {0}".format(model_url.url()))
+                    Message("Could not download file: " + str(model_url.url()),
+                            title= "Loading Model failed",
+                            message_type=Message.MessageType.ERROR).show()
+                    return
+
+                self.getHttpRequestManager().get(
+                    model_url.url(),
+                    callback=on_finish,
+                    error_callback=on_error,
+                )
+            case path:
+                Logger.log("w", "Unsupported url scheme path: {0}".format(path))
+
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
         pass
@@ -1845,7 +1915,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Attempting to read file %s", file.toString())
         if not file.isValid():
             return
-
+        self._open_project_mode = project_mode
         scene = self.getController().getScene()
 
         for node in DepthFirstIterator(scene.getRoot()):
@@ -1855,16 +1925,16 @@ class CuraApplication(QtApplication):
 
         is_project_file = self.checkIsValidProjectFile(file)
 
-        if project_mode is None:
-            project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
+        if self._open_project_mode is None:
+            self._open_project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
 
-        if is_project_file and project_mode == "open_as_project":
+        if is_project_file and self._open_project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
             workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
-        if is_project_file and project_mode == "always_ask":
+        if is_project_file and self._open_project_mode == "always_ask":
             # present a dialog asking to open as project or import models
             self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
@@ -1999,8 +2069,11 @@ class CuraApplication(QtApplication):
                         center_y = 0
 
                     node.translate(Vector(0, center_y, 0))
-
                     nodes_to_arrange.append(node)
+            # If the file is a project,and models are to be loaded from a that project,
+            # models inside file should be arranged in buildplate.
+            elif self._open_project_mode == "open_as_model":
+                nodes_to_arrange.append(node)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if
