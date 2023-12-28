@@ -82,13 +82,22 @@ class CloudApiClient:
         # HACK: There is something weird going on with the API, as it reports printer types in formats like
         # "ultimaker_s3", but wants "Ultimaker S3" when using the machine_variant filter query. So we need to do some
         # conversion!
+        # API points to "MakerBot Method" for a makerbot printertypes which we already changed to allign with other printer_type
 
-        machine_type = machine_type.replace("_plus", "+")
-        machine_type = machine_type.replace("_", " ")
-        machine_type = machine_type.replace("ultimaker", "ultimaker ")
-        machine_type = machine_type.replace("  ", " ")
-        machine_type = machine_type.title()
-        machine_type = urllib.parse.quote_plus(machine_type)
+        method_x = {
+            "ultimaker_method":"MakerBot Method",
+            "ultimaker_methodx":"MakerBot Method X",
+            "ultimaker_methodxl":"MakerBot Method XL"
+        }
+        if machine_type in method_x:
+            machine_type = method_x[machine_type]
+        else:
+            machine_type = machine_type.replace("_plus", "+")
+            machine_type = machine_type.replace("_", " ")
+            machine_type = machine_type.replace("ultimaker", "ultimaker ")
+            machine_type = machine_type.replace("  ", " ")
+            machine_type = machine_type.title()
+            machine_type = urllib.parse.quote_plus(machine_type)
         url = f"{self.CLUSTER_API_ROOT}/clusters?machine_variant={machine_type}"
         self._http.get(url,
                        scope=self._scope,

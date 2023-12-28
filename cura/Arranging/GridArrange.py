@@ -118,8 +118,9 @@ class GridArrange(Arranger):
 
     def _findOptimalGridOffset(self):
         if len(self._fixed_nodes) == 0:
-            self._offset_x = 0
-            self._offset_y = 0
+            edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+            self._offset_x = edge_disallowed_size
+            self._offset_y = edge_disallowed_size
             return
 
         if len(self._fixed_nodes) == 1:
@@ -240,14 +241,8 @@ class GridArrange(Arranger):
         center_grid_x = coord_grid_x + (0.5 * self._grid_width)
         center_grid_y = coord_grid_y + (0.5 * self._grid_height)
 
-        bounding_box = node.getBoundingBox()
-        center_node_x = (bounding_box.left + bounding_box.right) * 0.5
-        center_node_y = (bounding_box.back + bounding_box.front) * 0.5
-
-        delta_x = center_grid_x - center_node_x
-        delta_y = center_grid_y - center_node_y
-
-        return TranslateOperation(node, Vector(delta_x, 0, delta_y))
+        return TranslateOperation(node, Vector(center_grid_x, node.getWorldPosition().y, center_grid_y),
+                                  set_position=True)
 
     def _getGridCornerPoints(
             self,

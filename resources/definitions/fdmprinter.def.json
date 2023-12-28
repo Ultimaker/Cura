@@ -886,7 +886,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable') or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -1396,7 +1396,6 @@
                 {
                     "label": "Z Seam Relative",
                     "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
-                    "unit": "mm",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "z_seam_type == 'back'",
@@ -2603,7 +2602,7 @@
                     "maximum_value_warning": "120",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
+                    "resolve": "max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))",
                     "children":
                     {
                         "material_shrinkage_percentage_xy":
@@ -2619,7 +2618,7 @@
                             "maximum_value_warning": "120",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
-                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
+                            "resolve": "max(extruderValues(\"material_shrinkage_percentage\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_xy\")) / len(extruderValues(\"material_shrinkage_percentage_xy\"))",
                             "value": "material_shrinkage_percentage"
                         },
                         "material_shrinkage_percentage_z":
@@ -2635,7 +2634,7 @@
                             "maximum_value_warning": "120",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
-                            "resolve": "sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
+                            "resolve": "max(extruderValues(\"material_shrinkage_percentage_z\")) if any(extruderValues('material_is_support_material')) else sum(extruderValues(\"material_shrinkage_percentage_z\")) / len(extruderValues(\"material_shrinkage_percentage_z\"))",
                             "value": "material_shrinkage_percentage"
                         }
                     }
@@ -3198,7 +3197,7 @@
                                 "speed_wall_0_roofing":
                                 {
                                     "label": "Top Surface Outer Wall Speed",
-                                    "description": "The speed at which the top surface outermost walls are printed.",
+                                    "description": "The speed at which the top surface outermost wall is printed.",
                                     "unit": "mm/s",
                                     "type": "float",
                                     "minimum_value": "0.1",
@@ -5130,7 +5129,7 @@
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
-                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height.",
+                    "description": "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -5158,7 +5157,7 @@
                         "support_bottom_distance":
                         {
                             "label": "Support Bottom Distance",
-                            "description": "Distance from the print to the bottom of the support.",
+                            "description": "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height.",
                             "unit": "mm",
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
@@ -5895,7 +5894,7 @@
                     "type": "optional_extruder",
                     "default_value": "-1",
                     "value": "int(defaultExtruderPosition()) if resolveOrValue('adhesion_type') == 'raft' else -1",
-                    "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
+                    "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none')",
                     "resolve": "max(extruderValues('adhesion_extruder_nr'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -5908,7 +5907,7 @@
                             "type": "optional_extruder",
                             "default_value": "-1",
                             "value": "adhesion_extruder_nr",
-                            "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') in ['skirt', 'brim'] or resolveOrValue('prime_tower_brim_enable'))",
+                            "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') in ['skirt', 'brim'])",
                             "resolve": "max(extruderValues('skirt_brim_extruder_nr'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
@@ -6005,7 +6004,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
-                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6019,7 +6018,7 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
-                    "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -6034,7 +6033,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
                             "value": "math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
-                            "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
+                            "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                             "limit_to_extruder": "skirt_brim_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
@@ -6146,7 +6145,7 @@
                 "layer_0_z_overlap":
                 {
                     "label": "Initial Layer Z Overlap",
-                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.",
+                    "description": "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.22,
@@ -6641,9 +6640,9 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_width - max(extruderValue(skirt_brim_extruder_nr, 'brim_width') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_x'))) - 1",
-                    "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
-                    "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
+                    "value": "(resolveOrValue('machine_width') / 2 + resolveOrValue('prime_tower_size') / 2) if resolveOrValue('machine_shape') == 'elliptic' else (resolveOrValue('machine_width') - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_x')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_x'))), 1)) - (resolveOrValue('machine_width') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
+                    "maximum_value": "(machine_width / 2 if machine_center_is_zero else machine_width) - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0)",
+                    "minimum_value": "resolveOrValue('prime_tower_size') + (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - (machine_width / 2 if machine_center_is_zero else 0)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -6655,9 +6654,9 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(skirt_brim_extruder_nr, 'brim_width') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 3",
-                    "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
-                    "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
+                    "value": "machine_depth - prime_tower_size - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_y')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (resolveOrValue('machine_depth') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
+                    "maximum_value": "(machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')) - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0)",
+                    "minimum_value": "(machine_depth / -2 if machine_center_is_zero else 0) + (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -6673,14 +6672,70 @@
                 },
                 "prime_tower_brim_enable":
                 {
-                    "label": "Prime Tower Brim",
-                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type.",
+                    "value": "resolveOrValue('adhesion_type') in ['raft', 'brim']",
+                    "label": "Prime Tower Base",
+                    "description": "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height.",
                     "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') != 'raft')",
-                    "resolve": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') in ('none', 'skirt', 'brim'))",
+                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') != 'raft'",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "prime_tower_base_size":
+                {
+                    "value": "resolveOrValue('raft_margin') if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('brim_width')",
+                    "label": "Prime Tower Base Size",
+                    "description": "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "default_value": "resolveOrValue('brim_width')",
+                    "minimum_value": "0",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "prime_tower_base_height":
+                {
+                    "value": "resolveOrValue('layer_height')",
+                    "label": "Prime Tower Base Height",
+                    "description": "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_height",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "prime_tower_base_curve_magnitude":
+                {
+                    "label": "Prime Tower Base Slope",
+                    "description": "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                    "type": "float",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "default_value": 4,
+                    "minimum_value": "0",
+                    "maximum_value": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "prime_tower_raft_base_line_spacing":
+                {
+                    "label": "Prime Tower Raft Line Spacing",
+                    "description": "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.6,
+                    "value": "raft_base_line_spacing",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "raft_base_line_width",
+                    "maximum_value_warning": "100",
+                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_base_extruder_nr"
                 },
                 "ooze_shield_enabled":
                 {
@@ -7783,7 +7838,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7810,7 +7865,7 @@
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
+                    "maximum_value_warning": "250",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -8247,6 +8302,88 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
+                }
+            }
+        },
+        "ppr":
+        {
+            "label": "Print Process Reporting",
+            "type": "category",
+            "icon": "DocumentFilled",
+            "description": "Reporting events that go out of set thresholds",
+            "enabled": false,
+            "children":
+            {
+                "ppr_enable":
+                {
+                    "label": "Enable Print Process Reporting",
+                    "description": "Enable print process reporting for setting threshold values for possible fault detection.",
+                    "type": "bool",
+                    "enabled": false,
+                    "default_value": false,
+                    "value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "flow_warn_limit":
+                {
+                    "label": "Flow Warning",
+                    "description": "Limit on the flow warning for detection.",
+                    "default_value": "15.0",
+                    "enabled": "ppr_enable",
+                    "unit": "%",
+                    "type": "float",
+                    "settable_per_extruder": true
+                },
+                "flow_anomaly_limit":
+                {
+                    "label": "Flow Limit",
+                    "description": "Limit on flow anomaly for detection.",
+                    "default_value": "25.0",
+                    "enabled": "ppr_enable",
+                    "unit": "%",
+                    "type": "float",
+                    "settable_per_extruder": true
+                },
+                "print_temp_warn_limit":
+                {
+                    "label": "Print temperature Warning",
+                    "description": "Limit on Print temperature warning for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "3.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": true
+                },
+                "print_temp_anomaly_limit":
+                {
+                    "label": "Print temperature Limit",
+                    "description": "Limit on Print Temperature anomaly for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "7.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": true
+                },
+                "bv_temp_warn_limit":
+                {
+                    "label": "Build Volume temperature Warning",
+                    "description": "Limit on Build Volume Temperature warning for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "7.5",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": false
+                },
+                "bv_temp_anomaly_limit":
+                {
+                    "label": "Build Volume temperature Limit",
+                    "description": "Limit on Build Volume temperature Anomaly for detection.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": "10.0",
+                    "enabled": "ppr_enable",
+                    "settable_per_extruder": false
                 }
             }
         },
