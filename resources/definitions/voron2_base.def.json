@@ -76,7 +76,7 @@
         "machine_max_jerk_xy": { "default_value": 20 },
         "machine_max_jerk_z": { "default_value": 1 },
         "machine_name": { "default_value": "VORON2" },
-        "machine_start_gcode": { "default_value": "print_start EXTRUDER={material_print_temperature_layer_0} BED={material_bed_temperature_layer_0} CHAMBER={build_volume_temperature}" },
+        "machine_start_gcode": { "default_value": ";Nozzle diameter = {machine_nozzle_size}\n;Filament type = {material_type}\n;Filament name = {material_name}\n;Filament weight = {filament_weight}\n; M190 S{material_bed_temperature_layer_0}\n; M109 S{material_print_temperature_layer_0}\nprint_start EXTRUDER={material_print_temperature_layer_0} BED={material_bed_temperature_layer_0} CHAMBER={build_volume_temperature}" },
         "machine_steps_per_mm_x": { "default_value": 80 },
         "machine_steps_per_mm_y": { "default_value": 80 },
         "machine_steps_per_mm_z": { "default_value": 400 },
