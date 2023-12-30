@@ -1,24 +1,36 @@
 [5.6]
 
 * New features and improvements:
-- Introduced the MethodX and MethodXL printers with it's materials and the option to write to .makerbot
-- Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower sturdiness
-- Introduced the setting for Raft Line Spacing, but for the primetower
-- The Start and End gcodes now accept variables and math including the variables
+- Introduced the MethodX and MethodXL printers with their materials and the option to write to .makerbot
+- Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower's sturdiness
+- Introduced the setting for Raft Line Spacing, but for the prime tower
+- The Start and End gcodes now accept variables, and math including those variables
 - Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
 
 * Bug fixes:
 - Fixed a crash for some linux users when trying to open the file menu
 
+* Bugs resolved since the Beta Release
+- Introduced Balanced and Solid profiles for 1C cores to UltiMaker Method X and Method XL
+- Improved self-support for UltiMaker MethodX and MethodXL printers so the support extruder will not be used
+- The prime tower is now always enabled when the second extruder is used for the MethodX and MethodXL printers
+- Updated the default prime tower position so it doesn't prevent slicing for some printers
+- Fixed an issue where raft layers were partially printed
+- Slice information template variables were not available through start-end code formulas
+- Resolved an issue with 100% support roof for tree support, contributed by @ThomasRahm 
+
 * Printer definitions, profiles and materials:
+- Updated bridge flows for UltiMaker PLA, TPLA and ABS to address pillowing in AA 0.8 for UltiMaker printers
 - Introduced Ender 3 V3 SE, contributed by @dim1triy
 
 * Community translations:
 - Updated Spanish translation for Lightning infill, contributed by @Pelochus
+- Updated German translation for Laying object flat on buildplate, contributed by @gluetolf
+- Updated Brazilian translations, contributed by @Patola
 
-* Known Issue
-- The predicted printing time for dual extrusion printjobs on the Method are deviating from the actual printing time. Printjobs will take longer than predicted for now. 
-
+* Known Issues
+- The predicted printing time for dual extrusion printjobs on the Method X and Method XL are deviating from the actual printing time
+- It’s not possible yet, to use Method series printers with Digital Factory. We hope to resolve this for the next release.
 
 [5.5]
 
