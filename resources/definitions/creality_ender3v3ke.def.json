@@ -64,7 +64,6 @@
         "support_roof_line_width": { "value": "0.2 + machine_nozzle_size" },
         "support_bottom_line_width": { "value": "0.2 + machine_nozzle_size" },
         "prime_tower_line_width": { "value": "0.2 + machine_nozzle_size" },
-        "initial_layer_line_width_factor": { "default_value": 95.24 },
         "retraction_min_travel": { "value": 2.0 },
         "retraction_extrusion_window": { "value": "retraction_amount" },
         "retraction_combing": { "value": "no_outer_surfaces" },
