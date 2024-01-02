@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import math
 
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
@@ -148,24 +149,23 @@ class SimulationPass(RenderPass):
                         if layer == self._layer_view._current_layer_num:
                             # We look for the position of the head, searching the point of the current path
                             index = int(self._layer_view.getCurrentPath())
-                            offset = 0
                             for polygon in layer_data.getLayer(layer).polygons:
                                 # The size indicates all values in the two-dimension array, and the second dimension is
                                 # always size 3 because we have 3D points.
-                                if index >= polygon.data.size // 3 - offset:
-                                    index -= polygon.data.size // 3 - offset
-                                    offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
+                                if index >= polygon.data.size // 3 :
+                                    index -= polygon.data.size // 3
                                     continue
                                 # The head position is calculated and translated
-                                ratio = self._layer_view.getCurrentPath() - index
-                                pos_a = Vector(polygon.data[index + offset][0], polygon.data[index + offset][1],
-                                               polygon.data[index + offset][2])
-                                if ratio <= 0.0001 or index + offset < len(polygon.data):
+                                ratio = self._layer_view.getCurrentPath() - math.floor(self._layer_view.getCurrentPath())
+                                pos_a = Vector(polygon.data[index][0], polygon.data[index + offset][1],
+                                               polygon.data[index][2])
+                                if ratio <= 0.0001 or index + 1 == len(polygon.data):
+                                    # in case there multiple polygons and polygon changes, the first point has the same value as the last point in the previous polygon
                                     head_position = pos_a + node.getWorldPosition()
                                 else:
-                                    pos_b = Vector(polygon.data[index + offset + 1][0],
-                                                   polygon.data[index + offset + 1][1],
-                                                   polygon.data[index + offset + 1][2])
+                                    pos_b = Vector(polygon.data[index + 1][0],
+                                                   polygon.data[index + 1][1],
+                                                   polygon.data[index + 1][2])
                                     vec = pos_a * (1.0 - ratio) + pos_b * ratio
                                     head_position = vec + node.getWorldPosition()
                                 break
