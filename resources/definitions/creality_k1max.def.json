@@ -46,7 +46,6 @@
         "retraction_min_travel":            { "default_value": 2 },
         "retraction_hop":                   { "default_value": 0.1 },
         "retraction_combing_max_distance":  { "default_value": 15 },
-        "material_diameter":                { "value": 1.75 },
         "machine_max_acceleration_e":       { "value": 5000 },
         "machine_max_acceleration_x":       { "value": 20000.0 },
         "machine_max_acceleration_y":       { "value": 20000.0 },
