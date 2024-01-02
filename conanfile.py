@@ -14,7 +14,7 @@ required_conan_version = ">=1.58.0 <2.0.0"
 
 
 class CuraConan(ConanFile):
-    name = "cura"
+    name = "Go3d"
     license = "LGPL-3.0"
     author = "UltiMaker"
     url = "https://github.com/Ultimaker/cura"
@@ -50,7 +50,7 @@ class CuraConan(ConanFile):
 
     def set_version(self):
         if not self.version:
-            self.version = "5.6.0"
+            self.version = "1.0.0"
 
     @property
     def _i18n_options(self):
