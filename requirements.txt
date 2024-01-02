@@ -406,3 +406,6 @@ pywin32-ctypes==0.2.0; \
 
 charset-normalizer==2.1.0; \
     --hash=sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5
+
+polib==1.1.1; \
+    --hash=sha256:d3ee85e0c6788f789353416b1612c6c92d75fe6ccfac0029711974d6abd0f86d
