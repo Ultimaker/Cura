@@ -157,7 +157,7 @@ class SimulationPass(RenderPass):
                                     continue
                                 # The head position is calculated and translated
                                 ratio = self._layer_view.getCurrentPath() - math.floor(self._layer_view.getCurrentPath())
-                                pos_a = Vector(polygon.data[index][0], polygon.data[index + offset][1],
+                                pos_a = Vector(polygon.data[index][0], polygon.data[index][1],
                                                polygon.data[index][2])
                                 if ratio <= 0.0001 or index + 1 == len(polygon.data):
                                     # in case there multiple polygons and polygon changes, the first point has the same value as the last point in the previous polygon
