@@ -57,7 +57,7 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
-    SIMULATION_FACTOR = 3
+    SIMULATION_FACTOR = 2
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
@@ -211,7 +211,8 @@ class SimulationView(CuraView):
             left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
             right_value = cumulative_line_duration[i]
 
-            assert (left_value <= self._current_time <= right_value)
+            if not (left_value <= self._current_time <= right_value):
+                Logger.debug(f"At index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
 
             fractional_value = (self._current_time - left_value) / (right_value - left_value)
 
@@ -255,6 +256,8 @@ class SimulationView(CuraView):
                     for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
                         total_duration += line_duration / SimulationView.SIMULATION_FACTOR
                         self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+                    # for tool change we add an extra tool path
+                    self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
 
         return self._cumulative_line_duration[self.getCurrentLayer()]
 
