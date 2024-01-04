@@ -440,7 +440,6 @@ class CuraConan(ConanFile):
             for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
                 mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
-                print("mo_file", mo_file)
                 mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                 cpp_info = self.dependencies["gettext"].cpp_info
                 self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
