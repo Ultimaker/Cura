@@ -7060,6 +7060,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "user_defined_print_order_enabled":
+                {
+                    "label": "Set Print Sequence Manually",
+                    "description": "Allows to order the object list to set the print sequence manually. First object from the list will be printed first.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "enabled": "print_sequence == 'one_at_a_time'"
+                },
                 "infill_mesh":
                 {
                     "label": "Infill Mesh",

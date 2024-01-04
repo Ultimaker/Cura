@@ -2583,6 +2583,14 @@ msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "Tisková sekvence"
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Nastavit tiskovou sekvenci ručně"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr "Umožňuje řadit seznam objektů pro ruční nastavení tiskové sekvence. První objekt ze seznamu bude vytisknut jako první."
+
 msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "Rychlost tisku"

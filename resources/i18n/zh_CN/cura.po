@@ -4919,6 +4919,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "拆分模型"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "打印前"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "打印后"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "卸载"

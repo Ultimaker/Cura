@@ -4596,6 +4596,14 @@ msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr ""
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr ""
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr ""
+
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
 msgstr ""
