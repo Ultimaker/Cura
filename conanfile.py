@@ -220,8 +220,6 @@ class CuraConan(ConanFile):
                     else:
                         src_path = os.path.join(self.source_folder, data["src"])
                 else:
-                    if data["package"] not in self.deps_cpp_info.deps:
-                        continue
                     src_path = os.path.join(self.deps_cpp_info[data["package"]].rootpath, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
@@ -244,7 +242,7 @@ class CuraConan(ConanFile):
                 self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
 
-            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
+            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.|.pdb]*"):
                 binaries.append((str(bin), binary["dst"]))
             for bin in Path(src_path).glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
@@ -433,7 +431,6 @@ class CuraConan(ConanFile):
             for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
                 mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
-                print("mo_file", mo_file)
                 mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                 cpp_info = self.dependencies["gettext"].cpp_info
                 self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
