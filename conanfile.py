@@ -38,7 +38,7 @@ class CuraConan(ConanFile):
         "enable_i18n": [True, False],
     }
     default_options = {
-        "enterprise": "False",
+        "enterprise": "True",
         "staging": "False",
         "devtools": False,
         "cloud_api_version": "1",
