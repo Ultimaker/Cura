@@ -146,6 +146,14 @@ class SetInitialSwitchedExtruderOffset(Script):
           layer = data[index_num]
           lines = layer.split("\n")
 
+          # Check if all extruders have been processed to end early
+          num_extruders_complete = 0
+          for e_index in range(0, len(extruderOffsetInfo)):
+              if extruderOffsetInfo[e_index].offset_complete:
+                  num_extruders_complete += 1
+          if num_extruders_complete == len(extruderOffsetInfo):
+              break
+
           for e_index in range(0, len(extruderOffsetInfo)):
               if extruderOffsetInfo[e_index].offset_complete:
                   continue
