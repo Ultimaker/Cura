@@ -16,9 +16,9 @@ class ExtruderInitialOffsetInfo:
     self.retraction_distance = retraction_distance
 
 class SetInitialSwitchedExtruderOffset(Script):
-    """Adds timed annealing GCODE after objects finish printing.
+    """Offsets extruders by Nozzle Switch Retraction Distance the first time they are using in a print. 
 
-    Bed annealing works best with a glass bed and a container placed on top of the object during annealing.
+    This primes filament flow on extruders that were switched away from and had filament retracted a longer distance out of the melt zone.
     """
     def __init__(self):
         super().__init__()
@@ -41,65 +41,65 @@ class SetInitialSwitchedExtruderOffset(Script):
                 "setT0ExtruderOffset":
                 {
                     "label": "Set Extruder 1 Offset",
-                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance. If this extruder was previously switched out and retracted, this will ensure filament flow the first time this extruder is using this print. If your machine primes the initial extruder, the initial extruder does not need an offset.",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance. If this extruder was previously switched out and retracted, this will prime filament flow the first time this extruder is using this print. If your machine primes the initial extruder, the initial extruder does not need an offset.",
                     "type": "bool",
                     "default_value": false
                 },
                 "setT1ExtruderOffset":
                 {
                     "label": "Set Extruder 2 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 1"
                 },
                 "setT2ExtruderOffset":
                 {
                     "label": "Set Extruder 3 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 2"
                 },
                 "setT3ExtruderOffset":
                 {
                     "label": "Set Extruder 4 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 3"
                 },
                 "setT4ExtruderOffset":
                 {
                     "label": "Set Extruder 5 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 4"
                 },"setT5ExtruderOffset":
                 {
                     "label": "Set Extruder 6 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 5"
                 },"setT6ExtruderOffset":
                 {
                     "label": "Set Extruder 7 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 6"
                 },"setT7ExtruderOffset":
                 {
                     "label": "Set Extruder 8 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 7"
                 },"setT8ExtruderOffset":
                 {
                     "label": "Set Extruder 9 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 8"
                 },"setT9ExtruderOffset":
                 {
                     "label": "Set Extruder 10 Offset",
-                    "description": "",
+                    "description": "Set the initial offset of this extruder by Nozzle Switch Retraction Distance.",
                     "type": "bool",
                     "default_value": "CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr() != 9"
                 }
