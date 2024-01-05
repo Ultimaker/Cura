@@ -1478,6 +1478,7 @@
                             "description": "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
                             "type": "bool",
                             "value": true,
+                            "default_value": true,
                             "enabled": "roofing_layer_count > 0 and top_layers > 0 and roofing_pattern != 'concentric'",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
@@ -4578,6 +4579,7 @@
                     "unit": "\u00b0C",
                     "type": "float",
                     "value": "material_print_temperature",
+                    "default_value": 0,
                     "enabled": "cool_min_layer_time > 0",
                     "minimum_value_warning": "max(material_final_print_temperature, material_initial_print_temperature)",
                     "maximum_value_warning": "material_print_temperature",
@@ -6689,7 +6691,7 @@
                     "type": "float",
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
-                    "default_value": "resolveOrValue('brim_width')",
+                    "default_value": 1.2,
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "settable_per_mesh": false,
@@ -8329,7 +8331,7 @@
                 {
                     "label": "Flow Warning",
                     "description": "Limit on the flow warning for detection.",
-                    "default_value": "15.0",
+                    "default_value": 15.0,
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
@@ -8339,7 +8341,7 @@
                 {
                     "label": "Flow Limit",
                     "description": "Limit on flow anomaly for detection.",
-                    "default_value": "25.0",
+                    "default_value": 25.0,
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
@@ -8351,7 +8353,7 @@
                     "description": "Limit on Print temperature warning for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
-                    "default_value": "3.0",
+                    "default_value": 3.0,
                     "enabled": "ppr_enable",
                     "settable_per_extruder": true
                 },
@@ -8361,7 +8363,7 @@
                     "description": "Limit on Print Temperature anomaly for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
-                    "default_value": "7.0",
+                    "default_value": 7.0,
                     "enabled": "ppr_enable",
                     "settable_per_extruder": true
                 },
@@ -8371,7 +8373,7 @@
                     "description": "Limit on Build Volume Temperature warning for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
-                    "default_value": "7.5",
+                    "default_value": 7.5,
                     "enabled": "ppr_enable",
                     "settable_per_extruder": false
                 },
@@ -8381,7 +8383,7 @@
                     "description": "Limit on Build Volume temperature Anomaly for detection.",
                     "unit": "\u00b0C",
                     "type": "float",
-                    "default_value": "10.0",
+                    "default_value": 10.0,
                     "enabled": "ppr_enable",
                     "settable_per_extruder": false
                 }
