@@ -51,7 +51,7 @@
         "retraction_amount": { "value": 0.8 },
         "retraction_speed": { "default_value": 40 },
         "speed_layer_0": { "value": 50 },
-        "speed_print": { "value": 60 },
+        "speed_print": { "value": 100 },
         "speed_infill": { "value": 100 },
         "speed_travel": { "value": 200 },
         "speed_topbottom": { "value": 70 },
