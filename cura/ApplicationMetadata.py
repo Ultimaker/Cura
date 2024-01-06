@@ -4,9 +4,9 @@
 # ---------
 # General constants used in Cura
 # ---------
-DEFAULT_CURA_APP_NAME = "cura"
-DEFAULT_CURA_DISPLAY_NAME = "Go3d PrintPro"
-DEFAULT_CURA_VERSION = "dev"
+DEFAULT_CURA_APP_NAME = "Go3dPrintPro"
+DEFAULT_CURA_DISPLAY_NAME = "Go3dPrintPro"
+DEFAULT_CURA_VERSION = "1.0.0"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
 DEFAULT_CURA_LATEST_URL = "https://software.ultimaker.com/latest.json"
