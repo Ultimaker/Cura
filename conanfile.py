@@ -319,7 +319,7 @@ class CuraConan(ConanFile):
     def requirements(self):
         self.requires("boost/1.82.0")
         self.requires("fmt/9.0.0")
-        self.requires("curaengine_grpc_definitions/0.1.0")
+        self.requires("curaengine_grpc_definitions/(latest)@ultimaker/testing")
         self.requires("zlib/1.2.13")
         self.requires("pyarcus/5.3.0")
         self.requires("dulcificum/0.1.0-beta.1")  # TODO update pin for stable
