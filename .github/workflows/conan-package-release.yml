@@ -11,7 +11,7 @@ on:
 
       repository:
         description: 'repository'
-        default: 'Cura'
+        default: 'Go3dPrintPro'
         type: choice
         options:
           - Cura
