@@ -1,0 +1,220 @@
+name: Create Conan Package Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      organization:
+        description: 'Organization'
+        required: false
+        default: Ultimaker
+        type: string
+
+      repository:
+        description: 'repository'
+        default: 'Cura'
+        type: choice
+        options:
+          - Cura
+          - Uranium
+          - fdm_materials
+          - Cura-binary-data
+          - CuraEngine
+          - CuraEngine_grpc_definitions
+          - CuraEngine_plugin_gradual_flow
+          - synsepalum-dulcificum
+          - libArcus
+          - libnest2d
+          - libSavitar
+          - pyarcus
+          - pynest2d
+          - pySavitar
+          - NativeCADPlugin
+
+      ref_name:
+        description: 'Git ref (main, 5.7, sha)'
+        required: false
+        default: 'main'
+        type: string
+
+      version:
+        description: 'Semantic Version (5.7, 0.1.0-beta.1)'
+        required: true
+        type: string
+
+      conan_release:
+        description: 'Create a release'
+        required: false
+        default: true
+        type: boolean
+
+      conan_user:
+        description: 'Conan user (_, ultimaker, internal)'
+        required: false
+        default: '_'
+        type: string
+
+      conan_channel:
+        description: 'Conan channel (_, testing, stable)'
+        required: false
+        default: '_'
+        type: string
+
+      conan_internal:
+        description: 'UltiMaker private (internal)'
+        required: false
+        default: false
+        type: boolean
+
+      conan_latest:
+        description: 'Create the latest alias'
+        required: false
+        default: true
+        type: boolean
+
+      conan_extra_args:
+        description: 'Conan args: (--require-override)'
+        required: false
+        default: ''
+        type: string
+
+  workflow_call:
+    inputs:
+      organization:
+        required: false
+        default: Ultimaker
+        type: string
+
+      repository:
+        required: true
+        type: string
+
+      ref_name:
+        required: false
+        default: ''
+        type: string
+
+      version:
+        required: true
+        type: string
+
+      conan_user:
+        required: false
+        default: '_'
+        type: string
+
+      conan_channel:
+        required: false
+        default: '_'
+        type: string
+
+      conan_internal:
+        required: false
+        default: false
+        type: boolean
+
+      conan_latest:
+        required: false
+        default: true
+        type: boolean
+
+      conan_extra_args:
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+env:
+  CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
+  CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
+
+jobs:
+  package-export:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.organization }}/${{ inputs.repository }}
+          ref: ${{ inputs.ref_name }}
+          fetch-depth: 1
+          token: ${{ secrets.CURA_CONAN_PACKAGE_RELEASE_PAT }}
+
+      - name: Sync pip requirements
+        run: |
+          mkdir -p .github/workflows
+          cd .github/workflows
+          curl -O https://raw.githubusercontent.com/Ultimaker/cura-workflows/main/.github/workflows/requirements-runner.txt
+
+      - name: Setup Python and pip
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.x
+          cache: pip
+          cache-dependency-path: .github/workflows/requirements-runner.txt
+
+      - name: Install Python requirements and Create default Conan profile
+        run: pip install -r .github/workflows/requirements-runner.txt
+
+      - name: Setup pipeline caches
+        run: |
+          mkdir -p /home/runner/.conan/downloads
+
+      - name: Create default Conan profile
+        run: conan profile new default --detect
+
+      - name: Get Conan configuration
+        run: |
+          conan config install https://github.com/Ultimaker/conan-config.git
+          conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/${{ runner.os }}/${{ runner.arch }}"
+
+      - name: Add Cura private Artifactory remote
+        if: ${{ inputs.conan_internal }}
+        run: conan config install https://github.com/Ultimaker/conan-config.git -a "-b runner/internal"
+
+      - name: Cache Conan downloads
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.conan/downloads
+          key: ${{ runner.os }}-conan-downloads-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-conan-downloads-
+
+      - name: Install pyyaml
+        run: pip install pyyaml
+
+      - name: Get basic project info
+        run: |
+          echo "CONAN_PROJECT_NAME=$(conan inspect . | awk '/^name:/ {print $2}')" >> $GITHUB_ENV
+
+      - id: get-conan-broadcast-data
+        name: Get Conan broadcast data
+        run: |
+          mkdir runner_scripts
+          wget https://raw.githubusercontent.com/Ultimaker/cura-workflows/main/runner_scripts/get_conan_broadcast_data.py -O runner_scripts/get_conan_broadcast_data.py
+          python runner_scripts/get_conan_broadcast_data.py --user ${{ inputs.conan_user }} --channel ${{ inputs.conan_channel }} --project_name $CONAN_PROJECT_NAME --release ${{ inputs.conan_release }} --version ${{ inputs.version }}
+
+      - name: Export the Package
+        run: conan export . ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }} ${{ inputs.conan_extra_args }}
+
+      - name: Create the latest alias
+        if: ${{ inputs.conan_latest }}
+        run: conan alias ${{ steps.get-conan-broadcast-data.outputs.recipe_id_latest }} ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }}
+
+      - name: Upload the Package(s)
+        if: ${{ ! inputs.conan_internal }}
+        run: conan upload ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }} -r cura --all -c
+
+      - name: Upload the latest Package(s)
+        if: ${{ ! inputs.conan_internal && inputs.conan_latest }}
+        run: conan upload ${{ steps.get-conan-broadcast-data.outputs.recipe_id_latest }} -r cura -c
+
+      - name: Upload the Package(s) to the private Artifactory
+        if: ${{ inputs.conan_internal }}
+        run: conan upload ${{ steps.get-conan-broadcast-data.outputs.recipe_id_full }} -r cura-private --all -c
+
+      - name: Upload the latest Package(s) to the private Artifactory
+        if: ${{ inputs.conan_internal && inputs.conan_latest }}
+        run: conan upload ${{ steps.get-conan-broadcast-data.outputs.recipe_id_latest }} -r cura-private -c
