@@ -141,7 +141,7 @@ jobs:
           repository: ${{ inputs.organization }}/${{ inputs.repository }}
           ref: ${{ inputs.ref_name }}
           fetch-depth: 1
-          token: ${{ secrets.CURA_CONAN_PACKAGE_RELEASE_PAT }}
+          # token: ${{ secrets.CURA_CONAN_PACKAGE_RELEASE_PAT }}
 
       - name: Sync pip requirements
         run: |
