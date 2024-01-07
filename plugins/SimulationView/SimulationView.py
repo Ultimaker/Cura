@@ -97,7 +97,8 @@ class SimulationView(CuraView):
         self._min_line_width = sys.float_info.max
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration = {}
+        self._cumulative_line_duration_layer: Optional[int] = None
+        self._cumulative_line_duration: List[float] = []
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -196,7 +197,7 @@ class SimulationView(CuraView):
         if len(cumulative_line_duration) > 0:
             self._current_time = time
             left_i = 0
-            right_i = self._max_paths - 1
+            right_i = len(cumulative_line_duration) - 1
             total_duration = cumulative_line_duration[-1]
             # make an educated guess about where to start
             i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
@@ -212,7 +213,8 @@ class SimulationView(CuraView):
             right_value = cumulative_line_duration[i]
 
             if not (left_value <= self._current_time <= right_value):
-                Logger.debug(f"At index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
+                Logger.warn(
+                    f"Binary search error (out of bounds): index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
 
             fractional_value = (self._current_time - left_value) / (right_value - left_value)
 
@@ -245,21 +247,22 @@ class SimulationView(CuraView):
 
     def cumulativeLineDuration(self) -> List[float]:
         # Make sure _cumulative_line_duration is initialized properly
-        if self.getCurrentLayer() not in self._cumulative_line_duration:
+        if self.getCurrentLayer() != self._cumulative_line_duration_layer:
             #clear cache
-            self._cumulative_line_duration = {}
-            self._cumulative_line_duration[self.getCurrentLayer()] = []
+            self._cumulative_line_duration = []
             total_duration = 0.0
             polylines = self.getLayerData()
             if polylines is not None:
                 for polyline in polylines.polygons:
                     for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
                         total_duration += line_duration / SimulationView.SIMULATION_FACTOR
-                        self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+                        self._cumulative_line_duration.append(total_duration)
                     # for tool change we add an extra tool path
-                    self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+                    self._cumulative_line_duration.append(total_duration)
+            # set current cached layer
+            self._cumulative_line_duration_layer = self.getCurrentLayer()
 
-        return self._cumulative_line_duration[self.getCurrentLayer()]
+        return self._cumulative_line_duration
 
     def getLayerData(self) -> Optional["LayerData"]:
         scene = self.getController().getScene()
