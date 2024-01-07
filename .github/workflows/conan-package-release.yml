@@ -6,7 +6,7 @@ on:
       organization:
         description: 'Organization'
         required: false
-        default: Ultimaker
+        default: Go3dInnovation
         type: string
 
       repository:
@@ -15,6 +15,7 @@ on:
         type: choice
         options:
           - Cura
+          - Go3dPrintPro
           - Uranium
           - fdm_materials
           - Cura-binary-data
