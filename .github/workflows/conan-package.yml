@@ -136,15 +136,15 @@ jobs:
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura -c
           conan upload ${{ needs.conan-recipe-version.outputs.recipe_id_latest }} -r cura-conan-dev -c
 
-  notify-create:
-    if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
-    needs: [ conan-recipe-version, conan-package-create-linux ]
+  # notify-create:
+  #   if: ${{ always() && (github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master' || needs.conan-recipe-version.outputs.is_release_branch == 'true')) }}
+  #   needs: [ conan-recipe-version, conan-package-create-linux ]
 
-    uses: ultimaker/cura/.github/workflows/notify.yml@main
-    with:
-      success: ${{ contains(join(needs.*.result, ','), 'success') }}
-      success_title: "New binaries created in ${{ github.repository }}"
-      success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
-      failure_title: "Failed to create binaries in ${{ github.repository }}"
-      failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
-    secrets: inherit
+  #   uses: ultimaker/cura/.github/workflows/notify.yml@main
+  #   with:
+  #     success: ${{ contains(join(needs.*.result, ','), 'success') }}
+  #     success_title: "New binaries created in ${{ github.repository }}"
+  #     success_body: "Created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+  #     failure_title: "Failed to create binaries in ${{ github.repository }}"
+  #     failure_body: "Failed to created binaries for ${{ needs.conan-recipe-version.outputs.recipe_id_full }}"
+  #   secrets: inherit
