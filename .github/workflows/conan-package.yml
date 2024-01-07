@@ -63,7 +63,7 @@ jobs:
     permissions:
       contents: read
 
-    uses: ultimaker/cura/.github/workflows/conan-recipe-version.yml@main
+    uses: Go3DInnovation/cura-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
       project_name: cura
 
