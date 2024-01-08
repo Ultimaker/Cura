@@ -117,6 +117,6 @@ if __name__ == "__main__":
                         help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.msi')")
     parser.add_argument("name", type=str, help="App name (e.g. 'UltiMaker Cura')")
     args = parser.parse_args()
-    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), args.name)
+    generate_wxs(args.source_path.resolve(), args.dist_path.resolve(), args.filename.resolve(), "Go3dPrintPro")
     cleanup_artifacts(args.dist_path.resolve())
     build(args.dist_path.resolve(), args.filename)
