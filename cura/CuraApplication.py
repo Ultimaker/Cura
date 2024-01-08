@@ -1266,7 +1266,7 @@ class CuraApplication(QtApplication):
         self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
         qmlRegisterType(DiscoveredCloudPrintersModel, "Cura", 1, 7, "DiscoveredCloudPrintersModel")
-        qmlRegisterType(QualityProfilesDropDownMenuModel, "Cura", 1, 0, "QualityProfilesDropDownMenuModel")
+        qmlRegisterType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0, "CustomQualityProfilesDropDownMenuModel")
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
