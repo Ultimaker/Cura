@@ -40,7 +40,7 @@ on:
           - ubuntu-22.04
 
 jobs:
-  windows-installer:
+  linux-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}

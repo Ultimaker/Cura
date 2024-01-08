@@ -44,7 +44,7 @@ on:
           - macos-12
 
 jobs:
-  windows-installer:
+  macos-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
