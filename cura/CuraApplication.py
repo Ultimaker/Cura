@@ -1139,6 +1139,10 @@ class CuraApplication(QtApplication):
         return cast(MachineActionManager.MachineActionManager, self._machine_action_manager)
 
     @pyqtSlot(result = QObject)
+    def getMachineActionManagerQml(self)-> MachineActionManager.MachineActionManager:
+        return cast(QObject, self._machine_action_manager)
+
+    @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self) -> MaterialManagementModel:
         if not self._material_management_model:
             self._material_management_model = MaterialManagementModel(parent = self)
@@ -1150,7 +1154,8 @@ class CuraApplication(QtApplication):
             self._quality_management_model = QualityManagementModel(parent = self)
         return self._quality_management_model
 
-    def getSimpleModeSettingsManager(self, *args):
+    @pyqtSlot(result=QObject)
+    def getSimpleModeSettingsManager(self)-> SimpleModeSettingsManager:
         if self._simple_mode_settings_manager is None:
             self._simple_mode_settings_manager = SimpleModeSettingsManager()
         return self._simple_mode_settings_manager
@@ -1193,12 +1198,14 @@ class CuraApplication(QtApplication):
 
         return self._print_information
 
-    def getQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+    pyqtSlot(result =QObject)
+    def getQualityProfilesDropDownMenuModel(self, *args, **kwargs)-> QualityProfilesDropDownMenuModel:
         if self._quality_profile_drop_down_menu_model is None:
             self._quality_profile_drop_down_menu_model = QualityProfilesDropDownMenuModel(self)
         return self._quality_profile_drop_down_menu_model
 
-    def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+    pyqtSlot(result=QObject)
+    def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs)->CustomQualityProfilesDropDownMenuModel:
         if self._custom_quality_profile_drop_down_menu_model is None:
             self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
         return self._custom_quality_profile_drop_down_menu_model
@@ -1231,8 +1238,6 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, self.getMachineManager, "MachineManager")
         qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, self.getIntentManager, "IntentManager")
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, self.getSettingInheritanceManager, "SettingInheritanceManager")
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManager, "SimpleModeSettingsManager")
-        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, self.getMachineActionManager, "MachineActionManager")
 
         self.processEvents()
         qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
@@ -1257,16 +1262,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
-        qmlRegisterSingletonType(QualityManagementModel, "Cura", 1, 0, self.getQualityManagementModel, "QualityManagementModel")
-        qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, self.getMaterialManagementModel, "MaterialManagementModel")
 
         self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
         qmlRegisterType(DiscoveredCloudPrintersModel, "Cura", 1, 7, "DiscoveredCloudPrintersModel")
-        qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
-                                 self.getQualityProfilesDropDownMenuModel, "QualityProfilesDropDownMenuModel")
-        qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
-                                 self.getCustomQualityProfilesDropDownMenuModel, "CustomQualityProfilesDropDownMenuModel")
+        qmlRegisterType(QualityProfilesDropDownMenuModel, "Cura", 1, 0, "QualityProfilesDropDownMenuModel")
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")

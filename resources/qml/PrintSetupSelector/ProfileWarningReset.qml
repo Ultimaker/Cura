@@ -11,7 +11,7 @@ import "../Dialogs"
 Item
 {
     property bool fullWarning: true  // <- Can you see the warning icon and the text, or is it just the buttons?
-
+    property var simpleModeSettingsManager :CuraApplication.getSimpleModeSettingsManager()
     height: visible ? UM.Theme.getSize("action_button_icon").height : 0
     width: visible ? childrenRect.width: 0
     visible: Cura.MachineManager.hasUserSettings || (fullWarning && Cura.MachineManager.hasCustomQuality)
@@ -96,7 +96,7 @@ Item
             State
             {
                 name: "custom settings changed"
-                when: Cura.SimpleModeSettingsManager.isProfileCustomized
+                when: simpleModeSettingsManager.isProfileCustomized
                 PropertyChanges
                 {
                     target: warning
