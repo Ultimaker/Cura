@@ -46,7 +46,7 @@ env:
 
 jobs:
   installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
+    uses: Go3DInnovation/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
