@@ -81,12 +81,18 @@ class CuraConan(ConanFile):
         return self._cura_env
 
     @property
+    def _enterprise(self):
+        return self.options.enterprise in ["True", 'true']
+
+    @property
     def _internal(self):
         return self.options.internal in ["True", 'true']
 
     @property
     def _app_name(self):
-        return str(self.options.display_name) + " Enterprise"
+        if self._enterprise:
+            return str(self.options.display_name) + " Enterprise"
+        return str(self.options.display_name)
 
     @property
     def _urls(self):
@@ -188,7 +194,7 @@ class CuraConan(ConanFile):
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
                 cura_version = cura_version,
-                cura_build_type="Enterprise",
+                cura_build_type = "Enterprise" if self._enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self.conan_data["urls"][self._urls]["cloud_api_root"],
                 cura_cloud_api_version = self.options.cloud_api_version,
@@ -325,6 +331,8 @@ class CuraConan(ConanFile):
         for req in self.conan_data["requirements"]:
             if self._internal and "fdm_materials" in req:
                 continue
+            if not self._enterprise and "native_cad_plugin" in req:
+                continue
             self.requires(req)
         if self._internal:
             for req in self.conan_data["requirements_internal"]:
@@ -373,12 +381,11 @@ class CuraConan(ConanFile):
             copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path = False)
             copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
-            rmdir(self, str(self.source_path.joinpath("plugins", "NativeCADplugin")))
-            curaengine_plugin_gradual_flow = self.dependencies["native_cad_plugin"].cpp_info
-            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0],
-                 str(self.source_path.joinpath("plugins", "NativeCADplugin")), keep_path=True)
-            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1],
-                 str(self.source_path.joinpath("resources", "bundled_packages")), keep_path=False)
+            if self._enterprise:
+                rmdir(self, str(self.source_path.joinpath("plugins", "NativeCADplugin")))
+                curaengine_plugin_gradual_flow = self.dependencies["native_cad_plugin"].cpp_info
+                copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "NativeCADplugin")), keep_path = True)
+                copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
