@@ -6114,7 +6114,51 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children": {
+                        "raft_base_margin": {
+                            "label": "Raft Base Extra Margin",
+                            "description": "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_margin",
+                            "default_value": 15,
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "maximum_value_warning": "20",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "raft_interface_margin": {
+                            "label": "Raft Middle Extra Margin",
+                            "description": "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_margin",
+                            "default_value": 15,
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "maximum_value_warning": "20",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "raft_surface_margin": {
+                            "label": "Raft Top Extra Margin",
+                            "description": "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_margin",
+                            "default_value": 15,
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "maximum_value_warning": "20",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "raft_smoothing":
                 {
@@ -6128,7 +6172,51 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_remove_inside_corners",
                     "limit_to_extruder": "adhesion_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children": {
+                        "raft_base_smoothing": {
+                            "label": "Raft Base Smoothing",
+                            "description": "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_smoothing",
+                            "default_value": 5,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_base_remove_inside_corners",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "raft_interface_smoothing": {
+                            "label": "Raft Middle Smoothing",
+                            "description": "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_smoothing",
+                            "default_value": 5,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_interface_remove_inside_corners",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "raft_surface_smoothing": {
+                            "label": "Raft Top Smoothing",
+                            "description": "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                            "unit": "mm",
+                            "type": "float",
+                            "value": "raft_smoothing",
+                            "default_value": 5,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "raft_interface_line_width",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_surface_remove_inside_corners",
+                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "raft_airgap":
                 {
@@ -8284,7 +8372,42 @@
                     "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "children": {
+                        "raft_base_remove_inside_corners": {
+                            "label": "Remove Raft Base Inside Corners",
+                            "description": "Remove inside corners from the raft base, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_interface_remove_inside_corners": {
+                            "label": "Remove Raft Middle Inside Corners",
+                            "description": "Remove inside corners from the raft middle part, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_surface_remove_inside_corners": {
+                            "label": "Remove Raft Top Inside Corners",
+                            "description": "Remove inside corners from the raft top part, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
                 },
                 "raft_base_wall_count":
                 {
