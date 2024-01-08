@@ -6329,6 +6329,54 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_base_extruder_nr"
                 },
+                "raft_wall_count":
+                {
+                    "label": "Raft Wall Count",
+                    "description": "The number of contours to print around the linear pattern of the raft.",
+                    "type": "int",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "raft_surface_wall_count":
+                        {
+                            "label": "Raft Top Wall Count",
+                            "description": "The number of contours to print around the linear pattern in the top layers of the raft.",
+                            "type": "int",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_interface_wall_count":
+                        {
+                            "label": "Raft Middle Wall Count",
+                            "description": "The number of contours to print around the linear pattern in the middle layers of the raft.",
+                            "type": "int",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_base_wall_count":
+                        {
+                            "label": "Raft Base Wall Count",
+                            "description": "The number of contours to print around the linear pattern in the base layer of the raft.",
+                            "type": "int",
+                            "default_value": 1,
+                            "value": "raft_wall_count",
+                            "minimum_value": "0",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "raft_speed":
                 {
                     "label": "Raft Print Speed",
@@ -8283,17 +8331,6 @@
                     "default_value": false,
                     "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "raft_base_wall_count":
-                {
-                    "label": "Raft Base Wall Count",
-                    "description": "The number of contours to print around the linear pattern in the base layer of the raft.",
-                    "type": "int",
-                    "default_value": 1,
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "resolve": "max(extruderValues('raft_base_wall_count'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
