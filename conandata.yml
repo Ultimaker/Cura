@@ -74,11 +74,11 @@ pyinstaller:
             dst: "PyQt6/Qt6/qml/UM"
         cura_binary_data:
             package: "cura_binary_data"
-            src: "resources/cura/resources"
+            src: "cura/resources"
             dst: "share/cura/resources"
         uranium_binary_data:
             package: "cura_binary_data"
-            src: "resources/uranium/resources"
+            src: "uranium/resources"
             dst: "share/uranium/resources"
         windows_binary_data:
             package: "cura_binary_data"
