@@ -40,3 +40,11 @@ jobs:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
     secrets: inherit
+
+  conan-package-create:
+    needs: [ conan-recipe-version, conan-package-export ]
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@main
+    with:
+      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+      conan_extra_args: "-o cura:enable_i18n=True"
+    secrets: inherit
