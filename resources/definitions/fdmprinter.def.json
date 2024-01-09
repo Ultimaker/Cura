@@ -6164,6 +6164,54 @@
                         }
                     }
                 },
+                "raft_remove_inside_corners": {
+                    "label": "Remove Raft Inside Corners",
+                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
+                    "type": "bool",
+                    "default_value": false,
+                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children": {
+                        "raft_base_remove_inside_corners": {
+                            "label": "Remove Raft Base Inside Corners",
+                            "description": "Remove inside corners from the raft base, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_base_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_interface_remove_inside_corners": {
+                            "label": "Remove Raft Middle Inside Corners",
+                            "description": "Remove inside corners from the raft middle part, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        },
+                        "raft_surface_remove_inside_corners": {
+                            "label": "Remove Raft Top Inside Corners",
+                            "description": "Remove inside corners from the raft top part, causing the raft to become convex.",
+                            "type": "bool",
+                            "value": "raft_remove_inside_corners",
+                            "default_value": false,
+                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_surface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
+                },
                 "raft_smoothing":
                 {
                     "label": "Raft Smoothing",
@@ -8418,59 +8466,6 @@
                     "enabled": true,
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
-                },
-                "raft_remove_inside_corners":
-                {
-                    "label": "Remove Raft Inside Corners",
-                    "description": "Remove inside corners from the raft, causing the raft to become convex.",
-                    "type": "bool",
-                    "default_value": false,
-                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "children":
-                    {
-                        "raft_base_remove_inside_corners":
-                        {
-                            "label": "Remove Raft Base Inside Corners",
-                            "description": "Remove inside corners from the raft base, causing the raft to become convex.",
-                            "type": "bool",
-                            "value": "raft_remove_inside_corners",
-                            "default_value": false,
-                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "raft_base_extruder_nr",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "raft_interface_remove_inside_corners":
-                        {
-                            "label": "Remove Raft Middle Inside Corners",
-                            "description": "Remove inside corners from the raft middle part, causing the raft to become convex.",
-                            "type": "bool",
-                            "value": "raft_remove_inside_corners",
-                            "default_value": false,
-                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "raft_interface_extruder_nr",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        },
-                        "raft_surface_remove_inside_corners":
-                        {
-                            "label": "Remove Raft Top Inside Corners",
-                            "description": "Remove inside corners from the raft top part, causing the raft to become convex.",
-                            "type": "bool",
-                            "value": "raft_remove_inside_corners",
-                            "default_value": false,
-                            "resolve": "any(extruderValues('raft_remove_inside_corners'))",
-                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "raft_surface_extruder_nr",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": false
-                        }
-                    }
                 },
                 "group_outer_walls":
                 {
