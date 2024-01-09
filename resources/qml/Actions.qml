@@ -120,8 +120,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo")
         icon.name: "edit-undo"
         shortcut: StandardKey.Undo
-        onTriggered: UM.OperationStack.undo()
-        enabled: UM.OperationStack.canUndo
+        onTriggered: UM.CuraActions.undo()
+        enabled: UM.CuraActions.canUndo
     }
 
     Action
@@ -130,8 +130,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo")
         icon.name: "edit-redo"
         shortcut: StandardKey.Redo
-        onTriggered: UM.OperationStack.redo()
-        enabled: UM.OperationStack.canRedo
+        onTriggered: UM.CuraActions.redo()
+        enabled: UM.CuraActions.canRedo
     }
 
     Action
