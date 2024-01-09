@@ -6128,7 +6128,7 @@
                             "minimum_value_warning": "raft_interface_line_width",
                             "maximum_value_warning": "20",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_base_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -6143,7 +6143,7 @@
                             "minimum_value_warning": "raft_interface_line_width",
                             "maximum_value_warning": "20",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -6158,7 +6158,7 @@
                             "minimum_value_warning": "raft_interface_line_width",
                             "maximum_value_warning": "20",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_surface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -6190,7 +6190,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "raft_interface_line_width",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_base_remove_inside_corners",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_base_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -6205,7 +6205,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "raft_interface_line_width",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_interface_remove_inside_corners",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -6220,7 +6220,7 @@
                             "minimum_value": "0",
                             "minimum_value_warning": "raft_interface_line_width",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft' and not raft_surface_remove_inside_corners",
-                            "limit_to_extruder": "adhesion_extruder_nr",
+                            "limit_to_extruder": "raft_surface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -8440,6 +8440,7 @@
                             "default_value": false,
                             "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_base_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -8452,6 +8453,7 @@
                             "default_value": false,
                             "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -8464,6 +8466,7 @@
                             "default_value": false,
                             "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "limit_to_extruder": "raft_surface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
