@@ -54,9 +54,9 @@ jobs:
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise }}
-      staging: ${{ inputs.staging }}
+      conan_args: ${{ env.CONAN_ARGS }}
+      enterprise: ${{ env.ENTERPRISE }}
+      staging: ${{ env.STAGING }}
       architecture: X64
       operating_system: windows-2022
     secrets: inherit
@@ -66,9 +66,9 @@ jobs:
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise }}
-      staging: ${{ inputs.staging }}
+      conan_args: ${{ env.CONAN_ARGS }}
+      enterprise: ${{ env.ENTERPRISE }}
+      staging: ${{ env.STAGING }}
       architecture: X64
       operating_system: ubuntu-22.04
     secrets: inherit
@@ -78,9 +78,9 @@ jobs:
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise }}
-      staging: ${{ inputs.staging }}
+      conan_args: ${{ env.CONAN_ARGS }}
+      enterprise: ${{ env.ENTERPRISE }}
+      staging: ${{ env.STAGING }}
       architecture: X64
       operating_system: self-hosted-X64
     secrets: inherit
@@ -90,9 +90,9 @@ jobs:
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise }}
-      staging: ${{ inputs.staging }}
+      conan_args: ${{ env.CONAN_ARGS }}
+      enterprise: ${{ env.ENTERPRISE }}
+      staging: ${{ env.STAGING }}
       architecture: ARM64
       operating_system: self-hosted-ARM64
     secrets: inherit
