@@ -11,3 +11,4 @@ jobs:
     with:
       event: ${{ github.event.workflow_run.event }}
       conclusion: ${{ github.event.workflow_run.conclusion }}
+    secrets: inherit
