@@ -14,7 +14,7 @@
         "z_seam_type": { "value": "'sharpest_corner'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         
-        "jerk_enabled": { "value": false },
+        
         "coasting_enable": { "value": true }
 
     },
