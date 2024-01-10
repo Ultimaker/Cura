@@ -6900,7 +6900,7 @@
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false  
+                    "settable_per_extruder": false
                 },
                 "prime_tower_base_height":
                 {
