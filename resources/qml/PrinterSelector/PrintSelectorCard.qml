@@ -79,7 +79,7 @@ Rectangle
                         anchors.verticalCenter: extruderIcon.verticalCenter
                         anchors.left: extruderIcon.right
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        text: modelData.core
+                        text: modelData ? (modelData.core ? modelData.core : "" ) : ""
                         font: UM.Theme.getFont("default_bold")
                     }
 
