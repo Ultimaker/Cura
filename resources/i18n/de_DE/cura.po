@@ -559,7 +559,7 @@ msgstr "Alle Modelle in einem Raster anordnen"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr ""
+msgstr "Auswahl anordnen"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -1015,7 +1015,7 @@ msgstr "Die Antwort vom Server konnte nicht interpretiert werden."
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "Konnte GCodeWriter-Plugin nicht laden. Versuchen Sie, das Plugin wieder zu aktivieren."
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
@@ -2356,19 +2356,19 @@ msgstr "Stellen Sie sicher, dass der G-Code für Ihren Drucker und Ihre Druckerk
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
-msgstr ""
+msgstr "Makerbot-Druckdatei"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr ""
+msgstr "Makerbot-Druckdatei-Writer"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
-msgstr ""
+msgstr "MakerbotWriter konnte nicht im angegebenen Pfad speichern."
 
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
-msgstr ""
+msgstr "MakerbotWriter unterstützt keinen Textmodus."
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -3019,7 +3019,7 @@ msgstr "Geben Sie bitte einen Namen für dieses Profil an."
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr ""
+msgstr "Bitte geben Sie einen neuen Namen an."
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3456,7 +3456,7 @@ msgstr "Bietet Unterstützung für das Schreiben von 3MF-Dateien."
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr ""
+msgstr "Bietet Unterstützung für das Schreiben von MakerBot-Formatpaketen."
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3593,7 +3593,7 @@ msgstr "Umbenennen"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr ""
+msgstr "Umbenennen"
 
 msgctxt "@title:window"
 msgid "Rename Profile"
