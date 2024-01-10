@@ -1,0 +1,25 @@
+{
+    "name": "Artillery Sidewinder X3 Plus",
+    "version": 2,
+    "inherits": "artillery_base",
+    "overrides": {
+        "machine_name": { "default_value": "Artillery Sidewinder X3 Plus" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "gantry_height": { "value": 400 },
+        "machine_start_gcode": { "default_value": "G12 C2\nG92 E0 ; reset extruder\nG28 Z\nG1 Z1.0 F3000 ; move z up little to prevent scratching of surface\nG1 X2 Y20 Z0.3 F5000.0 ; move to start-line position\nG1 X2 Y200.0 Z0.3 F1500.0 E15 ; draw 1st line\nG1 X2 Y200.0 Z0.4 F5000.0 ; move to side a little\nG1 X2 Y20 Z0.4 F1500.0 E30 ; draw 2nd line\nG92 E0 ;\nG1 Z1.0 F3000;"},
+        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
+        "initial_layer_line_width_factor": { "value": 125 },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "acceleration_enabled": { "value": false },
+        "jerk_enabled": { "value": false },
+        "coasting_enable": { "value": true }
+
+    },
+    "metadata": {
+        "quality_definition": "artillery_base",
+        "visible": true
+    }
+}
