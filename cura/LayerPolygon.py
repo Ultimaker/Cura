@@ -67,7 +67,7 @@ class LayerPolygon:
         # Buffering the colors shouldn't be necessary as it is not
         # re-used and can save a lot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
-        self._colors = self._color_map[self._types]  # type: numpy.ndarray
+        self._colors: numpy.ndarray = self._color_map[self._types]
 
         # When type is used as index returns true if type == LayerPolygon.InfillType
         # or type == LayerPolygon.SkinType
@@ -75,8 +75,8 @@ class LayerPolygon:
         # Should be generated in better way, not hardcoded.
         self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype=bool)
 
-        self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
-        self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
+        self._build_cache_line_mesh_mask: Optional[numpy.ndarray] = None
+        self._build_cache_needed_points: Optional[numpy.ndarray] = None
 
     def buildCache(self) -> None:
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
