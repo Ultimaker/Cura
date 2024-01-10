@@ -266,6 +266,10 @@ app = UMBUNDLE(
         'CFBundlePackageType': 'APPL',
         'CFBundleVersionString': {{ version }},
         'CFBundleShortVersionString': {{ short_version }},
+        'CFBundleURLTypes': [{
+                'CFBundleURLName': '{{ display_name }}',
+                'CFBundleURLSchemes': ['cura', 'slicer'],
+        }],
         'CFBundleDocumentTypes': [{
                 'CFBundleTypeRole': 'Viewer',
                 'CFBundleTypeExtensions': ['*'],

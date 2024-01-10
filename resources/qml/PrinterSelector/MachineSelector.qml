@@ -11,7 +11,7 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property Cura.MachineManager machineManager
+    property var machineManager: Cura.MachineManager
     property bool isNetworkPrinter: machineManager.activeMachineHasNetworkConnection
     property bool isConnectedCloudPrinter: machineManager.activeMachineHasCloudConnection
     property bool isCloudRegistered: machineManager.activeMachineHasCloudRegistration
@@ -107,6 +107,7 @@ Cura.ExpandablePopup
             {
                 return UM.Theme.getIcon("Printer", "medium")
             }
+
             else
             {
                 return ""

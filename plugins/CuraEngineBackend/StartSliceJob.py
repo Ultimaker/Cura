@@ -1,5 +1,7 @@
 #  Copyright (c) 2023 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
+import uuid
+
 import os
 
 import numpy
@@ -30,6 +32,7 @@ from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.CuraVersion import CuraVersion
 
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
@@ -331,6 +334,11 @@ class StartSliceJob(Job):
 
         self._buildGlobalSettingsMessage(stack)
         self._buildGlobalInheritsStackMessage(stack)
+
+        user_id = uuid.getnode()  # On all of Cura's supported platforms, this returns the MAC address which is pseudonymical information (!= anonymous).
+        user_id %= 2 ** 16  # So to make it anonymous, apply a bitmask selecting only the last 16 bits. This prevents it from being traceable to a specific user but still gives somewhat of an idea of whether it's just the same user hitting the same crash over and over again, or if it's widespread.
+        self._slice_message.sentry_id = f"{user_id}"
+        self._slice_message.cura_version = CuraVersion
 
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:
