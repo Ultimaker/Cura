@@ -22,7 +22,7 @@ Item
     id: base
 
     implicitWidth: 200 * screenScaleFactor
-    height: header.contentShown ? (header.height + contentRectangle.height) : header.height
+    implicitHeight: contentShown ? (header.height + contentRectangle.implicitHeight) : header.height
 
     property var contentComponent: null
     property alias contentItem: contentLoader.item
@@ -56,12 +56,14 @@ Item
     Cura.RoundedRectangle
     {
         id: contentRectangle
+        anchors.top: header.bottom
         // Move up a bit (exactly the width of the border) to avoid double line
-        y: header.height - UM.Theme.getSize("default_lining").width
+        anchors.topMargin: -UM.Theme.getSize("default_lining").width
         anchors.left: header.left
         anchors.right: header.right
+        anchors.bottom: parent.bottom
         // Add 2x lining, because it needs a bit of space on the top and the bottom.
-        height: contentLoader.item ? contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height : 0
+        anchors.bottomMargin: UM.Theme.getSize("thick_lining").height
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -73,9 +75,7 @@ Item
         Loader
         {
             id: contentLoader
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.fill: parent
             // Keep a small margin with the Rectangle container so its content will not overlap with the Rectangle
             // border.
             anchors.margins: UM.Theme.getSize("default_lining").width

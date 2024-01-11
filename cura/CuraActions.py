@@ -1,15 +1,18 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import QObject, QUrl
-from PyQt6.QtGui import QDesktopServices
 from typing import List, cast
+
+from PyQt6.QtCore import QObject, QUrl, QMimeData
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QApplication
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
 from UM.Operations.TranslateOperation import TranslateOperation
@@ -19,6 +22,10 @@ from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
+
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
+
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
@@ -78,16 +85,25 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
-
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
+        """Multiply all objects in the selection
+        :param count: The number of times to multiply the selection.
+        """
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job.start()
+
+    @pyqtSlot(int)
+    def multiplySelectionToGrid(self, count: int) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
+                                 grid_arrange=True)
         job.start()
 
     @pyqtSlot()
@@ -180,6 +196,61 @@ class CuraActions(QObject):
         operation.push()
 
         Selection.clear()
+
+    @pyqtSlot()
+    def cut(self) -> None:
+        self.copy()
+        self.deleteSelection()
+
+    @pyqtSlot()
+    def copy(self) -> None:
+        mesh_writer = cura.CuraApplication.CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        if not mesh_writer:
+            Logger.log("e", "No 3MF writer found, unable to copy.")
+            return
+
+        # Get the selected nodes
+        selected_objects = Selection.getAllSelectedObjects()
+        # Serialize the nodes to a string
+        scene_string = mesh_writer.sceneNodesToString(selected_objects)
+        # Put the string on the clipboard
+        QApplication.clipboard().setText(scene_string)
+
+    @pyqtSlot()
+    def paste(self) -> None:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        mesh_reader = application.getMeshFileHandler().getReaderForFile(".3mf")
+        if not mesh_reader:
+            Logger.log("e", "No 3MF reader found, unable to paste.")
+            return
+
+        # Parse the scene from the clipboard
+        scene_string = QApplication.clipboard().text()
+
+        nodes = mesh_reader.stringToSceneNodes(scene_string)
+
+        if not nodes:
+            # Nothing to paste
+            return
+
+        # Find all fixed nodes, these are the nodes that should be avoided when arranging
+        fixed_nodes = []
+        root = application.getController().getScene().getRoot()
+        for node in DepthFirstIterator(root):
+            # Only count sliceable objects
+            if node.callDecoration("isSliceable"):
+                fixed_nodes.append(node)
+        # Add the new nodes to the scene, and arrange them
+
+        arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene = True)
+        group_operation.push()
+
+        # deselect currently selected nodes, and select the new nodes
+        for node in Selection.getAllSelectedObjects():
+            Selection.remove(node)
+        for node in nodes:
+            Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)

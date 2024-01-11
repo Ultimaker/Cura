@@ -17,7 +17,7 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "value": "true" },
+        "acceleration_enabled": { "value": "True" },
         "acceleration_infill": { "maximum_value_warning": "2500" },
         "acceleration_layer_0": { "maximum_value_warning": "2500" },
         "acceleration_prime_tower": { "maximum_value_warning": "2500" },
@@ -112,7 +112,6 @@
         "support_interface_density": { "value": 33.333 },
         "support_interface_enable": { "value": true },
         "support_interface_pattern": { "value": "'grid'" },
-        "support_interface_skip_height": { "value": 0.2 },
         "support_roof_enable": { "value": true },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
