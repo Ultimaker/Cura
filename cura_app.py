@@ -15,13 +15,12 @@ if "" in sys.path:
 import argparse
 import faulthandler
 import os
+
+# try converting to integer
+os.environ["QT_QUICK_FLICKABLE_WHEEL_DECELERATION"] = str(int(os.environ.get("QT_QUICK_FLICKABLE_WHEEL_DECELERATION", "5000")))
+
 if sys.platform != "linux":  # Turns out the Linux build _does_ use this, but we're not making an Enterprise release for that system anyway.
     os.environ["QT_PLUGIN_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
-    try:
-        # try converting to integer
-        os.environ["QT_QUICK_FLICKABLE_WHEEL_DECELERATION"] = str(int(os.environ["QT_QUICK_FLICKABLE_WHEEL_DECELERATION"]))
-    except ValueError:
-        os.environ["QT_QUICK_FLICKABLE_WHEEL_DECELERATION"] = "5000"
     os.environ["QML2_IMPORT_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
     os.environ["QT_OPENGL_DLL"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
 
