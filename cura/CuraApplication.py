@@ -1214,7 +1214,7 @@ class CuraApplication(QtApplication):
     def getSimpleModeSettingsManagerWrapper(self, *args, **kwargs):
         return self.getSimpleModeSettingsManager()
 
-    @deprecated("MachineActionManager is deprecated and will be removed in major SDK release, Use getMachineActionManager() instead", since="5.7.0")
+    @deprecated("MachineActionManager is deprecated and will be removed in major SDK release, Use getMachineActionManagerQml() instead", since="5.7.0")
     def getMachineActionManagerWrapper(self, *args, **kwargs):
         return self.getMachineActionManager()
 
