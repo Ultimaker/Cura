@@ -518,7 +518,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.cloud_api_version
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
-        self.options.rm_safe("enable_i18n")
+        if self.options.get_safe("enable_i18n", False):
+            del self.info.options.enable_i18n
 
         # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
         #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't
