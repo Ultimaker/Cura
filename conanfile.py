@@ -336,6 +336,7 @@ class CuraConan(ConanFile):
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("clipper/6.4.2@ultimaker/cura_11482")  # TODO: change channel to `testing` once merged
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
