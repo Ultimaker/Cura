@@ -164,6 +164,7 @@ class CuraEngineBackend(QObject, Backend):
 
         application.getPreferences().addPreference("general/auto_slice", False)
         application.getPreferences().addPreference("info/send_engine_crash", True)
+        application.getPreferences().addPreference("info/anonymous_engine_crash_report", True)
 
         self._use_timer: bool = False
 
@@ -198,6 +199,7 @@ class CuraEngineBackend(QObject, Backend):
 
         # Ensure that the initial value for send_engine_crash is handled correctly.
         application.callLater(self._onPreferencesChanged, "info/send_engine_crash")
+        application.callLater(self._onPreferencesChanged, "info/anonymous_engine_crash_report")
 
     def startPlugins(self) -> None:
         """
@@ -1094,14 +1096,18 @@ class CuraEngineBackend(QObject, Backend):
             self._change_timer.timeout.disconnect(self.slice)
 
     def _onPreferencesChanged(self, preference: str) -> None:
-        if preference != "general/auto_slice" and preference != "info/send_engine_crash":
+        if preference != "general/auto_slice" and preference != "info/send_engine_crash" and preference != "info/anonymous_engine_crash_report":
             return
         if preference == "general/auto_slice":
             auto_slice = self.determineAutoSlicing()
             if auto_slice:
                 self._change_timer.start()
         elif preference == "info/send_engine_crash":
-            os.environ["use_sentry"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
+            os.environ["USE_SENTRY"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
+        elif preference == "info/anonymous_engine_crash_report":
+            account = CuraApplication.getInstance().getCuraAPI().account
+            if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
+               os.environ["CURAENGINE_SENTRY_USER"] = account.userName
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""

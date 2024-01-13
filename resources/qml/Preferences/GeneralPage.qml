@@ -124,6 +124,9 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("info/send_engine_crash")
         sendEngineCrashCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
 
+        UM.Preferences.resetPreference("info/anonymous_engine_crash_report")
+        sendEngineCrashCheckboxAnonymous.checked = boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
 
@@ -859,11 +862,12 @@ UM.PreferencesPage
                 font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+                text: catalog.i18nc("@info:tooltip", "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission.")
 
                 UM.CheckBox
                 {
@@ -871,6 +875,47 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check","Send (anonymous) engine crash reports")
                     checked: boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
                     onCheckedChanged: UM.Preferences.setValue("info/send_engine_crash", checked)
+                }
+            }
+
+            ButtonGroup
+            {
+                id: curaCrashGroup
+                buttons: [sendEngineCrashCheckboxAnonymous, sendEngineCrashCheckboxUser]
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                visible: Cura.API.account.isLoggedIn
+                text: catalog.i18nc("@info:tooltip", "Send crash reports without any personally identifiable information or models data to UltiMaker.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxAnonymous
+                    text: catalog.i18nc("@option:radio", "Anonymous crash reports")
+                    enabled: sendEngineCrashCheckbox.checked
+                    checked: boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", true)
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                visible: Cura.API.account.isLoggedIn
+                text: catalog.i18nc("@info:tooltip", "Send crash reports with your registered UltiMaker account email adress to UltiMaker. No model data is being send.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxUser
+                    text: catalog.i18nc("@option:radio", "Crash reports with email adress")
+                    enabled: sendEngineCrashCheckbox.checked
+                    checked: !boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report")) && Cura.API.account.isLoggedIn
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", false)
                 }
             }
 
