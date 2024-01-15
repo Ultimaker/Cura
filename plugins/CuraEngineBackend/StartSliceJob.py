@@ -340,6 +340,11 @@ class StartSliceJob(Job):
         self._slice_message.sentry_id = f"{user_id}"
         self._slice_message.cura_version = CuraVersion
 
+        # Add the project name to the message if the user allows for non-anonymous crash data collection.
+        account = CuraApplication.getInstance().getCuraAPI().account
+        if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
+            self._slice_message.project_name = CuraApplication.getInstance().getPrintInformation().baseName
+
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)

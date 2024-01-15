@@ -35,6 +35,7 @@ message Slice
     repeated EnginePlugin engine_plugins = 5;
     string sentry_id = 6; // The anonymized Sentry user id that requested the slice
     string cura_version = 7; // The version of Cura that requested the slice
+    optional string project_name = 8; // The name of the project that requested the slice
 }
 
 message Extruder

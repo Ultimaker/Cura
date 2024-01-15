@@ -906,13 +906,13 @@ UM.PreferencesPage
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 visible: Cura.API.account.isLoggedIn
-                text: catalog.i18nc("@info:tooltip", "Send crash reports with your registered UltiMaker account email adress to UltiMaker. No model data is being send.")
+                text: catalog.i18nc("@info:tooltip", "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send.")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 Cura.RadioButton
                 {
                     id: sendEngineCrashCheckboxUser
-                    text: catalog.i18nc("@option:radio", "Crash reports with email adress")
+                    text: catalog.i18nc("@option:radio", "Send crash reports with UltiMaker account name")
                     enabled: sendEngineCrashCheckbox.checked
                     checked: !boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report")) && Cura.API.account.isLoggedIn
                     onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", false)
