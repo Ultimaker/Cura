@@ -6789,8 +6789,8 @@
                     "options":
                     {
                         "none": "None",
-                        "optimized_consistent": "Bucket",
-                        "optimized": "Sparse"
+                        "bucket": "Bucket",
+                        "sparse": "Sparse"
                     },
                     "default_value": "none",
                     "enabled": "extruders_enabled_count > 1",
@@ -6835,7 +6835,7 @@
                     "default_value": 5,
                     "minimum_value": "line_width",
                     "maximum_value_warning": "10.0",
-                    "enabled": "resolveOrValue('prime_tower_mode') == 'optimized' or resolveOrValue('prime_tower_mode') == 'optimized_consistent'",
+                    "enabled": "resolveOrValue('prime_tower_mode') == 'sparse' or resolveOrValue('prime_tower_mode') == 'bucket'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
