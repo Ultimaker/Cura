@@ -109,10 +109,10 @@ class GcodeStartEndFormatter(Formatter):
                 extruder_nr = self._all_extruder_settings["-1"].get(extruder_nr_expr, "-1")
 
         if extruder_nr in self._all_extruder_settings:
-            additional_variables = self._all_extruder_settings[extruder_nr]
+            additional_variables = self._all_extruder_settings[extruder_nr].copy()
         else:
             Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
-            additional_variables = self._all_extruder_settings["-1"]
+            additional_variables = self._all_extruder_settings["-1"].copy()
 
         # Add the arguments and keyword arguments to the additional settings. These
         # are currently _not_ used, but they are added for consistency with the
