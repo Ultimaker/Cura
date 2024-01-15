@@ -344,6 +344,7 @@ class StartSliceJob(Job):
         account = CuraApplication.getInstance().getCuraAPI().account
         if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
             self._slice_message.project_name = CuraApplication.getInstance().getPrintInformation().baseName
+            self._slice_message.user_name = account.userName
 
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:

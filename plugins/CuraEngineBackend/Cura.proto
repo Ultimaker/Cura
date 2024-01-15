@@ -36,6 +36,7 @@ message Slice
     string sentry_id = 6; // The anonymized Sentry user id that requested the slice
     string cura_version = 7; // The version of Cura that requested the slice
     optional string project_name = 8; // The name of the project that requested the slice
+    optional string user_name = 9; // The Digital Factory account name of the user that requested the slice
 }
 
 message Extruder
