@@ -334,7 +334,7 @@ class CuraConan(ConanFile):
         if self._internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
-        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("cpython/3.10.4@ultimaker/cura_11544")  # FIXME: once merged to main
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
