@@ -1105,9 +1105,10 @@ class CuraEngineBackend(QObject, Backend):
         elif preference == "info/send_engine_crash":
             os.environ["USE_SENTRY"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
         elif preference == "info/anonymous_engine_crash_report":
-            account = CuraApplication.getInstance().getCuraAPI().account
-            if account and account.isLoggedIn and not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
-               os.environ["CURAENGINE_SENTRY_USER"] = account.userName
+            if not CuraApplication.getInstance().getPreferences().getValue("info/anonymous_engine_crash_report"):
+                account = CuraApplication.getInstance().getCuraAPI().account
+                if account and account.isLoggedIn:
+                    os.environ["CURAENGINE_SENTRY_USER"] = account.userName
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""
