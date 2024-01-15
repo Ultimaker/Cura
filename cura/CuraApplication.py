@@ -15,13 +15,13 @@ import numpy
 from PyQt6.QtCore import QObject, QTimer, QUrl, QUrlQuery, pyqtSignal, pyqtProperty, QEvent, pyqtEnum, QCoreApplication, \
     QByteArray
 from PyQt6.QtGui import QColor, QIcon
-from PyQt6.QtQml import qmlRegisterUncreatableType, qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
+from PyQt6.QtQml import qmlRegisterUncreatableMetaObject, qmlRegisterSingletonType, qmlRegisterType
 from PyQt6.QtWidgets import QMessageBox
 
 import UM.Util
 import cura.Settings.cura_empty_instance_containers
 from UM.Application import Application
-from UM.Decorators import override
+from UM.Decorators import override, deprecated
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -191,7 +191,7 @@ class CuraApplication(QtApplication):
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
         self.empty_variant_container = None  # type: EmptyInstanceContainer
-        self.empty_intent_container = None  # type: EmptyInstanceContainer 
+        self.empty_intent_container = None  # type: EmptyInstanceContainer
         self.empty_material_container = None  # type: EmptyInstanceContainer
         self.empty_quality_container = None  # type: EmptyInstanceContainer
         self.empty_quality_changes_container = None  # type: EmptyInstanceContainer
@@ -1139,6 +1139,10 @@ class CuraApplication(QtApplication):
         return cast(MachineActionManager.MachineActionManager, self._machine_action_manager)
 
     @pyqtSlot(result = QObject)
+    def getMachineActionManagerQml(self)-> MachineActionManager.MachineActionManager:
+        return cast(QObject, self._machine_action_manager)
+
+    @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self) -> MaterialManagementModel:
         if not self._material_management_model:
             self._material_management_model = MaterialManagementModel(parent = self)
@@ -1150,7 +1154,8 @@ class CuraApplication(QtApplication):
             self._quality_management_model = QualityManagementModel(parent = self)
         return self._quality_management_model
 
-    def getSimpleModeSettingsManager(self, *args):
+    @pyqtSlot(result=QObject)
+    def getSimpleModeSettingsManager(self)-> SimpleModeSettingsManager:
         if self._simple_mode_settings_manager is None:
             self._simple_mode_settings_manager = SimpleModeSettingsManager()
         return self._simple_mode_settings_manager
@@ -1193,15 +1198,42 @@ class CuraApplication(QtApplication):
 
         return self._print_information
 
-    def getQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+    @pyqtSlot(result=QObject)
+    def getQualityProfilesDropDownMenuModel(self, *args, **kwargs)-> QualityProfilesDropDownMenuModel:
         if self._quality_profile_drop_down_menu_model is None:
             self._quality_profile_drop_down_menu_model = QualityProfilesDropDownMenuModel(self)
         return self._quality_profile_drop_down_menu_model
 
-    def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs):
+    @pyqtSlot(result=QObject)
+    def getCustomQualityProfilesDropDownMenuModel(self, *args, **kwargs)->CustomQualityProfilesDropDownMenuModel:
         if self._custom_quality_profile_drop_down_menu_model is None:
             self._custom_quality_profile_drop_down_menu_model = CustomQualityProfilesDropDownMenuModel(self)
         return self._custom_quality_profile_drop_down_menu_model
+
+    @deprecated("SimpleModeSettingsManager is deprecated and will be removed in major SDK release, Use getSimpleModeSettingsManager() instead", since = "5.7.0")
+    def getSimpleModeSettingsManagerWrapper(self, *args, **kwargs):
+        return self.getSimpleModeSettingsManager()
+
+    @deprecated("MachineActionManager is deprecated and will be removed in major SDK release, Use getMachineActionManager() instead", since="5.7.0")
+    def getMachineActionManagerWrapper(self, *args, **kwargs):
+        return self.getMachineActionManager()
+
+    @deprecated("QualityManagementModel is deprecated and will be removed in major SDK release, Use getQualityManagementModel() instead", since="5.7.0")
+    def getQualityManagementModelWrapper(self, *args, **kwargs):
+        return self.getQualityManagementModel()
+
+    @deprecated("MaterialManagementModel is deprecated and will be removed in major SDK release, Use getMaterialManagementModel() instead", since = "5.7.0")
+    def getMaterialManagementModelWrapper(self, *args, **kwargs):
+        return self.getMaterialManagementModel()
+
+    @deprecated("QualityProfilesDropDownMenuModel is deprecated and will be removed in major SDK release, Use getQualityProfilesDropDownMenuModel() instead", since = "5.7.0")
+    def getQualityProfilesDropDownMenuModelWrapper(self, *args, **kwargs):
+        return self.getQualityProfilesDropDownMenuModel()
+
+    @deprecated("CustomQualityProfilesDropDownMenuModel is deprecated and will be removed in major SDK release, Use getCustomQualityProfilesDropDownMenuModel() instead", since = "5.7.0")
+    def getCustomQualityProfilesDropDownMenuModelWrapper(self,  *args, **kwargs):
+        return self.getCustomQualityProfilesDropDownMenuModel()
+
 
     def getCuraAPI(self, *args, **kwargs) -> "CuraAPI":
         return self._cura_API
@@ -1231,8 +1263,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, self.getMachineManager, "MachineManager")
         qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, self.getIntentManager, "IntentManager")
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, self.getSettingInheritanceManager, "SettingInheritanceManager")
-        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManager, "SimpleModeSettingsManager")
-        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, self.getMachineActionManager, "MachineActionManager")
+        qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManagerWrapper, "SimpleModeSettingsManager")
+        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, self.getMachineActionManagerWrapper, "MachineActionManager")
 
         self.processEvents()
         qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
@@ -1257,16 +1289,14 @@ class CuraApplication(QtApplication):
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
-        qmlRegisterSingletonType(QualityManagementModel, "Cura", 1, 0, self.getQualityManagementModel, "QualityManagementModel")
-        qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, self.getMaterialManagementModel, "MaterialManagementModel")
+        qmlRegisterSingletonType(QualityManagementModel, "Cura", 1, 0, self.getQualityManagementModelWrapper,"QualityManagementModel")
+        qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, self.getMaterialManagementModelWrapper,"MaterialManagementModel")
 
         self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
         qmlRegisterType(DiscoveredCloudPrintersModel, "Cura", 1, 7, "DiscoveredCloudPrintersModel")
-        qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
-                                 self.getQualityProfilesDropDownMenuModel, "QualityProfilesDropDownMenuModel")
-        qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
-                                 self.getCustomQualityProfilesDropDownMenuModel, "CustomQualityProfilesDropDownMenuModel")
+        qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0, self.getQualityProfilesDropDownMenuModelWrapper, "QualityProfilesDropDownMenuModel")
+        qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0, self.getCustomQualityProfilesDropDownMenuModelWrapper, "CustomQualityProfilesDropDownMenuModel")
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
