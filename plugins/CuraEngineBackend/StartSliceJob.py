@@ -111,6 +111,7 @@ class GcodeStartEndFormatter(Formatter):
         if extruder_nr in self._all_extruder_settings:
             additional_variables = self._all_extruder_settings[extruder_nr]
         else:
+            Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
             additional_variables = self._all_extruder_settings["-1"]
 
         # Add the arguments and keyword arguments to the additional settings. These
@@ -125,6 +126,9 @@ class GcodeStartEndFormatter(Formatter):
             container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         else:
             container_stack = ExtruderManager.getInstance().getExtruderStack(extruder_nr)
+            if not container_stack:
+                Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
+                container_stack = CuraApplication.getInstance().getGlobalContainerStack()
 
         setting_function = SettingFunction(expression)
         value = setting_function(container_stack, additional_variables=additional_variables)
