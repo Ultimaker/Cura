@@ -1,4 +1,4 @@
-#  Copyright (c) 2023 UltiMaker
+#  Copyright (c) 2024 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 import uuid
 
@@ -63,13 +63,12 @@ class GcodeStartEndFormatter(Formatter):
     # will be used. Alternatively, if the expression is formatted as "{[expression], [extruder_nr]}",
     # then the expression will be evaluated with the extruder stack of the specified extruder_nr.
 
-    _extruder_regex = re.compile(r"^\s*(?P<expression>.*)\s*,\s*(?P<extruder_nr>\d+)\s*$")
+    _extruder_regex = re.compile(r"^\s*(?P<expression>.*)\s*,\s*(?P<extruder_nr_expr>.*)\s*$")
 
-    def __init__(self, default_extruder_nr: int = -1, *,
-                 additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = None) -> None:
+    def __init__(self, all_extruder_settings: Dict[str, Any], default_extruder_nr: int = -1) -> None:
         super().__init__()
+        self._all_extruder_settings: Dict[str, Any] = all_extruder_settings
         self._default_extruder_nr: int = default_extruder_nr
-        self._additional_per_extruder_settings: Optional[Dict[str, Dict[str, any]]] = additional_per_extruder_settings
 
     def get_field(self, field_name, args: [str], kwargs: dict) -> Tuple[str, str]:
         # get_field method parses all fields in the format-string and parses them individually to the get_value method.
@@ -88,22 +87,32 @@ class GcodeStartEndFormatter(Formatter):
         if expression in post_slice_data_variables:
             return f"{{{expression}}}"
 
-        extruder_nr = self._default_extruder_nr
+        extruder_nr = str(self._default_extruder_nr)
 
         # The settings may specify a specific extruder to use. This is done by
-        # formatting the expression as "{expression}, {extruder_nr}". If the
+        # formatting the expression as "{expression}, {extruder_nr_expr}". If the
         # expression is formatted like this, we extract the extruder_nr and use
         # it to get the value from the correct extruder stack.
         match = self._extruder_regex.match(expression)
         if match:
             expression = match.group("expression")
-            extruder_nr = int(match.group("extruder_nr"))
+            extruder_nr_expr = match.group("extruder_nr_expr")
 
-        if self._additional_per_extruder_settings is not None and str(
-                extruder_nr) in self._additional_per_extruder_settings:
-            additional_variables = self._additional_per_extruder_settings[str(extruder_nr)]
+            if extruder_nr_expr.isdigit():
+                extruder_nr = extruder_nr_expr
+            else:
+                # We get the value of the extruder_nr_expr from `_all_extruder_settings` dictionary
+                # rather than the global container stack. The `_all_extruder_settings["-1"]` is a
+                # dict-representation of the global container stack, with additional properties such
+                # as `initial_extruder_nr`. As users may enter such expressions we can't use the
+                # global container stack.
+                extruder_nr = str(self._all_extruder_settings["-1"].get(extruder_nr_expr, "-1"))
+
+        if extruder_nr in self._all_extruder_settings:
+            additional_variables = self._all_extruder_settings[extruder_nr].copy()
         else:
-            additional_variables = dict()
+            Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
+            additional_variables = self._all_extruder_settings["-1"].copy()
 
         # Add the arguments and keyword arguments to the additional settings. These
         # are currently _not_ used, but they are added for consistency with the
@@ -113,14 +122,16 @@ class GcodeStartEndFormatter(Formatter):
         for key, value in kwargs.items():
             additional_variables[key] = value
 
-        if extruder_nr == -1:
+        if extruder_nr == "-1":
             container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         else:
             container_stack = ExtruderManager.getInstance().getExtruderStack(extruder_nr)
+            if not container_stack:
+                Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
+                container_stack = CuraApplication.getInstance().getGlobalContainerStack()
 
         setting_function = SettingFunction(expression)
         value = setting_function(container_stack, additional_variables=additional_variables)
-
 
         return value
 
@@ -131,12 +142,13 @@ class StartSliceJob(Job):
     def __init__(self, slice_message: Arcus.PythonMessage) -> None:
         super().__init__()
 
-        self._scene = CuraApplication.getInstance().getController().getScene() #type: Scene
+        self._scene: Scene = CuraApplication.getInstance().getController().getScene()
         self._slice_message: Arcus.PythonMessage = slice_message
-        self._is_cancelled = False #type: bool
-        self._build_plate_number = None #type: Optional[int]
+        self._is_cancelled: bool = False
+        self._build_plate_number: Optional[int] = None
 
-        self._all_extruders_settings = None #type: Optional[Dict[str, Any]] # cache for all setting values from all stacks (global & extruder) for the current machine
+        # cache for all setting values from all stacks (global & extruder) for the current machine
+        self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
     def getSliceMessage(self) -> Arcus.PythonMessage:
         return self._slice_message
@@ -471,10 +483,7 @@ class StartSliceJob(Job):
             # Get "replacement-keys" for the extruders. In the formatter the settings stack is used to get the
             # replacement values for the setting-keys. However, the values for `material_id`, `material_type`,
             # etc are not in the settings stack.
-            additional_per_extruder_settings = self._all_extruders_settings.copy()
-            additional_per_extruder_settings["default_extruder_nr"] = default_extruder_nr
-            fmt = GcodeStartEndFormatter(default_extruder_nr=default_extruder_nr,
-                                         additional_per_extruder_settings=additional_per_extruder_settings)
+            fmt = GcodeStartEndFormatter(self._all_extruders_settings, default_extruder_nr=default_extruder_nr)
             return str(fmt.format(value))
         except:
             Logger.logException("w", "Unable to do token replacement on start/end g-code")
