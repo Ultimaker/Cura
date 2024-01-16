@@ -106,7 +106,7 @@ class GcodeStartEndFormatter(Formatter):
                 # dict-representation of the global container stack, with additional properties such
                 # as `initial_extruder_nr`. As users may enter such expressions we can't use the
                 # global container stack.
-                extruder_nr = self._all_extruder_settings["-1"].get(extruder_nr_expr, "-1")
+                extruder_nr = str(self._all_extruder_settings["-1"].get(extruder_nr_expr, "-1"))
 
         if extruder_nr in self._all_extruder_settings:
             additional_variables = self._all_extruder_settings[extruder_nr].copy()
