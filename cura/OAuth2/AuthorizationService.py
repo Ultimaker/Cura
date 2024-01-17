@@ -34,7 +34,7 @@ class AuthorizationService:
     def __init__(self,
                  settings: "OAuth2Settings",
                  preferences: Optional["Preferences"] = None,
-                 get_user_profile: bool = True) -> None:
+                 callback_auth_data_retrieved: Callable[[], None] = None) -> None:
         # Emit signal when authentication is completed.
         self.onAuthStateChanged = Signal()
 
@@ -48,7 +48,7 @@ class AuthorizationService:
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
         self._auth_data: Optional[AuthenticationResponse] = None
         self._user_profile: Optional["UserProfile"] = None
-        self._get_user_profile: bool = get_user_profile
+        self._callback_auth_data_retrieved = self.getUserProfile if callback_auth_data_retrieved is None else callback_auth_data_retrieved
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
         self._currently_refreshing_token = False  # Whether we are currently in the process of refreshing auth. Don't make new requests while busy.
@@ -298,8 +298,7 @@ class AuthorizationService:
         self._auth_data = auth_data
         self._currently_refreshing_token = False
         if auth_data:
-            if self._get_user_profile:
-                self.getUserProfile()
+            self._callback_auth_data_retrieved()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             Logger.log("d", "Clearing the user profile")
