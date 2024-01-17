@@ -5423,20 +5423,6 @@
                         }
                     }
                 },
-                "support_interface_skip_height":
-                {
-                    "label": "Support Interface Resolution",
-                    "description": "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.2,
-                    "value": "layer_height",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "support_interface_height",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": true
-                },
                 "support_interface_density":
                 {
                     "label": "Support Interface Density",
