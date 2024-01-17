@@ -99,7 +99,7 @@
         "acceleration_print":
         {
             "enabled": false,
-            "value": 300
+            "value": 800
         },
         "acceleration_print_layer_0":
         {
@@ -234,7 +234,7 @@
         "jerk_print":
         {
             "enabled": false,
-            "value": 12.5
+            "value": 6.25
         },
         "jerk_print_layer_0":
         {
@@ -279,7 +279,7 @@
         "jerk_travel":
         {
             "enabled": false,
-            "value": 12.5
+            "value": "jerk_print"
         },
         "jerk_travel_enabled":
         {
