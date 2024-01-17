@@ -6,7 +6,6 @@ requirements:
   - "fdm_materials/(latest)@ultimaker/testing"
   - "curaengine_plugin_gradual_flow/(latest)@ultimaker/stable"
   - "dulcificum/latest@ultimaker/testing"
-  - "pyarcus/5.3.0"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
   - "curaengine_grpc_definitions/(latest)@ultimaker/testing"
