@@ -164,6 +164,7 @@ class CuraEngineBackend(QObject, Backend):
 
         application.getPreferences().addPreference("general/auto_slice", False)
         application.getPreferences().addPreference("info/send_engine_crash", True)
+        application.getPreferences().addPreference("info/anonymous_engine_crash_report", True)
 
         self._use_timer: bool = False
 
@@ -1094,14 +1095,14 @@ class CuraEngineBackend(QObject, Backend):
             self._change_timer.timeout.disconnect(self.slice)
 
     def _onPreferencesChanged(self, preference: str) -> None:
-        if preference != "general/auto_slice" and preference != "info/send_engine_crash":
+        if preference != "general/auto_slice" and preference != "info/send_engine_crash" and preference != "info/anonymous_engine_crash_report":
             return
         if preference == "general/auto_slice":
             auto_slice = self.determineAutoSlicing()
             if auto_slice:
                 self._change_timer.start()
         elif preference == "info/send_engine_crash":
-            os.environ["use_sentry"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
+            os.environ["USE_SENTRY"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""

@@ -242,7 +242,7 @@ class CuraConan(ConanFile):
                 self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
 
-            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.|.pdb]*"):
+            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
             for bin in Path(src_path).glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
@@ -320,6 +320,8 @@ class CuraConan(ConanFile):
             self.options["openssl"].shared = True
         if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
             self.options["curaengine"].enable_sentry = True
+            self.options["arcus"].enable_sentry = True
+            self.options["clipper"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -335,6 +337,7 @@ class CuraConan(ConanFile):
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("clipper/6.4.2@ultimaker/stable")
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
