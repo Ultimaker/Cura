@@ -1,6 +1,6 @@
 pytest
-pyinstaller==5.8.0
+pyinstaller
 pyinstaller-hooks-contrib
 pyyaml
-sip==6.5.1
+sip>=6.8.1
 jinja2
