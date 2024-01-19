@@ -262,6 +262,10 @@ class CuraConan(ConanFile):
         # Collect all dll's from PyQt6 and place them in the root
         binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6").glob("**/*.dll")])
 
+        # Collect all Qt6 libs for macOS and place them in the root
+        if self.settings.os == "Macos":
+            binaries.extend([(f"{p}", ".") for p in Path(self._site_packages, "PyQt6", "Qt6", "lib").glob("**/A/*")])
+
         with open(os.path.join(self.recipe_folder, "UltiMaker-Cura.spec.jinja"), "r") as f:
             pyinstaller = Template(f.read())
 
