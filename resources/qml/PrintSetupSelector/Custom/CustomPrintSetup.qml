@@ -160,7 +160,6 @@ Item
         ProfileWarningReset
         {
             id: profileWarningReset
-            width: childrenRect.width
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             fullWarning: false
