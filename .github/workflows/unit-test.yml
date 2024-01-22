@@ -59,3 +59,4 @@ jobs:
       unit_test_cmd: 'pytest --junitxml=junit_cura.xml'
       unit_test_dir: 'tests'
       conan_generator_dir: './venv/bin'
+    secrets: inherit

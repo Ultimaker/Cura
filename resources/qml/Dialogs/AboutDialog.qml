@@ -58,7 +58,7 @@ UM.Dialog
         UM.Label
         {
             id: version
-            text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
+            text: catalog.i18nc("@label","version: %1").arg(CuraApplication.version())
             font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("button_text")
             anchors.right : logo.right
