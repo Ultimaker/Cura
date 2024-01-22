@@ -8,5 +8,4 @@ jobs:
   add_label:
     uses: ultimaker/cura-workflows/.github/workflows/process-pull-request.yml@main
     secrets: inherit
-
-permissions: inherit
+    permissions: inherit
