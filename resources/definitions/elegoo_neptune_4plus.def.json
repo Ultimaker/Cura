@@ -18,7 +18,6 @@
     {
         "acceleration_print":
         {
-            "default_value": 4000,
             "value": 4000
         },
         "machine_acceleration": { "value": 4000 },

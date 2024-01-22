@@ -18,7 +18,6 @@
     {
         "acceleration_print":
         {
-            "default_value": 2500,
             "maximum_value_warning": "15000",
             "value": 2500
         },
