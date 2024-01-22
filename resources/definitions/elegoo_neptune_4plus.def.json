@@ -16,10 +16,7 @@
     },
     "overrides":
     {
-        "acceleration_print":
-        {
-            "value": 4000
-        },
+        "acceleration_print": { "value": 4000 },
         "machine_acceleration": { "value": 4000 },
         "machine_depth": { "default_value": 330 },
         "machine_height": { "default_value": 387 },
