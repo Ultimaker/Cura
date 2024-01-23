@@ -45,10 +45,20 @@ UM.Dialog
             anchors.centerIn: parent
         }
 
+        Image
+        {
+            id: enterpriseLogo
+            visible: CuraApplication.isEnterprise
+            source: UM.Theme.getImage("enterprise")
+            fillMode: Image.PreserveAspectFit
+
+            anchors.bottom: parent.bottom
+        }
+
         UM.Label
         {
             id: version
-            text: catalog.i18nc("@label","version: %1").arg(UM.Application.version)
+            text: catalog.i18nc("@label","version: %1").arg(CuraApplication.version())
             font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("button_text")
             anchors.right : logo.right

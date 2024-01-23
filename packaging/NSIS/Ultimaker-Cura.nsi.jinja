@@ -144,6 +144,23 @@ SectionEnd
 
 ######################################################################
 
+Section UrlProtocol
+
+WriteRegStr HKCR "cura" "" "URL:cura"
+WriteRegStr HKCR "cura" "URL Protocol" ""
+WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "cura\shell" "" "open"
+WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+WriteRegStr HKCR "slicer" "" "URL:slicer"
+WriteRegStr HKCR "slicer" "URL Protocol" ""
+WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "slicer\shell" "" "open"
+WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+SectionEnd
+######################################################################
+
 Section Uninstall
 ${INSTALL_TYPE}{% for files in mapped_out_paths.values() %}{% for file in files %}
 Delete "{{ file[1] }}"{% endfor %}{% endfor %}{% for rem_dir in rmdir_paths %}
@@ -187,8 +204,13 @@ RmDir "$SMPROGRAMS\{{ app_name }}"
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
 !insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
 
+; Unassociate file associations for 'cura' protocol
+DeleteRegKey HKCR "cura"
+
+; Unassociate file associations for 'slicer' protocol
+DeleteRegKey HKCR "slicer"
+
 DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
 DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
 SectionEnd
 
-######################################################################
