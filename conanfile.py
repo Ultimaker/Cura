@@ -420,7 +420,6 @@ class CuraConan(ConanFile):
             )
 
         if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
-            # Update the po and pot files
             vb = VirtualBuildEnv(self)
             vb.generate()
 
