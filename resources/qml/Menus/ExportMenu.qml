@@ -25,7 +25,7 @@ Cura.Menu
             {
                 var localDeviceId = "local_file"
                 var file_name = PrintInformation.jobName
-                var args = { "filter_by_machine": false, "limit_mimetypes": model.mime_type}
+                var args = { "filter_by_machine": false, "limit_mimetypes": [model.mime_type], "limit_modes": [model.mode]}
                 if(exportMenu.selectionOnly)
                 {
                     UM.OutputDeviceManager.requestWriteSelectionToDevice(localDeviceId, file_name, args)
