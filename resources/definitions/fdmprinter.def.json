@@ -963,7 +963,7 @@
                             "description": "Width of a single prime tower line.",
                             "type": "float",
                             "unit": "mm",
-                            "enabled": "resolveOrValue('prime_tower_enable')",
+                            "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                             "default_value": 0.4,
                             "value": "line_width",
                             "minimum_value": "0.001",
@@ -3347,7 +3347,7 @@
                             "description": "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal.",
                             "type": "float",
                             "unit": "mm/s",
-                            "enabled": "resolveOrValue('prime_tower_enable')",
+                            "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                             "default_value": 60,
                             "value": "speed_print",
                             "minimum_value": "0.1",
@@ -3725,7 +3725,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('acceleration_enabled')",
+                            "enabled": "resolveOrValue('prime_tower_mode') != 'none' and resolveOrValue('acceleration_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -4044,7 +4044,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('jerk_enabled')",
+                            "enabled": "resolveOrValue('prime_tower_mode') != 'none' and resolveOrValue('jerk_enabled')",
                             "settable_per_mesh": false
                         }
                     }
@@ -6766,14 +6766,20 @@
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
-                "prime_tower_enable":
+                "prime_tower_mode":
                 {
-                    "label": "Enable Prime Tower",
-                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
-                    "type": "bool",
+                    "label": "Prime Tower",
+                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Bucket:</b> generate a bucket in which secondary materials are primed</li><li><b>Sparse:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
+                    "type": "enum",
+                    "value": "'optimized' if all(material_type == extruderValues('material_type')[0] for material_type in extruderValues('material_type')) else 'optimized_consistent'",
+                    "options":
+                    {
+                        "none": "None",
+                        "bucket": "Bucket",
+                        "sparse": "Sparse"
+                    },
+                    "default_value": "none",
                     "enabled": "extruders_enabled_count > 1",
-                    "default_value": false,
-                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -6783,7 +6789,7 @@
                     "description": "The width of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                     "default_value": 20,
                     "resolve": "max(extruderValues('prime_tower_size'))",
                     "minimum_value": "0",
@@ -6802,7 +6808,20 @@
                     "default_value": 6,
                     "minimum_value": "0",
                     "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_tower_max_bridging_distance":
+                {
+                    "label": "Prime Tower Maximum Bridging Distance",
+                    "description": "The maximum length of the branches which may be printed over the air.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "line_width",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "resolveOrValue('prime_tower_mode') == 'sparse' or resolveOrValue('prime_tower_mode') == 'bucket'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -6812,7 +6831,7 @@
                     "description": "The x coordinate of the position of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                     "default_value": 200,
                     "value": "(resolveOrValue('machine_width') / 2 + resolveOrValue('prime_tower_size') / 2) if resolveOrValue('machine_shape') == 'elliptic' else (resolveOrValue('machine_width') - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_x')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_x'))), 1)) - (resolveOrValue('machine_width') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
                     "maximum_value": "(machine_width / 2 if machine_center_is_zero else machine_width) - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0)",
@@ -6826,7 +6845,7 @@
                     "description": "The y coordinate of the position of the prime tower.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                     "default_value": 200,
                     "value": "machine_depth - prime_tower_size - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_y')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (resolveOrValue('machine_depth') / 2 if resolveOrValue('machine_center_is_zero') else 0)",
                     "maximum_value": "(machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')) - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0)",
@@ -6839,7 +6858,7 @@
                     "label": "Wipe Inactive Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
                     "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
                     "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6850,7 +6869,7 @@
                     "label": "Prime Tower Base",
                     "description": "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height.",
                     "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') != 'raft'",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none' and resolveOrValue('adhesion_type') != 'raft'",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -6862,7 +6881,7 @@
                     "description": "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none' and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
                     "default_value": 1.2,
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
@@ -6876,7 +6895,7 @@
                     "description": "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base.",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none' and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
                     "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
@@ -6888,7 +6907,7 @@
                     "label": "Prime Tower Base Slope",
                     "description": "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
                     "type": "float",
-                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none' and (resolveOrValue('prime_tower_brim_enable') or resolveOrValue('adhesion_type') == 'raft')",
                     "default_value": 4,
                     "minimum_value": "0",
                     "maximum_value": "10",
@@ -6906,7 +6925,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "raft_base_line_width",
                     "maximum_value_warning": "100",
-                    "enabled": "resolveOrValue('prime_tower_enable') and resolveOrValue('adhesion_type') == 'raft'",
+                    "enabled": "resolveOrValue('prime_tower_mode') != 'none' and resolveOrValue('adhesion_type') == 'raft'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_base_extruder_nr"
