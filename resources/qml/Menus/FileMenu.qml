@@ -4,7 +4,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
 
-import UM 1.6 as UM
+import UM 1.7 as UM
 import Cura 1.0 as Cura
 
 Cura.Menu
@@ -72,24 +72,24 @@ Cura.Menu
 
     Cura.MenuSeparator { }
 
-    Cura.MenuItem
+    UM.MeshWritersModel { id: meshWritersModel }
+
+    ExportMenu
     {
-        id: saveAsMenu
-        text: catalog.i18nc("@title:menu menubar:file", "&Export...")
-        onTriggered:
-        {
-            var localDeviceId = "local_file"
-            UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
-        }
+        id: exportMenu
+        title: catalog.i18nc("@title:menu menubar:file", "&Export...")
+        model: meshWritersModel
+        shouldBeVisible: model.count > 0
     }
 
-    Cura.MenuItem
+    ExportMenu
     {
         id: exportSelectionMenu
-        text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
+        title: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
+        model: meshWritersModel
+        shouldBeVisible: model.count > 0
         enabled: UM.Selection.hasSelection
-        icon.name: "document-save-as"
-        onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
+        selectionOnly: true
     }
 
     Cura.MenuSeparator { }
