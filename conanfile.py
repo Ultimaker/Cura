@@ -163,8 +163,10 @@ class CuraConan(ConanFile):
     def _python_installs(self):
         python_installs = {}
 
+        python_executable = "python3" if self.settings.os == "Macos" else "python"
+
         # list of python installs
-        python_ins_cmd = f"python -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
+        python_ins_cmd = f"{python_executable} -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
         from six import StringIO
         buffer = StringIO()
         self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
