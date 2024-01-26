@@ -1,0 +1,8 @@
+{
+    "name": "Pre-Configured Batch Writer",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Provides support for writing Pre-Configured Batch files.",
+    "api": 8,
+    "i18n-catalog": "cura"
+}

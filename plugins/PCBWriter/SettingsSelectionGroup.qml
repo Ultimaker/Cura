@@ -1,0 +1,70 @@
+// Copyright (c) 2024 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
+
+import UM 1.5 as UM
+import Cura 1.1 as Cura
+import PCBWriter 1.0 as PCBWriter
+
+Column
+{
+    id: settingsGroup
+
+    UM.I18nCatalog { id: catalog; name: "cura" }
+
+    Row
+    {
+        id: settingsGroupTitleRow
+        spacing: UM.Theme.getSize("default_margin").width
+
+        Item
+        {
+            id: icon
+            anchors.verticalCenter: parent.verticalCenter
+            height: UM.Theme.getSize("medium_button_icon").height
+            width: height
+
+            UM.ColorImage
+            {
+                id: settingsMainImage
+                anchors.fill: parent
+                source:
+                {
+                    switch(modelData.category)
+                    {
+                        case PCBWriter.SettingsExportGroup.Global:
+                            return UM.Theme.getIcon("Sliders")
+                        case PCBWriter.SettingsExportGroup.Model:
+                            return UM.Theme.getIcon("View3D")
+                        default:
+                            return ""
+                    }
+                }
+
+                color: UM.Theme.getColor("text")
+            }
+
+            Cura.ExtruderIcon
+            {
+                id: settingsExtruderIcon
+                anchors.fill: parent
+                visible: modelData.category === PCBWriter.SettingsExportGroup.Extruder
+                text: (modelData.extruder_index + 1).toString()
+                font: UM.Theme.getFont("tiny_emphasis")
+                materialColor: modelData.extruder_color
+            }
+        }
+
+        UM.Label
+        {
+            id: settingsTitle
+            text: modelData.name + (modelData.category_details ? ' (%1)'.arg(modelData.category_details) : '')
+            anchors.verticalCenter: parent.verticalCenter
+            font: UM.Theme.getFont("default_bold")
+        }
+    }
+}
