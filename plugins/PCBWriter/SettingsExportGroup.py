@@ -20,15 +20,14 @@ class SettingsExportGroup(QObject):
         Extruder = 1
         Model = 2
 
-    def __init__(self, name, category, category_details = '', extruder_index = 0, extruder_color = ''):
+    def __init__(self, name, category, settings, category_details = '', extruder_index = 0, extruder_color = ''):
         super().__init__()
         self._name = name
-        self._settings = []
+        self._settings = settings
         self._category = category
         self._category_details = category_details
         self._extruder_index = extruder_index
         self._extruder_color = extruder_color
-        self._updateSettings()
 
     @pyqtProperty(str, constant=True)
     def name(self):
@@ -53,7 +52,3 @@ class SettingsExportGroup(QObject):
     @pyqtProperty(str, constant=True)
     def extruder_color(self):
         return self._extruder_color
-
-    def _updateSettings(self):
-        self._settings.append(SettingsExport())
-        self._settings.append(SettingsExport())

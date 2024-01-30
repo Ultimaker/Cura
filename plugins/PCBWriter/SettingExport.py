@@ -8,12 +8,12 @@ from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger
 
 
-class SettingsExport():
+class SettingsExport(QObject):
 
-    def __init__(self):
+    def __init__(self, name, value):
         super().__init__()
-        self._name = "Generate Support"
-        self._value = "Enabled"
+        self._name = name
+        self._value = value
 
     @pyqtProperty(str, constant=True)
     def name(self):

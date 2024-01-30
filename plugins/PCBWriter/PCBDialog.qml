@@ -69,7 +69,7 @@ UM.Dialog
             id: settingsExportList
             anchors.fill: parent
             anchors.margins: UM.Theme.getSize("default_margin").width
-            spacing: UM.Theme.getSize("default_margin").height
+            spacing: UM.Theme.getSize("thick_margin").height
             model: settingsExportModel.settingsGroups
             clip: true
 
@@ -77,21 +77,6 @@ UM.Dialog
 
             delegate: SettingsSelectionGroup { Layout.margins: 0 }
         }
-
-        // Flickable
-        // {
-        //     Column
-        //     {
-        //         width: parent.width - scrollbar.width - UM.Theme.getSize("default_margin").width
-        //         height: childrenRect.height
-        //
-        //         spacing: UM.Theme.getSize("default_margin").height
-        //         leftPadding: UM.Theme.getSize("default_margin").width
-        //         rightPadding: leftPadding
-        //         topPadding: UM.Theme.getSize("default_margin").height
-        //         bottomPadding: topPadding
-        //     }
-        // }
     }
 
     footerComponent: Rectangle

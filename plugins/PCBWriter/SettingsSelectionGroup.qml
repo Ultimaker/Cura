@@ -10,13 +10,12 @@ import UM 1.5 as UM
 import Cura 1.1 as Cura
 import PCBWriter 1.0 as PCBWriter
 
-Column
+ColumnLayout
 {
     id: settingsGroup
+    spacing: UM.Theme.getSize("narrow_margin").width
 
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
-    Row
+    RowLayout
     {
         id: settingsGroupTitleRow
         spacing: UM.Theme.getSize("default_margin").width
@@ -24,7 +23,6 @@ Column
         Item
         {
             id: icon
-            anchors.verticalCenter: parent.verticalCenter
             height: UM.Theme.getSize("medium_button_icon").height
             width: height
 
@@ -63,8 +61,27 @@ Column
         {
             id: settingsTitle
             text: modelData.name + (modelData.category_details ? ' (%1)'.arg(modelData.category_details) : '')
-            anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.getFont("default_bold")
         }
+    }
+
+    ListView
+    {
+        id: settingsExportList
+        Layout.fillWidth: true
+        Layout.preferredHeight: contentHeight
+        spacing: 0
+        model: modelData.settings
+        visible: modelData.settings.length > 0
+
+        delegate: SettingSelection { }
+    }
+
+    UM.Label
+    {
+        UM.I18nCatalog { id: catalog; name: "cura" }
+
+        text: catalog.i18nc("@label", "No specific value has been set")
+        visible: modelData.settings.length === 0
     }
 }
