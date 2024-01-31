@@ -7,8 +7,6 @@
 
 from ..Script import Script
 
-import re
-import datetime
 from UM.Message import Message
 
 class DisplayProgressOnLCD(Script):
