@@ -4,9 +4,6 @@
 from UM.Job import Job
 from UM.Logger import Logger
 
-from .avr_isp import ispBase
-from .avr_isp.stk500v2 import Stk500v2
-
 from time import time, sleep
 from serial import Serial, SerialException
 

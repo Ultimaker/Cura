@@ -11,7 +11,7 @@ from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
 import UM.Settings.Models.SettingVisibilityHandler
 
-from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
+from cura.Settings.ExtruderManager import ExtruderManager # To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 

@@ -16,8 +16,6 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Math.Color import Color
-from UM.PluginRegistry import PluginRegistry
-from UM.Platform import Platform
 from UM.Event import Event
 
 from UM.View.RenderBatch import RenderBatch
