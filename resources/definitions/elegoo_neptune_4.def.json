@@ -1,0 +1,104 @@
+{
+    "version": 2,
+    "name": "ELEGOO NEPTUNE 4",
+    "inherits": "elegoo_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "mastercaution"
+    },
+    "overrides":
+    {
+        "acceleration_print":
+        {
+            "maximum_value_warning": "20000",
+            "value": 10000
+        },
+        "acceleration_wall": { "value": "acceleration_print/2" },
+        "cool_fan_full_layer": { "value": 2 },
+        "infill_line_width": { "value": "line_width + 0.05" },
+        "infill_overlap": { "value": "0 if infill_sparse_density < 40.01 and infill_pattern != 'concentric' else -5" },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 35 else 'grid'" },
+        "initial_layer_line_width_factor": { "value": "100.0 if resolveOrValue('adhesion_type') == 'raft' else 125 if line_width < 0.5 else 110" },
+        "machine_acceleration": { "value": 5000 },
+        "machine_depth": { "default_value": 230 },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positionning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z2 ;Raise Z more\nG90 ;Absolute positionning\nG1 X0 Y{machine_depth - 5} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\nM84 X Y E ;Disable all steppers but Z" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "value": [
+                [-40, 50],
+                [-40, -30],
+                [40, 50],
+                [40, -30]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 270 },
+        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_max_acceleration_x": { "value": 20000 },
+        "machine_max_acceleration_y": { "value": 20000 },
+        "machine_name": { "default_value": "ELEGOO NEPTUNE 4" },
+        "machine_nozzle_cool_down_speed": { "value": 0.75 },
+        "machine_nozzle_heat_up_speed": { "value": 1.6 },
+        "machine_start_gcode": { "default_value": ";ELEGOO NEPTUNE 4 / 4 PRO\nM220 S100 ;Set the feed speed to 100%\nM221 S100 ;Set the flow rate to 100%\nM104 S140 ;Start heating extruder\nM190 S{material_bed_temperature_layer_0} ;Wait for the bed to reach print temp\nG90\nG28 ;home\nG1 Z10 F300\nG1 X67.5 Y0 F6000\nG1 Z0 F300\nM109 S{material_print_temperature_layer_0} ;Wait for extruder to reach print temp\nG92 E0 ;Reset Extruder\nG1 X67.5 Y0 Z0.4 F300 ;Move to start position\nG1 X167.5 E30 F400 ;Draw the first line\nG1 Z0.6 F120.0 ;Move to side a little\nG1 X162.5 F3000\nG92 E0 ;Reset Extruder" },
+        "machine_width": { "default_value": 235 },
+        "retraction_amount": { "default_value": 0.5 },
+        "retraction_count_max": { "value": 80 },
+        "retraction_speed": { "default_value": 45 },
+        "skirt_brim_speed": { "maximum_value_warning": "500" },
+        "speed_infill":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_print"
+        },
+        "speed_layer_0":
+        {
+            "maximum_value_warning": "500",
+            "value": 60
+        },
+        "speed_prime_tower": { "maximum_value_warning": "500" },
+        "speed_print":
+        {
+            "default_value": 250,
+            "maximum_value_warning": "500"
+        },
+        "speed_print_layer_0": { "maximum_value_warning": "500" },
+        "speed_roofing": { "maximum_value_warning": "500" },
+        "speed_support": { "maximum_value_warning": "500" },
+        "speed_support_bottom": { "maximum_value_warning": "500" },
+        "speed_support_infill": { "maximum_value_warning": "500" },
+        "speed_support_interface": { "maximum_value_warning": "500" },
+        "speed_support_roof": { "maximum_value_warning": "500" },
+        "speed_topbottom":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_wall"
+        },
+        "speed_travel":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_print"
+        },
+        "speed_travel_layer_0":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_layer_0*2"
+        },
+        "speed_wall":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_print / 2"
+        },
+        "speed_wall_0":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_wall"
+        },
+        "speed_wall_x":
+        {
+            "maximum_value_warning": "500",
+            "value": "speed_wall + (speed_wall / 2)"
+        }
+    }
+}

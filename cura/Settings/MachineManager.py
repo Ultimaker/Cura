@@ -48,6 +48,8 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
+    from PyQt6.QtCore import QVariantList
+
     from cura.CuraApplication import CuraApplication
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
@@ -580,6 +582,10 @@ class MachineManager(QObject):
     @pyqtProperty(QObject, notify = globalContainerChanged)
     def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
+
+    @pyqtProperty("QVariantList", notify=activeVariantChanged)
+    def activeMachineExtruders(self) -> Optional["QVariantList"]:
+        return self._global_container_stack.extruderList if self._global_container_stack else None
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeStackId(self) -> str:
@@ -1699,6 +1705,16 @@ class MachineManager(QObject):
                     break
             else:  # No intent had the correct category.
                 extruder.intent = empty_intent_container
+
+    @pyqtSlot()
+    def resetIntents(self) -> None:
+        """Reset the intent category of the current printer.
+        """
+        global_stack = self._application.getGlobalContainerStack()
+        if global_stack is None:
+            return
+        for extruder in global_stack.extruderList:
+            extruder.intent = empty_intent_container
 
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         """Get the currently activated quality group.

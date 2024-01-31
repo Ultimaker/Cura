@@ -6,6 +6,7 @@ from PyQt6.QtGui import QDesktopServices
 from typing import List, Optional, Dict, cast
 
 from cura.Machines.Models.MachineListModel import MachineListModel
+from cura.Machines.Models.IntentTranslations import intent_translations
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
@@ -35,10 +36,12 @@ class WorkspaceDialog(QObject):
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
         self._default_strategy = None
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._override_machine = None
         self._visible = False
         self.showDialogSignal.connect(self.__show)
@@ -221,7 +224,14 @@ class WorkspaceDialog(QObject):
 
     def setIntentName(self, intent_name: str) -> None:
         if self._intent_name != intent_name:
-            self._intent_name = intent_name
+            try:
+                 self._intent_name = intent_translations[intent_name]["name"]
+            except:
+                self._intent_name = intent_name.title()
+            self.intentNameChanged.emit()
+
+        if not self._intent_name:
+            self._intent_name = intent_translations["default"]["name"]
             self.intentNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
@@ -347,10 +357,12 @@ class WorkspaceDialog(QObject):
         if threading.current_thread() != threading.main_thread():
             self._lock.acquire()
         # Reset the result
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._visible = True
         self.showDialogSignal.emit()
 

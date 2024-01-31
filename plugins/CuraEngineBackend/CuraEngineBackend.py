@@ -163,6 +163,8 @@ class CuraEngineBackend(QObject, Backend):
         self._is_disabled: bool = False
 
         application.getPreferences().addPreference("general/auto_slice", False)
+        application.getPreferences().addPreference("info/send_engine_crash", True)
+        application.getPreferences().addPreference("info/anonymous_engine_crash_report", True)
 
         self._use_timer: bool = False
 
@@ -173,6 +175,8 @@ class CuraEngineBackend(QObject, Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
+
+
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._slicing_error_message = Message(
@@ -192,6 +196,9 @@ class CuraEngineBackend(QObject, Backend):
         self._snapshot: Optional[QImage] = None 
 
         application.initializationFinished.connect(self.initialize)
+
+        # Ensure that the initial value for send_engine_crash is handled correctly.
+        application.callLater(self._onPreferencesChanged, "info/send_engine_crash")
 
     def startPlugins(self) -> None:
         """
@@ -1088,11 +1095,14 @@ class CuraEngineBackend(QObject, Backend):
             self._change_timer.timeout.disconnect(self.slice)
 
     def _onPreferencesChanged(self, preference: str) -> None:
-        if preference != "general/auto_slice":
+        if preference != "general/auto_slice" and preference != "info/send_engine_crash" and preference != "info/anonymous_engine_crash_report":
             return
-        auto_slice = self.determineAutoSlicing()
-        if auto_slice:
-            self._change_timer.start()
+        if preference == "general/auto_slice":
+            auto_slice = self.determineAutoSlicing()
+            if auto_slice:
+                self._change_timer.start()
+        elif preference == "info/send_engine_crash":
+            os.environ["USE_SENTRY"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""

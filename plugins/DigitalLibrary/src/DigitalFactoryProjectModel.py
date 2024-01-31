@@ -4,7 +4,6 @@ from typing import List, Optional
 
 from PyQt6.QtCore import Qt, pyqtSignal
 
-from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from .DigitalFactoryProjectResponse import DigitalFactoryProjectResponse
 

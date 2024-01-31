@@ -218,13 +218,13 @@ class LimitXYAccelJerk(Script):
         m201_limit_new = f"M201 X{x_accel} Y{y_accel}"
         m201_limit_old = f"M201 X{round(accel_old)} Y{round(accel_old)}"
         if x_jerk == 0:
-            m205_jerk_pattern = "Y(\d*)"
+            m205_jerk_pattern = r"Y(\d*)"
             m205_jerk_new = f"Y{y_jerk}"
         if y_jerk == 0:
-            m205_jerk_pattern = "X(\d*)"
+            m205_jerk_pattern = r"X(\d*)"
             m205_jerk_new = f"X{x_jerk}"
         if x_jerk != 0 and y_jerk != 0:
-            m205_jerk_pattern = jerk_cmd + " X(\d*) Y(\d*)"
+            m205_jerk_pattern = jerk_cmd + r" X(\d*) Y(\d*)"
             m205_jerk_new = jerk_cmd + f" X{x_jerk} Y{y_jerk}"
         m205_jerk_old = jerk_cmd + f" X{jerk_old} Y{jerk_old}"
         type_of_change = self.getSettingValueByKey("type_of_change")

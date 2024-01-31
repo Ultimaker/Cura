@@ -1,3 +1,37 @@
+[5.6]
+
+* New features and improvements:
+- Introduced the MethodX and MethodXL printers with their materials and the option to write to .makerbot
+- Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower's sturdiness
+- Introduced the setting for Raft Line Spacing, but for the prime tower
+- The Start and End gcodes now accept variables, and math including those variables
+- Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
+
+* Bug fixes:
+- Fixed a crash for some linux users when trying to open the file menu
+
+* Bugs resolved since the Beta Release
+- Introduced Balanced and Solid profiles for 1C cores to UltiMaker Method X and Method XL
+- Improved self-support for UltiMaker MethodX and MethodXL printers so the support extruder will not be used
+- The prime tower is now always enabled when the second extruder is used for the MethodX and MethodXL printers
+- Updated the default prime tower position so it doesn't prevent slicing for some printers
+- Fixed an issue where raft layers were partially printed
+- Slice information template variables were not available through start-end code formulas
+- Resolved an issue with 100% support roof for tree support, contributed by @ThomasRahm 
+
+* Printer definitions, profiles and materials:
+- Updated bridge flows for UltiMaker PLA, TPLA and ABS to address pillowing in AA 0.8 for UltiMaker printers
+- Introduced Ender 3 V3 SE, contributed by @dim1triy
+
+* Community translations:
+- Updated Spanish translation for Lightning infill, contributed by @Pelochus
+- Updated German translation for Laying object flat on buildplate, contributed by @gluetolf
+- Updated Brazilian translations, contributed by @Patola
+
+* Known Issues
+- The predicted printing time for dual extrusion printjobs on the Method X and Method XL are deviating from the actual printing time
+- It’s not possible yet, to use Method series printers with Digital Factory. We hope to resolve this for the next release.
+
 [5.5]
 
 * Engine Plugins
@@ -28,6 +62,7 @@
 - Updated printing temperatures for UltiMaker printers to be more uniform
 - Updated Support Interface Settings for UltiMaker printers 
 - Introduced a support material tag, so support is automatically printed with support material
+- Default has been updated to Balanced to reflect the perfect harmony between these visual, engineering, and draft profiles. 
 
 * Quality of Life Improvements
 - Use Tab to navigate between settings in the Per Model Settings window
@@ -52,16 +87,31 @@
 - Updated supporting certify libraries
 - Introduced a new Post Processing Script; Limit XY Accel for bed-slinger printers, contributed by @GregValiant
 - Introduced the machine name in the gcode headers, contributed by @smartin015
+- Extruder settings are cached to speed up slicing, contributed by @sesse
 
 * Bug Fixes that improve Printed Part Quality
 - The first support layers were printed incorrectly if adhesion was set to None
 - The support was printed before the brim when the origin was at the center of the buildplate
+- Some improvements to the Zseam for user-specified or the sharpest corner seam alignment 
 - Printers with a high resolution would incorrectly print embossed features
 - The flow would unexpectedly increase after a bridge was completed.
 - Bridging settings would not be applied to the first skin layer if the infill density was set to 0
 - The skirt height could collide with some models and could be printed in support
 - A brim would be too small if the extruder was not defined.
 - The Initial Buildplate and Printing Temperature would not be applied correctly when printing One-At-A-Time
+
+* Bugs resolved since the Beta Release
+- Updated some settings for UltiMaker printers to prevent infill from being exposed, introduce a visual mode for PETG, and prevent stringing for PETG and ABS
+- Fixed the upgrade script for UltiMaker materials that would cause configuration errors
+- Updated the arrange algorithm to work better with larger models
+- Prevented future crashes caused by the new gradual flow plugin with some active printers
+- Fixed Linux Legacy crashes for open file dialog due to OS icon style
+- The Linux Appimage had an unnessecarily large file size
+- The top layers where not showing distinct inner and outer walls. 
+- A printjob with a different raft extruder could cause a printjob to be considered too large to print
+- A project file with an intent would not be loaded correctly 
+- Moved the position of the Target Machine name in the start gcode to predicted time and material use for some printers
+- Restored the ColorDialog to prevent an SDK break
 
 * Other Bug Fixes
 - You could not load some Marketplace materials with intents on the like BASF Ultrafuse 17-4PH
@@ -93,6 +143,9 @@
 - Updated nozzle options for Dagoma Pro 430, contributed by @0r31
 - Updated start gcode and homing behavior in Creality Ender 3 S1, contributed by @GregValiant.
 - Updated faulty disallowed areas for Anycubic Kossel, contributed by @GregValiant
+
+* Community translations:
+- Updated Brazilian translations, contributed by @Patola
 
 [5.4]
 

@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Extruder 2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "ultimaker_methodx",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_extruder_end_code": { "default_value": "M106 P{extruder_nr} S1.0\nG91\nG0 Z0.4 F600\nG90\nG0 X{prime_tower_position_x - prime_tower_size/2} Y{prime_tower_position_y + prime_tower_size/2} F6000" },
+        "machine_extruder_start_code": { "default_value": "G0 X{prime_tower_position_x - prime_tower_size/2} Y{prime_tower_position_y + prime_tower_size/2} F6000\nM104 S{material_print_temperature}\nG4 S5\nG91\nG0 Z-0.4 F600\nG90\nM107 P{(extruder_nr+1)%2}\nM106 P{extruder_nr} S{cool_fan_speed/100}" },
+        "machine_extruder_start_code_duration": { "default_value": 8 },
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
