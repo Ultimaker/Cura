@@ -6,7 +6,6 @@
 # Description:  This plugin is now an option in 'Display Info on LCD'
 
 from ..Script import Script
-from UM.Application import Application
 from UM.Message import Message
 
 class DisplayFilenameAndLayerOnLCD(Script):
