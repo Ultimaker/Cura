@@ -2,12 +2,12 @@
     "version": 2,
     "name": "Adventurer 4 Lite",
     "inherits": "flashforge_adventurer4",
-    "metadata": 
+    "metadata":
     {
-        "author": "Jeremie-C",
-        "visible": true
+        "visible": true,
+        "author": "Jeremie-C"
     },
-    "overrides": 
+    "overrides":
     {
         "machine_name": { "default_value": "Adventurer 4 Lite" }
     }
