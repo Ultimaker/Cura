@@ -372,7 +372,10 @@ class SimulationView(CuraView):
             self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
             # update _current time when the path is changed by user
             if self._current_path_num < self._max_paths and round(self._current_path_num)== self._current_path_num:
-                self._current_time = self.cumulativeLineDuration()[int(self._current_path_num)]
+                actual_path_num = int(self._current_path_num)
+                cumulative_line_duration = self.cumulativeLineDuration()
+                if actual_path_num < len(cumulative_line_duration):
+                    self._current_time = cumulative_line_duration[actual_path_num]
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
