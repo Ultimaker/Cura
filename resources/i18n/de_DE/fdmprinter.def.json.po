@@ -1,16 +1,16 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2023-11-24 12:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -179,10 +179,6 @@ msgstr "Immer aktives Tools schreiben"
 msgctxt "travel_retract_before_outer_wall description"
 msgid "Always retract when moving to start an outer wall."
 msgstr "Stets zurückziehen, wenn eine Bewegung für den Beginn einer Außenwand erfolgt."
-
-msgctxt "hole_xy_offset description"
-msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "Versatz, der auf die Löcher in jeder Schicht angewandt wird. Bei positiven Werten werden die Löcher vergrößert; bei negativen Werten werden die Löcher verkleinert."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -410,7 +406,7 @@ msgstr "Abstand zum Brim-Element"
 
 msgctxt "brim_inside_margin label"
 msgid "Brim Inside Avoid Margin"
-msgstr "Abstand zur Vermeidung des inneren Brim-Elements"
+msgstr "Abstand zur Vermeidung des inneren Brims"
 
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
@@ -459,6 +455,10 @@ msgstr "Temperatur der Druckplatte für die erste Schicht"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Temperatur Druckabmessung"
+
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Durch Aktivieren dieser Einstellung erhält Ihr Prime-Turm einen Rand, auch wenn das Modell keinen hat. Wenn Sie eine stabilere Basis für einen hohen Turm möchten, können Sie die Basis-Höhe erhöhen."
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -745,16 +745,16 @@ msgid "Distance between the printed support structure lines. This setting is cal
 msgstr "Der Abstand zwischen den gedruckten Stützstrukturlinien. Diese Einstellung wird anhand der Dichte der Stützstruktur berechnet."
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Der Abstand vom gedruckten Objekt bis zur Unterseite der Stützstruktur."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "Abstand vom Druck zum Boden der Stütze. Beachten Sie, dass dies auf die nächste Schichthöhe aufgerundet wird."
 
 msgctxt "support_top_distance description"
 msgid "Distance from the top of the support to the print."
 msgstr "Der Abstand von der Oberseite der Stützstruktur zum gedruckten Objekt."
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Der Abstand der Ober-/Unterseite der Stützstruktur vom Druck. So wird ein Zwischenraum geschaffen, der die Entfernung der Stützstrukturen nach dem Drucken des Modells ermöglicht. Dieser Wert wird auf ein Vielfaches der Schichtdicke aufgerundet."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "Abstand von der Ober-/Unterseite der Stützstruktur zum Druck. Diese Lücke ermöglicht es, die Stützen nach dem Drucken des Modells zu entfernen. Die oberste Stützschicht unter dem Modell könnte ein Bruchteil der normalen Schichten sein."
 
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
@@ -779,6 +779,14 @@ msgstr "Der Abstand der Stützstruktur zum Überhang in der X- und Y-Richtung."
 msgctxt "support_xy_distance description"
 msgid "Distance of the support structure from the print in the X/Y directions."
 msgstr "Der Abstand der Stützstruktur zum gedruckten Objekt in der X- und Y-Richtung."
+
+msgctxt "meshfix_fluid_motion_shift_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Abstandspunkte werden verschoben, um den Pfad zu glätten"
+
+msgctxt "meshfix_fluid_motion_small_distance description"
+msgid "Distance points are shifted to smooth the path"
+msgstr "Abstandspunkte werden verschoben, um den Pfad zu glätten"
 
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
@@ -827,6 +835,10 @@ msgstr "Konische Stützstruktur aktivieren"
 msgctxt "draft_shield_enabled label"
 msgid "Enable Draft Shield"
 msgstr "Windschutz aktivieren"
+
+msgctxt "meshfix_fluid_motion_enabled label"
+msgid "Enable Fluid Motion"
+msgstr "Fließbewegung aktivieren"
 
 msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
@@ -887,6 +899,10 @@ msgstr "Ruckfunktion für Bewegungen aktivieren"
 msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Aktiviert den äußeren Sickerschutz. Damit wird eine Hülle um das Modell erstellt, die eine zweite Düse abstreift, wenn diese auf derselben Höhe wie die erste Düse steht."
+
+msgctxt "small_skin_on_surface description"
+msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
+msgstr "Ermöglicht es, dass kleine (bis zu „Kleine obere/untere Breite“) Bereiche auf der obersten (der Luft ausgesetzten) Hautschicht mit Wänden anstelle des Standardmusters gefüllt werden."
 
 msgctxt "jerk_enabled description"
 msgid "Enables adjusting the jerk of print head when the velocity in the X or Y axis changes. Increasing the jerk can reduce printing time at the cost of print quality."
@@ -1080,6 +1096,14 @@ msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
 msgstr "Durchflusskompensation an der äußeren Wandlinie."
 
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Flussausgleich an der äußersten Wandlinie der Oberfläche."
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Flussausgleich auf den Wandlinien der Oberfläche für alle Wandlinien außer der äußersten."
+
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
 msgstr "Durchflusskompensation an oberen/unteren Linien."
@@ -1099,6 +1123,18 @@ msgstr "Durchflusskompensation an Wandlinien."
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Fluss-Kompensation: Die extrudierte Materialmenge wird mit diesem Wert multipliziert."
+
+msgctxt "meshfix_fluid_motion_angle label"
+msgid "Fluid Motion Angle"
+msgstr "Fließbewegungswinkel"
+
+msgctxt "meshfix_fluid_motion_shift_distance label"
+msgid "Fluid Motion Shift Distance"
+msgstr "Fließbewegung – Verschiebeabstand"
+
+msgctxt "meshfix_fluid_motion_small_distance label"
+msgid "Fluid Motion Small Distance"
+msgstr "Fließbewegung – kleiner Abstand"
 
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
@@ -1256,6 +1292,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
 
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Äußere Wände gruppieren"
+
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
 msgstr "Gyroid"
@@ -1387,6 +1427,10 @@ msgstr "Dies bezeichnet die minimale Höhe eines Astes, der auf dem Modell platz
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Wenn ein Außenhautbereich für weniger als diesen Prozentwert seines Bereichs unterstützt wird, drucken Sie ihn mit den Brückeneinstellungen. Ansonsten erfolgt der Druck mit den normalen Außenhauteinstellungen."
+
+msgctxt "meshfix_fluid_motion_angle description"
+msgid "If a toolpath-segment deviates more than this angle from the general motion it is smoothed."
+msgstr "Weicht ein Werkzeugpfad-Segment mehr als diesen Winkel von der allgemeinen Bewegung ab, wird es geglättet."
 
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
@@ -2416,6 +2460,10 @@ msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Wipe-Abstand der Außenwand"
 
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Die äußeren Wände verschiedener Inseln in derselben Schicht werden nacheinander gedruckt. Wenn aktiviert, wird die Menge der Flussänderungen begrenzt, da die Wände nacheinander gedruckt werden, wenn deaktiviert, wird die Anzahl der Fahrten zwischen den Inseln reduziert, da die Wände auf den gleichen Inseln gruppiert sind."
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Von außen nach innen"
@@ -2469,8 +2517,20 @@ msgid "Prime Tower Acceleration"
 msgstr "Beschleunigung Einzugsturm"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Brim Einzugsturm"
+msgid "Prime Tower Base"
+msgstr "Grundfläche des Prime-Turms"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "Höhe der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "Größe der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Neigung der Prime-Turm-Basis"
 
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
@@ -2488,6 +2548,10 @@ msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Mindestvolumen Einzugsturm"
 
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "Linienabstand des Prime-Turm-Floßes"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Größe Einzugsturm"
@@ -2503,10 +2567,6 @@ msgstr "X-Position des Einzugsturm"
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "Y-Position des Einzugsturms"
-
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Einzugstürme benötigen möglicherweise zusätzliche Haftung in Form eines Brims, auch wenn das Modell selbst dies nicht benötigt. Kann derzeit nicht mit dem „Raft“-Haftungstyp verwendet werden."
 
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
@@ -2770,7 +2830,7 @@ msgstr "Grenzwert für Normaldrehzahl/Maximaldrehzahl des Lüfters"
 
 msgctxt "relative_extrusion label"
 msgid "Relative Extrusion"
-msgstr ""
+msgstr "Relative Extrusion"
 
 msgctxt "meshfix_union_all_remove_holes label"
 msgid "Remove All Holes"
@@ -3024,6 +3084,10 @@ msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Drucktemperatur für kleine Schichten"
 
+msgctxt "small_skin_on_surface label"
+msgid "Small Top/Bottom On Surface"
+msgstr "Kleine Oberseite/Unterseite auf der Oberfläche"
+
 msgctxt "small_skin_width label"
 msgid "Small Top/Bottom Width"
 msgstr "Kleine obere/untere Breite"
@@ -3037,12 +3101,12 @@ msgid "Small features will be printed at this percentage of their normal print s
 msgstr "Bei kleinen Details wird die Geschwindigkeit auf diesen Prozentsatz der normalen Druckgeschwindigkeit gesetzt. Durch eine niedrigere Druckgeschwindigkeit können die Haftung und die Genauigkeit verbessert werden."
 
 msgctxt "small_skin_width description"
-msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions."
-msgstr ""
+msgid "Small top/bottom regions are filled with walls instead of the default top/bottom pattern. This helps to avoids jerky motions. Off for the topmost (air-exposed) layer by default (see 'Small Top/Bottom On Surface')."
+msgstr "Kleine obere bzw. untere Bereiche werden mit Wänden anstelle des standardmäßigen oberen und unteren Musters gefüllt. So lassen sich ruckartige Bewegungen vermeiden. Dies ist standardmäßig für die oberste (der Luft ausgesetzten) Schicht deaktiviert (siehe „Kleine Oberseite/Unterseite auf der Oberfläche“)."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
-msgstr "Kleine obere bzw. untere Bereiche werden mit Wänden anstelle des oberen bzw. unteren Standardmusters gefüllt. Dies hilft, ruckartige Bewegungen zu vermeiden."
+msgstr "Intelligente Brim"
 
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
@@ -3572,6 +3636,14 @@ msgctxt "raft_surface_acceleration description"
 msgid "The acceleration with which the top raft layers are printed."
 msgstr "Die Beschleunigung, mit der die oberen Raft-Schichten gedruckt werden."
 
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Die Beschleunigung, mit der die inneren Wände der Oberfläche gedruckt werden."
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Die Beschleunigung, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
 msgctxt "acceleration_wall description"
 msgid "The acceleration with which the walls are printed."
 msgstr "Die Beschleunigung, mit der die Wände gedruckt werden."
@@ -3712,6 +3784,10 @@ msgctxt "raft_surface_line_spacing description"
 msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
 msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der Abstand sollte der Linienbreite entsprechen, damit die Oberfläche stabil ist."
 
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Der Abstand zwischen den Floßlinien für die einzigartige Prime-Turm-Floßschicht. Ein großer Abstand erleichtert das Entfernen des Floßes von der Bauplatte."
+
 msgctxt "interlocking_depth description"
 msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
 msgstr "Der Abstand von der Begrenzung zwischen Modellen, der eine ineinandergreifende Struktur erzeugt, gemessen in Zellen. Eine zu geringe Zellenanzahl führt zu mangelnder Haftung."
@@ -3746,7 +3822,7 @@ msgstr "Die Strecke, die der Kopf durch Vorwärts- und Rückwärtsbewegung über
 
 msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
-msgstr ""
+msgstr "Die Endpunkte von Füllungslinien werden gekürzt, um Material zu sparen. Bei dieser Einstellung handelt es sich um den Winkel des Überhangs der Endpunkte von diesen Linien."
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
@@ -3908,6 +3984,10 @@ msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Die Dicke der ersten Schicht in mm. Eine dicke erste Schicht erleichtert die Haftung am Druckbett."
 
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Die Höhe der Prime-Turm-Basis. Eine Erhöhung dieses Wertes führt zu einem stabileren Prime-Turm, da die Basis breiter wird. Ist dieser Wert zu niedrig, hat der Prime-Turm keine stabile Basis."
+
 msgctxt "support_bottom_stair_step_height description"
 msgid "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour."
 msgstr "Die Höhe der Stufen der treppenförmigen Unterlage für die Stützstruktur des Modells. Ein niedriger Wert kann das Entfernen der Stützstruktur erschweren, ein zu hoher Wert kann jedoch zu instabilen Stützstrukturen führen. Auf Null einstellen, um das Stufenverhalten zu deaktivieren."
@@ -3979,6 +4059,10 @@ msgstr "Die Schichtzeit, die den Grenzwert zwischen Normaldrehzahl und Maximaldr
 msgctxt "retraction_amount description"
 msgid "The length of material retracted during a retraction move."
 msgstr "Die Länge des Materials, das während der Einzugsbewegung eingezogen wird."
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Größenfaktor, der für die Neigung der Prime-Turm-Basis verwendet wird. Wenn Sie diesen Wert erhöhen, wird die Basis schlanker. Wenn Sie ihn verringern, wird die Basis dicker."
 
 msgctxt "machine_buildplate_type description"
 msgid "The material of the build plate installed on the printer."
@@ -4071,6 +4155,14 @@ msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der Skirt und B
 msgctxt "jerk_support description"
 msgid "The maximum instantaneous velocity change with which the support structure is printed."
 msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der die Stützstruktur gedruckt wird."
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die äußersten Oberflächenwände gedruckt werden."
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die inneren Oberflächenwände gedruckt werden."
 
 msgctxt "jerk_wall description"
 msgid "The maximum instantaneous velocity change with which the walls are printed."
@@ -4456,6 +4548,14 @@ msgctxt "raft_surface_speed description"
 msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr "Die Geschwindigkeit, mit der die oberen Schichten des Raft gedruckt werden. Diese sollte etwas geringer sein, damit die Düse langsam angrenzende Oberflächenlinien glätten kann."
 
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Die Geschwindigkeit, mit der die inneren Wände der Oberfläche gedruckt werden."
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Die Geschwindigkeit, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
 msgstr "Die Geschwindigkeit, mit der bei Z-Sprüngen die vertikale Bewegung (Z-Achse) erfolgt. Diese liegt in der Regel unterhalb der Druckgeschwindigkeit, da die Bewegung von Druckbett oder Brücke schwieriger ist."
@@ -4517,8 +4617,8 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Die Temperatur, bei der das Abkühlen bereits beginnen kann, bevor der Druck beendet wird."
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Die Temperatur, die für das Drucken der ersten Schicht verwendet wird. Wählen Sie hier 0, um eine spezielle Behandlung der ersten Schicht zu deaktivieren."
+msgid "The temperature used for printing the first layer."
+msgstr "Die Temperatur, die für den Druck der ersten Schicht verwendet wird."
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
@@ -4596,6 +4696,10 @@ msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
 msgstr "Die Breite der Balken in der ineinandergreifenden Struktur."
 
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Die Breite des Prime-Turm-Randes/Basis. Eine größere Basis verbessert die Haftung auf der Bauplatte, verringert jedoch auch den effektiven Druckbereich."
+
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
 msgstr "Die Breite des Einzugsturms."
@@ -4663,6 +4767,38 @@ msgstr "Expansionsdistanz Außenhaut oben"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "Breite für das Entfernen der Außenhaut oben"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Beschleunigung der inneren Oberfläche der Wand"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Ruck der äußersten Oberflächenwand"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Geschwindigkeit der inneren Oberfläche der Wand"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Fluss der inneren Oberflächenwand(en)"
+
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Beschleunigung der äußeren Oberfläche der Wand"
+
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Fluss der äußersten Oberflächenwand"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Ruck der inneren Oberflächenwand"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Geschwindigkeit der äußeren Oberfläche der Wand"
 
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
@@ -4960,6 +5096,10 @@ msgctxt "support_interface_skip_height description"
 msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
 msgstr "Bei der Überprüfung, wo sich das Modell über und unter der Stützstruktur befindet, verwenden Sie Schritte der entsprechenden Höhe. Niedrigere Werte schneiden langsamer, während höhere Werte dazu führen können, dass die normale Stützstruktur an einigen Stellen gedruckt wird, wo sie als Stützstrukturschnittstelle gedruckt werden sollte."
 
+msgctxt "meshfix_fluid_motion_enabled description"
+msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
+msgstr "Wenn diese Option aktiviert ist, werden die Werkzeugpfade für Drucker mit Planern für fließende Bewegungen korrigiert. Kleine Bewegungen, die von der allgemeinen Werkzeugpfadrichtung abweichen, werden geglättet, um Fließbewegungen zu verbessern."
+
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
 msgstr "Bei Aktivierung wird die Reihenfolge, in der die Fülllinien gedruckt werden, optimiert, um die gefahrene Distanz zu reduzieren. Diese erzielte Reduzierung der Bewegung ist sehr stark von dem zu slicenden Modell, dem Füllmuster, der Dichte usw. abhängig. Beachten Sie, dass die Dauer für das Slicen bei einigen Modellen mit vielen kleinen Füllbereichen erheblich länger ausfallen kann."
@@ -4979,6 +5119,10 @@ msgstr "Bei Werten größer als Null verwenden die Combing-Fahrbewegungen, die w
 msgctxt "hole_xy_offset_max_diameter description"
 msgid "When greater than zero, the Hole Horizontal Expansion is gradually applied on small holes (small holes are expanded more). When set to zero the Hole Horizontal Expansion will be applied to all holes. Holes larger than the Hole Horizontal Expansion Max Diameter are not expanded."
 msgstr "Bei Werten größer als Null wird die Horizontalloch-Erweiterung schrittweise auf kleine Löcher angewendet (kleine Löcher werden stärker erweitert). Beim Wert Null wird die Horizontalloch-Erweiterung auf alle Löcher angewendet. Löcher, die größer als der maximale Durchmesser der Horizontalloch-Erweiterung sind, werden nicht erweitert."
+
+msgctxt "hole_xy_offset description"
+msgid "When greater than zero, the Hole Horizontal Expansion is the amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes. When this setting is enabled it can be further tuned with Hole Horizontal Expansion Max Diameter."
+msgstr "Bei einem Wert größer als Null ist die Horizontalloch-Erweiterung der Versatz, der auf alle Löcher in jeder Schicht angewendet wird. Positive Werte vergrößern die Löcher, negative Werte verringern die Lochgröße. Wenn diese Einstellung aktiviert ist, kann sie mit „Maximaler Durchmesser der Horizontalloch-Erweiterung“ weiter angepasst werden."
 
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
@@ -5344,246 +5488,42 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "Bewegungen"
 
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "Kompensieren"
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Dauer der einzelnen Schritte bei der stufenweisen Änderung des Flusses"
 
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "Es wird ein kleiner Knoten oben auf einer Aufwärtslinie hergestellt, damit die nächste horizontale Schicht eine bessere Verbindung mit dieser herstellen kann. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Aktivieren Sie stufenweise Flussänderungen. Wenn diese Option aktiviert ist, wird der Fluss stufenweise auf den Sollwert des Flusses erhöht bzw. verringert. Dies ist bei Druckern mit Bowden-Röhren sinnvoll, bei denen der Fluss nicht sofort geändert wird, sobald der Extrudermotor startet/stoppt."
 
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "Die Verzögerungszeit nach einer Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
 
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "Die Verzögerungszeit nach einer Aufwärtsbewegung, damit die Aufwärtslinie härten kann. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Schrittgröße der stufenweisen Fluss-Diskretisierung"
 
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "Die Verzögerungszeit zwischen zwei horizontalen Segmenten. Durch eine solche Verzögerung kann eine bessere Haftung an den Verbindungspunkten zu vorherigen Schichten erreicht werden; bei einer zu langen Verzögerungszeit kann es allerdings zum Herabsinken von Bestandteilen kommen. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Stufenweiser Fluss aktiviert"
 
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "Der Abstand zwischen der Düse und den horizontalen Abwärtslinien. Bei einem größeren Abstand haben die diagonalen Abwärtslinien einen weniger spitzen Winkel, was wiederum weniger Aufwärtsverbindungen zur nächsten Schicht zur Folge hat. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Maximale Beschleunigung bei stufenweisem Fluss"
 
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr ""
-#~ "Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\n"
-#~ "Dies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Maximale Flussbeschleunigung bei erster Schicht"
 
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Die Strecke, die das Material nach einer Aufwärts-Extrusion herunterfällt. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Maximale Beschleunigung für stufenweise Änderung des Flusses"
 
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Die Strecke, die das Material bei einer Aufwärts-Extrusion mit der diagonalen Abwärts-Extrusion nach unten gezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Mindestgeschwindigkeit für stufenweise Änderung des Flusses in der ersten Schicht"
 
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "Flusskompensation bei der Aufwärts- und Abwärtsbewegung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "Flusskompensation beim Drucken flacher Linien. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "Flusskompensation: Die extrudierte Materialmenge wird mit diesem Wert multipliziert. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "Dies beschreibt, wie weit die Äste weg sein müssen, wenn sie das Modell berühren. Eine geringe Entfernung lässt die Baumstützstruktur das Modell an mehreren Punkten berühren, und führt zu einem besseren Überhang, allerdings lässt sich die Stützstruktur auch schwieriger entfernen."
-
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "Knoten"
-
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "Der Prozentsatz einer diagonalen Abwärtslinie, die von einem horizontalen Linienteil bedeckt wird. Dies kann das Herabsinken des höchsten Punktes einer Aufwärtslinie verhindern. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "Es wird „schwebend“ nur die äußere Oberfläche mit einer dünnen Netzstruktur gedruckt. Dazu werden die Konturen des Modells horizontal gemäß den gegebenen Z-Intervallen gedruckt, welche durch aufwärts und diagonal abwärts verlaufende Linien verbunden werden."
-
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "Dies ist die Auflösung für die Berechnung von Kollisionen, um ein Anschlagen des Modells zu verhindern. Eine niedrigere Einstellung sorgt für akkuratere Bäume, die weniger häufig fehlschlagen, erhöht jedoch die Slicing-Zeit erheblich."
-
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "Einziehen"
-
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "Die Geschwindigkeit, mit der sich die Düse bei der Materialextrusion bewegt. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "Die Geschwindigkeit beim Drucken einer Linie in diagonaler Abwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "Die Geschwindigkeit beim Drucken einer „schwebenden“ Linie in Aufwärtsrichtung. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "Die Geschwindigkeit beim drucken der ersten Schicht, also der einzigen Schicht, welche das Druckbett berührt. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "Die Geschwindigkeit beim Drucken der horizontalen Konturen des Modells. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "Eine Strategie, um sicherzustellen, dass an jedem Verbindungspunkt zwei Schichten miteinander verbunden werden. Durch den Einzug härten die Aufwärtslinien in der richtigen Position, allerdings kann es dabei zum Schleifen des Filaments kommen. Am Ende jeder Aufwärtslinie kann ein Knoten gemacht werden, um die Chance einer erfolgreichen Verbindung zu erhöhen und die Linie abkühlen zu lassen; allerdings ist dafür möglicherweise eine niedrige Druckgeschwindigkeit erforderlich. Eine andere Strategie ist die es an der Oberseite einer Aufwärtslinie das Herabsinken zu kompensieren; allerdings sinken nicht alle Linien immer genauso ab, wie dies erwartet wird."
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "Dies bezeichnet den Winkel der Äste. Verwenden Sie einen geringeren Winkel, um sie vertikaler und stabiler zu gestalten. Verwenden Sie einen stärkeren Winkel, um mehr Reichweite zu erhalten."
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "Der abgedeckte Abstand beim Herstellen einer Verbindung vom Dachumriss nach innen. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Die Strecke des Endstücks einer nach innen verlaufenden Linie, um die diese bei der Rückkehr zur äußeren Umfangslinie des Dachs nachgezogen wird. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Die Strecke, um die horizontale Dachlinien, die „schwebend“ gedruckt werden, beim Druck herunterfallen. Diese Strecke wird kompensiert. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "Die Höhe der Aufwärtslinien und diagonalen Abwärtslinien zwischen zwei horizontalen Teilen. Dies legt die Gesamtdichte der Netzstruktur fest. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "Die Zeit, die für die äußeren Umfänge eines Lochs aufgewendet wird, das später zu einem Dach werden soll. Durch längere Zeiten kann die Verbindung besser werden. Dies gilt nur für das Drucken mit Drahtstruktur."
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "Astwinkel der Baumstützstruktur"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "Astdurchmesser der Baumstützstruktur"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "Winkel Astdurchmesser der Baumstützstruktur"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "Astabstand der Baumstützstruktur"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "Kollisionsauflösung der Baumstützstruktur"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "Stammdurchmesser der Baumstützstruktur"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "Abwärtsverzögerung beim Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "Geschwindigkeit beim Drucken der Unterseite mit Drahtstruktur"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "Fluss für Drucken von Verbindungen mit Drahtstruktur"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "Verbindungshöhe bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "Geschwindigkeit beim Drucken in Abwärtsrichtung mit Drahtstruktur"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "Nachziehen bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "Langsame Aufwärtsbewegung bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "Herunterfallen bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "Horizontale Verzögerung beim Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "Fluss für Drucken von flachen Linien mit Drahtstruktur"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "Fluss für Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "Geschwindigkeit beim Drucken in horizontaler Richtung mit Drahtstruktur"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "Knotengröße für Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "Düsenabstand bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "Nachziehen für Dach bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "Herunterfallen des Dachs bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "Einfügeabstand für Dach bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "Verzögerung für Dachumfänge bei Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "Geschwindigkeit beim Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "Abwärtslinien beim Drucken mit Drahtstruktur geraderichten"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "Strategie für Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "Aufwärtsverzögerung beim Drucken mit Drahtstruktur"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "Geschwindigkeit beim Drucken in Aufwärtsrichtung mit Drahtstruktur"
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "Drucken mit Drahtstruktur"
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Flussdauer zurücksetzen"

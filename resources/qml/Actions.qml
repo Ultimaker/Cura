@@ -41,7 +41,7 @@ Item
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeSelection: arrangeSelectionAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -109,7 +109,6 @@ Item
     Action
     {
         id: exitFullScreenAction
-        shortcut: StandardKey.Cancel
         text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         icon.name: "view-fullscreen"
     }
@@ -120,8 +119,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo")
         icon.name: "edit-undo"
         shortcut: StandardKey.Undo
-        onTriggered: UM.OperationStack.undo()
-        enabled: UM.OperationStack.canUndo
+        onTriggered: CuraActions.undo()
+        enabled: CuraActions.canUndo
     }
 
     Action
@@ -130,8 +129,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo")
         icon.name: "edit-redo"
         shortcut: StandardKey.Redo
-        onTriggered: UM.OperationStack.redo()
-        enabled: UM.OperationStack.canRedo
+        onTriggered: CuraActions.redo()
+        enabled: CuraActions.canRedo
     }
 
     Action
@@ -462,9 +461,10 @@ Item
 
     Action
     {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection()
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        onTriggered: Printer.arrangeAllInGrid()
+        shortcut: "Shift+Ctrl+R"
     }
 
     Action
@@ -491,6 +491,13 @@ Item
         // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
         // enabled instead, and Ctrl+O is assigned to the local file provider
         shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange Selection")
+        onTriggered: Printer.arrangeSelection()
     }
 
     Action

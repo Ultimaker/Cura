@@ -66,8 +66,6 @@
         "optimize_wall_printing_order": { "default_value": true },
         "prime_blob_enable": { "default_value": false },
         "prime_tower_min_volume": { "value": "0.7" },
-        "prime_tower_position_x": { "value": "125" },
-        "prime_tower_position_y": { "value": "70" },
         "prime_tower_size": { "value": 24.0 },
         "retraction_extra_prime_amount": { "minimum_value_warning": "-2.0" }
     }
