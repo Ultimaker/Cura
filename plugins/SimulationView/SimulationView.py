@@ -57,7 +57,7 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
-    SIMULATION_FACTOR = 3
+    SIMULATION_FACTOR = 2
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
@@ -97,7 +97,8 @@ class SimulationView(CuraView):
         self._min_line_width = sys.float_info.max
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration = {}
+        self._cumulative_line_duration_layer: Optional[int] = None
+        self._cumulative_line_duration: List[float] = []
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -196,7 +197,7 @@ class SimulationView(CuraView):
         if len(cumulative_line_duration) > 0:
             self._current_time = time
             left_i = 0
-            right_i = self._max_paths - 1
+            right_i = len(cumulative_line_duration) - 1
             total_duration = cumulative_line_duration[-1]
             # make an educated guess about where to start
             i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
@@ -211,7 +212,9 @@ class SimulationView(CuraView):
             left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
             right_value = cumulative_line_duration[i]
 
-            assert (left_value <= self._current_time <= right_value)
+            if not (left_value <= self._current_time <= right_value):
+                Logger.warn(
+                    f"Binary search error (out of bounds): index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
 
             fractional_value = (self._current_time - left_value) / (right_value - left_value)
 
@@ -244,19 +247,22 @@ class SimulationView(CuraView):
 
     def cumulativeLineDuration(self) -> List[float]:
         # Make sure _cumulative_line_duration is initialized properly
-        if self.getCurrentLayer() not in self._cumulative_line_duration:
+        if self.getCurrentLayer() != self._cumulative_line_duration_layer:
             #clear cache
-            self._cumulative_line_duration = {}
-            self._cumulative_line_duration[self.getCurrentLayer()] = []
+            self._cumulative_line_duration = []
             total_duration = 0.0
             polylines = self.getLayerData()
             if polylines is not None:
                 for polyline in polylines.polygons:
                     for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
                         total_duration += line_duration / SimulationView.SIMULATION_FACTOR
-                        self._cumulative_line_duration[self.getCurrentLayer()].append(total_duration)
+                        self._cumulative_line_duration.append(total_duration)
+                    # for tool change we add an extra tool path
+                    self._cumulative_line_duration.append(total_duration)
+            # set current cached layer
+            self._cumulative_line_duration_layer = self.getCurrentLayer()
 
-        return self._cumulative_line_duration[self.getCurrentLayer()]
+        return self._cumulative_line_duration
 
     def getLayerData(self) -> Optional["LayerData"]:
         scene = self.getController().getScene()
@@ -366,7 +372,10 @@ class SimulationView(CuraView):
             self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
             # update _current time when the path is changed by user
             if self._current_path_num < self._max_paths and round(self._current_path_num)== self._current_path_num:
-                self._current_time = self.cumulativeLineDuration()[int(self._current_path_num)]
+                actual_path_num = int(self._current_path_num)
+                cumulative_line_duration = self.cumulativeLineDuration()
+                if actual_path_num < len(cumulative_line_duration):
+                    self._current_time = cumulative_line_duration[actual_path_num]
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()

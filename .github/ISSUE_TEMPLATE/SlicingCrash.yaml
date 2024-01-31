@@ -5,6 +5,13 @@ body:
 - type: markdown
   attributes:
     value: |
+       ### 💥 Slicing Crash Analysis Tool 💥
+       We are taking steps to analyze an increase in reported crashes more systematically. We'll need some help with that. 😇
+       Before filling out the report below, we want you to try a special Cura 5.7 Alpha.
+       This version of Cura has an updated slicing engine that will automatically send a report to the Cura Team for analysis. 
+       #### [You can find the downloads here](https://github.com/Ultimaker/Cura/discussions/18080) #### 
+       If you still encounter a crash you are still welcome to report the issue so we can use your model as a test case, you can find instructions on how to do that below.      
+       
        ### Project File
        **⚠️ Before you continue, we need your project file to troubleshoot a slicing crash.**
        It contains the printer and settings we need for troubleshooting. 
@@ -68,4 +75,3 @@ body:
     description: You can add the zip file and additional information that is relevant to the issue in the comments below.
   validations:
     required: true
-
