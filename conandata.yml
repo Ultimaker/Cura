@@ -1,10 +1,10 @@
-version: "5.7.0-alpha.0"
+version: "5.7.0-alpha.1"
 requirements:
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
   - "fdm_materials/(latest)@ultimaker/testing"
-  - "curaengine_plugin_gradual_flow/(latest)@ultimaker/stable"
+  - "curaengine_plugin_gradual_flow/0.1.0-beta.2"
   - "dulcificum/latest@ultimaker/testing"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
