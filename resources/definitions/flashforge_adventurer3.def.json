@@ -2,14 +2,14 @@
     "version": 2,
     "name": "Adventurer 3",
     "inherits": "flashforge_adventurer3c",
-    "metadata": 
+    "metadata":
     {
-        "author": "Jeremie-C",
         "visible": true,
+        "author": "Jeremie-C",
         "supports_network_connection": true
     },
-    "overrides": 
+    "overrides":
     {
-        "machine_name": {"default_value": "Adventurer 3"}
+        "machine_name": { "default_value": "Adventurer 3" }
     }
 }

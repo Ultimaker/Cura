@@ -4,15 +4,15 @@
     "inherits": "fdmprinter",
     "metadata":
     {
+        "visible": false,
         "author": "Jeremie-C",
         "manufacturer": "Flashforge",
-        "visible": false,
         "file_formats": "application/gx;text/x-gcode",
-        "first_start_actions": ["MachineSettingsAction"],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": {"0": "flashforge_adventurer_extruder_0"},
+        "machine_extruder_trains": { "0": "flashforge_adventurer_extruder_0" },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "preferred_variant_name": "0.4mm Nozzle",
@@ -20,15 +20,15 @@
     },
     "overrides":
     {
-        "adhesion_type": {"default_value": "skirt"},
-        "default_material_print_temperature": {"maximum_value_warning": "265"},
-        "layer_height": 
+        "adhesion_type": { "default_value": "skirt" },
+        "default_material_print_temperature": { "maximum_value_warning": "265" },
+        "layer_height":
         {
-            "minimum_value_warning": "0.1",
-            "maximum_value_warning": "0.4"
+            "maximum_value_warning": "0.4",
+            "minimum_value_warning": "0.1"
         },
-        "machine_center_is_zero": {"default_value": true},
-        "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
-        "machine_heated_bed": {"default_value": true}
+        "machine_center_is_zero": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true }
     }
 }
