@@ -242,7 +242,7 @@ class CuraConan(ConanFile):
                 self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
 
-            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.|.pdb]*"):
+            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
             for bin in Path(src_path).glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
@@ -320,6 +320,8 @@ class CuraConan(ConanFile):
             self.options["openssl"].shared = True
         if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
             self.options["curaengine"].enable_sentry = True
+            self.options["arcus"].enable_sentry = True
+            self.options["clipper"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -335,6 +337,7 @@ class CuraConan(ConanFile):
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("clipper/6.4.2@ultimaker/stable")
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
@@ -417,7 +420,6 @@ class CuraConan(ConanFile):
             )
 
         if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
-            # Update the po and pot files
             vb = VirtualBuildEnv(self)
             vb.generate()
 
@@ -518,7 +520,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.cloud_api_version
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
-        self.options.rm_safe("enable_i18n")
+        if self.options.get_safe("enable_i18n", False):
+            del self.info.options.enable_i18n
 
         # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
         #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't
