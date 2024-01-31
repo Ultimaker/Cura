@@ -64,4 +64,8 @@ class PCBWriter(MeshWriter):
 
     def _write(self, stream, nodes, mode):
         self._config_dialog = PCBDialog()
+        self._config_dialog.finished.connect(self._onDialogClosed)
         self._config_dialog.show()
+
+    def _onDialogClosed(self):
+        self._main_thread_lock.release()

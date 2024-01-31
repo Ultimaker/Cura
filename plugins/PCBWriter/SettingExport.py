@@ -1,11 +1,7 @@
 #  Copyright (c) 2024 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import Qt, QObject, pyqtProperty
-from UM.FlameProfiler import pyqtSlot
-from UM.Application import Application
-from UM.Qt.ListModel import ListModel
-from UM.Logger import Logger
+from PyQt6.QtCore import QObject, pyqtProperty
 
 
 class SettingsExport(QObject):

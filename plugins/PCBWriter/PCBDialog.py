@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QUrl
+from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QUrl, pyqtSlot
 from PyQt6.QtGui import QDesktopServices
 from typing import List, Optional, Dict, cast
 
@@ -26,6 +26,8 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class PCBDialog(QObject):
+    finished = pyqtSignal()
+
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
@@ -35,3 +37,7 @@ class PCBDialog(QObject):
 
     def show(self) -> None:
         self._view.show()
+
+    @pyqtSlot()
+    def notifyClosed(self):
+        self.finished.emit()

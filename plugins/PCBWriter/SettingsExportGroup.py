@@ -3,13 +3,7 @@
 
 from enum import IntEnum
 
-from PyQt6.QtCore import Qt, QObject, pyqtProperty, pyqtEnum
-from UM.FlameProfiler import pyqtSlot
-from UM.Application import Application
-from UM.Qt.ListModel import ListModel
-from UM.Logger import Logger
-
-from .SettingExport import SettingsExport
+from PyQt6.QtCore import QObject, pyqtProperty, pyqtEnum
 
 
 class SettingsExportGroup(QObject):

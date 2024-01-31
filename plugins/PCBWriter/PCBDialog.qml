@@ -130,4 +130,6 @@ UM.Dialog
     }
 
     buttonSpacing: UM.Theme.getSize("wide_margin").width
+
+    onClosing: manager.notifyClosed()
 }
