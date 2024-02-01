@@ -17,7 +17,8 @@ RowLayout
     {
         text: modelData.name
         Layout.preferredWidth: UM.Theme.getSize("setting").width
-        checked: true
+        checked: modelData.selected
+        onClicked: modelData.selected = checked
     }
 
     UM.Label

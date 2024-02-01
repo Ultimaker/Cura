@@ -1,13 +1,21 @@
 #  Copyright (c) 2024 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
 
+from dataclasses import asdict
+from typing import Optional, cast, List, Dict, Pattern, Set
+
 from PyQt6.QtCore import QObject, pyqtProperty
 
-from .SettingsExportGroup import SettingsExportGroup
-from .SettingExport import SettingsExport
-from cura.CuraApplication import CuraApplication
 from UM.Settings.SettingDefinition import SettingDefinition
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingFunction import SettingFunction
+
+from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.GlobalStack import GlobalStack
+
+from .SettingsExportGroup import SettingsExportGroup
+from .SettingExport import SettingExport
 
 
 class SettingsExportModel(QObject):
@@ -61,7 +69,8 @@ class SettingsExportModel(QObject):
 
         # Display global settings
         global_stack = application.getGlobalContainerStack()
-        self._settings_groups.append(SettingsExportGroup("Global settings",
+        self._settings_groups.append(SettingsExportGroup(global_stack,
+                                                         "Global settings",
                                                          SettingsExportGroup.Category.Global,
                                                          self._exportSettings(global_stack)))
 
@@ -72,7 +81,8 @@ class SettingsExportModel(QObject):
             if extruder_stack.material:
                 color = extruder_stack.material.getMetaDataEntry("color_code")
 
-            self._settings_groups.append(SettingsExportGroup("Extruder settings",
+            self._settings_groups.append(SettingsExportGroup(extruder_stack,
+                                                             "Extruder settings",
                                                              SettingsExportGroup.Category.Extruder,
                                                              self._exportSettings(extruder_stack),
                                                              extruder_index=extruder_stack.position,
@@ -83,13 +93,14 @@ class SettingsExportModel(QObject):
         for scene_node in scene_root.getChildren():
             per_model_stack = scene_node.callDecoration("getStack")
             if per_model_stack is not None:
-                self._settings_groups.append(SettingsExportGroup("Model settings",
+                self._settings_groups.append(SettingsExportGroup(per_model_stack,
+                                                                 "Model settings",
                                                                  SettingsExportGroup.Category.Model,
                                                                  self._exportSettings(per_model_stack),
                                                                  scene_node.getName()))
 
     @pyqtProperty(list, constant=True)
-    def settingsGroups(self):
+    def settingsGroups(self) -> List[SettingsExportGroup]:
         return self._settings_groups
 
     @staticmethod
@@ -110,6 +121,6 @@ class SettingsExportModel(QObject):
             else:
                 value = str(value)
 
-            settings_export.append(SettingsExport(label, value))
+            settings_export.append(SettingExport(setting_to_export, label, value))
 
         return settings_export

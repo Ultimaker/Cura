@@ -12,7 +12,7 @@ import PCBWriter 1.0 as PCBWriter
 
 UM.Dialog
 {
-    id: workspaceDialog
+    id: exportDialog
     title: catalog.i18nc("@title:window", "Export pre-configured build batch")
 
     margin: UM.Theme.getSize("default_margin").width
@@ -23,8 +23,6 @@ UM.Dialog
 
     headerComponent: Rectangle
     {
-        UM.I18nCatalog { id: catalog; name: "cura" }
-
         height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
 
@@ -62,7 +60,7 @@ UM.Dialog
         anchors.fill: parent
         color: UM.Theme.getColor("main_background")
 
-        PCBWriter.SettingsExportModel{ id: settingsExportModel }
+        UM.I18nCatalog { id: catalog; name: "cura" }
 
         ListView
         {
@@ -79,55 +77,19 @@ UM.Dialog
         }
     }
 
-    footerComponent: Rectangle
-    {
-        color: warning ? UM.Theme.getColor("warning") : "transparent"
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: childrenRect.height + (warning ? 2 * workspaceDialog.margin : workspaceDialog.margin)
-
-        Column
+    rightButtons:
+    [
+        Cura.TertiaryButton
         {
-            height: childrenRect.height
-            spacing: workspaceDialog.margin
-
-            anchors.leftMargin: workspaceDialog.margin
-            anchors.rightMargin: workspaceDialog.margin
-            anchors.bottomMargin: workspaceDialog.margin
-            anchors.topMargin: warning ? workspaceDialog.margin : 0
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-
-            RowLayout
-            {
-                id: warningRow
-                height: childrenRect.height
-                visible: warning
-                spacing: workspaceDialog.margin
-                UM.ColorImage
-                {
-                    width: UM.Theme.getSize("extruder_icon").width
-                    height: UM.Theme.getSize("extruder_icon").height
-                    source: UM.Theme.getIcon("Warning")
-                }
-
-                UM.Label
-                {
-                    id: warningText
-                    text: catalog.i18nc("@label", "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project.")
-                }
-            }
-
-            Loader
-            {
-                width: parent.width
-                height: childrenRect.height
-                sourceComponent: buttonRow
-            }
+            text: catalog.i18nc("@action:button", "Cancel")
+            onClicked: reject()
+        },
+        Cura.PrimaryButton
+        {
+            text: catalog.i18nc("@action:button", "Save project")
+            onClicked: accept()
         }
-    }
+    ]
 
     buttonSpacing: UM.Theme.getSize("wide_margin").width
 
