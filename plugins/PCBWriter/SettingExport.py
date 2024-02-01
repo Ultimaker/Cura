@@ -6,12 +6,13 @@ from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class SettingExport(QObject):
 
-    def __init__(self, id, name, value):
+    def __init__(self, id, name, value, selectable):
         super().__init__()
         self.id = id
         self._name = name
         self._value = value
-        self._selected = True
+        self._selected = selectable
+        self._selectable = selectable
 
     @pyqtProperty(str, constant=True)
     def name(self):
@@ -31,3 +32,7 @@ class SettingExport(QObject):
     @pyqtProperty(bool, fset = setSelected, notify = selectedChanged)
     def selected(self):
         return self._selected
+
+    @pyqtProperty(bool, constant=True)
+    def selectable(self):
+        return self._selectable

@@ -6,7 +6,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import UM 1.5 as UM
+import UM 1.8 as UM
 import Cura 1.1 as Cura
 
 RowLayout
@@ -19,10 +19,20 @@ RowLayout
         Layout.preferredWidth: UM.Theme.getSize("setting").width
         checked: modelData.selected
         onClicked: modelData.selected = checked
+        enabled: modelData.selectable
     }
 
     UM.Label
     {
         text: modelData.value
+    }
+
+    UM.HelpIcon
+    {
+        UM.I18nCatalog { id: catalog; name: "cura" }
+
+        text: catalog.i18nc("@tooltip",
+                            "This setting can't be exported because it depends too much on the used printer capacities")
+        visible: !modelData.selectable
     }
 }

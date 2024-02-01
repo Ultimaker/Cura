@@ -110,17 +110,21 @@ class SettingsExportModel(QObject):
 
         settings_export = []
 
-        for setting_to_export in user_keys.intersection(SettingsExportModel.EXPORTABLE_SETTINGS):
+        for setting_to_export in user_keys:
             label = settings_stack.getProperty(setting_to_export, "label")
             value = settings_stack.getProperty(setting_to_export, "value")
+            unit = settings_stack.getProperty(setting_to_export, "unit")
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
                 # This is not very good looking, but will do for now
-                value = SettingDefinition.settingValueToString(setting_type, value)
+                value = SettingDefinition.settingValueToString(setting_type, value) + " " + unit
             else:
                 value = str(value)
 
-            settings_export.append(SettingExport(setting_to_export, label, value))
+            settings_export.append(SettingExport(setting_to_export,
+                                                 label,
+                                                 value,
+                                                 setting_to_export in SettingsExportModel.EXPORTABLE_SETTINGS))
 
         return settings_export
