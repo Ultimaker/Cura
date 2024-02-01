@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import collections
 from typing import Dict, Optional
 

@@ -13,7 +13,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 def test_properties():
     properties = { b"firmware_version": b"12", b"printer_type": b"BHDHAHHADAD", b"address": b"ZOMG", b"name": b":(", b"testProp": b"zomg"}
     with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
-        output_device = NetworkedPrinterOutputDevice(device_id = "test", address = "127.0.0.1", properties = properties)
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties=properties)
     assert output_device.address == "ZOMG"
     assert output_device.firmwareVersion == "12"
     assert output_device.printerType == "BHDHAHHADAD"
@@ -45,10 +45,10 @@ def test_post():
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
-    mocked_network_manager.post = MagicMock(return_value = reply)
+    mocked_network_manager.post = MagicMock(return_value=reply)
 
     mocked_callback_handler = MagicMock()
-    output_device.post("whatever", "omgzomg", on_finished = mocked_callback_handler.onFinished)
+    output_device.post("whatever", "omgzomg", on_finished=mocked_callback_handler.onFinished)
 
     # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
@@ -111,10 +111,10 @@ def test_put():
     reply = MagicMock()
     reply.operation = MagicMock(return_value=QNetworkAccessManager.Operation.PostOperation)
     reply.url = MagicMock(return_value=QUrl("127.0.0.1"))
-    mocked_network_manager.put = MagicMock(return_value = reply)
+    mocked_network_manager.put = MagicMock(return_value=reply)
 
     mocked_callback_handler = MagicMock()
-    output_device.put("whatever", "omgzomg", on_finished = mocked_callback_handler.onFinished)
+    output_device.put("whatever", "omgzomg", on_finished=mocked_callback_handler.onFinished)
 
     # So we now fake that the request was successful.
     output_device._handleOnFinished(reply)
@@ -125,7 +125,7 @@ def test_put():
 
 def test_timeout():
     with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
-        output_device = NetworkedPrinterOutputDevice(device_id = "test", address = "127.0.0.1", properties = {})
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     with patch("cura.CuraApplication.CuraApplication.getInstance"):
         output_device.setConnectionState(ConnectionState.Connected)
 

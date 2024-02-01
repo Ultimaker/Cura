@@ -1,16 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To get version numbers from config files.
+import configparser  # To get version numbers from config files.
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 
-from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
+from UM.VersionUpgrade import VersionUpgrade  # Superclass of the plugin.
 
-from . import MachineInstance # To upgrade machine instances.
-from . import Preferences #To upgrade preferences.
-from . import Profile # To upgrade profiles.
+from . import MachineInstance  # To upgrade machine instances.
+from . import Preferences  # To upgrade preferences.
+from . import Profile  # To upgrade profiles.
 
-##  Which machines have material-specific profiles in the new version?
+#   Which machines have material-specific profiles in the new version?
 #
 #   These are the 2.1 machine identities with "has_machine_materials": true in
 #   their definitions in Cura 2.2. So these are the machines for which profiles

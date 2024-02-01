@@ -1,14 +1,14 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To get version numbers from config files.
+import configparser  # To get version numbers from config files.
 import io
 import os
 import os.path
 from typing import Dict, List, Optional, Tuple
 
 from UM.Resources import Resources
-from UM.VersionUpgrade import VersionUpgrade # Superclass of the plugin.
+from UM.VersionUpgrade import VersionUpgrade  # Superclass of the plugin.
 import UM.VersionUpgrade
 
 class VersionUpgrade22to24(VersionUpgrade):
@@ -19,7 +19,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         # on disk.
 
         config = configparser.ConfigParser(interpolation = None)
-        config.read_string(serialised) # Read the input string as config file.
+        config.read_string(serialised)  # Read the input string as config file.
         if config.get("metadata", "type") == "definition_changes":
             # This is not a container stack, don't upgrade it here
             return None
@@ -49,7 +49,7 @@ class VersionUpgrade22to24(VersionUpgrade):
                 # Change the name of variant and insert empty_variant into the stack.
                 new_container_list = []
                 for item in container_list:
-                    if not item: # the last item may be an empty string
+                    if not item:  # the last item may be an empty string
                         continue
                     if item == variant_name:
                         new_container_list.append("empty_variant")
@@ -94,7 +94,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         if variant_path.endswith("_variant.inst.cfg"):
             variant_path = variant_path[:-len("_variant.inst.cfg")] + "_settings.inst.cfg"
 
-        with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w", encoding = "utf-8") as fp:
+        with open(os.path.join(machine_instances_dir, os.path.basename(variant_path)), "w", encoding="utf-8") as fp:
             variant_config.write(fp)
 
         return config_name
@@ -106,16 +106,16 @@ class VersionUpgrade22to24(VersionUpgrade):
         result = []
         for entry in os.scandir(variants_dir):
             if entry.name.endswith(".inst.cfg") and entry.is_file():
-                config = configparser.ConfigParser(interpolation = None)
-                with open(entry.path, "r", encoding = "utf-8") as fhandle:
+                config = configparser.ConfigParser(interpolation=None)
+                with open(entry.path, "r", encoding="utf-8") as fhandle:
                     config.read_file(fhandle)
                 if config.has_section("general") and config.has_option("general", "name"):
-                    result.append( { "path": entry.path, "name": config.get("general", "name") } )
+                    result.append({"path": entry.path, "name": config.get("general", "name")})
         return result
 
     def upgradeExtruderTrain(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        config = configparser.ConfigParser(interpolation = None)
-        config.read_string(serialised) # Read the input string as config file.
+        config = configparser.ConfigParser(interpolation=None)
+        config.read_string(serialised)  # Read the input string as config file.
         config.set("general", "version", "3")   # Just bump the version number. That is all we need for now.
 
         output = io.StringIO()
@@ -123,7 +123,7 @@ class VersionUpgrade22to24(VersionUpgrade):
         return [filename], [output.getvalue()]
 
     def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        config = configparser.ConfigParser(interpolation = None)
+        config = configparser.ConfigParser(interpolation=None)
         config.read_string(serialised)
 
         if not config.has_section("general"):
@@ -143,18 +143,18 @@ class VersionUpgrade22to24(VersionUpgrade):
         return [filename], [output.getvalue()]
 
     def upgradeQuality(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        config = configparser.ConfigParser(interpolation = None)
-        config.read_string(serialised) # Read the input string as config file.
-        config.set("metadata", "type", "quality_changes")   # Update metadata/type to quality_changes
-        config.set("general", "version", "2")   # Just bump the version number. That is all we need for now.
+        config = configparser.ConfigParser(interpolation=None)
+        config.read_string(serialised)  # Read the input string as config file.
+        config.set("metadata", "type", "quality_changes")  # Update metadata/type to quality_changes
+        config.set("general", "version", "2")  # Just bump the version number. That is all we need for now.
 
         output = io.StringIO()
         config.write(output)
         return [filename], [output.getvalue()]
 
     def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
+        format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
+        setting_version = int(parser.get("metadata", "setting_version", fallback="0"))
         return format_version * 1000000 + setting_version

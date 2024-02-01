@@ -30,9 +30,9 @@ def getMetaData():
 def register(app):
     # add Mime type
     mime_type = MimeType(
-        name = "application/x-ultimaker-material-profile",
-        comment = "Ultimaker Material Profile",
-        suffixes = [ "xml.fdm_material" ]
+        name="application/x-ultimaker-material-profile",
+        comment="Ultimate Material Profile",
+        suffixes=["xml.fdm_material"]
     )
     MimeTypeDatabase.addMimeType(mime_type)
 

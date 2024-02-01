@@ -17,7 +17,7 @@ class VersionUpgrade47to48(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -38,7 +38,7 @@ class VersionUpgrade47to48(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -66,7 +66,7 @@ class VersionUpgrade47to48(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest import TestCase
 from unittest.mock import MagicMock
 
@@ -23,14 +26,14 @@ class TestContainerManager(TestCase):
 
         self._mocked_container = MagicMock()
         self._mocked_container_data = "SOME DATA :D"
-        self._mocked_container.serialize = MagicMock(return_value = self._mocked_container_data)
+        self._mocked_container.serialize = MagicMock(return_value=self._mocked_container_data)
 
         self._containers_meta_data = [{"id": "test", "test_data": "omg"}]
-        self._container_registry.findContainersMetadata = MagicMock(return_value = self._containers_meta_data)
-        self._container_registry.getMimeTypeForContainer = MagicMock(return_value = self._mocked_mime)
-        self._container_registry.findContainers = MagicMock(return_value = [self._mocked_container])
-        self._application.getContainerRegistry = MagicMock(return_value = self._container_registry)
-        self._application.getMachineManager = MagicMock(return_value = self._machine_manager)
+        self._container_registry.findContainersMetadata = MagicMock(return_value=self._containers_meta_data)
+        self._container_registry.getMimeTypeForContainer = MagicMock(return_value=self._mocked_mime)
+        self._container_registry.findContainers = MagicMock(return_value=[self._mocked_container])
+        self._application.getContainerRegistry = MagicMock(return_value=self._container_registry)
+        self._application.getMachineManager = MagicMock(return_value=self._machine_manager)
 
         # Destroy the previous instance of the container manager
         if ContainerManager.getInstance() is not None:

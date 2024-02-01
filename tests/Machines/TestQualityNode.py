@@ -86,7 +86,7 @@ def test_qualityNode_machine_1(container_registry):
     material_node.variant.variant_name = "correct_variant"
 
     with patch("cura.Machines.QualityNode.IntentNode"):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             node = QualityNode("quality_1", material_node)
 
     assert len(node.intents) == 3

@@ -7,7 +7,7 @@
 
 from ..Script import Script
 import re
-from UM.Application import Application # To get the current printer's settings.
+from UM.Application import Application  # To get the current printer's settings.
 from UM.Logger import Logger
 
 from typing import List, Tuple

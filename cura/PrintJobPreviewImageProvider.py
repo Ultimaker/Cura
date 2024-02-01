@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from PyQt6.QtGui import QImage
 from PyQt6.QtQuick import QQuickImageProvider
 from PyQt6.QtCore import QSize

@@ -44,7 +44,7 @@ class VersionUpgrade44to45(VersionUpgrade):
             folders = set(filter(lambda p: re.fullmatch(r"\d+\.\d+", p), folders))  # Only folders with a correct version number as name.
             folders.difference_update({os.path.basename(Resources.getDataStoragePath())})  # Remove current version from candidates (since the folder was just copied).
             if folders:
-                latest_version = max(folders, key = Version)  # Sort them by semantic version numbering.
+                latest_version = max(folders, key=Version)  # Sort them by semantic version numbering.
                 if latest_version == "4.4":
                     self.removeHiddenStacks()
 
@@ -73,7 +73,7 @@ class VersionUpgrade44to45(VersionUpgrade):
         for root, dirs, files in os.walk(data_storage):
             dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.global.cfg"):
-                parser = configparser.ConfigParser(interpolation = None)
+                parser = configparser.ConfigParser(interpolation=None)
                 try:
                     parser.read(os.path.join(root, filename))
                 except OSError:  # File not found or insufficient rights.
@@ -95,7 +95,7 @@ class VersionUpgrade44to45(VersionUpgrade):
         for root, dirs, files in os.walk(data_storage):
             dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.extruder.cfg"):
-                parser = configparser.ConfigParser(interpolation = None)
+                parser = configparser.ConfigParser(interpolation=None)
                 try:
                     parser.read(os.path.join(root, filename))
                 except OSError:  # File not found or insufficient rights.
@@ -130,7 +130,7 @@ class VersionUpgrade44to45(VersionUpgrade):
         This renames the renamed settings in the list of visible settings.
         """
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -145,7 +145,7 @@ class VersionUpgrade44to45(VersionUpgrade):
 
         This renames the renamed settings in the containers.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes = ())
         parser.read_string(serialized)
 
         # Update version number.
@@ -173,7 +173,7 @@ class VersionUpgrade44to45(VersionUpgrade):
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades stacks to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

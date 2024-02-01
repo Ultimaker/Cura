@@ -11,7 +11,7 @@ from typing import Dict
 from UM.Application import Application  # To get the machine manager to create the new profile in.
 from UM.Logger import Logger  # Logging errors.
 from UM.PluginRegistry import PluginRegistry  # For getting the path to this plugin's directory.
-from UM.Settings.ContainerRegistry import ContainerRegistry #To create unique profile IDs.
+from UM.Settings.ContainerRegistry import ContainerRegistry  # To create unique profile IDs.
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.ReaderWriters.ProfileReader import ProfileReader  # The plug-in type to implement.
 

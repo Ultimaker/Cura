@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from pathlib import Path
 from typing import Iterator
 
@@ -22,10 +25,9 @@ class Directory(Linter):
         if any("." in p for p in self._file.parent.parts):
             yield Diagnostic(
                 file = self._file,
-                diagnostic_name = "diagnostic-resources-macos-app-directory-name",
-                message = f"Directory name containing a `.` not allowed {self._file.suffix}, rename directory containing this file e.q: `_`",
-                level = "Error",
-                offset = 1
+                diagnostic_name="diagnostic-resources-macos-app-directory-name",
+                message=f"Directory name containing a `.` not allowed {self._file.suffix}, rename directory containing this file e.q: `_`",
+                level="Error",
+                offset=1
             )
         yield
-

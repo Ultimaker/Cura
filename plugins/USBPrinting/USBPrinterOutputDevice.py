@@ -5,9 +5,9 @@ import os
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Mesh.MeshWriter import MeshWriter # To get the g-code output.
-from UM.Message import Message # Show an error when already printing.
-from UM.PluginRegistry import PluginRegistry # To get the g-code output.
+from UM.Mesh.MeshWriter import MeshWriter  # To get the g-code output.
+from UM.Message import Message  # Show an error when already printing.
+from UM.PluginRegistry import PluginRegistry  # To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
@@ -19,7 +19,7 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
-from io import StringIO # To write the g-code output.
+from io import StringIO  # To write the g-code output.
 from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
@@ -38,7 +38,7 @@ catalog = i18nCatalog("cura")
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port, connection_type = ConnectionType.UsbConnection)
+        super().__init__(serial_port, connection_type=ConnectionType.UsbConnection)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
@@ -61,7 +61,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target = self._update, daemon = True, name = "USBPrinterUpdate")
+        self._update_thread = Thread(target=self._update, daemon=True, name="USBPrinterUpdate")
 
         self._last_temperature_request = None  # type: Optional[int]
         self._firmware_idle_count = 0
@@ -220,7 +220,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Ensure that a printer is created.
         controller = GenericOutputController(self)
         controller.setCanUpdateFirmware(True)
-        self._printers = [PrinterOutputModel(output_controller = controller, number_of_extruders = num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=controller, number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
 
     def close(self):
@@ -229,7 +229,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._serial.close()
 
         # Re-create the thread so it can be started again later.
-        self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
+        self._update_thread = Thread(target=self._update, daemon=True, name="USBPrinterUpdate")
         self._serial = None
 
     def sendCommand(self, command: Union[str, bytes]):
@@ -244,7 +244,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._serial is None or self._connection_state != ConnectionState.Connected:
             return
 
-        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
+        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode()  # type: bytes
         if not new_command.endswith(b"\n"):
             new_command += b"\n"
         try:
@@ -361,7 +361,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def resumePrint(self):
         self._paused = False
-        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
+        self._sendNextGcodeLine()  # Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0
@@ -422,7 +422,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
-            print_job = PrintJobOutputModel(output_controller = controller, name = CuraApplication.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller=controller, name=CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

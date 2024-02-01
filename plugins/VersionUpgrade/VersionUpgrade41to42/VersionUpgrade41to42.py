@@ -225,7 +225,7 @@ class VersionUpgrade41to42(VersionUpgrade):
 
         This renames the renamed settings in the containers.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -266,7 +266,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         This renames the renamed settings in the list of visible settings.
         """
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -292,7 +292,7 @@ class VersionUpgrade41to42(VersionUpgrade):
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades stacks to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

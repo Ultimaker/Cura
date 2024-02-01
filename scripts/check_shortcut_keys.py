@@ -10,7 +10,7 @@ from typing import Optional
 COLOR_WARNING = '\033[93m'
 COLOR_ENDC = '\033[0m'
 
-regex_patter = '(&[\w])' #"&[a-zA-Z0-9]" - Search char '&' and at least one character after it
+regex_patter = '(&[\w])' # "&[a-zA-Z0-9]" - Search char '&' and at least one character after it
 
 # Directory where this python file resides
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -26,7 +26,7 @@ class ShortcutKeysChecker:
         """
         Checks if the given file has duplicate shortcut keys.
         """
-        with open(filename, "r", encoding = "utf-8") as f:
+        with open(filename, "r", encoding="utf-8") as f:
             all_lines = f.readlines()
 
         all_lines = [l.strip() for l in all_lines]

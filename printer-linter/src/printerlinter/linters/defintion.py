@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import re
 from pathlib import Path
@@ -51,18 +54,18 @@ class Definition(Linter):
                         replacements = []
                     else:
                         replacements = [Replacement(
-                            file = self._file,
-                            offset = found.span(1)[0],
-                            length = len(found.group()),
-                            replacement_text = "")]
+                            file=self._file,
+                            offset=found.span(1)[0],
+                            length=len(found.group()),
+                            replacement_text="")]
 
                     yield Diagnostic(
-                        file = self._file,
-                        diagnostic_name = "diagnostic-definition-redundant-override",
-                        message = f"Overriding {key} with the same value ({child_key}: {child_value}) as defined in parent definition: {definition['inherits']}",
-                        level = "Warning",
-                        offset = found.span(0)[0],
-                        replacements = replacements
+                        file=self._file,
+                        diagnostic_name="diagnostic-definition-redundant-override",
+                        message=f"Overriding {key} with the same value ({child_key}: {child_value}) as defined in parent definition: {definition['inherits']}",
+                        level="Warning",
+                        offset=found.span(0)[0],
+                        replacements=replacements
                     )
 
     def _loadDefinitionFiles(self, definition_file) -> None:

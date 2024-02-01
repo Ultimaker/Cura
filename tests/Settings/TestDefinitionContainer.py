@@ -3,15 +3,15 @@
 
 import json  # To check files for unnecessarily overridden properties.
 import os
-import pytest #This module contains automated tests.
+import pytest  # This module contains automated tests.
 from typing import Any, Dict
 import uuid
 
 from unittest.mock import patch, MagicMock
 
-import UM.Settings.ContainerRegistry #To create empty instance containers.
-import UM.Settings.ContainerStack #To set the container registry the container stacks use.
-from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
+import UM.Settings.ContainerRegistry  # To create empty instance containers.
+import UM.Settings.ContainerStack  # To set the container registry the container stacks use.
+from UM.Settings.DefinitionContainer import DefinitionContainer  # To check against the class of DefinitionContainer.
 from UM.VersionUpgradeManager import FilesDataUpdateResult
 from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
@@ -54,7 +54,7 @@ def test_noCategory(file_path):
     present.
     :param file_path: The path of the machine definition to test.
     """
-    with open(file_path, encoding = "utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         json = f.read()
         metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
         assert "category" not in metadata[0], "Definition located at [%s] referenced a category, which is no longer allowed" % file_path
@@ -70,12 +70,12 @@ def test_validateMachineDefinitionContainer(file_path, definition_container):
 
     mocked_vum = MagicMock()
     mocked_vum.updateFilesData = lambda ct, v, fdl, fnl: FilesDataUpdateResult(ct, v, fdl, fnl)
-    with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value = mocked_vum)):
+    with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value=mocked_vum)):
         assertIsDefinitionValid(definition_container, file_path)
 
 
 def assertIsDefinitionValid(definition_container, file_path):
-    with open(file_path, encoding = "utf-8") as data:
+    with open(file_path, encoding="utf-8") as data:
         json = data.read()
         parser, is_valid = definition_container.readAndValidateSerialized(json)
         assert is_valid  # The definition has invalid JSON structure.
@@ -98,7 +98,7 @@ def test_validateOverridingDefaultValue(file_path: str):
     test fails on those things.
     """
 
-    with open(file_path, encoding = "utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         doc = json.load(f)
 
     if "inherits" not in doc:
@@ -111,7 +111,7 @@ def test_validateOverridingDefaultValue(file_path: str):
         if key in parent_settings and "value" in parent_settings[key]:
             if "default_value" in val:
                 faulty_keys.add(key)
-    assert not faulty_keys, "Unnecessary default_values for {faulty_keys} in {file_name}".format(faulty_keys = sorted(faulty_keys), file_name = file_path)  # If there is a value in the parent settings, then the default_value is not effective.
+    assert not faulty_keys, "Unnecessary default_values for {faulty_keys} in {file_name}".format(faulty_keys=sorted(faulty_keys), file_name=file_path)  # If there is a value in the parent settings, then the default_value is not effective.
 
 
 def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
@@ -122,7 +122,7 @@ def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
     """
 
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", definition_id + ".def.json")
-    with open(definition_path, encoding = "utf-8") as f:
+    with open(definition_path, encoding="utf-8") as f:
         doc = json.load(f)
     result = {}
 
@@ -184,7 +184,7 @@ def test_noId(file_path: str):
     people don't seem to be able to get used to.
     """
 
-    with open(file_path, encoding = "utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         doc = json.load(f)
 
     assert "id" not in doc, "Definitions should not have an ID field."
@@ -197,7 +197,7 @@ def test_extruderMatch(file_path: str):
     """
 
     extruder_id = os.path.basename(file_path).split(".")[0]
-    with open(file_path, encoding = "utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         doc = json.load(f)
 
     if "metadata" not in doc:
@@ -213,8 +213,8 @@ def test_extruderMatch(file_path: str):
         if machine_id == machine:
             break
     else:
-        assert False, "The machine ID {machine} is not found.".format(machine = machine)
-    with open(machine_filepath, encoding = "utf-8") as f:
+        assert False, "The machine ID {machine} is not found.".format(machine=machine)
+    with open(machine_filepath, encoding="utf-8") as f:
         machine_doc = json.load(f)
 
     # Make sure that the two match up.
@@ -241,6 +241,6 @@ def test_noNewSettings(file_path: str):
     filename = os.path.basename(file_path)
     if filename == "fdmprinter.def.json" or filename == "fdmextruder.def.json":
         return  # FDMPrinter and FDMExtruder, being the basis for all printers and extruders, are allowed to define new settings since they will be available for all printers then.
-    with open(file_path, encoding = "utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         doc = json.load(f)
     assert "settings" not in doc

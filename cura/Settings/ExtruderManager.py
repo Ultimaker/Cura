@@ -6,7 +6,7 @@ from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For comm
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
 
-import cura.CuraApplication # To get the global container stack to find the current machine.
+import cura.CuraApplication  # To get the global container stack to find the current machine.
 from UM.Util import parseBool
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Logger import Logger

@@ -10,7 +10,7 @@ from UM.Logger import Logger
 from UM.Mesh.MeshData import MeshData
 from UM.Mesh.MeshBuilder import MeshBuilder
 
-from UM.Application import Application #To modify the maximum zoom level.
+from UM.Application import Application  # To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator

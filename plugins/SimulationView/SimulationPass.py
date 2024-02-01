@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import math
 
 from UM.Math.Color import Color
@@ -21,7 +22,7 @@ from cura.LayerPolygon import LayerPolygon
 import os.path
 import numpy
 
-## RenderPass used to display g-code paths.
+# RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
 
 

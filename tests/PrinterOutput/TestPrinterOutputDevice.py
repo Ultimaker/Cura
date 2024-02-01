@@ -65,7 +65,7 @@ def test_uniqueConfigurations(printer_output_device):
     # Once the type of printer is set, it's active configuration counts as being set.
     # In that case, that should also be added to the list of available configurations
     printer.updateType("blarg!")
-    loaded_material = MaterialOutputModel(guid = "", type = "PLA", color = "Blue", brand = "Generic", name = "Blue PLA")
+    loaded_material = MaterialOutputModel(guid="", type="PLA", color="Blue", brand="Generic", name="Blue PLA")
     loaded_left_extruder = ExtruderConfigurationModel(0)
     loaded_left_extruder.setMaterial(loaded_material)
     loaded_right_extruder = ExtruderConfigurationModel(1)
@@ -81,7 +81,7 @@ def test_uniqueConfigurations_empty_is_filtered_out(printer_output_device):
     printer_output_device._onPrintersChanged()
 
     printer.updateType("blarg!")
-    empty_material = MaterialOutputModel(guid = "", type = "empty", color = "empty", brand = "Generic", name = "Empty")
+    empty_material = MaterialOutputModel(guid="", type="empty", color="empty", brand="Generic", name="Empty")
     empty_left_extruder = ExtruderConfigurationModel(0)
     empty_left_extruder.setMaterial(empty_material)
     empty_right_extruder = ExtruderConfigurationModel(1)

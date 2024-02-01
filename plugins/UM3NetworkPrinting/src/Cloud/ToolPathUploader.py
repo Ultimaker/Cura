@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, Tuple, cast, Dict, Optional
 
@@ -12,7 +13,6 @@ from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 class ToolPathUploader:
     """Class responsible for uploading meshes to the cloud in separate requests."""
-
 
     # The maximum amount of times to retry if the server returns one of the RETRY_HTTP_CODES
     MAX_RETRIES = 10
@@ -73,14 +73,14 @@ class ToolPathUploader:
         if self._finished:
             raise ValueError("The upload is already finished")
 
-        Logger.log("i", "Uploading print to {upload_url}".format(upload_url = self._print_job.upload_url))
+        Logger.log("i", "Uploading print to {upload_url}".format(upload_url=self._print_job.upload_url))
         self._http.put(
-            url = cast(str, self._print_job.upload_url),
-            headers_dict = {"Content-Type": cast(str, self._print_job.content_type)},
-            data = self._data,
-            callback = self._finishedCallback,
-            error_callback = self._errorCallback,
-            upload_progress_callback = self._progressCallback
+            url=cast(str, self._print_job.upload_url),
+            headers_dict={"Content-Type": cast(str, self._print_job.content_type)},
+            data=self._data,
+            callback=self._finishedCallback,
+            error_callback=self._errorCallback,
+            upload_progress_callback=self._progressCallback
         )
 
     def _progressCallback(self, bytes_sent: int, bytes_total: int) -> None:

@@ -22,8 +22,8 @@ metadata_dict = {
 @pytest.fixture
 def container_registry():
     result = MagicMock()
-    result.findInstanceContainersMetadata = MagicMock(return_value = [{"id": "variant_1", "name": "Variant One", "quality_type": "normal"}, {"id": "variant_2", "name": "Variant Two", "quality_type": "great"}])
-    result.findContainersMetadata = MagicMock(return_value = [metadata_dict])
+    result.findInstanceContainersMetadata = MagicMock(return_value=[{"id": "variant_1", "name": "Variant One", "quality_type": "normal"}, {"id": "variant_2", "name": "Variant Two", "quality_type": "great"}])
+    result.findContainersMetadata = MagicMock(return_value=[metadata_dict])
     return result
 
 @pytest.fixture
@@ -35,9 +35,9 @@ def empty_machine_node():
     """
 
     empty_container_registry = MagicMock()
-    empty_container_registry.findContainersMetadata = MagicMock(return_value = [metadata_dict])  # Still contain the MachineNode's own metadata for the constructor.
-    empty_container_registry.findInstanceContainersMetadata = MagicMock(return_value = [])
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = empty_container_registry)):
+    empty_container_registry.findContainersMetadata = MagicMock(return_value=[metadata_dict])  # Still contain the MachineNode's own metadata for the constructor.
+    empty_container_registry.findInstanceContainersMetadata = MagicMock(return_value=[])
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=empty_container_registry)):
         with patch("cura.Machines.MachineNode.MachineNode._loadAll", MagicMock()):
             return MachineNode("machine_1")
 
@@ -46,15 +46,15 @@ def getMetadataEntrySideEffect(*args, **kwargs):
 
 
 def createMockedInstanceContainer():
-    result = MagicMock(spec = ContainerInterface)
-    result.getMetaDataEntry = MagicMock(side_effect = getMetadataEntrySideEffect)
+    result = MagicMock(spec=ContainerInterface)
+    result.getMetaDataEntry = MagicMock(side_effect=getMetadataEntrySideEffect)
     return result
 
 
 def createMachineNode(container_id, container_registry):
     with patch("cura.Machines.MachineNode.VariantNode"):  # We're not testing the variant node here, so patch it out.
         with patch("cura.Machines.MachineNode.QualityNode"):
-            with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+            with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
                 return MachineNode(container_id)
 
 
@@ -87,22 +87,22 @@ def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
     """
 
     # Prepare a tree inside the machine node.
-    extruder_0_node = MagicMock(quality_type = "quality_type_1")
-    extruder_1_node = MagicMock(quality_type = "quality_type_1")  # Same quality type, so this is the one that can be returned.
+    extruder_0_node = MagicMock(quality_type="quality_type_1")
+    extruder_1_node = MagicMock(quality_type="quality_type_1")  # Same quality type, so this is the one that can be returned.
     empty_machine_node.variants = {
         "variant_1": MagicMock(
-            materials = {
+            materials={
                 "material_1": MagicMock(
-                    qualities = {
+                    qualities={
                         "quality_1": extruder_0_node
                     }
                 )
             }
         ),
         "variant_2": MagicMock(
-            materials = {
+            materials={
                 "material_2": MagicMock(
-                    qualities = {
+                    qualities={
                         "quality_2": extruder_1_node
                     }
                 )
@@ -110,8 +110,8 @@ def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
         )
     }
     global_node = MagicMock(
-        container = MagicMock(id = "global_quality_container"),  # Needs to exist, otherwise it won't add this quality type.
-        getMetaDataEntry = lambda _, __: "Global Quality Profile Name"
+        container=MagicMock(id="global_quality_container"),  # Needs to exist, otherwise it won't add this quality type.
+        getMetaDataEntry=lambda _, __: "Global Quality Profile Name"
     )
     empty_machine_node.global_qualities = {
         "quality_type_1": global_node
@@ -137,15 +137,15 @@ def test_getQualityGroupsAvailability(empty_machine_node):
     """
 
     # Prepare a tree inside the machine node.
-    extruder_0_both = MagicMock(quality_type = "quality_type_both")  # This quality type is available for both extruders.
-    extruder_1_both = MagicMock(quality_type = "quality_type_both")
-    extruder_0_exclusive = MagicMock(quality_type = "quality_type_0")  # These quality types are only available on one of the extruders.
-    extruder_1_exclusive = MagicMock(quality_type = "quality_type_1")
+    extruder_0_both = MagicMock(quality_type="quality_type_both")  # This quality type is available for both extruders.
+    extruder_1_both = MagicMock(quality_type="quality_type_both")
+    extruder_0_exclusive = MagicMock(quality_type="quality_type_0")  # These quality types are only available on one of the extruders.
+    extruder_1_exclusive = MagicMock(quality_type="quality_type_1")
     empty_machine_node.variants = {
         "variant_1": MagicMock(
-            materials = {
+            materials={
                 "material_1": MagicMock(
-                    qualities = {
+                    qualities={
                         "quality_0_both": extruder_0_both,
                         "quality_0_exclusive": extruder_0_exclusive
                     }
@@ -153,9 +153,9 @@ def test_getQualityGroupsAvailability(empty_machine_node):
             }
         ),
         "variant_2": MagicMock(
-            materials = {
+            materials={
                 "material_2": MagicMock(
-                    qualities = {
+                    qualities={
                         "quality_1_both": extruder_1_both,
                         "quality_1_exclusive": extruder_1_exclusive
                     }
@@ -163,9 +163,9 @@ def test_getQualityGroupsAvailability(empty_machine_node):
             }
         )
     }
-    global_both = MagicMock(container = MagicMock(id = "global_quality_both"), getMetaDataEntry = lambda _, __: "Global Quality Both")
-    global_0 = MagicMock(container = MagicMock(id = "global_quality_0"), getMetaDataEntry = lambda _, __: "Global Quality 0 Exclusive")
-    global_1 = MagicMock(container = MagicMock(id = "global_quality_1"), getMetaDataEntry = lambda _, __: "Global Quality 1 Exclusive")
+    global_both = MagicMock(container=MagicMock(id="global_quality_both"), getMetaDataEntry=lambda _, __: "Global Quality Both")
+    global_0 = MagicMock(container=MagicMock(id="global_quality_0"), getMetaDataEntry=lambda _, __: "Global Quality 0 Exclusive")
+    global_1 = MagicMock(container=MagicMock(id="global_quality_1"), getMetaDataEntry=lambda _, __: "Global Quality 1 Exclusive")
     empty_machine_node.global_qualities = {
         "quality_type_both": global_both,
         "quality_type_0": global_0,

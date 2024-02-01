@@ -8,16 +8,16 @@ from cura.Settings.GlobalStack import GlobalStack
 
 
 def createMockedStack(definition_id: str):
-    result = MagicMock(spec = GlobalStack)
-    result.definition.getId = MagicMock(return_value = definition_id)
+    result = MagicMock(spec=GlobalStack)
+    result.definition.getId = MagicMock(return_value=definition_id)
 
     extruder_left_mock = MagicMock()
-    extruder_left_mock.variant.getName = MagicMock(return_value = definition_id + "_left_variant_name")
-    extruder_left_mock.material.getMetaDataEntry = MagicMock(return_value = definition_id + "_left_material_base_file")
+    extruder_left_mock.variant.getName = MagicMock(return_value=definition_id + "_left_variant_name")
+    extruder_left_mock.material.getMetaDataEntry = MagicMock(return_value=definition_id + "_left_material_base_file")
     extruder_left_mock.isEnabled = True
     extruder_right_mock = MagicMock()
-    extruder_right_mock.variant.getName = MagicMock(return_value = definition_id + "_right_variant_name")
-    extruder_right_mock.material.getMetaDataEntry = MagicMock(return_value = definition_id + "_right_material_base_file")
+    extruder_right_mock.variant.getName = MagicMock(return_value=definition_id + "_right_variant_name")
+    extruder_right_mock.material.getMetaDataEntry = MagicMock(return_value=definition_id + "_right_material_base_file")
     extruder_right_mock.isEnabled = True
     extruder_list = [extruder_left_mock, extruder_right_mock]
     result.extruderList = extruder_list
@@ -27,17 +27,17 @@ def createMockedStack(definition_id: str):
 @pytest.fixture
 def container_registry():
     result = MagicMock()
-    result.findContainerStacks = MagicMock(return_value = [createMockedStack("machine_1"), createMockedStack("machine_2")])
+    result.findContainerStacks = MagicMock(return_value=[createMockedStack("machine_1"), createMockedStack("machine_2")])
     result.findContainersMetadata = lambda id: [{"id": id}] if id in {"machine_1", "machine_2"} else []
     return result
 
 @pytest.fixture
 def application():
-    return MagicMock(getGlobalContainerStack = MagicMock(return_value = createMockedStack("current_global_stack")))
+    return MagicMock(getGlobalContainerStack=MagicMock(return_value=createMockedStack("current_global_stack")))
 
 
 def test_containerTreeInit(container_registry):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         with patch("UM.Application.Application.getInstance"):
             container_tree = ContainerTree()
 
@@ -46,8 +46,8 @@ def test_containerTreeInit(container_registry):
 
 
 def test_getCurrentQualityGroupsNoGlobalStack(container_registry):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
             container_tree = ContainerTree()
             result = container_tree.getCurrentQualityGroups()
 
@@ -55,7 +55,7 @@ def test_getCurrentQualityGroupsNoGlobalStack(container_registry):
 
 
 def test_getCurrentQualityGroups(container_registry, application):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
             container_tree = ContainerTree()
             container_tree.machines._machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
@@ -71,8 +71,8 @@ def test_getCurrentQualityGroups(container_registry, application):
 
 
 def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
             container_tree = ContainerTree()
             result = container_tree.getCurrentQualityChangesGroups()
 
@@ -80,7 +80,7 @@ def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
 
 
 def test_getCurrentQualityChangesGroups(container_registry, application):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
             container_tree = ContainerTree()
             container_tree.machines._machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.

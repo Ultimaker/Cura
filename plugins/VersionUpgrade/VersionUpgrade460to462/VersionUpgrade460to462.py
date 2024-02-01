@@ -34,10 +34,10 @@ default_qualities_per_nozzle_and_material = {
 
 class VersionUpgrade460to462(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
+        setting_version = int(parser.get("metadata", "setting_version", fallback="0"))
         return format_version * 1000000 + setting_version
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -48,7 +48,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -72,7 +72,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
         results = [(parser, filename)]
 
@@ -80,8 +80,8 @@ class VersionUpgrade460to462(VersionUpgrade):
             if parser["general"]["definition"] == "deltacomb_extruder_0":
                 parser["general"]["definition"] = "deltacomb_base_extruder_0"
             elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
-                parser_e2 = configparser.ConfigParser(interpolation = None)
-                parser_e3 = configparser.ConfigParser(interpolation = None)
+                parser_e2 = configparser.ConfigParser(interpolation=None)
+                parser_e3 = configparser.ConfigParser(interpolation=None)
                 parser_e2.read_dict(parser)
                 parser_e3.read_dict(parser)
 
@@ -94,8 +94,8 @@ class VersionUpgrade460to462(VersionUpgrade):
                 parser["general"]["definition"] = "deltacomb_dc20"
 
                 if "metadata" in parser and ("extruder" in parser["metadata"] or "position" in parser["metadata"]):  # Per-extruder user container or quality changes container.
-                    parser_e2 = configparser.ConfigParser(interpolation = None)
-                    parser_e3 = configparser.ConfigParser(interpolation = None)
+                    parser_e2 = configparser.ConfigParser(interpolation=None)
+                    parser_e3 = configparser.ConfigParser(interpolation=None)
                     parser_e2.read_dict(parser)
                     parser_e3.read_dict(parser)
                     if "extruder" in parser["metadata"]:
@@ -129,7 +129,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -163,7 +163,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
         results = [(parser, filename)]
 

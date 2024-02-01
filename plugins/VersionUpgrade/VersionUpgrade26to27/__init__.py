@@ -10,12 +10,13 @@ if TYPE_CHECKING:
 
 upgrade = VersionUpgrade26to27.VersionUpgrade26to27()
 
+
 def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
             # From                          To                             Upgrade function
-            ("machine_stack", 3000001):     ("machine_stack", 3000002,     upgrade.upgradeStack),
-            ("extruder_train", 3000000):    ("extruder_train", 3000002,    upgrade.upgradeStack),
+            ("machine_stack", 3000001): ("machine_stack", 3000002, upgrade.upgradeStack),
+            ("extruder_train", 3000000): ("extruder_train", 3000002, upgrade.upgradeStack),
 
             # In 2.6.x, Preferences are saved with "version = 4" and no setting_version.
             # This means those Preferences files will still be treated as "4.0" as defined in VersionUpgrade25to26,
@@ -24,13 +25,13 @@ def getMetaData() -> Dict[str, Any]:
             # To fix this, we first fix the upgrade routine for 25to26 so it actually upgrades to "4.1", and then
             # here we can upgrade from "4.1" to "4.2" safely.
             #
-            ("preferences", 4000001):       ("preferences", 4000002,         upgrade.upgradePreferences),
+            ("preferences", 4000001): ("preferences", 4000002, upgrade.upgradePreferences),
             # NOTE: All the instance containers share the same general/version, so we have to update all of them
             #       if any is updated.
-            ("quality_changes", 2000001):       ("quality_changes", 2000002,    upgrade.upgradeOtherContainer),
-            ("user", 2000001):                  ("user", 2000002,               upgrade.upgradeOtherContainer),
-            ("definition_changes", 2000001):    ("definition_changes", 2000002, upgrade.upgradeOtherContainer),
-            ("variant", 2000000):               ("variant", 2000002,            upgrade.upgradeOtherContainer)
+            ("quality_changes", 2000001): ("quality_changes", 2000002, upgrade.upgradeOtherContainer),
+            ("user", 2000001): ("user", 2000002, upgrade.upgradeOtherContainer),
+            ("definition_changes", 2000001): ("definition_changes", 2000002, upgrade.upgradeOtherContainer),
+            ("variant", 2000000): ("variant", 2000002, upgrade.upgradeOtherContainer)
         },
         "sources": {
             "machine_stack": {
@@ -64,5 +65,6 @@ def getMetaData() -> Dict[str, Any]:
         }
     }
 
+
 def register(app: "Application") -> Dict[str, Any]:
-    return { "version_upgrade": upgrade }
+    return {"version_upgrade": upgrade}

@@ -1,14 +1,15 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os.path
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import configparser #To parse the resulting config files.
-import pytest #To register tests with.
+import configparser  # To parse the resulting config files.
+import pytest  # To register tests with.
 
-import VersionUpgrade27to30 #The module we're testing.
+import VersionUpgrade27to30  # The module we're testing.
 
-##  Creates an instance of the upgrader to test with.
+#  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
     return VersionUpgrade27to30.VersionUpgrade27to30()
@@ -36,7 +37,7 @@ infill_sparse_density = 42
         "version": 3000000
     },
     {
-        "test_name": "Negative Version", #Why not?
+        "test_name": "Negative Version",  # Why not?
         "file_data": """[general]
 version = -20
 """,
@@ -62,7 +63,7 @@ setting_version = -3
     }
 ]
 
-##  Tests the technique that gets the version number from CFG files.
+#   Tests the technique that gets the version number from CFG files.
 #
 #   \param data The parametrised data to test with. It contains a test name
 #   to debug with, the serialised contents of a CFG file and the correct
@@ -77,7 +78,7 @@ test_cfg_version_bad_data = [
     {
         "test_name": "Empty",
         "file_data": "",
-        "exception": configparser.Error #Explicitly not specified further which specific error we're getting, because that depends on the implementation of configparser.
+        "exception": configparser.Error  # Explicitly not specified further which specific error we're getting, because that depends on the implementation of configparser.
     },
     {
         "test_name": "No General",
@@ -118,7 +119,7 @@ version = 1.2
     }
 ]
 
-##  Tests whether getting a version number from bad CFG files gives an
+#   Tests whether getting a version number from bad CFG files gives an
 #   exception.
 #
 #   \param data The parametrised data to test with. It contains a test name
@@ -148,24 +149,24 @@ version = 4
 [metadata]
 setting_version = 2
 """,
-        None #Indicates that the theme should be absent in the new file.
+        None  # Indicates that the theme should be absent in the new file.
     )
 ]
 
-##  Tests whether the theme is properly translated.
+#  Tests whether the theme is properly translated.
 @pytest.mark.parametrize("test_name, file_data, new_theme", test_translate_theme_data)
 def test_translateTheme(test_name, file_data, new_theme, upgrader):
-    #Read old file.
-    original_parser = configparser.ConfigParser(interpolation = None)
+    # Read old file.
+    original_parser = configparser.ConfigParser(interpolation=None)
     original_parser.read_string(file_data)
 
-    #Perform the upgrade.
+    # Perform the upgrade.
     _, upgraded_stacks = upgrader.upgradePreferences(file_data, "<string>")
     upgraded_stack = upgraded_stacks[0]
-    parser = configparser.ConfigParser(interpolation = None)
+    parser = configparser.ConfigParser(interpolation=None)
     parser.read_string(upgraded_stack)
 
-    #Check whether the theme was properly translated.
+    # Check whether the theme was properly translated.
     if not new_theme:
         assert "theme" not in parser["general"]
     else:

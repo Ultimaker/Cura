@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import configparser
 from typing import Tuple, List
 import io
@@ -48,7 +51,7 @@ class VersionUpgrade43to44(VersionUpgrade):
 
         This renames the renamed settings in the containers.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -77,7 +80,7 @@ class VersionUpgrade43to44(VersionUpgrade):
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades stacks to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

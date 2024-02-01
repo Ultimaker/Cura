@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To parse the files we need to upgrade and write the new files.
-import io #To serialise configparser output to a string.
+import configparser  # To parse the files we need to upgrade and write the new files.
+import io  # To serialise configparser output to a string.
 from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
@@ -62,20 +62,20 @@ _renamed_quality_profiles = {
 
     "um3_bb0.8_TPU_Not_Supported_Quality": "um3_bb0.8_TPU_Fast_print",
     "um3_bb0.8_TPU_Not_Supported_Superdraft_Quality": "um3_bb0.8_TPU_Superdraft_Print",
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 
 
-##  A collection of functions that convert the configuration of the user in Cura
+#   A collection of functions that convert the configuration of the user in Cura
 #   2.6 to a configuration for Cura 2.7.
 #
 #   All of these methods are essentially stateless.
 class VersionUpgrade26to27(VersionUpgrade):
-    ##  Upgrades a preferences file from version 2.6 to 2.7.
+    #   Upgrades a preferences file from version 2.6 to 2.7.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
     def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -97,12 +97,12 @@ class VersionUpgrade26to27(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades a container file other than a container stack file from version 2.6 to 2.7.
+    #   Upgrades a container file other than a container stack file from version 2.6 to 2.7.
     #
     #   \param serialised The serialised form of a container file.
     #   \param filename The name of the file to upgrade.
     def upgradeOtherContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -119,12 +119,12 @@ class VersionUpgrade26to27(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades a container stack from version 2.6 to 2.7.
+    #   Upgrades a container stack from version 2.6 to 2.7.
     #
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.
     def upgradeStack(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update IDs of the renamed quality profiles

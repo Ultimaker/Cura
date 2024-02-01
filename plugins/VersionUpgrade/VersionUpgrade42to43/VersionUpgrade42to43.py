@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import configparser
 import io
 from typing import Dict, Tuple, List
@@ -28,7 +31,7 @@ _renamed_profiles = {"generic_pla_0.4_coarse": "jbo_generic_pla_0.4_coarse",
 # than what we can fix. So, here, we update all material variants, regardless of having "_2-fans" at the end or not, to
 # jellybox_0.4_mm.
 #
-_renamed_material_profiles = { # PETG
+_renamed_material_profiles = {  # PETG
                               "imade3d_petg_green":                                "imade3d_petg_175",
                               "imade3d_petg_green_imade3d_jellybox":               "imade3d_petg_175_imade3d_jellybox",
                               "imade3d_petg_green_imade3d_jellybox_0.4_mm":        "imade3d_petg_175_imade3d_jellybox_0.4_mm",
@@ -63,7 +66,7 @@ class VersionUpgrade42to43(VersionUpgrade):
     state they should be in at version 4.3.
     """
     def upgradePreferences(self, serialized: str, filename: str):
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         if "camera_perspective_mode" in parser["general"] and parser["general"]["camera_perspective_mode"] == "orthogonal":
@@ -89,7 +92,7 @@ class VersionUpgrade42to43(VersionUpgrade):
 
         This renames the renamed settings in the containers.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -116,7 +119,7 @@ class VersionUpgrade42to43(VersionUpgrade):
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades stacks to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

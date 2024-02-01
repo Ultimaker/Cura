@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import configparser
 from typing import Tuple, List, Set, Dict
 import io
@@ -59,7 +62,7 @@ class VersionUpgrade35to40(VersionUpgrade):
         parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "6"
 
-        #self._resetConcentric3DInfillPattern(parser)
+        # self._resetConcentric3DInfillPattern(parser)
         if "values" in parser:
             for deleted_setting in deleted_settings:
                 if deleted_setting not in parser["values"]:

@@ -17,7 +17,8 @@ _removed_settings = {
     "speed_equalize_flow_max"
 }
 
-_transformed_settings = {  # These settings have been changed to a new topic, but may have different data type. Used only for setting visibility; the rest is handled separately.
+_transformed_settings = {
+    # These settings have been changed to a new topic, but may have different data type. Used only for setting visibility; the rest is handled separately.
     "outer_inset_first": "inset_direction",
     "speed_equalize_flow_enabled": "speed_equalize_flow_width_factor"
 }
@@ -35,7 +36,7 @@ class VersionUpgrade413to50(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -73,7 +74,7 @@ class VersionUpgrade413to50(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -90,14 +91,16 @@ class VersionUpgrade413to50(VersionUpgrade):
                 old_value = parser["values"]["outer_inset_first"]
                 if old_value.startswith("="):  # Was already a formula.
                     old_value = old_value[1:]
-                parser["values"]["inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
+                parser["values"][
+                    "inset_direction"] = f"='outside_in' if ({old_value}) else 'inside_out'"  # Makes it work both with plain setting values and formulas.
 
             # Replace Equalize Filament Flow with equivalent setting.
             if "speed_equalize_flow_enabled" in parser["values"]:
                 old_value = parser["values"]["speed_equalize_flow_enabled"]
                 if old_value.startswith("="):  # Was already a formula.
                     old_value = old_value[1:]
-                parser["values"]["speed_equalize_flow_width_factor"] = f"=100 if ({old_value}) else 0"  # If it used to be enabled, set it to 100%. Otherwise 0%.
+                parser["values"][
+                    "speed_equalize_flow_width_factor"] = f"=100 if ({old_value}) else 0"  # If it used to be enabled, set it to 100%. Otherwise 0%.
 
         result = io.StringIO()
         parser.write(result)
@@ -112,7 +115,7 @@ class VersionUpgrade413to50(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

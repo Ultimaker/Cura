@@ -7,10 +7,10 @@ from typing import Dict, List, Set, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
 
-deleted_settings = {"prime_tower_wall_thickness", "dual_pre_wipe", "prime_tower_purge_volume"} # type: Set[str]
+deleted_settings = {"prime_tower_wall_thickness", "dual_pre_wipe", "prime_tower_purge_volume"}  # type: Set[str]
 
-changed_settings = {"retraction_combing": "noskin"} # type: Dict[str, str]
-updated_settings = {"retraction_combing": "infill"} # type: Dict[str, str]
+changed_settings = {"retraction_combing": "noskin"}  # type: Dict[str, str]
+updated_settings = {"retraction_combing": "infill"}  # type: Dict[str, str]
 
 _RENAMED_MATERIAL_PROFILES = {
     "dsm_arnitel2045_175_cartesio_0.25_mm": "dsm_arnitel2045_175_cartesio_0.25mm_thermoplastic_extruder",
@@ -58,12 +58,12 @@ _RENAMED_MATERIAL_PROFILES = {
     "ultimaker_pva_cartesio_0.25_mm": "ultimaker_pva_cartesio_0.25mm_thermoplastic_extruder",
     "ultimaker_pva_cartesio_0.4_mm": "ultimaker_pva_cartesio_0.4mm_thermoplastic_extruder",
     "ultimaker_pva_cartesio_0.8_mm": "ultimaker_pva_cartesio_0.8mm_thermoplastic_extruder"
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 
-##  Upgrades configurations from the state they were in at version 3.4 to the
+#   Upgrades configurations from the state they were in at version 3.4 to the
 #   state they should be in at version 3.5.
 class VersionUpgrade34to35(VersionUpgrade):
-    ##  Upgrades Preferences to have the new version number.
+    #  Upgrades Preferences to have the new version number.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
@@ -84,16 +84,16 @@ class VersionUpgrade34to35(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
+    #  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
         parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "5"
 
-        #Update the name of the quality profile.
+        # Update the name of the quality profile.
         if parser["containers"]["3"] in _RENAMED_MATERIAL_PROFILES:
             parser["containers"]["3"] = _RENAMED_MATERIAL_PROFILES[parser["containers"]["3"]]
 
@@ -101,10 +101,10 @@ class VersionUpgrade34to35(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades instance containers to have the new version
+    #  Upgrades instance containers to have the new version
     #   number.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.

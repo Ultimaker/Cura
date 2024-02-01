@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional
 
 from UM.Settings.Interfaces import ContainerInterface
@@ -13,7 +16,7 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
     test.
     """
 
-    def __init__(self, metadata = None):
+    def __init__(self, metadata=None):
         """Initialise a new definition container.
 
         The container will have the specified ID and all metadata in the
@@ -46,7 +49,7 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
 
         return self._metadata
 
-    def getMetaDataEntry(self, entry, default = None):
+    def getMetaDataEntry(self, entry, default=None):
         """Gets a metadata entry from the metadata dictionary.
 
         :param key: The key of the metadata entry.
@@ -99,7 +102,7 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
     def _trustHook(self, file_name: Optional[str]) -> bool:
         return True
 
-    def setProperty(self, key, property_name, property_value, container = None, set_from_cache = False):
+    def setProperty(self, key, property_name, property_value, container=None, set_from_cache=False):
         pass
 
     def getProperty(self, key, property_name, context=None):
@@ -126,7 +129,7 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
 
         return key in self.items
 
-    def serialize(self, ignored_metadata_keys = None):
+    def serialize(self, ignored_metadata_keys=None):
         """Serializes the container to a string representation.
 
         This method is not implemented in the mock container.

@@ -1,7 +1,7 @@
 #  Copyright (c) 2022 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 
-import argparse #To run the engine in debug mode if the front-end is in debug mode.
+import argparse  # To run the engine in debug mode if the front-end is in debug mode.
 from collections import defaultdict
 import os
 from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
@@ -21,8 +21,8 @@ from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
-from UM.Settings.SettingInstance import SettingInstance #For typing.
-from UM.Tool import Tool #For typing.
+from UM.Settings.SettingInstance import SettingInstance  # For typing.
+from UM.Tool import Tool  # For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager

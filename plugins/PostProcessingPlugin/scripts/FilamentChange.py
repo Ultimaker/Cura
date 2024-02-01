@@ -7,7 +7,7 @@
 from typing import List
 from ..Script import Script
 
-from UM.Application import Application # To get the current printer's settings.
+from UM.Application import Application  # To get the current printer's settings.
 
 class FilamentChange(Script):
 

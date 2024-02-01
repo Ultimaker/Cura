@@ -3,8 +3,8 @@
 
 import gzip
 
-from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementing.
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType #To add the .gcode.gz files to the MIME type database.
+from UM.Mesh.MeshReader import MeshReader  # The class we're extending/implementing.
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType  # To add the .gcode.gz files to the MIME type database.
 from UM.PluginRegistry import PluginRegistry
 
 

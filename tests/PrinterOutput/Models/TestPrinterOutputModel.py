@@ -1,4 +1,5 @@
-
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from unittest.mock import MagicMock
 
@@ -146,4 +147,3 @@ def test_removeAlreadyRemovedConfiguration():
     model.removeAvailableConfiguration(configuration)
     assert model.availableConfigurationsChanged.emit.call_count == 0
     assert model.availableConfigurations == []
-

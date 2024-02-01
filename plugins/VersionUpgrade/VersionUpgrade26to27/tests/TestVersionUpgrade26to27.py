@@ -1,17 +1,20 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To check whether the appropriate exceptions are raised.
-import pytest #To register tests with.
+import configparser  # To check whether the appropriate exceptions are raised.
+import pytest  # To register tests with.
 import os.path
 import sys
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
-import VersionUpgrade26to27 #The module we're testing.
 
-##  Creates an instance of the upgrader to test with.
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import VersionUpgrade26to27  # The module we're testing.
+
+
+#  Creates an instance of the upgrader to test with.
 @pytest.fixture
 def upgrader():
     return VersionUpgrade26to27.VersionUpgrade26to27()
+
 
 test_cfg_version_good_data = [
     {
@@ -46,7 +49,8 @@ setting_version = 1
     }
 ]
 
-##  Tests the technique that gets the version number from CFG files.
+
+#   Tests the technique that gets the version number from CFG files.
 #
 #   \param data The parametrised data to test with. It contains a test name
 #   to debug with, the serialised contents of a CFG file and the correct
@@ -103,12 +107,13 @@ type = extruder_train
     }
 ]
 
-##  Tests whether the "Not Supported" quality profiles in the global and extruder stacks are renamed for the 2.7
+
+#   Tests whether the "Not Supported" quality profiles in the global and extruder stacks are renamed for the 2.7
 #   version of preferences.
 @pytest.mark.parametrize("data", test_upgrade_stacks_with_not_supported_data)
 def test_upgradeStacksWithNotSupportedQuality(data, upgrader):
     # Read old file
-    original_parser = configparser.ConfigParser(interpolation = None)
+    original_parser = configparser.ConfigParser(interpolation=None)
     original_parser.read_string(data["file_data"])
 
     # Perform the upgrade.
@@ -116,6 +121,6 @@ def test_upgradeStacksWithNotSupportedQuality(data, upgrader):
     upgraded_stack = upgraded_stacks[0]
 
     # Find whether the not supported profile has been renamed
-    parser = configparser.ConfigParser(interpolation = None)
+    parser = configparser.ConfigParser(interpolation=None)
     parser.read_string(upgraded_stack)
-    assert("Not_Supported" not in parser.get("containers", "2"))
+    assert ("Not_Supported" not in parser.get("containers", "2"))

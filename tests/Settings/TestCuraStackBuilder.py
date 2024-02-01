@@ -1,3 +1,6 @@
+# Copyright (c) 2024 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import patch, MagicMock
 
 import pytest
@@ -57,11 +60,11 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
 
 def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container,
                        quality_container, intent_container, quality_changes_container):
-    global_variant_node = MagicMock(name = "global variant node")
+    global_variant_node = MagicMock(name="global variant node")
     global_variant_node.container = global_variant
 
-    quality_group = QualityGroup(name = "zomg", quality_type = "normal")
-    quality_group.node_for_global = MagicMock(name = "Node for global")
+    quality_group = QualityGroup(name="zomg", quality_type="normal")
+    quality_group.node_for_global = MagicMock(name="Node for global")
     quality_group.node_for_global.container = quality_container
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
@@ -78,11 +81,11 @@ def test_createMachine(application, container_registry, definition_container, gl
     container_registry.addContainer(definition_container)
     quality_node = MagicMock()
     machine_node = MagicMock()
-    machine_node.preferredGlobalQuality = MagicMock(return_value = quality_node)
+    machine_node.preferredGlobalQuality = MagicMock(return_value=quality_node)
     quality_node.container = quality_container
 
     # Patch out the creation of MachineNodes since that isn't under test (and would require quite a bit of extra setup)
-    with patch("cura.Machines.ContainerTree.MachineNode", MagicMock(return_value = machine_node)):
+    with patch("cura.Machines.ContainerTree.MachineNode", MagicMock(return_value=machine_node)):
         with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
             machine = CuraStackBuilder.createMachine("Whatever", "Test Definition")
 
@@ -97,7 +100,7 @@ def test_createExtruderStack(application, definition_container, global_variant, 
     application.empty_quality_container = quality_container
     application.empty_intent_container = intent_container
     application.empty_quality_changes_container = quality_changes_container
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
         assert extruder_stack.variant == global_variant
         assert extruder_stack.material == material_instance_container

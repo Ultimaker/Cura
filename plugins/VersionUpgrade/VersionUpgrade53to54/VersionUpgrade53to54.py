@@ -86,7 +86,7 @@ class VersionUpgrade53to54(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -118,7 +118,7 @@ class VersionUpgrade53to54(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -143,7 +143,7 @@ class VersionUpgrade53to54(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -153,7 +153,8 @@ class VersionUpgrade53to54(VersionUpgrade):
         parser["metadata"]["setting_version"] = "22"
 
         for container in parser['containers']:
-            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container], parser['containers'][container])
+            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container],
+                                                                    parser['containers'][container])
 
         result = io.StringIO()
         parser.write(result)

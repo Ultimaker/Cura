@@ -25,5 +25,3 @@ class XmlMaterialValidator:
             return "Missing Version"
 
         return None
-
-

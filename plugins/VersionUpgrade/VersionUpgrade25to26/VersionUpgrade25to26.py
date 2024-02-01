@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To parse the files we need to upgrade and write the new files.
-import io #To serialise configparser output to a string.
+import configparser  # To parse the files we need to upgrade and write the new files.
+import io  # To serialise configparser output to a string.
 import os
 from typing import Dict, List, Set, Tuple
 from urllib.parse import quote_plus
@@ -10,17 +10,17 @@ from urllib.parse import quote_plus
 from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade
 
-_removed_settings = { #Settings that were removed in 2.5.
+_removed_settings = {  # Settings that were removed in 2.5.
     "start_layers_at_same_position",
     "sub_div_rad_mult"
-} # type: Set[str]
+}  # type: Set[str]
 
-_split_settings = { #These settings should be copied to all settings it was split into.
+_split_settings = {  # These settings should be copied to all settings it was split into.
     "support_interface_line_distance": {"support_roof_line_distance", "support_bottom_line_distance"}
-} # type: Dict[str, Set[str]]
+}  # type: Dict[str, Set[str]]
 
 
-##  A collection of functions that convert the configuration of the user in Cura
+#   A collection of functions that convert the configuration of the user in Cura
 #   2.5 to a configuration for Cura 2.6.
 #
 #   All of these methods are essentially stateless.
@@ -29,29 +29,29 @@ class VersionUpgrade25to26(VersionUpgrade):
         super().__init__()
         self._current_fdm_printer_count = 2
 
-    ##  Upgrades the preferences file from version 2.5 to 2.6.
+    #   Upgrades the preferences file from version 2.5 to 2.6.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
     def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
-        #Remove settings from the visible_settings.
+        # Remove settings from the visible_settings.
         if parser.has_section("general") and "visible_settings" in parser["general"]:
             visible_settings = parser["general"]["visible_settings"].split(";")
             new_visible_settings = []
             for setting in visible_settings:
                 if setting in _removed_settings:
-                    continue #Skip.
+                    continue  # Skip.
                 if setting in _split_settings:
                     for replaced_setting in _split_settings[setting]:
                         new_visible_settings.append(replaced_setting)
-                    continue #Don't add the original.
-                new_visible_settings.append(setting) #No special handling, so just add the original visible setting back.
+                    continue  # Don't add the original.
+                new_visible_settings.append(setting)  # No special handling, so just add the original visible setting back.
             parser["general"]["visible_settings"] = ";".join(new_visible_settings)
 
-        #Change the version number in the file.
+        # Change the version number in the file.
         if "general" not in parser:
             parser["general"] = {}
         parser.set("general", "version", "4")
@@ -60,26 +60,26 @@ class VersionUpgrade25to26(VersionUpgrade):
             parser["metadata"] = {}
         parser.set("metadata", "setting_version", "1")
 
-        #Re-serialise the file.
+        # Re-serialise the file.
         output = io.StringIO()
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades an instance container from version 2.5 to 2.6.
+    #   Upgrades an instance container from version 2.5 to 2.6.
     #
     #   \param serialised The serialised form of a quality profile.
     #   \param filename The name of the file to upgrade.
     def upgradeInstanceContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
-        #Remove settings from the [values] section.
+        # Remove settings from the [values] section.
         if parser.has_section("values"):
-            for removed_setting in (_removed_settings & parser["values"].keys()): #Both in keys that need to be removed and in keys present in the file.
+            for removed_setting in (_removed_settings & parser["values"].keys()):  # Both in keys that need to be removed and in keys present in the file.
                 del parser["values"][removed_setting]
             for replaced_setting in (_split_settings.keys() & parser["values"].keys()):
                 for replacement in _split_settings[replaced_setting]:
-                    parser["values"][replacement] = parser["values"][replaced_setting] #Copy to replacement before removing the original!
+                    parser["values"][replacement] = parser["values"][replaced_setting]  # Copy to replacement before removing the original!
                 del replaced_setting
 
         for each_section in ("general", "metadata"):
@@ -90,17 +90,17 @@ class VersionUpgrade25to26(VersionUpgrade):
         parser["general"]["version"] = "2"
         parser["metadata"]["setting_version"] = "1"
 
-        #Re-serialise the file.
+        # Re-serialise the file.
         output = io.StringIO()
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades a machine stack from version 2.5 to 2.6
+    #   Upgrades a machine stack from version 2.5 to 2.6
     #
     #   \param serialised The serialised form of a quality profile.
     #   \param filename The name of the file to upgrade.
     def upgradeMachineStack(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # NOTE: This is for Custom FDM printers
@@ -131,7 +131,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         return [filename], [output.getvalue()]
 
-    ##  Acquires the next unique extruder stack index number for the Custom FDM Printer.
+    #  Acquires the next unique extruder stack index number for the Custom FDM Printer.
     def _acquireNextUniqueCustomFdmPrinterExtruderStackIdIndex(self) -> int:
         extruder_stack_dir = os.path.join(Resources.getDataStoragePath(), "extruders")
         file_name_list = os.listdir(extruder_stack_dir)
@@ -230,14 +230,14 @@ class VersionUpgrade25to26(VersionUpgrade):
         definition_changes_dir = os.path.join(Resources.getDataStoragePath(), "definition_changes")
         user_settings_dir = os.path.join(Resources.getDataStoragePath(), "user")
 
-        with open(os.path.join(definition_changes_dir, definition_changes_filename), "w", encoding = "utf-8") as f:
+        with open(os.path.join(definition_changes_dir, definition_changes_filename), "w", encoding="utf-8") as f:
             f.write(definition_changes_output.getvalue())
-        with open(os.path.join(user_settings_dir, user_settings_filename), "w", encoding = "utf-8") as f:
+        with open(os.path.join(user_settings_dir, user_settings_filename), "w", encoding="utf-8") as f:
             f.write(user_settings_output.getvalue())
-        with open(os.path.join(extruder_stack_dir, extruder_filename), "w", encoding = "utf-8") as f:
+        with open(os.path.join(extruder_stack_dir, extruder_filename), "w", encoding="utf-8") as f:
             f.write(extruder_output.getvalue())
 
-    ##  Creates a definition changes container which doesn't contain anything for the Custom FDM Printers.
+    #   Creates a definition changes container which doesn't contain anything for the Custom FDM Printers.
     #   The container ID will be automatically generated according to the given stack name.
     def _getCustomFdmPrinterDefinitionChanges(self, stack_id: str) -> configparser.ConfigParser:
         # In 2.5, there is no definition_changes container for the Custom FDM printer, so it should be safe to use the
@@ -258,7 +258,7 @@ class VersionUpgrade25to26(VersionUpgrade):
 
         return parser
 
-    ##  Creates a user settings container which doesn't contain anything for the Custom FDM Printers.
+    #   Creates a user settings container which doesn't contain anything for the Custom FDM Printers.
     #   The container ID will be automatically generated according to the given stack name.
     def _getCustomFdmPrinterUserSettings(self, stack_id: str) -> configparser.ConfigParser:
         # For the extruder stacks created in the upgrade, also create user_settings containers so the user changes

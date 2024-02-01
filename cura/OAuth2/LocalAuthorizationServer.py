@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import sys
 import threading
 from typing import Any, Callable, Optional, TYPE_CHECKING

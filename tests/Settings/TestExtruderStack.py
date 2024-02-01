@@ -1,16 +1,16 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import pytest #This module contains automated tests.
-import unittest.mock #For the mocking and monkeypatching functionality.
+import pytest  # This module contains automated tests.
+import unittest.mock  # For the mocking and monkeypatching functionality.
 
-import cura.Settings.CuraContainerStack #To get the list of container types.
-import UM.Settings.ContainerRegistry #To create empty instance containers.
-import UM.Settings.ContainerStack #To set the container registry the container stacks use.
-from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
-from UM.Settings.InstanceContainer import InstanceContainer #To check against the class of InstanceContainer.
+import cura.Settings.CuraContainerStack  # To get the list of container types.
+import UM.Settings.ContainerRegistry  # To create empty instance containers.
+import UM.Settings.ContainerStack  # To set the container registry the container stacks use.
+from UM.Settings.DefinitionContainer import DefinitionContainer  # To check against the class of DefinitionContainer.
+from UM.Settings.InstanceContainer import InstanceContainer  # To check against the class of InstanceContainer.
 from cura.Settings import Exceptions
-from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
+from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError  # To check whether the correct exceptions are raised.
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.cura_empty_instance_containers import empty_container
 
@@ -21,17 +21,17 @@ def getInstanceContainer(container_type) -> InstanceContainer:
     :return: An instance container instance.
     """
 
-    container = InstanceContainer(container_id = "InstanceContainer")
+    container = InstanceContainer(container_id="InstanceContainer")
     container.setMetaDataEntry("type", container_type)
     return container
 
 class DefinitionContainerSubClass(DefinitionContainer):
     def __init__(self):
-        super().__init__(container_id = "SubDefinitionContainer")
+        super().__init__(container_id="SubDefinitionContainer")
 
 class InstanceContainerSubClass(InstanceContainer):
     def __init__(self, container_type):
-        super().__init__(container_id = "SubInstanceContainer")
+        super().__init__(container_id="SubInstanceContainer")
         self.setMetaDataEntry("type", container_type)
 
 ############################START OF TEST CASES################################
@@ -43,97 +43,97 @@ def test_addContainer(extruder_stack):
     with pytest.raises(InvalidOperationError):
         extruder_stack.addContainer(unittest.mock.MagicMock())
 
-#Tests setting user changes profiles to invalid containers.
+# Tests setting user changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [
     getInstanceContainer(container_type = "wrong container type"),
-    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
+    getInstanceContainer(container_type = "material"),  # Existing, but still wrong type.
     DefinitionContainer(container_id = "wrong class")
 ])
 def test_constrainUserChangesInvalid(container, extruder_stack):
-    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+    with pytest.raises(InvalidContainerError):  # Invalid container, should raise an error.
         extruder_stack.userChanges = container
 
-#Tests setting user changes profiles.
+# Tests setting user changes profiles.
 @pytest.mark.parametrize("container", [
     getInstanceContainer(container_type = "user"),
     InstanceContainerSubClass(container_type = "user")
 ])
 def test_constrainUserChangesValid(container, extruder_stack):
-    extruder_stack.userChanges = container #Should not give an error.
+    extruder_stack.userChanges = container  # Should not give an error.
 
-#Tests setting quality changes profiles to invalid containers.
+# Tests setting quality changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "wrong container type"),
-    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
-    DefinitionContainer(container_id = "wrong class")
+    getInstanceContainer(container_type="wrong container type"),
+    getInstanceContainer(container_type="material"),  # Existing, but still wrong type.
+    DefinitionContainer(container_id="wrong class")
 ])
 def test_constrainQualityChangesInvalid(container, extruder_stack):
-    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+    with pytest.raises(InvalidContainerError):  # Invalid container, should raise an error.
         extruder_stack.qualityChanges = container
 
-#Test setting quality changes profiles.
+# Test setting quality changes profiles.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "quality_changes"),
-    InstanceContainerSubClass(container_type = "quality_changes")
+    getInstanceContainer(container_type="quality_changes"),
+    InstanceContainerSubClass(container_type="quality_changes")
 ])
 def test_constrainQualityChangesValid(container, extruder_stack):
-    extruder_stack.qualityChanges = container #Should not give an error.
+    extruder_stack.qualityChanges = container  # Should not give an error.
 
-#Tests setting quality profiles to invalid containers.
+# Tests setting quality profiles to invalid containers.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "wrong container type"),
-    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
-    DefinitionContainer(container_id = "wrong class")
+    getInstanceContainer(container_type="wrong container type"),
+    getInstanceContainer(container_type="material"),  # Existing, but still wrong type.
+    DefinitionContainer(container_id="wrong class")
 ])
 def test_constrainQualityInvalid(container, extruder_stack):
-    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+    with pytest.raises(InvalidContainerError): # Invalid container, should raise an error.
         extruder_stack.quality = container
 
-#Test setting quality profiles.
+# Test setting quality profiles.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "quality"),
-    InstanceContainerSubClass(container_type = "quality")
+    getInstanceContainer(container_type="quality"),
+    InstanceContainerSubClass(container_type="quality")
 ])
 def test_constrainQualityValid(container, extruder_stack):
-    extruder_stack.quality = container #Should not give an error.
+    extruder_stack.quality = container # Should not give an error.
 
-#Tests setting materials to invalid containers.
+# Tests setting materials to invalid containers.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "wrong container type"),
-    getInstanceContainer(container_type = "quality"), #Existing, but still wrong type.
-    DefinitionContainer(container_id = "wrong class")
+    getInstanceContainer(container_type="wrong container type"),
+    getInstanceContainer(container_type="quality"),  # Existing, but still wrong type.
+    DefinitionContainer(container_id="wrong class")
 ])
 def test_constrainMaterialInvalid(container, extruder_stack):
-    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+    with pytest.raises(InvalidContainerError): # Invalid container, should raise an error.
         extruder_stack.material = container
 
-#Test setting materials.
+# Test setting materials.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "material"),
-    InstanceContainerSubClass(container_type = "material")
+    getInstanceContainer(container_type="material"),
+    InstanceContainerSubClass(container_type="material")
 ])
 def test_constrainMaterialValid(container, extruder_stack):
-    extruder_stack.material = container #Should not give an error.
+    extruder_stack.material = container  # Should not give an error.
 
-#Tests setting variants to invalid containers.
+# Tests setting variants to invalid containers.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "wrong container type"),
-    getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
-    DefinitionContainer(container_id = "wrong class")
+    getInstanceContainer(container_type="wrong container type"),
+    getInstanceContainer(container_type="material"),  # Existing, but still wrong type.
+    DefinitionContainer(container_id="wrong class")
 ])
 def test_constrainVariantInvalid(container, extruder_stack):
-    with pytest.raises(InvalidContainerError): #Invalid container, should raise an error.
+    with pytest.raises(InvalidContainerError):  # Invalid container, should raise an error.
         extruder_stack.variant = container
 
-#Test setting variants.
+# Test setting variants.
 @pytest.mark.parametrize("container", [
-    getInstanceContainer(container_type = "variant"),
-    InstanceContainerSubClass(container_type = "variant")
+    getInstanceContainer(container_type="variant"),
+    InstanceContainerSubClass(container_type="variant")
 ])
 def test_constrainVariantValid(container, extruder_stack):
-    extruder_stack.variant = container #Should not give an error.
+    extruder_stack.variant = container #  Should not give an error.
 
-#Tests setting definition changes profiles to invalid containers.
+# Tests setting definition changes profiles to invalid containers.
 @pytest.mark.parametrize("container", [
     getInstanceContainer(container_type = "wrong container type"),
     getInstanceContainer(container_type = "material"), #Existing, but still wrong type.
@@ -204,10 +204,10 @@ def test_deserializeRemovesWrongContainerClass(extruder_stack):
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Quality] = DefinitionContainer(container_id = "wrong class")
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.Definition] = DefinitionContainer(container_id = "some definition")
 
-    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()): #Prevent calling super().deserialize.
+    with unittest.mock.patch("UM.Settings.ContainerStack.ContainerStack.deserialize", unittest.mock.MagicMock()):  # Prevent calling super().deserialize.
         extruder_stack.deserialize("")
 
-    assert extruder_stack.quality == extruder_stack._empty_instance_container #Replaced with empty.
+    assert extruder_stack.quality == extruder_stack._empty_instance_container  # Replaced with empty.
 
 
 def test_deserializeWrongDefinitionClass(extruder_stack):

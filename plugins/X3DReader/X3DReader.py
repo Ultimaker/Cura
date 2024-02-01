@@ -24,7 +24,7 @@ except ImportError:
 # TODO: preserve the structure of scenes that contain several objects
 # Use CADPart, for example, to distinguish between separate objects
 
-DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
+DEFAULT_SUBDIV = 16  # Default subdivision factor for spheres, cones, and cylinders
 EPSILON = 0.000001
 
 
@@ -58,7 +58,7 @@ class X3DReader(MeshReader):
             if xml_root.tag != "X3D":
                 return None
 
-            scale = 1000 # Default X3D unit it one meter, while Cura's is one millimeters
+            scale = 1000  # Default X3D unit it one meter, while Cura's is one millimeters
             if xml_root[0].tag == "head":
                 for head_node in xml_root[0]:
                     if head_node.tag == "unit" and head_node.attrib.get("category") == "length":
@@ -136,7 +136,7 @@ class X3DReader(MeshReader):
         # TODO: appearance is completely ignored. At least apply the material color...
         if geometry is not None:
             try:
-                self.verts = self.faces = [] # Safeguard
+                self.verts = self.faces = []  # Safeguard
                 self.geometry_importers[geometry.tag](self, geometry)
                 m = self.transform.getData()
                 verts = m.dot(self.verts)[:3].transpose()
@@ -147,11 +147,12 @@ class X3DReader(MeshReader):
             except Exception:
                 Logger.logException("e", "Exception in X3D reader while reading %s", geometry.tag)
 
-    # Returns the referenced node if the node has USE, the same node otherwise.
-    # May return None is USE points at a nonexistent node
-    # In X3DOM, when both DEF and USE are in the same node, DEF is ignored.
-    # Big caveat: XML element objects may evaluate to boolean False!!!
-    # Don't ever use "if node:", use "if not node is None:" instead
+    """Returns the referenced node if the node has USE, the same node otherwise.
+       May return None is USE points at a nonexistent node
+       In X3DOM, when both DEF and USE are in the same node, DEF is ignored.
+       Big caveat: XML element objects may evaluate to boolean False!!!
+       Don't ever use "if node:", use "if not node is None:" instead
+    """
     def resolveDefUse(self, node):
         USE = node.attrib.get("USE")
         if USE:
@@ -167,11 +168,12 @@ class X3DReader(MeshReader):
             self.processNode(c)
             Job.yieldThread()
 
-    # Since this is a grouping node, will recurse down the tree.
-    # According to the spec, the final transform matrix is:
-    # T * C * R * SR * S * -SR * -C
-    # Where SR corresponds to the rotation matrix to scaleOrientation
-    # C and SR are rather exotic. S, slightly less so.
+    """Since this is a grouping node, will recurse down the tree.
+       According to the spec, the final transform matrix is:
+       T * C * R * SR * S * -SR * -C
+       Where SR corresponds to the rotation matrix to scaleOrientation
+       C and SR are rather exotic. S, slightly less so.
+    """
     def processTransform(self, node):
         rot = readRotation(node, "rotation", (0, 0, 1, 0)) # (angle, axisVactor) tuple
         trans = readVector(node, "translation", (0, 0, 0)) # Vector
@@ -360,7 +362,7 @@ class X3DReader(MeshReader):
         ccw = readBoolean(node, "ccw", True)
 
         if nx <= 0 or nz <= 0 or len(height) < nx*nz:
-            return # That's weird, the wording of the standard suggests grids with zero quads are somehow valid
+            return  # That's weird, the wording of the standard suggests grids with zero quads are somehow valid
 
         self.reserveFaceAndVertexCount(2*(nx-1)*(nz-1), nx*nz)
 
@@ -403,10 +405,11 @@ class X3DReader(MeshReader):
                      if scale[i] != 1 or scale[i+1] != 1 else None for i in range(0, len(scale), 2)]
 
 
-        # Special treatment for the closed spine and cross section.
-        # Let's save some memory by not creating identical but distinct vertices;
-        # later we'll introduce conditional logic to link the last vertex with
-        # the first one where necessary.
+        """Special treatment for the closed spine and cross section.
+           Let's save some memory by not creating identical but distinct vertices;
+           later we'll introduce conditional logic to link the last vertex with
+           the first one where necessary.
+        """
         crossClosed = cross[0] == cross[-1]
         if crossClosed:
             cross = cross[:-1]
@@ -423,10 +426,11 @@ class X3DReader(MeshReader):
         spine = [Vector(*s) for s in spine]
         nsf = ns if spine_closed else ns - 1
 
-        # This will be used for fallback, where the current spine point joins
-        # two collinear spine segments. No need to recheck the case of the
-        # closed spine/last-to-first point juncture; if there's an angle there,
-        # it would kick in on the first iteration of the main loop by spine.
+        """This will be used for fallback, where the current spine point joins
+           two collinear spine segments. No need to recheck the case of the
+           closed spine/last-to-first point juncture; if there's an angle there,
+           it would kick in on the first iteration of the main loop by spine.
+        """
         def findFirstAngleNormal():
             for i in range(1, ns - 1):
                 spt = spine[i]
@@ -443,7 +447,7 @@ class X3DReader(MeshReader):
             orig_z = Vector(0, 0, 1)
             if v.cross(orig_y).length() > EPSILON:
                 # Spine at angle with global y - rotate the z accordingly
-                a = v.cross(orig_y) # Axis of rotation to get to the Z
+                a = v.cross(orig_y)  # Axis of rotation to get to the Z
                 (x, y, z) = a.normalized().getData()
                 s = a.length()/v.length()
                 c = sqrt(1-s*s)
@@ -487,7 +491,7 @@ class X3DReader(MeshReader):
 
             z = z.normalized()
             y = y.normalized()
-            x = y.cross(z) # Already normalized
+            x = y.cross(z)  # Already normalized
             m = numpy.array(((x.x, y.x, z.x), (x.y, y.y, z.y), (x.z, y.z, z.z)))
 
             # Columns are the unit vectors for the xz plane for the cross-section
@@ -513,10 +517,11 @@ class X3DReader(MeshReader):
         if begin_cap:
             self.addFace([x for x in range(nc - 1, -1, -1)], ccw)
 
-        # Order of edges in the face: forward along cross, forward along spine,
-        # backward along cross, backward along spine, flipped if now ccw.
-        # This order is assumed later in the texture coordinate assignment;
-        # please don't change without syncing.
+        """Order of edges in the face: forward along cross, forward along spine,
+           backward along cross, backward along spine, flipped if now ccw.
+           This order is assumed later in the texture coordinate assignment;
+           please don't change without syncing.
+        """
 
         for s in range(ns - 1):
             for c in range(ncf):
@@ -561,7 +566,7 @@ class X3DReader(MeshReader):
         ccw = int(self.startCoordMesh(node, sum([len(strip) - 2 for strip in strips])))
 
         for strip in strips:
-            sccw = ccw # Running CCW value, reset for each strip
+            sccw = ccw  # Running CCW value, reset for each strip
             for i in range(len(strip) - 2):
                 self.addTri(strip[i + 1 - sccw], strip[i + sccw], strip[i+2])
                 sccw = 1 - sccw
@@ -768,13 +773,14 @@ class X3DReader(MeshReader):
             self.addTri(c, a, d)
 
 
-    # Arbitrary polygon triangulation.
-    # Doesn't assume convexity and doesn't check the "convex" flag in the file.
-    # Works by the "cutting of ears" algorithm:
-    # - Find an outer vertex with the smallest angle and no vertices inside its adjacent triangle
-    # - Remove the triangle at that vertex
-    # - Repeat until done
-    # Vertex coordinates are supposed to be already set
+    """Arbitrary polygon triangulation.
+       Doesn't assume convexity and doesn't check the "convex" flag in the file.
+       Works by the "cutting of ears" algorithm:
+       - Find an outer vertex with the smallest angle and no vertices inside its adjacent triangle
+       - Remove the triangle at that vertex
+       - Repeat until done
+       Vertex coordinates are supposed to be already set
+    """
     def addFace(self, indices, ccw):
         # Resolve indices to coordinates for faster math
         face = [Vector(data=self.verts[0:3, i]) for i in indices]
@@ -782,15 +788,15 @@ class X3DReader(MeshReader):
         # Need a normal to the plane so that we can know which vertices form inner angles
         normal = findOuterNormal(face)
 
-        if not normal: # Couldn't find an outer edge, non-planar polygon maybe?
+        if not normal:  # Couldn't find an outer edge, non-planar polygon maybe?
             return
 
         # Find the vertex with the smallest inner angle and no points inside, cut off. Repeat until done
         n = len(face)
-        vi = [i for i in range(n)] # We'll be using this to kick vertices from the face
+        vi = [i for i in range(n)]  # We'll be using this to kick vertices from the face
         while n > 3:
-            max_cos = EPSILON # We don't want to check anything on Pi angles
-            i_min = 0 # max cos corresponds to min angle
+            max_cos = EPSILON  # We don't want to check anything on Pi angles
+            i_min = 0  # max cos corresponds to min angle
             for i in range(n):
                 inext = (i + 1) % n
                 iprev = (i + n - 1) % n
@@ -798,7 +804,7 @@ class X3DReader(MeshReader):
                 next = face[vi[inext]] - v
                 prev = face[vi[iprev]] - v
                 nextXprev = next.cross(prev)
-                if nextXprev.dot(normal) > EPSILON: # If it's an inner angle
+                if nextXprev.dot(normal) > EPSILON:  # If it's an inner angle
                     cos = next.dot(prev) / (next.length() * prev.length())
                     if cos > max_cos:
                         # Check if there are vertices inside the triangle
@@ -893,13 +899,13 @@ def findOuterNormal(face):
                         pt = face[k] - face[i]
                         pte = pt.dot(edge)
                         rejection = pt - edge*pte
-                        if rejection.dot(prev_rejection) < -EPSILON: # points on both sides of the edge - not an outer one
+                        if rejection.dot(prev_rejection) < -EPSILON:  # points on both sides of the edge - not an outer one
                             is_outer = False
                             break
-                        elif rejection.length() > prev_rejection.length(): # Pick a greater rejection for numeric stability
+                        elif rejection.length() > prev_rejection.length():  # Pick a greater rejection for numeric stability
                             prev_rejection = rejection
 
-                if is_outer: # Found an outer edge, prev_rejection is the rejection inside the face. Generate a normal.
+                if is_outer:  # Found an outer edge, prev_rejection is the rejection inside the face. Generate a normal.
                     return edge.cross(prev_rejection)
 
     return False
@@ -925,4 +931,3 @@ def pointInsideTriangle(vx, next, prev, nextXprev):
     vxXnext = vx.cross(next)
     s = -ratio(vxXnext, nextXprev)
     return s > 0 and (s + r) < 1
-

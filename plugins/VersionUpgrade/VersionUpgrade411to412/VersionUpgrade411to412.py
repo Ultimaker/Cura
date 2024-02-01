@@ -28,12 +28,12 @@ class VersionUpgrade411to412(VersionUpgrade):
 
     _flsun_quality_type_mapping = {
         "extra coarse": "normal",
-        "coarse"      : "normal",
-        "verydraft"   : "normal",
-        "draft"       : "normal",
-        "fast"        : "normal",
-        "normal"      : "normal",
-        "high"        : "fine"
+        "coarse": "normal",
+        "verydraft": "normal",
+        "draft": "normal",
+        "fast": "normal",
+        "normal": "normal",
+        "high": "fine"
     }
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
@@ -44,7 +44,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -76,7 +76,6 @@ class VersionUpgrade411to412(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades instance containers to have the new version number.
@@ -85,7 +84,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         :return: A list of file names, and a list of the new contents for those
         files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update setting version number.
@@ -115,7 +114,7 @@ class VersionUpgrade411to412(VersionUpgrade):
         :return: A list of file names, and a list of the new contents for those
         files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update setting version number.

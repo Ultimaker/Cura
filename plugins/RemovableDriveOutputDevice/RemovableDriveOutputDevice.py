@@ -8,7 +8,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.FileHandler.WriteFileJob import WriteFileJob
-from UM.FileHandler.FileWriter import FileWriter # To check against the write modes (text vs. binary).
+from UM.FileHandler.FileWriter import FileWriter  # To check against the write modes (text vs. binary).
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError

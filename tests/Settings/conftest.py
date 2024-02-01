@@ -7,7 +7,7 @@ import pytest
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import setContainerRegistry
-from UM.Settings.DefinitionContainer import DefinitionContainer #To provide definition containers in the registry fixtures.
+from UM.Settings.DefinitionContainer import DefinitionContainer  # To provide definition containers in the registry fixtures.
 from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.ExtruderStack import ExtruderStack
@@ -25,12 +25,12 @@ def container_registry(application) -> CuraContainerRegistry:
 # Gives an arbitrary definition container.
 @pytest.fixture()
 def definition_container() -> DefinitionContainer:
-    return DefinitionContainer(container_id = "Test Definition")
+    return DefinitionContainer(container_id="Test Definition")
 
 # Gives an arbitrary definition changes container.
 @pytest.fixture()
 def definition_changes_container() -> InstanceContainer:
-    definition_changes_container = InstanceContainer(container_id = "Test Definition Changes")
+    definition_changes_container = InstanceContainer(container_id="Test Definition Changes")
     definition_changes_container.setMetaDataEntry("type", "definition_changes")
     # Add current setting version to the instance container
     from cura.CuraApplication import CuraApplication

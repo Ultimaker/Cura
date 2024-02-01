@@ -28,7 +28,7 @@ class VersionUpgrade40to41(VersionUpgrade):
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -51,7 +51,7 @@ class VersionUpgrade40to41(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades Preferences to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -72,14 +72,14 @@ class VersionUpgrade40to41(VersionUpgrade):
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades stacks to have the new version number."""
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
         parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "7"
 
-        #Update the name of the quality profile.
+        # Update the name of the quality profile.
         if parser["containers"]["4"] in _renamed_quality_profiles:
             parser["containers"]["4"] = _renamed_quality_profiles[parser["containers"]["4"]]
 

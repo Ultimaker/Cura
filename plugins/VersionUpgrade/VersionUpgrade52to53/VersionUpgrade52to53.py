@@ -286,6 +286,7 @@ _RENAMED_PROFILES = {
     "um_s5_cc0.6_PLA_Fast_Print": "um_s5_cc0.6_pla_0.15mm"
 }
 
+
 class VersionUpgrade52to53(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
@@ -298,7 +299,7 @@ class VersionUpgrade52to53(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -330,7 +331,7 @@ class VersionUpgrade52to53(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser = configparser.ConfigParser(interpolation=None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.
@@ -355,7 +356,7 @@ class VersionUpgrade52to53(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -365,7 +366,8 @@ class VersionUpgrade52to53(VersionUpgrade):
         parser["metadata"]["setting_version"] = "21"
 
         for container in parser['containers']:
-            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container], parser['containers'][container])
+            parser['containers'][container] = _RENAMED_PROFILES.get(parser['containers'][container],
+                                                                    parser['containers'][container])
 
         result = io.StringIO()
         parser.write(result)

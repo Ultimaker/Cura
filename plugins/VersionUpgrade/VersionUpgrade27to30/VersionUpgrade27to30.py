@@ -1,18 +1,18 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To parse preference files.
-import io #To serialise the preference files afterwards.
+import configparser  # To parse preference files.
+import io  # To serialise the preference files afterwards.
 import os
 from typing import Dict, List, Tuple
 import urllib.parse
 import re
 
-from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
+from UM.VersionUpgrade import VersionUpgrade  # We're inheriting from this.
 
 _renamed_themes = {
     "cura": "cura-light"
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 _renamed_i18n = {
     "7s": "en_7S",
     "de": "de_DE",
@@ -29,11 +29,11 @@ _renamed_i18n = {
     "ptbr": "pt_BR",
     "ru": "ru_RU",
     "tr": "tr_TR"
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 
 
 class VersionUpgrade27to30(VersionUpgrade):
-    ##  Gets the version number from a CFG file in Uranium's 2.7 format.
+    #   Gets the version number from a CFG file in Uranium's 2.7 format.
     #
     #   Since the format may change, this is implemented for the 2.7 format only
     #   and needs to be included in the version upgrade system rather than
@@ -45,18 +45,18 @@ class VersionUpgrade27to30(VersionUpgrade):
     #   incorrect.
     #   \raises KeyError The format of the file is incorrect.
     def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
+        format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
+        setting_version = int(parser.get("metadata", "setting_version", fallback="0"))
         return format_version * 1000000 + setting_version
 
-    ##  Upgrades a preferences file from version 2.7 to 3.0.
+    #   Upgrades a preferences file from version 2.7 to 3.0.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
     def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -67,12 +67,12 @@ class VersionUpgrade27to30(VersionUpgrade):
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "3"
 
-        #Renamed themes.
+        # Renamed themes.
         if "theme" in parser["general"]:
             if parser["general"]["theme"] in _renamed_themes:
                 parser["general"]["theme"] = _renamed_themes[parser["general"]["theme"]]
 
-        #Renamed languages.
+        # Renamed languages.
         if "language" in parser["general"]:
             if parser["general"]["language"] in _renamed_i18n:
                 parser["general"]["language"] = _renamed_i18n[parser["general"]["language"]]
@@ -85,11 +85,11 @@ class VersionUpgrade27to30(VersionUpgrade):
                                             "expand_lower_skins": "bottom_skin_expand_distance"}
             for setting in visible_settings:
                 if setting == "expand_skins_into_infill":
-                    continue # this one is removed
+                    continue  # this one is removed
                 if setting in renamed_skin_preshrink_names:
                     new_visible_settings.append(renamed_skin_preshrink_names[setting])
-                    continue #Don't add the original.
-                new_visible_settings.append(setting) #No special handling, so just add the original visible setting back.
+                    continue  # Don't add the original.
+                new_visible_settings.append(setting)  # No special handling, so just add the original visible setting back.
             parser["general"]["visible_settings"] = ";".join(new_visible_settings)
 
         # Re-serialise the file.
@@ -97,12 +97,12 @@ class VersionUpgrade27to30(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades the given quality changes container file from version 2.7 to 3.0.
+    #   Upgrades the given quality changes container file from version 2.7 to 3.0.
     #
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
     def upgradeQualityChangesContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update the skin pre-shrink settings:
@@ -153,12 +153,12 @@ class VersionUpgrade27to30(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades the given instance container file from version 2.7 to 3.0.
+    #   Upgrades the given instance container file from version 2.7 to 3.0.
     #
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
     def upgradeOtherContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialised)
 
         # Update the skin pre-shrink settings:
@@ -182,7 +182,7 @@ class VersionUpgrade27to30(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-    ##  Upgrades a container stack from version 2.7 to 3.0.
+    #   Upgrades a container stack from version 2.7 to 3.0.
     #
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.

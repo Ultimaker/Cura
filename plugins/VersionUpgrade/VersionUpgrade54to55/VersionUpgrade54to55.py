@@ -8,7 +8,6 @@ from UM.VersionUpgrade import VersionUpgrade
 import re
 
 
-
 class VersionUpgrade54to55(VersionUpgrade):
     profile_regex = re.compile(
         r"um\_(?P<machine>s(3|5|7))_(?P<core_type>aa|cc|bb)(?P<nozzle_size>0\.(6|4|8))_(?P<material>pla|petg|abs|tough_pla)_(?P<layer_height>0\.\d{1,2}mm)")
@@ -38,7 +37,7 @@ class VersionUpgrade54to55(VersionUpgrade):
         :return: A list of new file names, and a list of the new contents for
         those files.
         """
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -46,7 +45,8 @@ class VersionUpgrade54to55(VersionUpgrade):
             parser["general"] = {}
 
         extruder_definition_id = parser["containers"]["7"]
-        if parser["metadata"]["type"] == "extruder_train" and VersionUpgrade54to55._isUpgradedUltimakerDefinitionId(extruder_definition_id):
+        if parser["metadata"]["type"] == "extruder_train" and VersionUpgrade54to55._isUpgradedUltimakerDefinitionId(
+                extruder_definition_id):
             # We only need to update certain Ultimaker extruder ID's
             material_id = parser["containers"]["4"]
             quality_id = parser["containers"]["3"]
@@ -56,7 +56,6 @@ class VersionUpgrade54to55(VersionUpgrade):
 
                 quality_id = VersionUpgrade54to55.profile_regex.sub(
                     r"um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", quality_id)
-
 
                 intent_id = VersionUpgrade54to55.profile_regex.sub(
                     r"um_\g<machine>_\g<core_type>\g<nozzle_size>_um-\g<material>_\g<layer_height>", intent_id)

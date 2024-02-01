@@ -2,13 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import gzip
-from io import StringIO, BufferedIOBase #To write the g-code to a temporary buffer, and for typing.
+from io import StringIO, BufferedIOBase  # To write the g-code to a temporary buffer, and for typing.
 from typing import cast, List
 
 from UM.Logger import Logger
-from UM.Mesh.MeshWriter import MeshWriter #The class we're extending/implementing.
+from UM.Mesh.MeshWriter import MeshWriter  # The class we're extending/implementing.
 from UM.PluginRegistry import PluginRegistry
-from UM.Scene.SceneNode import SceneNode #For typing.
+from UM.Scene.SceneNode import SceneNode  # For typing.
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
