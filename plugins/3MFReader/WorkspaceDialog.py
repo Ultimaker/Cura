@@ -71,6 +71,8 @@ class WorkspaceDialog(QObject):
         self._install_missing_package_dialog: Optional[QObject] = None
         self._is_abstract_machine = False
         self._is_networked_machine = False
+        self._is_compatible_machine = False
+        self._has_visible_select_same_profile = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -94,6 +96,8 @@ class WorkspaceDialog(QObject):
     extrudersChanged = pyqtSignal()
     isPrinterGroupChanged = pyqtSignal()
     missingPackagesChanged = pyqtSignal()
+    isCompatibleMachineChanged = pyqtSignal()
+    hasVisibleSelectSameProfileChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -291,7 +295,29 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot(str)
     def setMachineToOverride(self, machine_name: str) -> None:
+        registry = ContainerRegistry.getInstance()
+        containers_expected = registry.findDefinitionContainers(name = self._machine_type)
+        containers_selected = registry.findContainerStacks(id = machine_name)
+        if len(containers_expected) == 1 and len(containers_selected) == 1:
+            new_compatible_machine = (containers_expected[0] == containers_selected[0].definition)
+            if new_compatible_machine != self._is_compatible_machine:
+                self._is_compatible_machine = new_compatible_machine
+                self.isCompatibleMachineChanged.emit()
+
         self._override_machine = machine_name
+
+    @pyqtProperty(bool, notify = isCompatibleMachineChanged)
+    def isCompatibleMachine(self) -> bool:
+        return self._is_compatible_machine
+
+    def setHasVisibleSelectSameProfileChanged(self, has_visible_select_same_profile):
+        if has_visible_select_same_profile != self._has_visible_select_same_profile:
+            self._has_visible_select_same_profile = has_visible_select_same_profile
+            self.hasVisibleSelectSameProfileChanged.emit()
+
+    @pyqtProperty(bool, notify = hasVisibleSelectSameProfileChanged)
+    def hasVisibleSelectSameProfile(self):
+        return self._has_visible_select_same_profile
 
     @pyqtSlot()
     def closeBackend(self) -> None:

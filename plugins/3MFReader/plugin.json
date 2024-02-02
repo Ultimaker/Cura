@@ -2,7 +2,7 @@
     "name": "3MF Reader",
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
-    "description": "Provides support for reading 3MF files.",
+    "description": "Provides support for reading 3MF and PCB files.",
     "api": 8,
     "i18n-catalog": "cura"
 }

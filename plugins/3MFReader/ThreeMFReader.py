@@ -46,8 +46,15 @@ class ThreeMFReader(MeshReader):
                 suffixes=["3mf"]
             )
         )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-pcb",
+                comment="PCB",
+                suffixes=["pcb"]
+            )
+        )
 
-        self._supported_extensions = [".3mf"]
+        self._supported_extensions = [".3mf", ".pcb"]
         self._root = None
         self._base_name = ""
         self._unit = None

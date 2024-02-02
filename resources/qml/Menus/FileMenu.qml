@@ -77,7 +77,10 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled
         onTriggered:
         {
-            var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/x-pcb" };
+            var args = { "filter_by_machine": false,
+                         "file_type": "workspace",
+                         "preferred_mimetypes": "application/x-pcb",
+                         "limit_mimetypes": "application/x-pcb"};
             UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
         }
     }

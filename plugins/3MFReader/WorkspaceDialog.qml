@@ -186,6 +186,15 @@ UM.Dialog
                             rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                             visible: manager.numSettingsOverridenByQualityChanges != 0
                         }
+
+                        UM.CheckBox
+                        {
+                            text: catalog.i18nc("@action:checkbox", "Select the same profile")
+                            enabled: manager.isCompatibleMachine
+                            onEnabledChanged: checked = enabled
+                            tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
+                            visible: manager.hasVisibleSelectSameProfile
+                        }
                     }
 
                     comboboxVisible: manager.qualityChangesConflict

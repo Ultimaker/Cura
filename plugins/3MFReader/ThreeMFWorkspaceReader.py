@@ -112,7 +112,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".3mf"]
+        self._supported_extensions = [".3mf", ".pcb"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
@@ -228,11 +228,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
         containers_found_dict = {k: False for k in resolve_strategy_keys}
 
+        # Check whether the file is a PCB
+        is_pcb = file_name.endswith('.pcb')
+
         #
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machines = []
+        updatable_machines = None if is_pcb else []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -250,7 +253,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if definition_container_type == "machine":
                 machine_definition_id = container_id
                 machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
-                if machine_definition_containers:
+                if machine_definition_containers and updatable_machines is not None:
                     updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
@@ -617,6 +620,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
+        self._dialog.setHasVisibleSelectSameProfileChanged(is_pcb)
         self._dialog.show()
 
         # Choosing the initially selected printer in MachineSelector
