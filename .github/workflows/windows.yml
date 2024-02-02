@@ -34,15 +34,11 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'windows-2022'
+        default: 'self-hosted-Windows-X64'
         type: choice
         options:
+          - self-hosted-Windows-X64
           - windows-2022
-
-env:
-  CONAN_ARGS: ${{ inputs.conan_args || '' }}
-  ENTERPRISE: ${{ inputs.enterprise || false }}
-  STAGING: ${{ inputs.staging || false }}
 
 jobs:
   windows-installer:
@@ -50,8 +46,8 @@ jobs:
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging }}
       architecture: ${{ inputs.architecture }}
       operating_system: ${{ inputs.operating_system }}
     secrets: inherit
