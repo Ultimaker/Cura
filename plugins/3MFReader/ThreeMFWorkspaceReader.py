@@ -890,7 +890,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Prepare the machine
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
             else:
-                self._applyUserSettings(global_stack, extruder_stack_dict, user_settings)
+                # Just clear the settings now, so that we can change the active machine without conflicts
+                self._clearMachineSettings(global_stack, extruder_stack_dict)
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
@@ -901,6 +902,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # they won't take effect until this function is done.
             # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
             self._updateActiveMachine(global_stack)
+
+            if not self._load_profile:
+                # Now we have switched, apply the user settings
+                self._applyUserSettings(global_stack, extruder_stack_dict, user_settings)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1224,9 +1229,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._user_settings_to_apply = None
 
     def _applyUserSettings(self, global_stack, extruder_stack_dict, user_settings):
-        # Clear all first
-        self._clearMachineSettings(global_stack, extruder_stack_dict)
-
         for stack_name, settings in user_settings.items():
             if stack_name == 'global':
                 ThreeMFWorkspaceReader._applyUserSettingsOnStack(global_stack, settings)
