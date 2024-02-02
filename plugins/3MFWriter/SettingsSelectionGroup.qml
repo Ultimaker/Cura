@@ -8,7 +8,7 @@ import QtQuick.Window 2.2
 
 import UM 1.5 as UM
 import Cura 1.1 as Cura
-import PCBWriter 1.0 as PCBWriter
+import ThreeMFWriter 1.0 as ThreeMFWriter
 
 ColumnLayout
 {
@@ -34,9 +34,9 @@ ColumnLayout
                 {
                     switch(modelData.category)
                     {
-                        case PCBWriter.SettingsExportGroup.Global:
+                        case ThreeMFWriter.SettingsExportGroup.Global:
                             return UM.Theme.getIcon("Sliders")
-                        case PCBWriter.SettingsExportGroup.Model:
+                        case ThreeMFWriter.SettingsExportGroup.Model:
                             return UM.Theme.getIcon("View3D")
                         default:
                             return ""
@@ -50,7 +50,7 @@ ColumnLayout
             {
                 id: settingsExtruderIcon
                 anchors.fill: parent
-                visible: modelData.category === PCBWriter.SettingsExportGroup.Extruder
+                visible: modelData.category === ThreeMFWriter.SettingsExportGroup.Extruder
                 text: (modelData.extruder_index + 1).toString()
                 font: UM.Theme.getFont("tiny_emphasis")
                 materialColor: modelData.extruder_color

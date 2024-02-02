@@ -32,7 +32,7 @@ RowLayout
         UM.I18nCatalog { id: catalog; name: "cura" }
 
         text: catalog.i18nc("@tooltip",
-                            "This setting can't be exported because it depends too much on the used printer capacities")
+                            "This setting can't be exported because it depends on the used printer capacities")
         visible: !modelData.selectable
     }
 }

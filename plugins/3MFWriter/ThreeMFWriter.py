@@ -40,6 +40,9 @@ except ImportError:
 import zipfile
 import UM.Application
 
+from .SettingsExportModel import SettingsExportModel
+from .SettingsExportGroup import SettingsExportGroup
+
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
@@ -87,7 +90,9 @@ class ThreeMFWriter(MeshWriter):
         self._store_archive = store_archive
 
     @staticmethod
-    def _convertUMNodeToSavitarNode(um_node, transformation=Matrix()):
+    def _convertUMNodeToSavitarNode(um_node,
+                                    transformation = Matrix(),
+                                    exported_settings: Optional[Dict[str, Set[str]]] = None):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -129,13 +134,22 @@ class ThreeMFWriter(MeshWriter):
         if stack is not None:
             changed_setting_keys = stack.getTop().getAllKeys()
 
-            # Ensure that we save the extruder used for this object in a multi-extrusion setup
-            if stack.getProperty("machine_extruder_count", "value") > 1:
-                changed_setting_keys.add("extruder_nr")
+            if exported_settings is None:
+                # Ensure that we save the extruder used for this object in a multi-extrusion setup
+                if stack.getProperty("machine_extruder_count", "value") > 1:
+                    changed_setting_keys.add("extruder_nr")
 
-            # Get values for all changed settings & save them.
-            for key in changed_setting_keys:
-                savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+                # Get values for all changed settings & save them.
+                for key in changed_setting_keys:
+                    savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+            else:
+                 # We want to export only the specified settings
+                if um_node.getName() in exported_settings:
+                    model_exported_settings = exported_settings[um_node.getName()]
+
+                    # Get values for all exported settings & save them.
+                    for key in model_exported_settings:
+                        savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
 
         # Store the metadata.
         for key, value in um_node.metadata.items():
@@ -145,7 +159,8 @@ class ThreeMFWriter(MeshWriter):
             # only save the nodes on the active build plate
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
-            savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node)
+            savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
+                                                                           exported_settings = exported_settings)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -154,7 +169,7 @@ class ThreeMFWriter(MeshWriter):
     def getArchive(self):
         return self._archive
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode) -> bool:
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
         try:
@@ -232,14 +247,19 @@ class ThreeMFWriter(MeshWriter):
                 transformation_matrix.preMultiply(translation_matrix)
 
             root_node = UM.Application.Application.getInstance().getController().getScene().getRoot()
+            exported_model_settings = ThreeMFWriter._extractModelExportedSettings(export_settings_model)
             for node in nodes:
                 if node == root_node:
                     for root_child in node.getChildren():
-                        savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child, transformation_matrix)
+                        savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child,
+                                                                                 transformation_matrix,
+                                                                                 exported_model_settings)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
-                    savitar_node = self._convertUMNodeToSavitarNode(node, transformation_matrix)
+                    savitar_node = self._convertUMNodeToSavitarNode(node,
+                                                                    transformation_matrix,
+                                                                    exported_model_settings)
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
@@ -395,3 +415,20 @@ class ThreeMFWriter(MeshWriter):
         parser = Savitar.ThreeMFParser()
         scene_string = parser.sceneToString(savitar_scene)
         return scene_string
+
+    @staticmethod
+    def _extractModelExportedSettings(model: Optional[SettingsExportModel]) -> Dict[str, Set[str]]:
+        extra_settings = {}
+
+        if model is not None:
+            for group in model.settingsGroups:
+                if group.category == SettingsExportGroup.Category.Model:
+                    exported_model_settings = set()
+
+                    for exported_setting in group.settings:
+                        if exported_setting.selected:
+                            exported_model_settings.add(exported_setting.id)
+
+                    extra_settings[group.category_details] = exported_model_settings
+
+        return extra_settings
