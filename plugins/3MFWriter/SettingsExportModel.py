@@ -105,7 +105,7 @@ class SettingsExportModel(QObject):
 
     @staticmethod
     def _exportSettings(settings_stack):
-        user_settings_container = settings_stack.getTop()
+        user_settings_container = settings_stack.userChanges
         user_keys = user_settings_container.getAllKeys()
 
         settings_export = []

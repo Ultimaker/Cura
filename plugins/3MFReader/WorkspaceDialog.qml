@@ -120,13 +120,17 @@ UM.Dialog
 
                         minDropDownWidth: machineSelector.width
 
-                        buttons: [
+                        Component
+                        {
+                            id: componentNewPrinter
+
                             Cura.SecondaryButton
                             {
                                 id: createNewPrinter
                                 text: catalog.i18nc("@button", "Create new")
                                 fixedWidthMode: true
                                 width: parent.width - leftPadding * 1.5
+                                visible: manager.allowCreateMachine
                                 onClicked:
                                 {
                                     toggleContent()
@@ -136,7 +140,9 @@ UM.Dialog
                                     manager.setIsNetworkedMachine(false)
                                 }
                             }
-                        ]
+                        }
+
+                        buttons: manager.allowCreateMachine ? [componentNewPrinter.createObject()] : []
 
                         onSelectPrinter: function(machine)
                         {
@@ -191,9 +197,12 @@ UM.Dialog
                         {
                             text: catalog.i18nc("@action:checkbox", "Select the same profile")
                             enabled: manager.isCompatibleMachine
-                            onEnabledChanged: checked = enabled
+                            onEnabledChanged: manager.selectSameProfileChecked = enabled
                             tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
                             visible: manager.hasVisibleSelectSameProfile
+
+                            checked: manager.selectSameProfileChecked
+                            onCheckedChanged: manager.selectSameProfileChecked = checked
                         }
                     }
 

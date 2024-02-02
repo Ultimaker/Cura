@@ -73,6 +73,8 @@ class WorkspaceDialog(QObject):
         self._is_networked_machine = False
         self._is_compatible_machine = False
         self._has_visible_select_same_profile = False
+        self._select_same_profile_checked = True
+        self._allow_create_machine = True
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -98,6 +100,7 @@ class WorkspaceDialog(QObject):
     missingPackagesChanged = pyqtSignal()
     isCompatibleMachineChanged = pyqtSignal()
     hasVisibleSelectSameProfileChanged = pyqtSignal()
+    selectSameProfileCheckedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -295,16 +298,18 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot(str)
     def setMachineToOverride(self, machine_name: str) -> None:
+        self._override_machine = machine_name
+        self.updateCompatibleMachine()
+
+    def updateCompatibleMachine(self):
         registry = ContainerRegistry.getInstance()
-        containers_expected = registry.findDefinitionContainers(name = self._machine_type)
-        containers_selected = registry.findContainerStacks(id = machine_name)
+        containers_expected = registry.findDefinitionContainers(name=self._machine_type)
+        containers_selected = registry.findContainerStacks(id=self._override_machine)
         if len(containers_expected) == 1 and len(containers_selected) == 1:
             new_compatible_machine = (containers_expected[0] == containers_selected[0].definition)
             if new_compatible_machine != self._is_compatible_machine:
                 self._is_compatible_machine = new_compatible_machine
                 self.isCompatibleMachineChanged.emit()
-
-        self._override_machine = machine_name
 
     @pyqtProperty(bool, notify = isCompatibleMachineChanged)
     def isCompatibleMachine(self) -> bool:
@@ -318,6 +323,22 @@ class WorkspaceDialog(QObject):
     @pyqtProperty(bool, notify = hasVisibleSelectSameProfileChanged)
     def hasVisibleSelectSameProfile(self):
         return self._has_visible_select_same_profile
+
+    def setSelectSameProfileChecked(self, select_same_profile_checked):
+        if select_same_profile_checked != self._select_same_profile_checked:
+            self._select_same_profile_checked = select_same_profile_checked
+            self.selectSameProfileCheckedChanged.emit()
+
+    @pyqtProperty(bool, notify = selectSameProfileCheckedChanged, fset = setSelectSameProfileChecked)
+    def selectSameProfileChecked(self):
+        return self._select_same_profile_checked
+
+    def setAllowCreatemachine(self, allow_create_machine):
+        self._allow_create_machine = allow_create_machine
+
+    @pyqtProperty(bool, constant = True)
+    def allowCreateMachine(self):
+        return self._allow_create_machine
 
     @pyqtSlot()
     def closeBackend(self) -> None:
