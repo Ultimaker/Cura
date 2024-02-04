@@ -166,8 +166,6 @@ class CuraConan(ConanFile):
         self.output.info("Collecting python installs")
         python_installs = {}
 
-        python_executable = "python3" if self.settings.os == "Macos" else "python"
-
         # list of python installs
         run_env = VirtualRunEnv(self)
         env = run_env.environment()
