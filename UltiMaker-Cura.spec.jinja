@@ -69,9 +69,9 @@ coll = COLLECT(
     name=r'{{ name }}'
 )
 
-{% if macos == true %}
 app = BUNDLE(
     coll,
+    {% if macos == true %}
     name='{{ display_name }}.app',
     icon={{ icon }},
     bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_") + "_" {{ short_version }},
@@ -90,10 +90,10 @@ app = BUNDLE(
                 'CFBundleURLSchemes': ['cura', 'slicer'],
         }],
         'CFBundleDocumentTypes': [{
-                'CFBundleTypeRole': 'Viewer',
-                'CFBundleTypeExtensions': ['*'],
-                'CFBundleTypeName': 'Model Files',
-            }]
-        },
+            'CFBundleTypeRole': 'Viewer',
+            'CFBundleTypeExtensions': ['*'],
+            'CFBundleTypeName': 'Model Files',
+        }]
+    },
+    {% endif %}
 )
-{% endif %}
