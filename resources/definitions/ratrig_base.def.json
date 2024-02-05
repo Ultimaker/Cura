@@ -9,6 +9,7 @@
         "manufacturer": "RatRig",
         "file_formats": "text/x-gcode",
         "exclude_materials": [],
+        "machine_extruder_trains": { "0": "ratrig_base_extruder_0" },
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_materials": true,
         "preferred_material": "generic_pla",
