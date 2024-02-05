@@ -699,7 +699,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
 
-        self._load_profile = not is_pcb or self._dialog.selectSameProfileChecked
+        self._load_profile = not is_pcb or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
 
         self._resolve_strategies = self._dialog.getResult()
         #
