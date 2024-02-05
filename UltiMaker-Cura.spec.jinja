@@ -55,7 +55,8 @@ exe = EXE(
     target_arch={{ target_arch }},
     codesign_identity=os.getenv('CODESIGN_IDENTITY', None),
     entitlements_file={{ entitlements_file }},
-    icon={{ icon }}
+    icon={{ icon }},
+    contents_directory='.'
 )
 
 coll = COLLECT(
