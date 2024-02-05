@@ -1,12 +1,12 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.10
+import QtQuick 2.14
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.2
 
-import UM 1.5 as UM
+import UM 1.6 as UM
 import Cura 1.1 as Cura
 
 UM.Dialog
@@ -171,35 +171,68 @@ UM.Dialog
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Name")
                             rightLabelText: manager.qualityName
+                            visible: manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Intent")
                             rightLabelText: manager.intentName
+                            visible: manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Not in profile")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                            visible: manager.numUserSettings != 0
+                            visible: manager.numUserSettings != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Derivative from")
                             rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                            visible: manager.numSettingsOverridenByQualityChanges != 0
+                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Specific settings")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
+                            buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
+                            visible: !manager.selectSameProfileChecked || !manager.isCompatibleMachine
+                            onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
+                        }
+
+                        Cura.TableView
+                        {
+                            id: tableViewSpecificSettings
+                            width: parent.width - parent.leftPadding - UM.Theme.getSize("default_margin").width
+                            height: UM.Theme.getSize("card").height
+                            visible: shouldBeVisible && (!manager.selectSameProfileChecked || !manager.isCompatibleMachine)
+                            property bool shouldBeVisible: false
+
+                            columnHeaders:
+                            [
+                                catalog.i18nc("@title:column", "Applies on"),
+                                catalog.i18nc("@title:column", "Setting"),
+                                catalog.i18nc("@title:column", "Value")
+                            ]
+
+                            model: UM.TableModel
+                            {
+                                id: tableModel
+                                headers: ["category", "label", "value"]
+                                rows: manager.exportedSettingModel.items
+                            }
                         }
 
                         UM.CheckBox
                         {
                             text: catalog.i18nc("@action:checkbox", "Select the same profile")
-                            enabled: manager.isCompatibleMachine
                             onEnabledChanged: manager.selectSameProfileChecked = enabled
                             tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
-                            visible: manager.hasVisibleSelectSameProfile
+                            visible: manager.hasVisibleSelectSameProfile && manager.isCompatibleMachine
 
                             checked: manager.selectSameProfileChecked
                             onCheckedChanged: manager.selectSameProfileChecked = checked

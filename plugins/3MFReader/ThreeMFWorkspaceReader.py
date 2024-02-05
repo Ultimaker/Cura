@@ -143,12 +143,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info = None
 
         self._load_profile = False
+        self._user_settings: Dict[str, Dict[str, Any]] = {}
 
     def _clearState(self):
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
         self._load_profile = False
+        self._user_settings = {}
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
@@ -604,6 +606,36 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         package_metadata = self._parse_packages_metadata(archive)
         missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
 
+        # Load the user specifically exported settings
+        self._dialog.exportedSettingModel.clear()
+        if is_pcb:
+            try:
+                self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
+                any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
+
+                for stack_name, settings in self._user_settings.items():
+                    if stack_name == 'global':
+                        self._dialog.exportedSettingModel.addSettingsFromStack(global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
+                    else:
+                        extruder_match = re.fullmatch('extruder_([0-9]+)', stack_name)
+                        if extruder_match is not None:
+                            extruder_nr = int(extruder_match.group(1))
+                            self._dialog.exportedSettingModel.addSettingsFromStack(any_extruder_stack,
+                                                                                   i18n_catalog.i18nc("@label",
+                                                                                                      "Extruder {0}", extruder_nr + 1),
+                                                                                   settings)
+            except KeyError as e:
+                # If there is no user settings file, it's not a PCB, so notify user of failure.
+                Logger.log("w", "File %s is not a valid PCB.", file_name)
+                message = Message(
+                    i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                       "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                       file_name, str(e)),
+                    title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                    message_type=Message.MessageType.ERROR)
+                message.show()
+                return WorkspaceReader.PreReadResult.failed
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -627,6 +659,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setHasVisibleSelectSameProfileChanged(is_pcb)
         self._dialog.setAllowCreatemachine(not is_pcb)
         self._dialog.show()
+
 
         # Choosing the initially selected printer in MachineSelector
         is_networked_machine = False
@@ -790,8 +823,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in extruder_stacks:
                 stack.setNextStack(global_stack, connect_signals = False)
 
-        user_settings = {}
-
         if self._load_profile:
             Logger.log("d", "Workspace loading is checking definitions...")
             # Get all the definition files & check if they exist. If not, add them.
@@ -864,23 +895,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         self._container_registry.addContainer(material_container)
                     Job.yieldThread()
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-        else:
-            Logger.log("d", "Workspace loading user settings...")
-            try:
-                user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
-            except KeyError as e:
-                # If there is no user settings file, it's not a PCB, so notify user of failure.
-                Logger.log("w", "File %s is not a valid PCB.", file_name)
-                message = Message(
-                    i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
-                                       "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
-                                       file_name, str(e)),
-                    title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
-                    message_type=Message.MessageType.ERROR)
-                message.show()
-                self.setWorkspaceName("")
-                return [], {}
-
 
         if global_stack:
             if self._load_profile:
@@ -905,7 +919,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             if not self._load_profile:
                 # Now we have switched, apply the user settings
-                self._applyUserSettings(global_stack, extruder_stack_dict, user_settings)
+                self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)

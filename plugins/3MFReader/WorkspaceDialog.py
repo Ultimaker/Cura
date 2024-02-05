@@ -22,6 +22,8 @@ import time
 
 from cura.CuraApplication import CuraApplication
 
+from .SpecificSettingsModel import SpecificSettingsModel
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -75,6 +77,7 @@ class WorkspaceDialog(QObject):
         self._has_visible_select_same_profile = False
         self._select_same_profile_checked = True
         self._allow_create_machine = True
+        self._exported_settings_model = SpecificSettingsModel()
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -339,6 +342,10 @@ class WorkspaceDialog(QObject):
     @pyqtProperty(bool, constant = True)
     def allowCreateMachine(self):
         return self._allow_create_machine
+
+    @pyqtProperty(QObject, constant = True)
+    def exportedSettingModel(self):
+        return self._exported_settings_model
 
     @pyqtSlot()
     def closeBackend(self) -> None:
