@@ -374,14 +374,15 @@ class CuraApplication(QtApplication):
 
         app_root = os.path.abspath(os.path.join(os.path.dirname(sys.executable)))
 
-        Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
-        Resources.addSecureSearchPath(os.path.join(app_root, "Resources", "share", "cura", "resources"))
-        Resources.addSecureSearchPath(os.path.join(app_root, "..", "Resources", "share", "cura", "resources"))
-
-        Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
-        Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "Resources", "share", "cura", "resources"))
-        Resources.addSecureSearchPath(
-            os.path.join(self._app_install_dir, "..", "Resources", "share", "cura", "resources"))
+        if platform.system() == "Darwin":
+            Resources.addSecureSearchPath(os.path.join(app_root, "Resources", "share", "cura", "resources"))
+            Resources.addSecureSearchPath(os.path.join(app_root, "..", "Resources", "share", "cura", "resources"))
+            Resources.addSecureSearchPath(
+                os.path.join(self._app_install_dir, "..", "Resources", "share", "cura", "resources"))
+        else:
+            Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
+            Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
+            Resources.addSecureSearchPath(os.path.join(app_root, "Resources", "share", "cura", "resources"))
 
         if not hasattr(sys, "frozen"):
             cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
@@ -396,7 +397,6 @@ class CuraApplication(QtApplication):
 
             # venv site-packages
             Resources.addSearchPath(os.path.join(app_root, "..", "share", "cura", "resources"))
-            Resources.addSearchPath(os.path.join(app_root, "..", "Resources", "share", "cura", "resources"))
 
     @classmethod
     def _initializeSettingDefinitions(cls):
