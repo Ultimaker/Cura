@@ -156,7 +156,7 @@ WriteRegStr HKCR "slicer" "" "URL:slicer"
 WriteRegStr HKCR "slicer" "URL Protocol" ""
 WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
 WriteRegStr HKCR "slicer\shell" "" "open"
-WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" --single-instance "%1"'
 
 SectionEnd
 ######################################################################

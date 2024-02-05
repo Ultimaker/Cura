@@ -92,7 +92,11 @@ class SingleInstance:
 
                 # Command: Load a model or project file
                 elif command == "open":
-                    self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
+                    if payload["filePath"].file():
+                        self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
+                    if payload["filePath"].url():
+                        self._application.callLater(lambda f= payload["filepath"]: self._application._openUrl(f))
+
 
                 # Command: Activate the window and bring it to the top.
                 elif command == "focus":
