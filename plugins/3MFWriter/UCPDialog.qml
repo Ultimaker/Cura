@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: exportDialog
-    title: catalog.i18nc("@title:window", "Export pre-configured build batch")
+    title: catalog.i18nc("@title:window", "Export Universal Cura Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -39,14 +39,14 @@ UM.Dialog
             UM.Label
             {
                 id: titleLabel
-                text: catalog.i18nc("@action:title", "Summary - Pre-configured build batch")
+                text: catalog.i18nc("@action:title", "Summary - Universal Cura Project")
                 font: UM.Theme.getFont("large")
             }
 
             UM.Label
             {
                 id: descriptionLabel
-                text: catalog.i18nc("@action:description", "When exporting a build batch, all the models present on the build plate will be included with their current position, orientation and scale. You can also select which per-extruder or per-model settings should be included to ensure a proper printing of the batch, even on different printers.")
+                text: catalog.i18nc("@action:description", "When exporting a Universal Cura Project, all the models present on the build plate will be included with their current position, orientation and scale. You can also select which per-extruder or per-model settings should be included to ensure a proper printing of the batch, even on different printers.")
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.Wrap
                 Layout.maximumWidth: headerColumn.width

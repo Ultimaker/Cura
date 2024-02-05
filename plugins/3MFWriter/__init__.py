@@ -34,9 +34,9 @@ def getMetaData():
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
                 },
                 {
-                    "extension": "pcb",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "PCB file"),
-                    "mime_type": "application/x-pcb",
+                    "extension": "ucp",
+                    "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
+                    "mime_type": "application/x-ucp",
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
                 }
             ]
@@ -50,9 +50,9 @@ def getMetaData():
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
                 },
                 {
-                    "extension": "pcb",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "Pre-Configured Batch file"),
-                    "mime_type": "application/x-pcb",
+                    "extension": "ucp",
+                    "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
+                    "mime_type": "application/x-ucp",
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
                 }
             ]

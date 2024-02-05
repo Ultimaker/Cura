@@ -48,13 +48,13 @@ class ThreeMFReader(MeshReader):
         )
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-pcb",
-                comment="PCB",
-                suffixes=["pcb"]
+                name="application/x-ucp",
+                comment="UCP",
+                suffixes=["ucp"]
             )
         )
 
-        self._supported_extensions = [".3mf", ".pcb"]
+        self._supported_extensions = [".3mf", ".ucp"]
         self._root = None
         self._base_name = ""
         self._unit = None

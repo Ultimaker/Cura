@@ -14,14 +14,14 @@ from .SettingsExportModel import SettingsExportModel
 i18n_catalog = i18nCatalog("cura")
 
 
-class PCBDialog(QObject):
+class UCPDialog(QObject):
     finished = pyqtSignal(bool)
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
         plugin_path = os.path.dirname(__file__)
-        dialog_path = os.path.join(plugin_path, 'PCBDialog.qml')
+        dialog_path = os.path.join(plugin_path, 'UCPDialog.qml')
         self._model = SettingsExportModel()
         self._view = CuraApplication.getInstance().createQmlComponent(dialog_path,
                                                                       {"manager": self,

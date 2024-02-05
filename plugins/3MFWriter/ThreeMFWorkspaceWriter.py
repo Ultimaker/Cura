@@ -15,7 +15,7 @@ from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from .PCBDialog import PCBDialog
+from .UCPDialog import UCPDialog
 from .ThreeMFWriter import ThreeMFWriter
 from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
@@ -35,19 +35,19 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         self._config_dialog = None
 
     def _preWrite(self):
-        is_pcb = False
+        is_ucp = False
         if hasattr(self._stream, 'name'):
-            # This only works with local file, but we don't want remote PCB files yet
-            is_pcb = self._stream.name.endswith('.pcb')
+            # This only works with local file, but we don't want remote UCP files yet
+            is_ucp = self._stream.name.endswith('.ucp')
 
-        if is_pcb:
-            self._config_dialog = PCBDialog()
-            self._config_dialog.finished.connect(self._onPCBConfigFinished)
+        if is_ucp:
+            self._config_dialog = UCPDialog()
+            self._config_dialog.finished.connect(self._onUCPConfigFinished)
             self._config_dialog.show()
         else:
             self._doWrite()
 
-    def _onPCBConfigFinished(self, accepted: bool):
+    def _onUCPConfigFinished(self, accepted: bool):
         if accepted:
             self._export_model = self._config_dialog.getModel()
             self._doWrite()

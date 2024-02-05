@@ -113,7 +113,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".3mf", ".pcb"]
+        self._supported_extensions = [".3mf", ".ucp"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
@@ -234,14 +234,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
         containers_found_dict = {k: False for k in resolve_strategy_keys}
 
-        # Check whether the file is a PCB, which changes some import options
-        is_pcb = file_name.endswith('.pcb')
+        # Check whether the file is a UCP, which changes some import options
+        is_ucp = file_name.endswith('.ucp')
 
         #
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machines = None if is_pcb else []
+        updatable_machines = None if is_ucp else []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -608,7 +608,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Load the user specifically exported settings
         self._dialog.exportedSettingModel.clear()
-        if is_pcb:
+        if is_ucp:
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
@@ -625,8 +625,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                                                                       "Extruder {0}", extruder_nr + 1),
                                                                                    settings)
             except KeyError as e:
-                # If there is no user settings file, it's not a PCB, so notify user of failure.
-                Logger.log("w", "File %s is not a valid PCB.", file_name)
+                # If there is no user settings file, it's not a UCP, so notify user of failure.
+                Logger.log("w", "File %s is not a valid UCP.", file_name)
                 message = Message(
                     i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                        "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
@@ -656,8 +656,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
-        self._dialog.setHasVisibleSelectSameProfileChanged(is_pcb)
-        self._dialog.setAllowCreatemachine(not is_pcb)
+        self._dialog.setHasVisibleSelectSameProfileChanged(is_ucp)
+        self._dialog.setAllowCreatemachine(not is_ucp)
         self._dialog.show()
 
 
@@ -699,7 +699,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
 
-        self._load_profile = not is_pcb or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
+        self._load_profile = not is_ucp or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
 
         self._resolve_strategies = self._dialog.getResult()
         #
