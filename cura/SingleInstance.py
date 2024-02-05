@@ -52,6 +52,7 @@ class SingleInstance:
             single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             for filename in self._files_to_open:
+                Logger.log("i",f"Filename isxxx {os.path(filename)}")
                 payload = {"command": "open", "filePath": os.path.abspath(filename)}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
@@ -73,14 +74,18 @@ class SingleInstance:
     def _onClientConnected(self) -> None:
         Logger.log("i", "New connection received on our single-instance server")
         connection = None #type: Optional[QLocalSocket]
+        Logger.log("i","getting connection")
         if self._single_instance_server:
             connection = self._single_instance_server.nextPendingConnection()
+            Logger.log("i", f"here: {connection}")
 
         if connection is not None:
+            Logger.log("i","here2")
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
 
     def __readCommands(self, connection: QLocalSocket) -> None:
         line = connection.readLine()
+        Logger.log("i", f"line read is {line}")
         while len(line) != 0:    # There is also a .canReadLine()
             try:
                 payload = json.loads(str(line, encoding = "ascii").strip())
