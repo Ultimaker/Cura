@@ -56,8 +56,8 @@ class SingleInstance:
                 payload = {"command": "open", "filePath": os.path.abspath(filename)}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
-            for filename in self._url_to_open:
-                payload = {"command": "open", "urlPath": os.path.abspath(filename)}
+            for url in self._url_to_open:
+                payload = {"command": "open-url", "urlPath": url}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             payload = {"command": "close-connection"}
@@ -88,7 +88,7 @@ class SingleInstance:
         line = connection.readLine()
         while len(line) != 0:  # There is also a .canReadLine()
             try:
-                payload = json.loads(str(line, encoding="ascii").strip())
+                payload = json.loads(str(line, encoding = "ascii").strip())
                 command = payload["command"]
 
                 # Command: Remove all models from the build plate.
@@ -97,10 +97,11 @@ class SingleInstance:
 
                 # Command: Load a model or project file
                 elif command == "open":
-                    if payload["filePath"].file():
-                        self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
-                    if payload["urlPath"].url():
-                        self._application.callLater(lambda f = payload["urlPath"]: self._application._openUrl(f))
+                    self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
+
+                #command: Load a url link in Cura
+                elif command == "open-url":
+                    self._application.callLater(lambda f = payload["urlPath"]: self._application._openUrl(f))
 
 
                 # Command: Activate the window and bring it to the top.
