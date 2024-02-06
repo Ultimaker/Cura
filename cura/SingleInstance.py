@@ -74,13 +74,10 @@ class SingleInstance:
     def _onClientConnected(self) -> None:
         Logger.log("i", "New connection received on our single-instance server")
         connection = None #type: Optional[QLocalSocket]
-        Logger.log("i","getting connection")
         if self._single_instance_server:
             connection = self._single_instance_server.nextPendingConnection()
-            Logger.log("i", f"here: {connection}")
 
         if connection is not None:
-            Logger.log("i","here2")
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
 
     def __readCommands(self, connection: QLocalSocket) -> None:

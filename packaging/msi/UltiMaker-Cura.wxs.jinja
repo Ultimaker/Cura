@@ -166,6 +166,8 @@
                 <RegistryValue Type="string" Name="URL Protocol" Value=""/>
                 <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
                 <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; --single-instance &quot;%1&quot;"/>
+                <Verb Id="open_url" Command="Open" Argument='"%1"' />
+                <MIME Advertise="yes" ContentType="application/url" Default="yes" />
             </RegistryKey>
         </Component>
 
