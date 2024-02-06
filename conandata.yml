@@ -118,7 +118,6 @@ pyinstaller:
         - "sqlite3"
         - "trimesh"
         - "win32ctypes"
-        - "PyQt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "stl"
