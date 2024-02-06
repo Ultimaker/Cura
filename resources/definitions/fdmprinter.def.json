@@ -6453,18 +6453,6 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
                 },
-                "raft_surface_monotonic":
-                {
-                    "label": "Monotonic Raft Top Surface Order",
-                    "description": "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface.",
-                    "type": "bool",
-                    "default_value": false,
-                    "value": "skin_monotonic",
-                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "raft_surface_extruder_nr"
-                },
                 "raft_wall_count":
                 {
                     "label": "Raft Wall Count",
