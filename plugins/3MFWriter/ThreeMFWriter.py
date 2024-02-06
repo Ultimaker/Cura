@@ -10,11 +10,8 @@ from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
-from UM.Message import Message
-from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
