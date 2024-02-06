@@ -627,6 +627,7 @@ UM.PreferencesPage
             UM.TooltipArea
             {
                 width: childrenRect.width
+                visible: Qt.platform.os !== "osx"
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
 
