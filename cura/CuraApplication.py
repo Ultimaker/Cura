@@ -104,7 +104,8 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
-from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
+from cura.UI import CuraSplashScreen, PrintInformation
+from cura.UI.MachineActionManager import MachineActionManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
@@ -186,7 +187,7 @@ class CuraApplication(QtApplication):
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
-        self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
+        self._machine_action_manager: Optional[MachineActionManager] = None
 
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
@@ -352,7 +353,7 @@ class CuraApplication(QtApplication):
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
 
-        self._machine_action_manager = MachineActionManager.MachineActionManager(self)
+        self._machine_action_manager = MachineActionManager(self)
         self._machine_action_manager.initialize()
 
     def __sendCommandToSingleInstance(self):
@@ -373,9 +374,15 @@ class CuraApplication(QtApplication):
             Resources.addExpectedDirNameInData(dir_name)
 
         app_root = os.path.abspath(os.path.join(os.path.dirname(sys.executable)))
-        Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
 
-        Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
+        if platform.system() == "Darwin":
+            Resources.addSecureSearchPath(os.path.join(app_root, "Resources", "share", "cura", "resources"))
+            Resources.addSecureSearchPath(
+                os.path.join(self._app_install_dir, "Resources", "share", "cura", "resources"))
+        else:
+            Resources.addSecureSearchPath(os.path.join(app_root, "share", "cura", "resources"))
+            Resources.addSecureSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
+
         if not hasattr(sys, "frozen"):
             cura_data_root = os.environ.get('CURA_DATA_ROOT', None)
             if cura_data_root:
@@ -1129,18 +1136,16 @@ class CuraApplication(QtApplication):
             self._setting_inheritance_manager = SettingInheritanceManager.createSettingInheritanceManager()
         return self._setting_inheritance_manager
 
-    def getMachineActionManager(self, *args: Any) -> MachineActionManager.MachineActionManager:
+    @pyqtSlot(result = QObject)
+    def getMachineActionManager(self, *args: Any) -> MachineActionManager:
         """Get the machine action manager
 
         We ignore any *args given to this, as we also register the machine manager as qml singleton.
         It wants to give this function an engine and script engine, but we don't care about that.
         """
 
-        return cast(MachineActionManager.MachineActionManager, self._machine_action_manager)
+        return  self._machine_action_manager
 
-    @pyqtSlot(result = QObject)
-    def getMachineActionManagerQml(self)-> MachineActionManager.MachineActionManager:
-        return cast(QObject, self._machine_action_manager)
 
     @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self) -> MaterialManagementModel:
@@ -1264,7 +1269,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, self.getIntentManager, "IntentManager")
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, self.getSettingInheritanceManager, "SettingInheritanceManager")
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManagerWrapper, "SimpleModeSettingsManager")
-        qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, self.getMachineActionManagerWrapper, "MachineActionManager")
+        qmlRegisterSingletonType(MachineActionManager, "Cura", 1, 0, self.getMachineActionManagerWrapper, "MachineActionManager")
 
         self.processEvents()
         qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
