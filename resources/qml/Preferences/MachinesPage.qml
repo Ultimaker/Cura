@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 UM.ManagementPage
 {
     id: base
-    property var machineActionManager: CuraApplication.getMachineActionManagerQml()
+    property var machineActionManager: CuraApplication.getMachineActionManager()
     Item { enabled: false; UM.I18nCatalog { id: catalog; name: "cura"} }
 
     title: catalog.i18nc("@title:tab", "Printers")
@@ -63,7 +63,7 @@ UM.ManagementPage
         Repeater
         {
             id: machineActionRepeater
-            model: base.currentItem ? machineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
+            model: base.currentItem.id ? machineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
 
             Item
             {
