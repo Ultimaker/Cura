@@ -96,6 +96,7 @@
         "raft_interface_thickness": { "value": "(raft_base_thickness + raft_surface_thickness) / 2" },
         "raft_speed": { "value": 15 },
         "raft_surface_fan_speed": { "value": "cool_fan_speed_min" },
+        "raft_surface_monotonic": { "value": true },
         "raft_surface_speed": { "value": "speed_topbottom" },
         "relative_extrusion":
         {

@@ -380,7 +380,6 @@
         "roofing_material_flow": { "value": "material_flow" },
         "roofing_monotonic": { "value": true },
         "skin_material_flow": { "value": "0.95*material_flow" },
-        "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
