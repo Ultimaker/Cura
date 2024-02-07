@@ -5,6 +5,7 @@ import json
 import os
 from typing import List, Optional
 
+from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QLocalServer, QLocalSocket
 
 from UM.Qt.QtApplication import QtApplication  # For typing.
@@ -34,7 +35,7 @@ class SingleInstance:
             return False
 
         # We only send the files that need to be opened.
-        if not self._files_to_open or not self._url_to_open:
+        if not self._files_to_open and not self._url_to_open:
             Logger.log("i", "No file need to be opened, do nothing.")
             return True
 
@@ -47,17 +48,17 @@ class SingleInstance:
 
             if self._application.getPreferences().getValue("cura/single_instance_clear_before_load"):
                 payload = {"command": "clear-all"}
-                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             payload = {"command": "focus"}
-            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
+            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             for filename in self._files_to_open:
                 payload = {"command": "open", "filePath": os.path.abspath(filename)}
-                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
             for url in self._url_to_open:
-                payload = {"command": "open-url", "urlPath": url}
+                payload = {"command": "open-url", "urlPath": url.toString()}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             payload = {"command": "close-connection"}
@@ -82,10 +83,12 @@ class SingleInstance:
             connection = self._single_instance_server.nextPendingConnection()
 
         if connection is not None:
+            x = self.__readCommands(connection)
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
 
     def __readCommands(self, connection: QLocalSocket) -> None:
         line = connection.readLine()
+        print(f"line is {line}")
         while len(line) != 0:  # There is also a .canReadLine()
             try:
                 payload = json.loads(str(line, encoding = "ascii").strip())
@@ -101,7 +104,8 @@ class SingleInstance:
 
                 #command: Load a url link in Cura
                 elif command == "open-url":
-                    self._application.callLater(lambda f = payload["urlPath"]: self._application._openUrl(f))
+                    url = QUrl(payload["urlPath"])
+                    self._application.callLater(lambda f = url: self._application._openUrl(f))
 
 
                 # Command: Activate the window and bring it to the top.
