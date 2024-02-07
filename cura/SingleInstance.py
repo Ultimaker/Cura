@@ -88,7 +88,6 @@ class SingleInstance:
 
     def __readCommands(self, connection: QLocalSocket) -> None:
         line = connection.readLine()
-        print(f"line is {line}")
         while len(line) != 0:  # There is also a .canReadLine()
             try:
                 payload = json.loads(str(line, encoding = "ascii").strip())
