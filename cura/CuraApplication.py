@@ -180,6 +180,7 @@ class CuraApplication(QtApplication):
 
         # Variables set from CLI
         self._files_to_open = []
+        self._urls_to_open = []
         self._use_single_instance = False
 
         self._single_instance = None
@@ -334,7 +335,7 @@ class CuraApplication(QtApplication):
         for filename in self._cli_args.file:
             url = QUrl(filename)
             if url.scheme() in self._supported_url_schemes:
-                self._open_url_queue.append(url)
+                self._urls_to_open.append(url)
             else:
                 self._files_to_open.append(os.path.abspath(filename))
 
@@ -357,7 +358,7 @@ class CuraApplication(QtApplication):
         self._machine_action_manager.initialize()
 
     def __sendCommandToSingleInstance(self):
-        self._single_instance = SingleInstance(self, self._files_to_open, self._open_url_queue)
+        self._single_instance = SingleInstance(self, self._files_to_open, self._urls_to_open)
 
         # If we use single instance, try to connect to the single instance server, send commands, and then exit.
         # If we cannot find an existing single instance server, this is the only instance, so just keep going.
@@ -963,6 +964,8 @@ class CuraApplication(QtApplication):
             self.callLater(self._openFile, file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self.callLater(self._openFile, file_name)
+        for url in self._urls_to_open:
+            self.callLater(self._openUrl, url)
         for url in self._open_url_queue:
             self.callLater(self._openUrl, url)
 
