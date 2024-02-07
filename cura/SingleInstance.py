@@ -83,7 +83,6 @@ class SingleInstance:
             connection = self._single_instance_server.nextPendingConnection()
 
         if connection is not None:
-            x = self.__readCommands(connection)
             connection.readyRead.connect(lambda c = connection: self.__readCommands(c))
 
     def __readCommands(self, connection: QLocalSocket) -> None:
