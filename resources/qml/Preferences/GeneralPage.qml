@@ -627,6 +627,7 @@ UM.PreferencesPage
             UM.TooltipArea
             {
                 width: childrenRect.width
+                // Mac only allows applications to run as a single instance, so providing the option for this os doesn't make much sense
                 visible: Qt.platform.os !== "osx"
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
