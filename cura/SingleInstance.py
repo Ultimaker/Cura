@@ -103,7 +103,7 @@ class SingleInstance:
                 #command: Load a url link in Cura
                 elif command == "open-url":
                     url = QUrl(payload["urlPath"])
-                    self._application.callLater(lambda f = url: self._application._openUrl(f))
+                    self._application.callLater(lambda: self._application._openUrl(url))
 
 
                 # Command: Activate the window and bring it to the top.
