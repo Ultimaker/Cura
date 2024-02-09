@@ -613,10 +613,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                actual_global_stack = CuraApplication.getInstance().getGlobalContainerStack()
 
                 for stack_name, settings in self._user_settings.items():
                     if stack_name == 'global':
-                        self._dialog.exportedSettingModel.addSettingsFromStack(global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
+                        self._dialog.exportedSettingModel.addSettingsFromStack(actual_global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
                     else:
                         extruder_match = re.fullmatch('extruder_([0-9]+)', stack_name)
                         if extruder_match is not None:
