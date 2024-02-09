@@ -63,6 +63,18 @@ UM.PreferencesPage
         }
     }
 
+     function setDefaultDropDown(code)
+    {
+        for (var i = 0; i < choiceOnDropDown.model.count; ++i)
+        {
+            if (choiceOnDropDown.model.get(i).code == code)
+            {
+                choiceOnDropDown.currentIndex = i
+                break;
+            }
+        }
+    }
+
     function reset()
     {
         UM.Preferences.resetPreference("general/language")
@@ -510,6 +522,60 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
                     checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
                     onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "This setting will set a default (or not) for the Per Model Drop to buildplate feature (Either Always, Never, decide every time")
+
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", " Default per model setting for drop to build plate when importing a model: ")
+                    }
+
+                    Cura.ComboBox
+                    {
+                        id: choiceOnDropDown
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
+
+                        model: ListModel
+                        {
+                            id: dropDownOptions
+
+                            Component.onCompleted:
+                            {
+                                append({ text: catalog.i18nc("@option:openProject", "Always"), code: "always" })
+                                append({ text: catalog.i18nc("@option:openProject", "Never"), code: "never" })
+                                append({ text: catalog.i18nc("@option:openProject", "Always ask me this"), code: "always_ask" })
+                            }
+                        }
+                        textRole: "text"
+
+                        currentIndex:
+                        {
+                            var index = 0;
+                            var currentChoice = UM.Preferences.getValue("physics/automatic_drop_down_per_model");
+                            for (var i = 0; i < model.count; ++i)
+                            {
+                                if (model.get(i).code == currentChoice)
+                                {
+                                    index = i;
+                                    break;
+                                }
+                            }
+                            return index;
+                        }
+
+                        onActivated: UM.Preferences.setValue("physics/automatic_drop_down_per_model", model.get(index).code)
+                    }
                 }
             }
 
