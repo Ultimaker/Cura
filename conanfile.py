@@ -1,4 +1,5 @@
 import os
+
 from io import StringIO
 from pathlib import Path
 
@@ -176,17 +177,10 @@ class CuraConan(ConanFile):
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
         with venv_vars.apply():
-            self.run(f"""python -c {outer}import pkg_resources;  print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}""",
+            self.run(f"""python -c {outer}import importlib_metadata; print({{dist.metadata[{inner}Name{inner}]: {{{inner}version{inner}: dist.version}} for dist in importlib_metadata.distributions()}}){outer}""",
                           env = "conanrun",
                           output = buffer)
-
-        packages = str(buffer.getvalue()).split("-----------------\n")
-        packages = packages[1].strip('\r\n').split(";")
-        for package in packages:
-            name, version = package.split(",")
-            python_installs[name] = {"version": version}
-
-        return python_installs
+        return str(buffer.getvalue()).split("-----------------\n")[-1].strip()
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -347,7 +341,7 @@ class CuraConan(ConanFile):
         if self._internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
-        self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("cpython/3.12.2@ultimaker/cura_11079")
         self.requires("clipper/6.4.2@ultimaker/stable")
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
