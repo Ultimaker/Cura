@@ -162,12 +162,7 @@ pyclipper==1.3.0.post5 \
     --hash=sha256:ee1c4797b1dc982ae9d60333269536ea03ddc0baa1c3383a6d5b741dbbb12675 \
     --hash=sha256:f0b84fcf5230aca2de06ddb7920459daa858853835f8774739ca30dd516e7d37
 
-# Use Scipy wheel that is compiled with Intel optimizations (MKL). Obtained from https://github.com/cgohlke/numpy-mkl-wheels/releases
-https://cura.jfrog.io/artifactory/cura-local-pypi/scipy/scipy/scipy-mkl-1.11.3-cp312-win_amd64.whl; \
-    sys_platform=="win32" \
-    --hash=sha256:0509f157f597d3b71ba3146485e806ddb3f97908bf36991e9e1813f533854530
-scipy==1.11.3; \
-    sys_platform!="win32" \
+scipy==1.11.3 \
     --hash=sha256:00f325434b6424952fbb636506f0567898dca7b0f7654d48f1c382ea338ce9a3 \
     --hash=sha256:033c3fd95d55012dd1148b201b72ae854d5086d25e7c316ec9850de4fe776929 \
     --hash=sha256:0d3a136ae1ff0883fffbb1b05b0b2fea251cb1046a5077d0b435a1839b3e52b7 \
