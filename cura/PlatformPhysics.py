@@ -38,7 +38,7 @@ class PlatformPhysics:
         self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
-        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down_per_model", "never")
+        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", False)
 
     def _onSceneChanged(self, source):
         if not source.callDecoration("isSliceable"):
@@ -71,14 +71,6 @@ class PlatformPhysics:
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
-        default_value = False
-        if app_automatic_drop_down == "always":
-            default_value = True
-        if app_automatic_drop_down == "never":
-            default_value = False
-        if app_automatic_drop_down == "always_ask":
-            # ask_during_loading_model
-            pass
 
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
@@ -88,9 +80,7 @@ class PlatformPhysics:
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
-
-
-            if node.getSetting(SceneNodeSettings.AutoDropDown, default_value) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            if node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
             # If there is no convex hull for the node, start calculating it and continue.
