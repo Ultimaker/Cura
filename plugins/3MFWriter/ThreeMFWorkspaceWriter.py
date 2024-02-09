@@ -34,6 +34,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         self._mode = None
         self._config_dialog = None
 
+    #FIXME We should have proper preWrite/write methods like the readers have a preRead/read, and have them called by the global process
     def _preWrite(self):
         is_ucp = False
         if hasattr(self._stream, 'name'):
@@ -150,6 +151,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         self._success = True
 
+    #FIXME We should somehow give the information of the file type so that we know what to write, like the mode but for other files types (give mimetype ?)
     def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
         self._success = False
         self._export_model = None

@@ -235,6 +235,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         containers_found_dict = {k: False for k in resolve_strategy_keys}
 
         # Check whether the file is a UCP, which changes some import options
+        #FIXME Instead of this, we should just check for the presence of the user-settings file, whatever the extension
         is_ucp = file_name.endswith('.ucp')
 
         #
