@@ -154,7 +154,6 @@
         "support_infill_rate": { "value": "20" },
         "support_interface_enable": { "value": "True" },
         "support_interface_height": { "value": "1" },
-        "support_interface_skip_height": { "value": "layer_height" },
         "support_join_distance": { "value": "1" },
         "support_offset": { "value": "1.5" },
         "support_pattern": { "default_value": "zigzag" },

@@ -1,4 +1,5 @@
 import os
+from io import StringIO
 from pathlib import Path
 
 from jinja2 import Template
@@ -150,6 +151,7 @@ class CuraConan(ConanFile):
         return "None"
 
     def _conan_installs(self):
+        self.output.info("Collecting conan installs")
         conan_installs = {}
 
         # list of conan installs
@@ -161,13 +163,22 @@ class CuraConan(ConanFile):
         return conan_installs
 
     def _python_installs(self):
+        self.output.info("Collecting python installs")
         python_installs = {}
 
         # list of python installs
-        python_ins_cmd = f"python -c \"import pkg_resources; print(';'.join([(s.key+','+ s.version) for s in pkg_resources.working_set]))\""
-        from six import StringIO
+        run_env = VirtualRunEnv(self)
+        env = run_env.environment()
+        env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
+        venv_vars = env.vars(self, scope = "run")
+
+        outer = '"' if self.settings.os == "Windows" else "'"
+        inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
-        self.run(python_ins_cmd, run_environment= True, env = "conanrun",  output=buffer)
+        with venv_vars.apply():
+            self.run(f"""python -c {outer}import pkg_resources;  print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}""",
+                          env = "conanrun",
+                          output = buffer)
 
         packages = str(buffer.getvalue()).split("-----------------\n")
         packages = packages[1].strip('\r\n').split(";")
@@ -242,7 +253,7 @@ class CuraConan(ConanFile):
                 self.output.warning(f"Source path for binary {binary['binary']} does not exist")
                 continue
 
-            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.|.pdb]*"):
+            for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
             for bin in Path(src_path).glob(binary["binary"]):
                 binaries.append((str(bin), binary["dst"]))
@@ -320,6 +331,8 @@ class CuraConan(ConanFile):
             self.options["openssl"].shared = True
         if self.conf.get("user.curaengine:sentry_url", "", check_type=str) != "":
             self.options["curaengine"].enable_sentry = True
+            self.options["arcus"].enable_sentry = True
+            self.options["clipper"].enable_sentry = True
 
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
@@ -335,6 +348,7 @@ class CuraConan(ConanFile):
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
         self.requires("cpython/3.10.4@ultimaker/stable")
+        self.requires("clipper/6.4.2@ultimaker/stable")
         self.requires("openssl/3.2.0")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
@@ -417,7 +431,6 @@ class CuraConan(ConanFile):
             )
 
         if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
-            # Update the po and pot files
             vb = VirtualBuildEnv(self)
             vb.generate()
 
@@ -502,10 +515,14 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
+            self.env_info.PYTHONPATH.append(os.path.join(self.package_folder, "site-packages"))
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
+            self.env_info.PYTHONPATH.append(os.path.join(self.package_folder, "plugins"))
         else:
             self.runenv_info.append_path("PYTHONPATH", self.source_folder)
+            self.env_info.PYTHONPATH.append(self.source_folder)
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
+            self.env_info.PYTHONPATH.append(os.path.join(self.source_folder, "plugins"))
 
     def package_id(self):
         self.info.clear()
@@ -518,7 +535,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.cloud_api_version
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
-        self.options.rm_safe("enable_i18n")
+        if self.options.get_safe("enable_i18n", False):
+            del self.info.options.enable_i18n
 
         # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
         #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't

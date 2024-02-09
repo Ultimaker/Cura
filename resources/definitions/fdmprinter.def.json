@@ -1668,7 +1668,7 @@
                     "value": "skin_line_width * 2",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "maximum_value_warning": "skin_line_width * 3",
+                    "maximum_value_warning": "skin_line_width * 10",
                     "type": "float",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -5423,20 +5423,6 @@
                         }
                     }
                 },
-                "support_interface_skip_height":
-                {
-                    "label": "Support Interface Resolution",
-                    "description": "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.2,
-                    "value": "layer_height",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "support_interface_height",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": true
-                },
                 "support_interface_density":
                 {
                     "label": "Support Interface Density",
@@ -6463,6 +6449,18 @@
                     "maximum_value_warning": "raft_surface_line_width * 3",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "value": "raft_surface_line_width",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_surface_extruder_nr"
+                },
+                "raft_surface_monotonic":
+                {
+                    "label": "Monotonic Raft Top Surface Order",
+                    "description": "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "skin_monotonic",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
