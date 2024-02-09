@@ -173,11 +173,9 @@ class CuraConan(ConanFile):
         env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
         venv_vars = env.vars(self, scope = "run")
 
-        outer = '"' if self.settings.os == "Windows" else "'"
-        inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
         with venv_vars.apply():
-            self.run(f"""python -c {outer}import importlib_metadata; print({{dist.metadata[{inner}Name{inner}]: {{{inner}version{inner}: dist.version}} for dist in importlib_metadata.distributions()}}){outer}""",
+            self.run("""python -c "import importlib_metadata; print({dist.metadata['Name']: {'version': dist.version} for dist in importlib_metadata.distributions()})" """,
                           env = "conanrun",
                           output = buffer)
         return str(buffer.getvalue()).split("-----------------\n")[-1].strip()
