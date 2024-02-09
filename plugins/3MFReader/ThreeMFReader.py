@@ -177,6 +177,9 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
+                if key == "print_order":
+                    um_node.printOrder = int(setting_value)
+                    continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
                 else:

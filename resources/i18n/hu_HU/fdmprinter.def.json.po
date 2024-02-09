@@ -2585,6 +2585,14 @@ msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "Nyomtatási sorrend"
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Nyomtatási sorrend kézi beállítása"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr "Lehetővé teszi az objektumlista rendezését a nyomtatási sorrend kézi beállításához. A lista első objektuma lesz először nyomtatva."
+
 msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "Nyomtatási sebesség"
