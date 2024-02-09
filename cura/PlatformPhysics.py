@@ -80,9 +80,11 @@ class PlatformPhysics:
 
             # Move it downwards if bottom is above platform
             move_vector = Vector()
+
             if node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
+
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh") and node.callDecoration("getLayerData") is None:
                 node.addDecorator(ConvexHullDecorator())

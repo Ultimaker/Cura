@@ -299,6 +299,7 @@ UM.Dialog
                         }
                     }
                 }
+
                 Row
                 {
                     id: dropToBuildPlate
@@ -307,7 +308,6 @@ UM.Dialog
                     spacing: UM.Theme.getSize("default_margin").width
                     UM.CheckBox
                     {
-                        id: rememberChoiceCheckBox
                         text: catalog.i18nc("@text:window", "Drop models to buildplate")
                         checked: UM.Preferences.getValue("physics/automatic_drop_down") == True
                         onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
