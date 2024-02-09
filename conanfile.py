@@ -176,8 +176,7 @@ class CuraConan(ConanFile):
         buffer = StringIO()
         with venv_vars.apply():
             self.run("""python -c "import importlib_metadata; print({dist.metadata['Name']: {'version': dist.version} for dist in importlib_metadata.distributions()})" """,
-                          env = "conanrun",
-                          output = buffer)
+                     env = "conanrun", ignore_errors = True, output = buffer)
         return str(buffer.getvalue()).split("-----------------\n")[-1].strip()
 
     def _generate_cura_version(self, location):
