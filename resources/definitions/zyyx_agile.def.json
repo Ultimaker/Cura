@@ -1,12 +1,12 @@
 {
-    "version": 2,
+    "version": 3,
     "name": "Zyyx Agile",
     "inherits": "fdmprinter",
     "metadata":
     {
         "visible": true,
         "author": "Magicfirm Europe",
-        "manufacturer": "Magicfirm Europe",
+        "manufacturer": "ZYYX Labs AB",
         "file_formats": "application/x3g",
         "platform": "zyyx_platform.3mf",
         "has_machine_quality": true,
