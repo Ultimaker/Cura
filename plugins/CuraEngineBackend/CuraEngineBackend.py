@@ -76,6 +76,7 @@ class CuraEngineBackend(QObject, Backend):
         self._default_engine_location = executable_name
 
         search_path = [
+            os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..", "Resources")),
             os.path.abspath(os.path.dirname(sys.executable)),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "bin")),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..")),
