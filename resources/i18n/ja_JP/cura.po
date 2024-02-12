@@ -4914,6 +4914,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "モデルを非グループ化"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "印刷前"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "印刷後"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "アンインストール"

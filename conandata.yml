@@ -118,7 +118,6 @@ pyinstaller:
         - "sqlite3"
         - "trimesh"
         - "win32ctypes"
-        - "PyQt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "stl"
@@ -162,6 +161,10 @@ pycharm_targets:
     script_name: tests/TestGCodeListDecorator.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
     module_name: Cura
+    name: pytest in TestHitChecker.py
+    script_name: tests/TestHitChecker.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
     name: pytest in TestIntentManager.py
     script_name: tests/TestIntentManager.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
@@ -188,6 +191,10 @@ pycharm_targets:
     module_name: Cura
     name: pytest in TestPrintInformation.py
     script_name: tests/TestPrintInformation.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestPrintOrderManager.py
+    script_name: tests/TestPrintOrderManager.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
     module_name: Cura
     name: pytest in TestProfileRequirements.py
