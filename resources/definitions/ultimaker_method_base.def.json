@@ -373,7 +373,6 @@
         "retraction_hop": { "value": 0.4 },
         "retraction_hop_enabled": { "value": true },
         "retraction_hop_only_when_collides": { "value": false },
-        "retraction_min_travel": { "value": "line_width * 4" },
         "retraction_prime_speed": { "value": "retraction_speed" },
         "retraction_speed": { "value": 5 },
         "roofing_layer_count": { "value": 2 },
