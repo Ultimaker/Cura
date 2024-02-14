@@ -308,9 +308,14 @@ UM.Dialog
                     spacing: UM.Theme.getSize("default_margin").width
                     UM.CheckBox
                     {
+                        id: checkDropModels
                         text: catalog.i18nc("@text:window", "Drop models to buildplate")
-                        checked: UM.Preferences.getValue("physics/automatic_drop_down") == True
-                        onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                        checked: UM.Preferences.getValue("physics/automatic_drop_down")
+                        onCheckedChanged: UM.Preferences.setValue("physics/per_model_drop", checked)
+                    }
+                    function reloadValue()
+                    {
+                        checkDropModels.checked = UM.Preferences.getValue("physics/automatic_drop_down")
                     }
                 }
 
@@ -436,6 +441,7 @@ UM.Dialog
             materialSection.reloadValues()
             profileSection.reloadValues()
             printerSection.reloadValues()
+            dropToBuildPlate.reloadValue()
         }
     }
 }
