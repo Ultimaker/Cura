@@ -3548,14 +3548,6 @@ msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
 msgstr ""
 
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr ""
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr ""
-
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
 msgstr ""
@@ -4594,6 +4586,14 @@ msgstr ""
 
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
+msgstr ""
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr ""
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
 msgstr ""
 
 msgctxt "infill_mesh label"

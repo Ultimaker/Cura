@@ -35,6 +35,9 @@ Item
     property alias mergeObjects: mergeObjectsAction
     //property alias unMergeObjects: unMergeObjectsAction
 
+    property alias printObjectBeforePrevious: printObjectBeforePreviousAction
+    property alias printObjectAfterNext: printObjectAfterNextAction
+
     property alias multiplyObject: multiplyObjectAction
 
     property alias selectAll: selectAllAction
@@ -109,7 +112,6 @@ Item
     Action
     {
         id: exitFullScreenAction
-        shortcut: StandardKey.Cancel
         text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         icon.name: "view-fullscreen"
     }
@@ -120,8 +122,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo")
         icon.name: "edit-undo"
         shortcut: StandardKey.Undo
-        onTriggered: UM.OperationStack.undo()
-        enabled: UM.OperationStack.canUndo
+        onTriggered: CuraActions.undo()
+        enabled: CuraActions.canUndo
     }
 
     Action
@@ -130,8 +132,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo")
         icon.name: "edit-redo"
         shortcut: StandardKey.Redo
-        onTriggered: UM.OperationStack.redo()
-        enabled: UM.OperationStack.canRedo
+        onTriggered: CuraActions.redo()
+        enabled: CuraActions.canRedo
     }
 
     Action
@@ -404,6 +406,26 @@ Item
         icon.name: "object-ungroup"
         shortcut: "Ctrl+Shift+G"
         onTriggered: CuraApplication.ungroupSelected()
+    }
+
+    Action
+    {
+        id: printObjectBeforePreviousAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print Before") + " " + PrintOrderManager.previousNodeName
+        enabled: PrintOrderManager.shouldEnablePrintBeforeAction
+        icon.name: "print-before"
+        shortcut: "PgUp"
+        onTriggered: PrintOrderManager.swapSelectedAndPreviousNodes()
+    }
+
+    Action
+    {
+        id: printObjectAfterNextAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print After") + " " + PrintOrderManager.nextNodeName
+        enabled: PrintOrderManager.shouldEnablePrintAfterAction
+        icon.name: "print-after"
+        shortcut: "PgDown"
+        onTriggered: PrintOrderManager.swapSelectedAndNextNodes()
     }
 
     Action

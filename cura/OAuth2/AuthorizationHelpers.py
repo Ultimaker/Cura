@@ -41,6 +41,7 @@ class AuthorizationHelpers:
         """
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "client_secret": self._settings.CLIENT_SECRET if self._settings.CLIENT_SECRET is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
             "grant_type": "authorization_code",
             "code": authorization_code,
@@ -66,6 +67,7 @@ class AuthorizationHelpers:
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "client_secret": self._settings.CLIENT_SECRET if self._settings.CLIENT_SECRET is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,

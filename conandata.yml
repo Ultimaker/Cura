@@ -1,12 +1,11 @@
-version: "5.7.0-alpha.0"
+version: "5.7.0-alpha.1"
 requirements:
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
   - "fdm_materials/(latest)@ultimaker/testing"
-  - "curaengine_plugin_gradual_flow/(latest)@ultimaker/stable"
+  - "curaengine_plugin_gradual_flow/0.1.0-beta.2"
   - "dulcificum/latest@ultimaker/testing"
-  - "pyarcus/5.3.0"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
   - "curaengine_grpc_definitions/(latest)@ultimaker/testing"
@@ -119,7 +118,6 @@ pyinstaller:
         - "sqlite3"
         - "trimesh"
         - "win32ctypes"
-        - "PyQt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "stl"
@@ -163,6 +161,10 @@ pycharm_targets:
     script_name: tests/TestGCodeListDecorator.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
     module_name: Cura
+    name: pytest in TestHitChecker.py
+    script_name: tests/TestHitChecker.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
     name: pytest in TestIntentManager.py
     script_name: tests/TestIntentManager.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
@@ -189,6 +191,10 @@ pycharm_targets:
     module_name: Cura
     name: pytest in TestPrintInformation.py
     script_name: tests/TestPrintInformation.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestPrintOrderManager.py
+    script_name: tests/TestPrintOrderManager.py
   - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
     module_name: Cura
     name: pytest in TestProfileRequirements.py

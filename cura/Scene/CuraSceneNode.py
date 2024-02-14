@@ -25,9 +25,18 @@ class CuraSceneNode(SceneNode):
         if not no_setting_override:
             self.addDecorator(SettingOverrideDecorator())  # Now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
+        self._print_order = 0
 
     def setOutsideBuildArea(self, new_value: bool) -> None:
         self._outside_buildarea = new_value
+
+    @property
+    def printOrder(self):
+        return self._print_order
+
+    @printOrder.setter
+    def printOrder(self, new_value):
+        self._print_order = new_value
 
     def isOutsideBuildArea(self) -> bool:
         return self._outside_buildarea or self.callDecoration("getBuildPlateNumber") < 0
@@ -157,3 +166,6 @@ class CuraSceneNode(SceneNode):
 
     def transformChanged(self) -> None:
         self._transformChanged()
+
+    def __repr__(self) -> str:
+        return "{print_order}. {name}".format(print_order = self._print_order, name = self.getName())

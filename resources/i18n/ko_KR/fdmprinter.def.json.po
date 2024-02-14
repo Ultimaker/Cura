@@ -2580,6 +2580,14 @@ msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "프린팅 순서"
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "수동으로 인쇄 순서 설정"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr "객체 목록을 정렬하여 수동으로 인쇄 순서를 설정할 수 있습니다. 목록의 첫 번째 객체가 먼저 인쇄됩니다."
+
 msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "프린팅 속도"
