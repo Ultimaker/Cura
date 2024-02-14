@@ -126,6 +126,7 @@ from .Machines.Models.CompatibleMachineModel import CompatibleMachineModel
 from .Machines.Models.MachineListModel import MachineListModel
 from .Machines.Models.ActiveIntentQualitiesModel import ActiveIntentQualitiesModel
 from .Machines.Models.IntentSelectionModel import IntentSelectionModel
+from .PrintOrderManager import PrintOrderManager
 from .SingleInstance import SingleInstance
 
 if TYPE_CHECKING:
@@ -204,6 +205,7 @@ class CuraApplication(QtApplication):
         self._container_manager = None
 
         self._object_manager = None
+        self._print_order_manager = None
         self._extruders_model = None
         self._extruders_model_with_optional = None
         self._build_plate_model = None
@@ -907,6 +909,7 @@ class CuraApplication(QtApplication):
         # initialize info objects
         self._print_information = PrintInformation.PrintInformation(self)
         self._cura_actions = CuraActions.CuraActions(self)
+        self._print_order_manager = PrintOrderManager(self.getObjectsModel().getNodes)
         self.processEvents()
         # Initialize setting visibility presets model.
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
@@ -989,6 +992,7 @@ class CuraApplication(QtApplication):
             t.setEnabledAxis([ToolHandle.XAxis, ToolHandle.YAxis, ToolHandle.ZAxis])
 
         Selection.selectionChanged.connect(self.onSelectionChanged)
+        self._print_order_manager.printOrderChanged.connect(self._onPrintOrderChanged)
 
         # Set default background color for scene
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
@@ -1262,6 +1266,7 @@ class CuraApplication(QtApplication):
         self.processEvents()
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
+        engine.rootContext().setContextProperty("PrintOrderManager", self._print_order_manager)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
         engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
@@ -1757,8 +1762,12 @@ class CuraApplication(QtApplication):
             Selection.remove(node)
         Selection.add(group_node)
 
+        all_nodes = self.getObjectsModel().getNodes()
+        PrintOrderManager.updatePrintOrdersAfterGroupOperation(all_nodes, group_node, selected_nodes)
+
     @pyqtSlot()
     def ungroupSelected(self) -> None:
+        all_nodes = self.getObjectsModel().getNodes()
         selected_objects = Selection.getAllSelectedObjects().copy()
         for node in selected_objects:
             if node.callDecoration("isGroup"):
@@ -1766,20 +1775,29 @@ class CuraApplication(QtApplication):
 
                 group_parent = node.getParent()
                 children = node.getChildren().copy()
-                for child in children:
-                    # Ungroup only 1 level deep
-                    if child.getParent() != node:
-                        continue
 
+                # Ungroup only 1 level deep
+                children_to_ungroup = list(filter(lambda child: child.getParent() == node, children))
+                for child in children_to_ungroup:
                     # Set the parent of the children to the parent of the group-node
                     op.addOperation(SetParentOperation(child, group_parent))
 
                     # Add all individual nodes to the selection
                     Selection.add(child)
 
+                PrintOrderManager.updatePrintOrdersAfterUngroupOperation(all_nodes, node, children_to_ungroup)
                 op.push()
                 # Note: The group removes itself from the scene once all its children have left it,
                 # see GroupDecorator._onChildrenChanged
+
+    def _onPrintOrderChanged(self) -> None:
+        # update object list
+        scene = self.getController().getScene()
+        scene.sceneChanged.emit(scene.getRoot())
+
+        # reset if already was sliced
+        Application.getInstance().getBackend().needsSlicing()
+        Application.getInstance().getBackend().tickle()
 
     def _createSplashScreen(self) -> Optional[CuraSplashScreen.CuraSplashScreen]:
         if self._is_headless:
