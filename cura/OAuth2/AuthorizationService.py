@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 
 MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
 
+REFRESH_TOKEN_MAX_RETRIES = 15
+REFRESH_TOKEN_RETRY_INTERVAL = 1000
 
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing
@@ -60,7 +62,7 @@ class AuthorizationService:
 
         self._refresh_token_retries = 0
         self._refresh_token_retry_timer = QTimer()
-        self._refresh_token_retry_timer.setInterval(1000)
+        self._refresh_token_retry_timer.setInterval(REFRESH_TOKEN_RETRY_INTERVAL)
         self._refresh_token_retry_timer.setSingleShot(True)
         self._refresh_token_retry_timer.timeout.connect(self.refreshAccessToken)
 
@@ -182,7 +184,7 @@ class AuthorizationService:
                 HttpRequestManager.getInstance().setDelayRequests(False)
                 self.onAuthStateChanged.emit(logged_in = True)
             else:
-                if self._refresh_token_retries >= 15:
+                if self._refresh_token_retries >= REFRESH_TOKEN_MAX_RETRIES:
                     self._refresh_token_retries = 0
                     Logger.warning("Failed to get a new access token from the server, giving up.")
                     HttpRequestManager.getInstance().setDelayRequests(False)
