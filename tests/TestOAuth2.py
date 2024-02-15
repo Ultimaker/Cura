@@ -97,7 +97,7 @@ def test__parseJWTNoRefreshToken():
     mock_reply = Mock()  # The user profile that the service should respond with.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
     http_mock.readJSON = Mock(return_value = {"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
