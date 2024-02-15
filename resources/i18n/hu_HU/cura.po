@@ -4913,6 +4913,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Csoport bontása"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Nyomtatás előtt"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Nyomtatás után"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr ""

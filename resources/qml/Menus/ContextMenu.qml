@@ -78,6 +78,19 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.mergeObjects }
     Cura.MenuItem { action: Cura.Actions.unGroupObjects }
 
+    // Edit print sequence actions
+    Cura.MenuSeparator { visible: PrintOrderManager.shouldShowEditPrintOrderActions }
+    Cura.MenuItem
+    {
+        action: Cura.Actions.printObjectBeforePrevious
+        visible: PrintOrderManager.shouldShowEditPrintOrderActions
+    }
+    Cura.MenuItem
+    {
+        action: Cura.Actions.printObjectAfterNext
+        visible: PrintOrderManager.shouldShowEditPrintOrderActions
+    }
+
     Connections
     {
         target: UM.Controller
