@@ -8,6 +8,8 @@ import UM 1.5 as UM
 
 Item
 {
+    id: settingVisibilityItem
+
     // Use the depth of the model to move the item, but also leave space for the visibility / enabled exclamation mark.
 
     // Align checkbox with SettingVisibilityCategory icon with + 5

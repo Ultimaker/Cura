@@ -9,7 +9,7 @@ import Cura 1.5 as Cura
 
 Cura.CategoryButton
 {
-    id: base
+    id: settingVisibilityCategory
 
     categoryIcon: definition ? UM.Theme.getIcon(definition.icon) : ""
     labelText: definition ? definition.label : ""
