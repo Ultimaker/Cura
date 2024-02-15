@@ -1082,6 +1082,10 @@ class CuraApplication(QtApplication):
     def getTextManager(self, *args) -> "TextManager":
         return self._text_manager
 
+    @pyqtSlot(bool)
+    def getLocalDropToBuildplate(self, drop_to_build_plate: bool) ->None:
+        return self._physics.setAppPerModelDropDown(drop_to_build_plate)
+
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
             self._cura_formula_functions = CuraFormulaFunctions(self)

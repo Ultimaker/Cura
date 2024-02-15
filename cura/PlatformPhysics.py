@@ -39,7 +39,13 @@ class PlatformPhysics:
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", False)
-        Application.getInstance().getPreferences().addPreference("physics/per_model_drop", False)
+        self._app_per_model_drop = Application.getInstance().getPreferences().getValue("physics/automatic_drop_down")
+
+    def getAppPerModelDropDown(self):
+        return self._app_per_model_drop
+
+    def setAppPerModelDropDown(self, drop_to_buildplate):
+        self._app_per_model_drop = drop_to_buildplate
 
     def _onSceneChanged(self, source):
         if not source.callDecoration("isSliceable"):
@@ -55,9 +61,6 @@ class PlatformPhysics:
         app_preferences = app_instance.getPreferences()
         app_automatic_drop_down = app_preferences.getValue("physics/automatic_drop_down")
         app_automatic_push_free = app_preferences.getValue("physics/automatic_push_free")
-        # silent preference setting to mimic preference automatic_drop_down only different when user changes it explicitely while opening model
-        app_per_model_drop = app_preferences.getValue("physics/per_model_drop")
-
 
         root = self._controller.getScene().getRoot()
         build_volume = app_instance.getBuildVolume()
@@ -85,11 +88,10 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            # if per model drop is different then app_automatic_drop
-            # in case of 3mf loading when user changes this setting for that model
-            if (app_per_model_drop != app_automatic_drop_down):
-                node.setSetting(SceneNodeSettings.AutoDropDown, app_per_model_drop)
-            if node.getSetting(SceneNodeSettings.AutoDropDown, app_per_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            # if per model drop is different then app_automatic_drop, in case of 3mf loading when user changes this setting for that model
+            if (self._app_per_model_drop != app_automatic_drop_down):
+                node.setSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop)
+            if node.getSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
@@ -177,8 +179,8 @@ class PlatformPhysics:
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
-        # setting this silent preference same as app_automatic_drop_down
-        app_preferences.setValue("physics/per_model_drop", app_automatic_drop_down)
+        # setting this drop to model same as app_automatic_drop_down
+        self._app_per_model_drop = app_automatic_drop_down
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume.updateNodeBoundaryCheck()
 

@@ -311,7 +311,7 @@ UM.Dialog
                         id: checkDropModels
                         text: catalog.i18nc("@text:window", "Drop models to buildplate")
                         checked: UM.Preferences.getValue("physics/automatic_drop_down")
-                        onCheckedChanged: UM.Preferences.setValue("physics/per_model_drop", checked)
+                        onCheckedChanged: manager.setDropToBuildPlateForModel(checked)
                     }
                     function reloadValue()
                     {
