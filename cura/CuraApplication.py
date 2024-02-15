@@ -1083,7 +1083,7 @@ class CuraApplication(QtApplication):
         return self._text_manager
 
     @pyqtSlot(bool)
-    def getLocalDropToBuildplate(self, drop_to_build_plate: bool) ->None:
+    def getWorkplaceDropToBuildplate(self, drop_to_build_plate: bool) ->None:
         return self._physics.setAppPerModelDropDown(drop_to_build_plate)
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":

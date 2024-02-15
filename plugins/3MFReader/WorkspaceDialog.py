@@ -301,7 +301,7 @@ class WorkspaceDialog(QObject):
 
     @pyqtSlot(bool)
     def setDropToBuildPlateForModel(self, drop_to_buildplate: bool) -> None:
-        CuraApplication.getInstance().getLocalDropToBuildplate(drop_to_buildplate)
+        CuraApplication.getInstance().getWorkplaceDropToBuildplate(drop_to_buildplate)
 
 
     def setMaterialConflict(self, material_conflict: bool) -> None:
