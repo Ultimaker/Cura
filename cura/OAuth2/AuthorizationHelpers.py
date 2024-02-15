@@ -127,6 +127,8 @@ class AuthorizationHelpers:
             headers_dict = headers,
             callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
             error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None,
+            download_progress_callback = None,
+            upload_progress_callback = None,
             timeout = REQUEST_TIMEOUT
         )
 
