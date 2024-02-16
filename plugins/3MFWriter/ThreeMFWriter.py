@@ -17,6 +17,7 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings import CuraContainerStack
 from cura.Utils.Threading import call_on_qt_thread
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
 
 from PyQt6.QtCore import QBuffer
@@ -147,6 +148,9 @@ class ThreeMFWriter(MeshWriter):
                     # Get values for all exported settings & save them.
                     for key in model_exported_settings:
                         savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+
+        if isinstance(um_node, CuraSceneNode):
+            savitar_node.setSetting("cura:print_order", str(um_node.printOrder))
 
         # Store the metadata.
         for key, value in um_node.metadata.items():
