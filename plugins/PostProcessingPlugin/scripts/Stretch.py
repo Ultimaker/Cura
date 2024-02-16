@@ -1,4 +1,4 @@
-# This PostProcessingPlugin script is released under the terms of the AGPLv3 or higher.
+# This PostProcessingPlugin script is released under the terms of the LGPLv3 or higher.
 """
 Copyright (c) 2017 Christophe Baribaud 2017
 Python implementation of https://github.com/electrocbd/post_stretch
@@ -432,7 +432,7 @@ class Stretcher:
         """
         dist_palp = self.line_width # Palpation distance to seek for a wall
         mrot = np.array([[0, -1], [1, 0]]) # Rotation matrix for a quarter turn
-        for i in range(len(orig_seq)):
+        for i, _ in enumerate(orig_seq):
             ibeg = i # Index of the first point of the segment
             iend = i + 1 # Index of the last point of the segment
             if iend == len(orig_seq):

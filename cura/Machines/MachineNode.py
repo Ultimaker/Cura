@@ -14,6 +14,7 @@ from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construc
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
+from cura.Machines.MaterialNode import MaterialNode
 import UM.FlameProfiler
 
 
@@ -167,13 +168,20 @@ class MachineNode(ContainerNode):
 
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
+    def isExcludedMaterial(self, material: MaterialNode) -> bool:
+        """Returns whether the material should be excluded from the list of materials."""
+        for exclude_material in self.exclude_materials:
+            if exclude_material in material["id"]:
+                return True
+        return False
+
     @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
         """(Re)loads all variants under this printer."""
 
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
-            self.variants["empty"] = VariantNode("empty_variant", machine = self)
+            self.variants["empty"] = VariantNode("empty_variant", machine=self)
             self.variants["empty"].materialsChanged.connect(self.materialsChanged)
         else:
             # Find all the variants for this definition ID.

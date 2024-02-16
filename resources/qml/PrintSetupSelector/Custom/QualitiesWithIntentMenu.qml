@@ -187,7 +187,7 @@ Popup
                         //Add all the custom profiles.
                         Repeater
                         {
-                            model: Cura.CustomQualityProfilesDropDownMenuModel
+                            model: CuraApplication.getCustomQualityProfilesDropDownMenuModel()
                             MenuButton
                             {
                                 onClicked: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
@@ -225,58 +225,6 @@ Popup
 
         MenuButton
         {
-            labelText: Cura.Actions.addProfile.text
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.Actions.addProfile.enabled
-            onClicked:
-            {
-                Cura.Actions.addProfile.trigger()
-                popup.visible = false
-            }
-        }
-        MenuButton
-        {
-            labelText: Cura.Actions.updateProfile.text
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.Actions.updateProfile.enabled
-
-            onClicked:
-            {
-                popup.visible = false
-                Cura.Actions.updateProfile.trigger()
-            }
-        }
-        MenuButton
-        {
-            text: catalog.i18nc("@action:button", "Discard current changes")
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            enabled: Cura.MachineManager.hasUserSettings
-
-            onClicked:
-            {
-                popup.visible = false
-                Cura.ContainerManager.clearUserContainers()
-            }
-        }
-
-        Rectangle
-        {
-            height: UM.Theme.getSize("default_lining").width
-            anchors.left: parent.left
-            anchors.right: parent.right
-            color: borderColor
-        }
-
-        MenuButton
-        {
             id: manageProfilesButton
             text: Cura.Actions.manageProfiles.text
             anchors
@@ -285,18 +233,19 @@ Popup
                 right: parent.right
             }
 
-            height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
+            height: textLabel.contentHeight + UM.Theme.getSize("default_margin").height
 
             contentItem: Item
             {
                 width: parent.width
-                height: childrenRect.height
+                height: parent.height
 
                 UM.Label
                 {
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 UM.Label
                 {
@@ -304,6 +253,7 @@ Popup
                     text: Cura.Actions.manageProfiles.shortcut
                     color: UM.Theme.getColor("text_lighter")
                     height: contentHeight
+                    anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 }
@@ -318,7 +268,7 @@ Popup
         Item
         {
             width: 2
-            height: UM.Theme.getSize("default_radius").width 
+            height: UM.Theme.getSize("default_radius").width
         }
     }
 }

@@ -38,7 +38,14 @@ class PlatformPhysics:
         self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
-        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
+        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", False)
+        self._app_per_model_drop = Application.getInstance().getPreferences().getValue("physics/automatic_drop_down")
+
+    def getAppPerModelDropDown(self):
+        return self._app_per_model_drop
+
+    def setAppPerModelDropDown(self, drop_to_buildplate):
+        self._app_per_model_drop = drop_to_buildplate
 
     def _onSceneChanged(self, source):
         if not source.callDecoration("isSliceable"):
@@ -50,8 +57,13 @@ class PlatformPhysics:
         if not self._enabled:
             return
 
+        app_instance = Application.getInstance()
+        app_preferences = app_instance.getPreferences()
+        app_automatic_drop_down = app_preferences.getValue("physics/automatic_drop_down")
+        app_automatic_push_free = app_preferences.getValue("physics/automatic_push_free")
+
         root = self._controller.getScene().getRoot()
-        build_volume = Application.getInstance().getBuildVolume()
+        build_volume = app_instance.getBuildVolume()
         build_volume.updateNodeBoundaryCheck()
 
         # Keep a list of nodes that are moving. We use this so that we don't move two intersecting objects in the
@@ -66,6 +78,7 @@ class PlatformPhysics:
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
+
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
                 continue
@@ -75,16 +88,19 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            if Application.getInstance().getPreferences().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            # if per model drop is different then app_automatic_drop, in case of 3mf loading when user changes this setting for that model
+            if (self._app_per_model_drop != app_automatic_drop_down):
+                node.setSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop)
+            if node.getSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
-            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh"):
+            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh") and node.callDecoration("getLayerData") is None:
                 node.addDecorator(ConvexHullDecorator())
 
             # only push away objects if this node is a printing mesh
-            if not node.callDecoration("isNonPrintingMesh") and Application.getInstance().getPreferences().getValue("physics/automatic_push_free"):
+            if not node.callDecoration("isNonPrintingMesh") and app_automatic_push_free:
                 # Do not move locked nodes
                 if node.getSetting(SceneNodeSettings.LockPosition):
                     continue
@@ -163,6 +179,8 @@ class PlatformPhysics:
                 op = PlatformPhysicsOperation.PlatformPhysicsOperation(node, move_vector)
                 op.push()
 
+        # setting this drop to model same as app_automatic_drop_down
+        self._app_per_model_drop = app_automatic_drop_down
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume.updateNodeBoundaryCheck()
 

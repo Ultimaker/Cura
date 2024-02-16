@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Sovol Base Planetary Printer",
+    "inherits": "sovol_base",
+    "metadata":
+    {
+        "machine_extruder_trains": { "0": "sovol_planetary_extruder_0" },
+        "quality_definition": "sovol_base_planetary"
+    },
+    "overrides":
+    {
+        "jerk_print": { "value": 5 },
+        "machine_acceleration": { "value": 1000 },
+        "machine_max_feedrate_e": { "value": 40 },
+        "machine_max_jerk_xy": { "value": 5 },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" }
+    }
+}

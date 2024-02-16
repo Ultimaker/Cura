@@ -1,0 +1,61 @@
+{
+    "version": 2,
+    "name": "Dagoma PRO 430 Dual",
+    "inherits": "dagoma_pro_430_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Dagoma",
+        "manufacturer": "Dagoma",
+        "machine_extruder_trains":
+        {
+            "0": "dagoma_pro_430_dual_extruder_left",
+            "1": "dagoma_pro_430_dual_extruder_right"
+        },
+        "preferred_quality_type": "h0.2",
+        "preferred_variant_name": "Brass 0.4mm",
+        "quality_definition": "dagoma_pro_430_bowden"
+    },
+    "overrides":
+    {
+        "machine_end_gcode": { "default_value": ";End Gcode for {machine_name}\n;Author: Dagoma\n\nM104 T0 S0 ;Set hotend temperature for cooldown\nM104 T1 S0 ;Set hotend temperature for cooldown\nM140 S0 ;Set hotbed temperature for cooldown\nG91 ;Set all axes to relative\nG0 Z+3 ;Move Z axis after print end\nG1 E-{retraction_amount} F5000 ;Retract filament to stop oozing\nG90 ;Set all axes to absolute\nG28 X Y ;Home the X and Y axes\nM84 ; Disable steppers motors\nM18 ;Disable steppers motors\nM117 Print end ;Set message\n" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_height": { "default_value": 310 },
+        "machine_name": { "default_value": "Dagoma PRO 430 Dual" },
+        "machine_start_gcode": { "default_value": ";Start Gcode for {machine_name}\n;Author: Dagoma\n;Contact: contact-pro@dagoma3d.com\n\n;Sliced: {date} {time}\n;Estimated print time: {print_time}\n\n;Print speed: {speed_print}mm/s\n;Layer height: {layer_height}mm\n;Wall thickness: {wall_thickness}mm\n;Infill density: {infill_sparse_density}%\n;Infill pattern: {infill_pattern}\n;Support: {support_enable}\n;Print temperature: {material_print_temperature}\u00b0C\n;Flow: {material_flow}%\n;Retraction amount: {retraction_amount}mm\n;Retraction speed: {retraction_retract_speed}mm/s\n\nG21 ;Set units to millimeters\nG90 ;Set all axes to absolute\nM104 S120 ; Launch hotend heating up to 120\u00b0C\nM190 S{material_bed_temperature} ;Preheat hotbed\nM106 S255; Activating layers fans for checkup and minimise filament on t\nG28 ;Go to origin on all axes\nG29 ; Bed Leveling\nM107 ; Turn off Layers Fans\nG0 X215 Y1 Z0.4 ;Move XYZ axis before purge\nM109 S{material_print_temperature_layer_0} ;Wait for initial print temp\nM83 ;Set E to relative positioning\nG1 E{retraction_amount} F200 ;Purge\nG0 Z15.0 F6000 ;Move Z axis before print start\nM82 ;Set E to absolute positioning\nG92 E0 ;Set E position\nG1 F{travel_speed} ;Set the feedrate to {travel_speed}mm/s\n" },
+        "nozzle_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-215, 160],
+                    [-166, 160],
+                    [-215, 111]
+                ],
+                [
+                    [215, 160],
+                    [166, 160],
+                    [215, 111]
+                ],
+                [
+                    [-215, 160],
+                    [-154, 160],
+                    [-154, -160],
+                    [-215, -160]
+                ],
+                [
+                    [215, 160],
+                    [154, 160],
+                    [154, -160],
+                    [215, -160]
+                ],
+                [
+                    [-215, 160],
+                    [-215, 125],
+                    [215, 125],
+                    [215, 160]
+                ]
+            ]
+        },
+        "prime_tower_position_x": { "value": "350" }
+    }
+}

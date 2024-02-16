@@ -65,22 +65,22 @@ UM.TooltipArea
     {
         id: defaultOptionsModel
 
-        function updateModel()
-        {
-            clear()
-            // Options come in as a string-representation of an OrderedDict
-            if(propertyProvider.properties.options)
-            {
-                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
-                if(options)
-                {
-                    options = options[1].split("), (");
-                    for(var i = 0; i < options.length; i++)
-                    {
-                        var option = options[i].substring(1, options[i].length - 1).split("', '");
-                        append({ text: option[1], value: option[0] });
-                    }
-                }
+        function updateModel() {
+            clear();
+
+            if (!propertyProvider.properties.options) {
+                return;
+            }
+
+            if (typeof(propertyProvider.properties["options"]) === "string") {
+                return;
+            }
+
+            const keys = propertyProvider.properties["options"].keys();
+            for (let index = 0; index < propertyProvider.properties["options"].keys().length; index ++) {
+                const key = propertyProvider.properties["options"].keys()[index];
+                const value = propertyProvider.properties["options"][key];
+                defaultOptionsModel.append({ text: value, value: key });
             }
         }
 
@@ -105,36 +105,27 @@ UM.TooltipArea
         model: defaultOptionsModel
         textRole: "text"
 
-        currentIndex:
-        {
-            var currentValue = propertyProvider.properties.value
-            var index = 0
-            for (var i = 0; i < model.count; i++)
-            {
-                if (model.get(i).value == currentValue)
-                {
-                    index = i
-                    break
+        currentIndex: {
+            const currentValue = propertyProvider.properties.value
+            for (let i = 0; i < model.count; i ++) {
+                if (model.get(i).value === currentValue) {
+                    return i;
                 }
             }
-            return index
+            return -1;
         }
 
-        onActivated:
-        {
-            var newValue = model.get(index).value
-            if (propertyProvider.properties.value != newValue)
-            {
-                if (setValueFunction !== null)
-                {
-                    setValueFunction(newValue)
+        onActivated: function (index) {
+            const newValue = model.get(index).value;
+
+            if (propertyProvider.properties.value !== newValue && newValue !== undefined) {
+                if (setValueFunction !== null) {
+                    setValueFunction(newValue);
+                } else {
+                    propertyProvider.setPropertyValue("value", newValue);
                 }
-                else
-                {
-                    propertyProvider.setPropertyValue("value", newValue)
-                }
-                forceUpdateOnChangeFunction()
-                afterOnEditingFinishedFunction()
+                forceUpdateOnChangeFunction();
+                afterOnEditingFinishedFunction();
             }
         }
     }

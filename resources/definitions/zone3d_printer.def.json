@@ -1,28 +1,30 @@
 {
-    "name": "Zone3d Printer",
     "version": 2,
+    "name": "Zone3d Printer",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "manufacturer": "Zone3D",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0],
-        "machine_extruder_trains":
-        {
-            "0": "zone3d_printer_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "zone3d_printer_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
     },
-
-    "overrides": {
-        "prime_tower_size": { "default_value": 10.350983390135314 },
+    "overrides":
+    {
         "layer_height": { "default_value": 0.14 },
-        "machine_extruder_count": { "default_value": 1 },
-        "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
-        "machine_height": { "default_value": 210 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 220 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 210 },
+        "machine_name": { "default_value": "Zone3D Printer" },
         "machine_width": { "default_value": 240 },
-        "machine_name": { "default_value": "Zone3D Printer" }
+        "prime_tower_size": { "default_value": 10.350983390135314 }
     }
 }

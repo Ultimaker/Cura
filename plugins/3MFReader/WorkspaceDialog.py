@@ -5,6 +5,8 @@ from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication, QU
 from PyQt6.QtGui import QDesktopServices
 from typing import List, Optional, Dict, cast
 
+from cura.Machines.Models.MachineListModel import MachineListModel
+from cura.Machines.Models.IntentTranslations import intent_translations
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
@@ -13,8 +15,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
-
-from .UpdatableMachinesModel import UpdatableMachinesModel
 
 import os
 import threading
@@ -36,10 +36,12 @@ class WorkspaceDialog(QObject):
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
         self._default_strategy = None
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._override_machine = None
         self._visible = False
         self.showDialogSignal.connect(self.__show)
@@ -63,10 +65,12 @@ class WorkspaceDialog(QObject):
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = UpdatableMachinesModel(self)
+        self._updatable_machines_model = MachineListModel(self, listenToChanges=False)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
+        self._is_abstract_machine = False
+        self._is_networked_machine = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -80,6 +84,8 @@ class WorkspaceDialog(QObject):
     intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
     updatableMachinesChanged = pyqtSignal()
+    isAbstractMachineChanged = pyqtSignal()
+    isNetworkedChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
     numUserSettingsChanged = pyqtSignal()
@@ -161,12 +167,30 @@ class WorkspaceDialog(QObject):
             self.machineNameChanged.emit()
 
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
-    def updatableMachinesModel(self) -> UpdatableMachinesModel:
-        return cast(UpdatableMachinesModel, self._updatable_machines_model)
+    def updatableMachinesModel(self) -> MachineListModel:
+        return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
-        self._updatable_machines_model.update(updatable_machines)
+        self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
+
+    @pyqtProperty(bool, notify = isAbstractMachineChanged)
+    def isAbstractMachine(self) -> bool:
+        return self._is_abstract_machine
+
+    @pyqtSlot(bool)
+    def setIsAbstractMachine(self, is_abstract_machine: bool) -> None:
+        self._is_abstract_machine = is_abstract_machine
+        self.isAbstractMachineChanged.emit()
+
+    @pyqtProperty(bool, notify = isNetworkedChanged)
+    def isNetworked(self) -> bool:
+        return self._is_networked_machine
+
+    @pyqtSlot(bool)
+    def setIsNetworkedMachine(self, is_networked_machine: bool) -> None:
+        self._is_networked_machine = is_networked_machine
+        self.isNetworkedChanged.emit()
 
     @pyqtProperty(str, notify=qualityTypeChanged)
     def qualityType(self) -> str:
@@ -200,7 +224,14 @@ class WorkspaceDialog(QObject):
 
     def setIntentName(self, intent_name: str) -> None:
         if self._intent_name != intent_name:
-            self._intent_name = intent_name
+            try:
+                 self._intent_name = intent_translations[intent_name]["name"]
+            except:
+                self._intent_name = intent_name.title()
+            self.intentNameChanged.emit()
+
+        if not self._intent_name:
+            self._intent_name = intent_translations["default"]["name"]
             self.intentNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
@@ -268,6 +299,11 @@ class WorkspaceDialog(QObject):
 
         Application.getInstance().getBackend().close()
 
+    @pyqtSlot(bool)
+    def setDropToBuildPlateForModel(self, drop_to_buildplate: bool) -> None:
+        CuraApplication.getInstance().getWorkplaceDropToBuildplate(drop_to_buildplate)
+
+
     def setMaterialConflict(self, material_conflict: bool) -> None:
         if self._has_material_conflict != material_conflict:
             self._has_material_conflict = material_conflict
@@ -326,10 +362,12 @@ class WorkspaceDialog(QObject):
         if threading.current_thread() != threading.main_thread():
             self._lock.acquire()
         # Reset the result
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._visible = True
         self.showDialogSignal.emit()
 
@@ -387,26 +425,27 @@ class WorkspaceDialog(QObject):
     @pyqtSlot()
     def showMissingMaterialsWarning(self) -> None:
         result_message = Message(
-            i18n_catalog.i18nc("@info:status", "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."),
+            i18n_catalog.i18nc("@info:status",
+                               "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."),
             lifetime=0,
-            title=i18n_catalog.i18nc("@info:title", "Material profiles not installed"),
+            title=i18n_catalog.i18nc("@info:title", "Some required packages are not installed"),
             message_type=Message.MessageType.WARNING
         )
         result_message.addAction(
-                "learn_more",
-                name=i18n_catalog.i18nc("@action:button", "Learn more"),
-                icon="",
-                description="Learn more about project materials.",
-                button_align=Message.ActionButtonAlignment.ALIGN_LEFT,
-                button_style=Message.ActionButtonStyle.LINK
+            "learn_more",
+            name=i18n_catalog.i18nc("@action:button", "Learn more"),
+            icon="",
+            description=i18n_catalog.i18nc("@label", "Learn more about project packages."),
+            button_align=Message.ActionButtonAlignment.ALIGN_LEFT,
+            button_style=Message.ActionButtonStyle.LINK
         )
         result_message.addAction(
-                "install_materials",
-                name=i18n_catalog.i18nc("@action:button", "Install Materials"),
-                icon="",
-                description="Install missing materials from project file.",
-                button_align=Message.ActionButtonAlignment.ALIGN_RIGHT,
-                button_style=Message.ActionButtonStyle.DEFAULT
+            "install_packages",
+            name=i18n_catalog.i18nc("@action:button", "Install Packages"),
+            icon="",
+            description=i18n_catalog.i18nc("@label", "Install missing packages from project file."),
+            button_align=Message.ActionButtonAlignment.ALIGN_RIGHT,
+            button_style=Message.ActionButtonStyle.DEFAULT
         )
         result_message.actionTriggered.connect(self._onMessageActionTriggered)
         result_message.show()

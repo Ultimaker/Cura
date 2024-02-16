@@ -1,35 +1,37 @@
 {
-  "name": "Atom 2",
-  "version": 2,
-  "inherits": "fdmprinter",
-  "metadata": {
-    "visible": true,
-    "author": "Victor (Yu Chieh) Lin",
-    "manufacturer": "Layer One",
-    "file_formats": "text/x-gcode",
-    "platform_offset": [0,0,0],
-    "machine_extruder_trains":  { "0": "atom2_extruder_0"
+    "version": 2,
+    "name": "Atom 2",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Victor (Yu Chieh) Lin",
+        "manufacturer": "Layer One",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": { "0": "atom2_extruder_0" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
+    },
+    "overrides":
+    {
+        "brim_width": { "default_value": 4 },
+        "default_material_print_temperature": { "default_value": 210 },
+        "infill_sparse_density": { "default_value": 10 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 210 },
+        "machine_end_gcode": { "default_value": "G28\nG91\nG1 E-6 F300\nM104 S0\nG1 E-1000 F5000\nM84\nG90" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 320 },
+        "machine_name": { "default_value": "Atom 2" },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_start_gcode": { "default_value": "G21\nG90 \nM107\nG28\nG1 Y-110 Z15\nG0 Z{layer_height_0}\nG92 E0\nG1 F200 Y-100 E6\nG92 E0" },
+        "machine_width": { "default_value": 210 },
+        "optimize_wall_printing_order": { "value": "True" },
+        "speed_print": { "default_value": 32 }
     }
-  },
-
-  "overrides": {
-    "machine_name":           { "default_value": "Atom 2" },
-    "machine_shape":          { "default_value": "elliptic" },
-    "machine_width":          { "default_value": 210 },
-    "machine_depth":          { "default_value": 210 },
-    "machine_height":         { "default_value": 320 },
-    "machine_extruder_count": { "default_value": 1 },
-    "machine_heated_bed":     { "default_value": false },
-    "machine_center_is_zero": { "default_value": true },
-
-    "machine_start_gcode":    { "default_value": "G21\nG90 \nM107\nG28\nG1 Y-110 Z15\nG0 Z{layer_height_0}\nG92 E0\nG1 F200 Y-100 E6\nG92 E0" },
-    "machine_end_gcode":      { "default_value": "G28\nG91\nG1 E-6 F300\nM104 S0\nG1 E-1000 F5000\nM84\nG90" },
-
-    "layer_height": { "default_value": 0.2 },
-    "default_material_print_temperature": { "default_value": 210 },
-    "speed_print": { "default_value": 32 },
-    "optimize_wall_printing_order": { "value": "True" },
-    "infill_sparse_density": { "default_value": 10 },
-    "brim_width": { "default_value": 4 }
-  }
 }

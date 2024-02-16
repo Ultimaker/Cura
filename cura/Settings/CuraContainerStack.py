@@ -49,7 +49,7 @@ class CuraContainerStack(ContainerStack):
         self._empty_material = cura_empty_instance_containers.empty_material_container #type: InstanceContainer
         self._empty_variant = cura_empty_instance_containers.empty_variant_container #type: InstanceContainer
 
-        self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
+        self._containers: List[ContainerInterface] = [self._empty_instance_container for i in _ContainerIndexes.IndexTypeMap]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
         self._containers[_ContainerIndexes.Quality] = self._empty_quality
         self._containers[_ContainerIndexes.Material] = self._empty_material
@@ -359,7 +359,7 @@ class CuraContainerStack(ContainerStack):
         return self.definition
 
     @classmethod
-    def _findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
+    def findInstanceContainerDefinitionId(cls, machine_definition: DefinitionContainerInterface) -> str:
         """Find the ID that should be used when searching for instance containers for a specified definition.
 
         This handles the situation where the definition specifies we should use a different definition when
@@ -379,7 +379,7 @@ class CuraContainerStack(ContainerStack):
             Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
             return machine_definition.id #type: ignore
 
-        return cls._findInstanceContainerDefinitionId(definitions[0])
+        return cls.findInstanceContainerDefinitionId(definitions[0])
 
     def getExtruderPositionValueWithDefault(self, key):
         """getProperty for extruder positions, with translation from -1 to default extruder number"""
@@ -427,4 +427,4 @@ class _ContainerIndexes:
     }
 
     # Reverse lookup: type -> index
-    TypeIndexMap = dict([(v, k) for k, v in IndexTypeMap.items()])
+    TypeIndexMap = {v: k for k, v in IndexTypeMap.items()}

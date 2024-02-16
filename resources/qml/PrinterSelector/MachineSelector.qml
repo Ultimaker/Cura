@@ -11,12 +11,29 @@ Cura.ExpandablePopup
 {
     id: machineSelector
 
-    property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasNetworkConnection
-    property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
-    property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
-    property bool isGroup: Cura.MachineManager.activeMachineIsGroup
+    property var machineManager: Cura.MachineManager
+    property bool isNetworkPrinter: machineManager.activeMachineHasNetworkConnection
+    property bool isConnectedCloudPrinter: machineManager.activeMachineHasCloudConnection
+    property bool isCloudRegistered: machineManager.activeMachineHasCloudRegistration
+    property bool isGroup: machineManager.activeMachineIsGroup
+    property string machineName: {
+        if (isNetworkPrinter && machineManager.activeMachineNetworkGroupName != "")
+        {
+            return machineManager.activeMachineNetworkGroupName
+        }
+        if (machineManager.activeMachine != null)
+        {
+            return machineManager.activeMachine.name
+        }
+        return ""
+    }
 
-    readonly property string connectionStatus: {
+    property alias machineListModel: machineSelectorList.model
+    property alias onSelectPrinter: machineSelectorList.onSelectPrinter
+
+    property list<Item> buttons
+
+    property string connectionStatus: {
         if (isNetworkPrinter)
         {
             return "printer_connected"
@@ -42,7 +59,7 @@ Cura.ExpandablePopup
             {
                 if (Cura.API.account.isLoggedIn)
                 {
-                    if (Cura.MachineManager.activeMachineIsLinkedToCurrentAccount)
+                    if (machineManager.activeMachineIsLinkedToCurrentAccount)
                     {
                         return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
                     }
@@ -55,7 +72,8 @@ Cura.ExpandablePopup
                 {
                     return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer.")
                 }
-            } else
+            }
+            else
             {
                 return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
             }
@@ -77,18 +95,8 @@ Cura.ExpandablePopup
 
     headerItem: Cura.IconWithText
     {
-        text:
-        {
-            if (isNetworkPrinter && Cura.MachineManager.activeMachineNetworkGroupName != "")
-            {
-                return Cura.MachineManager.activeMachineNetworkGroupName
-            }
-            if(Cura.MachineManager.activeMachine != null)
-            {
-                return Cura.MachineManager.activeMachine.name
-            }
-            return ""
-        }
+        text: machineName
+
         source:
         {
             if (isGroup)
@@ -99,6 +107,7 @@ Cura.ExpandablePopup
             {
                 return UM.Theme.getIcon("Printer", "medium")
             }
+
             else
             {
                 return ""
@@ -140,7 +149,7 @@ Cura.ExpandablePopup
 
             color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
 
-            visible: isNetworkPrinter || isCloudRegistered
+            visible: (isNetworkPrinter || isCloudRegistered) && source != ""
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle
@@ -156,7 +165,8 @@ Cura.ExpandablePopup
 
         }
 
-        MouseArea // Connection status tooltip hover area
+        // Connection status tooltip hover area
+        MouseArea
         {
             id: connectionStatusTooltipHoverArea
             anchors.fill: parent
@@ -189,11 +199,14 @@ Cura.ExpandablePopup
         }
     }
 
+    property int minDropDownWidth: UM.Theme.getSize("machine_selector_widget_content").width
+    property int maxDropDownHeight: UM.Theme.getSize("machine_selector_widget_content").height
+
     contentItem: Item
     {
         id: popup
-        implicitWidth: UM.Theme.getSize("machine_selector_widget_content").width
-        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, UM.Theme.getSize("machine_selector_widget_content").height) //Maximum height is the theme entry.
+        implicitWidth: Math.max(machineSelector.width, minDropDownWidth)
+        implicitHeight: Math.min(machineSelectorList.contentHeight + separator.height + buttonRow.height, maxDropDownHeight) //Maximum height is the theme entry.
         MachineSelectorList
         {
             id: machineSelectorList
@@ -223,43 +236,31 @@ Cura.ExpandablePopup
             id: buttonRow
 
             anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.left: parent.left
+            anchors.right: parent.right
+
             padding: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("default_margin").width
 
-            Cura.SecondaryButton
-            {
-                id: addPrinterButton
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                text: catalog.i18nc("@button", "Add printer")
-                // The maximum width of the button is half of the total space, minus the padding of the parent, the left
-                // padding of the component and half the spacing because of the space between buttons.
-                fixedWidthMode: true
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
-                onClicked:
-                {
-                    toggleContent()
-                    Cura.Actions.addMachine.trigger()
-                }
-            }
-
-            Cura.SecondaryButton
-            {
-                id: managePrinterButton
-                leftPadding: UM.Theme.getSize("default_margin").width
-                rightPadding: UM.Theme.getSize("default_margin").width
-                text: catalog.i18nc("@button", "Manage printers")
-                fixedWidthMode: true
-                // The maximum width of the button is half of the total space, minus the padding of the parent, the right
-                // padding of the component and half the spacing because of the space between buttons.
-                width: UM.Theme.getSize("machine_selector_widget_content").width / 2 - leftPadding
-                onClicked:
-                {
-                    toggleContent()
-                    Cura.Actions.configureMachines.trigger()
-                }
-            }
+            children: buttons
         }
+
+        states: [
+            State {
+                name: "noButtons"
+                when: !buttons || buttons.length == 0
+                PropertyChanges
+                {
+                    target: buttonRow
+                    height: 0
+                    padding: 0
+                }
+                PropertyChanges
+                {
+                    target: separator
+                    height: 0
+                }
+            }
+        ]
     }
 }

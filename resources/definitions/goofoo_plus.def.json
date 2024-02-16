@@ -1,15 +1,13 @@
 {
-    "name": "Goofoo Plus",
     "version": 2,
+    "name": "Goofoo Plus",
     "inherits": "goofoo_near",
-    "overrides": {
-        "machine_name": { "default_value": "Goofoo Plus" },
-        "machine_width": { "default_value": 360 },
+    "metadata": { "visible": true },
+    "overrides":
+    {
         "machine_depth": { "default_value": 360 },
-        "machine_height": { "default_value": 400 }
-
-    },
-    "metadata": {
-        "visible": true
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Goofoo Plus" },
+        "machine_width": { "default_value": 360 }
     }
 }

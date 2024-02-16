@@ -1,0 +1,78 @@
+version: 1
+
+AppDir:
+  path: {{ app_dir }}
+  app_info:
+    id: com.ultimaker.cura
+    name: UltiMaker Cura
+    icon: {{ icon }}
+    version: {{ version }}
+    exec: UltiMaker-Cura
+    exec_args: $@
+  apt:
+    arch:
+    - amd64
+    allow_unauthenticated: true
+    sources:
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
+      - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+    include:
+      - xdg-desktop-portal-kde
+      - libgtk-3-0
+      - librsvg2-2
+      - librsvg2-common
+      - libgdk-pixbuf2.0-0
+      - libgdk-pixbuf2.0-bin
+      - libgdk-pixbuf2.0-common
+      - imagemagick
+      - shared-mime-info
+      - gnome-icon-theme-symbolic
+      - hicolor-icon-theme
+    exclude: []
+  files:
+    include: []
+    exclude:
+      - usr/share/man
+      - usr/share/doc/*/README.*
+      - usr/share/doc/*/changelog.*
+      - usr/share/doc/*/NEWS.*
+      - usr/share/doc/*/TODO.*
+      - usr/lib/x86_64-linux-gnu/libssl.so*
+  runtime:
+    env:
+      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      PYTHONPATH: "$APPDIR"
+      QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
+      QML2_IMPORT_PATH: "$APPDIR/qt/qml"
+      QT_QPA_PLATFORMTHEME: xdgdesktopportal
+      GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+      GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+    path_mappings:
+      - /usr/share:$APPDIR/usr/share
+  test:
+    fedora-30:
+      image: appimagecrafters/tests-env:fedora-30
+      command: ./AppRun
+      use_host_x: True
+    debian-stable:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+      use_host_x: True
+    archlinux-latest:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+      use_host_x: True
+    centos-7:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+      use_host_x: True
+    ubuntu-xenial:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: True
+AppImage:
+  arch: {{ arch }}
+  file_name: {{ file_name }}
+  update-information: guess

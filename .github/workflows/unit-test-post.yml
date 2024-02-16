@@ -1,0 +1,14 @@
+name: unit-test-post
+
+on:
+  workflow_run:
+    workflows: [ "unit-test" ]
+    types: [ completed ]
+
+jobs:
+  publish-test-results:
+    uses: ultimaker/cura-workflows/.github/workflows/unit-test-post.yml@main
+    with:
+      event: ${{ github.event.workflow_run.event }}
+      conclusion: ${{ github.event.workflow_run.conclusion }}
+    secrets: inherit

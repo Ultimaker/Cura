@@ -1,19 +1,26 @@
 {
-    "name": "Mingda Magician X",
     "version": 2,
+    "name": "Mingda Magician X",
     "inherits": "mingda_base",
-    "overrides": {
-        "machine_name": { "default_value": "Mingda Magician X" },
-        "machine_width": { "default_value": 230 },
-        "machine_depth": { "default_value": 230 },
-        "machine_height": { "default_value": 260 },
-        "gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "mingda_base",
+    "metadata":
+    {
         "visible": true,
-        "platform": "mingda_d2_base.stl",
-        "platform_offset": [ -205, -77, 65]
+        "platform": "mingda_magician_x_base.stl",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "quality_definition": "mingda_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 230 },
+        "machine_end_gcode": { "default_value": " G91; relative positioning\n G1 Z1.0 F3000 ; move z up little to prevent scratching of print\n G90; absolute positioning\n G1 X0 Y0 F1000 ; prepare for part removal\n M104 S0; turn off extruder\n M140 S0 ; turn off bed\n M84 ; disable motors\n M420 S0\n M106 S0 ; turn off fan" },
+        "machine_height": { "default_value": 260 },
+        "machine_name": { "default_value": "Mingda Magician X" },
+        "machine_start_gcode": { "default_value": " G28 ; home all axes\n M420 S1\n M117 ; Purge extruder\n G92 E0 ; reset extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface\n G1 X2 Y20 Z0.3 F5000.0 ; move to start-line position\n G1 X2 Y200.0 Z0.3 F1500.0 E15 ; draw 1st line\n G1 X2 Y200.0 Z0.4 F5000.0 ; move to side a little\n G1 X2 Y20 Z0.4 F1500.0 E30 ; draw 2nd line\n G92 E0 ; reset extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface" },
+        "machine_width": { "default_value": 230 }
     }
 }

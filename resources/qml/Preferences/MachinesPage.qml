@@ -17,7 +17,7 @@ UM.ManagementPage
     title: catalog.i18nc("@title:tab", "Printers")
     detailsPlaneCaption: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
 
-    model: Cura.GlobalStacksModel { }
+    model: Cura.GlobalStacksModel { filterAbstractMachines: false }
 
     sectionRole: "discoverySource"
 
@@ -58,25 +58,31 @@ UM.ManagementPage
         anchors.fill: parent
         spacing: UM.Theme.getSize("default_margin").height
 
+
         Repeater
         {
             id: machineActionRepeater
-            model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
+            model: base.currentItem ? CuraApplication.getSupportedActionMachineList(base.currentItem.id) : null
 
             Item
             {
                 width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                 height: childrenRect.height
+                visible: machineActionRepeater.model[index].visible
                 Cura.SecondaryButton
                 {
                     text: machineActionRepeater.model[index].label
                     onClicked:
                     {
                         var currentItem = machineActionRepeater.model[index]
-                        actionDialog.loader.manager = currentItem
-                        actionDialog.loader.source = currentItem.qmlPath
-                        actionDialog.title = currentItem.label
-                        actionDialog.show()
+                        if (currentItem.shouldOpenAsDialog) {
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
+                        } else {
+                            currentItem.execute()
+                        }
                     }
                 }
             }
@@ -93,6 +99,13 @@ UM.ManagementPage
             maximumWidth: minimumWidth * 3
             maximumHeight: minimumHeight * 3
             backgroundColor: UM.Theme.getColor("main_background")
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    actionDialog.loader.item.focus = true
+                }
+            }
         }
 
         UM.ConfirmRemoveDialog

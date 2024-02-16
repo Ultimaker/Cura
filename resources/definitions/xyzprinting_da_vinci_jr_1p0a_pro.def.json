@@ -1,53 +1,48 @@
 {
-    "version": 2, 
+    "version": 2,
     "name": "XYZprinting da Vinci Jr. 1.0A Pro",
     "inherits": "xyzprinting_base",
-    "metadata": {
-		"author": "XYZprinting Software",
-        "manufacturer": "XYZprinting",
+    "metadata":
+    {
         "visible": true,
+        "author": "XYZprinting Software",
+        "manufacturer": "XYZprinting",
         "file_formats": "text/x-gcode",
-		"has_machine_quality": true,
+        "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-		"exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone", "ultimaker_petg_blue", "ultimaker_petg_grey", "ultimaker_petg_black", "ultimaker_petg_green", "ultimaker_petg_white", "ultimaker_petg_orange", "ultimaker_petg_silver", "ultimaker_petg_yellow", "ultimaker_petg_transparent", "ultimaker_petg_red_translucent", "ultimaker_petg_blue_translucent", "ultimaker_petg_green_translucent", "ultimaker_petg_yellow_fluorescent", "ultimaker_petg_red" ],
-        "supports_usb_connection": true,
+        "machine_extruder_trains": { "0": "xyzprinting_da_vinci_jr_1p0a_pro_extruder_0" },
         "preferred_quality_type": "normal",
-		"quality_definition": "xyzprinting_da_vinci_jr_1p0a_pro",
-		"preferred_variant_name": "Copper 0.4mm Nozzle",
-        "variants_name": "Nozzle Type",
-		"machine_extruder_trains": {
-            "0": "xyzprinting_da_vinci_jr_1p0a_pro_extruder_0"
-        }
+        "preferred_variant_name": "Copper 0.4mm Nozzle",
+        "quality_definition": "xyzprinting_da_vinci_jr_1p0a_pro",
+        "supports_usb_connection": true,
+        "variants_name": "Nozzle Type"
     },
-
-    "overrides": {
-	    "machine_name": { "default_value": "XYZprinting da Vinci Jr. 1.0A Pro" },
-        "machine_shape": { "default_value": "rectangular"},
-        "machine_heated_bed": { "default_value": false },
-        "machine_width": { "default_value": 175.00 },
-        "machine_depth": { "default_value": 175.00 },
-        "machine_height": { "default_value":175.00 },
+    "overrides":
+    {
+        "brim_line_count": { "value": 5 },
+        "cool_fan_enabled": { "default_value": true },
+        "cool_fan_speed_0": { "value": 100 },
         "machine_center_is_zero": { "default_value": false },
-        "machine_head_with_fans_polygon": {
+        "machine_depth": { "default_value": 175.0 },
+        "machine_end_gcode": { "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
             "default_value": [
-                [ -20, -10 ],
-                [ -20, 10 ],
-                [ 10, 10 ],
-                [ 10, -10 ]
+                [-20, -10],
+                [-20, 10],
+                [10, 10],
+                [10, -10]
             ]
         },
-		"material_flow_layer_0": {"value": 120},
-        "cool_fan_enabled": { "default_value": true },
-		"cool_fan_speed_0": { "value": 100 },
-		"brim_line_count": { "value" : 5 },
-		"skirt_line_count": { "default_value" : 5 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode": {
-            "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n"
-         },
-        "machine_end_gcode": {
-            "default_value": "M104 S0 ; turn off temperature\nM105 S0;  \nG28 X0  ; home X axis\nM84     ; disable motors\n"
-        }
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 175.0 },
+        "machine_name": { "default_value": "XYZprinting da Vinci Jr. 1.0A Pro" },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_start_gcode": { "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n" },
+        "machine_width": { "default_value": 175.0 },
+        "material_flow_layer_0": { "value": 120 },
+        "skirt_line_count": { "default_value": 5 }
     }
 }

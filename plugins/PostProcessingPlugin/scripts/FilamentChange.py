@@ -1,5 +1,5 @@
-# Copyright (c) 2021 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2023 Ultimaker B.V.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
@@ -7,7 +7,7 @@
 from typing import List
 from ..Script import Script
 
-from UM.Application import Application #To get the current printer's settings.
+from UM.Application import Application # To get the current printer's settings.
 
 class FilamentChange(Script):
 
@@ -24,20 +24,29 @@ class FilamentChange(Script):
             "version": 2,
             "settings":
             {
+                "enabled":
+                {
+                    "label": "Enable",
+                    "description": "Uncheck to temporarily disable this feature.",
+                    "type": "bool",
+                    "default_value": true
+                },
                 "layer_number":
                 {
                     "label": "Layer",
                     "description": "At what layer should color change occur. This will be before the layer starts printing. Specify multiple color changes with a comma.",
                     "unit": "",
                     "type": "str",
-                    "default_value": "1"
+                    "default_value": "1",
+                    "enabled": "enabled"
                 },
                 "firmware_config":
                 {
                     "label": "Use Firmware Configuration",
                     "description": "Use the settings in your firmware, or customise the parameters of the filament change here.",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": false,
+                    "enabled": "enabled"
                 },
                 "initial_retract":
                 {
@@ -46,7 +55,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 30.0,
-                    "enabled": "not firmware_config"
+                    "enabled": "enabled and not firmware_config"
                 },
                 "later_retract":
                 {
@@ -55,7 +64,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 300.0,
-                    "enabled": "not firmware_config"
+                    "enabled": "enabled and not firmware_config"
                 },
                 "x_position":
                 {
@@ -64,7 +73,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "not firmware_config"
+                    "enabled": "enabled and not firmware_config"
                 },
                 "y_position":
                 {
@@ -73,7 +82,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "not firmware_config"
+                    "enabled": "enabled and not firmware_config"
                 },
                 "z_position":
                 {
@@ -82,7 +91,8 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": 0
+                    "minimum_value": 0,
+                    "enabled": "enabled"
                 },
                 "retract_method":
                 {
@@ -92,7 +102,7 @@ class FilamentChange(Script):
                     "options": {"U": "Marlin (M600 U)", "L": "Reprap (M600 L)"},
                     "default_value": "U",
                     "value": "\\\"L\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"U\\\"",
-                    "enabled": "not firmware_config"
+                    "enabled": "enabled and not firmware_config"
                 },                    
                 "machine_gcode_flavor":
                 {
@@ -113,6 +123,40 @@ class FilamentChange(Script):
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
                     "enabled": "false"
+                },
+                "enable_before_macro":
+                {
+                    "label": "Enable G-code Before",
+                    "description": "Use this to insert a custom G-code macro before the filament change happens",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "enabled"
+                },
+                "before_macro":
+                {
+                    "label": "G-code Before",
+                    "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep.",
+                    "unit": "",
+                    "type": "str",
+                    "default_value": "M300 S1000 P10000",
+                    "enabled": "enabled and enable_before_macro"
+                },
+                "enable_after_macro":
+                {
+                    "label": "Enable G-code After",
+                    "description": "Use this to insert a custom G-code macro after the filament change",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "enabled"
+                },
+                "after_macro":
+                {
+                    "label": "G-code After",
+                    "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle.",
+                    "unit": "",
+                    "type": "str",
+                    "default_value": "M300 S440 P500",
+                    "enabled": "enabled and enable_after_macro"
                 }
             }
         }"""
@@ -134,6 +178,7 @@ class FilamentChange(Script):
         :param data: A list of layers of g-code.
         :return: A similar list, with filament change commands inserted.
         """
+        enabled = self.getSettingValueByKey("enabled")
         layer_nums = self.getSettingValueByKey("layer_number")
         initial_retract = self.getSettingValueByKey("initial_retract")
         later_retract = self.getSettingValueByKey("later_retract")
@@ -141,8 +186,20 @@ class FilamentChange(Script):
         y_pos = self.getSettingValueByKey("y_position")
         z_pos = self.getSettingValueByKey("z_position")
         firmware_config = self.getSettingValueByKey("firmware_config")
+        enable_before_macro = self.getSettingValueByKey("enable_before_macro")
+        before_macro = self.getSettingValueByKey("before_macro")
+        enable_after_macro = self.getSettingValueByKey("enable_after_macro")
+        after_macro = self.getSettingValueByKey("after_macro")
 
-        color_change = "M600"
+        if not enabled:
+            return data
+
+        color_change = ";BEGIN FilamentChange plugin\n"
+
+        if enable_before_macro:
+            color_change = color_change + before_macro + "\n"
+
+        color_change = color_change + "M600"
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
@@ -156,14 +213,19 @@ class FilamentChange(Script):
 
             if x_pos is not None:
                 color_change = color_change + (" X%.2f" % x_pos)
-                
+
             if y_pos is not None:
                 color_change = color_change + (" Y%.2f" % y_pos)
-                
+
             if z_pos is not None and z_pos > 0.:
                 color_change = color_change + (" Z%.2f" % z_pos)
 
-        color_change = color_change + " ; Generated by FilamentChange plugin\n"
+        color_change = color_change + "\n"
+
+        if enable_after_macro:
+            color_change = color_change + after_macro + "\n"
+
+        color_change = color_change + ";END FilamentChange plugin\n"
 
         layer_targets = layer_nums.split(",")
         if len(layer_targets) > 0:
