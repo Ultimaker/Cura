@@ -55,8 +55,8 @@
             "settable_per_extruder": false
         },
         "prime_blob_enable": { "default_value": false },
-        "prime_tower_enable": { "default_value": true },
         "prime_tower_min_volume": { "default_value": 90 },
+        "prime_tower_mode": { "default_value": "normal" },
         "prime_tower_size": { "default_value": 30 },
         "raft_airgap": { "default_value": 0.25 },
         "raft_margin": { "default_value": 5 },

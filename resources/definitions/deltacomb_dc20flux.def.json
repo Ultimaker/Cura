@@ -31,8 +31,8 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "material_standby_temperature": { "value": "material_print_temperature" },
-        "prime_tower_enable": { "value": true },
         "prime_tower_min_volume": { "value": "50" },
+        "prime_tower_mode": { "value": "normal" },
         "switch_extruder_retraction_amount": { "value": "0" }
     }
 }
