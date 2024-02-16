@@ -222,7 +222,7 @@ Item
         UM.Label
         {
             id: toolHint
-            text: UM.Controller.properties.getValue("ToolHint") != undefined ? UM.ActiveTool.properties.getValue("ToolHint") : ""
+            text: UM.Controller.properties.getValue("ToolHint") != undefined ? UM.Controller.properties.getValue("ToolHint") : ""
             color: UM.Theme.getColor("tooltip_text")
             anchors.horizontalCenter: parent.horizontalCenter
         }
