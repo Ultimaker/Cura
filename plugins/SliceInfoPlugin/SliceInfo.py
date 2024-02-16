@@ -5,7 +5,7 @@ import json
 import os
 import platform
 import time
-from typing import cast, Optional, Set, TYPE_CHECKING
+from typing import Optional, Set, TYPE_CHECKING
 
 from PyQt6.QtCore import pyqtSlot, QObject
 from PyQt6.QtNetwork import QNetworkRequest

@@ -4928,6 +4928,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Dégrouper les modèles"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Imprimer avant"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Imprimer après"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "Désinstaller"

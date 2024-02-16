@@ -1684,7 +1684,7 @@
                     "value": "skin_line_width * 2",
                     "default_value": 1,
                     "minimum_value": "0",
-                    "maximum_value_warning": "skin_line_width * 3",
+                    "maximum_value_warning": "skin_line_width * 10",
                     "type": "float",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -5151,7 +5151,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
-                    "maximum_value_warning": "machine_nozzle_size",
+                    "maximum_value_warning": "5*layer_height",
                     "default_value": 0.1,
                     "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable else support_infill_extruder_nr",
                     "enabled": "support_enable or support_meshes_present",
@@ -6469,6 +6469,18 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
                 },
+                "raft_surface_monotonic":
+                {
+                    "label": "Monotonic Raft Top Surface Order",
+                    "description": "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "skin_monotonic",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_surface_extruder_nr"
+                },
                 "raft_wall_count":
                 {
                     "label": "Raft Wall Count",
@@ -7268,6 +7280,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "user_defined_print_order_enabled":
+                {
+                    "label": "Set Print Sequence Manually",
+                    "description": "Allows to order the object list to set the print sequence manually. First object from the list will be printed first.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "enabled": "print_sequence == 'one_at_a_time'"
                 },
                 "infill_mesh":
                 {

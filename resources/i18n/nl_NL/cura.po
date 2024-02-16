@@ -4925,6 +4925,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Groeperen van Modellen Opheffen"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Afdrukken voor"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Afdrukken na"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "De-installeren"
