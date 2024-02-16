@@ -203,6 +203,6 @@
         "machine_steps_per_mm_x": { "default_value": 88.888889 },
         "machine_steps_per_mm_y": { "default_value": 88.888889 },
         "machine_steps_per_mm_z": { "default_value": 400 },
-        "machine_width": { "default_value": 265 },
+        "machine_width": { "default_value": 265 }
     }
 }
