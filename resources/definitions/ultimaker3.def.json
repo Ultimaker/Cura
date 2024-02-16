@@ -149,7 +149,7 @@
             "enabled": true,
             "value": "resolveOrValue('print_sequence') != 'one_at_a_time'"
         },
-        "prime_tower_enable": { "default_value": true },
+        "prime_tower_mode": { "default_value": "normal" },
         "prime_tower_position_x": { "value": "185" },
         "prime_tower_wipe_enabled": { "default_value": false },
         "retraction_amount": { "value": "6.5" },

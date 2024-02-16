@@ -103,7 +103,7 @@
             "default_value": false,
             "enabled": true
         },
-        "prime_tower_enable": { "value": "True" },
+        "prime_tower_mode": { "value": "normal" },
         "retraction_amount": { "value": "6.5" },
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
