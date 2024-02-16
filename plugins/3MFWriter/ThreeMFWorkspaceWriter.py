@@ -39,7 +39,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         is_ucp = False
         if hasattr(self._stream, 'name'):
             # This only works with local file, but we don't want remote UCP files yet
-            is_ucp = self._stream.name.endswith('.ucp')
+            is_ucp = self._stream.name.endswith('.3mf')
 
         if is_ucp:
             self._config_dialog = UCPDialog()

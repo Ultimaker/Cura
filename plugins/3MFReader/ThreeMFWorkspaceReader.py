@@ -113,7 +113,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".3mf", ".ucp"]
+        self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._container_registry = ContainerRegistry.getInstance()
@@ -236,7 +236,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Check whether the file is a UCP, which changes some import options
         #FIXME Instead of this, we should just check for the presence of the user-settings file, whatever the extension
-        is_ucp = file_name.endswith('.ucp')
+        is_ucp = file_name.endswith('.3mf')
 
         #
         # Read definition containers

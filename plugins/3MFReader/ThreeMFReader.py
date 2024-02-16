@@ -50,11 +50,11 @@ class ThreeMFReader(MeshReader):
             MimeType(
                 name="application/x-ucp",
                 comment="UCP",
-                suffixes=["ucp"]
+                suffixes=["3mf"]
             )
         )
 
-        self._supported_extensions = [".3mf", ".ucp"]
+        self._supported_extensions = [".3mf"]
         self._root = None
         self._base_name = ""
         self._unit = None

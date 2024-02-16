@@ -34,7 +34,7 @@ def getMetaData():
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
                 },
                 {
-                    "extension": "ucp",
+                    "extension": "3mf",
                     "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
                     "mime_type": "application/x-ucp",
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
@@ -50,7 +50,7 @@ def getMetaData():
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
                 },
                 {
-                    "extension": "ucp",
+                    "extension": "3mf",
                     "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
                     "mime_type": "application/x-ucp",
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
