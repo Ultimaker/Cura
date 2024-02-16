@@ -1,7 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
+from PyQt6.QtCore import pyqtProperty, pyqtSignal, Qt
 from typing import Set
 
 import cura.CuraApplication
@@ -9,6 +9,7 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.SettingFunction import SettingFunction  # To format setting functions differently.
 
 import os
 
@@ -16,13 +17,13 @@ import os
 class QualitySettingsModel(ListModel):
     """This model is used to show details settings of the selected quality in the quality management page."""
 
-    KeyRole = Qt.UserRole + 1
-    LabelRole = Qt.UserRole + 2
-    UnitRole = Qt.UserRole + 3
-    ProfileValueRole = Qt.UserRole + 4
-    ProfileValueSourceRole = Qt.UserRole + 5
-    UserValueRole = Qt.UserRole + 6
-    CategoryRole = Qt.UserRole + 7
+    KeyRole = Qt.ItemDataRole.UserRole + 1
+    LabelRole = Qt.ItemDataRole.UserRole + 2
+    UnitRole = Qt.ItemDataRole.UserRole + 3
+    ProfileValueRole = Qt.ItemDataRole.UserRole + 4
+    ProfileValueSourceRole = Qt.ItemDataRole.UserRole + 5
+    UserValueRole = Qt.ItemDataRole.UserRole + 6
+    CategoryRole = Qt.ItemDataRole.UserRole + 7
 
     GLOBAL_STACK_POSITION = -1
 
@@ -173,12 +174,22 @@ class QualitySettingsModel(ListModel):
             label = definition.label
             if self._i18n_catalog:
                 label = self._i18n_catalog.i18nc(definition.key + " label", label)
+            if profile_value_source == "quality_changes":
+                label = f"<i>{label}</i>"  # Make setting name italic if it's derived from the quality-changes profile.
+
+            if isinstance(profile_value, SettingFunction):
+                if self._i18n_catalog:
+                    profile_value_display = self._i18n_catalog.i18nc("@info:status", "Calculated")
+                else:
+                    profile_value_display = "Calculated"
+            else:
+                profile_value_display = "" if profile_value is None else str(profile_value)
 
             items.append({
                 "key": definition.key,
                 "label": label,
                 "unit": definition.unit,
-                "profile_value": "" if profile_value is None else str(profile_value),  # it is for display only
+                "profile_value": profile_value_display,
                 "profile_value_source": profile_value_source,
                 "user_value": "" if user_value is None else str(user_value),
                 "category": current_category

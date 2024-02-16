@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 from typing import Any, cast, Dict, List, Optional
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Extension import Extension
 from UM.Logger import Logger

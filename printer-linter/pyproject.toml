@@ -1,0 +1,17 @@
+[project]
+name = "printerlinter"
+description = "Cura UltiMaker printer linting tool"
+version = "0.1.1"
+authors = [
+    { name = "UltiMaker", email = "cura@ultimaker.com" }
+]
+dependencies = [
+    "pyyaml"
+]
+
+[project.scripts]
+printer-linter = "terminal:main"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

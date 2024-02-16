@@ -4,7 +4,7 @@
 import os
 import threading
 
-from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt6.QtCore import Qt, pyqtSignal, QObject
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
@@ -85,7 +85,7 @@ class ImageReaderUI(QObject):
             Logger.log("d", "Creating ImageReader config UI")
             path = os.path.join(PluginRegistry.getInstance().getPluginPath("ImageReader"), "ConfigUI.qml")
             self._ui_view = Application.getInstance().createQmlComponent(path, {"manager": self})
-            self._ui_view.setFlags(self._ui_view.flags() & ~Qt.WindowCloseButtonHint & ~Qt.WindowMinimizeButtonHint & ~Qt.WindowMaximizeButtonHint)
+            self._ui_view.setFlags(self._ui_view.flags() & ~Qt.WindowType.WindowCloseButtonHint & ~Qt.WindowType.WindowMinimizeButtonHint & ~Qt.WindowType.WindowMaximizeButtonHint)
             self._disable_size_callbacks = False
 
     @pyqtSlot()

@@ -1,65 +1,31 @@
 {
-    "name": "Anycubic Kossel",
     "version": 2,
+    "name": "Anycubic Kossel",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": false,
         "author": "Allester Fox",
         "manufacturer": "Anycubic",
         "file_formats": "text/x-gcode",
-        "preferred_variant_name": "0.4mm Nozzle",
-        "preferred_quality_type": "standard",
-        "preferred_material": "generic_pla",
         "platform": "kossel_platform.3mf",
-        "machine_extruder_trains": {
-            "0": "anycubic_kossel_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "anycubic_kossel_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle"
     },
-    "overrides": {
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_width": {
-            "default_value": 180
-        },
-        "machine_height": {
-            "default_value": 300
-        },
-        "machine_depth": {
-            "default_value": 180
-        },
-        "machine_center_is_zero": {
-            "default_value": true
-        },
-        "machine_nozzle_heat_up_speed": {
-            "default_value": 2
-        },
-        "machine_nozzle_cool_down_speed": {
-            "default_value": 2
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G21        ;metric values\nG90        ;absolute positioning\nM107       ;start with the fan off\nG28   ;move to endstops\nG92 E0                  ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{speed_travel}\n;Put printing message on LCD screen\nM117 Printing..."
-        },
-        "machine_end_gcode": {
-            "default_value": "M400      ;Free buffer\nG91      ;relative positioning\nG1 E-1 F300      ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 F{speed_travel} Z+1 E-5        ;move Z up a bit and retract filament even more\nG90      ;absolute positioning\nM104 S0      ;extruder heater off\nM140 S0      ;heated bed heater off\nM107      ;fan off\nM84      ;steppers off\nG28      ;move to endstop\nM84      ;steppers off"
-        },
-        "machine_shape": {
-            "default_value": "elliptic"
-        },
-        "machine_disallowed_areas": {
-            "default_value": [
-                [[-50, -85], [-85, -85], [-90, -90]],
-                [[-85, -85], [-85, -50], [-90, -90]],
-                [[50, -85],  [85, -85],  [90, -90]],
-                [[85, -85],  [85, -50],  [90, -90]],
-                [[-50, 85],  [-85, 85],  [-90, 90]],
-                [[-85, 85],  [-85, 50],  [-90, 90]],
-                [[50, 85],   [85, 85],   [90, 90]],
-                [[85, 85],   [85, 50],   [90, 90]]
-            ]
-        }
+    "overrides":
+    {
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 180 },
+        "machine_end_gcode": { "default_value": "M400      ;Free buffer\nG91      ;relative positioning\nG1 E-1 F300      ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 F{speed_travel} Z+1 E-5        ;move Z up a bit and retract filament even more\nG90      ;absolute positioning\nM104 S0      ;extruder heater off\nM140 S0      ;heated bed heater off\nM107      ;fan off\nM84      ;steppers off\nG28      ;move to endstop\nM84      ;steppers off" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_nozzle_cool_down_speed": { "default_value": 2 },
+        "machine_nozzle_heat_up_speed": { "default_value": 2 },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_start_gcode": { "default_value": "G21        ;metric values\nG90        ;absolute positioning\nM107       ;start with the fan off\nG28   ;move to endstops\nG92 E0                  ;zero the extruded length\nG1 F200 E3              ;extrude 3mm of feed stock\nG92 E0                  ;zero the extruded length again\nG1 F{speed_travel}\n;Put printing message on LCD screen\nM117 Printing..." },
+        "machine_width": { "default_value": 180 }
     }
 }

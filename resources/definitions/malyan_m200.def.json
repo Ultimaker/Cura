@@ -2,85 +2,79 @@
     "version": 2,
     "name": "Malyan M200",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
+        "visible": true,
         "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Malyan",
         "file_formats": "text/x-gcode",
         "platform": "malyan_m200_platform.3mf",
-        "platform_offset": [0, -0.25, 0],
+        "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
+        "machine_extruder_trains": { "0": "malyan_m200_extruder_0" },
+        "platform_offset": [
+            0,
+            -0.25,
+            0
+        ],
         "preferred_quality_type": "normal",
-        "supports_usb_connection": true,
-        "visible": true,
-        "first_start_actions": ["MachineSettingsAction"],
-        "supported_actions": ["MachineSettingsAction"],
-        "machine_extruder_trains":
-        {
-            "0": "malyan_m200_extruder_0"
-        }
-   },
-
-    "overrides": {
-        "machine_name": { "default_value": "Malyan M200" },
-        "speed_print": { "default_value": 50 },
-        "speed_wall_0": { "value": "round(speed_print * 0.75, 2)" },
-        "speed_wall_x": { "value": "speed_print" },
-        "speed_support": { "value": "speed_wall_0" },
-        "speed_layer_0": { "value": "round(speed_print / 2.0, 2)" },
-        "speed_infill": { "value": "speed_print" },
-        "speed_topbottom": {"value": "speed_print / 2"},
-
+        "supported_actions": [ "MachineSettingsAction" ],
+        "supports_usb_connection": true
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "raft" },
+        "brim_width": { "default_value": 5 },
+        "coasting_enable": { "default_value": true },
         "layer_height":
         {
-            "minimum_value_warning": "0.04375",
+            "default_value": 0.13125,
             "maximum_value_warning": "machine_nozzle_size * 0.48125 + 0.0875",
-            "default_value": 0.13125
+            "minimum_value_warning": "0.04375"
         },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
-
-        "material_print_temperature": { "minimum_value": "0" },
-        "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 5, 245)" },
-        "material_bed_temperature": { "minimum_value": "0" },
-        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 5, 70)" },
-        "material_standby_temperature": { "minimum_value": "0" },
-        "machine_show_variants": { "default_value": true },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
-        "machine_start_gcode" : {
-            "default_value": "G21;(metric values)\nG90;(absolute positioning)\nM82;(set extruder to absolute mode)\nM107;(start with the fan off)\nG28;(Home the printer)\nG92 E0;(Reset the extruder to 0)\nG0 Z5 E5 F500;(Move up and prime the nozzle)\nG0 X-1 Z0;(Move outside the printable area)\nG1 Y60 E8 F500;(Draw a priming/wiping line to the rear)\nG1 X-1;(Move a little closer to the print area)\nG1 Y10 E16 F500;(draw more priming/wiping)\nG1 E15 F250;(Small retract)\nG92 E0;(Zero the extruder)"
-        },
-        "machine_end_gcode" : {
-            "default_value": "G0 X0 Y120;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)"
-        },
-        "machine_width": { "default_value": 120 },
-        "machine_depth": { "default_value": 120 },
-        "machine_height": { "default_value": 120 },
-        "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
-        "machine_max_feedrate_x": { "default_value": 150 },
-        "machine_max_feedrate_y": { "default_value": 150 },
-        "machine_max_feedrate_z": { "default_value": 1.5 },
-        "machine_max_feedrate_e": { "default_value": 100 },
+        "machine_depth": { "default_value": 120 },
+        "machine_end_gcode": { "default_value": "G0 X0 Y120;(Stick out the part)\nM190 S0;(Turn off heat bed, don't wait.)\nG92 E10;(Set extruder to 10)\nG1 E7 F200;(retract 3mm)\nM104 S0;(Turn off nozzle, don't wait)\nG4 S300;(Delay 5 minutes)\nM107;(Turn off part fan)\nM84;(Turn off stepper motors.)" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 120 },
+        "machine_max_acceleration_e": { "default_value": 10000 },
         "machine_max_acceleration_x": { "default_value": 800 },
         "machine_max_acceleration_y": { "default_value": 800 },
         "machine_max_acceleration_z": { "default_value": 20 },
-        "machine_max_acceleration_e": { "default_value": 10000 },
+        "machine_max_feedrate_e": { "default_value": 100 },
+        "machine_max_feedrate_x": { "default_value": 150 },
+        "machine_max_feedrate_y": { "default_value": 150 },
+        "machine_max_feedrate_z": { "default_value": 1.5 },
+        "machine_max_jerk_e": { "default_value": 5 },
         "machine_max_jerk_xy": { "default_value": 20 },
         "machine_max_jerk_z": { "default_value": 0.4 },
-        "machine_max_jerk_e": { "default_value": 5},
-        "adhesion_type": { "default_value": "raft" },
-        "raft_margin": { "default_value": 5 },
+        "machine_name": { "default_value": "Malyan M200" },
+        "machine_show_variants": { "default_value": true },
+        "machine_start_gcode": { "default_value": "G21;(metric values)\nG90;(absolute positioning)\nM82;(set extruder to absolute mode)\nM107;(start with the fan off)\nG28;(Home the printer)\nG92 E0;(Reset the extruder to 0)\nG0 Z5 E5 F500;(Move up and prime the nozzle)\nG0 X-1 Z0;(Move outside the printable area)\nG1 Y60 E8 F500;(Draw a priming/wiping line to the rear)\nG1 X-1;(Move a little closer to the print area)\nG1 Y10 E16 F500;(draw more priming/wiping)\nG1 E15 F250;(Small retract)\nG92 E0;(Zero the extruder)" },
+        "machine_width": { "default_value": 120 },
+        "material_bed_temperature": { "minimum_value": "0" },
+        "material_bed_temperature_layer_0": { "value": "min(material_bed_temperature + 5, 70)" },
+        "material_print_temperature": { "minimum_value": "0" },
+        "material_print_temperature_layer_0": { "value": "min(material_print_temperature + 5, 245)" },
+        "material_standby_temperature": { "minimum_value": "0" },
         "raft_airgap": { "default_value": 0.2625 },
         "raft_base_thickness": { "value": "0.30625" },
         "raft_interface_thickness": { "value": "0.21875" },
+        "raft_margin": { "default_value": 5 },
         "raft_surface_layers": { "default_value": 1 },
-        "skirt_line_count": { "default_value": 2},
-        "brim_width" : { "default_value": 5},
+        "retraction_amount": { "default_value": 4.5 },
         "retraction_combing": { "value": "'noskin'" },
-        "retraction_amount" : { "default_value": 4.5},
-        "retraction_speed" : { "default_value": 40},
-        "coasting_enable": { "default_value": true },
-        "prime_tower_enable": { "default_value": false},
-        "speed_z_hop": {"default_value": 1.5}
+        "retraction_speed": { "default_value": 40 },
+        "skirt_line_count": { "default_value": 2 },
+        "speed_layer_0": { "value": "round(speed_print / 2.0, 2)" },
+        "speed_print": { "default_value": 50 },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_topbottom": { "value": "speed_print / 2" },
+        "speed_wall_0": { "value": "round(speed_print * 0.75, 2)" },
+        "speed_wall_x": { "value": "speed_print" },
+        "speed_z_hop": { "default_value": 1.5 }
     }
 }

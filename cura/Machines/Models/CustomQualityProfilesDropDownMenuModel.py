@@ -10,7 +10,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
+    from PyQt6.QtCore import QObject
     from UM.Settings.Interfaces import ContainerInterface
 
 

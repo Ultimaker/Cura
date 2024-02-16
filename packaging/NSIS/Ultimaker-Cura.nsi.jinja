@@ -1,0 +1,216 @@
+# Copyright (c) 2022 UltiMaker B.V.
+# Cura's build system is released under the terms of the AGPLv3 or higher.
+
+!define APP_NAME "{{ app_name }}"
+!define COMP_NAME "{{ company }}"
+!define WEB_SITE "{{ web_site }}"
+!define VERSION "{{ version }}"
+!define VIVERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.0"
+!define COPYRIGHT "Copyright (c) {{ year }} {{ company }}"
+!define DESCRIPTION "Application"
+!define LICENSE_TXT "{{ cura_license_file }}"
+!define INSTALLER_NAME "{{ destination }}"
+!define MAIN_APP_EXE "{{ main_app }}"
+!define INSTALL_TYPE "SetShellVarContext all"
+!define REG_ROOT "HKLM"
+!define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}-${VERSION}"
+!define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}-${VERSION}"
+
+!define REG_START_MENU "Start Menu Folder"
+
+;Require administrator access
+RequestExecutionLevel admin
+
+var SM_Folder
+
+######################################################################
+
+VIProductVersion  "${VIVERSION}"
+VIAddVersionKey "ProductName"  "{{ app_name }}"
+VIAddVersionKey "CompanyName"  "${COMP_NAME}"
+VIAddVersionKey "LegalCopyright"  "${COPYRIGHT}"
+VIAddVersionKey "FileDescription"  "${DESCRIPTION}"
+VIAddVersionKey "FileVersion"  "${VIVERSION}"
+
+######################################################################
+
+SetCompressor {{ compression_method }}
+Name "${APP_NAME}"
+Caption "${APP_NAME}"
+OutFile "${INSTALLER_NAME}"
+BrandingText "${APP_NAME}"
+InstallDir "$PROGRAMFILES64\${APP_NAME}"
+
+######################################################################
+
+!include "MUI2.nsh"
+!include fileassoc.nsh
+
+!define MUI_ABORTWARNING
+!define MUI_UNABORTWARNING
+
+!define MUI_ICON "{{ cura_icon }}"
+
+!define MUI_WELCOMEFINISHPAGE_BITMAP "{{ cura_banner_img }}"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "{{ cura_banner_img }}"
+
+!insertmacro MUI_PAGE_WELCOME
+
+!ifdef LICENSE_TXT
+!insertmacro MUI_PAGE_LICENSE "${LICENSE_TXT}"
+!endif
+
+!insertmacro MUI_PAGE_DIRECTORY
+
+!ifdef REG_START_MENU
+!define MUI_STARTMENUPAGE_NODISABLE
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "UltiMaker Cura"
+!define MUI_STARTMENUPAGE_REGISTRY_ROOT "${REG_ROOT}"
+!define MUI_STARTMENUPAGE_REGISTRY_KEY "${UNINSTALL_PATH}"
+!define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${REG_START_MENU}"
+!insertmacro MUI_PAGE_STARTMENU Application $SM_Folder
+!endif
+
+!insertmacro MUI_PAGE_INSTFILES
+
+# Set up explorer to run Cura instead of directly, so it's not executed elevated (with all negative consequences that brings for an unelevated user).
+!define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
+!define MUI_FINISHPAGE_RUN_PARAMETERS "$INSTDIR\${MAIN_APP_EXE}"
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_UNPAGE_CONFIRM
+
+!insertmacro MUI_UNPAGE_INSTFILES
+
+!insertmacro MUI_UNPAGE_FINISH
+
+!insertmacro MUI_LANGUAGE "English"
+
+######################################################################
+
+Section -MainProgram
+${INSTALL_TYPE}
+SetOverwrite ifnewer
+{% for out_path, files in mapped_out_paths.items() %}SetOutPath "{{ out_path }}"{% for file in files %}
+File "{{ file[0] }}"{% endfor %}
+{% endfor %}SectionEnd
+
+######################################################################
+
+Section -Extension_Reg
+!insertmacro APP_ASSOCIATE "stl" "Cura.model" "Standard Tessellation Language (STL) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
+!insertmacro APP_ASSOCIATE "3mf" "Cura.project" "3D Manufacturing Format (3MF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
+SectionEnd
+
+Section -Icons_Reg
+SetOutPath "$INSTDIR"
+WriteUninstaller "$INSTDIR\uninstall.exe"
+
+!ifdef REG_START_MENU
+!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+CreateDirectory "$SMPROGRAMS\$SM_Folder"
+CreateShortCut "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
+CreateShortCut "$SMPROGRAMS\$SM_Folder\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
+
+!ifdef WEB_SITE
+WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
+CreateShortCut "$SMPROGRAMS\$SM_Folder\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
+!endif
+!insertmacro MUI_STARTMENU_WRITE_END
+!endif
+
+!ifndef REG_START_MENU
+CreateDirectory "$SMPROGRAMS\{{ app_name }}"
+CreateShortCut "$SMPROGRAMS\{{ app_name }}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
+CreateShortCut "$SMPROGRAMS\{{ app_name }}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
+
+!ifdef WEB_SITE
+WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
+CreateShortCut "$SMPROGRAMS\{{ app_name }}\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
+!endif
+!endif
+
+WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayName" "${APP_NAME}"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "UninstallString" "$INSTDIR\uninstall.exe"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_EXE}"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
+
+!ifdef WEB_SITE
+WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "URLInfoAbout" "${WEB_SITE}"
+!endif
+SectionEnd
+
+######################################################################
+
+Section UrlProtocol
+
+WriteRegStr HKCR "cura" "" "URL:cura"
+WriteRegStr HKCR "cura" "URL Protocol" ""
+WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "cura\shell" "" "open"
+WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+WriteRegStr HKCR "slicer" "" "URL:slicer"
+WriteRegStr HKCR "slicer" "URL Protocol" ""
+WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "slicer\shell" "" "open"
+WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+SectionEnd
+######################################################################
+
+Section Uninstall
+${INSTALL_TYPE}{% for files in mapped_out_paths.values() %}{% for file in files %}
+Delete "{{ file[1] }}"{% endfor %}{% endfor %}{% for rem_dir in rmdir_paths %}
+RmDir "{{ rem_dir }}"{% endfor %}
+
+# FIXME: dirty solution, but for some reason these directories aren't removed
+RmDir "$INSTDIR\share\cura\resources\scripts"
+RmDir "$INSTDIR\share\cura\resources"
+RmDir "$INSTDIR\share\cura"
+RmDir "$INSTDIR\share\uranium\resources\scripts"
+RmDir "$INSTDIR\share\uranium\resources"
+RmDir "$INSTDIR\share\uranium"
+RmDir "$INSTDIR\share"
+
+Delete "$INSTDIR\uninstall.exe"
+!ifdef WEB_SITE
+Delete "$INSTDIR\${APP_NAME} website.url"
+!endif
+
+RmDir /r /REBOOTOK "$INSTDIR"
+
+!ifdef REG_START_MENU
+!insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
+Delete "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\$SM_Folder\Uninstall ${APP_NAME}.lnk"
+!ifdef WEB_SITE
+Delete "$SMPROGRAMS\$SM_Folder\UltiMaker Cura website.lnk"
+!endif
+RmDir "$SMPROGRAMS\$SM_Folder"
+!endif
+
+!ifndef REG_START_MENU
+Delete "$SMPROGRAMS\{{ app_name }}\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\{{ app_name }}\Uninstall ${APP_NAME}.lnk"
+!ifdef WEB_SITE
+Delete "$SMPROGRAMS\{{ app_name }}\UltiMaker Cura website.lnk"
+!endif
+RmDir "$SMPROGRAMS\{{ app_name }}"
+!endif
+
+!insertmacro APP_UNASSOCIATE "stl" "Cura.model"
+!insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
+
+; Unassociate file associations for 'cura' protocol
+DeleteRegKey HKCR "cura"
+
+; Unassociate file associations for 'slicer' protocol
+DeleteRegKey HKCR "slicer"
+
+DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
+DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
+SectionEnd
+

@@ -1,0 +1,36 @@
+{
+    "version": 2,
+    "name": "Creality Ender-3 S1 Plus",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "value": true },
+        "acceleration_travel": { "value": 2000 },
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 300 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "Creality Ender-3 S1 Plus" },
+        "machine_start_gcode": { "default_value": "; Ender 3 S1 Plus Start G-code\n; M413 S0 ; Disable power loss recovery\nG92 E0 ; Reset Extruder\n\n; Prep surfaces before auto home for better accuracy\nM140 S{material_bed_temperature_layer_0}\nM104 S{material_print_temperature_layer_0}\n\nG28 ; Home all axes\nG1 Z10.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0 Y0\n\nM190 S{material_bed_temperature_layer_0}\nM109 S{material_print_temperature_layer_0}\n\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish\n" },
+        "machine_width": { "default_value": 300 },
+        "retraction_amount": { "value": 0.8 },
+        "retraction_extrusion_window": { "value": 1.5 },
+        "retraction_speed": { "default_value": 40 },
+        "speed_layer_0": { "value": 25 },
+        "speed_print": { "value": 60 },
+        "speed_travel": { "value": "120.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5" }
+    }
+}

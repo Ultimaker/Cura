@@ -1,0 +1,100 @@
+# -*- mode: python ; coding: utf-8 -*-
+import os
+from pathlib import Path
+from PyInstaller.utils.hooks import collect_all
+
+
+datas = {{ datas }}
+binaries = {{ binaries }}
+
+hiddenimports = {{ hiddenimports }}
+
+{% for value in collect_all %}tmp_ret = collect_all('{{ value }}')
+datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+{% endfor %}
+
+# Add dynamic libs in the venv bin/Script Path. This is needed because we might copy some additional libs
+# e.q.: OpenSSL 1.1.1l in that directory with a separate:
+# `conan install openssl@1.1.1l -g deploy && cp openssl/bin/*.so cura_inst/bin`
+binaries.extend([(str(bin), ".") for bin in Path(r"{{ venv_script_path }}").glob("*.so*")])
+binaries.extend([(str(bin), ".") for bin in Path(r"{{ venv_script_path }}").glob("*.dll")])
+binaries.extend([(str(bin), ".") for bin in Path(r"{{ venv_script_path }}").glob("*.dylib")])
+
+block_cipher = None
+
+a = Analysis(
+    [{{ entrypoint }}],
+    pathex=[],
+    binaries=binaries,
+    datas=datas,
+    hiddenimports=hiddenimports,
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=[],
+    win_no_prefer_redirects=False,
+    win_private_assemblies=False,
+    cipher=block_cipher,
+    noarchive=False
+)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+
+exe = EXE(
+    pyz,
+    a.scripts,
+    [],
+    exclude_binaries=True,
+    name=r'{{ name }}',
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip={{ strip }},
+    upx={{ upx }},
+    console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch={{ target_arch }},
+    codesign_identity=os.getenv('CODESIGN_IDENTITY', None),
+    entitlements_file={{ entitlements_file }},
+    icon={{ icon }},
+    contents_directory='.'
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    name=r'{{ name }}'
+)
+
+{% if macos == true %}
+app = BUNDLE(
+    coll,
+    name='{{ display_name }}.app',
+    icon={{ icon }},
+    bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_") + "_" {{ short_version }},
+    version={{ version }},
+    info_plist={
+        'CFBundleDisplayName': '{{ display_name }}',
+        'NSPrincipalClass': 'NSApplication',
+        'CFBundleDevelopmentRegion': 'English',
+        'CFBundleExecutable': '{{ name }}',
+        'CFBundleInfoDictionaryVersion': '6.0',
+        'CFBundlePackageType': 'APPL',
+        'CFBundleVersionString': {{ version }},
+        'CFBundleShortVersionString': {{ short_version }},
+        'CFBundleURLTypes': [{
+                'CFBundleURLName': '{{ display_name }}',
+                'CFBundleURLSchemes': ['cura', 'slicer'],
+        }],
+        'CFBundleDocumentTypes': [{
+            'CFBundleTypeRole': 'Viewer',
+            'CFBundleTypeExtensions': ['stl', 'obj', '3mf', 'gcode', 'ufp'],
+            'CFBundleTypeName': 'Model Files',
+        }]
+    },
+)
+{% endif %}

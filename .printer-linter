@@ -1,0 +1,18 @@
+checks:
+    diagnostic-mesh-file-extension: true
+    diagnostic-mesh-file-size: true
+    diagnostic-definition-redundant-override: true
+    diagnostic-resources-macos-app-directory-name: true
+fixes:
+    diagnostic-definition-redundant-override: true
+format:
+    format-definition-bracket-newline: true
+    format-definition-paired-coordinate-array: true
+    format-definition-sort-keys: true
+    format-definition-indent: 4
+    format-definition-single-value-single-line: true # Format dicts and lists with a single item on one line "dict": { "value": 10 }
+    format-profile-space-around-delimiters: true
+    format-profile-sort-keys: true
+diagnostic-mesh-file-size: 1200000
+diagnostic-definition-redundant-override-ignore:
+  - machine_.*

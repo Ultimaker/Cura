@@ -1,10 +1,10 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.5 as UM
 import Cura 1.1 as Cura
 
 
@@ -22,7 +22,7 @@ Item
     id: base
 
     implicitWidth: 200 * screenScaleFactor
-    height: header.contentShown ? (header.height + contentRectangle.height) : header.height
+    implicitHeight: contentShown ? (header.height + contentRectangle.implicitHeight) : header.height
 
     property var contentComponent: null
     property alias contentItem: contentLoader.item
@@ -56,12 +56,14 @@ Item
     Cura.RoundedRectangle
     {
         id: contentRectangle
+        anchors.top: header.bottom
         // Move up a bit (exactly the width of the border) to avoid double line
-        y: header.height - UM.Theme.getSize("default_lining").width
+        anchors.topMargin: -UM.Theme.getSize("default_lining").width
         anchors.left: header.left
         anchors.right: header.right
+        anchors.bottom: parent.bottom
         // Add 2x lining, because it needs a bit of space on the top and the bottom.
-        height: contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height
+        anchors.bottomMargin: UM.Theme.getSize("thick_lining").height
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -73,9 +75,7 @@ Item
         Loader
         {
             id: contentLoader
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.fill: parent
             // Keep a small margin with the Rectangle container so its content will not overlap with the Rectangle
             // border.
             anchors.margins: UM.Theme.getSize("default_lining").width
@@ -88,14 +88,12 @@ Item
         {
             id: emptyComponent
 
-            Label
+            UM.Label
             {
                 text: catalog.i18nc("@label", "Empty")
                 height: UM.Theme.getSize("action_button").height
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
                 font: UM.Theme.getFont("medium")
-                renderType: Text.NativeRendering
             }
         }
     }

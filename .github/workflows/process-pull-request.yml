@@ -1,0 +1,10 @@
+name: process-pull-request
+
+on:
+  pull_request_target:
+    types: [ opened, reopened, edited, review_requested, ready_for_review, assigned ]
+
+jobs:
+  add_label:
+    uses: ultimaker/cura-workflows/.github/workflows/process-pull-request.yml@main
+    secrets: inherit

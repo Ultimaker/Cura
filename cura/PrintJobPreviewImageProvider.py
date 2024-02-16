@@ -1,6 +1,6 @@
-from PyQt5.QtGui import QImage
-from PyQt5.QtQuick import QQuickImageProvider
-from PyQt5.QtCore import QSize
+from PyQt6.QtGui import QImage
+from PyQt6.QtQuick import QQuickImageProvider
+from PyQt6.QtCore import QSize
 
 from UM.Application import Application
 from typing import Tuple
@@ -8,7 +8,7 @@ from typing import Tuple
 
 class PrintJobPreviewImageProvider(QQuickImageProvider):
     def __init__(self):
-        super().__init__(QQuickImageProvider.Image)
+        super().__init__(QQuickImageProvider.ImageType.Image)
 
     def requestImage(self, id: str, size: QSize) -> Tuple[QImage, QSize]:
         """Request a new image.

@@ -1,0 +1,125 @@
+{
+    "version": 2,
+    "name": "AnkerMake M5",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "just-trey",
+        "manufacturer": "AnkerMake",
+        "file_formats": "text/x-gcode",
+        "platform": "ankermake_m5_platform.obj",
+        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
+        "platform_texture": "ankermake_m5.png",
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "normal"
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "value": "True" },
+        "acceleration_infill": { "maximum_value_warning": "2500" },
+        "acceleration_layer_0": { "maximum_value_warning": "2500" },
+        "acceleration_prime_tower": { "maximum_value_warning": "2500" },
+        "acceleration_print":
+        {
+            "maximum_value_warning": "2500",
+            "value": "2500"
+        },
+        "acceleration_print_layer_0": { "maximum_value_warning": "2500" },
+        "acceleration_roofing": { "maximum_value_warning": "2500" },
+        "acceleration_skirt_brim": { "maximum_value_warning": "2500" },
+        "acceleration_support": { "maximum_value_warning": "2500" },
+        "acceleration_support_bottom": { "maximum_value_warning": "2500" },
+        "acceleration_support_infill": { "maximum_value_warning": "2500" },
+        "acceleration_support_interface": { "maximum_value_warning": "2500" },
+        "acceleration_support_roof": { "maximum_value_warning": "2500" },
+        "acceleration_topbottom": { "maximum_value_warning": "2500" },
+        "acceleration_travel":
+        {
+            "maximum_value_warning": "2500",
+            "value": "acceleration_print"
+        },
+        "acceleration_travel_layer_0":
+        {
+            "maximum_value_warning": "2500",
+            "value": "acceleration_travel"
+        },
+        "acceleration_wall": { "maximum_value_warning": "2500" },
+        "acceleration_wall_0": { "maximum_value_warning": "2500" },
+        "acceleration_wall_x": { "maximum_value_warning": "2500" },
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_min_layer_time": { "value": 6 },
+        "cool_min_speed": { "value": 30 },
+        "gantry_height": { "value": 25 },
+        "hole_xy_offset": { "value": 0.2 },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density >= 25 else 'grid'" },
+        "infill_sparse_density": { "value": 25 },
+        "machine_depth": { "default_value": 235 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "AnkerMake M5" },
+        "machine_start_gcode": { "default_value": "M104 S{material_print_temperature_layer_0} ; set final nozzle temp\nM190 S{material_bed_temperature_layer_0} ; set and wait for nozzle temp to stabilize\nM109 S{material_print_temperature_layer_0} ; wait for nozzle temp to stabilize\nG28 ;Home\nG1 E10 F3600; push out retracted filament(fix for over retraction after prime)" },
+        "machine_width": { "default_value": 235 },
+        "material_bed_temperature": { "maximum_value_warning": "110" },
+        "material_bed_temperature_layer_0": { "maximum_value_warning": "110" },
+        "material_diameter": { "default_value": 1.75 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_flow_layer_0": { "value": 115 },
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+        "material_print_temperature": { "maximum_value_warning": "260" },
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": "270",
+            "value": "material_print_temperature + 5"
+        },
+        "minimum_interface_area": { "value": 10 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
+        "retraction_amount": { "default_value": 1.5 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
+        "retraction_hop": { "value": 0.2 },
+        "retraction_speed": { "default_value": 60 },
+        "skin_material_flow": { "value": 97 },
+        "skin_monotonic": { "default_value": true },
+        "skirt_line_count": { "value": 3 },
+        "small_hole_max_size": { "value": 10 },
+        "speed_infill": { "maximum_value_warning": 255 },
+        "speed_print":
+        {
+            "maximum_value_warning": 255,
+            "value": 250.0
+        },
+        "speed_support": { "maximum_value_warning": 255 },
+        "speed_support_bottom": { "maximum_value_warning": 255 },
+        "speed_support_infill": { "maximum_value_warning": 255 },
+        "speed_support_interface": { "maximum_value_warning": 255 },
+        "speed_support_roof": { "maximum_value_warning": 255 },
+        "speed_topbottom": { "value": 150.0 },
+        "speed_travel": { "value": 250.0 },
+        "speed_wall":
+        {
+            "maximum_value_warning": 255,
+            "value": 150.0
+        },
+        "speed_wall_x":
+        {
+            "maximum_value_warning": 255,
+            "value": 250.0
+        },
+        "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 /layer_height)))" },
+        "support_brim_width": { "value": 4.0 },
+        "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
+        "support_interface_density": { "value": 33.333 },
+        "support_interface_enable": { "value": true },
+        "support_interface_pattern": { "value": "'grid'" },
+        "support_roof_enable": { "value": true },
+        "support_xy_distance": { "value": "wall_line_width_0 * 2" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
+        "support_z_distance": { "value": "layer_height * 2" },
+        "top_bottom_thickness": { "value": "layer_height * 4" },
+        "wall_overhang_angle": { "value": 55 },
+        "wall_overhang_speed_factor": { "value": 55 },
+        "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'lines'" }
+    }
+}

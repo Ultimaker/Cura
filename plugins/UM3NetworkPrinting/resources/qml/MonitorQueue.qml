@@ -1,10 +1,9 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import UM 1.3 as UM
+import QtQuick.Controls 2.15
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 /**
@@ -18,18 +17,16 @@ Item
     // they might not need to though.
     property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
 
-    Label
+    UM.Label
     {
         id: queuedLabel
         anchors
         {
-            left: queuedPrintJobs.left
+            left: printJobList.left
             top: parent.top
         }
-        color: UM.Theme.getColor("text")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
-        renderType: Text.NativeRendering
     }
 
     Item
@@ -37,13 +34,14 @@ Item
         id: manageQueueLabel
         anchors
         {
-            right: queuedPrintJobs.right
+            right: printJobList.right
             verticalCenter: queuedLabel.verticalCenter
         }
         height: 18 * screenScaleFactor // TODO: Theme!
         width: childrenRect.width
+        visible: OutputDevice.canReadPrinterDetails
 
-        UM.RecolorImage
+        UM.ColorImage
         {
             id: externalLinkIcon
             anchors.verticalCenter: manageQueueLabel.verticalCenter
@@ -52,7 +50,7 @@ Item
             width: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
             height: 16 * screenScaleFactor // TODO: Theme! (Y U NO USE 18 LIKE ALL OTHER ICONS?!)
         }
-        Label
+        UM.Label
         {
             id: manageQueueText
             anchors
@@ -64,7 +62,6 @@ Item
             color: UM.Theme.getColor("text_link")
             font: UM.Theme.getFont("medium") // 14pt, regular
             text: catalog.i18nc("@label link to connect manager", "Manage in browser")
-            renderType: Text.NativeRendering
         }
     }
 
@@ -72,14 +69,9 @@ Item
     {
         anchors.fill: manageQueueLabel
         onClicked: OutputDevice.openPrintJobControlPanel()
-        onEntered:
-        {
-            manageQueueText.font.underline = true
-        }
-        onExited:
-        {
-            manageQueueText.font.underline = false
-        }
+        onEntered: manageQueueText.font.underline = true
+
+        onExited: manageQueueText.font.underline = false
     }
 
     Row
@@ -87,96 +79,85 @@ Item
         id: printJobQueueHeadings
         anchors
         {
-            left: queuedPrintJobs.left
+            left: printJobList.left
             leftMargin: UM.Theme.getSize("narrow_margin").width
             top: queuedLabel.bottom
             topMargin: 24 * screenScaleFactor // TODO: Theme!
         }
         spacing: 18 * screenScaleFactor // TODO: Theme!
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "There are no print jobs in the queue. Slice and send a job to add one.")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             anchors.verticalCenter: parent.verticalCenter
-
-            renderType: Text.NativeRendering
             visible: printJobList.count === 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Print jobs")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: 284 * screenScaleFactor // TODO: Theme! (Should match column size)
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Total print time")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
 
-        Label
+        UM.Label
         {
             text: catalog.i18nc("@label", "Waiting for")
-            color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
             width: UM.Theme.getSize("monitor_column").width
-
-            renderType: Text.NativeRendering
             visible: printJobList.count > 0
         }
     }
 
-    ScrollView
+    ListView
     {
-        id: queuedPrintJobs
+        id: printJobList
         anchors
         {
             bottom: parent.bottom
             horizontalCenter: parent.horizontalCenter
             top: printJobQueueHeadings.bottom
-            topMargin: 12 * screenScaleFactor // TODO: Theme!
+            topMargin: UM.Theme.getSize("default_margin").width
         }
-        style: UM.Theme.styles.scrollview
         width: parent.width
 
-        ListView
+        ScrollBar.vertical: UM.ScrollBar
         {
-            id: printJobList
-            anchors.fill: parent
-            delegate: MonitorPrintJobCard
+            id: printJobScrollBar
+        }
+        spacing: UM.Theme.getSize("narrow_margin").width
+        clip: true
+
+        delegate: MonitorPrintJobCard
+        {
+            anchors
             {
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                }
-                printJob: modelData
+                left: parent.left
+                right: parent.right
+                rightMargin: printJobScrollBar.width
             }
-            model:
+            printJob: modelData
+        }
+        model:
+        {
+            if (OutputDevice.receivedData)
             {
-                if (OutputDevice.receivedData)
-                {
-                    return OutputDevice.queuedPrintJobs
-                }
-                return [null, null]
+                return OutputDevice.queuedPrintJobs
             }
-            spacing: 6  // TODO: Theme!
+            return [null, null]
         }
     }
 }

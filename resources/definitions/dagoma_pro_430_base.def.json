@@ -1,0 +1,40 @@
+{
+    "version": 2,
+    "name": "Dagoma PRO 430 BASE",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Dagoma",
+        "manufacturer": "Dagoma",
+        "file_formats": "text/x-gcode",
+        "platform": "dagoma_pro430.obj",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "variants_name": "Nozzle"
+    },
+    "overrides":
+    {
+        "default_material_bed_temperature": { "default_value": 50 },
+        "default_material_print_temperature":
+        {
+            "default_value": 205,
+            "maximum_value": "430"
+        },
+        "infill_before_walls": { "value": "False" },
+        "inset_direction": { "value": "'inside_out'" },
+        "machine_depth": { "default_value": 320 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 430 },
+        "material_break_preparation_temperature": { "maximum_value": "430" },
+        "material_break_temperature": { "maximum_value": "430" },
+        "material_final_print_temperature": { "maximum_value": "430" },
+        "material_initial_print_temperature": { "maximum_value": "430" },
+        "material_print_temperature": { "maximum_value": "430" },
+        "material_print_temperature_layer_0": { "maximum_value": "430" },
+        "material_standby_temperature": { "maximum_value": "430" }
+    }
+}

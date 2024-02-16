@@ -8,12 +8,35 @@ message ObjectList
     repeated Setting settings = 2; // meshgroup settings (for one-at-a-time printing)
 }
 
+enum SlotID {
+  SETTINGS_BROADCAST = 0;
+  SIMPLIFY_MODIFY = 100;
+  POSTPROCESS_MODIFY = 101;
+  INFILL_MODIFY = 102;
+  GCODE_PATHS_MODIFY = 103;
+  INFILL_GENERATE = 200;
+}
+
+message EnginePlugin
+{
+    SlotID id = 1;
+    string address = 2;
+    uint32 port = 3;
+    string plugin_name = 4;
+    string plugin_version = 5;
+}
+
 message Slice
 {
     repeated ObjectList object_lists = 1; // The meshgroups to be printed one after another
     SettingList global_settings = 2; // The global settings used for the whole print job
     repeated Extruder extruders = 3; // The settings sent to each extruder object
     repeated SettingExtruder limit_to_extruder = 4; // From which stack the setting would inherit if not defined per object
+    repeated EnginePlugin engine_plugins = 5;
+    string sentry_id = 6; // The anonymized Sentry user id that requested the slice
+    string cura_version = 7; // The version of Cura that requested the slice
+    optional string project_name = 8; // The name of the project that requested the slice
+    optional string user_name = 9; // The Digital Factory account name of the user that requested the slice
 }
 
 message Extruder
@@ -137,6 +160,10 @@ message SettingExtruder {
 
 message GCodePrefix {
     bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
+}
+
+message SliceUUID {
+    string slice_uuid = 1; //The UUID of the slice.
 }
 
 message SlicingFinished {

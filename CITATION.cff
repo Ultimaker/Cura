@@ -1,11 +1,30 @@
 # YAML 1.2
 ---
-authors: 
-cff-version: "1.1.0"
-date-released: 2021-06-28
-license: "LGPL-3.0"
-message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/ultimaker/cura/"
-title: "Ultimaker Cura"
-version: "4.12.0"
-...
+cff-version: 1.2.0
+type: software
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+title: Ultimaker Cura
+abstract: >-
+  A state-of-the-art slicer application built on top
+  of the Uranium framework.
+authors:
+  - name: Ultimaker B.V.
+contact:
+  - email: info@ultimaker.com
+    name: "Ultimaker B.V."
+url: "https://ultimaker.com/software/ultimaker-cura"
+repository-code: "https://github.com/Ultimaker/Cura"
+license: LGPL-3.0
+license-url: "https://github.com/Ultimaker/Cura/blob/main/LICENSE"
+version: 5.4.0
+date-released: "2023-07-04"
+keywords:
+  - Ultimaker
+  - Cura
+  - Slicer
+  - Uranium
+  - Arachne
+  - 3D Printing
+  - Additive Manufacturing

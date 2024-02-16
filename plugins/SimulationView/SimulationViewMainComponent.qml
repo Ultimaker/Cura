@@ -2,9 +2,6 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.4
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.1
-import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
 import Cura 1.0 as Cura
@@ -78,7 +75,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg"
+        iconSource: Qt.resolvedUrl(!isSimulationPlaying ? "./resources/Play.svg": "./resources/Pause.svg")
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")
@@ -130,6 +127,7 @@ Item
         function resumeSimulation()
         {
             UM.SimulationView.setSimulationRunning(true)
+            UM.SimulationView.setCurrentPath(UM.SimulationView.currentPath)
             simulationTimer.start()
             layerSlider.manuallyChanged = false
             pathSlider.manuallyChanged = false
@@ -139,54 +137,19 @@ Item
     Timer
     {
         id: simulationTimer
-        interval: 100
+        interval: 1000 / 15
         running: false
         repeat: true
         onTriggered:
         {
-            var currentPath = UM.SimulationView.currentPath
-            var numPaths = UM.SimulationView.numPaths
-            var currentLayer = UM.SimulationView.currentLayer
-            var numLayers = UM.SimulationView.numLayers
-
-            // When the user plays the simulation, if the path slider is at the end of this layer, we start
-            // the simulation at the beginning of the current layer.
-            if (!isSimulationPlaying)
-            {
-                if (currentPath >= numPaths)
-                {
-                    UM.SimulationView.setCurrentPath(0)
-                }
-                else
-                {
-                    UM.SimulationView.setCurrentPath(currentPath + 1)
-                }
-            }
-            // If the simulation is already playing and we reach the end of a layer, then it automatically
-            // starts at the beginning of the next layer.
-            else
-            {
-                if (currentPath >= numPaths)
-                {
-                    // At the end of the model, the simulation stops
-                    if (currentLayer >= numLayers)
-                    {
-                        playButton.pauseSimulation()
-                    }
-                    else
-                    {
-                        UM.SimulationView.setCurrentLayer(currentLayer + 1)
-                        UM.SimulationView.setCurrentPath(0)
-                    }
-                }
-                else
-                {
-                    UM.SimulationView.setCurrentPath(currentPath + 1)
-                }
+            // divide by 1000 to account for ms to s conversion
+            const advance_time = simulationTimer.interval / 1000.0;
+            if (!UM.SimulationView.advanceTime(advance_time)) {
+                playButton.pauseSimulation();
             }
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
             // correctly, because part of the logic is in this trigger function.
-            isSimulationPlaying = true
+            isSimulationPlaying = true;
         }
     }
 

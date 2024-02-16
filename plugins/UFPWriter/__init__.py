@@ -1,5 +1,5 @@
-#Copyright (c) 2018 Ultimaker B.V.
-#Cura is released under the terms of the LGPLv3 or higher.
+#  Copyright (c) 2022 UltiMaker
+#  Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
 
@@ -9,8 +9,8 @@ try:
 except ImportError:
     Logger.log("w", "Could not import UFPWriter; libCharon may be missing")
 
-from UM.i18n import i18nCatalog #To translate the file format description.
-from UM.Mesh.MeshWriter import MeshWriter #For the binary mode flag.
+from UM.i18n import i18nCatalog # To translate the file format description.
+from UM.Mesh.MeshWriter import MeshWriter # For the binary mode flag.
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -25,7 +25,7 @@ def getMetaData():
                     "mime_type": "application/x-ufp",
                     "mode": MeshWriter.OutputMode.BinaryMode,
                     "extension": "ufp",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "Ultimaker Format Package")
+                    "description": i18n_catalog.i18nc("@item:inlistbox", "UltiMaker Format Package")
                 }
             ]
         }

@@ -1,13 +1,16 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from typing import Optional, Dict, List, Callable, Any
 
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
-from PyQt5.QtNetwork import QNetworkReply
+from time import time
+
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
+from UM.Version import Version
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
@@ -31,6 +34,8 @@ I18N_CATALOG = i18nCatalog("cura")
 class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
+
+    CHECK_CLUSTER_INTERVAL = 10.0  # seconds
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], parent=None) -> None:
 
@@ -82,7 +87,10 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
+        if Version(self.firmwareVersion) >= Version("7.0.2"):
+            QDesktopServices.openUrl(QUrl("http://" + self._address + "/print_jobs"))
+        else:
+            QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
 
     @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
@@ -107,6 +115,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _update(self) -> None:
         super()._update()
+        if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
+            return  # avoid calling the cluster too often
         self._getApiClient().getPrinters(self._updatePrinters)
         self._getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
@@ -136,7 +146,12 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeStarted.emit(self)
 
         # Export the scene to the correct file type.
-        job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
+        job = ExportFileJob(
+            file_handler=file_handler,
+            nodes=nodes,
+            firmware_version=self.firmwareVersion,
+            print_type=self.printerType,
+        )
         job.finished.connect(self._onPrintJobCreated)
         job.start()
 

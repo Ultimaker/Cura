@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Dict, Callable
 
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -13,13 +13,13 @@ DIGITAL_FACTORY_DISPLAY_DATETIME_FORMAT = "%d-%m-%Y %H:%M"
 
 
 class DigitalFactoryFileModel(ListModel):
-    FileNameRole = Qt.UserRole + 1
-    FileIdRole = Qt.UserRole + 2
-    FileSizeRole = Qt.UserRole + 3
-    LibraryProjectIdRole = Qt.UserRole + 4
-    DownloadUrlRole = Qt.UserRole + 5
-    UsernameRole = Qt.UserRole + 6
-    UploadedAtRole = Qt.UserRole + 7
+    FileNameRole = Qt.ItemDataRole.UserRole + 1
+    FileIdRole = Qt.ItemDataRole.UserRole + 2
+    FileSizeRole = Qt.ItemDataRole.UserRole + 3
+    LibraryProjectIdRole = Qt.ItemDataRole.UserRole + 4
+    DownloadUrlRole = Qt.ItemDataRole.UserRole + 5
+    UsernameRole = Qt.ItemDataRole.UserRole + 6
+    UploadedAtRole = Qt.ItemDataRole.UserRole + 7
 
     dfFileModelChanged = pyqtSignal()
 

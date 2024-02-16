@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QTimer
+from PyQt6.QtCore import QTimer
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
@@ -111,11 +111,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # Parent can be None if node is just loaded.
         if self._isSingularOneAtATimeNode():
-            hull = self.getConvexHullHeadFull()
-            if hull is None:
-                return None
-            hull = self._add2DAdhesionMargin(hull)
-            return hull
+            return self.getConvexHullHeadFull()
 
         return self._compute2DConvexHull()
 
@@ -323,6 +319,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
+        convex_hull = self._add2DAdhesionMargin(convex_hull)
         if convex_hull:
             return convex_hull.getMinkowskiHull(self._getHeadAndFans())
         return None
@@ -383,14 +380,14 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Shrinkage compensation.
         if not self._global_stack:  # Should never happen.
             return convex_hull
-        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage", "value") / 100.0
+        scale_factor = self._global_stack.getProperty("material_shrinkage_percentage_xy", "value") / 100.0
         result = convex_hull
-        if scale_factor != 1.0 and not self.getNode().callDecoration("isGroup"):
+        if scale_factor != 1.0 and scale_factor > 0 and not self.getNode().callDecoration("isGroup"):
             center = None
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 # Find the root node that's placed in the scene; the root of the mesh group.
                 ancestor = self.getNode()
-                while ancestor.getParent() != self._root:
+                while ancestor.getParent() != self._root and ancestor.getParent() is not None:
                     ancestor = ancestor.getParent()
                 center = ancestor.getBoundingBox().center
             else:
@@ -498,7 +495,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
 
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh", "material_shrinkage_percentage_xy"}
     """Settings that change the convex hull.
 
     If these settings change, the convex hull should be recalculated.

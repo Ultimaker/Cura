@@ -33,63 +33,63 @@ Popup
                     thumbnail: UM.Theme.getIcon("PrinterTriple", "high"),
                     description: catalog.i18nc("@tooltip:button", "Monitor printers in Ultimaker Digital Factory."),
                     link: "https://digitalfactory.ultimaker.com/app/printers?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printers",
-                    DFAccessRequired: true
+                    permissionsRequired: ["digital-factory.printer.read"]
                 },
                 {
                     displayName: "Digital Library", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Library", "high"),
                     description: catalog.i18nc("@tooltip:button", "Create print projects in Digital Library."),
                     link: "https://digitalfactory.ultimaker.com/app/library?utm_source=cura&utm_medium=software&utm_campaign=switcher-library",
-                    DFAccessRequired: true
+                    permissionsRequired: ["digital-factory.project.read.shared"]
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Print jobs"),
-                    thumbnail: UM.Theme.getIcon("FoodBeverages"),
+                    thumbnail: UM.Theme.getIcon("Nozzle"),
                     description: catalog.i18nc("@tooltip:button", "Monitor print jobs and reprint from your print history."),
                     link: "https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printjobs",
-                    DFAccessRequired: true
+                    permissionsRequired: ["digital-factory.print-job.read"]
                 },
                 {
-                    displayName: "Ultimaker Marketplace", //Not translated, since it's a brand name.
+                    displayName: "UltiMaker Marketplace", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Shop", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Extend Ultimaker Cura with plugins and material profiles."),
+                    description: catalog.i18nc("@tooltip:button", "Extend UltiMaker Cura with plugins and material profiles."),
                     link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
-                    DFAccessRequired: false
+                    permissionsRequired: []
                 },
                 {
-                    displayName: "Ultimaker Academy", //Not translated, since it's a brand name.
-                    thumbnail: UM.Theme.getIcon("Knowledge"),
-                    description: catalog.i18nc("@tooltip:button", "Become a 3D printing expert with Ultimaker e-learning."),
-                    link: "https://academy.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-academy",
-                    DFAccessRequired: false
+                    displayName: catalog.i18nc("@label:button", "Sponsor Cura"),
+                    thumbnail: UM.Theme.getIcon("Heart"),
+                    description: catalog.i18nc("@tooltip:button", "Show your support for Cura with a donation."),
+                    link: "https://ultimaker.com/software/ultimaker-cura/sponsor/",
+                    permissionsRequired: []
                 },
                 {
-                    displayName: catalog.i18nc("@label:button", "Ultimaker support"),
+                    displayName: catalog.i18nc("@label:button", "UltiMaker support"),
                     thumbnail: UM.Theme.getIcon("Help", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with Ultimaker Cura."),
+                    description: catalog.i18nc("@tooltip:button", "Learn how to get started with UltiMaker Cura."),
                     link: "https://support.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-support",
-                    DFAccessRequired: false
+                    permissionsRequired: []
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Ask a question"),
                     thumbnail: UM.Theme.getIcon("Speak", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Consult the Ultimaker Community."),
+                    description: catalog.i18nc("@tooltip:button", "Consult the UltiMaker Community."),
                     link: "https://community.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-community",
-                    DFAccessRequired: false
+                    permissionsRequired: []
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Report a bug"),
                     thumbnail: UM.Theme.getIcon("Bug", "high"),
                     description: catalog.i18nc("@tooltip:button", "Let developers know that something is going wrong."),
                     link: "https://github.com/Ultimaker/Cura/issues/new/choose",
-                    DFAccessRequired: false
+                    permissionsRequired: []
                 },
                 {
                     displayName: "Ultimaker.com", //Not translated, since it's a URL.
                     thumbnail: UM.Theme.getIcon("Browser"),
-                    description: catalog.i18nc("@tooltip:button", "Visit the Ultimaker website."),
+                    description: catalog.i18nc("@tooltip:button", "Visit the UltiMaker website."),
                     link: "https://ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-umwebsite",
-                    DFAccessRequired: false
+                    permissionsRequired: []
                 }
             ]
 
@@ -99,7 +99,24 @@ Popup
                 iconSource: modelData.thumbnail
                 tooltipText: modelData.description
                 isExternalLink: true
-                visible: modelData.DFAccessRequired ? Cura.API.account.isLoggedIn & Cura.API.account.additionalRights["df_access"] : true
+                visible:
+                {
+                    try
+                    {
+                        modelData.permissionsRequired.forEach(function(permission)
+                        {
+                            if(!Cura.API.account.isLoggedIn || !Cura.API.account.permissions.includes(permission)) //This required permission is not in the account.
+                            {
+                                throw "No permission to use this application."; //Can't return from within this lambda. Throw instead.
+                            }
+                        });
+                    }
+                    catch(e)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
 
                 onClicked: Qt.openUrlExternally(modelData.link)
             }

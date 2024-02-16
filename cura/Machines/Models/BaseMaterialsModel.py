@@ -3,7 +3,7 @@
 
 from typing import Dict, Set
 
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger
@@ -61,22 +61,22 @@ class BaseMaterialsModel(ListModel):
         ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
         self._application.getMaterialManagementModel().favoritesChanged.connect(self._onChanged)
 
-        self.addRoleName(Qt.UserRole + 1, "root_material_id")
-        self.addRoleName(Qt.UserRole + 2, "id")
-        self.addRoleName(Qt.UserRole + 3, "GUID")
-        self.addRoleName(Qt.UserRole + 4, "name")
-        self.addRoleName(Qt.UserRole + 5, "brand")
-        self.addRoleName(Qt.UserRole + 6, "description")
-        self.addRoleName(Qt.UserRole + 7, "material")
-        self.addRoleName(Qt.UserRole + 8, "color_name")
-        self.addRoleName(Qt.UserRole + 9, "color_code")
-        self.addRoleName(Qt.UserRole + 10, "density")
-        self.addRoleName(Qt.UserRole + 11, "diameter")
-        self.addRoleName(Qt.UserRole + 12, "approximate_diameter")
-        self.addRoleName(Qt.UserRole + 13, "adhesion_info")
-        self.addRoleName(Qt.UserRole + 14, "is_read_only")
-        self.addRoleName(Qt.UserRole + 15, "container_node")
-        self.addRoleName(Qt.UserRole + 16, "is_favorite")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 1, "root_material_id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 2, "id")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 3, "GUID")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 4, "name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 5, "brand")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 6, "description")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 7, "material")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 8, "color_name")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 9, "color_code")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 10, "density")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 11, "diameter")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 12, "approximate_diameter")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 13, "adhesion_info")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 14, "is_read_only")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 15, "container_node")
+        self.addRoleName(Qt.ItemDataRole.UserRole + 16, "is_favorite")
 
     def _onChanged(self) -> None:
         self._update_timer.start()

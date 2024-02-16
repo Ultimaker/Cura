@@ -3,7 +3,7 @@
 
 from typing import TYPE_CHECKING, Optional, List, Set, Dict
 
-from PyQt5.QtCore import QObject
+from PyQt6.QtCore import QObject
 
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger

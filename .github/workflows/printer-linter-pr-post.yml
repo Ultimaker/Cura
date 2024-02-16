@@ -1,0 +1,81 @@
+name: printer-linter-pr-post
+
+on:
+  workflow_run:
+    workflows: ["printer-linter-pr-diagnose"]
+    types: [completed]
+
+jobs:
+  clang-tidy-results:
+    # Trigger the job only if the previous (insecure) workflow completed successfully
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download analysis results
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            let artifacts = await github.actions.listWorkflowRunArtifacts({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: ${{github.event.workflow_run.id }},
+            });
+            let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+                return artifact.name == "printer-linter-result"
+            })[0];
+            let download = await github.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: matchArtifact.id,
+                archive_format: "zip",
+            });
+            let fs = require("fs");
+            fs.writeFileSync("${{github.workspace}}/printer-linter-result.zip", Buffer.from(download.data));
+
+      - name: Set environment variables
+        run: |
+          mkdir printer-linter-result
+          unzip printer-linter-result.zip -d printer-linter-result
+          echo "pr_id=$(cat printer-linter-result/pr-id.txt)" >> $GITHUB_ENV
+          echo "pr_head_repo=$(cat printer-linter-result/pr-head-repo.txt)" >> $GITHUB_ENV
+          echo "pr_head_ref=$(cat printer-linter-result/pr-head-ref.txt)" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ env.pr_head_repo }}
+          ref: ${{ env.pr_head_ref }}
+          persist-credentials: false
+
+      - name: Redownload analysis results
+        uses: actions/github-script@v3.1.0
+        with:
+          script: |
+            let artifacts = await github.actions.listWorkflowRunArtifacts({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: ${{github.event.workflow_run.id }},
+            });
+            let matchArtifact = artifacts.data.artifacts.filter((artifact) => {
+                return artifact.name == "printer-linter-result"
+            })[0];
+            let download = await github.actions.downloadArtifact({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                artifact_id: matchArtifact.id,
+                archive_format: "zip",
+            });
+            let fs = require("fs");
+            fs.writeFileSync("${{github.workspace}}/printer-linter-result.zip", Buffer.from(download.data));
+
+      - name: Extract analysis results
+        run: |
+          mkdir printer-linter-result
+          unzip printer-linter-result.zip -d printer-linter-result
+
+      - name: Run clang-tidy-pr-comments action
+        uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          clang_tidy_fixes: printer-linter-result/fixes.yml
+          pull_request_id: ${{ env.pr_id }}
+          request_changes: true

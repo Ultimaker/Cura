@@ -1,7 +1,9 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+import copy
+
+from typing import Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
@@ -17,7 +19,7 @@ class CuraStackBuilder:
     """Contains helper functions to create new machines."""
 
     @classmethod
-    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None) -> Optional[GlobalStack]:
+    def createMachine(cls, name: str, definition_id: str, machine_extruder_count: Optional[int] = None, show_warning_message: bool = True) -> Optional[GlobalStack]:
         """Create a new instance of a machine.
 
         :param name: The name of the new machine.
@@ -27,14 +29,15 @@ class CuraStackBuilder:
         :return: The new global stack or None if an error occurred.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
+            if show_warning_message:
+                ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
             Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
             return None
 
@@ -90,7 +93,7 @@ class CuraStackBuilder:
         :param extruder_position: The position of the current extruder.
         """
 
-        from cura.CuraApplication import CuraApplication
+        from cura.CuraApplication import CuraApplication  # inline import needed due to circular import
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
@@ -198,13 +201,21 @@ class CuraStackBuilder:
 
         :return: A new Global stack instance with the specified parameters.
         """
-
-        from cura.CuraApplication import CuraApplication
-        application = CuraApplication.getInstance()
-        registry = application.getContainerRegistry()
-
         stack = GlobalStack(new_stack_id)
         stack.setDefinition(definition)
+        cls.createUserContainer(new_stack_id, definition, stack, variant_container, material_container, quality_container)
+        return stack
+
+    @classmethod
+    def createUserContainer(cls, new_stack_id: str, definition: DefinitionContainerInterface,
+                            stack: GlobalStack,
+                            variant_container: "InstanceContainer",
+                            material_container: "InstanceContainer",
+                            quality_container: "InstanceContainer") -> None:
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+
+        registry = application.getContainerRegistry()
 
         # Create user container
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
@@ -219,8 +230,6 @@ class CuraStackBuilder:
         stack.userChanges = user_container
 
         registry.addContainer(user_container)
-
-        return stack
 
     @classmethod
     def createUserChangesContainer(cls, container_name: str, definition_id: str, stack_id: str,
@@ -258,3 +267,40 @@ class CuraStackBuilder:
         container_stack.definitionChanges = definition_changes_container
 
         return definition_changes_container
+
+    @classmethod
+    def createAbstractMachine(cls, definition_id: str) -> Optional[GlobalStack]:
+        """Create a new instance of an abstract machine.
+
+        :param definition_id: The ID of the machine definition to use.
+
+        :return: The new Abstract Machine or None if an error occurred.
+        """
+        abstract_machine_id = f"{definition_id}_abstract_machine"
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+        registry = application.getContainerRegistry()
+
+        abstract_machines = registry.findContainerStacks(id = abstract_machine_id)
+        if abstract_machines:
+            return cast(GlobalStack, abstract_machines[0])
+
+        definitions = registry.findDefinitionContainers(id=definition_id)
+
+        name = ""
+        if definitions:
+            name = definitions[0].getName()
+
+        stack = cls.createMachine(abstract_machine_id, definition_id, show_warning_message=False)
+        if not stack:
+            return None
+
+        if not stack.getMetaDataEntry("visible", True):
+            return None
+
+        stack.setName(name)
+
+        stack.setMetaDataEntry("is_abstract_machine", True)
+        stack.setMetaDataEntry("is_online", True)
+
+        return stack

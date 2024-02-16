@@ -1,28 +1,29 @@
 {
-    "name": "Creality Ender-3 Pro",
     "version": 2,
+    "name": "Creality Ender-3 Pro",
     "inherits": "creality_base",
-    "metadata": {
-        "quality_definition": "creality_base",
+    "metadata":
+    {
         "visible": true,
-        "platform": "creality_ender3.3mf"
+        "platform": "creality_ender3.3mf",
+        "quality_definition": "creality_base"
     },
-    "overrides": {
-        "machine_name": { "default_value": "Creality Ender-3 Pro" },
-        "machine_width": { "default_value": 220 },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 220 },
-        "machine_height": { "default_value": 250 },
-        "machine_head_with_fans_polygon": { "default_value": [
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
                 [-26, 34],
                 [-26, -32],
                 [32, -32],
                 [32, 34]
             ]
         },
-        "machine_start_gcode": {
-            "default_value": "; Ender 3 Custom Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish"
-        },
-
-        "gantry_height": { "value": 25 }
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Creality Ender-3 Pro" },
+        "machine_start_gcode": { "default_value": "; Ender 3 Custom Start G-code\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nG1 Z5.0 F3000 ; Move Z Axis up a bit during heating to not damage bed\nM104 S{material_standby_temperature} ; Start heating up the nozzle most of the way\nM190 S{material_bed_temperature_layer_0} ; Start heating the bed, wait until target temperature reached\nM109 S{material_print_temperature_layer_0} ; Finish heating the nozzle\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish" },
+        "machine_width": { "default_value": 220 }
     }
 }

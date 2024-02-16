@@ -2,45 +2,25 @@
     "version": 2,
     "name": "Flsun Q5",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
-        "manufacturer": "Flsun",
         "author": "Daniel Kreuzhofer",
+        "manufacturer": "Flsun",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains": {
-            "0": "flsun_q5_extruder"
-        }
+        "machine_extruder_trains": { "0": "flsun_q5_extruder" }
     },
-    "overrides": {
-        "machine_extruder_count": {
-            "default_value": 1
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_width": {
-            "default_value": 200
-        },
-        "machine_height": {
-            "default_value": 200
-        },
-        "machine_depth": {
-            "default_value": 200
-        },
-        "machine_center_is_zero": {
-            "default_value": true
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": ";FLAVOR:Marlin\r\nM82 ;absolute extrusion mode\r\nG21\r\nG90\r\nM82\r\nM107 T0\r\nG28\r\nG92 E0\r\nG0 E3 F200\r\nG92 E0 ; reset extrusion distance\r\nM106 S255 ; Enable cooling fan full speed\r\nG1 X-98 Y0 Z0.4 F3000 ; move to arc start\r\nG3 X0 Y-98 I98 Z0.4 E40 F400 ; lay arc stripe 90deg\r\nG92 E0 ; reset extrusion distance\r\nG4 P500 ; wait for 0.5 sec\r\nG0 Z10 E-1 ; Lift 15mm and retract 1mm filament\r\nG4 P2000 ; wait for 5 sec\r\nG0 Z15\r\nM107 ; Disable cooling fan\r\nG1 X0 Y-85 Z4 E0 F3000 ; get off the bed"
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 S0\r\nM140 S0\r\nG92 E1\r\nG1 E-1 F300\r\nG28 X0 Y0\r\nM84\r\nM82 ;absolute extrusion mode\r\nM104 S0"
-        },
-        "machine_shape": {
-            "default_value": "elliptic"
-        }
+    "overrides":
+    {
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 200 },
+        "machine_end_gcode": { "default_value": "M104 S0\r\nM140 S0\r\nG92 E1\r\nG1 E-1 F300\r\nG28 X0 Y0\r\nM84\r\nM82 ;absolute extrusion mode\r\nM104 S0" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 200 },
+        "machine_shape": { "default_value": "elliptic" },
+        "machine_start_gcode": { "default_value": ";FLAVOR:Marlin\r\nM82 ;absolute extrusion mode\r\nG21\r\nG90\r\nM82\r\nM107 T0\r\nG28\r\nG92 E0\r\nG0 E3 F200\r\nG92 E0 ; reset extrusion distance\r\nM106 S255 ; Enable cooling fan full speed\r\nG1 X-98 Y0 Z0.4 F3000 ; move to arc start\r\nG3 X0 Y-98 I98 Z0.4 E40 F400 ; lay arc stripe 90deg\r\nG92 E0 ; reset extrusion distance\r\nG4 P500 ; wait for 0.5 sec\r\nG0 Z10 E-1 ; Lift 15mm and retract 1mm filament\r\nG4 P2000 ; wait for 5 sec\r\nG0 Z15\r\nM107 ; Disable cooling fan\r\nG1 X0 Y-85 Z4 E0 F3000 ; get off the bed" },
+        "machine_width": { "default_value": 200 }
     }
 }

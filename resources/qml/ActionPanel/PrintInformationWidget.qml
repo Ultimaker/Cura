@@ -7,7 +7,7 @@ import QtQuick.Controls 2.1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-UM.RecolorImage
+UM.ColorImage
 {
     id: widget
 
@@ -16,6 +16,8 @@ UM.RecolorImage
     height: UM.Theme.getSize("section_icon").height
 
     color: UM.Theme.getColor("icon")
+
+    property var printMaterialCosts: PrintInformation.materialCosts
 
     MouseArea
     {
@@ -37,8 +39,6 @@ UM.RecolorImage
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
-        contentWidth: printJobInformation.width
-        contentHeight: printJobInformation.implicitHeight
 
         contentItem: PrintJobInformation
         {

@@ -1,0 +1,51 @@
+{
+    "version": 2,
+    "name": "MakerGear M2",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "William Anderson",
+        "manufacturer": "MakerGear",
+        "file_formats": "text/x-gcode",
+        "platform": "makergear_m2_platform.3mf",
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "makergear_m2_v3b" }
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "gantry_height": { "value": 24 },
+        "layer_height": { "default_value": 0.15 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 250 },
+        "machine_end_gcode": { "default_value": "G92 E0           ; zero extruder\nG1 E-2.0000 F2000 ; retract filament\nM104 S0           ; extruder off\nM140 S0           ; bed off\nM107              ; fan off\nG90               ; absolute coords\nG28 X0            ; home X\nM18 S0            ; disable steppers" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-16, 10],
+                [11, 10],
+                [11, -41],
+                [-16, -41]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 190 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_max_feedrate_e": { "default_value": 100 },
+        "machine_max_feedrate_z": { "default_value": 200 },
+        "machine_max_jerk_e": { "default_value": 2.5 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.2 },
+        "machine_name": { "default_value": "MakerGear M2" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G21 ; use mms\nM140 S{material_bed_temperature_layer_0} ; heat bed\nM104 S{material_print_temperature_layer_0} ; heat extruder\nG90 ; abs coords\nM82 ; abs extruder\nM107 ; fan off\nG28 Z ; home Z\nG1 Z10 F1200 ; lift nozzle\nG28 X Y ; home XY\nG92 E0 ; zero extruder\nG1 X230 Y50 F9600 ; move nozzle to priming location\nM190 S{material_bed_temperature_layer_0} ; wait for bed\nM109 S{material_print_temperature_layer_0} ; wait for nozzle\nG1 E10 Z0.3 F225 ; prime and lower nozzle\nG1 X190 Z0.1 F1200 ; wipe nozzle\nG92 E0 ; zero extruder" },
+        "machine_width": { "default_value": 200 },
+        "material_diameter": { "default_value": 1.75 },
+        "retraction_amount": { "default_value": 0.2 },
+        "retraction_speed": { "default_value": 50 }
+    }
+}

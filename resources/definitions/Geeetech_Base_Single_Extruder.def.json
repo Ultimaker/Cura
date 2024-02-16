@@ -1,0 +1,134 @@
+{
+    "version": 2,
+    "name": "Geeetech Base Single Extruder Printer",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Teddy.Hu",
+        "manufacturer": "Geeetech",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "Geeetech_Single_Extruder" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "Geeetech_Base_Single_Extruder",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "acceleration_print": { "value": 500 },
+        "acceleration_travel": { "value": 500 },
+        "acceleration_travel_layer_0": { "value": "acceleration_travel" },
+        "adhesion_type": { "value": "'skirt'" },
+        "brim_replaces_support": { "value": false },
+        "cool_min_layer_time": { "value": "1.3 if speed_infill>=200  else 5" },
+        "gantry_height": { "value": 40 },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'grid'" },
+        "line_width": { "value": "1.125*machine_nozzle_size if speed_infill<=100 else machine_nozzle_size" },
+        "machine_acceleration": { "value": 500 },
+        "machine_depth": { "default_value": 350 },
+        "machine_end_gcode": { "default_value": ";Geeetech Custom end G-code\nG91 ;Switch to relative positioning\nG1 E-2.5 F2700 ;Retract filament\nG1 E-1.5 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Move away\nG1 Z10 ;lift print head\nG90 ;Switch to absolute positioning\nG28 X Y ;homing XY\nM106 S0 ;off Fan\nM104 S0 ;Cooldown hotend\nM140 S0 ;Cooldown bed\nM84 X Y E ;Disable steppers\n\n\n" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-40, 40],
+                [40, 40],
+                [40, -40],
+                [-40, -40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 350 },
+        "machine_max_acceleration_e": { "value": 1000 },
+        "machine_max_acceleration_x": { "value": 500 },
+        "machine_max_acceleration_y": { "value": 500 },
+        "machine_max_acceleration_z": { "value": 111 },
+        "machine_max_feedrate_e": { "value": 40 },
+        "machine_max_feedrate_x": { "value": 500 },
+        "machine_max_feedrate_y": { "value": 500 },
+        "machine_max_feedrate_z": { "value": 10 },
+        "machine_max_jerk_e": { "value": 4.9 },
+        "machine_max_jerk_xy": { "value": 10 },
+        "machine_max_jerk_z": { "value": 0.3 },
+        "machine_name": { "default_value": "Geeetech Base Single Extruder Printer" },
+        "machine_start_gcode": { "default_value": ";Geeetech Custom Start G-code\nM104 S{material_print_temperature_layer_0} ;Set Hotend Temperature\nM190 S{material_bed_temperature_layer_0} ;Wait for Bed Temperature\nM109 S{material_print_temperature_layer_0} ;Wait for Hotend Temperature\nG92 E0 ;Reset Extruder\nG28 ;Home all axes\nM107 P0 ;Off Main Fan\nM107 P1 ;Off Aux Fan\nM2012 P8 S1 F100 ;ON Light\n;M106 P0 S383 ;ON MainFan 150% if need\n;M106 P1 S255 ;ON Aux Fan 100% if need\nG1 Z5.0 F3000 ;Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.8 F5000 ;Move to start position\nG1 X0.1 Y200.0 Z1.2 F1500 E30 ;Draw the first line\nG92 E0 ;Reset Extruder\nG1 X0.4 Y200.0 Z1.2 F3000 ;Move to side a little\nG1 X0.4 Y20 Z1.2 F1500 E25 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.4 F3000.0 ;Scrape off nozzle residue" },
+        "machine_width": { "default_value": 350 },
+        "material_bed_temperature": { "maximum_value_warning": 110 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature":
+        {
+            "minimum_value_warning": "material_standby_temperature - 10",
+            "value": "material_print_temperature - 5"
+        },
+        "material_print_temperature":
+        {
+            "maximum_value": "250",
+            "value": "200 if speed_infill <=100 else 210 if speed_infill <= 150 else 220 if speed_infill <= 180 else 230"
+        },
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": 250,
+            "value": "material_print_temperature + 5"
+        },
+        "minimum_interface_area": { "value": 10 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
+        "optimize_wall_printing_order": { "value": true },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'all'" },
+        "retraction_combing_max_distance": { "value": 30 },
+        "retraction_hop": { "value": 0.5 },
+        "retraction_speed": { "value": 40 },
+        "skirt_brim_speed":
+        {
+            "maximum_value_warning": "60",
+            "value": "speed_print_layer_0"
+        },
+        "skirt_gap": { "value": 6 },
+        "small_hole_max_size": { "value": "5 if speed_infill>=150  else 0" },
+        "speed_layer_0":
+        {
+            "maximum_value_warning": "100",
+            "value": "50 if speed_infill <= 150 else 75"
+        },
+        "speed_print_layer_0":
+        {
+            "maximum_value_warning": "60",
+            "value": "25 if speed_infill <= 150 else 35"
+        },
+        "speed_support": { "value": "speed_print*0.5" },
+        "speed_support_bottom": { "value": "speed_support_roof" },
+        "speed_support_interface": { "value": "speed_support / 0.8" },
+        "speed_support_roof": { "value": "speed_support_interface / 2" },
+        "speed_topbottom": { "value": "speed_print" },
+        "speed_travel": { "value": "200 if 120<=speed_print<=200 else speed_print if speed_print>200 else 120" },
+        "speed_travel_layer_0":
+        {
+            "maximum_value_warning": "150",
+            "value": "speed_layer_0"
+        },
+        "speed_wall": { "value": "60 if speed_print==60 else math.ceil(round(speed_print*0.90))" },
+        "speed_wall_0": { "value": "30 if speed_print==60 else math.ceil(round(speed_print*0.75))" },
+        "speed_wall_x": { "value": "60 if speed_print==60 else math.ceil(round(speed_print*0.90))" },
+        "support_brim_enable": { "value": true },
+        "support_brim_width": { "value": 5 },
+        "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 20" },
+        "support_interface_density": { "value": 33.333 },
+        "support_interface_height": { "value": "layer_height * 3" },
+        "support_interface_pattern": { "value": "'zigzag'" },
+        "support_pattern": { "value": "'zigzag'" },
+        "support_wall_count": { "value": 0 },
+        "support_xy_distance": { "value": "wall_line_width_0 * 2" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
+        "top_bottom_thickness": { "value": "layer_height_0 + layer_height * 3" },
+        "travel_avoid_supports": { "value": true },
+        "wall_thickness": { "value": "line_width * 2" },
+        "wall_transition_filter_deviation": { "value": 0.15 },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
+        "z_seam_type": { "value": "'sharpest_corner'" }
+    }
+}

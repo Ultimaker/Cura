@@ -4,7 +4,7 @@ from UM.Logger import Logger
 import re
 from typing import Dict, List, Optional, Union
 
-from PyQt5.QtCore import QTimer, Qt
+from PyQt6.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -13,6 +13,9 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.i18n import i18nCatalog
+
+from cura.PrintOrderManager import PrintOrderManager
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 catalog = i18nCatalog("cura")
 
@@ -34,14 +37,14 @@ class _NodeInfo:
 class ObjectsModel(ListModel):
     """Keep track of all objects in the project"""
 
-    NameRole = Qt.UserRole + 1
-    SelectedRole = Qt.UserRole + 2
-    OutsideAreaRole = Qt.UserRole + 3
-    BuilplateNumberRole = Qt.UserRole + 4
-    NodeRole = Qt.UserRole + 5
-    PerObjectSettingsCountRole = Qt.UserRole + 6
-    MeshTypeRole = Qt.UserRole + 7
-    ExtruderNumberRole = Qt.UserRole + 8
+    NameRole = Qt.ItemDataRole.UserRole + 1
+    SelectedRole = Qt.ItemDataRole.UserRole + 2
+    OutsideAreaRole = Qt.ItemDataRole.UserRole + 3
+    BuilplateNumberRole = Qt.ItemDataRole.UserRole + 4
+    NodeRole = Qt.ItemDataRole.UserRole + 5
+    PerObjectSettingsCountRole = Qt.ItemDataRole.UserRole + 6
+    MeshTypeRole = Qt.ItemDataRole.UserRole + 7
+    ExtruderNumberRole = Qt.ItemDataRole.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -69,12 +72,15 @@ class ObjectsModel(ListModel):
         self._group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
         self._group_name_prefix = self._group_name_template.split("#")[0]
 
-        self._naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
+        self._naming_regex = re.compile(r"^(.+)\(([0-9]+)\)$")
 
     def setActiveBuildPlate(self, nr: int) -> None:
         if self._build_plate_number != nr:
             self._build_plate_number = nr
             self._update()
+
+    def getNodes(self) -> List[CuraSceneNode]:
+        return list(map(lambda n: n["node"], self.items))
 
     def _updateSceneDelayed(self, source) -> None:
         if not isinstance(source, Camera):
@@ -175,6 +181,10 @@ class ObjectsModel(ListModel):
 
         all_nodes = self._renameNodes(name_to_node_info_dict)
 
+        user_defined_print_order_enabled = PrintOrderManager.isUserDefinedPrintOrderEnabled()
+        if user_defined_print_order_enabled:
+            PrintOrderManager.initializePrintOrders(all_nodes)
+
         for node in all_nodes:
             if hasattr(node, "isOutsideBuildArea"):
                 is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
@@ -223,8 +233,13 @@ class ObjectsModel(ListModel):
                 # for anti overhang meshes and groups the extruder nr is irrelevant
                 extruder_number = -1
 
+            if not user_defined_print_order_enabled:
+                name = node.getName()
+            else:
+                name = "{print_order}. {name}".format(print_order = node.printOrder, name = node.getName())
+
             nodes.append({
-                "name": node.getName(),
+                "name": name,
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
@@ -234,5 +249,5 @@ class ObjectsModel(ListModel):
                 "node": node
             })
 
-        nodes = sorted(nodes, key=lambda n: n["name"])
+        nodes = sorted(nodes, key=lambda n: n["name"] if not user_defined_print_order_enabled else n["node"].printOrder)
         self.setItems(nodes)
