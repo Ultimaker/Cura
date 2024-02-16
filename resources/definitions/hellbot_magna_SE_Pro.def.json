@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "Hellbot Magna SE Pro",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Hellbot Development Team",
+        "manufacturer": "Hellbot",
+        "file_formats": "text/x-gcode",
+        "platform": "Hellbot_Magna_SE_Pro.obj",
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "hellbot_magna_SE_Pro_extruder" },
+        "platform_texture": "Hellbot_magna_SE_Pro.png"
+    },
+    "overrides":
+    {
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 230 },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Hellbot Magna SE Pro" },
+        "machine_width": { "default_value": 230 }
+    }
+}

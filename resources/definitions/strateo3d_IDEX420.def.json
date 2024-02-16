@@ -1,0 +1,233 @@
+{
+    "version": 2,
+    "name": "IDEX420",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "eMotionTech",
+        "manufacturer": "eMotionTech",
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "strateo3d_IDEX420_left_extruder",
+            "1": "strateo3d_IDEX420_right_extruder"
+        },
+        "preferred_material": "emotiontech_pla",
+        "preferred_quality_type": "b",
+        "preferred_variant_name": "IDEX420 Standard 0.4",
+        "variants_name": "Print Head"
+    },
+    "overrides":
+    {
+        "acceleration_infill": { "value": "machine_acceleration" },
+        "acceleration_ironing": { "value": "machine_acceleration" },
+        "acceleration_layer_0": { "value": "machine_acceleration" },
+        "acceleration_prime_tower": { "value": "machine_acceleration" },
+        "acceleration_print": { "value": "machine_acceleration" },
+        "acceleration_print_layer_0": { "value": "machine_acceleration" },
+        "acceleration_roofing": { "value": "machine_acceleration" },
+        "acceleration_skirt_brim": { "value": "machine_acceleration" },
+        "acceleration_support": { "value": "machine_acceleration" },
+        "acceleration_support_bottom": { "value": "machine_acceleration" },
+        "acceleration_support_infill": { "value": "machine_acceleration" },
+        "acceleration_support_interface": { "value": "machine_acceleration" },
+        "acceleration_support_roof": { "value": "machine_acceleration" },
+        "acceleration_topbottom": { "value": "machine_acceleration" },
+        "acceleration_travel": { "value": "machine_acceleration" },
+        "acceleration_travel_enabled": { "value": "False" },
+        "acceleration_travel_layer_0": { "value": "machine_acceleration" },
+        "acceleration_wall": { "value": "machine_acceleration" },
+        "acceleration_wall_0": { "value": "machine_acceleration" },
+        "acceleration_wall_x": { "value": "machine_acceleration" },
+        "adhesion_type": { "default_value": "skirt" },
+        "default_material_print_temperature":
+        {
+            "maximum_value": "295",
+            "maximum_value_warning": "286",
+            "minimum_value": "180",
+            "minimum_value_warning": "190"
+        },
+        "gantry_height": { "value": "6.6" },
+        "gradual_infill_step_height": { "value": "layer_height * 10" },
+        "gradual_support_infill_step_height": { "value": "layer_height * 7" },
+        "infill_before_walls": { "default_value": false },
+        "infill_overlap": { "value": "0" },
+        "infill_wipe_dist": { "value": "0" },
+        "jerk_layer_0":
+        {
+            "maximum_value_warning": "5.1",
+            "value": "5"
+        },
+        "jerk_prime_tower": { "value": "15" },
+        "jerk_support": { "value": "15" },
+        "jerk_support_interface": { "value": "15" },
+        "jerk_topbottom":
+        {
+            "maximum_value_warning": "5.1",
+            "value": "5"
+        },
+        "jerk_wall":
+        {
+            "maximum_value_warning": "10.1",
+            "value": "10"
+        },
+        "jerk_wall_0":
+        {
+            "maximum_value_warning": "5.1",
+            "value": "5"
+        },
+        "machine_acceleration": { "value": "1000" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 320 },
+        "machine_end_gcode": { "default_value": "M0" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-27.9, -18.5],
+                [27.9, -18.5],
+                [27.9, 18.5],
+                [-27.9, 18.5]
+            ]
+        },
+        "machine_heat_zone_length": { "default_value": 21 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_heated_build_volume": { "default_value": true },
+        "machine_height": { "default_value": 400 },
+        "machine_max_acceleration_e": { "value": "250" },
+        "machine_max_acceleration_x": { "value": "1000" },
+        "machine_max_acceleration_y": { "value": "1000" },
+        "machine_max_acceleration_z": { "value": "20" },
+        "machine_max_jerk_xy": { "value": "15" },
+        "machine_max_jerk_z": { "value": "15" },
+        "machine_min_cool_heat_time_window": { "value": "15" },
+        "machine_name": { "default_value": "IDEX420" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G90 ; switch to absolute coordinate mode\nG1 F18000 Y-160 Z15 ; move fast to the coordinates\nG1 F18000 X0 Z0.3 ; move fast to the coordinates\nG92 E0 ; set the extruder to 0\nG1 F300 X60 E24 ; purge the hotend\nG1 F600 X40 ; swipe the nozzle\nG1 F600 Z3 ; perform Z hop" },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
+        "machine_width": { "default_value": 420 },
+        "material_diameter": { "default_value": 1.75 },
+        "prime_tower_enable": { "default_value": true },
+        "prime_tower_min_volume": { "default_value": 35.6 },
+        "raft_acceleration": { "value": "machine_acceleration" },
+        "raft_base_acceleration": { "value": "machine_acceleration" },
+        "raft_interface_acceleration": { "value": "machine_acceleration" },
+        "raft_surface_acceleration": { "value": "machine_acceleration" },
+        "retraction_combing_max_distance": { "default_value": 5 },
+        "retraction_count_max": { "default_value": 15 },
+        "skin_overlap": { "value": "10" },
+        "skirt_brim_minimal_length": { "default_value": 333 },
+        "skirt_brim_speed":
+        {
+            "maximum_value": "40",
+            "value": "40"
+        },
+        "speed_infill":
+        {
+            "maximum_value": "50",
+            "value": "50"
+        },
+        "speed_layer_0":
+        {
+            "maximum_value": "20",
+            "value": "20"
+        },
+        "speed_prime_tower":
+        {
+            "maximum_value": "28",
+            "value": "28"
+        },
+        "speed_print":
+        {
+            "maximum_value": "50",
+            "value": "50"
+        },
+        "speed_print_layer_0":
+        {
+            "maximum_value": "20",
+            "value": "20"
+        },
+        "speed_support":
+        {
+            "maximum_value": "38",
+            "value": "38"
+        },
+        "speed_support_interface":
+        {
+            "maximum_value": "28",
+            "value": "28"
+        },
+        "speed_topbottom":
+        {
+            "maximum_value": "28",
+            "value": "28"
+        },
+        "speed_travel":
+        {
+            "maximum_value": "150",
+            "value": "150"
+        },
+        "speed_travel_layer_0":
+        {
+            "maximum_value": "100",
+            "value": "100"
+        },
+        "speed_wall":
+        {
+            "maximum_value": "38",
+            "value": "38"
+        },
+        "speed_wall_0":
+        {
+            "maximum_value": "20",
+            "value": "20"
+        },
+        "speed_wall_x":
+        {
+            "maximum_value": "38",
+            "value": "38"
+        },
+        "speed_z_hop":
+        {
+            "maximum_value": "20",
+            "value": "20"
+        },
+        "support_bottom_distance":
+        {
+            "maximum_value_warning": "machine_nozzle_size * 1.5",
+            "value": "support_z_distance"
+        },
+        "support_infill_rate": { "value": "12" },
+        "support_interface_density": { "default_value": 90 },
+        "support_interface_enable": { "default_value": true },
+        "support_interface_height": { "value": "layer_height * 3" },
+        "support_interface_offset": { "value": "support_offset" },
+        "support_top_distance":
+        {
+            "maximum_value_warning": "machine_nozzle_size * 1.5",
+            "value": "support_z_distance"
+        },
+        "support_use_towers": { "default_value": false },
+        "support_xy_distance": { "value": "line_width * 1.7" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_z_distance":
+        {
+            "maximum_value_warning": "machine_nozzle_size * 1.5",
+            "value": "layer_height * 2"
+        },
+        "switch_extruder_prime_speed": { "value": "retraction_prime_speed" },
+        "switch_extruder_retraction_speeds": { "value": "retraction_retract_speed" },
+        "top_bottom_thickness":
+        {
+            "minimum_value_warning": "layer_height * 2",
+            "value": "4 * layer_height"
+        },
+        "travel_avoid_distance": { "value": "3" },
+        "wall_line_count": { "value": "4" }
+    }
+}

@@ -1,5 +1,5 @@
 pytest
-pyinstaller==5.6.2
+pyinstaller==6.3.0
 pyinstaller-hooks-contrib
 pyyaml
 sip==6.5.1
