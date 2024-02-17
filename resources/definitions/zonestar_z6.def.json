@@ -9,7 +9,6 @@
     },
     "overrides":
     {
-        "layer_height": { "default_value": 0.2 },
         "machine_acceleration": { "default_value": 1000 },
         "machine_depth": { "default_value": 150 },
         "machine_end_gcode": { "default_value": "G92 E0\nG1 E-3 F2100\nG28 XY\nG90\nM104 S0\nG92 E0\nM140 S0\nM107\nM84\n" },

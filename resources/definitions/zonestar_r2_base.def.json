@@ -44,7 +44,6 @@
         "machine_start_gcode": { "default_value": "G28\nG1 Z15 F300\nM107\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\nG1 X5 Y10 F1500 ; move to prime\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 Y150 E10 F600 ; prime nozzle\nG1 Y100 F5000 ; quick wipe\n" },
         "machine_width": { "default_value": 220 },
         "prime_tower_enable": { "value": "extruders_enabled_count > 1" },
-        "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },

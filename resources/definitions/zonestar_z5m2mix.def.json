@@ -9,7 +9,6 @@
     },
     "overrides":
     {
-        "layer_height": { "default_value": 0.2 },
         "machine_acceleration": { "default_value": 1000 },
         "machine_depth": { "default_value": 220 },
         "machine_height": { "default_value": 230 },
