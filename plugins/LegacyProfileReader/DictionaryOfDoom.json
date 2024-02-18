@@ -68,7 +68,7 @@
         "meshfix_keep_open_polygons": "fix_horrible_use_open_bits",
         "magic_mesh_surface_mode": "\"surface\" if simple_mode else \"normal\"",
         "magic_spiralize": "spiralize",
-        "prime_tower_enable": "wipe_tower",
+        "prime_tower_mode": "\"normal\" if wipe_tower else \"none\"",
         "prime_tower_size": "math.sqrt(float(wipe_tower_volume) / float(layer_height))",
         "ooze_shield_enabled": "ooze_shield",
         "skin_overlap": "fill_overlap"

@@ -112,7 +112,6 @@
         "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
         "machine_width": { "default_value": 420 },
         "material_diameter": { "default_value": 1.75 },
-        "prime_tower_enable": { "default_value": true },
         "prime_tower_min_volume": { "default_value": 35.6 },
         "raft_acceleration": { "value": "machine_acceleration" },
         "raft_base_acceleration": { "value": "machine_acceleration" },
