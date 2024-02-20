@@ -13,7 +13,7 @@
         "has_materials": true,
         "has_variants": false,
         "preferred_material": "generic_pla",
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "fast",
         "preferred_variant_name": "0.4mm Nozzle",
         "machine_extruder_trains": { "0": "colido_x3045_extruder_0" },
         "quality_definition": "colido_x3045",
