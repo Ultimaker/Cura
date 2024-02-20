@@ -57,9 +57,9 @@ class UCPDialog(QObject):
         device = application.getOutputDeviceManager().getOutputDevice("local_file")
         nodes = [application.getController().getScene().getRoot()]
 
-        device.writeError.connect(self._onRejected)
-        device.writeSuccess.connect(self._onSuccess)
-        device.writeFinished.connect(self._onFinished)
+        device.writeError.connect(lambda: self._onRejected())
+        device.writeSuccess.connect(lambda: self._onSuccess())
+        device.writeFinished.connect(lambda: self._onFinished())
 
         device.requestWrite(nodes, application.getPrintInformation().jobName, ["application/x-ucp"], workspace_handler,
                             preferred_mimetype_list="application/x-ucp")
