@@ -104,7 +104,9 @@
             "default_value": false,
             "enabled": true
         },
-        "prime_tower_mode": { "value": "normal" },
+        "prime_tower_mode": {
+            "value": "'normal'"
+        },
         "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_hop": { "value": "2" },
