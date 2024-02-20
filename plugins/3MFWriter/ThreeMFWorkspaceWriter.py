@@ -26,11 +26,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def __init__(self):
         super().__init__()
         self._main_thread_lock = Lock()
-        self._success = False
         self._ucp_model = None
-        self._stream = None
-        self._nodes = None
-        self._mode = None
         self._is_ucp = False
 
 
@@ -38,7 +34,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if self._ucp_model != model:
             self._ucp_model = model
 
-    def _write(self):
+    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
 
@@ -47,24 +43,24 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if not mesh_writer:  # We need to have the 3mf mesh writer, otherwise we can't save the entire workspace
             self.setInformation(catalog.i18nc("@error:zip", "3MF Writer plug-in is corrupt."))
             Logger.error("3MF Writer class is unavailable. Can't write workspace.")
-            return
+            return False
 
         global_stack = machine_manager.activeMachine
         if global_stack is None:
             self.setInformation(
                 catalog.i18nc("@error", "There is no workspace yet to write. Please add a printer first."))
             Logger.error("Tried to write a 3MF workspace before there was a global stack.")
-            return
+            return False
 
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
-        if not mesh_writer.write(self._stream, self._nodes, self._mode, self._export_model):
+        if not mesh_writer.write(stream, nodes, mode, self._ucp_model):
             self.setInformation(mesh_writer.getInformation())
-            return
+            return False
 
         archive = mesh_writer.getArchive()
         if archive is None:  # This happens if there was no mesh data to write.
-            archive = zipfile.ZipFile(self._stream, "w", compression=zipfile.ZIP_DEFLATED)
+            archive = zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_DEFLATED)
 
         try:
             # Add global container stack data to the archive.
@@ -81,13 +77,13 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                     self._writeContainerToArchive(container, archive)
 
             # Write user settings data
-            if self._export_model is not None:
-                user_settings_data = self._getUserSettings(self._export_model)
+            if self._ucp_model is not None:
+                user_settings_data = self._getUserSettings(self._ucp_model)
                 ThreeMFWriter._storeMetadataJson(user_settings_data, archive, USER_SETTINGS_PATH)
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
-            return
+            return False
 
         # Write preferences to archive
         original_preferences = Application.getInstance().getPreferences()  # Copy only the preferences that we use to the workspace.
@@ -128,33 +124,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             return
         mesh_writer.setStoreArchive(False)
 
-        self._success = True
-
-    #FIXME We should somehow give the information of the file type so that we know what to write, like the mode but for other files types (give mimetype ?)
-    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
-        print("Application.getInstance().getPreferences().getValue(\"local_file/last_used_type\")", Application.getInstance().getPreferences().getValue("local_file/last_used_type"))
-
-        self._success = False
-        self._export_model = None
-        self._stream = stream
-        self._nodes = nodes
-        self._mode = mode
-        self._config_dialog = None
-        #
-        # self._main_thread_lock.acquire()
-        # # Export is done in main thread because it may require a few asynchronous configuration steps
-        Application.getInstance().callLater(self._write())
-        # self._main_thread_lock.acquire()  # Block until lock has been released, meaning the config+write is over
-        #
-        # self._main_thread_lock.release()
-
-        self._export_model = None
-        self._stream = None
-        self._nodes = None
-        self._mode = None
-        self._config_dialog = None
-
-        return self._success
+        return True
 
     @staticmethod
     def _writePluginMetadataToArchive(archive: zipfile.ZipFile) -> None:
