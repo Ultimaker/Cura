@@ -115,11 +115,11 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
-            return
+            return False
         except EnvironmentError as e:
             self.setInformation(catalog.i18nc("@error:zip", str(e)))
             Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err=str(e)))
-            return
+            return False
         mesh_writer.setStoreArchive(False)
 
         return True
