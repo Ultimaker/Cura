@@ -64,7 +64,7 @@ class UCPDialog(QObject):
         device.writeSuccess.connect(lambda: self._onSuccess())
         device.writeFinished.connect(lambda: self._onFinished())
 
-        file_name = CuraApplication.getInstance().getPrintInformation().jobName
+        file_name = CuraApplication.getInstance().getPrintInformation().baseName
 
         try:
             device.requestWrite(nodes, file_name, ["application/x-ucp"], workspace_handler,

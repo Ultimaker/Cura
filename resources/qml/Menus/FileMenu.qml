@@ -87,7 +87,7 @@ Cura.Menu
                          "file_type": "workspace",
                          "preferred_mimetypes": "application/x-ucp",
                          "limit_mimetypes": ["application/x-ucp"]};
-                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.baseName, args)
             }
         }
     }
