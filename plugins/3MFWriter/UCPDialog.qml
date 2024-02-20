@@ -19,12 +19,12 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
 
     backgroundColor: UM.Theme.getColor("detail_background")
-    property bool dontShowAgain: true
+    property bool dontShowAgain: false
 
     function storeDontShowAgain()
     {
         UM.Preferences.setValue("cura/dialog_on_ucp_project_save", !dontShowAgainCheckbox.checked)
-        UM.Preferences.setValue("asked_dialog_on_ucp_project_save", true)
+        UM.Preferences.setValue("cura/asked_dialog_on_ucp_project_save", false)
     }
 
     onVisibleChanged:
@@ -115,5 +115,11 @@ UM.Dialog
 
     buttonSpacing: UM.Theme.getSize("wide_margin").width
 
-    onClosing: manager.notifyClosed()
+    onClosing:
+    {
+        storeDontShowAgain()
+        manager.notifyClosed()
+    }
+    onRejected: storeDontShowAgain()
+    onAccepted: storeDontShowAgain()
 }

@@ -77,7 +77,18 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
         onTriggered:
         {
-             CuraApplication.exportUcp()
+            if(UM.Preferences.getValue("cura/dialog_on_ucp_project_save"))
+            {
+                CuraApplication.exportUcp()
+            }
+            else
+            {
+                var args = { "filter_by_machine": false,
+                         "file_type": "workspace",
+                         "preferred_mimetypes": "application/x-ucp",
+                         "limit_mimetypes": ["application/x-ucp"]};
+                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+            }
         }
     }
 
