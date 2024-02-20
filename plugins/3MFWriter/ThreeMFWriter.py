@@ -61,7 +61,6 @@ class ThreeMFWriter(MeshWriter):
         self._unit_matrix_string = ThreeMFWriter._convertMatrixToString(Matrix())
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
-        self._is_ucp = False
 
     @staticmethod
     def _convertMatrixToString(matrix):
@@ -436,6 +435,5 @@ class ThreeMFWriter(MeshWriter):
         return extra_settings
 
     def exportUcp(self):
-        self._is_ucp = True
         self._config_dialog = UCPDialog()
         self._config_dialog.show()

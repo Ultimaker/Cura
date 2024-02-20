@@ -1,6 +1,8 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
+
 import configparser
 from io import StringIO
 from threading import Lock
@@ -25,10 +27,9 @@ USER_SETTINGS_PATH = "Cura/user-settings.json"
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def __init__(self):
         super().__init__()
-        self._ucp_model = None
-        self._is_ucp = False
+        self._ucp_model: Optional[SettingsExportModel] = None
 
-    def setExportModel(self, model):
+    def setExportModel(self, model: SettingsExportModel) -> None:
         if self._ucp_model != model:
             self._ucp_model = model
 
