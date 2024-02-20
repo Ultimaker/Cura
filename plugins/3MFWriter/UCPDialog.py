@@ -7,6 +7,7 @@ from PyQt6.QtCore import pyqtSignal, QObject
 
 import UM
 from UM.FlameProfiler import pyqtSlot
+from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
@@ -45,24 +46,38 @@ class UCPDialog(QObject):
 
     @pyqtSlot()
     def _onAccepted(self):
-        self._accepted = True
-        mesh_writer = CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
-        mesh_writer.custom_data = "My custom data"
+        application = CuraApplication.getInstance()
+        workspace_handler = application.getInstance().getWorkspaceFileHandler()
 
-        device = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevice("local_file")
-        file_handler = UM.Qt.QtApplication.QtApplication.getInstance().getWorkspaceFileHandler()
-        nodes = [CuraApplication.getInstance().getController().getScene().getRoot()]
-        device.requestWrite(nodes, "test.3mf", ["application/x-ucp"], file_handler,
+        # Set the model to the workspace writer
+        mesh_writer = workspace_handler.getWriter("3MFWriter")
+        mesh_writer.setExportModel(self._model)
+
+        # Open file dialog and write the file
+        device = application.getOutputDeviceManager().getOutputDevice("local_file")
+        nodes = [application.getController().getScene().getRoot()]
+
+        device.writeError.connect(self._onRejected)
+        device.writeSuccess.connect(self._onSuccess)
+        device.writeFinished.connect(self._onFinished)
+
+        device.requestWrite(nodes, application.getPrintInformation().jobName, ["application/x-ucp"], workspace_handler,
                             preferred_mimetype_list="application/x-ucp")
-        #TODO: update _export_model in threeMFWorkspacewriter and set is_ucp is true
-        # = self._config_dialog.getModel()
-        self._onFinished()
 
     @pyqtSlot()
     def _onRejected(self):
         self._onFinished()
 
+    def _onSuccess(self):
+        self._accepted = True
+        self._onFinished()
+
     def _onFinished(self):
         if not self._finished: # Make sure we don't send the finished signal twice, whatever happens
             self._finished = True
+
+            # Reset the model to the workspace writer
+            mesh_writer = CuraApplication.getInstance().getInstance().getWorkspaceFileHandler().getWriter("3MFWriter")
+            mesh_writer.setExportModel(None)
+
             self.finished.emit(self._accepted)

@@ -27,7 +27,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         super().__init__()
         self._main_thread_lock = Lock()
         self._success = False
-        self._export_model = None
+        self._ucp_model = None
         self._stream = None
         self._nodes = None
         self._mode = None
@@ -35,8 +35,8 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
 
     def setExportModel(self, model):
-        if self._export_model != model:
-            self._export_model = model
+        if self._ucp_model != model:
+            self._ucp_model = model
 
     def _write(self):
         application = Application.getInstance()
