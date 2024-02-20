@@ -7,8 +7,11 @@ from PyQt6.QtCore import pyqtSignal, QObject
 
 import UM
 from UM.FlameProfiler import pyqtSlot
+from UM.OutputDevice import OutputDeviceError
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
+from UM.Message import Message
 
 from cura.CuraApplication import CuraApplication
 
@@ -61,8 +64,22 @@ class UCPDialog(QObject):
         device.writeSuccess.connect(lambda: self._onSuccess())
         device.writeFinished.connect(lambda: self._onFinished())
 
-        device.requestWrite(nodes, application.getPrintInformation().jobName, ["application/x-ucp"], workspace_handler,
+        file_name = application.getPrintInformation().jobName
+
+        try:
+            device.requestWrite(nodes, file_name, ["application/x-ucp"], workspace_handler,
                             preferred_mimetype_list="application/x-ucp")
+        except OutputDeviceError.UserCanceledError:
+            self._onRejected()
+        except Exception as e:
+            message = Message(
+                i18n_catalog.i18nc("@info:error", "Unable to write to file: {0}", file_name),
+                title=i18n_catalog.i18nc("@info:title", "Error"),
+                message_type=Message.MessageType.ERROR
+            )
+            message.show()
+            Logger.logException("e", "Unable to write to file %s: %s", file_name, e)
+            self._onRejected()
 
     @pyqtSlot()
     def _onRejected(self):
