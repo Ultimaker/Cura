@@ -25,10 +25,8 @@ USER_SETTINGS_PATH = "Cura/user-settings.json"
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def __init__(self):
         super().__init__()
-        self._main_thread_lock = Lock()
         self._ucp_model = None
         self._is_ucp = False
-
 
     def setExportModel(self, model):
         if self._ucp_model != model:
