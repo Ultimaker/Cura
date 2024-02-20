@@ -1143,6 +1143,16 @@ class CuraApplication(QtApplication):
             self._build_plate_model = BuildPlateModel(self)
         return self._build_plate_model
 
+    @pyqtSlot()
+    def exportUcp(self):
+        writer = self.getMeshFileHandler().getWriter("3MFWriter")
+
+        if writer is None:
+            Logger.warning("3mf writer is not enabled")
+            return
+
+        writer.exportUcp()
+
     def getCuraSceneController(self, *args) -> CuraSceneController:
         if self._cura_scene_controller is None:
             self._cura_scene_controller = CuraSceneController.createCuraSceneController()

@@ -4,6 +4,8 @@
 import os
 
 from PyQt6.QtCore import pyqtSignal, QObject
+
+import UM
 from UM.FlameProfiler import pyqtSlot
 from UM.i18n import i18nCatalog
 
@@ -44,6 +46,16 @@ class UCPDialog(QObject):
     @pyqtSlot()
     def _onAccepted(self):
         self._accepted = True
+        mesh_writer = CuraApplication.getInstance().getMeshFileHandler().getWriter("3MFWriter")
+        mesh_writer.custom_data = "My custom data"
+
+        device = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevice("local_file")
+        file_handler = UM.Qt.QtApplication.QtApplication.getInstance().getWorkspaceFileHandler()
+        nodes = [CuraApplication.getInstance().getController().getScene().getRoot()]
+        device.requestWrite(nodes, "test.3mf", ["application/x-ucp"], file_handler,
+                            preferred_mimetype_list="application/x-ucp")
+        #TODO: update _export_model in threeMFWorkspacewriter and set is_ucp is true
+        # = self._config_dialog.getModel()
         self._onFinished()
 
     @pyqtSlot()

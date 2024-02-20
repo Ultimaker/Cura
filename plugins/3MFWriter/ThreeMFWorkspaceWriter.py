@@ -15,7 +15,6 @@ from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from .UCPDialog import UCPDialog
 from .ThreeMFWriter import ThreeMFWriter
 from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
@@ -32,32 +31,12 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         self._stream = None
         self._nodes = None
         self._mode = None
-        self._config_dialog = None
+        self._is_ucp = False
 
-    #FIXME We should have proper preWrite/write methods like the readers have a preRead/read, and have them called by the global process
-    def _preWrite(self):
-        is_ucp = False
-        if hasattr(self._stream, 'name'):
-            # This only works with local file, but we don't want remote UCP files yet
-            is_ucp = self._stream.name.endswith('.3mf')
 
-        if is_ucp:
-            self._config_dialog = UCPDialog()
-            self._config_dialog.finished.connect(self._onUCPConfigFinished)
-            self._config_dialog.show()
-        else:
-            self._doWrite()
-
-    def _onUCPConfigFinished(self, accepted: bool):
-        if accepted:
-            self._export_model = self._config_dialog.getModel()
-            self._doWrite()
-        else:
-            self._main_thread_lock.release()
-
-    def _doWrite(self):
-        self._write()
-        self._main_thread_lock.release()
+    def setExportModel(self, model):
+        if self._export_model != model:
+            self._export_model = model
 
     def _write(self):
         application = Application.getInstance()
@@ -153,19 +132,21 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
     #FIXME We should somehow give the information of the file type so that we know what to write, like the mode but for other files types (give mimetype ?)
     def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+        print("Application.getInstance().getPreferences().getValue(\"local_file/last_used_type\")", Application.getInstance().getPreferences().getValue("local_file/last_used_type"))
+
         self._success = False
         self._export_model = None
         self._stream = stream
         self._nodes = nodes
         self._mode = mode
         self._config_dialog = None
-
-        self._main_thread_lock.acquire()
-        # Export is done in main thread because it may require a few asynchronous configuration steps
-        Application.getInstance().callLater(self._preWrite)
-        self._main_thread_lock.acquire()  # Block until lock has been released, meaning the config+write is over
-
-        self._main_thread_lock.release()
+        #
+        # self._main_thread_lock.acquire()
+        # # Export is done in main thread because it may require a few asynchronous configuration steps
+        Application.getInstance().callLater(self._write())
+        # self._main_thread_lock.acquire()  # Block until lock has been released, meaning the config+write is over
+        #
+        # self._main_thread_lock.release()
 
         self._export_model = None
         self._stream = None

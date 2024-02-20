@@ -236,8 +236,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Check whether the file is a UCP, which changes some import options
         #FIXME Instead of this, we should just check for the presence of the user-settings file, whatever the extension
-        is_ucp = file_name.endswith('.3mf')
-
+        if file_name.endswith('.3mf'):
+            is_ucp = True
         #
         # Read definition containers
         #

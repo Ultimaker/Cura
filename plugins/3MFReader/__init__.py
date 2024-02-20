@@ -25,20 +25,12 @@ def getMetaData() -> Dict:
             {
                 "extension": "3mf",
                 "description": catalog.i18nc("@item:inlistbox", "3MF File")
-            },
-            {
-                "extension": "ucp",
-                "description": catalog.i18nc("@item:inlistbox", "UCP File")
             }
         ]
         metaData["workspace_reader"] = [
             {
                 "extension": workspace_extension,
                 "description": catalog.i18nc("@item:inlistbox", "3MF File")
-            },
-            {
-                "extension": "ucp",
-                "description": catalog.i18nc("@item:inlistbox", "UCP File")
             }
         ]
 

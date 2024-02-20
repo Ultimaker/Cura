@@ -23,7 +23,7 @@ from cura.Snapshot import Snapshot
 from PyQt6.QtCore import QBuffer
 
 import pySavitar as Savitar
-
+from .UCPDialog import UCPDialog
 import numpy
 import datetime
 
@@ -61,6 +61,7 @@ class ThreeMFWriter(MeshWriter):
         self._unit_matrix_string = ThreeMFWriter._convertMatrixToString(Matrix())
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
+        self._is_ucp = False
 
     @staticmethod
     def _convertMatrixToString(matrix):
@@ -433,3 +434,8 @@ class ThreeMFWriter(MeshWriter):
                     extra_settings[group.category_details] = exported_model_settings
 
         return extra_settings
+
+    def exportUcp(self):
+        self._is_ucp = True
+        self._config_dialog = UCPDialog()
+        self._config_dialog.show()

@@ -74,14 +74,10 @@ Cura.Menu
     {
         id: saveUCPMenu
         text: catalog.i18nc("@title:menu menubar:file", "&Save Universal Cura Project...")
-        enabled: UM.WorkspaceFileHandler.enabled
+        enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
         onTriggered:
         {
-            var args = { "filter_by_machine": false,
-                         "file_type": "workspace",
-                         "preferred_mimetypes": "application/x-ucp",
-                         "limit_mimetypes": "application/x-ucp"};
-            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+             CuraApplication.exportUcp()
         }
     }
 
