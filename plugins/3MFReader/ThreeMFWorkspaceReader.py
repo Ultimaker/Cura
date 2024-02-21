@@ -58,6 +58,7 @@ _ignored_machine_network_metadata: Set[str] = {
     "is_abstract_machine"
 }
 
+USER_SETTINGS_PATH = "Cura/user-settings.json"
 
 class ContainerInfo:
     def __init__(self, file_name: Optional[str], serialized: Optional[str], parser: Optional[ConfigParser]) -> None:
@@ -235,9 +236,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         containers_found_dict = {k: False for k in resolve_strategy_keys}
 
         # Check whether the file is a UCP, which changes some import options
-        #FIXME Instead of this, we should just check for the presence of the user-settings file, whatever the extension
-        if file_name.endswith('.3mf'):
-            is_ucp = True
+        is_ucp = USER_SETTINGS_PATH in cura_file_names
+
         #
         # Read definition containers
         #
