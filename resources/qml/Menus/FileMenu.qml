@@ -77,16 +77,18 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
         onTriggered:
         {
-            if(UM.Preferences.getValue("cura/dialog_on_ucp_project_save"))
+            if (UM.Preferences.getValue("cura/dialog_on_ucp_project_save"))
             {
                 CuraApplication.exportUcp()
             }
             else
             {
-                var args = { "filter_by_machine": false,
-                         "file_type": "workspace",
-                         "preferred_mimetypes": "application/x-ucp",
-                         "limit_mimetypes": ["application/x-ucp"]};
+                const args = {
+                    "filter_by_machine": false,
+                    "file_type": "workspace",
+                    "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                    "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                };
                 UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.baseName, args)
             }
         }
