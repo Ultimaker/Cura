@@ -33,7 +33,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if self._ucp_model != model:
             self._ucp_model = model
 
-    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+    def _write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
 
@@ -124,6 +124,11 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer.setStoreArchive(False)
 
         return True
+
+    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+        success = self._write(stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode)
+        self._ucp_model = None
+        return success
 
     @staticmethod
     def _writePluginMetadataToArchive(archive: zipfile.ZipFile) -> None:
