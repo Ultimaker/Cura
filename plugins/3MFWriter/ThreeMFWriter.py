@@ -188,7 +188,6 @@ class ThreeMFWriter(MeshWriter):
         painter.drawImage(icon_position[0], icon_position[1], icon_image)
 
         painter.end()
-        primary_image.save("test.png", "PNG")
 
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
         self._archive = None # Reset archive
