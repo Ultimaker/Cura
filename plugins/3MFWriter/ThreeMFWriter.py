@@ -10,6 +10,8 @@ from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
+from UM.OutputDevice import OutputDeviceError
+from UM.Message import Message
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -456,5 +458,40 @@ class ThreeMFWriter(MeshWriter):
         return extra_settings
 
     def exportUcp(self):
-        self._config_dialog = UCPDialog()
-        self._config_dialog.show()
+        preferences = CuraApplication.getInstance().getPreferences()
+        if preferences.getValue("cura/dialog_on_ucp_project_save"):
+            self._config_dialog = UCPDialog()
+            self._config_dialog.show()
+        else:
+            application = CuraApplication.getInstance()
+            workspace_handler = application.getInstance().getWorkspaceFileHandler()
+
+            # Set the model to the workspace writer
+            mesh_writer = workspace_handler.getWriter("3MFWriter")
+            mesh_writer.setExportModel(SettingsExportModel())
+
+            # Open file dialog and write the file
+            device = application.getOutputDeviceManager().getOutputDevice("local_file")
+            nodes = [application.getController().getScene().getRoot()]
+
+            file_name = CuraApplication.getInstance().getPrintInformation().baseName
+
+            try:
+                device.requestWrite(
+                    nodes,
+                    file_name,
+                    ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                    workspace_handler,
+                    preferred_mimetype_list="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"
+                )
+            except OutputDeviceError.UserCanceledError:
+                self._onRejected()
+            except Exception as e:
+                message = Message(
+                    catalog.i18nc("@info:error", "Unable to write to file: {0}", file_name),
+                    title=catalog.i18nc("@info:title", "Error"),
+                    message_type=Message.MessageType.ERROR
+                )
+                message.show()
+                Logger.logException("e", "Unable to write to file %s: %s", file_name, e)
+                self._onRejected()

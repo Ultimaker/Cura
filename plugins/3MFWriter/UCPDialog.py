@@ -53,8 +53,7 @@ class UCPDialog(QObject):
     def notifyClosed(self):
         self._onFinished()
 
-    @pyqtSlot()
-    def _onAccepted(self):
+    def save3mf(self):
         application = CuraApplication.getInstance()
         workspace_handler = application.getInstance().getWorkspaceFileHandler()
 
@@ -92,7 +91,9 @@ class UCPDialog(QObject):
             Logger.logException("e", "Unable to write to file %s: %s", file_name, e)
             self._onRejected()
 
-    @pyqtSlot()
+    def _onAccepted(self):
+        self.save3mf()
+
     def _onRejected(self):
         self._onFinished()
 
