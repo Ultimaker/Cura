@@ -41,15 +41,8 @@ class ThreeMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                name="application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 comment="3MF",
-                suffixes=["3mf"]
-            )
-        )
-        MimeTypeDatabase.addMimeType(
-            MimeType(
-                name="application/x-ucp",
-                comment="UCP",
                 suffixes=["3mf"]
             )
         )

@@ -29,15 +29,21 @@ class UCPDialog(QObject):
         plugin_path = os.path.dirname(__file__)
         dialog_path = os.path.join(plugin_path, 'UCPDialog.qml')
         self._model = SettingsExportModel()
-        self._view = CuraApplication.getInstance().createQmlComponent(dialog_path,
-                                                                      {"manager": self,
-                                                                       "settingsExportModel": self._model})
+        self._view = CuraApplication.getInstance().createQmlComponent(
+            dialog_path,
+            {
+                "manager": self,
+                "settingsExportModel": self._model
+            }
+        )
         self._view.accepted.connect(self._onAccepted)
         self._view.rejected.connect(self._onRejected)
         self._finished = False
         self._accepted = False
 
     def show(self) -> None:
+        self._finished = False
+        self._accepted = False
         self._view.show()
 
     def getModel(self) -> SettingsExportModel:
@@ -67,8 +73,13 @@ class UCPDialog(QObject):
         file_name = CuraApplication.getInstance().getPrintInformation().baseName
 
         try:
-            device.requestWrite(nodes, file_name, ["application/x-ucp"], workspace_handler,
-                            preferred_mimetype_list="application/x-ucp")
+            device.requestWrite(
+                nodes,
+                file_name,
+                ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                workspace_handler,
+                preferred_mimetype_list="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"
+            )
         except OutputDeviceError.UserCanceledError:
             self._onRejected()
         except Exception as e:
@@ -90,11 +101,13 @@ class UCPDialog(QObject):
         self._onFinished()
 
     def _onFinished(self):
-        if not self._finished: # Make sure we don't send the finished signal twice, whatever happens
-            self._finished = True
+        # Make sure we don't send the finished signal twice, whatever happens
+        if self._finished:
+            return
+        self._finished = True
 
-            # Reset the model to the workspace writer
-            mesh_writer = CuraApplication.getInstance().getInstance().getWorkspaceFileHandler().getWriter("3MFWriter")
-            mesh_writer.setExportModel(None)
+        # Reset the model to the workspace writer
+        mesh_writer = CuraApplication.getInstance().getInstance().getWorkspaceFileHandler().getWriter("3MFWriter")
+        mesh_writer.setExportModel(None)
 
-            self.finished.emit(self._accepted)
+        self.finished.emit(self._accepted)
