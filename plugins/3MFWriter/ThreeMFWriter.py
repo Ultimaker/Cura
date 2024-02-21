@@ -10,6 +10,7 @@ from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
+from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -20,7 +21,8 @@ from cura.Utils.Threading import call_on_qt_thread
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
 
-from PyQt6.QtCore import QBuffer
+from PyQt6.QtCore import Qt, QBuffer
+from PyQt6.QtGui import QImage, QPainter
 
 import pySavitar as Savitar
 from .UCPDialog import UCPDialog
@@ -170,6 +172,24 @@ class ThreeMFWriter(MeshWriter):
     def getArchive(self):
         return self._archive
 
+    def _addShareLogoToThumbnail(self, primary_image):
+        # Load the icon png image
+        icon_image = QImage(Resources.getPath(Resources.Images,  "cura-share.png"))
+
+        # Resize icon_image to be 1/3 of primary_image size
+        new_width = int(primary_image.width() / 4)
+        new_height = int(primary_image.height() / 4)
+        icon_image = icon_image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
+        # Create a QPainter to draw on the image
+        painter = QPainter(primary_image)
+
+        # Draw the icon in the top-left corner (adjust coordinates as needed)
+        icon_position = (10, 10)
+        painter.drawImage(icon_position[0], icon_position[1], icon_image)
+
+        painter.end()
+        primary_image.save("test.png", "PNG")
+
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
@@ -194,6 +214,8 @@ class ThreeMFWriter(MeshWriter):
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()
             if snapshot:
+                if export_settings_model != None:
+                    self._addShareLogoToThumbnail(snapshot)
                 thumbnail_buffer = QBuffer()
                 thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
