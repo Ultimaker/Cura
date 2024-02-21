@@ -5,9 +5,8 @@ import re
 import argparse
 from pathlib import Path
 from fuzzywuzzy import fuzz
-from fuzzywuzzy import process
 import xml.etree.ElementTree as ET
-from xml.sax.saxutils import unescape, escape, quoteattr
+from xml.sax.saxutils import unescape
 
 
 def load_existing_xmtm(path: Path) -> ET.Element:
