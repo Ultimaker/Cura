@@ -509,10 +509,13 @@ UM.PreferencesPage
                     id: dropDownCheckbox
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
                     checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
-                    onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                        CuraApplication.getWorkplaceDropToBuildplate(checked)
+                    }
                 }
             }
-
 
             UM.TooltipArea
             {

@@ -61,7 +61,7 @@ class PrintOrderManager(QObject):
         is_enabled = stack and \
                      stack.getProperty("print_sequence", "value") == "one_at_a_time" and \
                      stack.getProperty("user_defined_print_order_enabled", "value")
-        return is_enabled
+        return bool(is_enabled)
 
     @staticmethod
     def initializePrintOrders(nodes: List[CuraSceneNode]) -> None:
