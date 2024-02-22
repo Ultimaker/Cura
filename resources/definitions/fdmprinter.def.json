@@ -76,22 +76,6 @@
                     "type": "str",
                     "enabled": false
                 },
-                "material_type":
-                {
-                    "label": "Material Type",
-                    "description": "The type of material used.",
-                    "default_value": "",
-                    "type": "str",
-                    "enabled": false
-                },
-                "material_brand":
-                {
-                    "label": "Material Brand",
-                    "description": "The brand of material used.",
-                    "default_value": "",
-                    "type": "str",
-                    "enabled": false
-                },
                 "material_diameter":
                 {
                     "label": "Diameter",
@@ -6797,14 +6781,14 @@
                 "prime_tower_mode":
                 {
                     "label": "Prime Tower",
-                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Normal:</b> generate a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
+                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Bucket:</b> generate a bucket in which secondary materials are primed</li><li><b>Sparse:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
                     "type": "enum",
-                    "value": "'none' if (extruders_enabled_count < 2) else ('interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal')",
+                    "value": "'optimized' if all(material_type == extruderValues('material_type')[0] for material_type in extruderValues('material_type')) else 'optimized_consistent'",
                     "options":
                     {
                         "none": "None",
-                        "normal": "Normal",
-                        "interleaved": "Interleaved"
+                        "bucket": "Bucket",
+                        "sparse": "Sparse"
                     },
                     "default_value": "none",
                     "enabled": "extruders_enabled_count > 1",
@@ -6849,7 +6833,7 @@
                     "default_value": 5,
                     "minimum_value": "line_width",
                     "maximum_value_warning": "10.0",
-                    "enabled": "resolveOrValue('prime_tower_mode') != 'none'",
+                    "enabled": "resolveOrValue('prime_tower_mode') == 'sparse' or resolveOrValue('prime_tower_mode') == 'bucket'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
