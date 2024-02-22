@@ -6817,7 +6817,7 @@
                         "interleaved": "Interleaved"
                     },
                     "default_value": "normal",
-                    "enabled": "prime_tower_enabled",
+                    "enabled": "prime_tower_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
