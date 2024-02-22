@@ -178,7 +178,7 @@ class ThreeMFWriter(MeshWriter):
         # Load the icon png image
         icon_image = QImage(Resources.getPath(Resources.Images,  "cura-share.png"))
 
-        # Resize icon_image to be 1/3 of primary_image size
+        # Resize icon_image to be 1/4 of primary_image size
         new_width = int(primary_image.width() / 4)
         new_height = int(primary_image.height() / 4)
         icon_image = icon_image.scaled(new_width, new_height, Qt.AspectRatioMode.KeepAspectRatio)
