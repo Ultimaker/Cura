@@ -6794,20 +6794,29 @@
             "description": "Settings used for printing with multiple extruders.",
             "children":
             {
+                "prime_tower_enable": {
+                    "label": "Enable Prime Tower",
+                    "description": "Print a tower next to the print which serves to prime the material after each nozzle switch.",
+                    "type": "bool",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": false,
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "prime_tower_mode":
                 {
                     "label": "Prime Tower",
-                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>None:</b> do not generate a prime tower</li><li><b>Normal:</b> generate a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
+                    "description": "<html>Print a tower next to the model, which serves to prime the material after each nozzle switch.<ul><li><b>Normal:</b> generate a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> generate a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
                     "type": "enum",
-                    "value": "'none' if (extruders_enabled_count < 2) else ('interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal')",
+                    "value": "'interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal'",
                     "options":
                     {
-                        "none": "None",
                         "normal": "Normal",
                         "interleaved": "Interleaved"
                     },
-                    "default_value": "none",
-                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": "normal",
+                    "enabled": "prime_tower_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
