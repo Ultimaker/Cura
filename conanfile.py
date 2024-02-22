@@ -350,6 +350,7 @@ class CuraConan(ConanFile):
         self.requires("cpython/3.10.4@ultimaker/stable")
         self.requires("clipper/6.4.2@ultimaker/stable")
         self.requires("openssl/3.2.0")
+        self.requires("protobuf/3.21.12")
         self.requires("boost/1.82.0")
         self.requires("spdlog/1.12.0")
         self.requires("fmt/10.1.1")
