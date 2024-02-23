@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S5",
+    "name": "UltiMaker S5",
     "inherits": "ultimaker",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
@@ -104,13 +104,12 @@
             "default_value": false,
             "enabled": true
         },
-        "prime_tower_enable": { "value": "True" },
+        "prime_tower_mode": { "value": "'normal'" },
         "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
         "retraction_hop_only_when_collides": { "value": "True" },
-        "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "45" },
         "speed_prime_tower": { "value": "speed_topbottom" },

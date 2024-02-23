@@ -10,16 +10,14 @@ from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
-from UM.Message import Message
-from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings import CuraContainerStack
 from cura.Utils.Threading import call_on_qt_thread
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
 
 from PyQt6.QtCore import QBuffer
@@ -102,12 +100,20 @@ class ThreeMFWriter(MeshWriter):
         savitar_node = Savitar.SceneNode()
         savitar_node.setName(um_node.getName())
 
-        node_matrix = um_node.getLocalTransformation()
+        node_matrix = Matrix()
+        mesh_data = um_node.getMeshData()
+        # compensate for original center position, if object(s) is/are not around its zero position
+        if mesh_data is not None:
+            extents = mesh_data.getExtents()
+            if extents is not None:
+                # We use a different coordinate space while writing, so flip Z and Y
+                center_vector = Vector(extents.center.x, extents.center.z, extents.center.y)
+                node_matrix.setByTranslation(center_vector)
+        node_matrix.multiply(um_node.getLocalTransformation())
 
         matrix_string = ThreeMFWriter._convertMatrixToString(node_matrix.preMultiply(transformation))
 
         savitar_node.setTransformation(matrix_string)
-        mesh_data = um_node.getMeshData()
         if mesh_data is not None:
             savitar_node.getMeshData().setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
             indices_array = mesh_data.getIndicesAsByteArray()
@@ -128,6 +134,9 @@ class ThreeMFWriter(MeshWriter):
             # Get values for all changed settings & save them.
             for key in changed_setting_keys:
                 savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+
+        if isinstance(um_node, CuraSceneNode):
+            savitar_node.setSetting("cura:print_order", str(um_node.printOrder))
 
         # Store the metadata.
         for key, value in um_node.metadata.items():

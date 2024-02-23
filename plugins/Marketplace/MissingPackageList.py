@@ -3,12 +3,10 @@
 
 from typing import Optional, TYPE_CHECKING, Dict, List
 
-from .Constants import PACKAGES_URL
 from .PackageModel import PackageModel
 from .RemotePackageList import RemotePackageList
 from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 from UM.i18n import i18nCatalog
 
 if TYPE_CHECKING:

@@ -16,6 +16,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To downlo
 
 catalog = i18nCatalog("cura")
 TOKEN_TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+REQUEST_TIMEOUT = 5 # Seconds
 
 
 class AuthorizationHelpers:
@@ -40,6 +41,7 @@ class AuthorizationHelpers:
         """
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "client_secret": self._settings.CLIENT_SECRET if self._settings.CLIENT_SECRET is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
             "grant_type": "authorization_code",
             "code": authorization_code,
@@ -52,7 +54,8 @@ class AuthorizationHelpers:
             data = urllib.parse.urlencode(data).encode("UTF-8"),
             headers_dict = headers,
             callback = lambda response: self.parseTokenResponse(response, callback),
-            error_callback = lambda response, _: self.parseTokenResponse(response, callback)
+            error_callback = lambda response, _: self.parseTokenResponse(response, callback),
+            timeout = REQUEST_TIMEOUT
         )
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str, callback: Callable[[AuthenticationResponse], None]) -> None:
@@ -64,6 +67,7 @@ class AuthorizationHelpers:
         Logger.log("d", "Refreshing the access token for [%s]", self._settings.OAUTH_SERVER_URL)
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
+            "client_secret": self._settings.CLIENT_SECRET if self._settings.CLIENT_SECRET is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
@@ -75,7 +79,9 @@ class AuthorizationHelpers:
             data = urllib.parse.urlencode(data).encode("UTF-8"),
             headers_dict = headers,
             callback = lambda response: self.parseTokenResponse(response, callback),
-            error_callback = lambda response, _: self.parseTokenResponse(response, callback)
+            error_callback = lambda response, _: self.parseTokenResponse(response, callback),
+            urgent = True,
+            timeout = REQUEST_TIMEOUT
         )
 
     def parseTokenResponse(self, token_response: QNetworkReply, callback: Callable[[AuthenticationResponse], None]) -> None:
@@ -120,7 +126,8 @@ class AuthorizationHelpers:
             check_token_url,
             headers_dict = headers,
             callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
-            error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None
+            error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None,
+            timeout = REQUEST_TIMEOUT
         )
 
     def _parseUserProfile(self, reply: QNetworkReply, success_callback: Optional[Callable[[UserProfile], None]], failed_callback: Optional[Callable[[], None]] = None) -> None:
