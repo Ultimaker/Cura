@@ -100,7 +100,7 @@
         "raft_surface_speed": { "value": "speed_topbottom" },
         "relative_extrusion":
         {
-            "enabled": false,
+            "enabled": false
         },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_combing_max_distance": { "value": 15 },
