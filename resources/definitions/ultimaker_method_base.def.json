@@ -377,7 +377,7 @@
         "retraction_prime_speed": { "value": "retraction_speed" },
         "retraction_speed": { "value": 5 },
         "roofing_layer_count": { "value": 2 },
-        "roofing_material_flow": { "value": "material_flow" },
+        
         "roofing_monotonic": { "value": true },
         "skin_material_flow": { "value": "0.95*material_flow" },
         "skin_outline_count": { "value": 0 },
