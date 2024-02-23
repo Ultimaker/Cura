@@ -101,7 +101,6 @@
         "relative_extrusion":
         {
             "enabled": false,
-            "value": false
         },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_combing_max_distance": { "value": 15 },
