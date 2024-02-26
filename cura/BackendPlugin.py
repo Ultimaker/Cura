@@ -92,10 +92,13 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                     "stderr": subprocess.STDOUT,  # Combine stderr and stdout
                     "env": os.environ
                 }
+                run_prep_cmd = ""
                 if Platform.isWindows():
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+                else:
+                    run_prep_cmd = f"LD_LIBRARY_PATH={os.environ['LD_LIBRARY_PATH']}:$LD_LIBRARY_PATH "
                 Logger.info(f"Starting plugin with: {popen_kwargs}")
-                self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
+                self._process = subprocess.Popen(f"{run_prep_cmd}{self._validatePluginCommand()}", **popen_kwargs)
             self._is_running = True
             return True
         except PermissionError:
