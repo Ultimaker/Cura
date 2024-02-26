@@ -27,7 +27,6 @@ class CuraSceneNode(SceneNode):
             self.addDecorator(SettingOverrideDecorator())  # Now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
         self._print_order = 0
-        self._drop_down = Application.getInstance().getPreferences().getValue("physics/automatic_drop_down")
 
     def setOutsideBuildArea(self, new_value: bool) -> None:
         self._outside_buildarea = new_value
@@ -45,7 +44,7 @@ class CuraSceneNode(SceneNode):
 
     @property
     def isDropDownEnabled(self) ->bool:
-        return self.getSetting(SceneNodeSettings.AutoDropDown, self._drop_down)
+        return self.getSetting(SceneNodeSettings.AutoDropDown, Application.getInstance().getPreferences().getValue("physics/automatic_drop_down"))
 
     def isVisible(self) -> bool:
         return super().isVisible() and self.callDecoration("getBuildPlateNumber") == cura.CuraApplication.CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
