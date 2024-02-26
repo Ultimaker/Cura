@@ -55,7 +55,7 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
         port = sock.getsockname()[1]
         self.setPort(port)
 
-    def _validatePluginCommand(self) -> list[str]:
+    def _validatePluginCommand(self) -> List[str]:
         """
         Validate the plugin command and add the port parameter if it is missing.
 
@@ -90,9 +90,11 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                     "stdin": None,
                     "stdout": f,  # Redirect output to file
                     "stderr": subprocess.STDOUT,  # Combine stderr and stdout
+                    "env": os.environ
                 }
                 if Platform.isWindows():
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+                Logger.info(f"Starting plugin with: {popen_kwargs}")
                 self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
             self._is_running = True
             return True
