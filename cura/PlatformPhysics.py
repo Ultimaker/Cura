@@ -38,7 +38,7 @@ class PlatformPhysics:
         self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
-        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", False)
+        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
         self._app_per_model_drop = None
 
     def getAppPerModelDropDown(self):
