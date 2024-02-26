@@ -47,6 +47,11 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
         onTriggered:
         {
+            const args = {
+                "filter_by_machine": false,
+                "file_type": "workspace",
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            };
             if (UM.Preferences.getValue("cura/dialog_on_project_save"))
             {
                 saveWorkspaceDialog.args = args
@@ -54,11 +59,6 @@ Cura.Menu
             }
             else
             {
-                const args = {
-                    "filter_by_machine": false,
-                    "file_type": "workspace",
-                    "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-                };
                 UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
             }
         }
