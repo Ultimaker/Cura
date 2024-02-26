@@ -355,7 +355,6 @@ class CuraConan(ConanFile):
         self.requires("spdlog/1.12.0")
         self.requires("fmt/10.1.1")
         self.requires("zlib/1.2.13")
-        self.requires("protobuf/3.21.12")
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
