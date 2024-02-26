@@ -39,7 +39,7 @@ class PlatformPhysics:
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", False)
-        self._app_per_model_drop = Application.getInstance().getPreferences().getValue("physics/automatic_drop_down")
+        self._app_per_model_drop = None
 
     def getAppPerModelDropDown(self):
         return self._app_per_model_drop
@@ -78,6 +78,14 @@ class PlatformPhysics:
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
+        drop_down = False
+        # drop down in case nodes are asked to drop down from the user from workspaceDialog while opening 3mf
+        if self._app_per_model_drop and (self._app_per_model_drop != app_automatic_drop_down):
+            drop_down = True
+        # drop down in case the user has selected automated drop down preference for 3mf opening
+        if self._app_per_model_drop and app_automatic_drop_down:
+            drop_down= True
+
 
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
@@ -88,12 +96,9 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            # if per model drop is different then app_automatic_drop, in case of 3mf loading when user changes this setting for that model
-            if (self._app_per_model_drop != app_automatic_drop_down):
-                node.setSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop)
-            if node.getSetting(SceneNodeSettings.AutoDropDown, self._app_per_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            if (node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) or drop_down) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root)  and node.isEnabled():
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
-                move_vector = move_vector.set(y = -bbox.bottom + z_offset)
+                move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
             if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh") and node.callDecoration("getLayerData") is None:
@@ -180,7 +185,7 @@ class PlatformPhysics:
                 op.push()
 
         # setting this drop to model same as app_automatic_drop_down
-        self._app_per_model_drop = app_automatic_drop_down
+        self._app_per_model_drop = None
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume.updateNodeBoundaryCheck()
 

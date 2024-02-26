@@ -366,6 +366,7 @@ UM.Dialog
                     }
                     function reloadValue()
                     {
+                        manager.manager.setDropToBuildPlateForModel(checkDropModels.checked)
                         checkDropModels.checked = UM.Preferences.getValue("physics/automatic_drop_down")
                     }
                 }
