@@ -1087,7 +1087,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def setWorkplaceDropToBuildplate(self):
-        return self._physics.setAppPerModelDropDown()
+        return self._physics.setAppAllModelDropDown()
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:

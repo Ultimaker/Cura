@@ -39,10 +39,10 @@ class PlatformPhysics:
 
         Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
-        self._app_per_model_drop = None
+        self._app_all_model_drop = False
 
-    def setAppPerModelDropDown(self):
-        self._app_per_model_drop = True
+    def setAppAllModelDropDown(self):
+        self._app_all_model_drop = True
         self._onChangeTimerFinished()
 
     def _onSceneChanged(self, source):
@@ -76,9 +76,6 @@ class PlatformPhysics:
         # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
-        drop_down = False
-        if self._app_per_model_drop == True: drop_down = True
-
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
                 continue
@@ -88,7 +85,7 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            if (node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) or drop_down) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root)  and node.isEnabled():
+            if (node.getSetting(SceneNodeSettings.AutoDropDown, app_automatic_drop_down) or self._app_all_model_drop) and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root)  and node.isEnabled():
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y=-bbox.bottom + z_offset)
 
@@ -177,7 +174,7 @@ class PlatformPhysics:
                 op.push()
 
         # setting this drop to model same as app_automatic_drop_down
-        self._app_per_model_drop = None
+        self._app_all_model_drop = False
         # After moving, we have to evaluate the boundary checks for nodes
         build_volume.updateNodeBoundaryCheck()
 
