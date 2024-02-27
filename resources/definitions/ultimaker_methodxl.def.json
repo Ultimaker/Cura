@@ -7,7 +7,7 @@
         "visible": true,
         "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
-        "file_formats": "application/x-makerbot",
+        "file_formats": "application/x-makerbot-sketch",
         "platform": "ultimaker_method_xl_platform.stl",
         "has_machine_materials": true,
         "has_machine_quality": true,

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 UltiMaker
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from io import StringIO, BufferedIOBase
@@ -73,8 +73,8 @@ class MakerbotWriter(MeshWriter):
 
         return None
 
-    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
-        print("METHOD WRITE")
+    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.TextMode) -> bool:
+        print("SKETCH WRITE")
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "MakerbotWriter does not support text mode.")
             self.setInformation(catalog.i18nc("@error:not supported", "MakerbotWriter does not support text mode."))
@@ -140,7 +140,7 @@ class MakerbotWriter(MeshWriter):
                 if not getattr(node, "_outside_buildarea", False):
                     if node.callDecoration(
                             "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
-                            "isNonThumbnailVisibleMesh"):
+                        "isNonThumbnailVisibleMesh"):
                         nodes.append(node)
 
         meta = dict()

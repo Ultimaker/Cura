@@ -21,7 +21,6 @@ def getMetaData():
         }
     }
 
-
 def register(app):
     return {
         "mesh_writer": MakerbotWriter.MakerbotWriter(),
