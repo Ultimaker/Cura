@@ -6069,12 +6069,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "brim_outside_only":
+                "brim_location":
                 {
-                    "label": "Brim Only on Outside",
-                    "description": "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much.",
-                    "type": "bool",
-                    "default_value": true,
+                    "label": "Brim Location",
+                    "description": "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "outside": "Outside Only",
+                        "inside": "Inside Only",
+                        "everywhere": "Everywhere"
+                    },
+                    "default_value": "outside",
                     "enabled": "resolveOrValue('adhesion_type') == 'brim'",
                     "limit_to_extruder": "skirt_brim_extruder_nr",
                     "settable_per_mesh": false,
