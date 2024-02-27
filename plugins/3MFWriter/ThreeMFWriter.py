@@ -272,7 +272,8 @@ class ThreeMFWriter(MeshWriter):
                 transformation_matrix.preMultiply(translation_matrix)
 
             root_node = UM.Application.Application.getInstance().getController().getScene().getRoot()
-            exported_model_settings = ThreeMFWriter._extractModelExportedSettings(export_settings_model)
+            exported_model_settings = ThreeMFWriter._extractModelExportedSettings(export_settings_model) if export_settings_model != None else None
+
             for node in nodes:
                 if node == root_node:
                     for root_child in node.getChildren():
