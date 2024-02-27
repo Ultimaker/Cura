@@ -155,6 +155,7 @@ class ThreeMFWriter(MeshWriter):
 
         if isinstance(um_node, CuraSceneNode):
             savitar_node.setSetting("cura:print_order", str(um_node.printOrder))
+            savitar_node.setSetting("cura:drop_to_buildplate", str(um_node.isDropDownEnabled))
 
         # Store the metadata.
         for key, value in um_node.metadata.items():

@@ -11,6 +11,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator  # To cast the deepcopy of every decorator back to SceneNodeDecorator.
 
 import cura.CuraApplication  # To get the build plate.
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from cura.Settings.ExtruderStack import ExtruderStack  # For typing.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator  # For per-object settings.
 
@@ -40,6 +41,10 @@ class CuraSceneNode(SceneNode):
 
     def isOutsideBuildArea(self) -> bool:
         return self._outside_buildarea or self.callDecoration("getBuildPlateNumber") < 0
+
+    @property
+    def isDropDownEnabled(self) ->bool:
+        return self.getSetting(SceneNodeSettings.AutoDropDown, Application.getInstance().getPreferences().getValue("physics/automatic_drop_down"))
 
     def isVisible(self) -> bool:
         return super().isVisible() and self.callDecoration("getBuildPlateNumber") == cura.CuraApplication.CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate

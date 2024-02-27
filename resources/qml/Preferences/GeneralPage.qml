@@ -513,7 +513,6 @@ UM.PreferencesPage
                     onCheckedChanged:
                     {
                         UM.Preferences.setValue("physics/automatic_drop_down", checked)
-                        CuraApplication.getWorkplaceDropToBuildplate(checked)
                     }
                 }
             }
