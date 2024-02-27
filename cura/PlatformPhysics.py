@@ -41,11 +41,9 @@ class PlatformPhysics:
         Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
         self._app_per_model_drop = None
 
-    def getAppPerModelDropDown(self):
-        return self._app_per_model_drop
-
-    def setAppPerModelDropDown(self, drop_to_buildplate):
-        self._app_per_model_drop = drop_to_buildplate
+    def setAppPerModelDropDown(self):
+        self._app_per_model_drop = True
+        self._onChangeTimerFinished()
 
     def _onSceneChanged(self, source):
         if not source.callDecoration("isSliceable"):
@@ -79,13 +77,7 @@ class PlatformPhysics:
         # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
         drop_down = False
-        # drop down in case nodes are asked to drop down from the user from workspaceDialog while opening 3mf
-        if self._app_per_model_drop and (self._app_per_model_drop != app_automatic_drop_down):
-            drop_down = True
-        # drop down in case the user has selected automated drop down preference for 3mf opening
-        if self._app_per_model_drop and app_automatic_drop_down:
-            drop_down= True
-
+        if self._app_per_model_drop == True: drop_down = True
 
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:

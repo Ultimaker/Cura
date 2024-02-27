@@ -353,26 +353,6 @@ UM.Dialog
 
                 Row
                 {
-                    id: dropToBuildPlate
-                    width: parent.width
-                    height: childrenRect.height
-                    spacing: UM.Theme.getSize("default_margin").width
-                    UM.CheckBox
-                    {
-                        id: checkDropModels
-                        text: catalog.i18nc("@text:window", "Drop models to buildplate")
-                        checked: UM.Preferences.getValue("physics/automatic_drop_down")
-                        onCheckedChanged: manager.setDropToBuildPlateForModel(checked)
-                    }
-                    function reloadValue()
-                    {
-                        manager.setDropToBuildPlateForModel(checkDropModels.checked)
-                        checkDropModels.checked = UM.Preferences.getValue("physics/automatic_drop_down")
-                    }
-                }
-
-                Row
-                {
                     id: clearBuildPlateWarning
                     width: parent.width
                     height: childrenRect.height
@@ -493,7 +473,6 @@ UM.Dialog
             materialSection.reloadValues()
             profileSection.reloadValues()
             printerSection.reloadValues()
-            dropToBuildPlate.reloadValue()
         }
     }
 }
