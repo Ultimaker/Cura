@@ -175,9 +175,9 @@ class ThreeMFWriter(MeshWriter):
     def getArchive(self):
         return self._archive
 
-    def _addShareLogoToThumbnail(self, primary_image):
+    def _addLogoToThumbnail(self, primary_image, logo_name):
         # Load the icon png image
-        icon_image = QImage(Resources.getPath(Resources.Images,  "cura-share.png"))
+        icon_image = QImage(Resources.getPath(Resources.Images,  logo_name))
 
         # Resize icon_image to be 1/4 of primary_image size
         new_width = int(primary_image.width() / 4)
@@ -217,7 +217,9 @@ class ThreeMFWriter(MeshWriter):
             snapshot = self._createSnapshot()
             if snapshot:
                 if export_settings_model != None:
-                    self._addShareLogoToThumbnail(snapshot)
+                    self._addLogoToThumbnail(snapshot, "cura-share.png")
+                elif export_settings_model == None and self._store_archive:
+                    self._addLogoToThumbnail(snapshot, "cura-icon.png")
                 thumbnail_buffer = QBuffer()
                 thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
