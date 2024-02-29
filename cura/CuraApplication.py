@@ -1979,6 +1979,18 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, bool)
+    def readLocalUcpFile(self, file: QUrl, add_to_recent_files: bool = True):
+
+        file_name = QUrl(file).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler()
+        if workspace_reader is None:
+            Logger.log("w", "Workspace reader not found")
+            return
+
+        workspace_reader.getReaderForFile(file_name).setOpenAsUcp(True)
+        workspace_reader.readLocalFile(file, add_to_recent_files)
+
     @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)

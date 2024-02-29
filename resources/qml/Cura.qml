@@ -701,24 +701,34 @@ UM.MainWindow
 
             if (hasProjectFile)
             {
-                var projectFile = projectFileUrlList[0];
-
-                // check preference
-                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                if (choice == "open_as_project")
+                var projectFile = projectFileUrlList[0]
+                var is_ucp = CuraActions.isProjectUcp(projectFile);
+                print("this file is ucp", is_ucp);
+                if (is_ucp)
                 {
-                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+                    askOpenAsProjectOrUcpOrImportModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrUcpOrImportModelsDialog.addToRecent = true;
+                    askOpenAsProjectOrUcpOrImportModelsDialog.show();
                 }
-                else if (choice == "open_as_model")
+                else
                 {
-                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
-                }
-                else    // always ask
-                {
-                    // ask whether to open as project or as models
-                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                    askOpenAsProjectOrModelsDialog.addToRecent = true;
-                    askOpenAsProjectOrModelsDialog.show();
+                    // check preference
+                    var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                    if (choice == "open_as_project")
+                    {
+                        openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+                    }
+                    else if (choice == "open_as_model")
+                    {
+                        openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
+                    }
+                    else    // always ask
+                    {
+                        // ask whether to open as project or as models
+                        askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                        askOpenAsProjectOrModelsDialog.addToRecent = true;
+                        askOpenAsProjectOrModelsDialog.show();
+                    }
                 }
             }
             else
@@ -769,14 +779,31 @@ UM.MainWindow
         id: askOpenAsProjectOrModelsDialog
     }
 
+    AskOpenAsProjectOrUcpOrImportModel
+    {
+        id: askOpenAsProjectOrUcpOrImportModelsDialog
+    }
+
     Connections
     {
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
-            askOpenAsProjectOrModelsDialog.fileUrl = project_file;
-            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
-            askOpenAsProjectOrModelsDialog.show();
+            var is_ucp = CuraActions.isProjectUcp(project_file);
+            print("this file is ucp", is_ucp);
+            if (is_ucp)
+            {
+
+                askOpenAsProjectOrUcpOrImportModelsDialog.fileUrl = project_file;
+                askOpenAsProjectOrUcpOrImportModelsDialog.addToRecent = add_to_recent_files;
+                askOpenAsProjectOrUcpOrImportModelsDialog.show();
+            }
+            else
+            {
+                askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+                askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
+                askOpenAsProjectOrModelsDialog.show();
+            }
         }
     }
 

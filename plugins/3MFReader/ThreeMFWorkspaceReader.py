@@ -117,6 +117,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
+        self._is_ucp = False
         self._container_registry = ContainerRegistry.getInstance()
 
         # suffixes registered with the MimeTypes don't start with a dot '.'
@@ -152,6 +153,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info = None
         self._load_profile = False
         self._user_settings = {}
+
+    def setOpenAsUcp(self, openAsUcp: bool):
+        self._is_ucp =  openAsUcp
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
@@ -242,7 +246,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machines = None if is_ucp else []
+        updatable_machines = None if self._is_ucp else []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -609,7 +613,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Load the user specifically exported settings
         self._dialog.exportedSettingModel.clear()
-        if is_ucp:
+        if self._is_ucp:
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
@@ -658,8 +662,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
-        self._dialog.setHasVisibleSelectSameProfileChanged(is_ucp)
-        self._dialog.setAllowCreatemachine(not is_ucp)
+        self._dialog.setHasVisibleSelectSameProfileChanged(self._is_ucp)
+        self._dialog.setAllowCreatemachine(not self._is_ucp)
         self._dialog.show()
 
 
@@ -701,7 +705,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
 
-        self._load_profile = not is_ucp or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
+        self._load_profile = not self._is_ucp
 
         self._resolve_strategies = self._dialog.getResult()
         #
@@ -717,7 +721,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in containers_found_dict or strategy is not None:
                 continue
             self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
-
+        self._is_ucp = False
         return WorkspaceReader.PreReadResult.accepted
 
     @call_on_qt_thread
