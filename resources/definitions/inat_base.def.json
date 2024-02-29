@@ -113,7 +113,7 @@
             "minimum_value_warning": "100"
         },
         "adhesion_type": { "value": "'skirt'" },
-        "brim_outside_only": { "value": false },
+        "brim_location": { "value": "everywhere" },
         "cool_fan_speed_min": { "value": "0.5*cool_fan_speed" },
         "cool_min_layer_time_fan_speed_max": { "value": 10 },
         "default_material_bed_temperature": { "maximum_value": "150" },

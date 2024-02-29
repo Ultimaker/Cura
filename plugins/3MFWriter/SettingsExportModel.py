@@ -39,7 +39,7 @@ class SettingsExportModel(QObject):
                            'adaptive_layer_height_enabled',
                            'brim_gap',
                            'support_offset',
-                           'brim_outside_only',
+                           'brim_location',
                            'magic_spiralize',
                            'slicing_tolerance',
                            'outer_inset_first',
