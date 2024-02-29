@@ -19,7 +19,7 @@ RowLayout
         Layout.preferredWidth: UM.Theme.getSize("setting").width
         checked: modelData.selected
         onClicked: modelData.selected = checked
-        enabled: modelData.selectable
+
     }
 
     UM.Label

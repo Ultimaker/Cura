@@ -135,13 +135,16 @@ class ThreeMFWriter(MeshWriter):
         stack = um_node.callDecoration("getStack")
         if stack is not None:
             changed_setting_keys = stack.getTop().getAllKeys()
-            # Ensure that we save the extruder used for this object in a multi-extrusion setup
-            if stack.getProperty("machine_extruder_count", "value") > 1:
-                changed_setting_keys.add("extruder_nr")
-            # Get values for all changed settings & save them.
-            for key in changed_setting_keys:
-                savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
-            if exported_settings is not None:
+
+            if exported_settings is None:
+                # Ensure that we save the extruder used for this object in a multi-extrusion setup
+                if stack.getProperty("machine_extruder_count", "value") > 1:
+                    changed_setting_keys.add("extruder_nr")
+
+                # Get values for all changed settings & save them.
+                for key in changed_setting_keys:
+                    savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
+            else:
                  # We want to export only the specified settings
                 if um_node.getName() in exported_settings:
                     model_exported_settings = exported_settings[um_node.getName()]

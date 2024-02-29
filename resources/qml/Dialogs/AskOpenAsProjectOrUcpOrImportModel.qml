@@ -29,13 +29,6 @@ UM.Dialog
     property var fileUrl
     property var addToRecent: true //Whether to add this file to the recent files list after reading it.
 
-    // load the entire project
-    function loadProjectFile() {
-
-        UM.WorkspaceFileHandler.readLocalFile(base.fileUrl, base.addToRecent);
-
-        base.hide()
-    }
 
     // load the project file as separated models
     function loadModelFiles() {
@@ -57,10 +50,8 @@ UM.Dialog
         // when hitting 'enter', we always open as project unless open_as_model was explicitly stored as preference
         if (openAsPreference == "open_as_model") {
             loadModelFiles()
-        } else if (openAsPreference == "open_as_ucp"){
+        } else{
             loadUcpFiles()
-        }else {
-            loadProjectFile()
         }
     }
 
@@ -78,21 +69,17 @@ UM.Dialog
         }
     }
 
-    onAccepted: loadProjectFile()
+    onAccepted: loadUcpFile()
     onRejected: loadModelFiles()
 
     buttonSpacing: UM.Theme.getSize("thin_margin").width
 
     rightButtons:
     [
-        Cura.SecondaryButton
-        {
-            text: catalog.i18nc("@action:button", "Open as project")
-            onClicked: loadProjectFile()
-        },
         Cura.PrimaryButton
         {
             text: catalog.i18nc("@action:button", "Open as UCP")
+            iconSource: UM.Theme.getIcon("CuraShareIcon")
             onClicked: loadUcpFiles()
         },
         Cura.SecondaryButton
