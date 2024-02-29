@@ -116,6 +116,9 @@ class PrintOrderManager(QObject):
                                      ) -> (Optional[CuraSceneNode], Optional[CuraSceneNode], Optional[CuraSceneNode]):
         nodes = self._get_nodes()
         ordered_nodes = sorted(nodes, key=lambda n: n.printOrder)
+        for i, node in enumerate(ordered_nodes, 1):
+            node.printOrder = i
+
         selected_node = PrintOrderManager._getSingleSelectedNode()
         if selected_node and selected_node in ordered_nodes:
             selected_node_index = ordered_nodes.index(selected_node)

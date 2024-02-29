@@ -118,7 +118,7 @@ class SettingsExportModel(QObject):
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
                 # This is not very good looking, but will do for now
-                value = SettingDefinition.settingValueToString(setting_type, value) + " " + unit
+                value = f"{str(SettingDefinition.settingValueToString(setting_type, value))} {unit}"
             else:
                 value = str(value)
 
