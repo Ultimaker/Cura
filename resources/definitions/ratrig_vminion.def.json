@@ -11,7 +11,7 @@
         "machine_extruder_trains": { "0": "ratrig_base_extruder_0" },
         "platform_offset": [
             0,
-            5,
+            0,
             0
         ],
         "preferred_variant_name": "0.4mm Nozzle",
