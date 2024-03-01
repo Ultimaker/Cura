@@ -16,7 +16,8 @@
         ],
         "exclude_materials": [
             "generic_hips",
-            "structur3d_dap100silicone"
+            "generic_flexible",
+            "structur3d_*"
         ],
         "firmware_update_info":
         {
