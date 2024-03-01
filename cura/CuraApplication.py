@@ -601,7 +601,9 @@ class CuraApplication(QtApplication):
         preferences.addPreference("mesh/scale_to_fit", False)
         preferences.addPreference("mesh/scale_tiny_meshes", True)
         preferences.addPreference("cura/dialog_on_project_save", True)
+        preferences.addPreference("cura/dialog_on_ucp_project_save", True)
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
+        preferences.addPreference("cura/asked_dialog_on_ucp_project_save", False)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
@@ -617,6 +619,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("view/invert_zoom", False)
         preferences.addPreference("view/filter_current_build_plate", False)
+        preferences.addPreference("view/navigation_style", "cura")
         preferences.addPreference("cura/sidebar_collapsed", False)
 
         preferences.addPreference("cura/favorite_materials", "")
@@ -1082,9 +1085,9 @@ class CuraApplication(QtApplication):
     def getTextManager(self, *args) -> "TextManager":
         return self._text_manager
 
-    @pyqtSlot(bool)
-    def getWorkplaceDropToBuildplate(self, drop_to_build_plate: bool) ->None:
-        return self._physics.setAppPerModelDropDown(drop_to_build_plate)
+    @pyqtSlot()
+    def setWorkplaceDropToBuildplate(self):
+        return self._physics.setAppAllModelDropDown()
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
@@ -1140,6 +1143,16 @@ class CuraApplication(QtApplication):
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel(self)
         return self._build_plate_model
+
+    @pyqtSlot()
+    def exportUcp(self):
+        writer = self.getMeshFileHandler().getWriter("3MFWriter")
+
+        if writer is None:
+            Logger.warning("3mf writer is not enabled")
+            return
+
+        writer.exportUcp()
 
     def getCuraSceneController(self, *args) -> CuraSceneController:
         if self._cura_scene_controller is None:
