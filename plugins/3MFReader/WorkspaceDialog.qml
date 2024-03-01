@@ -185,14 +185,14 @@ UM.Dialog
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Not in profile")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                            visible: manager.numUserSettings != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
+                            visible: manager.numUserSettings != 0 && manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Derivative from")
                             rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
+                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
@@ -200,7 +200,7 @@ UM.Dialog
                             leftLabelText: catalog.i18nc("@action:label", "Specific settings")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
-                            visible: !manager.selectSameProfileChecked || !manager.isCompatibleMachine
+                            visible: manager.isUcp
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
 
@@ -209,8 +209,8 @@ UM.Dialog
                             id: tableViewSpecificSettings
                             width: parent.width - parent.leftPadding - UM.Theme.getSize("default_margin").width
                             height: UM.Theme.getSize("card").height
-                            visible: shouldBeVisible && (!manager.selectSameProfileChecked || !manager.isCompatibleMachine)
-                            property bool shouldBeVisible: false
+                            visible: shouldBeVisible && manager.isUcp
+                            property bool shouldBeVisible: true
 
                             columnHeaders:
                             [
@@ -232,7 +232,7 @@ UM.Dialog
                             text: catalog.i18nc("@action:checkbox", "Select the same profile")
                             onEnabledChanged: manager.selectSameProfileChecked = enabled
                             tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
-                            visible: manager.hasVisibleSelectSameProfile && manager.isCompatibleMachine
+                            visible: manager.isUcp
 
                             checked: manager.selectSameProfileChecked
                             onCheckedChanged: manager.selectSameProfileChecked = checked
@@ -330,6 +330,7 @@ UM.Dialog
                     id: visibilitySection
                     title: catalog.i18nc("@action:label", "Setting visibility")
                     iconSource: UM.Theme.getIcon("Eye")
+                    visible : !manager.isUcp
                     content: Column
                     {
                         spacing: UM.Theme.getSize("default_margin").height

@@ -212,6 +212,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return global_stack_file_list[0], extruder_stack_file_list
 
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
+        result = self._preRead(file_name, show_dialog)
+        self._is_ucp = False
+        return result
+
+    def _preRead(self, file_name, show_dialog=True):
         """Read some info so we can make decisions
 
         :param file_name:
@@ -662,8 +667,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
-        self._dialog.setHasVisibleSelectSameProfileChanged(self._is_ucp)
         self._dialog.setAllowCreatemachine(not self._is_ucp)
+        self._dialog.setIsUcp(self._is_ucp)
         self._dialog.show()
 
 
@@ -721,7 +726,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in containers_found_dict or strategy is not None:
                 continue
             self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
-        self._is_ucp = False
         return WorkspaceReader.PreReadResult.accepted
 
     @call_on_qt_thread

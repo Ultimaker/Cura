@@ -74,10 +74,10 @@ class WorkspaceDialog(QObject):
         self._is_abstract_machine = False
         self._is_networked_machine = False
         self._is_compatible_machine = False
-        self._has_visible_select_same_profile = False
         self._select_same_profile_checked = True
         self._allow_create_machine = True
         self._exported_settings_model = SpecificSettingsModel()
+        self._is_ucp = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -102,7 +102,7 @@ class WorkspaceDialog(QObject):
     isPrinterGroupChanged = pyqtSignal()
     missingPackagesChanged = pyqtSignal()
     isCompatibleMachineChanged = pyqtSignal()
-    hasVisibleSelectSameProfileChanged = pyqtSignal()
+    isUcpChanged = pyqtSignal()
     selectSameProfileCheckedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
@@ -318,14 +318,14 @@ class WorkspaceDialog(QObject):
     def isCompatibleMachine(self) -> bool:
         return self._is_compatible_machine
 
-    def setHasVisibleSelectSameProfileChanged(self, has_visible_select_same_profile):
-        if has_visible_select_same_profile != self._has_visible_select_same_profile:
-            self._has_visible_select_same_profile = has_visible_select_same_profile
-            self.hasVisibleSelectSameProfileChanged.emit()
+    def setIsUcp(self, isUcp: bool) -> None:
+        if isUcp != self._is_ucp:
+            self._is_ucp = isUcp
+            self.isUcpChanged.emit()
 
-    @pyqtProperty(bool, notify = hasVisibleSelectSameProfileChanged)
-    def hasVisibleSelectSameProfile(self):
-        return self._has_visible_select_same_profile
+    @pyqtProperty(bool, notify=isUcpChanged)
+    def isUcp(self):
+        return self._is_ucp
 
     def setSelectSameProfileChecked(self, select_same_profile_checked):
         if select_same_profile_checked != self._select_same_profile_checked:
