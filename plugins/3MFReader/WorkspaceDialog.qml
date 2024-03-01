@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: workspaceDialog
-    title: catalog.i18nc("@title:window", "Open Project")
+    title: manager.isUcp? catalog.i18nc("@title:window", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -28,7 +28,7 @@ UM.Dialog
         UM.Label
         {
             id: titleLabel
-            text: catalog.i18nc("@action:title", "Summary - Cura Project")
+            text: manager.isUcp? catalog.i18nc("@action:title", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
             font: UM.Theme.getFont("large")
             anchors.top: parent.top
             anchors.left: parent.left
@@ -159,7 +159,7 @@ UM.Dialog
                 WorkspaceSection
                 {
                     id: profileSection
-                    title: catalog.i18nc("@action:label", "Profile settings")
+                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Profile settings"):catalog.i18nc("@action:label", "Profile settings")
                     iconSource: UM.Theme.getIcon("Sliders")
                     content: Column
                     {
@@ -194,13 +194,26 @@ UM.Dialog
                             rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
                             visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.isCompatibleMachine
                         }
+                    }
+                }
+                WorkspaceSection
+                {
+                    id: ucpProfileSection
+                    visible: manager.isUcp
+                    title: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
+                    iconSource: UM.Theme.getIcon("Settings")
+
+                    content: Column
+                    {
+                        id: ucpProfileSettingsValuesTable
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
                         WorkspaceRow
                         {
-                            leftLabelText: catalog.i18nc("@action:label", "Specific settings")
+                            leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
-                            visible: manager.isUcp
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
 
@@ -263,7 +276,7 @@ UM.Dialog
                 WorkspaceSection
                 {
                     id: materialSection
-                    title: catalog.i18nc("@action:label", "Material settings")
+                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Material settings"): catalog.i18nc("@action:label", "Material settings")
                     iconSource: UM.Theme.getIcon("Spool")
                     content: Column
                     {
@@ -457,12 +470,13 @@ UM.Dialog
     {
         if (visible)
         {
-            // Force relead the comboboxes
+            // Force reload the comboboxes
             // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
             // each time it is shown after the first time so that the indexes will update correctly.
             materialSection.reloadValues()
             profileSection.reloadValues()
             printerSection.reloadValues()
+            ucpProfileSection.reloadValues()
         }
     }
 }
