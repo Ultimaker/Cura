@@ -4,9 +4,6 @@
 from UM.Job import Job
 from UM.Logger import Logger
 
-from .avr_isp import ispBase
-from .avr_isp.stk500v2 import Stk500v2
-
 from time import time, sleep
 from serial import Serial, SerialException
 
@@ -27,14 +24,7 @@ class AutoDetectBaudJob(Job):
         write_timeout = 3
         read_timeout = 3
         tries = 2
-
-        programmer = Stk500v2()
         serial = None
-        try:
-            programmer.connect(self._serial_port)
-            serial = programmer.leaveISP()
-        except ispBase.IspError:
-            programmer.close()
 
         for retry in range(tries):
             for baud_rate in self._all_baud_rates:

@@ -76,6 +76,7 @@ class CuraEngineBackend(QObject, Backend):
         self._default_engine_location = executable_name
 
         search_path = [
+            os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..", "Resources")),
             os.path.abspath(os.path.dirname(sys.executable)),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "bin")),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..")),
@@ -83,7 +84,6 @@ class CuraEngineBackend(QObject, Backend):
             os.path.join(CuraApplication.getInstallPrefix(), "bin"),
             os.path.dirname(os.path.abspath(sys.executable)),
         ]
-        self._last_backend_plugin_port = self._port + 1000
         for path in search_path:
             engine_path = os.path.join(path, executable_name)
             if os.path.isfile(engine_path):
@@ -164,6 +164,8 @@ class CuraEngineBackend(QObject, Backend):
         self._is_disabled: bool = False
 
         application.getPreferences().addPreference("general/auto_slice", False)
+        application.getPreferences().addPreference("info/send_engine_crash", True)
+        application.getPreferences().addPreference("info/anonymous_engine_crash_report", True)
 
         self._use_timer: bool = False
 
@@ -174,10 +176,15 @@ class CuraEngineBackend(QObject, Backend):
         self._change_timer.setSingleShot(True)
         self._change_timer.setInterval(500)
         self.determineAutoSlicing()
+
+
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._slicing_error_message = Message(
-            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            text = catalog.i18nc("@message", "Oops! We encountered an unexpected error during your slicing process. "
+                                             "Rest assured, we've automatically received the crash logs for analysis, "
+                                             "if you have not disabled data sharing in your preferences. To assist us "
+                                             "further, consider sharing your project details on our issue tracker."),
             title = catalog.i18nc("@message:title", "Slicing failed"),
             message_type = Message.MessageType.ERROR
         )
@@ -194,6 +201,9 @@ class CuraEngineBackend(QObject, Backend):
 
         application.initializationFinished.connect(self.initialize)
 
+        # Ensure that the initial value for send_engine_crash is handled correctly.
+        application.callLater(self._onPreferencesChanged, "info/send_engine_crash")
+
     def startPlugins(self) -> None:
         """
         Ensure that all backend plugins are started
@@ -205,8 +215,7 @@ class CuraEngineBackend(QObject, Backend):
         for backend_plugin in backend_plugins:
             # Set the port to prevent plugins from using the same one.
             if backend_plugin.getPort() < 1:
-                backend_plugin.setPort(self._last_backend_plugin_port)
-                self._last_backend_plugin_port += 1
+                backend_plugin.setAvailablePort()
             backend_plugin.start()
 
     def stopPlugins(self) -> None:
@@ -1090,11 +1099,14 @@ class CuraEngineBackend(QObject, Backend):
             self._change_timer.timeout.disconnect(self.slice)
 
     def _onPreferencesChanged(self, preference: str) -> None:
-        if preference != "general/auto_slice":
+        if preference != "general/auto_slice" and preference != "info/send_engine_crash" and preference != "info/anonymous_engine_crash_report":
             return
-        auto_slice = self.determineAutoSlicing()
-        if auto_slice:
-            self._change_timer.start()
+        if preference == "general/auto_slice":
+            auto_slice = self.determineAutoSlicing()
+            if auto_slice:
+                self._change_timer.start()
+        elif preference == "info/send_engine_crash":
+            os.environ["USE_SENTRY"] = "1" if CuraApplication.getInstance().getPreferences().getValue("info/send_engine_crash") else "0"
 
     def tickle(self) -> None:
         """Tickle the backend so in case of auto slicing, it starts the timer."""

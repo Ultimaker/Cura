@@ -222,7 +222,7 @@
         "raft_surface_speed": { "value": 40.0 },
         "raft_surface_thickness": { "value": 0.25 },
         "retraction_amount": { "default_value": 3 },
-        "retraction_combing": { "value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "retraction_extrusion_window": { "value": 1.0 },
         "retraction_hop_after_extruder_switch": { "default_value": false },
         "retraction_min_travel": { "value": 0.8 },

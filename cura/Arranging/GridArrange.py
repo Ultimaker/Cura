@@ -80,7 +80,7 @@ class GridArrange(Arranger):
 
         self._allowed_grid_idx = self._build_plate_grid_ids.difference(self._fixed_nodes_grid_ids)
 
-    def createGroupOperationForArrange(self, *, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
+    def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         # Find the sequence in which items are placed
         coord_build_plate_center_x = self._build_volume_bounding_box.width * 0.5 + self._build_volume_bounding_box.left
         coord_build_plate_center_y = self._build_volume_bounding_box.depth * 0.5 + self._build_volume_bounding_box.back
@@ -118,8 +118,9 @@ class GridArrange(Arranger):
 
     def _findOptimalGridOffset(self):
         if len(self._fixed_nodes) == 0:
-            self._offset_x = 0
-            self._offset_y = 0
+            edge_disallowed_size = self._build_volume.getEdgeDisallowedSize()
+            self._offset_x = edge_disallowed_size
+            self._offset_y = edge_disallowed_size
             return
 
         if len(self._fixed_nodes) == 1:
@@ -240,14 +241,8 @@ class GridArrange(Arranger):
         center_grid_x = coord_grid_x + (0.5 * self._grid_width)
         center_grid_y = coord_grid_y + (0.5 * self._grid_height)
 
-        bounding_box = node.getBoundingBox()
-        center_node_x = (bounding_box.left + bounding_box.right) * 0.5
-        center_node_y = (bounding_box.back + bounding_box.front) * 0.5
-
-        delta_x = center_grid_x - center_node_x
-        delta_y = center_grid_y - center_node_y
-
-        return TranslateOperation(node, Vector(delta_x, 0, delta_y))
+        return TranslateOperation(node, Vector(center_grid_x, node.getWorldPosition().y, center_grid_y),
+                                  set_position=True)
 
     def _getGridCornerPoints(
             self,

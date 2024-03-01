@@ -1,14 +1,8 @@
-# Cura
-# Copyright (C) 2022 UltiMaker.
-# This file is distributed under the same license as the Cura package.
-# Ultimaker <plugins@ultimaker.com>, 2022.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 14:20+0000\n"
+"POT-Creation-Date: 2023-10-31 19:13+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,13 +150,6 @@ msgstr ""
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr "-- eksik --"
-
-#, python-brace-format
-msgctxt "info:{0} gets replaced by a number of printers"
-msgid "... and {0} other"
-msgid_plural "... and {0} others"
-msgstr[0] "... ve {0} diğeri"
-msgstr[1] "... ve {0} diğeri"
 
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
@@ -502,7 +489,7 @@ msgstr "Bir modelin birimi milimetre değil de metre ise oldukça küçük gör�
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Tavlama"
 
 msgctxt "@label"
 msgid "Anonymous"
@@ -567,8 +554,12 @@ msgid "Arrange All Models"
 msgstr "Tüm Modelleri Düzenle"
 
 msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange All Models in a grid"
+msgstr "Tüm Modelleri bir ızgarada düzenleyin"
+
+msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
-msgstr "Seçimi Düzenle"
+msgstr "Düzenleme Seçimi"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -634,13 +625,13 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "Yedeklemeler"
 
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Dengeli"
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Taban (mm)"
-
-msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with UltiMaker e-learning."
-msgstr "UltiMaker e-öğrenme ile 3D baskı uzmanı olun."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
@@ -985,6 +976,10 @@ msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Tüm değiştirilmiş değerleri tüm ekstruderlere kopyala"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Copy to clipboard"
+msgstr "Panoya kopyala"
+
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Değeri tüm ekstruderlere kopyala"
@@ -1018,6 +1013,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "Sunucunun yanıtı yorumlanamadı."
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr "GCodeWriter eklentisi yüklenemedi. Eklentiyi yeniden etkinleştirmeyi deneyin."
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Pazar Yerine ulaşılamadı."
@@ -1043,6 +1042,33 @@ msgstr "Çıkarılabilir aygıta {0} kaydedilemedi: {1}"
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Veri yazıcıya yüklenemedi."
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"İşlem yürütme izni yok."
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"İşletim sistemi tarafından engelleniyor (antivirüs?)"
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr ""
+"EnginePlugin başlatılamadı: {self._plugin_id}\n"
+"Kaynak geçici olarak kullanılamıyor"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1153,6 +1179,14 @@ msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "CuraEngine Arka Uç"
 
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "Yüksek akışlı sıçramaları sınırlamak amacıyla akışı kademeli olarak düzelten CuraEngine eklentisi"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
+
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Para Birimi:"
@@ -1197,6 +1231,10 @@ msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Özel profiller"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Cut"
+msgstr "Kes"
+
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
 msgstr "Kesme Örgüsü"
@@ -1227,11 +1265,7 @@ msgstr "Reddet ve hesaptan kaldır"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
-
-msgctxt "@label"
-msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
@@ -1428,8 +1462,8 @@ msgid "Enable Extruder"
 msgstr "Ekstruderi Etkinleştir"
 
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "Bir kenar veya radye yazdırın. Bu nesnenizin etrafına veya altına daha sonra kesilmesi kolay olan düz bir alan sağlayacak."
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
+msgstr "Kenarlık veya radye yazdırmayı etkinleştirin. Bu, nesnenizin etrafına veya altına daha sonradan kolayca kesebileceğiniz düz bir alan ekleyecektir. Bu ayarı devre dışı bıraktığınızda ise nesnenin etrafında bir etek oluşur."
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1447,9 +1481,13 @@ msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Kaynaşık filaman 3B yazdırma için kalıcı çözüm."
 
+msgctxt "@info:title"
+msgid "EnginePlugin"
+msgstr "EnginePlugin"
+
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Mühendislik"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
@@ -1470,10 +1508,6 @@ msgstr "Hata"
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "Hata geri izleme"
-
-msgctxt "@error:zip"
-msgid "Error writing 3mf file."
-msgstr "3mf dosyasını yazarken hata oluştu."
 
 msgctxt "@label"
 msgid "Estimated time left"
@@ -1847,6 +1881,10 @@ msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Grafik kullanıcı arayüzü"
 
+msgctxt "@label"
+msgid "Grid Placement"
+msgstr "Izgara Yerleşimi"
+
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1881,10 +1919,6 @@ msgid "Helpers"
 msgstr "Yardımcılar"
 
 msgctxt "@label"
-msgid "Hex"
-msgstr "Altıgen"
-
-msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "Bağlı tüm yazıcıları gizle"
 
@@ -1902,7 +1936,7 @@ msgstr "Modelin desteklenmeyen alanlarını kırmızı ile gösterin. Destek al�
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Yazıcıma yeni malzeme profillerini nasıl yüklerim"
 
 msgctxt "@action:button"
 msgid "How to update"
@@ -2028,10 +2062,6 @@ msgctxt "@button"
 msgid "Install"
 msgstr "Yükle"
 
-msgctxt "@action:button"
-msgid "Install Materials"
-msgstr "Malzeme Yükle"
-
 msgctxt "@header"
 msgid "Install Materials"
 msgstr "Malzeme Yükle"
@@ -2040,17 +2070,29 @@ msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Paketi Kur"
 
+msgctxt "@action:button"
+msgid "Install Packages"
+msgstr "Paketleri Yükle"
+
+msgctxt "@header"
+msgid "Install Packages"
+msgstr "Paketleri Yükle"
+
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr "Eklentileri Yükle"
 
-msgctxt "@title"
-msgid "Install missing Materials"
-msgstr "Eksik Malzemeleri yükle"
-
 msgctxt "@action:button"
-msgid "Install missing material"
-msgstr "Eksik malzemeyi yükle"
+msgid "Install missing packages"
+msgstr "Eksik paketleri yükle"
+
+msgctxt "@title"
+msgid "Install missing packages"
+msgstr "Eksik paketleri yükleyin"
+
+msgctxt "@label"
+msgid "Install missing packages from project file."
+msgstr "Eksik paketleri proje dosyasından yükleyin."
 
 msgctxt "@button"
 msgid "Install pending updates"
@@ -2070,7 +2112,7 @@ msgstr "Yükleniyor..."
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Amaç"
 
 msgctxt "@label"
 msgid "Interface"
@@ -2187,6 +2229,10 @@ msgstr "Cura baskı profilleri hakkında daha fazla bilgi edinin"
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
 msgstr "Cura’ya yazıcı ekleme hakkında daha fazla bilgi edinin"
+
+msgctxt "@label"
+msgid "Learn more about project packages."
+msgstr "Proje paketleri hakkında daha fazla bilgi edinin."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
@@ -2308,6 +2354,22 @@ msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Dosya göndermeden önce g-code’un yazıcınız ve yazıcı yapılandırmanız için uygun olduğundan emin olun. G-code temsili doğru olmayabilir."
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr "Makerbot Baskı Dosyası"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Makerbot Baskı Dosyası Yazarı"
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr "MakerbotWriter belirlenen yola kaydedemedi."
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr "MakerbotWriter metin modunu desteklemiyor."
+
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Malzemeleri Yönet..."
@@ -2412,10 +2474,6 @@ msgctxt "@label"
 msgid "Material estimation"
 msgstr "Malzeme tahmini"
 
-msgctxt "@info:title"
-msgid "Material profiles not installed"
-msgstr "Malzeme profilleri yüklü değil"
-
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "Malzeme profilleri aşağıdaki yazıcılarla başarıyla senkronize edildi:"
@@ -2518,6 +2576,10 @@ msgid_plural "Multiply Selected Models"
 msgstr[0] "Seçili Modeli Çoğalt"
 msgstr[1] "Seçili Modelleri Çoğalt"
 
+msgctxt "@info"
+msgid "Multiply selected item and place them in a grid of build plate."
+msgstr "Seçili öğeyi çoğaltıp yapı levhası ızgarasına yerleştirin."
+
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Nesneler çoğaltılıyor ve yerleştiriliyor"
@@ -2581,6 +2643,10 @@ msgstr "Sonraki"
 msgctxt "@button"
 msgid "Next"
 msgstr "Sonraki"
+
+msgctxt "@info:title"
+msgid "Nightly build"
+msgstr "Gecelik sürüm"
 
 msgctxt "@info"
 msgid "No"
@@ -2649,7 +2715,7 @@ msgstr "Hiçbiri"
 
 msgctxt "@label"
 msgid "Normal model"
-msgstr ""
+msgstr "Normal model"
 
 msgctxt "@info:title"
 msgid "Not a group host"
@@ -2861,6 +2927,10 @@ msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code ayrıştırma"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Paste from clipboard"
+msgstr "Panodan yapıştır"
+
 msgctxt "@label"
 msgid "Pause"
 msgstr "Duraklat"
@@ -2910,7 +2980,7 @@ msgstr "Nesneler Yerleştiriliyor"
 
 msgctxt "@label Type of platform"
 msgid "Platform"
-msgstr ""
+msgstr "Platform"
 
 msgctxt "@info"
 msgid "Please connect your printer to the network."
@@ -2950,7 +3020,7 @@ msgstr "Bu profil için lütfen bir ad girin."
 
 msgctxt "@info"
 msgid "Please provide a new name."
-msgstr "Lütfen yeni bir ad girin."
+msgstr "Lütfen yeni bir isim belirtin."
 
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
@@ -3386,6 +3456,10 @@ msgid "Provides support for writing 3MF files."
 msgstr "3MF dosyalarının yazılması için destek sağlar."
 
 msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "MakerBot Format Paketleri yazmayı destekler."
+
+msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr "Ultimaker Biçim Paketleri yazmak için destek sağlar."
 
@@ -3478,6 +3552,10 @@ msgctxt "@button"
 msgid "Refresh List"
 msgstr "Listeyi Yenile"
 
+msgctxt "@button"
+msgid "Refreshing..."
+msgstr "Yenileniyor..."
+
 msgctxt "@label"
 msgid "Release Notes"
 msgstr "Sürüm notları"
@@ -3516,7 +3594,7 @@ msgstr "Yeniden adlandır"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr "Yeniden adlandır"
+msgstr "Yeniden Adlandır"
 
 msgctxt "@title:window"
 msgid "Rename Profile"
@@ -3929,6 +4007,10 @@ msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Projeyi kaydederken özet iletişim kutusunu göster"
 
+msgctxt "@tooltip:button"
+msgid "Show your support for Cura with a donation."
+msgstr "Bağış yaparak Cura'ya desteğinizi gösterin."
+
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "Çıkış yap"
@@ -4027,9 +4109,17 @@ msgstr ""
 "\n"
 "Bu ayarları görmek için tıklayın."
 
+msgctxt "@info:status"
+msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
+msgstr "Proje dosyasında kullanılan paketlerden bazıları şu anda Cura'da yüklü değil. Bu durum, istenmeyen yazdırma sonuçlarına neden olabilir. Gerekli tüm paketleri Marketplace'ten yüklemenizi önemle tavsiye ederiz."
+
+msgctxt "@info:title"
+msgid "Some required packages are not installed"
+msgstr "Bazı gerekli paketler yüklü değil"
+
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
-msgstr ""
+msgstr "<b>1</b> kapsamında tanımlanan bazı ayar değerleri geçersiz kılındı."
 
 msgctxt "@tooltip"
 msgid ""
@@ -4060,6 +4150,14 @@ msgstr "Bir sorun oluştu..."
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "Hız"
+
+msgctxt "@action:inmenu"
+msgid "Sponsor Cura"
+msgstr "Cura'ya Sponsor Olun"
+
+msgctxt "@label:button"
+msgid "Sponsor Cura"
+msgstr "Cura'ya Sponsor Olun"
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4232,7 +4330,7 @@ msgstr "Resme uygulanacak düzeltme miktarı."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Tavlama profili, baskı bittikten sonra fırında son işlem yapılmasını gerektirir. Bu profil, tavlama sonrasında basılı parçanın boyutsal doğruluğunu korur ve mukavemeti, sertliği ve termal direnci artırır."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4243,6 +4341,10 @@ msgstr[1] "Atanan yazıcı %1, şu yapılandırma değişikliklerini gerektiriyo
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "Yedekleme maksimum dosya boyutunu aşıyor."
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Dengeli profil, verimlilik, yüzey kalitesi, mekanik özellikler ve boyutsal doğruluk arasında bir denge kurmayı amaçlar."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -4351,14 +4453,6 @@ msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr "Cura projesiyle ilişkilendirilen malzeme paketi Ultimaker Marketplace’te bulunamadı. Cura proje dosyasında saklanan kısmi malzeme profili tanımını, riski göze alarak kullanın."
 
-msgctxt "@label"
-msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "Bu projede kullanılan malzeme şu anda Cura’da yüklü değil.<br/>Malzeme profilini yükleyin ve projeyi yeniden açın."
-
-msgctxt "@info:status"
-msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr "Bu projede kullanılan malzeme, Cura'da bulunmayan birtakım malzeme tanımlarını temel alıyor ve bu durum, istenmeyen baskı sonuçlarına sebep olabilir. Mağazadan tam malzeme paketini kurmanızı öneririz."
-
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "Her bir pikselin “Taban”dan en yüksek mesafesi."
@@ -4370,10 +4464,6 @@ msgstr "Yeni filaman çapı %1 mm olarak ayarlandı ve bu değer, geçerli ekstr
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Bu ekstrudere takılan nozül."
-
-msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr "İşletim sistemi, proje dosyalarının bu konuma veya bu dosya adıyla kaydedilmesine izin vermiyor."
 
 msgctxt "@label"
 msgid ""
@@ -4396,6 +4486,10 @@ msgstr ""
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "1 milimetre kalınlığında bir baskıya nüfuz eden ışığın yüzdesi. Bu değerin düşürülmesi karanlık bölgelerdeki kontrastı arttırır ve görüntünün açık bölgelerindeki kontrastı azaltır."
+
+msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
+msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
+msgstr "Cura projesiyle ilişkili eklenti, Ultimaker Marketplace'te bulunamadı. Projeyi dilimlemek için eklenti gerekebileceğinden dosyayı doğru şekilde dilimlemek mümkün olmayabilir."
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4549,6 +4643,10 @@ msgid "This profile uses the defaults specified by the printer, so it has no set
 msgstr "Bu profil yazıcının belirlediği varsayılan ayarları kullanır; dolayısıyla aşağıdaki listede bulunan ayarları/geçersiz kılmaları içermez."
 
 msgctxt "@label"
+msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
+msgstr "Bu proje şu anda Cura'da yüklü olmayan materyal veya eklentiler içeriyor.<br/>Eksik paketleri kurun ve projeyi yeniden açın."
+
+msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
@@ -4589,6 +4687,10 @@ msgstr "Etkilediği tüm ayarlar geçersiz kılındığı için bu ayar kullanı
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Bu ayar, çakışan ekstrüdere özgü değerlerden çözümlenir:"
+
+msgctxt "@info:warning"
+msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
+msgstr "Bu sürüm üretimde kullanıma yönelik değildir. Herhangi bir sorunla karşılaşırsanız, lütfen tam sürümü {self.getVersion()} belirterek GitHub sayfamıza bildirin."
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4760,6 +4862,20 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Yapılan hacim içinde tüm nesneler için konum bulunamadı"
 
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
+msgstr "{self._plugin_id} için yürütülebilir yerel EnginePlugin sunucusu bulunamıyor"
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr ""
+"Çalışan EnginePlugin sonlandırılamıyor: {self._plugin_id}\n"
+"Erişim reddedildi."
+
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
 msgstr "Ultimaker hesabı sunucusuna ulaşılamadı."
@@ -4814,6 +4930,14 @@ msgstr "Kullanım dışı yazıcı"
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Model Grubunu Çöz"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Önce Yazdır"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Sonra Yazdır"
 
 msgctxt "@button"
 msgid "Uninstall"
@@ -5006,7 +5130,11 @@ msgstr "Yapılandırmaları Cura 5.2'dan Cura 5.3'a yükseltir."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr ""
+msgstr "Cura 5.3'ten Cura 5.4'e yükseltme yapılandırmaları"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "Cura 5.4'ten Cura 5.5'e yükseltme yapılandırmaları"
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5138,7 +5266,11 @@ msgstr "5.2'dan 5.3'a Sürüm Yükseltme"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr ""
+msgstr "5.3'ten 5.4'e Sürüm Yükseltme"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "5.4'ten 5.5'e Sürüm Yükseltme"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5454,10 +5586,9 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} eklenti indirilemedi"
 
-#~ msgctxt "@info:status"
-#~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
-#~ msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
+#~ msgctxt "@label"
+#~ msgid "Default"
+#~ msgstr "Varsayılan"
 
-#~ msgctxt "@info:title"
-#~ msgid "Simulation View"
-#~ msgstr "Simülasyon Görünümü"
+#~ msgid "Provides support for exporting Cura profiles."
+#~ msgstr "Cura profillerinin dışa aktarımı için destek sağlar."

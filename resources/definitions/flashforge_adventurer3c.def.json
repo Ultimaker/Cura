@@ -1,0 +1,33 @@
+{
+    "version": 2,
+    "name": "Adventurer 3C",
+    "inherits": "flashforge_adventurer_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Jeremie-C",
+        "quality_definition": "flashforge_adventurer3"
+    },
+    "overrides":
+    {
+        "default_material_bed_temperature": { "maximum_value_warning": "100" },
+        "gantry_height": { "value": "150" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 150 },
+        "machine_end_gcode": { "default_value": ";end gcode\nM104 S0 T0\nM140 S0 T0\nG162 Z F1800\nG28 X Y\nM132 X Y A B\nM652\nG91\nM18" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-20, 10],
+                [-20, -10],
+                [10, 10],
+                [10, -10]
+            ]
+        },
+        "machine_height": { "default_value": 150 },
+        "machine_name": { "default_value": "Adventurer 3C" },
+        "machine_start_gcode": { "default_value": ";Start Gcode\nG28\nM132 X Y Z A B\nG1 Z50.000 F420\nG161 X Y F3300\nM7 T0\nM6 T0\nM651 S255\n;End Start" },
+        "machine_width": { "default_value": 150 },
+        "speed_print": { "maximum_value_warning": 100 }
+    }
+}

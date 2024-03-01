@@ -6,6 +6,7 @@ from PyQt6.QtGui import QDesktopServices
 from typing import List, Optional, Dict, cast
 
 from cura.Machines.Models.MachineListModel import MachineListModel
+from cura.Machines.Models.IntentTranslations import intent_translations
 from cura.Settings.GlobalStack import GlobalStack
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
@@ -21,6 +22,8 @@ import time
 
 from cura.CuraApplication import CuraApplication
 
+from .SpecificSettingsModel import SpecificSettingsModel
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -35,10 +38,12 @@ class WorkspaceDialog(QObject):
         self._qml_url = "WorkspaceDialog.qml"
         self._lock = threading.Lock()
         self._default_strategy = None
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._override_machine = None
         self._visible = False
         self.showDialogSignal.connect(self.__show)
@@ -68,6 +73,11 @@ class WorkspaceDialog(QObject):
         self._install_missing_package_dialog: Optional[QObject] = None
         self._is_abstract_machine = False
         self._is_networked_machine = False
+        self._is_compatible_machine = False
+        self._has_visible_select_same_profile = False
+        self._select_same_profile_checked = True
+        self._allow_create_machine = True
+        self._exported_settings_model = SpecificSettingsModel()
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -91,6 +101,9 @@ class WorkspaceDialog(QObject):
     extrudersChanged = pyqtSignal()
     isPrinterGroupChanged = pyqtSignal()
     missingPackagesChanged = pyqtSignal()
+    isCompatibleMachineChanged = pyqtSignal()
+    hasVisibleSelectSameProfileChanged = pyqtSignal()
+    selectSameProfileCheckedChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -221,7 +234,14 @@ class WorkspaceDialog(QObject):
 
     def setIntentName(self, intent_name: str) -> None:
         if self._intent_name != intent_name:
-            self._intent_name = intent_name
+            try:
+                 self._intent_name = intent_translations[intent_name]["name"]
+            except:
+                self._intent_name = intent_name.title()
+            self.intentNameChanged.emit()
+
+        if not self._intent_name:
+            self._intent_name = intent_translations["default"]["name"]
             self.intentNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
@@ -282,6 +302,50 @@ class WorkspaceDialog(QObject):
     @pyqtSlot(str)
     def setMachineToOverride(self, machine_name: str) -> None:
         self._override_machine = machine_name
+        self.updateCompatibleMachine()
+
+    def updateCompatibleMachine(self):
+        registry = ContainerRegistry.getInstance()
+        containers_expected = registry.findDefinitionContainers(name=self._machine_type)
+        containers_selected = registry.findContainerStacks(id=self._override_machine)
+        if len(containers_expected) == 1 and len(containers_selected) == 1:
+            new_compatible_machine = (containers_expected[0] == containers_selected[0].definition)
+            if new_compatible_machine != self._is_compatible_machine:
+                self._is_compatible_machine = new_compatible_machine
+                self.isCompatibleMachineChanged.emit()
+
+    @pyqtProperty(bool, notify = isCompatibleMachineChanged)
+    def isCompatibleMachine(self) -> bool:
+        return self._is_compatible_machine
+
+    def setHasVisibleSelectSameProfileChanged(self, has_visible_select_same_profile):
+        if has_visible_select_same_profile != self._has_visible_select_same_profile:
+            self._has_visible_select_same_profile = has_visible_select_same_profile
+            self.hasVisibleSelectSameProfileChanged.emit()
+
+    @pyqtProperty(bool, notify = hasVisibleSelectSameProfileChanged)
+    def hasVisibleSelectSameProfile(self):
+        return self._has_visible_select_same_profile
+
+    def setSelectSameProfileChecked(self, select_same_profile_checked):
+        if select_same_profile_checked != self._select_same_profile_checked:
+            self._select_same_profile_checked = select_same_profile_checked
+            self.selectSameProfileCheckedChanged.emit()
+
+    @pyqtProperty(bool, notify = selectSameProfileCheckedChanged, fset = setSelectSameProfileChecked)
+    def selectSameProfileChecked(self):
+        return self._select_same_profile_checked
+
+    def setAllowCreatemachine(self, allow_create_machine):
+        self._allow_create_machine = allow_create_machine
+
+    @pyqtProperty(bool, constant = True)
+    def allowCreateMachine(self):
+        return self._allow_create_machine
+
+    @pyqtProperty(QObject, constant = True)
+    def exportedSettingModel(self):
+        return self._exported_settings_model
 
     @pyqtSlot()
     def closeBackend(self) -> None:
@@ -347,10 +411,12 @@ class WorkspaceDialog(QObject):
         if threading.current_thread() != threading.main_thread():
             self._lock.acquire()
         # Reset the result
-        self._result = {"machine": self._default_strategy,
-                        "quality_changes": self._default_strategy,
-                        "definition_changes": self._default_strategy,
-                        "material": self._default_strategy}
+        self._result = {
+            "machine": self._default_strategy,
+            "quality_changes": self._default_strategy,
+            "definition_changes": self._default_strategy,
+            "material": self._default_strategy,
+        }
         self._visible = True
         self.showDialogSignal.emit()
 
