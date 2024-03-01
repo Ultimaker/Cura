@@ -2580,6 +2580,14 @@ msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "Sequenza di stampa"
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Imposta manualmente la sequenza di stampa"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr "Consente di ordinare l'elenco degli oggetti per impostare manualmente la sequenza di stampa. Il primo oggetto dell'elenco sarà stampato per primo."
+
 msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "Velocità di stampa"

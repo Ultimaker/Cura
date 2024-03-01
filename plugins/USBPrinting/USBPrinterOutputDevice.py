@@ -5,9 +5,9 @@ import os
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Mesh.MeshWriter import MeshWriter #To get the g-code output.
-from UM.Message import Message #Show an error when already printing.
-from UM.PluginRegistry import PluginRegistry #To get the g-code output.
+from UM.Mesh.MeshWriter import MeshWriter # To get the g-code output.
+from UM.Message import Message # Show an error when already printing.
+from UM.PluginRegistry import PluginRegistry # To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
@@ -19,7 +19,7 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
-from io import StringIO #To write the g-code output.
+from io import StringIO # To write the g-code output.
 from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event

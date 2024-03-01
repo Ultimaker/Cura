@@ -4930,6 +4930,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Gruppierung für Modelle aufheben"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Vor dem Drucken"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Nach dem Drucken"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "Deinstallieren"

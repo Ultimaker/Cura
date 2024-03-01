@@ -2,7 +2,6 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import re
-from enum import Enum
 from typing import Any, cast, Dict, List, Optional
 
 from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal, pyqtSlot
@@ -12,7 +11,6 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To get names of materials we're compatible with.
 from UM.i18n import i18nCatalog  # To translate placeholder names if data is not present.
-from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 
 catalog = i18nCatalog("cura")

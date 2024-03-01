@@ -22,7 +22,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.InstanceContainer import InstanceContainer
 from cura.CuraApplication import CuraApplication
-from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Utils.Threading import call_on_qt_thread
 

@@ -58,7 +58,7 @@ jobs:
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
       architecture: X64
-      operating_system: windows-2022
+      operating_system: self-hosted-Windows-X64
     secrets: inherit
 
   linux-installer:
