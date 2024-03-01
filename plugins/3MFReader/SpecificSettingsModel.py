@@ -27,7 +27,7 @@ class SpecificSettingsModel(ListModel):
             setting_type = stack.getProperty(setting, "type")
             if setting_type is not None:
                 # This is not very good looking, but will do for now
-                value = SettingDefinition.settingValueToString(setting_type, value) + " " + unit
+                value = str(SettingDefinition.settingValueToString(setting_type, value)) + " " + str(unit)
             else:
                 value = str(value)
 

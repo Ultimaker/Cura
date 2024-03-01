@@ -702,7 +702,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setIsAbstractMachine(is_abstract_machine)
         self._dialog.setMachineName(machine_name)
         self._dialog.updateCompatibleMachine()
-        self._dialog.setSelectSameProfileChecked(self._dialog.isCompatibleMachine)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()

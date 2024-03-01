@@ -226,17 +226,6 @@ UM.Dialog
                                 rows: manager.exportedSettingModel.items
                             }
                         }
-
-                        UM.CheckBox
-                        {
-                            text: catalog.i18nc("@action:checkbox", "Select the same profile")
-                            onEnabledChanged: manager.selectSameProfileChecked = enabled
-                            tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
-                            visible: manager.isUcp
-
-                            checked: manager.selectSameProfileChecked
-                            onCheckedChanged: manager.selectSameProfileChecked = checked
-                        }
                     }
 
                     comboboxVisible: manager.qualityChangesConflict
