@@ -19,7 +19,7 @@ RowLayout
         Layout.preferredWidth: UM.Theme.getSize("setting").width
         checked: modelData.selected
         onClicked: modelData.selected = checked
-
+        tooltip: modelData.selectable ? "" :catalog.i18nc("@tooltip", "This setting may not perform well while exporting in UCP. Users are asked to add it at their own risk")
     }
 
     UM.Label
@@ -30,9 +30,10 @@ RowLayout
     UM.HelpIcon
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
-
         text: catalog.i18nc("@tooltip",
-                            "This setting can't be exported because it depends on the used printer capacities")
+                            "This setting may not perform well while exporting in UCP, Users are asked to add it at their own risk")
         visible: !modelData.selectable
     }
+
+
 }
