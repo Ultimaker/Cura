@@ -8,8 +8,8 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "exclude_materials": [
-            "generic_hips",
-            "structur3d_dap100silicone"
+            "structur3d_*",
+            "generic_hips"
         ]
     },
     "overrides":
