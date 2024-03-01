@@ -13,13 +13,15 @@
             9066
         ],
         "exclude_materials": [
-            "structur3d_*",
-            "generic_hips",
             "generic_cffcpe",
             "generic_cffpa",
+            "generic_flexible",
             "generic_gffcpe",
             "generic_gffpa",
+            "generic_hips",
             "generic_petcf",
+            "structur3d_*",
+            "ultimaker_petcf",
             "ultimaker_petcf_*"
         ],
         "firmware_update_info":

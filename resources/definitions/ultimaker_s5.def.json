@@ -16,8 +16,9 @@
             214477
         ],
         "exclude_materials": [
-            "structur3d_*",
-            "generic_hips"
+            "generic_hips",
+            "generic_flexible",
+            "structur3d_*"
         ],
         "firmware_update_info":
         {
