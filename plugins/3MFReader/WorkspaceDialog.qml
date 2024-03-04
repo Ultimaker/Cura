@@ -216,7 +216,6 @@ UM.Dialog
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
-
                         Cura.TableView
                         {
                             id: tableViewSpecificSettings
@@ -238,6 +237,13 @@ UM.Dialog
                                 headers: ["category", "label", "value"]
                                 rows: manager.exportedSettingModel.items
                             }
+                        }
+
+                        property var modelRows: manager.exportedSettingModel.items
+                        onModelRowsChanged:
+                        {
+                            tableModel.clear()
+                            tableModel.rows = modelRows
                         }
                     }
 

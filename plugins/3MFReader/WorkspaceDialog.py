@@ -332,7 +332,7 @@ class WorkspaceDialog(QObject):
     def allowCreateMachine(self):
         return self._allow_create_machine
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject)
     def exportedSettingModel(self):
         return self._exported_settings_model
 

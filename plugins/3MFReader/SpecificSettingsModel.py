@@ -3,6 +3,7 @@
 
 from PyQt6.QtCore import Qt
 
+from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Qt.ListModel import ListModel
 
@@ -19,6 +20,8 @@ class SpecificSettingsModel(ListModel):
         self.addRoleName(self.ValueRole, "value")
 
         self._i18n_catalog = None
+        self._update()
+
 
     def addSettingsFromStack(self, stack, category, settings):
         for setting, value in settings.items():
@@ -36,3 +39,8 @@ class SpecificSettingsModel(ListModel):
                 "label": stack.getProperty(setting, "label"),
                 "value": value
             })
+
+    def _update(self):
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        self.setItems([])
+        return
