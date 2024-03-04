@@ -30,10 +30,10 @@ class MachineListModel(ListModel):
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
     IsNetworkedMachineRole = Qt.ItemDataRole.UserRole + 9
 
-    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True, showCloudPrinters: bool = False) -> None:
         super().__init__(parent)
 
-        self._show_cloud_printers = False
+        self._show_cloud_printers = showCloudPrinters
         self._machines_filter = machines_filter
 
         self._catalog = i18nCatalog("cura")
