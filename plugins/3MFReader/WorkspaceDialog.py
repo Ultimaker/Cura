@@ -63,6 +63,7 @@ class WorkspaceDialog(QObject):
         self._machine_name = ""
         self._machine_type = ""
         self._variant_type = ""
+        self._current_machine_name = ""
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
@@ -76,6 +77,7 @@ class WorkspaceDialog(QObject):
         self._is_compatible_machine = False
         self._allow_create_machine = True
         self._exported_settings_model = SpecificSettingsModel()
+        self._current_machine_pos_index = 0
         self._is_ucp = False
 
     machineConflictChanged = pyqtSignal()
@@ -174,11 +176,33 @@ class WorkspaceDialog(QObject):
             self._machine_name = machine_name
             self.machineNameChanged.emit()
 
+    def setCurrentMachineName(self, machine: str) -> None:
+        self._current_machine_name = machine
+
+    @pyqtProperty(str, notify = machineNameChanged)
+    def currentMachineName(self) -> str:
+        return self._current_machine_name
+
+    @staticmethod
+    def getIndexOfCurrentMachine(list_of_dicts, key, value):
+        for i, d in enumerate(list_of_dicts):
+            if d.get(key) == value:  # found the dictionary
+                return i;
+        return 0
+
+    @pyqtProperty(int, notify = machineNameChanged)
+    def currentMachinePositionIndex(self):
+        return self._current_machine_pos_index
+
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
     def updatableMachinesModel(self) -> MachineListModel:
+        if self._current_machine_name != "":
+            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name)
+        else:
+            self._current_machine_pos_index = 0
         return cast(MachineListModel, self._updatable_machines_model)
 
-    def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
+    def setUpdatableMachines(self, updatable_machines: List[GlobalStack], current_machine=None) -> None:
         self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
 

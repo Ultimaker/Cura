@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from typing import Optional, List, cast
+from typing import Optional, List, cast, Dict, Any
 
 from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -159,3 +159,8 @@ class MachineListModel(ListModel):
             "machineCount": machine_count,
             "catergory": "connected" if is_online else "other",
         })
+
+    def getItems(self) -> Dict[str, Any]:
+        if self.count > 0:
+            return self.items
+        return {}

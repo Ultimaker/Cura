@@ -144,14 +144,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
-        self._load_profile = False
         self._user_settings: Dict[str, Dict[str, Any]] = {}
 
     def _clearState(self):
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
-        self._load_profile = False
         self._user_settings = {}
 
     def setOpenAsUcp(self, openAsUcp: bool):
@@ -212,11 +210,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return global_stack_file_list[0], extruder_stack_file_list
 
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
-        result = self._preRead(file_name, show_dialog)
-        self._is_ucp = False
-        return result
-
-    def _preRead(self, file_name, show_dialog=True):
         """Read some info so we can make decisions
 
         :param file_name:
@@ -618,11 +611,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Load the user specifically exported settings
         self._dialog.exportedSettingModel.clear()
+        self._dialog.setCurrentMachineName("")
         if self._is_ucp:
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
                 actual_global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+                self._dialog.setCurrentMachineName(actual_global_stack.id)
 
                 for stack_name, settings in self._user_settings.items():
                     if stack_name == 'global':
@@ -675,7 +670,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Choosing the initially selected printer in MachineSelector
         is_networked_machine = False
         is_abstract_machine = False
-        if global_stack and isinstance(global_stack, GlobalStack):
+        if global_stack and isinstance(global_stack, GlobalStack) and not self._is_ucp:
             # The machine included in the project file exists locally already, no need to change selected printers.
             is_networked_machine = global_stack.hasNetworkedConnection()
             is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
@@ -684,7 +679,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         elif self._dialog.updatableMachinesModel.count > 0:
             # The machine included in the project file does not exist. There is another machine of the same type.
             # This will always default to an abstract machine first.
-            machine = self._dialog.updatableMachinesModel.getItem(0)
+            machine = self._dialog.updatableMachinesModel.getItem(self._dialog.currentMachinePositionIndex)
             machine_name = machine["name"]
             is_networked_machine = machine["isNetworked"]
             is_abstract_machine = machine["isAbstractMachine"]
@@ -708,8 +703,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
-
-        self._load_profile = not self._is_ucp
 
         self._resolve_strategies = self._dialog.getResult()
         #
@@ -832,7 +825,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in extruder_stacks:
                 stack.setNextStack(global_stack, connect_signals = False)
 
-        if self._load_profile:
+        if not self._is_ucp:
             Logger.log("d", "Workspace loading is checking definitions...")
             # Get all the definition files & check if they exist. If not, add them.
             definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -906,7 +899,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         if global_stack:
-            if self._load_profile:
+            if not self._is_ucp:
                 # Handle quality changes if any
                 self._processQualityChanges(global_stack)
 
@@ -914,7 +907,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
             else:
                 # Just clear the settings now, so that we can change the active machine without conflicts
-                self._clearMachineSettings(global_stack, extruder_stack_dict)
+                self._clearMachineSettings(global_stack, {})
+
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
@@ -924,9 +918,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
             # they won't take effect until this function is done.
             # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+
             self._updateActiveMachine(global_stack)
 
-            if not self._load_profile:
+            if self._is_ucp:
                 # Now we have switched, apply the user settings
                 self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
 
@@ -938,6 +933,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
 
+        self._is_ucp = False
         return nodes, self._loadMetadata(file_name)
 
     @staticmethod
@@ -1320,7 +1316,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
-        if self._quality_changes_to_apply:
+        if self._quality_changes_to_apply !=None:
             quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
             quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
             if not quality_changes_group:
