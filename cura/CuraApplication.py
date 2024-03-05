@@ -2194,6 +2194,12 @@ class CuraApplication(QtApplication):
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
 
+    @pyqtSlot(str, result = bool)
+    def isProjectUcp(self, file_url) -> bool:
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
+        return workspace_reader.getIsProjectUcp()
+
     @pyqtSlot(str, result=bool)
     def checkIsValidProjectFile(self, file_url):
         """Checks if the given file URL is a valid project file. """

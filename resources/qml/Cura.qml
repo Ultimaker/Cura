@@ -702,7 +702,7 @@ UM.MainWindow
             if (hasProjectFile)
             {
                 var projectFile = projectFileUrlList[0]
-                var is_ucp = CuraActions.isProjectUcp(projectFile);
+                var is_ucp = CuraApplication.isProjectUcp(projectFile);
                 if (is_ucp)
                 {
                     askOpenAsProjectOrUcpOrImportModelsDialog.fileUrl = projectFile;
@@ -788,7 +788,7 @@ UM.MainWindow
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
-            var is_ucp = CuraActions.isProjectUcp(project_file);
+            var is_ucp = CuraApplication.isProjectUcp(project_file);
             if (is_ucp)
             {
 

@@ -1,6 +1,5 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-import zipfile
 from typing import List, cast
 
 from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
@@ -32,8 +31,6 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
-
-USER_SETTINGS_PATH = "Cura/user-settings.json"
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -195,13 +192,6 @@ class CuraActions(QObject):
         for node in nodes_to_change:
             operation.addOperation(SetObjectExtruderOperation(node, extruder_id))
         operation.push()
-
-    @pyqtSlot(str, result = bool)
-    def isProjectUcp(self, file_url) -> bool:
-        file_name = QUrl(file_url).toLocalFile()
-        archive = zipfile.ZipFile(file_name, "r")
-        cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
-        return USER_SETTINGS_PATH in cura_file_names
 
     @pyqtSlot(int)
     def setBuildPlateForSelection(self, build_plate_nr: int) -> None:
