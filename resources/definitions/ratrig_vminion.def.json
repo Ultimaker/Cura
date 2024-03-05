@@ -11,7 +11,7 @@
         "machine_extruder_trains": { "0": "ratrig_base_extruder_0" },
         "platform_offset": [
             0,
-            5,
+            0,
             0
         ],
         "preferred_variant_name": "0.4mm Nozzle",
@@ -34,7 +34,6 @@
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
         "cool_min_layer_time": { "value": 2 },
         "fill_outline_gaps": { "value": false },
-        "filter_out_tiny_gaps": { "value": false },
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "value": false },
         "infill_overlap": { "value": 30 },

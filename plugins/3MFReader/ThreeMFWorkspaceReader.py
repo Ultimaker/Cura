@@ -5,6 +5,7 @@ from configparser import ConfigParser
 import zipfile
 import os
 import json
+import re
 from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
@@ -57,6 +58,7 @@ _ignored_machine_network_metadata: Set[str] = {
     "is_abstract_machine"
 }
 
+USER_SETTINGS_PATH = "Cura/user-settings.json"
 
 class ContainerInfo:
     def __init__(self, file_name: Optional[str], serialized: Optional[str], parser: Optional[ConfigParser]) -> None:
@@ -141,10 +143,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
+        self._load_profile = False
+        self._user_settings: Dict[str, Dict[str, Any]] = {}
+
     def _clearState(self):
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
+        self._load_profile = False
+        self._user_settings = {}
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
@@ -228,11 +235,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._resolve_strategies = {k: None for k in resolve_strategy_keys}
         containers_found_dict = {k: False for k in resolve_strategy_keys}
 
+        # Check whether the file is a UCP, which changes some import options
+        is_ucp = USER_SETTINGS_PATH in cura_file_names
+
         #
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machines = []
+        updatable_machines = None if is_ucp else []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -250,7 +260,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if definition_container_type == "machine":
                 machine_definition_id = container_id
                 machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
-                if machine_definition_containers:
+                if machine_definition_containers and updatable_machines is not None:
                     updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
@@ -597,6 +607,37 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         package_metadata = self._parse_packages_metadata(archive)
         missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
 
+        # Load the user specifically exported settings
+        self._dialog.exportedSettingModel.clear()
+        if is_ucp:
+            try:
+                self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
+                any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
+                actual_global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+
+                for stack_name, settings in self._user_settings.items():
+                    if stack_name == 'global':
+                        self._dialog.exportedSettingModel.addSettingsFromStack(actual_global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
+                    else:
+                        extruder_match = re.fullmatch('extruder_([0-9]+)', stack_name)
+                        if extruder_match is not None:
+                            extruder_nr = int(extruder_match.group(1))
+                            self._dialog.exportedSettingModel.addSettingsFromStack(any_extruder_stack,
+                                                                                   i18n_catalog.i18nc("@label",
+                                                                                                      "Extruder {0}", extruder_nr + 1),
+                                                                                   settings)
+            except KeyError as e:
+                # If there is no user settings file, it's not a UCP, so notify user of failure.
+                Logger.log("w", "File %s is not a valid UCP.", file_name)
+                message = Message(
+                    i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                       "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
+                                       file_name, str(e)),
+                    title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                    message_type=Message.MessageType.ERROR)
+                message.show()
+                return WorkspaceReader.PreReadResult.failed
+
         # Show the dialog, informing the user what is about to happen.
         self._dialog.setMachineConflict(machine_conflict)
         self._dialog.setIsPrinterGroup(is_printer_group)
@@ -617,7 +658,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
+        self._dialog.setHasVisibleSelectSameProfileChanged(is_ucp)
+        self._dialog.setAllowCreatemachine(not is_ucp)
         self._dialog.show()
+
 
         # Choosing the initially selected printer in MachineSelector
         is_networked_machine = False
@@ -648,12 +692,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setIsNetworkedMachine(is_networked_machine)
         self._dialog.setIsAbstractMachine(is_abstract_machine)
         self._dialog.setMachineName(machine_name)
+        self._dialog.updateCompatibleMachine()
+        self._dialog.setSelectSameProfileChecked(self._dialog.isCompatibleMachine)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()
 
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
+
+        self._load_profile = not is_ucp or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
 
         self._resolve_strategies = self._dialog.getResult()
         #
@@ -690,16 +738,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except EnvironmentError as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
-                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
-                                                 message_type = Message.MessageType.ERROR)
+                              title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
         except zipfile.BadZipFile as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.", file_name, str(e)),
-                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
-                                                 message_type = Message.MessageType.ERROR)
+                              title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type = Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
@@ -761,9 +809,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Find the machine which will be overridden
             global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
             if not global_stacks:
-                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!", 
+                message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!",
                                                      "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura.", file_name),
-                                                     message_type = Message.MessageType.ERROR)
+                                  message_type = Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
                 return [], {}
@@ -777,84 +825,89 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in extruder_stacks:
                 stack.setNextStack(global_stack, connect_signals = False)
 
-        Logger.log("d", "Workspace loading is checking definitions...")
-        # Get all the definition files & check if they exist. If not, add them.
-        definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
-        for definition_container_file in definition_container_files:
-            container_id = self._stripFileToId(definition_container_file)
+        if self._load_profile:
+            Logger.log("d", "Workspace loading is checking definitions...")
+            # Get all the definition files & check if they exist. If not, add them.
+            definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
+            for definition_container_file in definition_container_files:
+                container_id = self._stripFileToId(definition_container_file)
 
-            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
-            if not definitions:
-                definition_container = DefinitionContainer(container_id)
-                try:
-                    definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
-                                                     file_name = definition_container_file)
-                except ContainerFormatError:
-                    # We cannot just skip the definition file because everything else later will just break if the
-                    # machine definition cannot be found.
-                    Logger.logException("e", "Failed to deserialize definition file %s in project file %s",
-                                        definition_container_file, file_name)
-                    definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
-                self._container_registry.addContainer(definition_container)
-            Job.yieldThread()
-            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
-
-        Logger.log("d", "Workspace loading is checking materials...")
-        # Get all the material files and check if they exist. If not, add them.
-        xml_material_profile = self._getXmlProfileClass()
-        if self._material_container_suffix is None:
-            self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
-        if xml_material_profile:
-            material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
-            for material_container_file in material_container_files:
-                to_deserialize_material = False
-                container_id = self._stripFileToId(material_container_file)
-                need_new_name = False
-                materials = self._container_registry.findInstanceContainers(id = container_id)
-
-                if not materials:
-                    # No material found, deserialize this material later and add it
-                    to_deserialize_material = True
-                else:
-                    material_container = materials[0]
-                    old_material_root_id = material_container.getMetaDataEntry("base_file")
-                    if old_material_root_id is not None and not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
-                        to_deserialize_material = True
-
-                        if self._resolve_strategies["material"] == "override":
-                            # Remove the old materials and then deserialize the one from the project
-                            root_material_id = material_container.getMetaDataEntry("base_file")
-                            application.getContainerRegistry().removeContainer(root_material_id)
-                        elif self._resolve_strategies["material"] == "new":
-                            # Note that we *must* deserialize it with a new ID, as multiple containers will be
-                            # auto created & added.
-                            container_id = self.getNewId(container_id)
-                            self._old_new_materials[old_material_root_id] = container_id
-                            need_new_name = True
-
-                if to_deserialize_material:
-                    material_container = xml_material_profile(container_id)
+                definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
+                if not definitions:
+                    definition_container = DefinitionContainer(container_id)
                     try:
-                        material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                       file_name = container_id + "." + self._material_container_suffix)
+                        definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
+                                                         file_name = definition_container_file)
                     except ContainerFormatError:
-                        Logger.logException("e", "Failed to deserialize material file %s in project file %s",
-                                            material_container_file, file_name)
-                        continue
-                    if need_new_name:
-                        new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
-                        material_container.setName(new_name)
-                    material_container.setDirty(True)
-                    self._container_registry.addContainer(material_container)
+                        # We cannot just skip the definition file because everything else later will just break if the
+                        # machine definition cannot be found.
+                        Logger.logException("e", "Failed to deserialize definition file %s in project file %s",
+                                            definition_container_file, file_name)
+                        definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
+                    self._container_registry.addContainer(definition_container)
                 Job.yieldThread()
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
-        if global_stack:
-            # Handle quality changes if any
-            self._processQualityChanges(global_stack)
+            Logger.log("d", "Workspace loading is checking materials...")
+            # Get all the material files and check if they exist. If not, add them.
+            xml_material_profile = self._getXmlProfileClass()
+            if self._material_container_suffix is None:
+                self._material_container_suffix = ContainerRegistry.getMimeTypeForContainer(xml_material_profile).suffixes[0]
+            if xml_material_profile:
+                material_container_files = [name for name in cura_file_names if name.endswith(self._material_container_suffix)]
+                for material_container_file in material_container_files:
+                    to_deserialize_material = False
+                    container_id = self._stripFileToId(material_container_file)
+                    need_new_name = False
+                    materials = self._container_registry.findInstanceContainers(id = container_id)
 
-            # Prepare the machine
-            self._applyChangesToMachine(global_stack, extruder_stack_dict)
+                    if not materials:
+                        # No material found, deserialize this material later and add it
+                        to_deserialize_material = True
+                    else:
+                        material_container = materials[0]
+                        old_material_root_id = material_container.getMetaDataEntry("base_file")
+                        if old_material_root_id is not None and not self._container_registry.isReadOnly(old_material_root_id):  # Only create new materials if they are not read only.
+                            to_deserialize_material = True
+
+                            if self._resolve_strategies["material"] == "override":
+                                # Remove the old materials and then deserialize the one from the project
+                                root_material_id = material_container.getMetaDataEntry("base_file")
+                                application.getContainerRegistry().removeContainer(root_material_id)
+                            elif self._resolve_strategies["material"] == "new":
+                                # Note that we *must* deserialize it with a new ID, as multiple containers will be
+                                # auto created & added.
+                                container_id = self.getNewId(container_id)
+                                self._old_new_materials[old_material_root_id] = container_id
+                                need_new_name = True
+
+                    if to_deserialize_material:
+                        material_container = xml_material_profile(container_id)
+                        try:
+                            material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
+                                                           file_name = container_id + "." + self._material_container_suffix)
+                        except ContainerFormatError:
+                            Logger.logException("e", "Failed to deserialize material file %s in project file %s",
+                                                material_container_file, file_name)
+                            continue
+                        if need_new_name:
+                            new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
+                            material_container.setName(new_name)
+                        material_container.setDirty(True)
+                        self._container_registry.addContainer(material_container)
+                    Job.yieldThread()
+                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+        if global_stack:
+            if self._load_profile:
+                # Handle quality changes if any
+                self._processQualityChanges(global_stack)
+
+                # Prepare the machine
+                self._applyChangesToMachine(global_stack, extruder_stack_dict)
+            else:
+                # Just clear the settings now, so that we can change the active machine without conflicts
+                self._clearMachineSettings(global_stack, extruder_stack_dict)
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
@@ -865,6 +918,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # they won't take effect until this function is done.
             # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
             self._updateActiveMachine(global_stack)
+
+            if not self._load_profile:
+                # Now we have switched, apply the user settings
+                self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1177,11 +1234,37 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
             extruder_stack.material = material_node.container
 
-    def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
-        # Clear all first
+    def _clearMachineSettings(self, global_stack, extruder_stack_dict):
         self._clearStack(global_stack)
         for extruder_stack in extruder_stack_dict.values():
             self._clearStack(extruder_stack)
+
+        self._quality_changes_to_apply = None
+        self._quality_type_to_apply = None
+        self._intent_category_to_apply = None
+        self._user_settings_to_apply = None
+
+    def _applyUserSettings(self, global_stack, extruder_stack_dict, user_settings):
+        for stack_name, settings in user_settings.items():
+            if stack_name == 'global':
+                ThreeMFWorkspaceReader._applyUserSettingsOnStack(global_stack, settings)
+            else:
+                extruder_match = re.fullmatch('extruder_([0-9]+)', stack_name)
+                if extruder_match is not None:
+                    extruder_nr = extruder_match.group(1)
+                    if extruder_nr in extruder_stack_dict:
+                        ThreeMFWorkspaceReader._applyUserSettingsOnStack(extruder_stack_dict[extruder_nr], settings)
+
+    @staticmethod
+    def _applyUserSettingsOnStack(stack, user_settings):
+        user_settings_container = stack.userChanges
+
+        for setting_to_import, setting_value in user_settings.items():
+            user_settings_container.setProperty(setting_to_import, 'value', setting_value)
+
+    def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
+        # Clear all first
+        self._clearMachineSettings(global_stack, extruder_stack_dict)
 
         self._applyDefinitionChanges(global_stack, extruder_stack_dict)
         self._applyUserChanges(global_stack, extruder_stack_dict)
@@ -1189,9 +1272,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._applyMaterials(global_stack, extruder_stack_dict)
 
         # prepare the quality to select
-        self._quality_changes_to_apply = None
-        self._quality_type_to_apply = None
-        self._intent_category_to_apply = None
         if self._machine_info.quality_changes_info is not None:
             self._quality_changes_to_apply = self._machine_info.quality_changes_info.name
         else:

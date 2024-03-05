@@ -2580,6 +2580,14 @@ msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "印刷頻度"
 
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "手動で印刷順序を設定する"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgstr "オブジェクトリストを並べ替えて、手動で印刷順序を設定することができます。リストの最初のオブジェクトが最初に印刷されます。"
+
 msgctxt "speed_print label"
 msgid "Print Speed"
 msgstr "印刷速度"

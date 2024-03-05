@@ -4917,6 +4917,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "모델 그룹 해제"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "인쇄 전"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "인쇄 후"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "설치 제거"

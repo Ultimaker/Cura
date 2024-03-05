@@ -101,6 +101,7 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+        UM.Preferences.resetPreference("view/navigation_style");
         UM.Preferences.resetPreference("view/zoom_to_mouse");
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         //UM.Preferences.resetPreference("view/top_layer_count");
@@ -509,10 +510,12 @@ UM.PreferencesPage
                     id: dropDownCheckbox
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
                     checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
-                    onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    }
                 }
             }
-
 
             UM.TooltipArea
             {
@@ -611,6 +614,55 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "What type of camera navigation should be used?")
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Camera navigation:")
+                    }
+                    ListModel
+                    {
+                        id: navigationStylesList 
+                        Component.onCompleted:
+                        {
+                            append({ text: catalog.i18n("Cura"), code: "cura" })
+                            append({ text: catalog.i18n("FreeCAD trackpad"), code: "freecad_trackpad" })
+                        }
+                    }
+
+                    Cura.ComboBox
+                    {
+                        id: cameraNavigationComboBox
+
+                        model: navigationStylesList 
+                        textRole: "text"
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
+
+                        currentIndex:
+                        {
+                            var code = UM.Preferences.getValue("view/navigation_style");
+                            for(var i = 0; i < comboBoxList.count; ++i)
+                            {
+                                if(model.get(i).code == code)
+                                {
+                                    return i
+                                }
+                            }
+                            return 0
+                        }
+                        onActivated: UM.Preferences.setValue("view/navigation_style", model.get(index).code)
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
@@ -627,6 +679,8 @@ UM.PreferencesPage
             UM.TooltipArea
             {
                 width: childrenRect.width
+                // Mac only allows applications to run as a single instance, so providing the option for this os doesn't make much sense
+                visible: Qt.platform.os !== "osx"
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
 
@@ -727,6 +781,20 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Show summary dialog when saving project")
                     checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_project_save"))
                     onCheckedChanged: UM.Preferences.setValue("cura/dialog_on_project_save", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should a summary be shown when saving a UCP project file?")
+
+                UM.CheckBox
+                {
+                    text: catalog.i18nc("@option:check", "Show summary dialog when saving a UCP project")
+                    checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_ucp_project_save"))
+                    onCheckedChanged: UM.Preferences.setValue("cura/dialog_on_ucp_project_save", checked)
                 }
             }
 
