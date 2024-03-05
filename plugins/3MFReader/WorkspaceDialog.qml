@@ -253,7 +253,7 @@ UM.Dialog
                         id: qualityChangesResolveComboBox
                         model: resolveStrategiesModel
                         textRole: "label"
-                        visible: manager.qualityChangesConflict
+                        visible: manager.qualityChangesConflict && !manager.isUcp
                         contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 
@@ -307,7 +307,7 @@ UM.Dialog
                         id: materialResolveComboBox
                         model: resolveStrategiesModel
                         textRole: "label"
-                        visible: manager.materialConflict
+                        visible: manager.materialConflict && !manager.isUcp
                         contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 

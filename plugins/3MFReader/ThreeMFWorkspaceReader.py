@@ -117,7 +117,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
-        self._is_ucp = False
+        self._is_ucp = None
         self._container_registry = ContainerRegistry.getInstance()
 
         # suffixes registered with the MimeTypes don't start with a dot '.'
@@ -208,6 +208,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
+    def _isProjectUcp(self, file_name) -> bool:
+        if self._is_ucp == None:
+            archive = zipfile.ZipFile(file_name, "r")
+            cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
+            self._is_ucp =True if USER_SETTINGS_PATH in cura_file_names else False
+
+    def getIsProjectUcp(self) -> bool:
+        return self._is_ucp
+
 
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         """Read some info so we can make decisions
@@ -217,7 +226,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             we don't want to show a dialog.
         """
         self._clearState()
-
+        self._isProjectUcp(file_name)
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
             pass
@@ -933,7 +942,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
 
-        self._is_ucp = False
+        self._is_ucp = None
         return nodes, self._loadMetadata(file_name)
 
     @staticmethod
@@ -1312,39 +1321,40 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Set metadata fields that are missing from the global stack
-        for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
-                global_stack.setMetaDataEntry(key, value)
+        if not self._is_ucp:
+            for key, value in self._machine_info.metadata_dict.items():
+                if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
+                    global_stack.setMetaDataEntry(key, value)
 
-        if self._quality_changes_to_apply !=None:
-            quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
-            quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
-            if not quality_changes_group:
-                Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
-                return
-            machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
-        else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
-            quality_group_dict = container_tree.getCurrentQualityGroups()
-            if self._quality_type_to_apply in quality_group_dict:
-                quality_group = quality_group_dict[self._quality_type_to_apply]
+            if self._quality_changes_to_apply !=None:
+                quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
+                quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
+                if not quality_changes_group:
+                    Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
+                    return
+                machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
             else:
-                Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
-                preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-                quality_group = quality_group_dict.get(preferred_quality_type)
-                if quality_group is None:
-                    Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
-
-            if quality_group is not None:
-                machine_manager.setQualityGroup(quality_group, no_dialog = True)
-
-                # Also apply intent if available
-                available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
-                if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
-                    machine_manager.setIntentByCategory(self._intent_category_to_apply)
+                self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
+                quality_group_dict = container_tree.getCurrentQualityGroups()
+                if self._quality_type_to_apply in quality_group_dict:
+                    quality_group = quality_group_dict[self._quality_type_to_apply]
                 else:
-                    # if no intent is provided, reset to the default (balanced) intent
-                    machine_manager.resetIntents()
+                    Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
+                    preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
+                    quality_group = quality_group_dict.get(preferred_quality_type)
+                    if quality_group is None:
+                        Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
+
+                if quality_group is not None:
+                    machine_manager.setQualityGroup(quality_group, no_dialog = True)
+
+                    # Also apply intent if available
+                    available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
+                    if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
+                        machine_manager.setIntentByCategory(self._intent_category_to_apply)
+                    else:
+                        # if no intent is provided, reset to the default (balanced) intent
+                        machine_manager.resetIntents()
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 
