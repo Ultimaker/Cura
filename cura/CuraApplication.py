@@ -1985,7 +1985,7 @@ class CuraApplication(QtApplication):
         file_name = QUrl(file).toLocalFile()
         workspace_reader = self.getWorkspaceFileHandler()
         if workspace_reader is None:
-            Logger.log("w", "Workspace reader not found")
+            Logger.warning(f"Workspace reader not found, cannot read file {file_name}.")
             return
 
         workspace_reader.getReaderForFile(file_name).setOpenAsUcp(True)

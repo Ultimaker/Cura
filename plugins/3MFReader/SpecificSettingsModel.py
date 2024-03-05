@@ -41,6 +41,6 @@ class SpecificSettingsModel(ListModel):
             })
 
     def _update(self):
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.debug(f"Updating {self.__class__.__name__}")
         self.setItems([])
         return

@@ -184,11 +184,11 @@ class WorkspaceDialog(QObject):
         return self._current_machine_name
 
     @staticmethod
-    def getIndexOfCurrentMachine(list_of_dicts, key, value):
+    def getIndexOfCurrentMachine(list_of_dicts, key, value, defaultIndex):
         for i, d in enumerate(list_of_dicts):
             if d.get(key) == value:  # found the dictionary
-                return i;
-        return 0
+                return i
+        return defaultIndex
 
     @pyqtProperty(int, notify = machineNameChanged)
     def currentMachinePositionIndex(self):
@@ -197,7 +197,7 @@ class WorkspaceDialog(QObject):
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
     def updatableMachinesModel(self) -> MachineListModel:
         if self._current_machine_name != "":
-            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name)
+            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name, defaultIndex = 0)
         else:
             self._current_machine_pos_index = 0
         return cast(MachineListModel, self._updatable_machines_model)
