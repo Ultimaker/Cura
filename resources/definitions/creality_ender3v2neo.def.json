@@ -12,15 +12,6 @@
     {
         "gantry_height": { "value": 25 },
         "machine_depth": { "default_value": 230 },
-        "machine_head_polygon":
-        {
-            "default_value": [
-                [-1, 1],
-                [-1, -1],
-                [1, -1],
-                [1, 1]
-            ]
-        },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
