@@ -59,17 +59,12 @@ class SettingsExportModel(QObject):
                            'skin_edge_support_thickness',
                            'alternate_carve_order',
                            'top_skin_preshrink',
-                           'interlocking_enable',
-                           'infill_mesh',
-                           'cutting_mesh'}
+                           'interlocking_enable'}
 
-    PER_MODEL_EXPORTABLE_SETTINGS_KEYS = {  'top_bottom_thickness',
-                                            'top_thickness',
-                                            'bottom_thickness',
-                                            'top_layers',
-                                            'bottom_layers',
-                                            'wall_thickness',
-                                            'wall_line_count'}
+    PER_MODEL_EXPORTABLE_SETTINGS_KEYS = {"anti_overhang_mesh",
+                                          "infill_mesh",
+                                          "cutting_mesh",
+                                          "support_mesh"}
 
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -119,20 +114,16 @@ class SettingsExportModel(QObject):
         user_keys = user_settings_container.getAllKeys()
         exportable_settings = SettingsExportModel.EXPORTABLE_SETTINGS
         settings_export = []
+        # Check whether any of the user keys exist in PER_MODEL_EXPORTABLE_SETTINGS_KEYS
+        is_exportable = any(key in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS for key in user_keys)
 
-        # in case of modify mesh settings we add spme extra settings to the exportable settings
-        if 'infill_mesh' in user_keys:
-            exportable_settings = exportable_settings.union(SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS)
         for setting_to_export in user_keys:
             label = settings_stack.getProperty(setting_to_export, "label")
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
-
-            is_exportable = True if setting_to_export in exportable_settings else False
             if setting_type is not None:
-                # This is not very good looking, but will do for now
                 value = f"{str(SettingDefinition.settingValueToString(setting_type, value))} {unit}"
             else:
                 value = str(value)
@@ -140,6 +131,6 @@ class SettingsExportModel(QObject):
             settings_export.append(SettingExport(setting_to_export,
                                                  label,
                                                  value,
-                                                 is_exportable))
+                                                 is_exportable or setting_to_export in exportable_settings))
 
         return settings_export
