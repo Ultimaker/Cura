@@ -1986,7 +1986,6 @@ class CuraApplication(QtApplication):
             Logger.warning(f"Workspace reader not found, cannot read file {file_name}.")
             return
 
-        workspace_reader.getReaderForFile(file_name).setOpenAsUcp(True)
         workspace_reader.readLocalFile(file, add_to_recent_files)
 
     @pyqtSlot(QUrl, str, bool)
@@ -2209,6 +2208,8 @@ class CuraApplication(QtApplication):
         if workspace_reader is None:
             return False  # non-project files won't get a reader
         try:
+            if workspace_reader.getPluginId() == "3MFReader":
+                workspace_reader.clearOpenAsUcp()
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except:

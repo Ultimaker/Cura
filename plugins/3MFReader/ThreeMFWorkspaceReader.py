@@ -152,8 +152,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info = None
         self._user_settings = {}
 
-    def setOpenAsUcp(self, openAsUcp: bool):
-        self._is_ucp =  openAsUcp
+    def clearOpenAsUcp(self):
+        self._is_ucp =  None
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
@@ -208,6 +208,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
+
     def _isProjectUcp(self, file_name) -> bool:
         if self._is_ucp == None:
             archive = zipfile.ZipFile(file_name, "r")
