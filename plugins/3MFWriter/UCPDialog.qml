@@ -19,21 +19,6 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
 
     backgroundColor: UM.Theme.getColor("detail_background")
-    property bool dontShowAgain: false
-
-    function storeDontShowAgain()
-    {
-        UM.Preferences.setValue("cura/dialog_on_ucp_project_save", !dontShowAgainCheckbox.checked)
-        UM.Preferences.setValue("cura/asked_dialog_on_ucp_project_save", false)
-    }
-
-    onVisibleChanged:
-    {
-        if(visible && UM.Preferences.getValue("cura/asked_dialog_on_ucp_project_save"))
-        {
-            dontShowAgain = !UM.Preferences.getValue("cura/dialog_on_ucp_project_save")
-        }
-    }
 
     headerComponent: Rectangle
     {
@@ -90,15 +75,7 @@ UM.Dialog
             delegate: SettingsSelectionGroup { Layout.margins: 0 }
         }
     }
-    leftButtons:
-    [
-        UM.CheckBox
-        {
-            id: dontShowAgainCheckbox
-            text: catalog.i18nc("@action:label", "Don't show project summary on save again")
-            checked: dontShowAgain
-        }
-    ]
+
     rightButtons:
     [
         Cura.TertiaryButton
@@ -117,9 +94,6 @@ UM.Dialog
 
     onClosing:
     {
-        storeDontShowAgain()
         manager.notifyClosed()
     }
-    onRejected: storeDontShowAgain()
-    onAccepted: storeDontShowAgain()
 }

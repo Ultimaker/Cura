@@ -61,43 +61,47 @@ class SettingsExportModel(QObject):
                            'top_skin_preshrink',
                            'interlocking_enable'}
 
-    def __init__(self, parent = None):
+    PER_MODEL_EXPORTABLE_SETTINGS_KEYS = {"anti_overhang_mesh",
+                                          "infill_mesh",
+                                          "cutting_mesh",
+                                          "support_mesh"}
+
+    def __init__(self, parent=None):
         super().__init__(parent)
         self._settings_groups = []
 
         application = CuraApplication.getInstance()
 
-        # Display global settings
-        global_stack = application.getGlobalContainerStack()
-        self._settings_groups.append(SettingsExportGroup(global_stack,
-                                                         "Global settings",
-                                                         SettingsExportGroup.Category.Global,
-                                                         self._exportSettings(global_stack)))
+        self._appendGlobalSettings(application)
+        self._appendExtruderSettings(application)
+        self._appendModelSettings(application)
 
-        # Display per-extruder settings
+    def _appendGlobalSettings(self, application):
+        global_stack = application.getGlobalContainerStack()
+        self._settings_groups.append(SettingsExportGroup(
+            global_stack, "Global settings", SettingsExportGroup.Category.Global, self._exportSettings(global_stack)))
+
+    def _appendExtruderSettings(self, application):
         extruders_stacks = ExtruderManager.getInstance().getUsedExtruderStacks()
         for extruder_stack in extruders_stacks:
-            color = ""
-            if extruder_stack.material:
-                color = extruder_stack.material.getMetaDataEntry("color_code")
+            color = extruder_stack.material.getMetaDataEntry("color_code") if extruder_stack.material else ""
+            self._settings_groups.append(SettingsExportGroup(
+                extruder_stack, "Extruder settings", SettingsExportGroup.Category.Extruder,
+                self._exportSettings(extruder_stack), extruder_index=extruder_stack.position, extruder_color=color))
 
-            self._settings_groups.append(SettingsExportGroup(extruder_stack,
-                                                             "Extruder settings",
-                                                             SettingsExportGroup.Category.Extruder,
-                                                             self._exportSettings(extruder_stack),
-                                                             extruder_index=extruder_stack.position,
-                                                             extruder_color=color))
+    def _appendModelSettings(self, application):
+        scene = application.getController().getScene()
+        for scene_node in scene.getRoot().getChildren():
+            self._appendNodeSettings(scene_node, "Model settings", SettingsExportGroup.Category.Model)
 
-        # Display per-model settings
-        scene_root = application.getController().getScene().getRoot()
-        for scene_node in scene_root.getChildren():
-            per_model_stack = scene_node.callDecoration("getStack")
-            if per_model_stack is not None:
-                self._settings_groups.append(SettingsExportGroup(per_model_stack,
-                                                                 "Model settings",
-                                                                 SettingsExportGroup.Category.Model,
-                                                                 self._exportSettings(per_model_stack),
-                                                                 scene_node.getName()))
+    def _appendNodeSettings(self, node, title_prefix, category):
+        stack = node.callDecoration("getStack")
+        if stack:
+            self._settings_groups.append(SettingsExportGroup(
+                stack, f"{title_prefix}", category, self._exportSettings(stack), node.getName()))
+        for child in node.getChildren():
+            self._appendNodeSettings(child, f"Children of {node.getName()}", SettingsExportGroup.Category.Model)
+
 
     @pyqtProperty(list, constant=True)
     def settingsGroups(self) -> List[SettingsExportGroup]:
@@ -107,8 +111,10 @@ class SettingsExportModel(QObject):
     def _exportSettings(settings_stack):
         user_settings_container = settings_stack.userChanges
         user_keys = user_settings_container.getAllKeys()
-
+        exportable_settings = SettingsExportModel.EXPORTABLE_SETTINGS
         settings_export = []
+        # Check whether any of the user keys exist in PER_MODEL_EXPORTABLE_SETTINGS_KEYS
+        is_exportable = any(key in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS for key in user_keys)
 
         for setting_to_export in user_keys:
             label = settings_stack.getProperty(setting_to_export, "label")
@@ -117,7 +123,6 @@ class SettingsExportModel(QObject):
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
-                # This is not very good looking, but will do for now
                 value = f"{str(SettingDefinition.settingValueToString(setting_type, value))} {unit}"
             else:
                 value = str(value)
@@ -125,6 +130,6 @@ class SettingsExportModel(QObject):
             settings_export.append(SettingExport(setting_to_export,
                                                  label,
                                                  value,
-                                                 setting_to_export in SettingsExportModel.EXPORTABLE_SETTINGS))
+                                                 is_exportable or setting_to_export in exportable_settings))
 
         return settings_export

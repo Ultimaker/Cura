@@ -3,6 +3,7 @@
 
 from PyQt6.QtCore import Qt
 
+from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Qt.ListModel import ListModel
 
@@ -19,6 +20,8 @@ class SpecificSettingsModel(ListModel):
         self.addRoleName(self.ValueRole, "value")
 
         self._i18n_catalog = None
+        self._update()
+
 
     def addSettingsFromStack(self, stack, category, settings):
         for setting, value in settings.items():
@@ -27,7 +30,7 @@ class SpecificSettingsModel(ListModel):
             setting_type = stack.getProperty(setting, "type")
             if setting_type is not None:
                 # This is not very good looking, but will do for now
-                value = SettingDefinition.settingValueToString(setting_type, value) + " " + unit
+                value = str(SettingDefinition.settingValueToString(setting_type, value)) + " " + str(unit)
             else:
                 value = str(value)
 
@@ -36,3 +39,8 @@ class SpecificSettingsModel(ListModel):
                 "label": stack.getProperty(setting, "label"),
                 "value": value
             })
+
+    def _update(self):
+        Logger.debug(f"Updating {self.__class__.__name__}")
+        self.setItems([])
+        return

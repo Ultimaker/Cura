@@ -63,21 +63,22 @@ class WorkspaceDialog(QObject):
         self._machine_name = ""
         self._machine_type = ""
         self._variant_type = ""
+        self._current_machine_name = ""
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = MachineListModel(self, listenToChanges=False)
+        self._updatable_machines_model = MachineListModel(self, listenToChanges = False, showCloudPrinters = True)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
         self._is_abstract_machine = False
         self._is_networked_machine = False
         self._is_compatible_machine = False
-        self._has_visible_select_same_profile = False
-        self._select_same_profile_checked = True
         self._allow_create_machine = True
         self._exported_settings_model = SpecificSettingsModel()
+        self._current_machine_pos_index = 0
+        self._is_ucp = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -102,8 +103,7 @@ class WorkspaceDialog(QObject):
     isPrinterGroupChanged = pyqtSignal()
     missingPackagesChanged = pyqtSignal()
     isCompatibleMachineChanged = pyqtSignal()
-    hasVisibleSelectSameProfileChanged = pyqtSignal()
-    selectSameProfileCheckedChanged = pyqtSignal()
+    isUcpChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -176,8 +176,30 @@ class WorkspaceDialog(QObject):
             self._machine_name = machine_name
             self.machineNameChanged.emit()
 
+    def setCurrentMachineName(self, machine: str) -> None:
+        self._current_machine_name = machine
+
+    @pyqtProperty(str, notify = machineNameChanged)
+    def currentMachineName(self) -> str:
+        return self._current_machine_name
+
+    @staticmethod
+    def getIndexOfCurrentMachine(list_of_dicts, key, value, defaultIndex):
+        for i, d in enumerate(list_of_dicts):
+            if d.get(key) == value:  # found the dictionary
+                return i
+        return defaultIndex
+
+    @pyqtProperty(int, notify = machineNameChanged)
+    def currentMachinePositionIndex(self):
+        return self._current_machine_pos_index
+
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
     def updatableMachinesModel(self) -> MachineListModel:
+        if self._current_machine_name != "":
+            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name, defaultIndex = 0)
+        else:
+            self._current_machine_pos_index = 0
         return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
@@ -318,23 +340,14 @@ class WorkspaceDialog(QObject):
     def isCompatibleMachine(self) -> bool:
         return self._is_compatible_machine
 
-    def setHasVisibleSelectSameProfileChanged(self, has_visible_select_same_profile):
-        if has_visible_select_same_profile != self._has_visible_select_same_profile:
-            self._has_visible_select_same_profile = has_visible_select_same_profile
-            self.hasVisibleSelectSameProfileChanged.emit()
+    def setIsUcp(self, isUcp: bool) -> None:
+        if isUcp != self._is_ucp:
+            self._is_ucp = isUcp
+            self.isUcpChanged.emit()
 
-    @pyqtProperty(bool, notify = hasVisibleSelectSameProfileChanged)
-    def hasVisibleSelectSameProfile(self):
-        return self._has_visible_select_same_profile
-
-    def setSelectSameProfileChecked(self, select_same_profile_checked):
-        if select_same_profile_checked != self._select_same_profile_checked:
-            self._select_same_profile_checked = select_same_profile_checked
-            self.selectSameProfileCheckedChanged.emit()
-
-    @pyqtProperty(bool, notify = selectSameProfileCheckedChanged, fset = setSelectSameProfileChecked)
-    def selectSameProfileChecked(self):
-        return self._select_same_profile_checked
+    @pyqtProperty(bool, notify=isUcpChanged)
+    def isUcp(self):
+        return self._is_ucp
 
     def setAllowCreatemachine(self, allow_create_machine):
         self._allow_create_machine = allow_create_machine
@@ -343,7 +356,7 @@ class WorkspaceDialog(QObject):
     def allowCreateMachine(self):
         return self._allow_create_machine
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject)
     def exportedSettingModel(self):
         return self._exported_settings_model
 

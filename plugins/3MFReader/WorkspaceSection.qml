@@ -84,7 +84,8 @@ Item
         {
             anchors.right: parent.right
             anchors.verticalCenter: comboboxLabel.verticalCenter
-
+            color: UM.Theme.getColor("small_button_text")
+            icon: UM.Theme.getIcon("Information")
             text: comboboxTooltipText
             visible: comboboxTooltipText != ""
         }
