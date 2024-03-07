@@ -425,7 +425,7 @@ class ThreeMFWriter(MeshWriter):
     @call_on_qt_thread  # must be called from the main thread because of OpenGL
     def _createSnapshot(self):
         Logger.log("d", "Creating thumbnail image...")
-        self._lock.aquire()
+        self._lock.acquire()
         if not CuraApplication.getInstance().isVisible:
             Logger.log("w", "Can't create snapshot when renderer not initialized.")
             return None
