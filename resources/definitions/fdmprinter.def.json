@@ -6089,7 +6089,7 @@
                 "brim_inside_margin":
                 {
                     "label": "Brim Avoid Margin",
-                    "description": "When growing the brim around a surface, it may touch an other surface where brim is not expected. This removes all brim within this distance from clean surfaces.",
+                    "description": "A brim around a surface may touch an other surface where brim is not expected. This removes all brim within this distance from brimless surfaces.",
                     "unit": "mm",
                     "type": "float",
                     "value": "line_width * 4",
