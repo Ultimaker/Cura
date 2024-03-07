@@ -601,9 +601,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("mesh/scale_to_fit", False)
         preferences.addPreference("mesh/scale_tiny_meshes", True)
         preferences.addPreference("cura/dialog_on_project_save", True)
-        preferences.addPreference("cura/dialog_on_ucp_project_save", True)
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
-        preferences.addPreference("cura/asked_dialog_on_ucp_project_save", False)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
@@ -1979,6 +1977,17 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, bool)
+    def readLocalUcpFile(self, file: QUrl, add_to_recent_files: bool = True):
+
+        file_name = QUrl(file).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler()
+        if workspace_reader is None:
+            Logger.warning(f"Workspace reader not found, cannot read file {file_name}.")
+            return
+
+        workspace_reader.readLocalFile(file, add_to_recent_files)
+
     @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
@@ -2184,6 +2193,12 @@ class CuraApplication(QtApplication):
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
 
+    @pyqtSlot(str, result = bool)
+    def isProjectUcp(self, file_url) -> bool:
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
+        return workspace_reader.getIsProjectUcp()
+
     @pyqtSlot(str, result=bool)
     def checkIsValidProjectFile(self, file_url):
         """Checks if the given file URL is a valid project file. """
@@ -2193,6 +2208,8 @@ class CuraApplication(QtApplication):
         if workspace_reader is None:
             return False  # non-project files won't get a reader
         try:
+            if workspace_reader.getPluginId() == "3MFReader":
+                workspace_reader.clearOpenAsUcp()
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except:

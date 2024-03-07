@@ -117,6 +117,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._supported_extensions = [".3mf"]
         self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
+        self._is_ucp = None
         self._container_registry = ContainerRegistry.getInstance()
 
         # suffixes registered with the MimeTypes don't start with a dot '.'
@@ -143,15 +144,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._old_new_materials: Dict[str, str] = {}
         self._machine_info = None
 
-        self._load_profile = False
         self._user_settings: Dict[str, Dict[str, Any]] = {}
 
     def _clearState(self):
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
-        self._load_profile = False
         self._user_settings = {}
+
+    def clearOpenAsUcp(self):
+        self._is_ucp =  None
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
@@ -207,6 +209,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return global_stack_file_list[0], extruder_stack_file_list
 
+    def _isProjectUcp(self, file_name) -> bool:
+        if self._is_ucp == None:
+            archive = zipfile.ZipFile(file_name, "r")
+            cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
+            self._is_ucp =True if USER_SETTINGS_PATH in cura_file_names else False
+
+    def getIsProjectUcp(self) -> bool:
+        return self._is_ucp
+
+
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         """Read some info so we can make decisions
 
@@ -215,7 +227,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             we don't want to show a dialog.
         """
         self._clearState()
-
+        self._isProjectUcp(file_name)
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
             pass
@@ -242,7 +254,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Read definition containers
         #
         machine_definition_id = None
-        updatable_machines = None if is_ucp else []
+        updatable_machines = None if self._is_ucp else []
         machine_definition_container_count = 0
         extruder_definition_container_count = 0
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -609,11 +621,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Load the user specifically exported settings
         self._dialog.exportedSettingModel.clear()
-        if is_ucp:
+        self._dialog.setCurrentMachineName("")
+        if self._is_ucp:
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
                 actual_global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+                self._dialog.setCurrentMachineName(actual_global_stack.id)
 
                 for stack_name, settings in self._user_settings.items():
                     if stack_name == 'global':
@@ -658,15 +672,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setVariantType(variant_type_name)
         self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
         self._dialog.setMissingPackagesMetadata(missing_package_metadata)
-        self._dialog.setHasVisibleSelectSameProfileChanged(is_ucp)
-        self._dialog.setAllowCreatemachine(not is_ucp)
+        self._dialog.setAllowCreatemachine(not self._is_ucp)
+        self._dialog.setIsUcp(self._is_ucp)
         self._dialog.show()
 
 
         # Choosing the initially selected printer in MachineSelector
         is_networked_machine = False
         is_abstract_machine = False
-        if global_stack and isinstance(global_stack, GlobalStack):
+        if global_stack and isinstance(global_stack, GlobalStack) and not self._is_ucp:
             # The machine included in the project file exists locally already, no need to change selected printers.
             is_networked_machine = global_stack.hasNetworkedConnection()
             is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
@@ -675,7 +689,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         elif self._dialog.updatableMachinesModel.count > 0:
             # The machine included in the project file does not exist. There is another machine of the same type.
             # This will always default to an abstract machine first.
-            machine = self._dialog.updatableMachinesModel.getItem(0)
+            machine = self._dialog.updatableMachinesModel.getItem(self._dialog.currentMachinePositionIndex)
             machine_name = machine["name"]
             is_networked_machine = machine["isNetworked"]
             is_abstract_machine = machine["isAbstractMachine"]
@@ -693,15 +707,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setIsAbstractMachine(is_abstract_machine)
         self._dialog.setMachineName(machine_name)
         self._dialog.updateCompatibleMachine()
-        self._dialog.setSelectSameProfileChecked(self._dialog.isCompatibleMachine)
 
         # Block until the dialog is closed.
         self._dialog.waitForClose()
 
         if self._dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
-
-        self._load_profile = not is_ucp or (self._dialog.selectSameProfileChecked and self._dialog.isCompatibleMachine)
 
         self._resolve_strategies = self._dialog.getResult()
         #
@@ -717,7 +728,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in containers_found_dict or strategy is not None:
                 continue
             self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
-
         return WorkspaceReader.PreReadResult.accepted
 
     @call_on_qt_thread
@@ -825,7 +835,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for stack in extruder_stacks:
                 stack.setNextStack(global_stack, connect_signals = False)
 
-        if self._load_profile:
+        if not self._is_ucp:
             Logger.log("d", "Workspace loading is checking definitions...")
             # Get all the definition files & check if they exist. If not, add them.
             definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
@@ -899,7 +909,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         if global_stack:
-            if self._load_profile:
+            if not self._is_ucp:
                 # Handle quality changes if any
                 self._processQualityChanges(global_stack)
 
@@ -907,7 +917,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
             else:
                 # Just clear the settings now, so that we can change the active machine without conflicts
-                self._clearMachineSettings(global_stack, extruder_stack_dict)
+                self._clearMachineSettings(global_stack, {})
+
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
@@ -917,9 +928,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
             # they won't take effect until this function is done.
             # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
+
             self._updateActiveMachine(global_stack)
 
-            if not self._load_profile:
+            if self._is_ucp:
                 # Now we have switched, apply the user settings
                 self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
 
@@ -931,6 +943,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
 
+        self._is_ucp = None
         return nodes, self._loadMetadata(file_name)
 
     @staticmethod
@@ -1309,39 +1322,40 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Set metadata fields that are missing from the global stack
-        for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
-                global_stack.setMetaDataEntry(key, value)
+        if not self._is_ucp:
+            for key, value in self._machine_info.metadata_dict.items():
+                if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
+                    global_stack.setMetaDataEntry(key, value)
 
-        if self._quality_changes_to_apply:
-            quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
-            quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
-            if not quality_changes_group:
-                Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
-                return
-            machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
-        else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
-            quality_group_dict = container_tree.getCurrentQualityGroups()
-            if self._quality_type_to_apply in quality_group_dict:
-                quality_group = quality_group_dict[self._quality_type_to_apply]
+            if self._quality_changes_to_apply !=None:
+                quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
+                quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
+                if not quality_changes_group:
+                    Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
+                    return
+                machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
             else:
-                Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
-                preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-                quality_group = quality_group_dict.get(preferred_quality_type)
-                if quality_group is None:
-                    Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
-
-            if quality_group is not None:
-                machine_manager.setQualityGroup(quality_group, no_dialog = True)
-
-                # Also apply intent if available
-                available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
-                if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
-                    machine_manager.setIntentByCategory(self._intent_category_to_apply)
+                self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
+                quality_group_dict = container_tree.getCurrentQualityGroups()
+                if self._quality_type_to_apply in quality_group_dict:
+                    quality_group = quality_group_dict[self._quality_type_to_apply]
                 else:
-                    # if no intent is provided, reset to the default (balanced) intent
-                    machine_manager.resetIntents()
+                    Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
+                    preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
+                    quality_group = quality_group_dict.get(preferred_quality_type)
+                    if quality_group is None:
+                        Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
+
+                if quality_group is not None:
+                    machine_manager.setQualityGroup(quality_group, no_dialog = True)
+
+                    # Also apply intent if available
+                    available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
+                    if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
+                        machine_manager.setIntentByCategory(self._intent_category_to_apply)
+                    else:
+                        # if no intent is provided, reset to the default (balanced) intent
+                        machine_manager.resetIntents()
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 

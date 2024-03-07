@@ -788,20 +788,6 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should a summary be shown when saving a UCP project file?")
-
-                UM.CheckBox
-                {
-                    text: catalog.i18nc("@option:check", "Show summary dialog when saving a UCP project")
-                    checked: boolCheck(UM.Preferences.getValue("cura/dialog_on_ucp_project_save"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/dialog_on_ucp_project_save", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Default behavior when opening a project file")
 
                 Column
