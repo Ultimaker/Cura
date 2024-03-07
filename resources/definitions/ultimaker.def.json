@@ -8,7 +8,7 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "exclude_materials": [
-            "structur3d_*",
+            "structur3d_",
             "generic_hips"
         ]
     },

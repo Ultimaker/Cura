@@ -17,10 +17,9 @@
             "generic_gffpa",
             "generic_hips",
             "generic_pva",
-            "structur3d_*",
+            "structur3d_",
             "ultimaker_bam",
             "ultimaker_petcf",
-            "ultimaker_petcf_*",
             "ultimaker_pva"
         ],
         "first_start_actions": [],
