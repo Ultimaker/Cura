@@ -2,6 +2,7 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 import json
 import re
+import threading
 
 from typing import Optional, cast, List, Dict, Pattern, Set
 
@@ -65,6 +66,7 @@ class ThreeMFWriter(MeshWriter):
         self._unit_matrix_string = ThreeMFWriter._convertMatrixToString(Matrix())
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
+        self._lock = threading.Lock()
 
     @staticmethod
     def _convertMatrixToString(matrix):
@@ -423,6 +425,7 @@ class ThreeMFWriter(MeshWriter):
     @call_on_qt_thread  # must be called from the main thread because of OpenGL
     def _createSnapshot(self):
         Logger.log("d", "Creating thumbnail image...")
+        self._lock.aquire()
         if not CuraApplication.getInstance().isVisible:
             Logger.log("w", "Can't create snapshot when renderer not initialized.")
             return None
@@ -431,6 +434,7 @@ class ThreeMFWriter(MeshWriter):
         except:
             Logger.logException("w", "Failed to create snapshot image")
             return None
+        finally: self._lock.release()
 
         return snapshot
 
