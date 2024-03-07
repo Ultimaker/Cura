@@ -7,6 +7,11 @@ from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
 
+from cura.HitChecker import HitChecker
+from cura.PrintOrderManager import PrintOrderManager
+from cura.Scene.CuraSceneNode import CuraSceneNode
+
+
 class OneAtATimeIterator(Iterator.Iterator):
     """Iterator that returns a list of nodes in the order that they need to be printed
 
@@ -16,8 +21,6 @@ class OneAtATimeIterator(Iterator.Iterator):
 
     def __init__(self, scene_node) -> None:
         super().__init__(scene_node) # Call super to make multiple inheritance work.
-        self._hit_map = [[]]  # type: List[List[bool]]  # For each node, which other nodes this hits. A grid of booleans on which nodes hit which.
-        self._original_node_list = []  # type: List[SceneNode]  # The nodes that need to be checked for collisions.
 
     def _fillStack(self) -> None:
         """Fills the ``_node_stack`` with a list of scene nodes that need to be printed in order. """
@@ -38,104 +41,50 @@ class OneAtATimeIterator(Iterator.Iterator):
             self._node_stack = node_list[:]
             return
 
-        # Copy the list
-        self._original_node_list = node_list[:]
+        hit_checker = HitChecker(node_list)
 
-        # Initialise the hit map (pre-compute all hits between all objects)
-        self._hit_map = [[self._checkHit(i, j) for i in node_list] for j in node_list]
+        if PrintOrderManager.isUserDefinedPrintOrderEnabled():
+            self._node_stack = self._getNodesOrderedByUser(hit_checker, node_list)
+        else:
+            self._node_stack = self._getNodesOrderedAutomatically(hit_checker, node_list)
 
-        # Check if we have to files that block each other. If this is the case, there is no solution!
-        for a in range(0, len(node_list)):
-            for b in range(0, len(node_list)):
-                if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
-                    return
+            # update print orders so that user can try to arrange the nodes automatically first
+            # and if result is not satisfactory he/she can switch to manual mode and change it
+            for index, node in enumerate(self._node_stack):
+                node.printOrder = index + 1
+
+    @staticmethod
+    def _getNodesOrderedByUser(hit_checker: HitChecker, node_list: List[CuraSceneNode]) -> List[CuraSceneNode]:
+        nodes_ordered_by_user = sorted(node_list, key=lambda n: n.printOrder)
+        if hit_checker.canPrintNodesInProvidedOrder(nodes_ordered_by_user):
+            return nodes_ordered_by_user
+        return []  # No solution
+
+    @staticmethod
+    def _getNodesOrderedAutomatically(hit_checker: HitChecker, node_list: List[CuraSceneNode]) -> List[CuraSceneNode]:
+        # Check if we have two files that block each other. If this is the case, there is no solution!
+        if hit_checker.anyTwoNodesBlockEachOther(node_list):
+            return []  # No solution
 
         # Sort the original list so that items that block the most other objects are at the beginning.
         # This does not decrease the worst case running time, but should improve it in most cases.
-        sorted(node_list, key = cmp_to_key(self._calculateScore))
+        node_list = sorted(node_list, key = cmp_to_key(hit_checker.calculateScore))
 
         todo_node_list = [_ObjectOrder([], node_list)]
         while len(todo_node_list) > 0:
             current = todo_node_list.pop()
             for node in current.todo:
                 # Check if the object can be placed with what we have and still allows for a solution in the future
-                if not self._checkHitMultiple(node, current.order) and not self._checkBlockMultiple(node, current.todo):
+                if hit_checker.canPrintAfter(node, current.order) and hit_checker.canPrintBefore(node, current.todo):
                     # We found a possible result. Create new todo & order list.
                     new_todo_list = current.todo[:]
                     new_todo_list.remove(node)
                     new_order = current.order[:] + [node]
                     if len(new_todo_list) == 0:
                         # We have no more nodes to check, so quit looking.
-                        self._node_stack = new_order
-                        return
+                        return new_order # Solution found!
                     todo_node_list.append(_ObjectOrder(new_order, new_todo_list))
-        self._node_stack = [] #No result found!
-
-
-    #  Check if first object can be printed before the provided list (using the hit map)
-    def _checkHitMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
-        node_index = self._original_node_list.index(node)
-        for other_node in other_nodes:
-            other_node_index = self._original_node_list.index(other_node)
-            if self._hit_map[node_index][other_node_index]:
-                return True
-        return False
-
-    def _checkBlockMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
-        """Check for a node whether it hits any of the other nodes.
-
-        :param node: The node to check whether it collides with the other nodes.
-        :param other_nodes: The nodes to check for collisions.
-        :return: returns collision between nodes
-        """
-
-        node_index = self._original_node_list.index(node)
-        for other_node in other_nodes:
-            other_node_index = self._original_node_list.index(other_node)
-            if self._hit_map[other_node_index][node_index] and node_index != other_node_index:
-                return True
-        return False
-
-    def _calculateScore(self, a: SceneNode, b: SceneNode) -> int:
-        """Calculate score simply sums the number of other objects it 'blocks'
-
-        :param a: node
-        :param b: node
-        :return: sum of the number of other objects
-        """
-
-        score_a = sum(self._hit_map[self._original_node_list.index(a)])
-        score_b = sum(self._hit_map[self._original_node_list.index(b)])
-        return score_a - score_b
-
-    def _checkHit(self, a: SceneNode, b: SceneNode) -> bool:
-        """Checks if a can be printed before b
-
-        :param a: node
-        :param b: node
-        :return: true if a can be printed before b
-        """
-
-        if a == b:
-            return False
-
-        a_hit_hull = a.callDecoration("getConvexHullBoundary")
-        b_hit_hull = b.callDecoration("getConvexHullHeadFull")
-        overlap = a_hit_hull.intersectsPolygon(b_hit_hull)
-
-        if overlap:
-            return True
-
-        # Adhesion areas must never overlap, regardless of printing order
-        # This would cause over-extrusion
-        a_hit_hull = a.callDecoration("getAdhesionArea")
-        b_hit_hull = b.callDecoration("getAdhesionArea")
-        overlap = a_hit_hull.intersectsPolygon(b_hit_hull)
-
-        if overlap:
-            return True
-        else:
-            return False
+        return []  # No result found!
 
 
 class _ObjectOrder:
