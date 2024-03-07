@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: workspaceDialog
-    title: catalog.i18nc("@title:window", "Open Project")
+    title: manager.isUcp? catalog.i18nc("@title:window", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -28,7 +28,7 @@ UM.Dialog
         UM.Label
         {
             id: titleLabel
-            text: catalog.i18nc("@action:title", "Summary - Cura Project")
+            text: manager.isUcp? catalog.i18nc("@action:title", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
             font: UM.Theme.getFont("large")
             anchors.top: parent.top
             anchors.left: parent.left
@@ -96,7 +96,7 @@ UM.Dialog
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
-                            rightLabelText: manager.machineName == catalog.i18nc("@button", "Create new") ? "" : manager.machineName
+                            rightLabelText: manager.isUcp? manager.machineType: manager.machineName == catalog.i18nc("@button", "Create new") ? "" : manager.machineName
                         }
                     }
 
@@ -159,7 +159,7 @@ UM.Dialog
                 WorkspaceSection
                 {
                     id: profileSection
-                    title: catalog.i18nc("@action:label", "Profile settings")
+                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Profile settings"):catalog.i18nc("@action:label", "Profile settings")
                     iconSource: UM.Theme.getIcon("Sliders")
                     content: Column
                     {
@@ -185,32 +185,44 @@ UM.Dialog
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Not in profile")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                            visible: manager.numUserSettings != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
+                            visible: manager.numUserSettings != 0 && manager.isCompatibleMachine
                         }
 
                         WorkspaceRow
                         {
                             leftLabelText: catalog.i18nc("@action:label", "Derivative from")
                             rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.selectSameProfileChecked && manager.isCompatibleMachine
+                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.isCompatibleMachine
                         }
+                    }
+                }
+                WorkspaceSection
+                {
+                    id: ucpProfileSection
+                    visible: manager.isUcp
+                    title: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
+                    iconSource: UM.Theme.getIcon("Settings")
+
+                    content: Column
+                    {
+                        id: ucpProfileSettingsValuesTable
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
 
                         WorkspaceRow
                         {
-                            leftLabelText: catalog.i18nc("@action:label", "Specific settings")
+                            leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
                             rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
-                            visible: !manager.selectSameProfileChecked || !manager.isCompatibleMachine
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
-
                         Cura.TableView
                         {
                             id: tableViewSpecificSettings
                             width: parent.width - parent.leftPadding - UM.Theme.getSize("default_margin").width
                             height: UM.Theme.getSize("card").height
-                            visible: shouldBeVisible && (!manager.selectSameProfileChecked || !manager.isCompatibleMachine)
-                            property bool shouldBeVisible: false
+                            visible: shouldBeVisible && manager.isUcp
+                            property bool shouldBeVisible: true
 
                             columnHeaders:
                             [
@@ -227,15 +239,11 @@ UM.Dialog
                             }
                         }
 
-                        UM.CheckBox
+                        property var modelRows: manager.exportedSettingModel.items
+                        onModelRowsChanged:
                         {
-                            text: catalog.i18nc("@action:checkbox", "Select the same profile")
-                            onEnabledChanged: manager.selectSameProfileChecked = enabled
-                            tooltip: enabled ? "" : catalog.i18nc("@tooltip", "You can use the same profile only if you have the same printer as the project was published with")
-                            visible: manager.hasVisibleSelectSameProfile && manager.isCompatibleMachine
-
-                            checked: manager.selectSameProfileChecked
-                            onCheckedChanged: manager.selectSameProfileChecked = checked
+                            tableModel.clear()
+                            tableModel.rows = modelRows
                         }
                     }
 
@@ -245,7 +253,7 @@ UM.Dialog
                         id: qualityChangesResolveComboBox
                         model: resolveStrategiesModel
                         textRole: "label"
-                        visible: manager.qualityChangesConflict
+                        visible: manager.qualityChangesConflict && !manager.isUcp
                         contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 
@@ -274,7 +282,7 @@ UM.Dialog
                 WorkspaceSection
                 {
                     id: materialSection
-                    title: catalog.i18nc("@action:label", "Material settings")
+                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Material settings"): catalog.i18nc("@action:label", "Material settings")
                     iconSource: UM.Theme.getIcon("Spool")
                     content: Column
                     {
@@ -299,7 +307,7 @@ UM.Dialog
                         id: materialResolveComboBox
                         model: resolveStrategiesModel
                         textRole: "label"
-                        visible: manager.materialConflict
+                        visible: manager.materialConflict && !manager.isUcp
                         contentLeftPadding: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                         textFont: UM.Theme.getFont("medium")
 
@@ -330,6 +338,7 @@ UM.Dialog
                     id: visibilitySection
                     title: catalog.i18nc("@action:label", "Setting visibility")
                     iconSource: UM.Theme.getIcon("Eye")
+                    visible : !manager.isUcp
                     content: Column
                     {
                         spacing: UM.Theme.getSize("default_margin").height
@@ -467,12 +476,13 @@ UM.Dialog
     {
         if (visible)
         {
-            // Force relead the comboboxes
+            // Force reload the comboboxes
             // Since this dialog is only created once the first time you open it, these comboxes need to be reloaded
             // each time it is shown after the first time so that the indexes will update correctly.
             materialSection.reloadValues()
             profileSection.reloadValues()
             printerSection.reloadValues()
+            ucpProfileSection.reloadValues()
         }
     }
 }
