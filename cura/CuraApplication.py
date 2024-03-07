@@ -617,6 +617,7 @@ class CuraApplication(QtApplication):
 
         preferences.addPreference("view/invert_zoom", False)
         preferences.addPreference("view/filter_current_build_plate", False)
+        preferences.addPreference("view/navigation_style", "cura")
         preferences.addPreference("cura/sidebar_collapsed", False)
 
         preferences.addPreference("cura/favorite_materials", "")
@@ -1082,6 +1083,10 @@ class CuraApplication(QtApplication):
     def getTextManager(self, *args) -> "TextManager":
         return self._text_manager
 
+    @pyqtSlot()
+    def setWorkplaceDropToBuildplate(self):
+        return self._physics.setAppAllModelDropDown()
+
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
             self._cura_formula_functions = CuraFormulaFunctions(self)
@@ -1136,6 +1141,16 @@ class CuraApplication(QtApplication):
         if self._build_plate_model is None:
             self._build_plate_model = BuildPlateModel(self)
         return self._build_plate_model
+
+    @pyqtSlot()
+    def exportUcp(self):
+        writer = self.getMeshFileHandler().getWriter("3MFWriter")
+
+        if writer is None:
+            Logger.warning("3mf writer is not enabled")
+            return
+
+        writer.exportUcp()
 
     def getCuraSceneController(self, *args) -> CuraSceneController:
         if self._cura_scene_controller is None:
@@ -1962,6 +1977,17 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, bool, arguments = ["project_file", "add_to_recent_files"])  # Emitted when a project file is about to open.
 
+    @pyqtSlot(QUrl, bool)
+    def readLocalUcpFile(self, file: QUrl, add_to_recent_files: bool = True):
+
+        file_name = QUrl(file).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler()
+        if workspace_reader is None:
+            Logger.warning(f"Workspace reader not found, cannot read file {file_name}.")
+            return
+
+        workspace_reader.readLocalFile(file, add_to_recent_files)
+
     @pyqtSlot(QUrl, str, bool)
     @pyqtSlot(QUrl, str)
     @pyqtSlot(QUrl)
@@ -2167,6 +2193,12 @@ class CuraApplication(QtApplication):
     def addNonSliceableExtension(self, extension):
         self._non_sliceable_extensions.append(extension)
 
+    @pyqtSlot(str, result = bool)
+    def isProjectUcp(self, file_url) -> bool:
+        file_path = QUrl(file_url).toLocalFile()
+        workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)
+        return workspace_reader.getIsProjectUcp()
+
     @pyqtSlot(str, result=bool)
     def checkIsValidProjectFile(self, file_url):
         """Checks if the given file URL is a valid project file. """
@@ -2176,6 +2208,8 @@ class CuraApplication(QtApplication):
         if workspace_reader is None:
             return False  # non-project files won't get a reader
         try:
+            if workspace_reader.getPluginId() == "3MFReader":
+                workspace_reader.clearOpenAsUcp()
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except:

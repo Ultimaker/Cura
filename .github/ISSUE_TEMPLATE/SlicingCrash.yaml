@@ -4,7 +4,7 @@ labels: ["Type: Bug", "Status: Triage", "Slicing Error :collision:"]
 body:
 - type: markdown
   attributes:
-    value: |
+    value: |      
        ### 💥 Slicing Crash Analysis Tool 💥
        We are taking steps to analyze an increase in reported crashes more systematically. We'll need some help with that. 😇
        Before filling out the report below, we want you to try a special Cura 5.7 Alpha.
