@@ -99,7 +99,7 @@
     "bridge_wall_speed": { "value": 20 },
     "bridge_skin_speed": { "value": 20 },
     "bridge_skin_material_flow": { "value": 100 },
-    "bridge_skin_density": { "value": 100 },
+    
     "bridge_skin_speed_2": { "value": 50 },
     "bridge_skin_material_flow_2": { "value": 80 },
     "bridge_skin_density_2": { "value": 80 },
