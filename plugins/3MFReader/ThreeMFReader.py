@@ -16,6 +16,7 @@ from UM.Mesh.MeshReader import MeshReader
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -41,7 +42,7 @@ class ThreeMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                name="application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 comment="3MF",
                 suffixes=["3mf"]
             )
@@ -176,6 +177,12 @@ class ThreeMFReader(MeshReader):
                         um_node.callDecoration("setActiveExtruder", extruder_stack.getId())
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
+                    continue
+                if key == "print_order":
+                    um_node.printOrder = int(setting_value)
+                    continue
+                if key =="drop_to_buildplate":
+                    um_node.setSetting(SceneNodeSettings.AutoDropDown, eval(setting_value))
                     continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
