@@ -28,7 +28,7 @@ class MaterialOutputModel(QObject):
                             "abs-wss1"	:{"name" :"absr_175"      ,"guid": "88c8919c-6a09-471a-b7b6-e801263d862d"},
                             "asa" 		:{"name" :"asa_175"       ,"guid": "416eead4-0d8e-4f0b-8bfc-a91a519befa5"},
                             "nylon-cf" 	:{"name" :"cffpa_175"     ,"guid": "85bbae0e-938d-46fb-989f-c9b3689dc4f0"},
-                             "nylon12-cf": {"name": "nylon12-cf", "guid": "3c6f2877-71cc-4760-84e6-4b89ab243e3b"},
+                             "nylon12-cf": {"name": "nylon12-cf_175", "guid": "3c6f2877-71cc-4760-84e6-4b89ab243e3b"},
                             "nylon"		:{"name" :"nylon_175"     ,"guid": "283d439a-3490-4481-920c-c51d8cdecf9c"},
                             "pc"		:{"name" :"pc_175"        ,"guid": "62414577-94d1-490d-b1e4-7ef3ec40db02"},
                             "petg"		:{"name" :"petg_175"      ,"guid": "69386c85-5b6c-421a-bec5-aeb1fb33f060"},
