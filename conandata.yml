@@ -6,8 +6,8 @@ requirements:
   - "fdm_materials/5.7.0-beta.1"
   - "curaengine_plugin_gradual_flow/0.1.0"
   - "dulcificum/0.2.0"
-  - "pysavitar/5.4.0"
-  - "pynest2d/5.4.0"
+  - "pysavitar/5.3.0"
+  - "pynest2d/5.3.0"
   - "curaengine_grpc_definitions/0.2.0"
 requirements_internal:
   - "fdm_materials/5.7.0-beta.1"
