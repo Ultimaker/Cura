@@ -151,8 +151,7 @@
       "value": 250
     },
     "speed_wall_x_roofing": {
-      "maximum_value_warning": "550",
-      "value": "speed_wall_x"
+      "maximum_value_warning": "550"
     },
     "speed_support_interface": {
       "maximum_value_warning": "550",
