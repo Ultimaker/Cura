@@ -193,19 +193,16 @@ class Snapshot:
             preview_pass.setCamera(camera)
             preview_pass.render()
             pixel_output = preview_pass.getOutput()
-            if Snapshot._prereadSnapshot(pixel_output):
-                try:
-                    min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
-                except (ValueError, AttributeError) as e:
-                    Logger.logException("w", f"Failed to crop the snapshot! {e}")
+            try:
+                min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+            except (ValueError, AttributeError) as e:
+                if number_of_attempts == 0:
+                    Logger.warning( f"Failed to crop the snapshot even after {Snapshot.ATTEMPTS_FOR_SNAPSHOT} attempts!")
                     return None
-            elif number_of_attempts == 0:
-                Logger.warning( f"Failed to crop the snapshot even after {Snapshot.ATTEMPTS_FOR_SNAPSHOT} attempts!")
-                return None
-            else:
-                number_of_attempts = number_of_attempts - 1
-                Logger.info("Trying to get the snapshot again.")
-                return Snapshot.snapshot(width, height, number_of_attempts)
+                else:
+                    number_of_attempts = number_of_attempts - 1
+                    Logger.info("Trying to get the snapshot again.")
+                    return Snapshot.snapshot(width, height, number_of_attempts)
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
             if size > 0.5 or satisfied:
@@ -230,8 +227,3 @@ class Snapshot:
             transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
 
         return scaled_image
-
-    @staticmethod
-    def _prereadSnapshot(snap = QImage):
-        nonzero_pixels = Snapshot.getNonZeroPixels(snap)
-        return all(len(nonzero_pixels[i]) != 0 for i in range(3))
