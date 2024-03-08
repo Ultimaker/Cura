@@ -100,8 +100,8 @@ class Snapshot:
             camera_width / 2,
             -camera_height / 2,
             camera_height / 2,
-            -10000,
-            10000
+            -Snapshot.MAX_RENDER_DISTANCE,
+            Snapshot.MAX_RENDER_DISTANCE
         )
         camera.setPerspective(False)
         camera.setProjectionMatrix(ortho_matrix)
