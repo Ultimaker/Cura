@@ -4899,6 +4899,14 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Poista mallien ryhmitys"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Tulosta ennen"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Tulosta jälkeen"
+
 msgctxt "@button"
 msgid "Uninstall"
 msgstr ""

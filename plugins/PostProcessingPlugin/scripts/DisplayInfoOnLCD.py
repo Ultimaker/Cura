@@ -30,9 +30,6 @@
 from ..Script import Script
 from UM.Application import Application
 from UM.Qt.Duration import DurationFormat
-import UM.Util
-import configparser
-from UM.Preferences import Preferences
 import time
 import datetime
 import math
