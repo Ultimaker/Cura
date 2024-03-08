@@ -200,7 +200,7 @@ class Snapshot:
                     Logger.logException("w", f"Failed to crop the snapshot! {e}")
                     return None
             elif number_of_attempts == 0:
-                Logger.warning( f"Failed to crop the snapshot even after 10 attempts!")
+                Logger.warning( f"Failed to crop the snapshot even after {Snapshot.ATTEMPTS_FOR_SNAPSHOT} attempts!")
                 return None
             else:
                 number_of_attempts = number_of_attempts - 1
