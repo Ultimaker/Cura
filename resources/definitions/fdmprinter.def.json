@@ -7956,7 +7956,7 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
-                    "unitp": "mm",
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "minimum_value": "0.001",
                     "settable_per_extruder": false,
