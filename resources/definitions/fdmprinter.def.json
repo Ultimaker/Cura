@@ -6808,7 +6808,7 @@
                 "prime_tower_mode":
                 {
                     "label": "Prime Tower Type",
-                    "description": "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other.</li></ul></html>",
+                    "description": "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>",
                     "type": "enum",
                     "value": "'interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal'",
                     "options":
@@ -7294,7 +7294,7 @@
                 "user_defined_print_order_enabled":
                 {
                     "label": "Set Print Sequence Manually",
-                    "description": "Allows to order the object list to set the print sequence manually. First object from the list will be printed first.",
+                    "description": "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first.",
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
@@ -7956,7 +7956,7 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
-                    "unit": "mm",
+                    "unitp": "mm",
                     "settable_per_mesh": false,
                     "minimum_value": "0.001",
                     "settable_per_extruder": false,
