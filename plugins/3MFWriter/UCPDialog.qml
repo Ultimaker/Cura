@@ -46,7 +46,7 @@ UM.Dialog
             UM.Label
             {
                 id: descriptionLabel
-                text: catalog.i18nc("@action:description", "When exporting a Universal Cura Project, all the models present on the build plate will be included with their current position, orientation and scale. You can also select which per-extruder or per-model settings should be included to ensure a proper printing of the batch, even on different printers.")
+                text: catalog.i18nc("@action:description", "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing.")
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.Wrap
                 Layout.maximumWidth: headerColumn.width
