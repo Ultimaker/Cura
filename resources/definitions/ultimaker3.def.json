@@ -20,9 +20,8 @@
             "generic_gffpa",
             "generic_hips",
             "generic_petcf",
-            "structur3d_*",
-            "ultimaker_petcf",
-            "ultimaker_petcf_*"
+            "structur3d_",
+            "ultimaker_petcf"
         ],
         "firmware_update_info":
         {
