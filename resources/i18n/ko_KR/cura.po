@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 19:13+0100\n"
+"POT-Creation-Date: 2024-03-11 12:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,6 +114,10 @@ msgstr "다시하기(&R)"
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "프로젝트 저장(&S)..."
+
+msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
+msgid "&Save Universal Cura Project..."
+msgstr ""
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
@@ -257,6 +261,10 @@ msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "A cloud connection is not available for some printers"
+
+msgctxt "@text"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -492,9 +500,17 @@ msgctxt "@label"
 msgid "Anonymous"
 msgstr "익명"
 
+msgctxt "@option:radio"
+msgid "Anonymous crash reports"
+msgstr ""
+
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "애플리케이션 프레임 워크"
+
+msgctxt "@title:column"
+msgid "Applies on"
+msgstr ""
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -681,6 +697,10 @@ msgstr "COLLADA Digital Asset Exchange"
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "계산된"
+
+msgctxt "@window:text"
+msgid "Camera navigation:"
+msgstr ""
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -1412,6 +1432,10 @@ msgctxt "@label"
 msgid "Draft"
 msgstr "초안"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Drop All Models to buildplate"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "복제"
@@ -1538,6 +1562,10 @@ msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "내보내기 선택..."
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Export Universal Cura Project"
+msgstr ""
+
 msgctxt "@button"
 msgid "Export material archive"
 msgstr "재료 아카이브 내보내기"
@@ -1571,9 +1599,22 @@ msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "익스트루더 종료 Gcode"
 
+msgctxt "@label"
+msgid "Extruder End G-code duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "익스트루더 시작 Gcode"
+
+msgctxt "@label"
+msgid "Extruder Start G-code duration"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@label"
+msgid "Extruder {0}"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1640,6 +1681,11 @@ msgstr "프린터와 동기화할 재료의 아카이브 로드에 실패했습�
 msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "재료 아카이브를 저장하는 데 실패함"
+
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
+msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
@@ -1782,6 +1828,9 @@ msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "레이어 뷰 호환성 모드로 전환 (다시 시작해야 함)"
 
+msgid "FreeCAD trackpad"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "앞에서 보기"
@@ -1870,6 +1919,10 @@ msgctxt "@action"
 msgid "Get started"
 msgstr "시작하기"
 
+msgctxt "@label"
+msgid "Global"
+msgstr ""
+
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "전역 설정"
@@ -1918,6 +1971,10 @@ msgstr "도움말"
 msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "연결된 프린터 모두 숨기기"
+
+msgctxt "@action:button"
+msgid "Hide settings"
+msgstr ""
 
 msgctxt "@action:menu"
 msgid "Hide this setting"
@@ -1994,6 +2051,10 @@ msgstr "Cura를 사용하려면 프린터를 구성해야 합니다."
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
 msgstr "패키지를 사용하려면 Cura를 재시작해야 합니다."
+
+msgctxt "@option:radio"
+msgid "Include UltiMaker account name"
+msgstr ""
 
 msgctxt "@label"
 msgid "Infill"
@@ -2697,6 +2758,10 @@ msgid "No results found with current filter"
 msgstr "현재 필터로는 결과를 찾을 수 없음"
 
 msgctxt "@label"
+msgid "No specific value has been set"
+msgstr ""
+
+msgctxt "@label"
 msgid "No time estimation available"
 msgstr "시간 추산 이용 불가"
 
@@ -2797,6 +2862,10 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "한 번에 하나의 G-코드 파일만 로드 할 수 있습니다. {0} 가져 오기를 건너 뛰었습니다."
 
+msgctxt "@message"
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Open"
 msgstr "열기"
@@ -2825,9 +2894,21 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "프로젝트 파일 열기"
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP) file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "다음으로 열기"
+
+msgctxt "@action:button"
+msgid "Open as UCP"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Open as project"
@@ -3042,6 +3123,10 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "UltiMaker Cura Enterprise용으로 검증된 플러그인 및 재료를 받으려면 로그인하십시오."
 
+msgctxt "@info:tooltip"
+msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "프린트를 시작하기 전에 재료 프로파일을 프린터와 동기화하십시오."
@@ -3137,6 +3222,14 @@ msgstr "프라임 타워"
 msgctxt "@action:button"
 msgid "Print"
 msgstr "프린트"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "인쇄 후"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "인쇄 전"
 
 msgctxt "@label"
 msgid "Print Selected Model With:"
@@ -3442,8 +3535,8 @@ msgid "Provides support for reading model files."
 msgstr "모델 파일 읽기 기능을 제공합니다."
 
 msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "3MF 파일 작성 지원을 제공합니다."
+msgid "Provides support for writing 3MF and UCP files."
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
@@ -3687,8 +3780,12 @@ msgid "Save Cura project"
 msgstr "Cura 프로젝트 저장하기"
 
 msgctxt "@option"
-msgid "Save Cura project and print file"
-msgstr "Cura 프로젝트 저장하고 파일 프린팅하기"
+msgid "Save Cura project and .makerbot print file"
+msgstr ""
+
+msgctxt "@option"
+msgid "Save Cura project and .ufp print file"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3713,6 +3810,10 @@ msgstr "변경 사항 저장"
 msgctxt "@button"
 msgid "Save new profile"
 msgstr "새 프로필 저장"
+
+msgctxt "@action:button"
+msgid "Save project"
+msgstr ""
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
@@ -3817,6 +3918,18 @@ msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "충돌 보고서를 UltiMaker에 보내기"
 
+msgctxt "@info:tooltip"
+msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Send engine crash reports"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "보고서 전송"
@@ -3868,6 +3981,10 @@ msgstr "설정"
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "설정"
+
+msgctxt "@action:label"
+msgid "Settings Loaded from UCP file"
+msgstr ""
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -3938,6 +4055,10 @@ msgid "Should opening files from the desktop or external applications open in th
 msgstr "데스크톱 또는 외부 애플리케이션의 파일을 동일한 Cura 인스턴스에서 엽니까?"
 
 msgctxt "@info:tooltip"
+msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "Cura의 단일 인스턴스에서 새 모델을 로드하기 전에 빌드 플레이트를 지워야 합니까?"
 
@@ -3992,6 +4113,10 @@ msgstr "설정 폴더 보기"
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "충돌 리포트 보기"
+
+msgctxt "@action:button"
+msgid "Show settings"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
@@ -4069,10 +4194,6 @@ msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "슬라이싱 실패"
 
-msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr "예기치 않은 오류로 인해 슬라이싱에 실패했습니다. 이슈 트래커에 버그를 보고하는 것을 고려하십시오."
-
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "슬라이싱..."
@@ -4080,6 +4201,10 @@ msgstr "슬라이싱..."
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "스무딩(smoothing)"
+
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
 
 msgctxt "name"
 msgid "Solid View"
@@ -4206,9 +4331,25 @@ msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "프로파일 {0}을(를) 성공적으로 가져왔습니다."
 
+msgctxt "@action:label"
+msgid "Suggested Material settings"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Suggested Profile settings"
+msgstr ""
+
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "요약 - Cura 프로젝트"
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Universal Cura Project"
+msgstr ""
 
 msgctxt "@label"
 msgid "Support"
@@ -4588,6 +4729,10 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "%1이(가) 인식되지 않기 때문에 이 구성을 사용할 수 없습니다. %2에 방문하여 올바른 재료 프로파일을 다운로드하십시오."
 
 msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr ""
+
+msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "이 파일은 Cura 프로젝트 파일입니다. 프로젝트로 열거나 모델을 가져 오시겠습니까?"
 
@@ -4673,6 +4818,14 @@ msgstr "영향을 미치는 모든 설정이 무효화되기 때문에 이 설�
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "이 설정은 충돌하는 압출기별 값으로 결정됩니다:"
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
+msgstr ""
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
@@ -4905,6 +5058,11 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "새 로그인 작업을 시작할 수 없습니다. 다른 로그인 작업이 진행 중인지 확인하십시오."
 
+#, python-brace-format
+msgctxt "@info:error"
+msgid "Unable to write to file: {0}"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "사용불가"
@@ -4917,14 +5075,6 @@ msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "모델 그룹 해제"
 
-msgctxt "@action:inmenu menubar:edit"
-msgid "Print Before"
-msgstr "인쇄 전"
-
-msgctxt "@action:inmenu menubar:edit"
-msgid "Print After"
-msgstr "인쇄 후"
-
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "설치 제거"
@@ -4932,6 +5082,10 @@ msgstr "설치 제거"
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
 msgstr "단위"
+
+msgctxt "@action:description Don't translate 'Universal Cura Project'"
+msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
+msgstr ""
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
@@ -5122,6 +5276,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr "Cura 5.4에서 Cura 5.5로 구성을 업그레이드합니다."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "사용자 정의 펌웨어 업로드"
@@ -5153,6 +5311,10 @@ msgstr "이미지 로더를 포함한 유틸리티 기능"
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Voronoi 세대를 포함한 유틸리티 라이브러리"
+
+msgctxt "@title:column"
+msgid "Value"
+msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
@@ -5258,6 +5420,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr "5.4에서 5.5로 버전 업그레이드"
 
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr ""
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "Digital Factory에서 프린터 보기"
@@ -5334,6 +5500,10 @@ msgstr "웹사이트"
 msgctxt "@label"
 msgid "What printer would you like to setup?"
 msgstr "어떤 프린터를 설정하시겠습니까?"
+
+msgctxt "@info:tooltip"
+msgid "What type of camera navigation should be used?"
+msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
@@ -5548,6 +5718,10 @@ msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
+msgctxt "@label"
+msgid "s"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "today"
 msgstr "오늘"
@@ -5575,3 +5749,15 @@ msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
 
 #~ msgid "Provides support for exporting Cura profiles."
 #~ msgstr "Cura 프로필 내보내기를 지원합니다."
+
+#~ msgctxt "description"
+#~ msgid "Provides support for writing 3MF files."
+#~ msgstr "3MF 파일 작성 지원을 제공합니다."
+
+#~ msgctxt "@option"
+#~ msgid "Save Cura project and print file"
+#~ msgstr "Cura 프로젝트 저장하고 파일 프린팅하기"
+
+#~ msgctxt "@message"
+#~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+#~ msgstr "예기치 않은 오류로 인해 슬라이싱에 실패했습니다. 이슈 트래커에 버그를 보고하는 것을 고려하십시오."
