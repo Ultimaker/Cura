@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-11-24 12:51+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -15,6 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.1.1\n"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "brim_inside_margin description"
+msgid "A brim around a surface may touch an other surface where brim is not expected. This removes all brim within this distance from brimless surfaces."
+msgstr ""
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -59,10 +67,6 @@ msgstr "Monikulmioluettelo, jossa on alueet, joihin suutin ei saa siirtyä."
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "Monikulmioluettelo, jossa on alueet, joihin tulostuspää ei saa siirtyä."
-
-msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr ""
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
@@ -153,6 +157,10 @@ msgstr "Kaikki kerralla"
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
 msgstr "Kaikki tulostuksen resoluutioon vaikuttavat asetukset. Näillä asetuksilla on suuri vaikutus laatuun (ja tulostusaikaan)."
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr ""
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -402,21 +410,21 @@ msgctxt "adhesion_type option brim"
 msgid "Brim"
 msgstr "Reunus"
 
-msgctxt "brim_gap label"
-msgid "Brim Distance"
+msgctxt "brim_inside_margin label"
+msgid "Brim Avoid Margin"
 msgstr ""
 
-msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
+msgctxt "brim_gap label"
+msgid "Brim Distance"
 msgstr ""
 
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
 msgstr "Reunuksen linjaluku"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "Reunus vain ulkopuolella"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr ""
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -456,6 +464,14 @@ msgstr "Alustan lämpötila (alkukerros)"
 
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
+msgstr ""
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr ""
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
 msgstr ""
 
 msgctxt "prime_tower_brim_enable description"
@@ -870,6 +886,10 @@ msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
 msgstr "Ota tulostuksen jäähdytys käyttöön"
 
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr ""
+
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "Ota takaisinveto käyttöön"
@@ -902,6 +922,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Ottaa ulkoisen tihkusuojuksen käyttöön. Tämä luo mallin ympärille kuoren, joka pyyhkii todennäköisesti toisen suuttimen, jos se on samalla korkeudella kuin ensimmäinen suutin."
 
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr ""
+
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
 msgstr ""
@@ -932,6 +956,10 @@ msgstr ""
 
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr ""
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
 msgstr ""
 
 msgctxt "support_type option everywhere"
@@ -1038,6 +1066,10 @@ msgctxt "speed_equalize_flow_width_factor label"
 msgid "Flow Equalization Ratio"
 msgstr ""
 
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr ""
+
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
 msgstr ""
@@ -1049,6 +1081,10 @@ msgstr ""
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
 msgstr "Virtauksen lämpötilakaavio"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr ""
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
@@ -1438,9 +1474,21 @@ msgctxt "wall_transition_filter_distance description"
 msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
 msgstr ""
 
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
 msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "Jos pohjaristikko on otettu käyttöön, tämä on ylimääräinen ristikkoalue malli ympärillä, jolle myös annetaan pohjaristikko. Tämän marginaalin kasvattaminen vahvistaa pohjaristikkoa, jolloin käytetään enemmän materiaalia ja tulosteelle jää vähemmän tilaa."
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
 
 msgctxt "meshfix_union_all description"
 msgid "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear."
@@ -1670,6 +1718,10 @@ msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "Ulkoseinämän reitille asetettu liitos. Jos ulkoseinämä on pienempi kuin suutin ja se tulostetaan sisäseinämien jälkeen, tällä siirtymällä saadaan suuttimen reikä limittymään sisäseinämiin mallin ulkopuolen sijaan."
 
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr ""
+
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr ""
@@ -1680,6 +1732,10 @@ msgstr ""
 
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
+msgstr ""
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
 msgstr ""
 
 msgctxt "interlocking_beam_layer_count label"
@@ -1822,6 +1878,30 @@ msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr ""
 
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr ""
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr ""
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr ""
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr ""
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr ""
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr ""
+
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
 msgstr "Rajoita tämän verkon laajuus muiden verkkojen alueelle. Tällä voit määrittää tietyt yhden verkon alueet tulostumaan eri asetuksilla ja täysin eri suulakkeella."
@@ -1919,8 +1999,10 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "Tekee suulakkeen esitäyttösijainnista absoluuttisen eikä suhteellisen viimeksi tunnettuun pään sijaintiin nähden."
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "Mallin ensimmäisen ja toisen kerroksen limitys Z-suunnassa, millä kompensoidaan ilmaraossa menetettyä tulostuslankaa. Kaikki ensimmäisen mallin kerroksen yläpuolella olevat mallit siirtyvät alas tämän määrän."
+msgid ""
+"Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\n"
+"It may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr ""
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -1946,9 +2028,17 @@ msgctxt "material label"
 msgid "Material"
 msgstr "Materiaali"
 
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr ""
+
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "Materiaalin GUID"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr ""
 
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
@@ -2226,6 +2316,10 @@ msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
 msgstr ""
 
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr ""
+
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
 msgstr ""
@@ -2265,6 +2359,10 @@ msgstr "Ei mitään"
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
 msgstr "Normaali"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr ""
 
 msgctxt "support_structure option normal"
 msgid "Normal"
@@ -2398,10 +2496,6 @@ msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
 msgstr "Suorita silitys vain verkon viimeisessä kerroksessa. Tämä säästää aikaa, jos alemmat kerrokset eivät edellytä sileää pintaviimeistelyä."
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "Tulostaa reunuksen vain mallin ulkopuolelle. Tämä vähentää myöhemmin poistettavan reunuksen määrää, mutta se ei juurikaan vähennä pöydän tarttuvuutta."
-
 msgctxt "ooze_shield_angle label"
 msgid "Ooze Shield Angle"
 msgstr "Tihkusuojuksen kulma"
@@ -2461,6 +2555,10 @@ msgstr "Ulkoseinämän täyttöliikkeen etäisyys"
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
 msgstr "Samaan kerrokseen kuuluvat eri saarten ulkoseinät tulostetaan peräkkäin. Kun toiminto on käytössä, virtauksen muutosten määrä on rajoitettu, koska seinät tulostetaan yksi kerrallaan. Kun toiminto on pois päältä, matkojen määrä saarten välillä vähenee, koska saman saaren seinät ryhmitellään."
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr ""
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -2542,6 +2640,10 @@ msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
 msgstr "Esitäyttötornin linjan leveys"
 
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr ""
+
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "Esitäyttötornin minimiainemäärä"
@@ -2557,6 +2659,10 @@ msgstr "Esitäyttötornin koko"
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
 msgstr "Esitäyttötornin nopeus"
+
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr ""
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -2574,17 +2680,13 @@ msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Tulostuksen nykäisy"
 
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr ""
+
 msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "Tulostusjärjestys"
-
-msgctxt "user_defined_print_order_enabled label"
-msgid "Set Print Sequence Manually"
-msgstr "Aseta tulostusjärjestys manuaalisesti"
-
-msgctxt "user_defined_print_order_enabled description"
-msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
-msgstr "Mahdollistaa kohteiden järjestämisen tulostusjärjestyksen manuaaliseen asettamiseen. Listan ensimmäinen kohde tulostetaan ensin."
 
 msgctxt "speed_print label"
 msgid "Print Speed"
@@ -2593,6 +2695,10 @@ msgstr "Tulostusnopeus"
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "Tulosta ohuet seinämät"
+
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr ""
 
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
@@ -2614,12 +2720,24 @@ msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Tulostaa mallin kohtia, jotka ovat vaakasuunnassa suuttimen kokoa ohuempia."
 
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr ""
+
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
 msgstr ""
 
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
+msgstr ""
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr ""
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
 msgstr ""
 
 msgctxt "infill_before_walls description"
@@ -2666,6 +2784,10 @@ msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
 msgstr "Pohjaristikon ilmarako"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr ""
+
 msgctxt "raft_base_extruder_nr label"
 msgid "Raft Base Extruder"
 msgstr ""
@@ -2694,6 +2816,10 @@ msgctxt "raft_base_speed label"
 msgid "Raft Base Print Speed"
 msgstr "Pohjaristikon pohjan tulostusnopeus"
 
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr ""
+
 msgctxt "raft_base_thickness label"
 msgid "Raft Base Thickness"
 msgstr "Pohjaristikon pohjan paksuus"
@@ -2709,6 +2835,10 @@ msgstr "Pohjaristikon lisämarginaali"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "Pohjaristikon tuulettimen nopeus"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr ""
 
 msgctxt "raft_interface_extruder_nr label"
 msgid "Raft Middle Extruder"
@@ -2738,6 +2868,10 @@ msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
 msgstr "Pohjaristikon keskikerroksen tulostusnopeus"
 
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr ""
+
 msgctxt "raft_interface_line_spacing label"
 msgid "Raft Middle Spacing"
 msgstr "Pohjaristikon keskikerroksen linjajako"
@@ -2745,6 +2879,10 @@ msgstr "Pohjaristikon keskikerroksen linjajako"
 msgctxt "raft_interface_thickness label"
 msgid "Raft Middle Thickness"
 msgstr "Pohjaristikon keskikerroksen paksuus"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr ""
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -2761,6 +2899,10 @@ msgstr "Pohjaristikon tulostusnopeus"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Pohjaristikon tasoitus"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr ""
 
 msgctxt "raft_surface_extruder_nr label"
 msgid "Raft Top Extruder"
@@ -2794,9 +2936,21 @@ msgctxt "raft_surface_speed label"
 msgid "Raft Top Print Speed"
 msgstr "Pohjaristikon pinnan tulostusnopeus"
 
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr ""
+
 msgctxt "raft_surface_line_spacing label"
 msgid "Raft Top Spacing"
 msgstr "Pohjaristikon pinnan linjajako"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr ""
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr ""
 
 msgctxt "z_seam_type option random"
 msgid "Random"
@@ -2850,8 +3004,20 @@ msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
 msgstr "Poista verkon leikkauspiste"
 
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr ""
+
 msgctxt "raft_remove_inside_corners label"
 msgid "Remove Raft Inside Corners"
+msgstr ""
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
 msgstr ""
 
 msgctxt "carve_multiple_volumes description"
@@ -2860,6 +3026,18 @@ msgstr "Poistaa alueet, joissa useat verkot ovat limittäin toistensa kanssa. T�
 
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
+msgstr ""
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
 msgstr ""
 
 msgctxt "raft_remove_inside_corners description"
@@ -2881,6 +3059,10 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "Korvaa ylä-/alakuvion uloimman osan samankeskisillä linjoilla. Yhden tai kahden linjan käyttäminen parantaa kattoja, jotka alkavat täyttömateriaalin keskeltä."
+
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr ""
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -2953,6 +3135,10 @@ msgstr ""
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "Saumakulmien asetus"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Aseta tulostusjärjestys manuaalisesti"
 
 msgctxt "draft_shield_height_limitation description"
 msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height."
@@ -3354,10 +3540,6 @@ msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
 msgstr ""
 
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "Tukiliittymän resoluutio"
-
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
 msgstr "Tukiliittymän nopeus"
@@ -3709,6 +3891,10 @@ msgstr "Kerroksen kuhunkin monikulmioon tehtävien pisteiden keskimääräinen t
 msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
 msgstr "Keskimääräinen etäisyys kunkin linjasegmentin satunnaisten pisteiden välillä. Huomaa, että alkuperäiset monikulmion pisteet poistetaan käytöstä, joten korkea sileysarvo alentaa resoluutiota. Tämän arvon täytyy olla suurempi kuin puolet karhean pintakalvon paksuudesta."
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr ""
 
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
@@ -4184,6 +4370,10 @@ msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
 msgstr "Siirtoliikkeiden nopeuden hetkellinen maksimimuutos."
 
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr ""
+
 msgctxt "machine_max_feedrate_x description"
 msgid "The maximum speed for the motor of the X-direction."
 msgstr "X-suunnan moottorin maksiminopeus."
@@ -4294,6 +4484,18 @@ msgstr "Alakerrosten lukumäärä. Kun se lasketaan alaosan paksuudesta, arvo py
 
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr ""
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr ""
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr ""
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
 msgstr ""
 
 msgctxt "skin_edge_support_layers description"
@@ -4684,6 +4886,10 @@ msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
 msgstr ""
 
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr ""
+
 msgctxt "coasting_volume description"
 msgid "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed."
 msgstr "Aineen määrä, joka muutoin on tihkunut. Tämän arvon tulisi yleensä olla lähellä suuttimen läpimittaa korotettuna kuutioon."
@@ -4732,8 +4938,20 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr ""
 
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr ""
 
 msgctxt "retraction_count_max description"
@@ -5095,10 +5313,6 @@ msgstr ""
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
 msgstr ""
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "Kun tarkistat tuen päällä ja alla olevaa mallia, toimi annetun korkeuden mukaisesti. Pienemmillä arvoilla viipalointi tapahtuu hitaammin, ja korkeammat arvot saattavat aiheuttaa normaalin tuen tulostumisen paikkoihin, joissa olisi pitänyt olla tukiliittymä."
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5492,42 +5706,26 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "siirtoliike"
 
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
+#~ msgctxt "user_defined_print_order_enabled description"
+#~ msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+#~ msgstr "Mahdollistaa kohteiden järjestämisen tulostusjärjestyksen manuaaliseen asettamiseen. Listan ensimmäinen kohde tulostetaan ensin."
 
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
+#~ msgctxt "brim_outside_only label"
+#~ msgid "Brim Only on Outside"
+#~ msgstr "Reunus vain ulkopuolella"
 
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
+#~ msgctxt "layer_0_z_overlap description"
+#~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
+#~ msgstr "Mallin ensimmäisen ja toisen kerroksen limitys Z-suunnassa, millä kompensoidaan ilmaraossa menetettyä tulostuslankaa. Kaikki ensimmäisen mallin kerroksen yläpuolella olevat mallit siirtyvät alas tämän määrän."
 
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
+#~ msgctxt "brim_outside_only description"
+#~ msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
+#~ msgstr "Tulostaa reunuksen vain mallin ulkopuolelle. Tämä vähentää myöhemmin poistettavan reunuksen määrää, mutta se ei juurikaan vähennä pöydän tarttuvuutta."
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
+#~ msgctxt "support_interface_skip_height label"
+#~ msgid "Support Interface Resolution"
+#~ msgstr "Tukiliittymän resoluutio"
 
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
+#~ msgctxt "support_interface_skip_height description"
+#~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
+#~ msgstr "Kun tarkistat tuen päällä ja alla olevaa mallia, toimi annetun korkeuden mukaisesti. Pienemmillä arvoilla viipalointi tapahtuu hitaammin, ja korkeammat arvot saattavat aiheuttaa normaalin tuen tulostumisen paikkoihin, joissa olisi pitänyt olla tukiliittymä."
