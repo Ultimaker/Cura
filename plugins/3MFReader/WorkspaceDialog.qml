@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: workspaceDialog
-    title: manager.isUcp? catalog.i18nc("@title:window", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
+    title: manager.isUcp? catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -28,7 +28,7 @@ UM.Dialog
         UM.Label
         {
             id: titleLabel
-            text: manager.isUcp? catalog.i18nc("@action:title", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
+            text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
             font: UM.Theme.getFont("large")
             anchors.top: parent.top
             anchors.left: parent.left

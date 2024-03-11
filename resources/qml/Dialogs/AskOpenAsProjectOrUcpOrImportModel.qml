@@ -14,7 +14,7 @@ UM.Dialog
     // This dialog asks the user whether he/she wants to open a project file as a project or import models.
     id: base
 
-    title: catalog.i18nc("@title:window", "Open Universal Cura Project (UCP) file")
+    title: catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Open Universal Cura Project (UCP) file")
     width: UM.Theme.getSize("small_popup_dialog").width
     height: UM.Theme.getSize("small_popup_dialog").height
     backgroundColor: UM.Theme.getColor("main_background")
