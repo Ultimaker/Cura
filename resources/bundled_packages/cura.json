@@ -1975,7 +1975,7 @@
         "package_info": {
             "package_id": "UltimakerPA12CF_175",
             "package_type": "material",
-            "display_name": "Ultimaker Nylon12 CF",
+            "display_name": "Ultimaker Nylon12 Carbon Fiber",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "1.4.0",
             "sdk_version": "8.6.0",
