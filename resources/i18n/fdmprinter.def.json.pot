@@ -5428,6 +5428,38 @@ msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
 msgstr ""
 
+msgctxt "z_hop_type label"
+msgid "Z Hop Type"
+msgstr ""
+
+msgctxt "z_hop_type description"
+msgid "How to lift the nozzle, when changing from an extrusion to a travel. The spiral z hop will automatically disable combing. If desired it can be turned on again."
+msgstr ""
+
+msgctxt "z_hop_type option normal"
+msgid "Vertical Hop"
+msgstr ""
+
+msgctxt "z_hop_type option spiral"
+msgid "Spiral Hop"
+msgstr ""
+
+msgctxt "spiral_radius label"
+msgid "Z Hop Radius"
+msgstr ""
+
+msgctxt "spiral_radius description"
+msgid "Radius of the spiral z hop."
+msgstr ""
+
+msgctxt "retract_during_spiral label"
+msgid "Retract While Spiral"
+msgstr ""
+
+msgctxt "retract_during_spiral description"
+msgid "Do the retraction while simultaneously performing the spiral z hop (and not as a separate command before). Please note, that in case of a very fast or very small retraction, the retraction speed set in the UI, might then only serve as an upper limit."
+msgstr ""
+
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr ""
