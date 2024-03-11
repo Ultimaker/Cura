@@ -1,4 +1,4 @@
-version: "5.7.0-alpha.1"
+version: "5.8.0-alpha.0"
 requirements:
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
