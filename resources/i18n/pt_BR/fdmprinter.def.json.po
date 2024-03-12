@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"POT-Creation-Date: 2024-03-12 15:10+0000\n"
 "PO-Revision-Date: 2023-11-22 17:17+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -22,7 +22,7 @@ msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a buc
 msgstr ""
 
 msgctxt "brim_inside_margin description"
-msgid "A brim around a surface may touch an other surface where brim is not expected. This removes all brim within this distance from brimless surfaces."
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
 msgstr ""
 
 msgctxt "ironing_inset description"
