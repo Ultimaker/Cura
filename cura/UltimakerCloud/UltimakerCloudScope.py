@@ -21,7 +21,7 @@ class UltimakerCloudScope(DefaultUserAgentScope):
     def __init__(self, application: "CuraApplication"):
         super().__init__(application)
         api = application.getCuraAPI()
-        self._account = api.account  # type: Account
+        self._account: Account = api.account
 
     def requestHook(self, request: QNetworkRequest):
         super().requestHook(request)

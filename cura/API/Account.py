@@ -275,7 +275,11 @@ class Account(QObject):
 
     @pyqtProperty(str, notify=accessTokenChanged)
     def accessToken(self) -> Optional[str]:
-        return self._authorization_service.getAccessToken()
+        try:
+            return self._authorization_service.getAccessToken()
+        except Exception as e:
+            Logger.error("Failed to get access token: %s", str(e))
+            return None
 
     @pyqtProperty("QVariantMap", notify = userProfileChanged)
     def userProfile(self) -> Dict[str, Optional[str]]:
