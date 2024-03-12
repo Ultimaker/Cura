@@ -143,6 +143,7 @@ class SimulationPass(RenderPass):
                 if self._layer_view.getCurrentLayer() > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
+                    towards_next_vertex = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
                         # In the current layer, we show just the indicated paths
@@ -162,12 +163,19 @@ class SimulationPass(RenderPass):
                                 if ratio <= 0.0001 or index + 1 == len(polygon.data):
                                     # in case there multiple polygons and polygon changes, the first point has the same value as the last point in the previous polygon
                                     head_position = pos_a + node.getWorldPosition()
+                                    self._layer_shader.setUniformValue("u_last_vertex", pos_a)
+                                    self._layer_shader.setUniformValue("u_next_vertex", pos_a)
+                                    self._layer_shader.setUniformValue("u_last_line_ratio", 1.0)
                                 else:
                                     pos_b = Vector(polygon.data[index + 1][0],
                                                    polygon.data[index + 1][1],
                                                    polygon.data[index + 1][2])
                                     vec = pos_a * (1.0 - ratio) + pos_b * ratio
                                     head_position = vec + node.getWorldPosition()
+                                    towards_next_vertex = 2
+                                    self._layer_shader.setUniformValue("u_last_vertex", pos_a)
+                                    self._layer_shader.setUniformValue("u_next_vertex", pos_b)
+                                    self._layer_shader.setUniformValue("u_last_line_ratio", ratio)
                                 break
                             break
                         if self._layer_view.getMinimumLayer() > layer:
@@ -176,7 +184,7 @@ class SimulationPass(RenderPass):
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end
-                    current_layer_end = end + int( self._layer_view.getCurrentPath()) * 2  # Because each point is used twice
+                    current_layer_end = end + towards_next_vertex + int( self._layer_view.getCurrentPath()) * 2  # Because each point is used twice
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first
