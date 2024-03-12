@@ -39,7 +39,7 @@ def getMetaData():
             "output": [
                 {
                     "extension": workspace_extension,
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project (UCP) file"),
+                    "description": i18n_catalog.i18nc("@item:inlistbox", "3MF Project file"),
                     "mime_type": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
                 }
