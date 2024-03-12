@@ -1920,7 +1920,7 @@
             "package_type": "material",
             "display_name": "Ultimaker ABS-CF",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-abs-carbon-fiber/",
             "author": {
@@ -1939,7 +1939,7 @@
             "package_type": "material",
             "display_name": "Ultimaker ABS-R",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-abs-r/",
             "author": {
@@ -1958,7 +1958,7 @@
             "package_type": "material",
             "display_name": "Ultimaker ASA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-asa/",
             "author": {
@@ -1977,7 +1977,7 @@
             "package_type": "material",
             "display_name": "Ultimaker Nylon12 Carbon Fiber",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-nylon-12-carbon-fiber/",
             "author": {
@@ -1996,7 +1996,7 @@
             "package_type": "material",
             "display_name": "Ultimaker RapidRinse",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-rapidrinse/",
             "author": {
@@ -2015,7 +2015,7 @@
             "package_type": "material",
             "display_name": "Ultimaker SR-30",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
-            "package_version": "1.4.0",
+            "package_version": "2.0.0",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com/materials/method-series-sr-30/",
             "author": {
