@@ -121,6 +121,7 @@ class SimulationPass(RenderPass):
         disabled_batch = RenderBatch(self._disabled_shader)
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
+        not_a_vector = Vector(math.nan, math.nan, math.nan)
 
         for node in DepthFirstIterator(self._scene.getRoot()):
 
@@ -143,6 +144,9 @@ class SimulationPass(RenderPass):
                 if self._layer_view.getCurrentLayer() > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
                     end = 0
+                    vertex_before_head = not_a_vector
+                    vertex_after_head = not_a_vector
+                    last_to_next_ratio = 0.0
                     towards_next_vertex = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
@@ -160,22 +164,19 @@ class SimulationPass(RenderPass):
                                 ratio = self._layer_view.getCurrentPath() - math.floor(self._layer_view.getCurrentPath())
                                 pos_a = Vector(polygon.data[index][0], polygon.data[index][1],
                                                polygon.data[index][2])
+                                vertex_before_head = pos_a
+                                last_to_next_ratio = ratio
                                 if ratio <= 0.0001 or index + 1 == len(polygon.data):
                                     # in case there multiple polygons and polygon changes, the first point has the same value as the last point in the previous polygon
                                     head_position = pos_a + node.getWorldPosition()
-                                    self._layer_shader.setUniformValue("u_last_vertex", pos_a)
-                                    self._layer_shader.setUniformValue("u_next_vertex", pos_a)
-                                    self._layer_shader.setUniformValue("u_last_line_ratio", 1.0)
                                 else:
                                     pos_b = Vector(polygon.data[index + 1][0],
                                                    polygon.data[index + 1][1],
                                                    polygon.data[index + 1][2])
                                     vec = pos_a * (1.0 - ratio) + pos_b * ratio
                                     head_position = vec + node.getWorldPosition()
+                                    vertex_after_head = pos_b
                                     towards_next_vertex = 2
-                                    self._layer_shader.setUniformValue("u_last_vertex", pos_a)
-                                    self._layer_shader.setUniformValue("u_next_vertex", pos_b)
-                                    self._layer_shader.setUniformValue("u_last_line_ratio", ratio)
                                 break
                             break
                         if self._layer_view.getMinimumLayer() > layer:
@@ -184,7 +185,7 @@ class SimulationPass(RenderPass):
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end
-                    current_layer_end = end + towards_next_vertex + int( self._layer_view.getCurrentPath()) * 2  # Because each point is used twice
+                    current_layer_end = end + int( self._layer_view.getCurrentPath()) * 2  # Because each point is used twice
 
                     # This uses glDrawRangeElements internally to only draw a certain range of lines.
                     # All the layers but the current selected layer are rendered first
@@ -194,6 +195,11 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view.getCurrentLayer():
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    # reset 'last vertex'
+                    self._layer_shader.setUniformValue("u_last_vertex", not_a_vector)
+                    self._layer_shader.setUniformValue("u_next_vertex", not_a_vector)
+                    self._layer_shader.setUniformValue("u_last_line_ratio", 1.0)
 
                     # The first line does not have a previous line: add a MoveCombingType in front for start detection
                     # this way the first start of the layer can also be drawn
@@ -210,6 +216,17 @@ class SimulationPass(RenderPass):
                     current_layer_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end))
                     current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
                     current_layer_batch.render(self._scene.getActiveCamera())
+
+                    # Last line may be partial
+                    if vertex_after_head != not_a_vector and vertex_after_head != not_a_vector:
+                        self._layer_shader.setUniformValue("u_last_vertex", vertex_before_head)
+                        self._layer_shader.setUniformValue("u_next_vertex", vertex_after_head)
+                        self._layer_shader.setUniformValue("u_last_line_ratio", last_to_next_ratio)
+                        last_line_start = current_layer_end
+                        last_line_end = current_layer_end + towards_next_vertex
+                        last_line_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range = (last_line_start, last_line_end))
+                        last_line_batch.addItem(node.getWorldTransformation(), layer_data)
+                        last_line_batch.render(self._scene.getActiveCamera())
 
                     self._old_current_layer = self._layer_view.getCurrentLayer()
                     self._old_current_path = self._layer_view.getCurrentPath()

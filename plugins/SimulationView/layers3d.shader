@@ -435,6 +435,10 @@ u_max_feedrate = 1
 u_min_thickness = 0
 u_max_thickness = 1
 
+u_last_vertex = [0.0, 0.0, 0.0]
+u_next_vertex = [0.0, 0.0, 0.0]
+u_last_line_ratio = 1.0
+
 [bindings]
 u_modelMatrix = model_matrix
 u_viewMatrix = view_matrix
