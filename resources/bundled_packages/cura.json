@@ -1916,7 +1916,7 @@
     },
     "UltimakerABSCF_175": {
         "package_info": {
-            "package_id": "UltimakerABSR_175",
+            "package_id": "ULTIMAKERBASCFMETHOD",
             "package_type": "material",
             "display_name": "Ultimaker ABS-CF",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
@@ -1935,7 +1935,7 @@
     },
     "UltimakerABSR_175": {
         "package_info": {
-            "package_id": "UltimakerABSR_175",
+            "package_id": "ULTIMAKERABSRMETHOD",
             "package_type": "material",
             "display_name": "Ultimaker ABS-R",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
@@ -1954,7 +1954,7 @@
     },
     "UltimakerASA_175": {
         "package_info": {
-            "package_id": "UltimakerASA_175",
+            "package_id": "ULTIMAKERASAMETHOD",
             "package_type": "material",
             "display_name": "Ultimaker ASA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
@@ -1973,7 +1973,7 @@
     },
     "UltimakerPA12CF_175": {
         "package_info": {
-            "package_id": "UltimakerPA12CF_175",
+            "package_id": "ULTIMAKERNYLON12CFMETHOD",
             "package_type": "material",
             "display_name": "Ultimaker Nylon12 Carbon Fiber",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
@@ -1992,7 +1992,7 @@
     },
     "UltimakerRapidRinse_175": {
         "package_info": {
-            "package_id": "UltimakerRapidRinse_175",
+            "package_id": "ULTIMAKERRAPIDRINSEMETHOD",
             "package_type": "material",
             "display_name": "Ultimaker RapidRinse",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
@@ -2011,7 +2011,7 @@
     },
     "UltimakerSR30_175": {
         "package_info": {
-            "package_id": "UltimakerSR30_175",
+            "package_id": "ULTIMAKERSR30METHOD",
             "package_type": "material",
             "display_name": "Ultimaker SR-30",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
