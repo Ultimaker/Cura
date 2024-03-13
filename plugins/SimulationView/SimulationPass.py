@@ -176,7 +176,7 @@ class SimulationPass(RenderPass):
                                     vec = pos_a * (1.0 - ratio) + pos_b * ratio
                                     head_position = vec + node.getWorldPosition()
                                     vertex_after_head = pos_b
-                                    towards_next_vertex = 2
+                                    towards_next_vertex = 2  # Add two to the index to print the current and next vertices as an 'unfinished' line (to the nozzle).
                                 break
                             break
                         if self._layer_view.getMinimumLayer() > layer:
