@@ -146,7 +146,7 @@ class SimulationPass(RenderPass):
                     end = 0
                     vertex_before_head = not_a_vector
                     vertex_after_head = not_a_vector
-                    last_to_next_ratio = 0.0
+                    vertex_distance_ratio = 0.0
                     towards_next_vertex = 0
                     element_counts = layer_data.getElementCounts()
                     for layer in sorted(element_counts.keys()):
@@ -165,7 +165,7 @@ class SimulationPass(RenderPass):
                                 pos_a = Vector(polygon.data[index][0], polygon.data[index][1],
                                                polygon.data[index][2])
                                 vertex_before_head = pos_a
-                                last_to_next_ratio = ratio
+                                vertex_distance_ratio = ratio
                                 if ratio <= 0.0001 or index + 1 == len(polygon.data):
                                     # in case there multiple polygons and polygon changes, the first point has the same value as the last point in the previous polygon
                                     head_position = pos_a + node.getWorldPosition()
@@ -221,7 +221,7 @@ class SimulationPass(RenderPass):
                     if vertex_after_head != not_a_vector and vertex_after_head != not_a_vector:
                         self._layer_shader.setUniformValue("u_last_vertex", vertex_before_head)
                         self._layer_shader.setUniformValue("u_next_vertex", vertex_after_head)
-                        self._layer_shader.setUniformValue("u_last_line_ratio", last_to_next_ratio)
+                        self._layer_shader.setUniformValue("u_last_line_ratio", vertex_distance_ratio)
                         last_line_start = current_layer_end
                         last_line_end = current_layer_end + towards_next_vertex
                         last_line_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range = (last_line_start, last_line_end))
