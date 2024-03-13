@@ -1914,7 +1914,7 @@
             }
         }
     },
-    "UltimakerABSCF_175": {
+    "ULTIMAKERBASCFMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERBASCFMETHOD",
             "package_type": "material",
@@ -1933,7 +1933,7 @@
             }
         }
     },
-    "UltimakerABSR_175": {
+    "ULTIMAKERABSRMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERABSRMETHOD",
             "package_type": "material",
@@ -1952,7 +1952,7 @@
             }
         }
     },
-    "UltimakerASA_175": {
+    "ULTIMAKERASAMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERASAMETHOD",
             "package_type": "material",
@@ -1971,7 +1971,7 @@
             }
         }
     },
-    "UltimakerPA12CF_175": {
+    "ULTIMAKERNYLON12CFMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERNYLON12CFMETHOD",
             "package_type": "material",
@@ -1990,7 +1990,7 @@
             }
         }
     },
-    "UltimakerRapidRinse_175": {
+    "ULTIMAKERRAPIDRINSEMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERRAPIDRINSEMETHOD",
             "package_type": "material",
@@ -2009,7 +2009,7 @@
             }
         }
     },
-    "UltimakerSR30_175": {
+    "ULTIMAKERSR30METHOD": {
         "package_info": {
             "package_id": "ULTIMAKERSR30METHOD",
             "package_type": "material",
