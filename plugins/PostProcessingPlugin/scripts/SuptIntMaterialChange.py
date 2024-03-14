@@ -9,7 +9,7 @@
 ##   If this script is used on the bottom interface then you can set the bottom distance to 0.  When used on a top interface the interface density should be 100% and the "Top Distance" 0.
 ##   Multi-extruder printers are allowed but may only have a single extruder enabled (tool change retractions are a problem).
 ##   The layer numbers you enter are the only ones searched for "TYPE:SUPPORT-INTERFACE" so be accurate when you pick the "layers of interest".  Checking the output gcode is a really good idea.
-##   
+##
 ##   My normal setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  My Ender 3 Pro is a bowden printer and 470mm of unload and 370mm of reload works well.  Yours will vary according to the length of the filament path from the extruder to the hot end.
 
 
@@ -76,6 +76,14 @@ class SuptIntMaterialChange(Script):
                     "maximum_value_warning": 30.0,
                     "unit": "minutes   ",
                     "enabled": "pause_method == 'g_4'"
+                },
+                "gcode_after_pause":
+                {
+                    "label": "    Gcode after pause",
+                    "description": "Some printers require a buffer after the pause when M25 is used. Typically 6 M105's works well.  Delimit multiple commands with a comma EX: M105,M105,M105",
+                    "type": "str",
+                    "default_value": "M105,M105,M105,M105,M105,M105",
+                    "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
                 },
                 "custom_pause_command":
                 {
@@ -375,6 +383,15 @@ class SuptIntMaterialChange(Script):
             pause_cmd_model += "; Pause\n"
             pause_cmd_interface = pause_cmd_model
 
+        ##Gcode after pause
+        gcode_after_pause = ""
+        if pause_method not in ["marlin","marlin2","griffin","g_4"]:
+            gcode_after_pause = self.getSettingValueByKey("gcode_after_pause").upper()
+            if gcode_after_pause != "":
+                if "," in gcode_after_pause:
+                    gcode_after_pause = re.sub(",", "; gcode after\n", gcode_after_pause)
+                gcode_after_pause += "; gcode after\n"
+
         ## Park Head
         park_head = self.getSettingValueByKey("park_head")
         park_x = self.getSettingValueByKey("park_x")
@@ -464,9 +481,9 @@ class SuptIntMaterialChange(Script):
 
         ## Put together the preliminary strings for the interface material and model material
         interface_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Change to Interface Material" + "\n" + m84_line + "\nG91; Relative movement\nM83; Relative extrusion\n"
-        interface_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + interface_str + m118_interface_str + median_temp + pause_cmd_interface + interface_temp
+        interface_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + interface_str + m118_interface_str + median_temp + pause_cmd_interface + gcode_after_pause + interface_temp
         model_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Revert to Model Material" + "\n" + m84_line + "\n" + "G91; Relative movement" + "\nM83; Relative extrusion\n"
-        model_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + model_str + m118_model_str + median_temp + pause_cmd_model + model_temp
+        model_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + model_str + m118_model_str + median_temp + pause_cmd_model + gcode_after_pause + model_temp
 
         # Go through the relevant layers and add the strings
         for lnum in range(0,len(data_list)):
