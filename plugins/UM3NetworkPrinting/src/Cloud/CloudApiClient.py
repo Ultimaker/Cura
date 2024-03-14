@@ -5,6 +5,7 @@ import urllib.parse
 from json import JSONDecodeError
 from time import time
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any, cast
+from pathlib import Path
 
 from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
@@ -28,6 +29,14 @@ from ..Models.Http.CloudPrintResponse import CloudPrintResponse
 
 CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
 """The generic type variable used to document the methods below."""
+
+
+try:
+    with open(Path(__file__).parent / "machine_id_to_name.json", "rt") as f:
+        MACHINE_ID_TO_NAME: Dict[str, str] = json.load(f)
+except Exception as e:
+    Logger.logException("e", f"Could not load machine_id_to_name.json: '{e}'")
+    MACHINE_ID_TO_NAME = {}
 
 
 class CloudApiClient:
@@ -84,13 +93,8 @@ class CloudApiClient:
         # conversion!
         # API points to "MakerBot Method" for a makerbot printertypes which we already changed to allign with other printer_type
 
-        method_x = {
-            "ultimaker_method":"MakerBot Method",
-            "ultimaker_methodx":"MakerBot Method X",
-            "ultimaker_methodxl":"MakerBot Method XL"
-        }
-        if machine_type in method_x:
-            machine_type = method_x[machine_type]
+        if machine_type in MACHINE_ID_TO_NAME:
+            machine_type = MACHINE_ID_TO_NAME[machine_type]
         else:
             machine_type = machine_type.replace("_plus", "+")
             machine_type = machine_type.replace("_", " ")
