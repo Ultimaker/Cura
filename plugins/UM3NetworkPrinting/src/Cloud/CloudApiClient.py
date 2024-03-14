@@ -31,14 +31,6 @@ CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
 """The generic type variable used to document the methods below."""
 
 
-try:
-    with open(Path(__file__).parent / "machine_id_to_name.json", "rt") as f:
-        MACHINE_ID_TO_NAME: Dict[str, str] = json.load(f)
-except Exception as e:
-    Logger.logException("e", f"Could not load machine_id_to_name.json: '{e}'")
-    MACHINE_ID_TO_NAME = {}
-
-
 class CloudApiClient:
     """The cloud API client is responsible for handling the requests and responses from the cloud.
 
@@ -54,6 +46,9 @@ class CloudApiClient:
 
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
+
+    # Custom machine definition ID to cloud cluster name mapping
+    _machine_id_to_name: Dict[str, str] = None
 
     def __init__(self, app: CuraApplication, on_error: Callable[[List[CloudError]], None]) -> None:
         """Initializes a new cloud API client.
@@ -93,8 +88,9 @@ class CloudApiClient:
         # conversion!
         # API points to "MakerBot Method" for a makerbot printertypes which we already changed to allign with other printer_type
 
-        if machine_type in MACHINE_ID_TO_NAME:
-            machine_type = MACHINE_ID_TO_NAME[machine_type]
+        machine_id_to_name = self.getMachineIDMap()
+        if machine_type in machine_id_to_name:
+            machine_type = machine_id_to_name[machine_type]
         else:
             machine_type = machine_type.replace("_plus", "+")
             machine_type = machine_type.replace("_", " ")
@@ -284,3 +280,14 @@ class CloudApiClient:
 
         self._anti_gc_callbacks.append(parse)
         return parse
+
+    @classmethod
+    def getMachineIDMap(cls) -> Dict[str, str]:
+        if cls._machine_id_to_name is None:
+            try:
+                with open(Path(__file__).parent / "machine_id_to_name.json", "rt") as f:
+                    cls._machine_id_to_name = json.load(f)
+            except Exception as e:
+                Logger.logException("e", f"Could not load machine_id_to_name.json: '{e}'")
+                cls._machine_id_to_name = {}
+        return cls._machine_id_to_name
