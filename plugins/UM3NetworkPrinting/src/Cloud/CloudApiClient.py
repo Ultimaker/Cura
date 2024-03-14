@@ -47,8 +47,8 @@ class CloudApiClient:
 
     # The cloud URL to use for this remote cluster.
     ROOT_PATH = UltimakerCloudConstants.CuraCloudAPIRoot
-    CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
-    CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
+    CLUSTER_API_ROOT = f"{ROOT_PATH}/connect/v1"
+    CURA_API_ROOT = f"{ROOT_PATH}/cura/v1"
 
     DEFAULT_REQUEST_TIMEOUT = 10  # seconds
 
