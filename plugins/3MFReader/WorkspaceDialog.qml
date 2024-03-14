@@ -112,8 +112,8 @@ UM.Dialog
                         anchors.topMargin: UM.Theme.getSize("default_margin").width * 3
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        width: UM.Theme.getSize("machine_selector_widget").width
-                        height: UM.Theme.getSize("machine_selector_widget").height
+                        width: Math.round(parent.width / 2.5)
+                        height: UM.Theme.getSize("button").height
                         machineListModel: manager.updatableMachinesModel
                         machineName: manager.machineName
 
