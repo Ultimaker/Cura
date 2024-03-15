@@ -1,4 +1,5 @@
 [5.7]
+
 * New features and improvements:
 - Introduced a way that you can open models from Thingiverse from your browser
 - Introduced Universal Cura Project files. They contain models and settings and can be shared with people who have different printers.
@@ -14,7 +15,6 @@
 - Introduced DisplayInfoOnLCD Post Processing Script which combines DisplayFilenameAndLayerOnLCD with DisplayProgress, contributed by @GregValiant
 - Introduced alternative camera navigation similar to FreeCAD Trackpad, contributed by @quarnster
 - Introduced a way to set print sequence manually when printing One at a time, contributed by @alexandr-vladimirov
-
 
 * MethodX specific improvements
 - Enabled Print over Cloud for UltiMaker MethodX and Method XL printers
@@ -44,7 +44,6 @@
 - Improved behavior for loading 3mfs by giving the models original names, contributed by @pietchaki, resolves https://github.com/Ultimaker/Cura/issues/12089
 - Added an error so LimitXYAccelJerk doesn't run unless Accel Control is enabled in Cura, contributed by @Gregvaliant
 - Some helpful code cleanup contributed by @dmitrygribenchuk
-
 
 * Printer definitions, profiles and materials:
 - Introduced high-speed profiles for the layer heights <0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
