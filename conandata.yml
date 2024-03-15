@@ -1,9 +1,9 @@
 version: "5.7.0-beta.1"
 requirements:
-  - "uranium/5.7.0-beta.1@ultimaker/stable"
-  - "curaengine/5.7.0-beta.1@ultimaker/stable"
-  - "cura_binary_data/5.7.0-beta.1@ultimaker/stable"
-  - "fdm_materials/5.7.0-beta.1@ultimaker/stable"
+  - "uranium/5.7.0-beta.1"
+  - "curaengine/5.7.0-beta.1"
+  - "cura_binary_data/5.7.0-beta.1"
+  - "fdm_materials/5.7.0-beta.1"
   - "curaengine_plugin_gradual_flow/0.1.0-beta.3"
   - "dulcificum/latest@ultimaker/testing"
   - "pysavitar/5.3.0"
