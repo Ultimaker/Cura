@@ -35,6 +35,19 @@ UM.Dialog
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.leftMargin: UM.Theme.getSize("default_margin").height
         }
+
+        Cura.TertiaryButton
+        {
+            id: learnMoreButton
+            visible: manager.isUcp
+            anchors.right: parent.right
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.rightMargin: UM.Theme.getSize("default_margin").height
+            text: catalog.i18nc("@button", "Learn more")
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            isIconOnRightSide: true
+            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+        }
     }
 
     Rectangle
