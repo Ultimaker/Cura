@@ -6089,7 +6089,7 @@
                 "brim_inside_margin":
                 {
                     "label": "Brim Avoid Margin",
-                    "description": "A brim around a surface may touch an other surface where brim is not expected. This removes all brim within this distance from brimless surfaces.",
+                    "description": "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models.",
                     "unit": "mm",
                     "type": "float",
                     "value": "line_width * 4",

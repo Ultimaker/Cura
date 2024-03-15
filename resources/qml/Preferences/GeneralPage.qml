@@ -632,7 +632,7 @@ UM.PreferencesPage
                         id: navigationStylesList 
                         Component.onCompleted:
                         {
-                            append({ text: catalog.i18n("Cura"), code: "cura" })
+                            append({ text: "Cura", code: "cura" })
                             append({ text: catalog.i18n("FreeCAD trackpad"), code: "freecad_trackpad" })
                         }
                     }
