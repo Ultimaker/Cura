@@ -77,7 +77,7 @@ Cura.Menu
     Cura.MenuItem
     {
         id: saveUCPMenu
-        text: catalog.i18nc("@title:menu menubar:file", "&Save Universal Cura Project...")
+        text: catalog.i18nc("@title:menu menubar:file Don't translate 'Universal Cura Project'", "&Save Universal Cura Project...")
         enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
         onTriggered: CuraApplication.exportUcp()
     }
