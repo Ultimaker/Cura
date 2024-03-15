@@ -75,9 +75,9 @@ class UCPDialog(QObject):
             device.requestWrite(
                 nodes,
                 file_name,
-                ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                ["application/x-ucp"],
                 workspace_handler,
-                preferred_mimetype_list="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"
+                preferred_mimetype_list="application/x-ucp"
             )
         except OutputDeviceError.UserCanceledError:
             self._onRejected()
