@@ -37,11 +37,6 @@ class VersionUpgrade56to57(VersionUpgrade):
                 if removed in visible_settings:
                     visible_settings.remove(removed)
 
-            if "brim_outside_only" in parser["values"]:
-                parser["values"]["brim_location"] = "outside" if bool(
-                    parser["values"]["brim_outside_only"]) else "everywhere"
-                del parser["values"]["brim_outside_only"]
-
             parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
@@ -74,8 +69,8 @@ class VersionUpgrade56to57(VersionUpgrade):
                     del parser["values"][removed]
 
             if "brim_outside_only" in parser["values"]:
-                parser["values"]["brim_location"] = "outside" if bool(
-                    parser["values"]["brim_outside_only"]) else "everywhere"
+                parser["values"]["brim_location"] = "outside" if parser["values"][
+                                                                     "brim_outside_only"] == "True" else "everywhere"
                 del parser["values"]["brim_outside_only"]
 
         result = io.StringIO()
