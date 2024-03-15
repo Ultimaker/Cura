@@ -35,6 +35,7 @@ UM.Dialog
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.rightMargin: anchors.leftMargin
+
             RowLayout
             {
                 UM.Label
