@@ -9,11 +9,7 @@
 ##   If this script is used on the bottom interface then you can set the bottom distance to 0.  When used on a top interface the interface density should be 100% and the "Top Distance" 0.
 ##   Multi-extruder printers are allowed but may only have a single extruder enabled (tool change retractions are a problem).
 ##   The layer numbers you enter are the only ones searched for "TYPE:SUPPORT-INTERFACE" so be accurate when you pick the "layers of interest".  Checking the output gcode is a really good idea.
-<<<<<<< HEAD
-##
-=======
-##   
->>>>>>> 028430ac44a5bc07dd0f6e40abfadfc42915d3db
+
 ##   My normal setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  My Ender 3 Pro is a bowden printer and 470mm of unload and 370mm of reload works well.  Yours will vary according to the length of the filament path from the extruder to the hot end.
 
 
@@ -81,7 +77,6 @@ class SuptIntMaterialChange(Script):
                     "unit": "minutes   ",
                     "enabled": "pause_method == 'g_4'"
                 },
-<<<<<<< HEAD
                 "gcode_after_pause":
                 {
                     "label": "    Gcode after pause",
@@ -90,8 +85,6 @@ class SuptIntMaterialChange(Script):
                     "default_value": "M105,M105,M105,M105,M105,M105",
                     "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
                 },
-=======
->>>>>>> 028430ac44a5bc07dd0f6e40abfadfc42915d3db
                 "custom_pause_command":
                 {
                     "label": "    Enter your pause command",
@@ -390,7 +383,6 @@ class SuptIntMaterialChange(Script):
             pause_cmd_model += "; Pause\n"
             pause_cmd_interface = pause_cmd_model
 
-<<<<<<< HEAD
         ##Gcode after pause
         gcode_after_pause = ""
         if pause_method not in ["marlin","marlin2","griffin","g_4"]:
@@ -400,8 +392,6 @@ class SuptIntMaterialChange(Script):
                     gcode_after_pause = re.sub(",", "; gcode after\n", gcode_after_pause)
                 gcode_after_pause += "; gcode after\n"
 
-=======
->>>>>>> 028430ac44a5bc07dd0f6e40abfadfc42915d3db
         ## Park Head
         park_head = self.getSettingValueByKey("park_head")
         park_x = self.getSettingValueByKey("park_x")
@@ -491,15 +481,12 @@ class SuptIntMaterialChange(Script):
 
         ## Put together the preliminary strings for the interface material and model material
         interface_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Change to Interface Material" + "\n" + m84_line + "\nG91; Relative movement\nM83; Relative extrusion\n"
-<<<<<<< HEAD
         interface_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + interface_str + m118_interface_str + median_temp + pause_cmd_interface + gcode_after_pause + interface_temp
         model_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Revert to Model Material" + "\n" + m84_line + "\n" + "G91; Relative movement" + "\nM83; Relative extrusion\n"
         model_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + model_str + m118_model_str + median_temp + pause_cmd_model + gcode_after_pause + model_temp
-=======
         interface_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + interface_str + m118_interface_str + median_temp + pause_cmd_interface + interface_temp
         model_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Revert to Model Material" + "\n" + m84_line + "\n" + "G91; Relative movement" + "\nM83; Relative extrusion\n"
         model_replacement_pre_string_2 = "G90; Absolute movement" + "\n" + park_str + m300_str + unload_str + model_str + m118_model_str + median_temp + pause_cmd_model + model_temp
->>>>>>> 028430ac44a5bc07dd0f6e40abfadfc42915d3db
 
         # Go through the relevant layers and add the strings
         for lnum in range(0,len(data_list)):
@@ -554,6 +541,7 @@ class SuptIntMaterialChange(Script):
                 else:
                     start_retract_str = retract_line
                     start_unretract_str = unretract_line
+        
                 startout_to_str = "G0 F" + str(speed_travel) + startout_location + "; Return to print\n"
                 startout_final_str = interface_replacement_pre_string_1 + start_retract_str + z_raise + interface_replacement_pre_string_2 + load_str + purge_str_model + startout_to_str + "G91; Relative movement\n" + z_lower + start_unretract_str + start_e_reset_str + flow_rate_str + "G90; Absolute movement\n" + ext_mode_str + ";" + str('-' * 26) + "; End of Material Change"
 
@@ -610,7 +598,7 @@ class SuptIntMaterialChange(Script):
             if ";LAYER:" in lines[back_num]:
                 lines2 = data[num - 1].split("\n")
                 for back_num2 in range(len(lines2)-1,0, -1):
-                    if is_retraction is None and " E" in lines2[back_num2]:
+                    if is_retraction is None and " E" in lines2[back_num2] or "G10" in lines2[back_num2] or "G11" in lines2[back_num2]:
                         ## Catch a retraction whether extrusions are Absolute or Relative or whether firmware retraction is enabled.
                         if re.search("G1 F(\d*) E-(\d.*)", lines2[back_num2]) is not None or re.search("G1 F(\d*) E(\d.*)", lines2[back_num2]) is not None or "G10" in lines2[back_num2]:
                             is_retraction = True
@@ -620,6 +608,7 @@ class SuptIntMaterialChange(Script):
                                     e_loc = "0"
                         elif is_retraction is None and "G11" in lines2[back_num2]:
                             is_retraction = False
+                            e_loc = 0
                         elif re.search("G1 F(\d*) X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None or re.search("G1 X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None:
                             is_retraction = False
                             if e_loc is None:
