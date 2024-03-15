@@ -51,4 +51,4 @@ msgstr ""
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
-msgstr "Reset flow duration"
+msgstr ""
