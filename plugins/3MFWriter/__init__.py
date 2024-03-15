@@ -45,7 +45,7 @@ def getMetaData():
                 },
                 {
                     "extension": "3mf",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
+                    "description": "Universal Cura Project",
                     "mime_type": "application/x-ucp",
                     "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
                 }
