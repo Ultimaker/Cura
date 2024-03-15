@@ -35,7 +35,6 @@
 - Reduced the amount of floating support in area's near the support overhang angle threshold
 - Fixed a bug with the Initial Extruder Number in the start gcode, resolves https://github.com/Ultimaker/Cura/issues/17501
 - Fixed a bug where Z could be negative if Remove Empty Layers was enabled, resolves https://github.com/Ultimaker/Cura/issues/15975
-- Fixed a bug where you are signed out if you leave Cura open for a longer time or let the PC fall asleep.
 - Fixed tree support-related crashes if there are no overhangs, contributed by @thomasrahm
 - Pressing the Esc key now doesn't exiting full screen mode, contributed by @Sophist-UK, resolves https://github.com/Ultimaker/Cura/issues/7499
 - Improved the OAuth protocol to improve signing in with plug-ins, contributed by @wawanbreton
