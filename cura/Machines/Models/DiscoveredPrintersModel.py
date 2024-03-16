@@ -37,7 +37,7 @@ class DiscoveredPrinter(QObject):
     def getKey(self) -> str:
         return self._key
 
-    @pyqtProperty(str, notify = nameChanged)
+    @pyqtProperty(str, notify=nameChanged)
     def name(self) -> str:
         return self._name
 
@@ -46,13 +46,13 @@ class DiscoveredPrinter(QObject):
             self._name = name
             self.nameChanged.emit()
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def address(self) -> str:
         return self._ip_address
 
     machineTypeChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = machineTypeChanged)
+    @pyqtProperty(str, notify=machineTypeChanged)
     def machineType(self) -> str:
         return self._machine_type
 
@@ -66,11 +66,11 @@ class DiscoveredPrinter(QObject):
     # the machine type, which is "Ultimaker 3" for "ultimaker_3".
     def _hasHumanReadableMachineTypeName(self, machine_type_name: str) -> bool:
         from cura.CuraApplication import CuraApplication
-        results = CuraApplication.getInstance().getContainerRegistry().findDefinitionContainersMetadata(name = machine_type_name)
+        results = CuraApplication.getInstance().getContainerRegistry().findDefinitionContainersMetadata(name=machine_type_name)
         return len(results) > 0
 
     # Human readable machine type string
-    @pyqtProperty(str, notify = machineTypeChanged)
+    @pyqtProperty(str, notify=machineTypeChanged)
     def readableMachineType(self) -> str:
         # In NetworkOutputDevice, when it updates a printer information, it updates the machine type using the field
         # "machine_variant", and for some reason, it's not the machine type ID/codename/... but a human-readable string
@@ -83,7 +83,7 @@ class DiscoveredPrinter(QObject):
                 readable_type = catalog.i18nc("@label", "Unknown")
         return readable_type
 
-    @pyqtProperty(bool, notify = machineTypeChanged)
+    @pyqtProperty(bool, notify=machineTypeChanged)
     def isUnknownMachineType(self) -> bool:
         if self._hasHumanReadableMachineTypeName(self._machine_type):
             readable_type = self._machine_type
@@ -99,15 +99,15 @@ class DiscoveredPrinter(QObject):
             machine_type_name = results[0]["name"]
         return machine_type_name
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def device(self) -> "NetworkedPrinterOutputDevice":
         return self._device
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def isHostOfGroup(self) -> bool:
         return getattr(self._device, "clusterSize", 1) > 0
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def sectionName(self) -> str:
         if self.isUnknownMachineType or not self.isHostOfGroup:
             return catalog.i18nc("@label", "The printer(s) below cannot be connected because they are part of a group")
@@ -179,7 +179,7 @@ class DiscoveredPrintersModel(QObject):
 
         if self._manual_device_address:
             if self._plugin_for_manual_device is not None:
-                self._plugin_for_manual_device.removeManualDevice(self._manual_device_address, address = self._manual_device_address)
+                self._plugin_for_manual_device.removeManualDevice(self._manual_device_address, address=self._manual_device_address)
             self._manual_device_address = ""
             self._plugin_for_manual_device = None
             self.hasManualDeviceRequestInProgressChanged.emit()
@@ -194,11 +194,11 @@ class DiscoveredPrintersModel(QObject):
 
     hasManualDeviceRequestInProgressChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = hasManualDeviceRequestInProgressChanged)
+    @pyqtProperty(bool, notify=hasManualDeviceRequestInProgressChanged)
     def hasManualDeviceRequestInProgress(self) -> bool:
         return self._manual_device_address != ""
 
-    manualDeviceRequestFinished = pyqtSignal(bool, arguments = ["success"])
+    manualDeviceRequestFinished = pyqtSignal(bool, arguments=["success"])
 
     def _onManualDeviceRequestFinished(self, success: bool, address: str) -> None:
         self._manual_device_request_timer.stop()
@@ -209,11 +209,11 @@ class DiscoveredPrintersModel(QObject):
         if not success and self._network_plugin_queue:
             self._attemptToAddManualDevice(address)
 
-    @pyqtProperty("QVariantMap", notify = discoveredPrintersChanged)
+    @pyqtProperty("QVariantMap", notify=discoveredPrintersChanged)
     def discoveredPrintersByAddress(self) -> Dict[str, DiscoveredPrinter]:
         return self._discovered_printer_by_ip_dict
 
-    @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
+    @pyqtProperty("QVariantList", notify=discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(
             x for x in self._discovered_printer_by_ip_dict.values() if not parseBool(x.device.getProperty("temporary")))
@@ -227,8 +227,8 @@ class DiscoveredPrintersModel(QObject):
             else:
                 available_list.append(item)
 
-        available_list.sort(key = lambda x: x.device.name)
-        not_available_list.sort(key = lambda x: x.device.name)
+        available_list.sort(key=lambda x: x.device.name)
+        not_available_list.sort(key=lambda x: x.device.name)
 
         return available_list + not_available_list
 
@@ -238,7 +238,7 @@ class DiscoveredPrintersModel(QObject):
             Logger.log("e", "Printer with ip [%s] has already been added", ip_address)
             return
 
-        discovered_printer = DiscoveredPrinter(ip_address, key, name, create_callback, machine_type, device, parent = self)
+        discovered_printer = DiscoveredPrinter(ip_address, key, name, create_callback, machine_type, device, parent=self)
         self._discovered_printer_by_ip_dict[ip_address] = discovered_printer
         self.discoveredPrintersChanged.emit()
 
