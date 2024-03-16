@@ -448,36 +448,34 @@ class SuptIntMaterialChange(Script):
         else:
             load_str = ""
 
-        ## Purge Lines
-        purge_str_model = ""
+        ## Purge Lines Model
+        purge_str_model = "M83; Relative extrusion\n"
+        nozzle_size = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
+        firmware_retract = bool(CuraApplication.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value"))
         if purge_amt_model > 0 and enable_purge:
-            nozzle_size = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
-            retraction_amount = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
-            firmware_retract = bool(CuraApplication.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value"))
-            purge_str_model = "M83; Relative extrusion\n"
             purge_str_model += "G1 F" + str(round(float(nozzle_size) * 8.333) * 60) + " E" + str(purge_amt_model) + "; Purge\n"
-            if not firmware_retract:
-                purge_str_model += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
-            else:
-                purge_str_model += "G10; Retract\n"
-            purge_str_model += "M400; Complete all moves\n"
-            purge_str_model += "M300 P250; Beep\n"
-            purge_str_model += "G4 S2; Wait for 2 seconds\n"
-
-        purge_str_interface = ""
+        if not firmware_retract:
+            purge_str_model += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
+        else:
+            purge_str_model += "G10; Retract\n"
+        purge_str_model += "M400; Complete all moves\n"
+        purge_str_model += "M300 P250; Beep\n"
+        purge_str_model += "G4 S2; Wait for 2 seconds\n"
+        
+        ## Purge Lines Interface
+        purge_str_interface = "M83; Relative extrusion\n"
+        nozzle_size = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
+        firmware_retract = bool(CuraApplication.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value"))
         if purge_amt_interface > 0 and enable_purge:
-            nozzle_size = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
-            retraction_amount = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
-            firmware_retract = bool(CuraApplication.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value"))
-            purge_str_interface = "M83; Relative extrusion\n"
             purge_str_interface += "G1 F" + str(round(float(nozzle_size) * 8.333) * 60) + " E" + str(purge_amt_interface) + "; Purge\n"
-            if not firmware_retract:
-                purge_str_interface += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
-            else:
-                purge_str_interface += "G10; Retract\n"
-            purge_str_interface += "M400; Complete all moves\n"
-            purge_str_interface += "M300 P250; Beep\n"
-            purge_str_interface += "G4 S2; Wait for 2 seconds\n"
+        if not firmware_retract:
+            purge_str_interface += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
+        else:
+            purge_str_interface += "G10; Retract\n"
+        purge_str_interface += "M400; Complete all moves\n"
+        purge_str_interface += "M300 P250; Beep\n"
+        purge_str_interface += "G4 S2; Wait for 2 seconds\n"
+            
 
         ## Put together the preliminary strings for the interface material and model material
         interface_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Change to Interface Material" + "\n" + m84_line + "\nG91; Relative movement\nM83; Relative extrusion\n"
