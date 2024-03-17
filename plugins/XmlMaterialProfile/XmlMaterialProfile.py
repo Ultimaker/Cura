@@ -579,8 +579,9 @@ class XmlMaterialProfile(InstanceContainer):
 
             meta_data[tag_name] = entry.text
 
-            if tag_name in self.__material_metadata_setting_map:
-                common_setting_values[self.__material_metadata_setting_map[tag_name]] = entry.text
+            for tag_name, value in meta_data.items():
+                if tag_name in self.__material_metadata_setting_map:
+                    common_setting_values[self.__material_metadata_setting_map[tag_name]] = value
 
         if "description" not in meta_data:
             meta_data["description"] = ""
@@ -1222,7 +1223,9 @@ class XmlMaterialProfile(InstanceContainer):
         "diameter": "material_diameter"
     }
     __material_metadata_setting_map = {
-        "GUID": "material_guid"
+        "GUID": "material_guid",
+        "material": "material_type",
+        "brand": "material_brand",
     }
 
     # Map of recognised namespaces with a proper prefix.

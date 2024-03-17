@@ -35,8 +35,11 @@ Item
     property alias mergeObjects: mergeObjectsAction
     //property alias unMergeObjects: unMergeObjectsAction
 
-    property alias multiplyObject: multiplyObjectAction
+    property alias printObjectBeforePrevious: printObjectBeforePreviousAction
+    property alias printObjectAfterNext: printObjectAfterNextAction
 
+    property alias multiplyObject: multiplyObjectAction
+    property alias dropAll: dropAllAction
     property alias selectAll: selectAllAction
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
@@ -407,6 +410,26 @@ Item
 
     Action
     {
+        id: printObjectBeforePreviousAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print Before") + " " + PrintOrderManager.previousNodeName
+        enabled: PrintOrderManager.shouldEnablePrintBeforeAction
+        icon.name: "print-before"
+        shortcut: "PgUp"
+        onTriggered: PrintOrderManager.swapSelectedAndPreviousNodes()
+    }
+
+    Action
+    {
+        id: printObjectAfterNextAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print After") + " " + PrintOrderManager.nextNodeName
+        enabled: PrintOrderManager.shouldEnablePrintAfterAction
+        icon.name: "print-after"
+        shortcut: "PgDown"
+        onTriggered: PrintOrderManager.swapSelectedAndNextNodes()
+    }
+
+    Action
+    {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models")
         enabled: UM.Selection.selectionCount > 1 ? true: false
@@ -465,6 +488,14 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
         onTriggered: Printer.arrangeAllInGrid()
         shortcut: "Shift+Ctrl+R"
+    }
+
+    Action
+    {
+        id: dropAllAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Drop All Models to buildplate")
+        shortcut: "Ctrl+B"
+        onTriggered: CuraApplication.setWorkplaceDropToBuildplate()
     }
 
     Action

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 19:13+0100\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,6 +116,10 @@ msgstr "&Rétablir"
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "&Enregistrer le projet..."
+
+msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
+msgid "&Save Universal Cura Project..."
+msgstr ""
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
@@ -257,6 +261,10 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "Une connexion cloud n'est pas disponible pour une imprimante"
 msgstr[1] "Une connexion cloud n'est pas disponible pour certaines imprimantes"
+
+msgctxt "@text"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -492,9 +500,17 @@ msgctxt "@label"
 msgid "Anonymous"
 msgstr "Anonyme"
 
+msgctxt "@option:radio"
+msgid "Anonymous crash reports"
+msgstr ""
+
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Cadre d'application"
+
+msgctxt "@title:column"
+msgid "Applies on"
+msgstr ""
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -681,6 +697,10 @@ msgstr "COLLADA Digital Asset Exchange"
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Calculer"
+
+msgctxt "@window:text"
+msgid "Camera navigation:"
+msgstr ""
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -1412,6 +1432,10 @@ msgctxt "@label"
 msgid "Draft"
 msgstr "Ébauche"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Drop All Models to buildplate"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Dupliquer"
@@ -1538,6 +1562,10 @@ msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Exporter la sélection..."
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Export Universal Cura Project"
+msgstr ""
+
 msgctxt "@button"
 msgid "Export material archive"
 msgstr "Exporter l'archive des matériaux"
@@ -1571,9 +1599,22 @@ msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Extrudeuse G-Code de fin"
 
+msgctxt "@label"
+msgid "Extruder End G-code duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "Extrudeuse G-Code de démarrage"
+
+msgctxt "@label"
+msgid "Extruder Start G-code duration"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@label"
+msgid "Extruder {0}"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1640,6 +1681,11 @@ msgstr "Impossible de charger l'archive des matériaux pour la synchroniser avec
 msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Échec de l'enregistrement de l'archive des matériaux"
+
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
+msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
@@ -1782,6 +1828,9 @@ msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Forcer l'affichage de la couche en mode de compatibilité (redémarrage requis)"
 
+msgid "FreeCAD trackpad"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Vue de face"
@@ -1870,6 +1919,10 @@ msgctxt "@action"
 msgid "Get started"
 msgstr "Prise en main"
 
+msgctxt "@label"
+msgid "Global"
+msgstr ""
+
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Paramètres généraux"
@@ -1918,6 +1971,10 @@ msgstr "Aides"
 msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "Masquer toutes les imprimantes connectées"
+
+msgctxt "@action:button"
+msgid "Hide settings"
+msgstr ""
 
 msgctxt "@action:menu"
 msgid "Hide this setting"
@@ -1994,6 +2051,10 @@ msgstr "Pour pouvoir utiliser Cura, vous devez configurer une imprimante."
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
 msgstr "Pour pouvoir utiliser le package, vous devrez redémarrer Cura"
+
+msgctxt "@option:radio"
+msgid "Include UltiMaker account name"
+msgstr ""
 
 msgctxt "@label"
 msgid "Infill"
@@ -2699,6 +2760,10 @@ msgid "No results found with current filter"
 msgstr "Aucun résultat trouvé avec le filtre actuel"
 
 msgctxt "@label"
+msgid "No specific value has been set"
+msgstr ""
+
+msgctxt "@label"
 msgid "No time estimation available"
 msgstr "Aucune estimation de la durée n'est disponible"
 
@@ -2799,6 +2864,10 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Un seul fichier G-Code peut être chargé à la fois. Importation de {0} sautée"
 
+msgctxt "@message"
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Ouvrir"
@@ -2827,9 +2896,21 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Ouvrir un fichier de projet"
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP) file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "Ouvrir avec"
+
+msgctxt "@action:button"
+msgid "Open as UCP"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Open as project"
@@ -3047,6 +3128,10 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "Veuillez vous connecter pour obtenir les plug-ins et matériaux vérifiés pour UltiMaker Cura Enterprise"
 
+msgctxt "@info:tooltip"
+msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "Veuillez synchroniser les profils de matériaux avec vos imprimantes avant de commencer à imprimer."
@@ -3142,6 +3227,14 @@ msgstr "Tour primaire"
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Imprimer"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Imprimer après"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Imprimer avant"
 
 msgctxt "@label"
 msgid "Print Selected Model With:"
@@ -3449,8 +3542,8 @@ msgid "Provides support for reading model files."
 msgstr "Fournit la prise en charge de la lecture de fichiers modèle 3D."
 
 msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Permet l'écriture de fichiers 3MF."
+msgid "Provides support for writing 3MF and UCP files."
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
@@ -3694,8 +3787,12 @@ msgid "Save Cura project"
 msgstr "Sauvegarder le projet Cura"
 
 msgctxt "@option"
-msgid "Save Cura project and print file"
-msgstr "Sauvegarder le projet Cura et imprimer le fichier"
+msgid "Save Cura project and .makerbot print file"
+msgstr ""
+
+msgctxt "@option"
+msgid "Save Cura project and .ufp print file"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3720,6 +3817,10 @@ msgstr "Conserver les modifications"
 msgctxt "@button"
 msgid "Save new profile"
 msgstr "Enregistrer le nouveau profil"
+
+msgctxt "@action:button"
+msgid "Save project"
+msgstr ""
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
@@ -3824,6 +3925,18 @@ msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "Envoyer le rapport de d'incident à UltiMaker"
 
+msgctxt "@info:tooltip"
+msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Send engine crash reports"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "Envoyer rapport"
@@ -3875,6 +3988,10 @@ msgstr "Paramètres"
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Paramètres"
+
+msgctxt "@action:label"
+msgid "Settings Loaded from UCP file"
+msgstr ""
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -3945,6 +4062,10 @@ msgid "Should opening files from the desktop or external applications open in th
 msgstr "L'ouverture de fichiers à partir du bureau ou d'applications externes doit-elle se faire dans la même instance de Cura ?"
 
 msgctxt "@info:tooltip"
+msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "Les objets doivent-ils être supprimés du plateau de fabrication avant de charger un nouveau modèle dans l'instance unique de Cura ?"
 
@@ -3999,6 +4120,10 @@ msgstr "Afficher le dossier de configuration"
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "Afficher le rapport d'incident détaillé"
+
+msgctxt "@action:button"
+msgid "Show settings"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
@@ -4076,10 +4201,6 @@ msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "Échec de la découpe"
 
-msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr "Échec de la découpe avec une erreur inattendue. Signalez un bug sur notre outil de suivi des problèmes."
-
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Découpe en cours..."
@@ -4087,6 +4208,10 @@ msgstr "Découpe en cours..."
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Lissage"
+
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
 
 msgctxt "name"
 msgid "Solid View"
@@ -4213,9 +4338,25 @@ msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Importation du profil {0} réussie."
 
+msgctxt "@action:label"
+msgid "Suggested Material settings"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Suggested Profile settings"
+msgstr ""
+
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Résumé - Projet Cura"
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Universal Cura Project"
+msgstr ""
 
 msgctxt "@label"
 msgid "Support"
@@ -4597,6 +4738,10 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "Cette configuration n'est pas disponible car %1 n'est pas reconnu. Veuillez visiter %2 pour télécharger le profil matériel correct."
 
 msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr ""
+
+msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "Ceci est un fichier de projet Cura. Souhaitez-vous l'ouvrir comme projet ou en importer les modèles ?"
 
@@ -4684,6 +4829,14 @@ msgstr "Ce paramètre n'est pas utilisé car tous les paramètres qu'il influenc
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Ce paramètre est résolu à partir de valeurs conflictuelles spécifiques à l'extrudeur :"
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
+msgstr ""
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
@@ -4916,6 +5069,11 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Impossible de lancer une nouvelle procédure de connexion. Vérifiez si une autre tentative de connexion est toujours active."
 
+#, python-brace-format
+msgctxt "@info:error"
+msgid "Unable to write to file: {0}"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Indisponible"
@@ -4935,6 +5093,14 @@ msgstr "Désinstaller"
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
 msgstr "Unité"
+
+msgctxt "@item:inlistbox"
+msgid "Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:description Don't translate 'Universal Cura Project'"
+msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
+msgstr ""
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
@@ -5125,6 +5291,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr "Configurations des mises à niveau de Cura 5.4 vers Cura 5.5."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Charger le firmware personnalisé"
@@ -5156,6 +5326,10 @@ msgstr "Fonctions utilitaires, y compris un chargeur d'images"
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Bibliothèque d'utilitaires, y compris la génération d'un diagramme Voronoï"
+
+msgctxt "@title:column"
+msgid "Value"
+msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
@@ -5261,6 +5435,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr "Mise à niveau de la version 5.4 vers 5.5"
 
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr ""
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "Afficher les imprimantes dans Digital Factory"
@@ -5337,6 +5515,10 @@ msgstr "Site Internet"
 msgctxt "@label"
 msgid "What printer would you like to setup?"
 msgstr "Quelle imprimante souhaitez-vous configurer?"
+
+msgctxt "@info:tooltip"
+msgid "What type of camera navigation should be used?"
+msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
@@ -5554,6 +5736,10 @@ msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
+msgctxt "@label"
+msgid "s"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "today"
 msgstr "aujourd'hui"
@@ -5581,3 +5767,15 @@ msgstr "Échec de téléchargement des plugins {}"
 
 #~ msgid "Provides support for exporting Cura profiles."
 #~ msgstr "Fournit une assistance pour l’exportation de profils Cura."
+
+#~ msgctxt "description"
+#~ msgid "Provides support for writing 3MF files."
+#~ msgstr "Permet l'écriture de fichiers 3MF."
+
+#~ msgctxt "@option"
+#~ msgid "Save Cura project and print file"
+#~ msgstr "Sauvegarder le projet Cura et imprimer le fichier"
+
+#~ msgctxt "@message"
+#~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+#~ msgstr "Échec de la découpe avec une erreur inattendue. Signalez un bug sur notre outil de suivi des problèmes."
