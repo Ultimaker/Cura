@@ -119,7 +119,7 @@ UM.Dialog
                     Cura.MachineSelector
                     {
                         id: machineSelector
-                        visible: comboboxVisible
+                        visible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
                         headerCornerSide: Cura.RoundedRectangle.Direction.All
                         anchors.top: parent.top
                         anchors.topMargin: UM.Theme.getSize("default_margin").width * 3
