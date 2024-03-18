@@ -173,7 +173,7 @@ UM.Dialog
                         {
                             id: numberOfOverrides
                             leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModelRowCount).arg(manager.exportedSettingModelRowCount)
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
@@ -196,15 +196,8 @@ UM.Dialog
                             {
                                 id: tableModel
                                 headers: ["category", "label", "value"]
-                                rows: manager.exportedSettingModel.items
+                                rows: manager.exportedSettingModelItems
                             }
-                        }
-
-                        property var modelRows: manager.exportedSettingModel.items
-                        onModelRowsChanged:
-                        {
-                            tableModel.clear()
-                            tableModel.rows = modelRows
                         }
                     }
 

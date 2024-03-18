@@ -362,6 +362,13 @@ class WorkspaceDialog(QObject):
     def exportedSettingModel(self):
         return self._exported_settings_model
 
+    @pyqtProperty("QVariantList", notify=exportedSettingModelChanged)
+    def exportedSettingModelItems(self):
+        return self._exported_settings_model.items
+
+    @pyqtProperty(int, notify=exportedSettingModelChanged)
+    def exportedSettingModelRowCount(self):
+        return self._exported_settings_model.rowCount()
     @pyqtSlot()
     def closeBackend(self) -> None:
         """Close the backend: otherwise one could end up with "Slicing..."""
