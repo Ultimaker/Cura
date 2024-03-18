@@ -75,7 +75,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.UserChanges, new_user_changes)
 
-    @pyqtProperty(QObject, fset = setUserChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setUserChanges, notify=pyqtContainersChanged)
     def userChanges(self) -> InstanceContainer:
         """Get the user changes container.
 
@@ -90,9 +90,9 @@ class CuraContainerStack(ContainerStack):
         :param new_quality_changes: The new quality changes container. It is expected to have a "type" metadata entry with the value "quality_changes".
         """
 
-        self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes, postpone_emit = postpone_emit)
+        self.replaceContainer(_ContainerIndexes.QualityChanges, new_quality_changes, postpone_emit=postpone_emit)
 
-    @pyqtProperty(QObject, fset = setQualityChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setQualityChanges, notify=pyqtContainersChanged)
     def qualityChanges(self) -> InstanceContainer:
         """Get the quality changes container.
 
@@ -107,9 +107,9 @@ class CuraContainerStack(ContainerStack):
         :param new_intent: The new intent container. It is expected to have a "type" metadata entry with the value "intent".
         """
 
-        self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit = postpone_emit)
+        self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit=postpone_emit)
 
-    @pyqtProperty(QObject, fset = setIntent, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setIntent, notify=pyqtContainersChanged)
     def intent(self) -> InstanceContainer:
         """Get the quality container.
 
@@ -124,9 +124,9 @@ class CuraContainerStack(ContainerStack):
         :param new_quality: The new quality container. It is expected to have a "type" metadata entry with the value "quality".
         """
 
-        self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit = postpone_emit)
+        self.replaceContainer(_ContainerIndexes.Quality, new_quality, postpone_emit=postpone_emit)
 
-    @pyqtProperty(QObject, fset = setQuality, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setQuality, notify=pyqtContainersChanged)
     def quality(self) -> InstanceContainer:
         """Get the quality container.
 
@@ -141,9 +141,9 @@ class CuraContainerStack(ContainerStack):
         :param new_material: The new material container. It is expected to have a "type" metadata entry with the value "material".
         """
 
-        self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit = postpone_emit)
+        self.replaceContainer(_ContainerIndexes.Material, new_material, postpone_emit=postpone_emit)
 
-    @pyqtProperty(QObject, fset = setMaterial, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setMaterial, notify=pyqtContainersChanged)
     def material(self) -> InstanceContainer:
         """Get the material container.
 
@@ -160,7 +160,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.Variant, new_variant)
 
-    @pyqtProperty(QObject, fset = setVariant, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setVariant, notify=pyqtContainersChanged)
     def variant(self) -> InstanceContainer:
         """Get the variant container.
 
@@ -177,7 +177,7 @@ class CuraContainerStack(ContainerStack):
 
         self.replaceContainer(_ContainerIndexes.DefinitionChanges, new_definition_changes)
 
-    @pyqtProperty(QObject, fset = setDefinitionChanges, notify = pyqtContainersChanged)
+    @pyqtProperty(QObject, fset=setDefinitionChanges, notify=pyqtContainersChanged)
     def definitionChanges(self) -> InstanceContainer:
         """Get the definition changes container.
 
@@ -197,7 +197,7 @@ class CuraContainerStack(ContainerStack):
     def getDefinition(self) -> "DefinitionContainer":
         return cast(DefinitionContainer, self._containers[_ContainerIndexes.Definition])
 
-    definition = pyqtProperty(QObject, fget = getDefinition, fset = setDefinition, notify = pyqtContainersChanged)
+    definition = pyqtProperty(QObject, fget=getDefinition, fset=setDefinition, notify=pyqtContainersChanged)
 
     @override(ContainerStack)
     def getBottom(self) -> "DefinitionContainer":
@@ -207,7 +207,7 @@ class CuraContainerStack(ContainerStack):
     def getTop(self) -> "InstanceContainer":
         return self.userChanges
 
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str, result=bool)
     def hasUserValue(self, key: str) -> bool:
         """Check whether the specified setting has a 'user' value.
 
@@ -283,9 +283,9 @@ class CuraContainerStack(ContainerStack):
         expected_type = _ContainerIndexes.IndexTypeMap[index]
         if expected_type == "definition":
             if not isinstance(container, DefinitionContainer):
-                raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not a DefinitionContainer".format(index = index))
+                raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not a DefinitionContainer".format(index=index))
         elif container != self._empty_instance_container and container.getMetaDataEntry("type") != expected_type:
-            raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type, but {actual_type} type.".format(index = index, type = expected_type, actual_type = container.getMetaDataEntry("type")))
+            raise Exceptions.InvalidContainerError("Cannot replace container at index {index} with a container that is not of {type} type, but {actual_type} type.".format(index=index, type=expected_type, actual_type=container.getMetaDataEntry("type")))
 
         current_container = self._containers[index]
         if current_container.getId() == container.getId():
@@ -322,15 +322,15 @@ class CuraContainerStack(ContainerStack):
 
             if type_name == "definition":
                 if not container or not isinstance(container, DefinitionContainer):
-                    definition = self.findContainer(container_type = DefinitionContainer)
+                    definition = self.findContainer(container_type=DefinitionContainer)
                     if not definition:
-                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id = self.getId()))
+                        raise InvalidContainerStackError("Stack {id} does not have a definition!".format(id=self.getId()))
 
                     new_containers[index] = definition
                 continue
 
             if not container or container.getMetaDataEntry("type") != type_name:
-                actual_container = self.findContainer(type = type_name)
+                actual_container = self.findContainer(type=type_name)
                 if actual_container:
                     new_containers[index] = actual_container
                 else:
@@ -374,9 +374,9 @@ class CuraContainerStack(ContainerStack):
         if not quality_definition:
             return machine_definition.id #type: ignore
 
-        definitions = ContainerRegistry.getInstance().findDefinitionContainers(id = quality_definition)
+        definitions = ContainerRegistry.getInstance().findDefinitionContainers(id=quality_definition)
         if not definitions:
-            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent = quality_definition, machine = machine_definition.id) #type: ignore
+            Logger.log("w", "Unable to find parent definition {parent} for machine {machine}", parent=quality_definition, machine=machine_definition.id)  # type: ignore
             return machine_definition.id #type: ignore
 
         return cls.findInstanceContainerDefinitionId(definitions[0])

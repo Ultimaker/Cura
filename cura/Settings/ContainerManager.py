@@ -48,7 +48,7 @@ class ContainerManager(QObject):
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
         try:
-            super().__init__(parent = application)
+            super().__init__(parent=application)
         except TypeError:
             super().__init__()
         ContainerManager.__instance = self
@@ -96,9 +96,9 @@ class ContainerManager(QObject):
         if container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
             return False
-        root_material_query = container_registry.findContainers(id = root_material_id)
+        root_material_query = container_registry.findContainers(id=root_material_id)
         if not root_material_query:
-            Logger.log("w", "Unable to find root material: {root_material}.".format(root_material = root_material_id))
+            Logger.log("w", "Unable to find root material: {root_material}.".format(root_material=root_material_id))
             return False
         root_material = root_material_query[0]
 
@@ -128,11 +128,11 @@ class ContainerManager(QObject):
         cura.CuraApplication.CuraApplication.getInstance().getMachineManager().updateUponMaterialMetadataChange()
         return True
 
-    @pyqtSlot(str, result = str)
+    @pyqtSlot(str, result=str)
     def makeUniqueName(self, original_name: str) -> str:
         return cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().uniqueName(original_name)
 
-    @pyqtSlot(str, result = "QStringList")
+    @pyqtSlot(str, result="QStringList")
     def getContainerNameFilters(self, type_name: str) -> List[str]:
         """Get a list of string that can be used as name filters for a Qt File Dialog
 
@@ -157,7 +157,7 @@ class ContainerManager(QObject):
         filters.append("All Files (*)")
         return filters
 
-    @pyqtSlot(str, str, QUrl, result = "QVariantMap")
+    @pyqtSlot(str, str, QUrl, result="QVariantMap")
     def exportContainer(self, container_id: str, file_type: str, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         """Export a container to a file
 
@@ -188,7 +188,7 @@ class ContainerManager(QObject):
         else:
             mime_type = self._container_name_filters[file_type]["mime"]
 
-        containers = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findContainers(id = container_id)
+        containers = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findContainers(id=container_id)
         if not containers:
             return {"status": "error", "message": "Container not found"}
         container = containers[0]
@@ -223,10 +223,10 @@ class ContainerManager(QObject):
         except OSError:
             return {"status": "error", "message": "Unable to write to this location.", "path": file_url}
 
-        Logger.info("Successfully exported container to {path}".format(path = file_url))
+        Logger.info("Successfully exported container to {path}".format(path=file_url))
         return {"status": "success", "message": "Successfully exported container", "path": file_url}
 
-    @pyqtSlot(QUrl, result = "QVariantMap")
+    @pyqtSlot(QUrl, result="QVariantMap")
     def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         """Imports a profile from a file
 
@@ -266,7 +266,7 @@ class ContainerManager(QObject):
         container = container_type(container_id)
 
         try:
-            with open(file_url, "rt", encoding = "utf-8") as f:
+            with open(file_url, "rt", encoding="utf-8") as f:
                 container.deserialize(f.read(), file_url)
         except PermissionError:
             return {"status": "error", "message": "Permission denied when trying to read the file."}
@@ -281,7 +281,7 @@ class ContainerManager(QObject):
 
         return {"status": "success", "message": "Successfully imported container {0}".format(container.getName())}
 
-    @pyqtSlot(result = bool)
+    @pyqtSlot(result=bool)
     def updateQualityChanges(self) -> bool:
         """Update the current active quality changes container with the settings from the user container.
 
@@ -355,7 +355,7 @@ class ContainerManager(QObject):
         for container in send_emits_containers:
             container.sendPostponedEmits()
 
-    @pyqtSlot("QVariant", bool, result = "QStringList")
+    @pyqtSlot("QVariant", bool, result="QStringList")
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
         """Get a list of materials that have the same GUID as the reference material
 
@@ -365,7 +365,7 @@ class ContainerManager(QObject):
         :return: A list of names of materials with the same GUID.
         """
 
-        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(GUID = material_node.guid)
+        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(GUID=material_node.guid)
         if exclude_self:
             return list({meta["name"] for meta in same_guid if meta["base_file"] != material_node.base_file})
         else:
@@ -451,7 +451,7 @@ class ContainerManager(QObject):
             name_filter = "{0} ({1})".format(mime_type.comment, suffix_list)
             self._container_name_filters[name_filter] = entry
 
-    @pyqtSlot(QUrl, result = "QVariantMap")
+    @pyqtSlot(QUrl, result="QVariantMap")
     def importProfile(self, file_url: QUrl) -> Dict[str, str]:
         """Import single profile, file_url does not have to end with curaprofile"""
 
@@ -471,9 +471,9 @@ class ContainerManager(QObject):
             return
 
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        container_list = [cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])]  # type: List[InstanceContainer]
+        container_list = [cast(InstanceContainer, container_registry.findContainers(id=quality_changes_group.metadata_for_global["id"])[0])]  # type: List[InstanceContainer]
         for metadata in quality_changes_group.metadata_per_extruder.values():
-            container_list.append(cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0]))
+            container_list.append(cast(InstanceContainer, container_registry.findContainers(id=metadata["id"])[0]))
         cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().exportQualityProfile(container_list, path, file_type)
 
     __instance = None   # type: ContainerManager
