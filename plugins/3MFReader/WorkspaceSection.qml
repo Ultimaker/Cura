@@ -15,11 +15,7 @@ Item
     property Component content: Item { visible: false  }
 
     property alias comboboxTitle: comboboxLabel.text
-    property Component combobox: Item
-        {
-            z: -1
-            visible: false
-        }
+    property Component combobox: Item { visible: false }
     property string comboboxTooltipText: ""
     property bool comboboxVisible: false
 
