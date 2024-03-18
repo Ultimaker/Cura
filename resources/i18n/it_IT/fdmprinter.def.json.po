@@ -1,16 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2024-03-12 15:10+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2024-03-18 14:06+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.0.1\n"
 
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
@@ -66,7 +67,7 @@ msgstr "Un elenco di poligoni con aree alle quali la testina di stampa non può 
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
-msgstr "Raccomandazione sull'entità della possibile distanza dei rami dai punti che supportano. I rami possono violare questo valore per raggiungere la loro destinazione (piano di stampa o parte piatta del modello). Ridurre questo valore può rendere il supporto più robusto, ma incrementa la quantità di rami (e, di conseguenza, la quantità di materiale/il tempo di stampa)"
+msgstr "Raccomandazione sull'entità della possibile distanza dei rami dai punti che supportano. I rami possono violare questo valore per raggiungere la loro destinazione (piano di stampa o parte piatta del modello). Ridurre questo valore può rendere il supporto più robusto, ma incrementa la quantità di rami (e, di conseguenza, la quantità di materiale/il tempo di stampa) "
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -410,7 +411,7 @@ msgstr "Brim"
 
 msgctxt "brim_inside_margin label"
 msgid "Brim Avoid Margin"
-msgstr ""
+msgstr "Brim evita margini"
 
 msgctxt "brim_gap label"
 msgid "Brim Distance"
@@ -422,7 +423,7 @@ msgstr "Numero di linee del brim"
 
 msgctxt "brim_location label"
 msgid "Brim Location"
-msgstr ""
+msgstr "Posizione Brim"
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -886,7 +887,7 @@ msgstr "Abilitazione raffreddamento stampa"
 
 msgctxt "ppr_enable label"
 msgid "Enable Print Process Reporting"
-msgstr ""
+msgstr "Abilita rapporto del processo di stampa"
 
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
@@ -958,7 +959,7 @@ msgstr "Abilita la stampa del brim intorno al modello anche se quello spazio dov
 
 msgctxt "brim_location option everywhere"
 msgid "Everywhere"
-msgstr ""
+msgstr "Ovunque"
 
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
@@ -1066,7 +1067,7 @@ msgstr "Rapporto di equalizzazione del flusso"
 
 msgctxt "flow_anomaly_limit label"
 msgid "Flow Limit"
-msgstr ""
+msgstr "Limite flusso"
 
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
@@ -1082,7 +1083,7 @@ msgstr "Grafico della temperatura del flusso"
 
 msgctxt "flow_warn_limit label"
 msgid "Flow Warning"
-msgstr ""
+msgstr "Attenzione flusso"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
@@ -1722,7 +1723,7 @@ msgstr "Inserto applicato al percorso della parete esterna. Se la parete esterna
 
 msgctxt "brim_location option inside"
 msgid "Inside Only"
-msgstr ""
+msgstr "Solo interno"
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
@@ -2032,7 +2033,7 @@ msgstr "Materiale"
 
 msgctxt "material_brand label"
 msgid "Material Brand"
-msgstr ""
+msgstr "Marca materiale"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
@@ -2040,7 +2041,7 @@ msgstr "GUID materiale"
 
 msgctxt "material_type label"
 msgid "Material Type"
-msgstr ""
+msgstr "Tipo materiale"
 
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
@@ -2364,7 +2365,7 @@ msgstr "Normale"
 
 msgctxt "prime_tower_mode option normal"
 msgid "Normal"
-msgstr ""
+msgstr "Normale"
 
 msgctxt "support_structure option normal"
 msgid "Normal"
@@ -2560,7 +2561,7 @@ msgstr "Le pareti esterne di diverse isole nello stesso strato vengono stampate 
 
 msgctxt "brim_location option outside"
 msgid "Outside Only"
-msgstr ""
+msgstr "Solo esterno"
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"

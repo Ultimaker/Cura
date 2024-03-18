@@ -1,16 +1,17 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2024-03-11 11:28+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2024-03-18 14:02+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 3.0.1\n"
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -38,11 +39,11 @@ msgstr "Estrusore"
 
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "Codice G fine estrusore"
+msgstr "G-Code fine estrusore"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "Durata G-Code finale estrusore"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -74,11 +75,11 @@ msgstr "Ventola di raffreddamento stampa estrusore"
 
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "Codice G avvio estrusore"
+msgstr "G-Code avvio estrusore"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "Durata G-Code iniziale estrusore"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +167,11 @@ msgstr "Il numero di ventole di raffreddamento stampa abbinate a questo estrusor
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "Il tempo necessario per eseguire il G-code finale quando si passa ad altro estrusore da questo."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "Il tempo necessario per eseguire il G-code iniziale quando si passa a questo estrusore."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
