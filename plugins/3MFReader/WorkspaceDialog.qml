@@ -209,8 +209,15 @@ UM.Dialog
                             {
                                 id: tableModel
                                 headers: ["category", "label", "value"]
-                                rows: manager.exportedSettingModelItems
+                                rows: manager.exportedSettingModel.items
                             }
+                        }
+
+                        property var modelRows: manager.exportedSettingModel.items
+                        onModelRowsChanged:
+                        {
+                            tableModel.clear()
+                            tableModel.rows = modelRows
                         }
                     }
 
