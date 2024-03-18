@@ -3792,11 +3792,11 @@ msgstr "Salva progetto Cura"
 
 msgctxt "@option"
 msgid "Save Cura project and .makerbot print file"
-msgstr "Salva progetto progetto Cura e file di stampa .makerbot"
+msgstr "Salva progetto Cura e file di stampa .makerbot"
 
 msgctxt "@option"
 msgid "Save Cura project and .ufp print file"
-msgstr "Salva progetto Cura project e file di stampa .ufp"
+msgstr "Salva progetto Cura e file di stampa .ufp"
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
