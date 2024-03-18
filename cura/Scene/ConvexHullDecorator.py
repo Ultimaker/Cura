@@ -232,12 +232,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
         if self._node.callDecoration("isGroup"):
-            points = numpy.zeros((0, 2), dtype = numpy.int32)
+            points = numpy.zeros((0, 2), dtype=numpy.int32)
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
                     try:
-                        points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                        points = numpy.append(points, child_hull.getPoints(), axis=0)
                     except ValueError:
                         pass
 
@@ -249,8 +249,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if child_polygon == self._2d_convex_hull_group_child_polygon:
                 return self._2d_convex_hull_group_result
 
-            convex_hull = child_polygon.getConvexHull() #First calculate the normal convex hull around the points.
-            offset_hull = self._offsetHull(convex_hull) #Then apply the offset from the settings.
+            convex_hull = child_polygon.getConvexHull()  # First calculate the normal convex hull around the points.
+            offset_hull = self._offsetHull(convex_hull)  # Then apply the offset from the settings.
 
             # Store the result in the cache
             self._2d_convex_hull_group_child_polygon = child_polygon
@@ -265,7 +265,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if mesh is None:
                 return Polygon([])  # Node has no mesh data, so just return an empty Polygon.
 
-            world_transform = self._node.getWorldTransformation(copy = True)
+            world_transform = self._node.getWorldTransformation(copy=True)
 
             # Check the cache
             if mesh is self._2d_convex_hull_mesh and world_transform == self._2d_convex_hull_mesh_world_transform:
@@ -292,7 +292,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
                 vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
                     numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                _, idx = numpy.unique(vertex_byte_view, return_index = True)
+                _, idx = numpy.unique(vertex_byte_view, return_index=True)
                 vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
                 hull = Polygon(vertex_data)
@@ -416,7 +416,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._getSettingProperty("mold_enabled", "value"):
             mold_width = self._getSettingProperty("mold_width", "value")
         hull_offset = horizontal_expansion + mold_width
-        if hull_offset > 0: #TODO: Implement Minkowski subtraction for if the offset < 0.
+        if hull_offset > 0:  # TODO: Implement Minkowski subtraction for if the offset < 0.
             expansion_polygon = Polygon(numpy.array([
                 [-hull_offset, -hull_offset],
                 [-hull_offset, hull_offset],
@@ -467,7 +467,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if not extruder_stack_id:
                 # Decoration doesn't exist
                 extruder_stack_id = ExtruderManager.getInstance().extruderIds["0"]
-            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack_id)[0]
             return extruder_stack.getProperty(setting_key, prop)
         else:
             # Limit_to_extruder is set. The global stack handles this then
