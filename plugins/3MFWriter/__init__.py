@@ -33,12 +33,6 @@ def getMetaData():
                     "mime_type": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
                 },
-                {
-                    "extension": "3mf",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "Universal Cura Project"),
-                    "mime_type": "application/x-ucp",
-                    "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
-                }
             ]
         }
         metaData["workspace_writer"] = {
