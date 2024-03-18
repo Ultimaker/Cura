@@ -205,7 +205,6 @@ UM.Dialog
                         {
                             tableModel.clear()
                             tableModel.rows = modelRows
-                            numberOfOverrides.rightLabelText = catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
                         }
                     }
 

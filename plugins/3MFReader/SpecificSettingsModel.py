@@ -1,7 +1,7 @@
 # Copyright (c) 2024 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 
 from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
@@ -22,6 +22,8 @@ class SpecificSettingsModel(ListModel):
         self._i18n_catalog = None
         self._update()
 
+    modelChanged = pyqtSignal()
+
 
     def addSettingsFromStack(self, stack, category, settings):
         for setting, value in settings.items():
@@ -39,8 +41,10 @@ class SpecificSettingsModel(ListModel):
                 "label": stack.getProperty(setting, "label"),
                 "value": value
             })
+            self.modelChanged.emit()
 
     def _update(self):
         Logger.debug(f"Updating {self.__class__.__name__}")
         self.setItems([])
+        self.modelChanged.emit()
         return
