@@ -116,17 +116,12 @@ UM.Dialog
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "Printer settings will be updated to match the settings saved with the project.")
                     comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
-                    Cura.MachineSelector
+                    combobox: Cura.MachineSelector
                     {
                         id: machineSelector
-                        visible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
                         headerCornerSide: Cura.RoundedRectangle.Direction.All
-                        anchors.top: parent.top
-                        anchors.topMargin: UM.Theme.getSize("default_margin").width * 3
-                        anchors.right: parent.right
-                        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                        width: Math.round(parent.width / 2.5)
-                        height: UM.Theme.getSize("button").height
+                        width: parent.width
+                        height: parent.height
                         machineListModel: manager.updatableMachinesModel
                         machineName: manager.machineName
 

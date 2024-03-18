@@ -15,7 +15,11 @@ Item
     property Component content: Item { visible: false  }
 
     property alias comboboxTitle: comboboxLabel.text
-    property Component combobox: Item { visible: false }
+    property Component combobox: Item
+        {
+            z: -1
+            visible: false
+        }
     property string comboboxTooltipText: ""
     property bool comboboxVisible: false
 
@@ -91,11 +95,11 @@ Item
         }
     }
 
-
     Loader
     {
         width: parent.width
         height: content.height
+        z: -1
         anchors.top: sectionTitleRow.bottom
         sourceComponent: content
     }
