@@ -8,7 +8,7 @@ from UM.Application import Application
 
 class SimpleModeSettingsManager(QObject):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self._machine_manager = Application.getInstance().getMachineManager()
@@ -22,7 +22,7 @@ class SimpleModeSettingsManager(QObject):
 
     isProfileCustomizedChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = isProfileCustomizedChanged)
+    @pyqtProperty(bool, notify=isProfileCustomizedChanged)
     def isProfileCustomized(self):
         return self._is_profile_customized
 
