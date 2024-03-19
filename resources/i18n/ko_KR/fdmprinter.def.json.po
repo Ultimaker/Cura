@@ -5691,3 +5691,7 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "서포트 구조의 배치를 조정합니다. 배치는 빌드 플레이트 또는 모든 곳을 터치하도록 설정할 수 있습니다. 모든 곳에 설정하면 모델에 서포트 구조가 프린팅됩니다."

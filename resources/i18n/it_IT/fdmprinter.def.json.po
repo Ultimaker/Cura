@@ -5691,3 +5691,7 @@ msgstr "Matrice rotazione maglia"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Regola il posizionamento delle strutture di supporto. Il posizionamento può essere impostato su contatto con il piano di stampa o in tutti i possibili punti. Quando impostato su tutti i possibili punti, le strutture di supporto verranno anche stampate sul modello."

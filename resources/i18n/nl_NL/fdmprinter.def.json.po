@@ -5691,3 +5691,7 @@ msgstr "Matrix rasterrotatie"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit wordt geladen vanuit een bestand."
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Past de plaatsing van de supportstructuur aan. De plaatsing kan worden ingesteld op Platform aanraken of Overal. Wanneer deze optie ingesteld is op Overal, worden de supportstructuren ook op het model geprint."

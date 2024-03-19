@@ -5691,3 +5691,7 @@ msgstr "Матрица вращения объекта"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Матрица преобразования, применяемая к модели при её загрузке из файла."
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Настраивает размещение структур поддержки. Размещение может быть выбрано с касанием стола или везде. Для последнего случая структуры поддержки печатаются даже на самой модели."

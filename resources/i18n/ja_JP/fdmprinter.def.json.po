@@ -5693,3 +5693,7 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定することができます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"

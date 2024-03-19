@@ -5691,3 +5691,7 @@ msgstr "Bileşim Rotasyon Matrisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
+
+msgctxt "support_type description"
+msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
+msgstr "Destek yapılarının yerleştirilmesini ayarlar. Yerleştirme, temas eden yapı levhasına veya her bölüme ayarlanabilir. Her bölüme ayarlandığında, destek yapıları da modelde yazdırılacaktır."
