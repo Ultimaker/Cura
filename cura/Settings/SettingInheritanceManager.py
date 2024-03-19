@@ -168,7 +168,7 @@ class SettingInheritanceManager(QObject):
     def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
-    def _userSettingIsOverwritingInheritance(self, key: str, stack: ContainerStack, all_keys: Set[str]) -> bool:
+    def _userSettingIsOverwritingInheritance(self, key: str, stack: ContainerStack, all_keys: Set[str] = set()) -> bool:
         """Check if a setting known as having a User state has an inheritance function that is overwritten"""
 
         has_setting_function = False
@@ -180,10 +180,13 @@ class SettingInheritanceManager(QObject):
             return False
 
         user_container = stack.getTop()
-        """Also check if the top container is not a setting function (this happens if the inheritance is restored)."""
+        # Also check if the top container is not a setting function (this happens if the inheritance is restored).
 
         if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
+
+        if not all_keys:
+            all_keys = self._active_container_stack.getAllKeys()
 
         ##  Mash all containers for all the stacks together.
         while stack:
@@ -231,9 +234,7 @@ class SettingInheritanceManager(QObject):
         if not has_user_state:
             return False
 
-        all_keys = self._active_container_stack.getAllKeys()
-
-        return self._userSettingIsOverwritingInheritance(key, stack, all_keys)
+        return self._userSettingIsOverwritingInheritance(key, stack)
 
     def _update(self) -> None:
         self._settings_with_inheritance_warning = []  # Reset previous data.
