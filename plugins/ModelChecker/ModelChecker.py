@@ -26,10 +26,10 @@ class ModelChecker(QObject, Extension):
 
         self._button_view = None
 
-        self._caution_message = Message("", #Message text gets set when the message gets shown, to display the models in question.
-            lifetime = 0,
-            title = catalog.i18nc("@info:title", "3D Model Assistant"),
-            message_type = Message.MessageType.WARNING)
+        self._caution_message = Message("",  # Message text gets set when the message gets shown, to display the models in question.
+            lifetime=0,
+            title=catalog.i18nc("@info:title", "3D Model Assistant"),
+            message_type=Message.MessageType.WARNING)
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -59,9 +59,9 @@ class ModelChecker(QObject, Extension):
         self._createView()
 
     def checkObjectsForShrinkage(self):
-        shrinkage_threshold = 100.5 #From what shrinkage percentage a warning will be issued about the model size.
-        warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
-        warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
+        shrinkage_threshold = 100.5  # From what shrinkage percentage a warning will be issued about the model size.
+        warning_size_xy = 150  # The horizontal size of a model that would be too large when dealing with shrinking materials.
+        warning_size_z = 100  # The vertical size of a model that would be too large when dealing with shrinking materials.
 
         # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
         # has not done yet.
@@ -98,7 +98,7 @@ class ModelChecker(QObject, Extension):
             "<p>{model_names}</p>\n"
             "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
             "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-            ).format(model_names = ", ".join([n.getName() for n in warning_nodes])))
+            ).format(model_names=", ".join([n.getName() for n in warning_nodes])))
 
         return len(warning_nodes) > 0
 
@@ -126,10 +126,10 @@ class ModelChecker(QObject, Extension):
 
         Logger.log("d", "Model checker view created.")
 
-    @pyqtProperty(bool, notify = onChanged)
+    @pyqtProperty(bool, notify=onChanged)
     def hasWarnings(self):
         danger_shrinkage = self.checkObjectsForShrinkage()
-        return any((danger_shrinkage, )) #If any of the checks fail, show the warning button.
+        return any((danger_shrinkage, ))  # If any of the checks fail, show the warning button.
 
     @pyqtSlot()
     def showWarnings(self):

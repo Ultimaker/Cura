@@ -20,8 +20,8 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
     definitions that have a matching instance Container are returned as visible.
     """
-    def __init__(self, parent = None, *args, **kwargs):
-        super().__init__(parent = parent, *args, **kwargs)
+    def __init__(self, parent=None, *args, **kwargs):
+        super().__init__(parent=parent, *args, **kwargs)
 
         self._selected_object_id = None
         self._node = None
@@ -42,7 +42,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
             self.visibilityChanged.emit()
 
-    @pyqtProperty("quint64", fset = setSelectedObjectId)
+    @pyqtProperty("quint64", fset=setSelectedObjectId)
     def selectedObjectId(self):
         return self._selected_object_id
 
@@ -96,7 +96,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
                 # Use the found stack_number to get the right ContainerStack to copy the value from.
                 if stack_nr in ExtruderManager.getInstance().extruderIds:
-                    stack = ContainerRegistry.getInstance().findContainerStacks(id = ExtruderManager.getInstance().extruderIds[stack_nr])[0]
+                    stack = ContainerRegistry.getInstance().findContainerStacks(id=ExtruderManager.getInstance().extruderIds[stack_nr])[0]
             else:
                 stack = self._stack
 
@@ -126,4 +126,3 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         visible_settings = set(map(lambda i: i.definition.key, settings.findInstances()))
         return visible_settings
-
