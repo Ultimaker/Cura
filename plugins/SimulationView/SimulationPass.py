@@ -153,7 +153,7 @@ class SimulationPass(RenderPass):
                         # In the current layer, we show just the indicated paths
                         if layer == self._layer_view._current_layer_num:
                             # We look for the position of the head, searching the point of the current path
-                            index = int(self._layer_view.getCurrentPath())
+                            index = int(self._layer_view.getCurrentPath()) if self._layer_view.getCurrentPath() else 0
                             for polygon in layer_data.getLayer(layer).polygons:
                                 # The size indicates all values in the two-dimension array, and the second dimension is
                                 # always size 3 because we have 3D points.
