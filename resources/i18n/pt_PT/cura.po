@@ -5055,6 +5055,7 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Falhou a transferência de {} plug-ins"
 
+msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "Gere as ligações de rede a impressoras UltiMaker interconectadas."
 

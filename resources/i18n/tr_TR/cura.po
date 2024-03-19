@@ -5056,6 +5056,7 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} eklenti indirilemedi"
 
+msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "UltiMaker ağ bağlantılı yazıcılara olan ağ bağlantılarını yönetir."
 

@@ -5043,6 +5043,7 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} 个插件下载失败"
 
+msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "管理与 UltiMaker 网络打印机的网络连接。"
 

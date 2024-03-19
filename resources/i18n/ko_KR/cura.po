@@ -5041,6 +5041,7 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
 
+msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "UltiMaker 네트워크 프린터에 대한 네트워크 연결을 관리합니다."
 
