@@ -43,9 +43,9 @@ class RestoreBackupJob(Job):
         assert url is not None
 
         HttpRequestManager.getInstance().get(
-            url = url,
-            callback = self._onRestoreRequestCompleted,
-            error_callback = self._onRestoreRequestCompleted
+            url=url,
+            callback=self._onRestoreRequestCompleted,
+            error_callback=self._onRestoreRequestCompleted
         )
 
         self._job_done.wait()  # A job is considered finished when the run function completes
@@ -60,7 +60,7 @@ class RestoreBackupJob(Job):
 
         # We store the file in a temporary path fist to ensure integrity.
         try:
-            temporary_backup_file = NamedTemporaryFile(delete = False)
+            temporary_backup_file = NamedTemporaryFile(delete=False)
             with open(temporary_backup_file.name, "wb") as write_backup:
                 app = CuraApplication.getInstance()
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
@@ -97,5 +97,5 @@ class RestoreBackupJob(Job):
         """
 
         with open(file_path, "rb") as read_backup:
-            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
+            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars=b"_-").decode("utf-8")
             return known_hash == local_md5_hash
