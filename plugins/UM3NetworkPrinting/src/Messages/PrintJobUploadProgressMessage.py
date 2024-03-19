@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM import i18nCatalog
 from UM.Message import Message
 
@@ -12,12 +13,12 @@ class PrintJobUploadProgressMessage(Message):
 
     def __init__(self):
         super().__init__(
-            title = I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
-            text = I18N_CATALOG.i18nc("@info:status", "Uploading print job to printer."),
-            progress = -1,
-            lifetime = 0,
-            dismissable = False,
-            use_inactivity_timer = False
+            title=I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
+            text=I18N_CATALOG.i18nc("@info:status", "Uploading print job to printer."),
+            progress=-1,
+            lifetime=0,
+            dismissable=False,
+            use_inactivity_timer=False
         )
 
     def show(self):

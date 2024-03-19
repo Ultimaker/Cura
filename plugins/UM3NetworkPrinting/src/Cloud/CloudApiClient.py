@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import urllib.parse
 from json import JSONDecodeError
@@ -73,10 +74,10 @@ class CloudApiClient:
 
         url = f"{self.CLUSTER_API_ROOT}/clusters?status=active"
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, CloudClusterResponse, failed),
-                       error_callback = failed,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def getClustersByMachineType(self, machine_type, on_finished: Callable[[List[CloudClusterWithConfigResponse]], Any], failed: Callable) -> None:
         # HACK: There is something weird going on with the API, as it reports printer types in formats like
@@ -114,9 +115,9 @@ class CloudApiClient:
 
         url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/status"
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, CloudClusterStatus),
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterStatus),
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def requestUpload(self, request: CloudPrintJobUploadRequest,
                       on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
@@ -131,10 +132,10 @@ class CloudApiClient:
         data = json.dumps({"data": request.toDict()}).encode()
 
         self._http.put(url,
-                        scope = self._scope,
-                        data = data,
-                        callback = self._parseCallback(on_finished, CloudPrintJobResponse),
-                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                        scope=self._scope,
+                        data=data,
+                        callback=self._parseCallback(on_finished, CloudPrintJobResponse),
+                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def uploadToolPath(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                        on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
@@ -160,11 +161,11 @@ class CloudApiClient:
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any], on_error) -> None:
         url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print/{job_id}"
         self._http.post(url,
-                       scope = self._scope,
-                       data = b"",
-                       callback = self._parseCallback(on_finished, CloudPrintResponse),
-                       error_callback = on_error,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       data=b"",
+                       callback=self._parseCallback(on_finished, CloudPrintResponse),
+                       error_callback=on_error,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
                          data: Optional[Dict[str, Any]] = None) -> None:
@@ -179,9 +180,9 @@ class CloudApiClient:
         body = json.dumps({"data": data}).encode() if data else b""
         url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print_jobs/{cluster_job_id}/action/{action}"
         self._http.post(url,
-                        scope = self._scope,
-                        data = body,
-                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                        scope=self._scope,
+                        data=body,
+                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
