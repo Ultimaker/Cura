@@ -227,7 +227,6 @@ class SettingInheritanceManager(QObject):
             return False
 
         has_user_state = stack.getProperty(key, "state") == InstanceState.User
-        """Check if the setting has a user state. If not, it is never overwritten."""
 
         if not has_user_state:
             return False
