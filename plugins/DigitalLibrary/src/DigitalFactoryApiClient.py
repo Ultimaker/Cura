@@ -56,7 +56,7 @@ class DigitalFactoryApiClient:
         self._file_uploader: Optional[DFFileUploader] = None
         self._library_max_private_projects: Optional[int] = None
 
-        self._projects_pagination_mgr = PaginationManager(limit = projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
+        self._projects_pagination_mgr = PaginationManager(limit=projects_limit_per_page) if projects_limit_per_page else None  # type: Optional[PaginationManager]
 
     def checkUserHasAccess(self, callback: Callable) -> None:
         """Checks if the user has any sort of access to the digital library.
@@ -75,10 +75,10 @@ class DigitalFactoryApiClient:
                 callback(False)
 
         self._http.get(f"{self.CURA_API_ROOT}/feature_budgets",
-                       scope = self._scope,
-                       callback = self._parseCallback(callbackWrap, DigitalFactoryFeatureBudgetResponse, callbackWrap),
-                       error_callback = callbackWrap,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(callbackWrap, DigitalFactoryFeatureBudgetResponse, callbackWrap),
+                       error_callback=callbackWrap,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def checkUserCanCreateNewLibraryProject(self, callback: Callable) -> None:
         """
@@ -106,10 +106,10 @@ class DigitalFactoryApiClient:
             #       of the pagination will become corrupted
             url = f"{self.CURA_API_ROOT}/projects?shared=false&limit={self._library_max_private_projects}"
             self._http.get(url,
-                           scope = self._scope,
-                           callback = self._parseCallback(callbackWrap, DigitalFactoryProjectResponse, callbackWrap, pagination_manager = None),
-                           error_callback = callbackWrap,
-                           timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                           scope=self._scope,
+                           callback=self._parseCallback(callbackWrap, DigitalFactoryProjectResponse, callbackWrap, pagination_manager=None),
+                           error_callback=callbackWrap,
+                           timeout=self.DEFAULT_REQUEST_TIMEOUT)
         else:
             # If the limit is -1, then the user is allowed unlimited projects. If its 0 then they are not allowed to
             # create any projects
@@ -126,10 +126,10 @@ class DigitalFactoryApiClient:
         url = "{}/projects/{}".format(self.CURA_API_ROOT, library_project_id)
 
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed),
-                       error_callback = failed,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def getProjectsFirstPage(self, search_filter: str, on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any], failed: Callable) -> None:
         """
@@ -153,10 +153,10 @@ class DigitalFactoryApiClient:
             url += f"{query_character}search={search_filter}"
 
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed, pagination_manager = self._projects_pagination_mgr),
-                       error_callback = failed,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed, pagination_manager=self._projects_pagination_mgr),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def getMoreProjects(self,
                         on_finished: Callable[[List[DigitalFactoryProjectResponse]], Any],
@@ -170,10 +170,10 @@ class DigitalFactoryApiClient:
         if self.hasMoreProjectsToLoad():
             url = cast(PaginationLinks, cast(PaginationManager, self._projects_pagination_mgr).links).next_page
             self._http.get(url,
-                           scope = self._scope,
-                           callback = self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed, pagination_manager = self._projects_pagination_mgr),
-                           error_callback = failed,
-                           timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                           scope=self._scope,
+                           callback=self._parseCallback(on_finished, DigitalFactoryProjectResponse, failed, pagination_manager=self._projects_pagination_mgr),
+                           error_callback=failed,
+                           timeout=self.DEFAULT_REQUEST_TIMEOUT)
         else:
             Logger.log("d", "There are no more projects to load.")
 
@@ -195,10 +195,10 @@ class DigitalFactoryApiClient:
 
         url = "{}/projects/{}/files".format(self.CURA_API_ROOT, library_project_id)
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, DigitalFactoryFileResponse, failed),
-                       error_callback = failed,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, DigitalFactoryFileResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def _parseCallback(self,
                        on_finished: Union[Callable[[CloudApiClientModel], Any],
@@ -234,7 +234,7 @@ class DigitalFactoryApiClient:
             if status_code >= 300 and on_error is not None:
                 on_error()
             else:
-                self._parseModels(response, on_finished, model, pagination_manager = pagination_manager)
+                self._parseModels(response, on_finished, model, pagination_manager=pagination_manager)
 
         self._anti_gc_callbacks.append(parse)
         return parse
@@ -252,8 +252,8 @@ class DigitalFactoryApiClient:
             response = bytes(reply.readAll()).decode()
             return status_code, json.loads(response)
         except (UnicodeDecodeError, JSONDecodeError, ValueError) as err:
-            error = CloudError(code = type(err).__name__, title = str(err), http_code = str(status_code),
-                               id = str(time()), http_status = "500")
+            error = CloudError(code=type(err).__name__, title=str(err), http_code=str(status_code),
+                               id=str(time()), http_status="500")
             Logger.logException("e", "Could not parse the stardust response: %s", error.toDict())
             return status_code, {"errors": [error.toDict()]}
 
@@ -306,11 +306,11 @@ class DigitalFactoryApiClient:
         data = json.dumps({"data": request.toDict()}).encode()
 
         self._http.put(url,
-                       scope = self._scope,
-                       data = data,
-                       callback = self._parseCallback(on_finished, DFLibraryFileUploadResponse),
-                       error_callback = on_error,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       data=data,
+                       callback=self._parseCallback(on_finished, DFLibraryFileUploadResponse),
+                       error_callback=on_error,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def requestUploadMeshFile(self, request: DFPrintJobUploadRequest,
                          on_finished: Callable[[DFPrintJobUploadResponse], Any],
@@ -326,11 +326,11 @@ class DigitalFactoryApiClient:
         data = json.dumps({"data": request.toDict()}).encode()
 
         self._http.put(url,
-                       scope = self._scope,
-                       data = data,
-                       callback = self._parseCallback(on_finished, DFPrintJobUploadResponse),
-                       error_callback = on_error,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       data=data,
+                       callback=self._parseCallback(on_finished, DFPrintJobUploadResponse),
+                       error_callback=on_error,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def uploadExportedFileData(self,
                                df_file_upload_response: Union[DFLibraryFileUploadResponse, DFPrintJobUploadResponse],
@@ -369,11 +369,11 @@ class DigitalFactoryApiClient:
         url = "{}/projects".format(self.CURA_API_ROOT)
         data = json.dumps({"data": {"display_name": project_name}}).encode()
         self._http.put(url,
-                       scope = self._scope,
-                       data = data,
-                       callback = self._parseCallback(on_finished, DigitalFactoryProjectResponse),
-                       error_callback = on_error,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       data=data,
+                       callback=self._parseCallback(on_finished, DigitalFactoryProjectResponse),
+                       error_callback=on_error,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def clear(self) -> None:
         if self._projects_pagination_mgr is not None:
