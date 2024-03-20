@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -12,6 +13,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Haftung"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Druckplattenhaftung"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Durchmesser"
+
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Extruder"
@@ -19,6 +36,14 @@ msgstr "Extruder"
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Die für das Drucken verwendete Extruder-Einheit. Diese wird für die Mehrfach-Extrusion benutzt."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Sie eine Düse einer Nicht-Standardgröße verwenden."
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Der Düsen-ID für eine Extruder-Einheit, z. B. „AA 0,4“ und „BB 0,8“."
 
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
@@ -64,6 +89,18 @@ msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Extruder-Endposition Y"
 
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "X-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Y-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z-Position Extruder-Einzug"
+
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
 msgstr "Die Y-Koordinate der Endposition beim Ausschalten des Extruders."
@@ -75,6 +112,18 @@ msgstr "G-Code Extruder-Start"
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "Auszuführenden G-Code beim Umschalten auf diesen Extruder starten."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die X-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Z-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
@@ -92,6 +141,22 @@ msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "Bevorzugen Sie eine absolute Startposition des Extruders anstelle einer relativen Position zur zuletzt bekannten Kopfposition."
 
+msgctxt "material description"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Düsendurchmesser"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Düsen-ID"
+
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
 msgstr "X-Position Extruder-Start"
@@ -103,6 +168,14 @@ msgstr "Die X-Koordinate der Startposition beim Einschalten des Extruders."
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
 msgstr "Y-Position Extruder-Start"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Gerät"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Gerätespezifische Einstellungen"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."

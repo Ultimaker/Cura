@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -12,6 +13,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "附着"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "打印平台附着"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
+
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "挤出机"
@@ -19,6 +36,14 @@ msgstr "挤出机"
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "用于打印的挤出机，在多挤出机情况下适用。"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
 
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
@@ -64,6 +89,18 @@ msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "挤出机终点位置 Y 坐标"
 
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "挤出机 X 轴坐标"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "挤出机 Y 轴起始位置"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "挤出机初始 Z 轴位置"
+
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
 msgstr "关闭挤出机时的终止位置的 Y 坐标。"
@@ -75,6 +112,18 @@ msgstr "挤出机的开始 G-code"
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "在切换到此挤出机时执行的开始 G-code。"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 X 轴上初始位置。"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
@@ -92,6 +141,22 @@ msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "令挤出机起始位置为绝对位置，而不根据打印头的最后位置来改变。"
 
+msgctxt "material description"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "material label"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "喷嘴直径"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "喷嘴 ID"
+
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
 msgstr "挤出机起始位置 X 坐标"
@@ -103,6 +168,14 @@ msgstr "打开挤出机时起始位置的 X 坐标。"
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
 msgstr "挤出机起始位置 Y 坐标"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "﻿机器"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "﻿机器详细设置"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."

@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -12,6 +13,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Прилипание"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Укажите диаметр используемой нити."
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Прилипание к столу"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Диаметр"
+
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Экструдер"
@@ -19,6 +36,14 @@ msgstr "Экструдер"
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Экструдер, который используется для печати. Имеет значение при использовании нескольких экструдеров."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Внутренний диаметр сопла. Измените этот параметр при использовании сопла нестандартного размера."
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Идентификатор сопла для экструдера, например \"AA 0.4\" и \"BB 0.8\"."
 
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
@@ -64,6 +89,18 @@ msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Конечная Y позиция экструдера"
 
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Начальная X позиция экструдера"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Начальная Y позиция экструдера"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z координата начала печати"
+
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
 msgstr "Y координата конечной позиции при отключении экструдера."
@@ -75,6 +112,18 @@ msgstr "Стартовый G-код экструдера"
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "Стартовый G-код, запускающийся при переключении на данный экструдер."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "X координата позиции, в которой сопло начинает печать."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Y координата позиции, в которой сопло начинает печать."
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Позиция кончика сопла на оси Z при старте печати."
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
@@ -92,6 +141,22 @@ msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "Устанавливает абсолютную стартовую позицию экструдера, а не относительно последней известной позиции головы."
 
+msgctxt "material description"
+msgid "Material"
+msgstr "Материал"
+
+msgctxt "material label"
+msgid "Material"
+msgstr "Материал"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Диаметр сопла"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Идентификатор сопла"
+
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
 msgstr "Стартовая X позиция экструдера"
@@ -103,6 +168,14 @@ msgstr "X координата стартовой позиции при вклю
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
 msgstr "Стартовая Y позиция экструдера"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Принтер"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Параметры, относящиеся к принтеру"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
