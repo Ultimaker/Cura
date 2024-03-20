@@ -202,8 +202,9 @@ msgstr "<li>OpenGL 版本： {version}</li>"
 
 msgctxt "@label crash message"
 msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>"
-"            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>"
+msgstr ""
+"<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
+"            <p>请使用“发送报告”按钮将错误报告自动发送到我们的服务器</p>\n"
 "        "
 
 msgctxt "@label crash message"
@@ -218,7 +219,7 @@ msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>"
 "<p>{model_names}</p>"
-"<p>找出如何确保最好的打印质量和可靠性.</p>"
+"<p>找到确保最好的打印质量与可靠性的方法.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 msgctxt "@label"
@@ -1787,7 +1788,7 @@ msgstr "热床（官方版本或自制）"
 
 msgctxt "@label"
 msgid "Heated bed"
-msgstr "加热床"
+msgstr "热床"
 
 msgctxt "@label"
 msgid "Heated build volume"
@@ -2452,7 +2453,7 @@ msgstr "网络错误"
 
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
-msgstr "新 %s 稳定固件可用"
+msgstr "新 %s 稳定版固件可用"
 
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
@@ -2565,7 +2566,7 @@ msgstr "正常模式"
 
 msgctxt "@info:title"
 msgid "Not a group host"
-msgstr "非组中的主机"
+msgstr "非位于组中的主机"
 
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
@@ -4483,11 +4484,11 @@ msgstr "空驶"
 
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr "尝试恢复的 Cura 备份版本高于当前版本。"
+msgstr "尝试从高于当前版本的 Cura 备份恢复。"
 
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr "试图在没有适当数据或元数据的情况下恢复Cura备份。"
+msgstr "尝试在没有适当数据或元数据的情况下恢复Cura备份。"
 
 msgctxt "@button"
 msgid "Troubleshooting"
@@ -4824,7 +4825,7 @@ msgstr "我们已经在您所选择的文件中找到一个或多个项目文件
 
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
+msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头的反馈数据。请单击“管理打印机”以访问 UltiMaker Digital Factory 并查看此网络摄像头。"
 
 msgctxt "@button"
 msgid "Website"
