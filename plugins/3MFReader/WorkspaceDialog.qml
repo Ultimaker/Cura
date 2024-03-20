@@ -200,8 +200,6 @@ UM.Dialog
                             }
                         }
 
-
-
                         property var modelRows: manager.exportedSettingModel.items
                         onModelRowsChanged:
                         {
