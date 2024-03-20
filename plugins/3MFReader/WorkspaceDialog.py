@@ -77,6 +77,7 @@ class WorkspaceDialog(QObject):
         self._is_compatible_machine = False
         self._allow_create_machine = True
         self._exported_settings_model = SpecificSettingsModel()
+        self._exported_settings_model.modelChanged.connect(self.exportedSettingModelChanged.emit)
         self._current_machine_pos_index = 0
         self._is_ucp = False
 
@@ -104,6 +105,7 @@ class WorkspaceDialog(QObject):
     missingPackagesChanged = pyqtSignal()
     isCompatibleMachineChanged = pyqtSignal()
     isUcpChanged = pyqtSignal()
+    exportedSettingModelChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -356,10 +358,13 @@ class WorkspaceDialog(QObject):
     def allowCreateMachine(self):
         return self._allow_create_machine
 
-    @pyqtProperty(QObject)
+    @pyqtProperty(QObject, notify=exportedSettingModelChanged)
     def exportedSettingModel(self):
         return self._exported_settings_model
 
+    @pyqtProperty(int, notify=exportedSettingModelChanged)
+    def exportedSettingModelRowCount(self):
+        return self._exported_settings_model.rowCount()
     @pyqtSlot()
     def closeBackend(self) -> None:
         """Close the backend: otherwise one could end up with "Slicing..."""

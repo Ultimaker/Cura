@@ -91,11 +91,11 @@ Item
         }
     }
 
-
     Loader
     {
         width: parent.width
         height: content.height
+        z: -1
         anchors.top: sectionTitleRow.bottom
         sourceComponent: content
     }

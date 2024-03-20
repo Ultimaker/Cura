@@ -35,6 +35,19 @@ UM.Dialog
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             anchors.leftMargin: UM.Theme.getSize("default_margin").height
         }
+
+        Cura.TertiaryButton
+        {
+            id: learnMoreButton
+            visible: manager.isUcp
+            anchors.right: parent.right
+            anchors.topMargin: UM.Theme.getSize("default_margin").height
+            anchors.rightMargin: UM.Theme.getSize("default_margin").height
+            text: catalog.i18nc("@button", "Learn more")
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            isIconOnRightSide: true
+            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+        }
     }
 
     Rectangle
@@ -173,7 +186,7 @@ UM.Dialog
                         {
                             id: numberOfOverrides
                             leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModelRowCount).arg(manager.exportedSettingModelRowCount)
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
@@ -205,7 +218,6 @@ UM.Dialog
                         {
                             tableModel.clear()
                             tableModel.rows = modelRows
-                            numberOfOverrides.rightLabelText = catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
                         }
                     }
 
