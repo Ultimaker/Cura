@@ -3,8 +3,8 @@
 
 import gzip
 
-from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementing.
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType #To add the .gcode.gz files to the MIME type database.
+from UM.Mesh.MeshReader import MeshReader  # The class we're extending/implementing.
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType  # To add the .gcode.gz files to the MIME type database.
 from UM.PluginRegistry import PluginRegistry
 
 
@@ -18,9 +18,9 @@ class GCodeGzReader(MeshReader):
         super().__init__()
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-cura-compressed-gcode-file",
-                comment = "Cura Compressed G-code File",
-                suffixes = ["gcode.gz"]
+                name="application/x-cura-compressed-gcode-file",
+                comment="Cura Compressed G-code File",
+                suffixes=["gcode.gz"]
             )
         )
         self._supported_extensions = [".gcode.gz"]

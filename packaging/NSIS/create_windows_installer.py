@@ -1,7 +1,6 @@
 # Copyright (c) 2022 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-
 import os
 import argparse  # Command line arguments parsing and help.
 import subprocess
@@ -34,7 +33,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
             for rmdir in rmdir_p.parents:
                 rmdir_paths.add(rmdir)
 
-    rmdir_paths = sorted(list(rmdir_paths), reverse = True)[:-2]  # Removes the `.` and `..` from the list
+    rmdir_paths = sorted(list(rmdir_paths), reverse=True)[:-2]  # Removes the `.` and `..` from the list
 
     jinja_template_path = Path(source_loc.joinpath("packaging", "NSIS", "Ultimaker-Cura.nsi.jinja"))
     with open(jinja_template_path, "r") as f:
@@ -42,22 +41,22 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
 
 
     nsis_content = template.render(
-        app_name = f"UltiMaker Cura {os.getenv('CURA_VERSION_FULL')}",
-        main_app = "UltiMaker-Cura.exe",
-        version = os.getenv('CURA_VERSION_FULL'),
-        version_major = os.environ.get("CURA_VERSION_MAJOR"),
-        version_minor = os.environ.get("CURA_VERSION_MINOR"),
-        version_patch = os.environ.get("CURA_VERSION_PATCH"),
-        company = "UltiMaker",
-        web_site = "https://ultimaker.com",
-        year = datetime.now().year,
-        cura_license_file = str(source_loc.joinpath("packaging", "cura_license.txt")),
-        compression_method = "LZMA",  # ZLIB, BZIP2 or LZMA
-        cura_banner_img = str(source_loc.joinpath("packaging", "NSIS", "cura_banner_nsis.bmp")),
-        cura_icon = str(source_loc.joinpath("packaging", "icons", "Cura.ico")),
-        mapped_out_paths = mapped_out_paths,
-        rmdir_paths = rmdir_paths,
-        destination = filename
+        app_name=f"UltiMaker Cura {os.getenv('CURA_VERSION_FULL')}",
+        main_app="UltiMaker-Cura.exe",
+        version=os.getenv('CURA_VERSION_FULL'),
+        version_major=os.environ.get("CURA_VERSION_MAJOR"),
+        version_minor=os.environ.get("CURA_VERSION_MINOR"),
+        version_patch=os.environ.get("CURA_VERSION_PATCH"),
+        company="UltiMaker",
+        web_site="https://ultimaker.com",
+        year=datetime.now().year,
+        cura_license_file=str(source_loc.joinpath("packaging", "cura_license.txt")),
+        compression_method="LZMA",  # ZLIB, BZIP2 or LZMA
+        cura_banner_img=str(source_loc.joinpath("packaging", "NSIS", "cura_banner_nsis.bmp")),
+        cura_icon=str(source_loc.joinpath("packaging", "icons", "Cura.ico")),
+        mapped_out_paths=mapped_out_paths,
+        rmdir_paths=rmdir_paths,
+        destination=filename
     )
 
     with open(dist_loc.joinpath("UltiMaker-Cura.nsi"), "w") as f:
@@ -73,10 +72,10 @@ def build(dist_path: str):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Create Windows exe installer of Cura.")
+    parser = argparse.ArgumentParser(description="Create Windows exe installer of Cura.")
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("filename", type = str, help = "Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
+    parser.add_argument("filename", type=str, help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
     args = parser.parse_args()
     generate_nsi(args.source_path, args.dist_path, args.filename)
     build(args.dist_path)

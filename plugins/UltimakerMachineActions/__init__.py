@@ -8,7 +8,7 @@ def getMetaData():
     return {}
 
 def register(app):
-    return { "machine_action": [
+    return {"machine_action": [
         BedLevelMachineAction.BedLevelMachineAction(),
         UMOUpgradeSelection.UMOUpgradeSelection()
     ]}

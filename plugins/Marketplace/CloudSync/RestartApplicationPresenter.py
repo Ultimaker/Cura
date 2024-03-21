@@ -24,7 +24,7 @@ class RestartApplicationPresenter:
 
         message.addAction("quit",
                           name="Quit " + app_name,
-                          icon = "",
+                          icon="",
                           description="Close the application",
                           button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
 

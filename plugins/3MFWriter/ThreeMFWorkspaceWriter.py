@@ -140,7 +140,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
             file_in_archive.compress_type = zipfile.ZIP_DEFLATED
             import json
-            archive.writestr(file_in_archive, json.dumps(metadata, separators = (", ", ": "), indent = 4, skipkeys = True))
+            archive.writestr(file_in_archive, json.dumps(metadata, separators=(", ", ": "), indent=4, skipkeys=True))
 
     @staticmethod
     def _writeContainerToArchive(container, archive):
@@ -158,7 +158,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if "base_file" in container.getMetaData():
             base_file = container.getMetaDataEntry("base_file")
             if base_file != container.getId():
-                container = ContainerRegistry.getInstance().findContainers(id = base_file)[0]
+                container = ContainerRegistry.getInstance().findContainers(id=base_file)[0]
 
         file_name = "Cura/%s.%s" % (container.getId(), file_suffix)
 
@@ -184,11 +184,11 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 "octoprint_api_key",
                 "is_online",
             }
-            serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
+            serialized_data = container.serialize(ignored_metadata_keys=ignore_keys)
 
             archive.writestr(file_in_archive, serialized_data)
         except (FileNotFoundError, EnvironmentError):
-            Logger.error("File became inaccessible while writing to it: {archive_filename}".format(archive_filename = archive.fp.name))
+            Logger.error("File became inaccessible while writing to it: {archive_filename}".format(archive_filename=archive.fp.name))
             return
 
     @staticmethod

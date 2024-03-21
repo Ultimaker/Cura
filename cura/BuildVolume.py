@@ -10,7 +10,7 @@ from UM.Logger import Logger
 from UM.Mesh.MeshData import MeshData
 from UM.Mesh.MeshBuilder import MeshBuilder
 
-from UM.Application import Application #To modify the maximum zoom level.
+from UM.Application import Application  # To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -100,8 +100,8 @@ class BuildVolume(SceneNode):
                 "The build volume height has been reduced due to the value of the"
                 " \"Print Sequence\" setting to prevent the gantry from colliding"
                 " with printed models."),
-            title = catalog.i18nc("@info:title", "Build Volume"),
-            message_type = Message.MessageType.WARNING)
+            title=catalog.i18nc("@info:title", "Build Volume"),
+            message_type=Message.MessageType.WARNING)
 
         self._global_container_stack = None  # type: Optional[GlobalStack]
 
@@ -260,11 +260,11 @@ class BuildVolume(SceneNode):
             self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
             self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
 
-        renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
-        renderer.queueNode(self, mesh = self._origin_mesh, backface_cull = True)
-        renderer.queueNode(self, mesh = self._grid_mesh, shader = self._grid_shader, backface_cull = True)
+        renderer.queueNode(self, mode=RenderBatch.RenderMode.Lines)
+        renderer.queueNode(self, mesh=self._origin_mesh, backface_cull=True)
+        renderer.queueNode(self, mesh=self._grid_mesh, shader=self._grid_shader, backface_cull=True)
         if self._disallowed_area_mesh:
-            renderer.queueNode(self, mesh = self._disallowed_area_mesh, shader = self._shader, transparent = True, backface_cull = True, sort = -9)
+            renderer.queueNode(self, mesh=self._disallowed_area_mesh, shader=self._shader, transparent=True, backface_cull=True, sort=-9)
 
         if self._error_mesh:
             renderer.queueNode(self, mesh=self._error_mesh, shader=self._shader, transparent=True,
@@ -425,20 +425,20 @@ class BuildVolume(SceneNode):
         if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color=self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color=self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color=self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color=self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color=self._volume_outline_color)
 
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color=self._volume_outline_color)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color=self._volume_outline_color)
 
             return mb.build()
 
@@ -448,10 +448,10 @@ class BuildVolume(SceneNode):
             if self._width != 0:
                 # Scale circular meshes by aspect ratio if width != height
                 aspect = self._depth / self._width
-                scale_matrix.compose(scale = Vector(1, 1, aspect))
+                scale_matrix.compose(scale=Vector(1, 1, aspect))
             mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center=(0, min_h - z_fight_distance, 0), color=self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center=(0, max_h, 0),  color=self._volume_outline_color)
             return mb.build().getTransformed(scale_matrix)
 
     def _buildOriginMesh(self, origin: Vector) -> MeshData:
@@ -591,8 +591,8 @@ class BuildVolume(SceneNode):
         self._updateScaleFactor()
 
         self._volume_aabb = AxisAlignedBox(
-            minimum = Vector(min_w, min_h - 1.0, min_d),
-            maximum = Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d)
+            minimum=Vector(min_w, min_h - 1.0, min_d),
+            maximum=Vector(max_w, max_h - self._raft_thickness - self._extra_z_clearance, max_d)
         )
 
         bed_adhesion_size = self.getEdgeDisallowedSize()
@@ -601,8 +601,8 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
+            minimum=Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
+            maximum=Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
@@ -699,7 +699,7 @@ class BuildVolume(SceneNode):
                 diagonal = self.getDiagonalSize()
                 if diagonal > 1:
                     # You can zoom out up to 5 times the diagonal. This gives some space around the volume.
-                    camera.setZoomRange(min = 0.1, max = diagonal * 5)  # type: ignore
+                    camera.setZoomRange(min=0.1, max=diagonal * 5)  # type: ignore
 
     def _onEngineCreated(self) -> None:
         self._engine_ready = True
@@ -902,7 +902,7 @@ class BuildVolume(SceneNode):
             if prime_tower_base_size > 0 and ((prime_tower_brim_enable and prime_tower_base_height > 0) or adhesion_type == "raft"):
                 radius += prime_tower_base_size
 
-            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 32)
+            prime_tower_area = Polygon.approximatedCircle(radius, num_segments=32)
             prime_tower_area = prime_tower_area.translate(prime_tower_x + delta_x, prime_tower_y + delta_y)
 
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))

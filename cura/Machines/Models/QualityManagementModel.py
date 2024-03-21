@@ -80,7 +80,7 @@ class QualityManagementModel(ListModel):
         :param quality_changes_group: The quality changes group representing the profile to delete.
         """
 
-        Logger.log("i", "Removing quality changes group {group_name}".format(group_name = quality_changes_group.name))
+        Logger.log("i", "Removing quality changes group {group_name}".format(group_name=quality_changes_group.name))
         removed_quality_changes_ids = set()
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
@@ -89,14 +89,14 @@ class QualityManagementModel(ListModel):
             removed_quality_changes_ids.add(container_id)
 
         # Reset all machines that have activated this custom profile.
-        for global_stack in container_registry.findContainerStacks(type = "machine"):
+        for global_stack in container_registry.findContainerStacks(type="machine"):
             if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 global_stack.qualityChanges = empty_quality_changes_container
-        for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
+        for extruder_stack in container_registry.findContainerStacks(type="extruder_train"):
             if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 extruder_stack.qualityChanges = empty_quality_changes_container
 
-    @pyqtSlot(QObject, str, result = str)
+    @pyqtSlot(QObject, str, result=str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
         """Rename a custom profile.
 
@@ -109,9 +109,9 @@ class QualityManagementModel(ListModel):
         :return: The actual new name of the profile, after making the name unique.
         """
 
-        Logger.log("i", "Renaming QualityChangesGroup {old_name} to {new_name}.".format(old_name = quality_changes_group.name, new_name = new_name))
+        Logger.log("i", "Renaming QualityChangesGroup {old_name} to {new_name}.".format(old_name=quality_changes_group.name, new_name=new_name))
         if new_name == quality_changes_group.name:
-            Logger.log("i", "QualityChangesGroup name {name} unchanged.".format(name = quality_changes_group.name))
+            Logger.log("i", "QualityChangesGroup name {name} unchanged.".format(name=quality_changes_group.name))
             return new_name
 
         application = cura.CuraApplication.CuraApplication.getInstance()
@@ -130,9 +130,9 @@ class QualityManagementModel(ListModel):
         # Renaming the container for the global stack in the end seems to be ok, because the assumption is mostly based
         # on the quality changes container for the global stack.
         for metadata in quality_changes_group.metadata_per_extruder.values():
-            extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
+            extruder_container = cast(InstanceContainer, container_registry.findContainers(id=metadata["id"])[0])
             extruder_container.setName(new_name)
-        global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
+        global_container = cast(InstanceContainer, container_registry.findContainers(id=quality_changes_group.metadata_for_global["id"])[0])
         global_container.setName(new_name)
 
         quality_changes_group.name = new_name
@@ -165,18 +165,18 @@ class QualityManagementModel(ListModel):
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
             new_quality_changes = self._createQualityChanges(quality_group.quality_type, intent_category, new_name,
-                                                             global_stack, extruder_stack = None)
+                                                             global_stack, extruder_stack=None)
             container_registry.addContainer(new_quality_changes)
 
             for extruder in global_stack.extruderList:
                 new_extruder_quality_changes = self._createQualityChanges(quality_group.quality_type, intent_category,
                                                                           new_name,
-                                                                          global_stack, extruder_stack = extruder)
+                                                                          global_stack, extruder_stack=extruder)
 
                 container_registry.addContainer(new_extruder_quality_changes)
         else:
             for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
-                containers = container_registry.findContainers(id = metadata["id"])
+                containers = container_registry.findContainers(id=metadata["id"])
                 if not containers:
                     continue
                 container = containers[0]
@@ -229,7 +229,7 @@ class QualityManagementModel(ListModel):
                 extruder_stack = stack
                 intent_category = stack.intent.getMetaDataEntry("intent_category")
             new_changes = self._createQualityChanges(quality_container.getMetaDataEntry("quality_type"), intent_category, unique_name, global_stack, extruder_stack)
-            container_manager._performMerge(new_changes, quality_changes_container, clear_settings = False)
+            container_manager._performMerge(new_changes, quality_changes_container, clear_settings=False)
             container_manager._performMerge(new_changes, stack.userChanges)
 
             container_registry.addContainer(new_changes)
@@ -287,7 +287,7 @@ class QualityManagementModel(ListModel):
         if container.getMetaDataEntry("type") == "quality_changes":
             self._update()
 
-    @pyqtSlot("QVariantMap", result = str)
+    @pyqtSlot("QVariantMap", result=str)
     def getQualityItemDisplayName(self, quality_model_item: Dict[str, Any]) -> str:
         quality_group = quality_model_item["quality_group"]
         is_read_only = quality_model_item["is_read_only"]
@@ -301,18 +301,18 @@ class QualityManagementModel(ListModel):
 
         if intent_category != "default":
             intent_display_name = catalog.i18nc("@label", intent_category.capitalize())
-            display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
-                                                               the_rest = display_name)
+            display_name = "{intent_name} - {the_rest}".format(intent_name=intent_display_name,
+                                                               the_rest=display_name)
 
         # A custom quality
         if not is_read_only:
-            display_name = "{custom_profile_name} - {the_rest}".format(custom_profile_name = quality_model_item["name"],
-                                                                       the_rest = display_name)
+            display_name = "{custom_profile_name} - {the_rest}".format(custom_profile_name=quality_model_item["name"],
+                                                                       the_rest=display_name)
 
         return display_name
 
     def _update(self):
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name=self.__class__.__name__))
 
         global_stack = self._machine_manager.activeMachine
         if not global_stack:
@@ -350,7 +350,7 @@ class QualityManagementModel(ListModel):
             item_list.append(item)
 
         # Sort by layer_height for built-in qualities
-        item_list = sorted(item_list, key = lambda x: x["layer_height"])
+        item_list = sorted(item_list, key=lambda x: x["layer_height"])
 
         # Create intent items (non-default)
         available_intent_list = IntentManager.getInstance().getCurrentAvailableIntents()
@@ -379,7 +379,7 @@ class QualityManagementModel(ListModel):
             except ValueError:
                 return 99
 
-        result = sorted(result, key = lambda x: (getIntentWeight(x["intent_category"]), x["quality_type"]))
+        result = sorted(result, key=lambda x: (getIntentWeight(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items
@@ -402,12 +402,12 @@ class QualityManagementModel(ListModel):
             quality_changes_item_list.append(item)
 
         # Sort quality_changes items by names and append to the item list
-        quality_changes_item_list = sorted(quality_changes_item_list, key = lambda x: x["name"].upper())
+        quality_changes_item_list = sorted(quality_changes_item_list, key=lambda x: x["name"].upper())
         item_list += quality_changes_item_list
 
         self.setItems(item_list)
 
-    @pyqtSlot(str, result = "QVariantList")
+    @pyqtSlot(str, result="QVariantList")
     def getFileNameFilters(self, io_type):
         """Gets a list of the possible file filters that the plugins have registered they can read or write.
 

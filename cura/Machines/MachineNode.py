@@ -32,7 +32,7 @@ class MachineNode(ContainerNode):
 
         container_registry = ContainerRegistry.getInstance()
         try:
-            my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+            my_metadata = container_registry.findContainersMetadata(id=container_id)[0]
         except IndexError:
             Logger.log("Unable to find metadata for container %s", container_id)
             my_metadata = {}
@@ -87,7 +87,7 @@ class MachineNode(ContainerNode):
             if not global_quality_node.container:
                 Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
                 continue
-            quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
+            quality_groups[quality_type] = QualityGroup(name=global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type=quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder_position, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
@@ -122,7 +122,7 @@ class MachineNode(ContainerNode):
         :return: List of all quality changes groups for the printer.
         """
 
-        machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type = "quality_changes", definition = self.quality_definition)  # All quality changes for each extruder.
+        machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type="quality_changes", definition=self.quality_definition)  # All quality changes for each extruder.
 
         groups_by_name = {}  #type: Dict[str, QualityChangesGroup]  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
         for quality_changes in machine_quality_changes:
@@ -133,9 +133,9 @@ class MachineNode(ContainerNode):
                 # a QObject. Setting the object ownership to QQmlEngine.ObjectOwnership.CppOwnership doesn't work, but setting the object
                 # parent to application seems to work.
                 from cura.CuraApplication import CuraApplication
-                groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],
-                                                           intent_category = quality_changes.get("intent_category", "default"),
-                                                           parent = CuraApplication.getInstance())
+                groups_by_name[name] = QualityChangesGroup(name, quality_type=quality_changes["quality_type"],
+                                                           intent_category=quality_changes.get("intent_category", "default"),
+                                                           parent=CuraApplication.getInstance())
 
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
@@ -185,24 +185,24 @@ class MachineNode(ContainerNode):
             self.variants["empty"].materialsChanged.connect(self.materialsChanged)
         else:
             # Find all the variants for this definition ID.
-            variants = container_registry.findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
+            variants = container_registry.findInstanceContainersMetadata(type="variant", definition=self.container_id, hardware_type="nozzle")
             for variant in variants:
                 variant_name = variant["name"]
                 if variant_name not in self.variants:
-                    self.variants[variant_name] = VariantNode(variant["id"], machine = self)
+                    self.variants[variant_name] = VariantNode(variant["id"], machine=self)
                     self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
                 else:
                     # Force reloading the materials if the variant already exists or else materals won't be loaded
                     # when the G-Code flavor changes --> CURA-7354
                     self.variants[variant_name]._loadAll()
             if not self.variants:
-                self.variants["empty"] = VariantNode("empty_variant", machine = self)
+                self.variants["empty"] = VariantNode("empty_variant", machine=self)
 
         # Find the global qualities for this printer.
-        global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.quality_definition, global_quality = "True")  # First try specific to this printer.
+        global_qualities = container_registry.findInstanceContainersMetadata(type="quality", definition=self.quality_definition, global_quality="True")  # First try specific to this printer.
         if not global_qualities:  # This printer doesn't override the global qualities.
-            global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter", global_quality = "True")  # Otherwise pick the global global qualities.
+            global_qualities = container_registry.findInstanceContainersMetadata(type="quality", definition="fdmprinter", global_quality="True")  # Otherwise pick the global global qualities.
             if not global_qualities:  # There are no global qualities either?! Something went very wrong, but we'll not crash and properly fill the tree.
                 global_qualities = [cura.CuraApplication.CuraApplication.getInstance().empty_quality_container.getMetaData()]
         for global_quality in global_qualities:
-            self.global_qualities[global_quality["quality_type"]] = QualityNode(global_quality["id"], parent = self)
+            self.global_qualities[global_quality["quality_type"]] = QualityNode(global_quality["id"], parent=self)

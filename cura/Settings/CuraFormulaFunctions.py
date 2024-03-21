@@ -52,9 +52,9 @@ class CuraFormulaFunctions:
             Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. " % (property_key, extruder_position))
             return None
 
-        value = extruder_stack.getRawProperty(property_key, "value", context = context)
+        value = extruder_stack.getRawProperty(property_key, "value", context=context)
         if isinstance(value, SettingFunction):
-            value = value(extruder_stack, context = context)
+            value = value(extruder_stack, context=context)
 
         if isinstance(value, str):
             value = value.lower()
@@ -72,7 +72,7 @@ class CuraFormulaFunctions:
             if not extruder.isEnabled:
                 continue
             # only include values from extruders that are "active" for the current machine instance
-            if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
+            if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context=context):
                 continue
             result.append(extruder)
 
@@ -85,18 +85,18 @@ class CuraFormulaFunctions:
 
         result = []
         for extruder in self._getActiveExtruders(context):
-            value = extruder.getRawProperty(property_key, "value", context = context)
+            value = extruder.getRawProperty(property_key, "value", context=context)
 
             if value is None:
                 continue
 
             if isinstance(value, SettingFunction):
-                value = value(extruder, context = context)
+                value = value(extruder, context=context)
 
             result.append(value)
 
         if not result:
-            result.append(global_stack.getProperty(property_key, "value", context = context))
+            result.append(global_stack.getProperty(property_key, "value", context=context))
 
         return result
 
@@ -124,7 +124,7 @@ class CuraFormulaFunctions:
         machine_manager = self._application.getMachineManager()
 
         global_stack = machine_manager.activeMachine
-        resolved_value = global_stack.getProperty(property_key, "value", context = context)
+        resolved_value = global_stack.getProperty(property_key, "value", context=context)
 
         return resolved_value
 
@@ -141,7 +141,7 @@ class CuraFormulaFunctions:
         else:
             context = self.createContextForDefaultValueEvaluation(extruder_stack)
 
-            return self.getValueInExtruder(extruder_position, property_key, context = context)
+            return self.getValueInExtruder(extruder_position, property_key, context=context)
 
     # Gets all default setting values as a list from all extruders of the currently active machine.
     # The default values are those excluding the values in the user_changes container.
@@ -152,7 +152,7 @@ class CuraFormulaFunctions:
 
         context = self.createContextForDefaultValueEvaluation(global_stack)
 
-        return self.getValuesInAllExtruders(property_key, context = context)
+        return self.getValuesInAllExtruders(property_key, context=context)
 
     # Gets the resolve value or value for a given key without looking the first container (user container).
     def getDefaultResolveOrValue(self, property_key: str) -> Any:
@@ -161,7 +161,7 @@ class CuraFormulaFunctions:
         global_stack = machine_manager.activeMachine
 
         context = self.createContextForDefaultValueEvaluation(global_stack)
-        return self.getResolveOrValue(property_key, context = context)
+        return self.getResolveOrValue(property_key, context=context)
 
     # Gets the value for the given setting key starting from the given container index.
     def getValueFromContainerAtIndex(self, property_key: str, container_index: int,
@@ -172,7 +172,7 @@ class CuraFormulaFunctions:
         context = self.createContextForDefaultValueEvaluation(global_stack)
         context.context["evaluate_from_container_index"] = container_index
 
-        return global_stack.getProperty(property_key, "value", context = context)
+        return global_stack.getProperty(property_key, "value", context=context)
 
     # Gets the extruder value for the given setting key starting from the given container index.
     def getValueFromContainerAtIndexInExtruder(self, extruder_position: int, property_key: str, container_index: int,

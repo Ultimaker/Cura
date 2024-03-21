@@ -118,7 +118,7 @@ class PrintInformation(QObject):
         if self._active_build_plate not in self._material_names:
             self._material_names[self._active_build_plate] = []
         if self._active_build_plate not in self._current_print_time:
-            self._current_print_time[self._active_build_plate] = Duration(parent = self)
+            self._current_print_time[self._active_build_plate] = Duration(parent=self)
 
     currentPrintTimeChanged = pyqtSignal()
 
@@ -134,31 +134,31 @@ class PrintInformation(QObject):
             self._updateJobName()
             self.preSlicedChanged.emit()
 
-    @pyqtProperty(QObject, notify = currentPrintTimeChanged)
+    @pyqtProperty(QObject, notify=currentPrintTimeChanged)
     def currentPrintTime(self) -> Duration:
         return self._current_print_time[self._active_build_plate]
 
     materialLengthsChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = materialLengthsChanged)
+    @pyqtProperty("QVariantList", notify=materialLengthsChanged)
     def materialLengths(self):
         return self._material_lengths[self._active_build_plate]
 
     materialWeightsChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = materialWeightsChanged)
+    @pyqtProperty("QVariantList", notify=materialWeightsChanged)
     def materialWeights(self):
         return self._material_weights[self._active_build_plate]
 
     materialCostsChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = materialCostsChanged)
+    @pyqtProperty("QVariantList", notify=materialCostsChanged)
     def materialCosts(self):
         return self._material_costs[self._active_build_plate]
 
     materialNamesChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = materialNamesChanged)
+    @pyqtProperty("QVariantList", notify=materialNamesChanged)
     def materialNames(self):
         return self._material_names[self._active_build_plate]
 
@@ -297,7 +297,7 @@ class PrintInformation(QObject):
 
     jobNameChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = jobNameChanged)
+    @pyqtProperty(str, notify=jobNameChanged)
     def jobName(self):
         return self._job_name
 
@@ -328,7 +328,7 @@ class PrintInformation(QObject):
             connector = "_#"
             suffix = connector + str(self._active_build_plate + 1)
             if connector in self._job_name:
-                self._job_name = self._job_name.split(connector)[0] # get the real name
+                self._job_name = self._job_name.split(connector)[0]  # get the real name
             if self._active_build_plate != 0:
                 self._job_name += suffix
 
@@ -336,7 +336,7 @@ class PrintInformation(QObject):
 
     @pyqtSlot(str)
     def setProjectName(self, name: str) -> None:
-        self.setBaseName(name, is_project_file = True)
+        self.setBaseName(name, is_project_file=True)
 
     baseNameChanged = pyqtSignal()
 
@@ -387,7 +387,7 @@ class PrintInformation(QObject):
 
             self._updateJobName()
 
-    @pyqtProperty(str, fset = setBaseName, notify = baseNameChanged)
+    @pyqtProperty(str, fset=setBaseName, notify=baseNameChanged)
     def baseName(self):
         return self._base_name
 
@@ -405,7 +405,7 @@ class PrintInformation(QObject):
 
         self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
 
-    @pyqtSlot(result = "QVariantMap")
+    @pyqtSlot(result="QVariantMap")
     def getFeaturePrintTimes(self) -> Dict[str, Duration]:
         result = {}
         if self._active_build_plate not in self._print_times_per_feature:

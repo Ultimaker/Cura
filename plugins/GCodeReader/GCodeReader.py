@@ -31,9 +31,9 @@ class GCodeReader(MeshReader):
         super().__init__()
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-cura-gcode-file",
-                comment = "Cura G-code File",
-                suffixes = ["gcode"]
+                name="application/x-cura-gcode-file",
+                comment="Cura G-code File",
+                suffixes=["gcode"]
             )
         )
         self._supported_extensions = [".gcode", ".g"]
@@ -58,7 +58,7 @@ class GCodeReader(MeshReader):
 
     # PreRead is used to get the correct flavor. If not, Marlin is set by default
     def preRead(self, file_name, *args, **kwargs):
-        with open(file_name, "r", encoding = "utf-8") as file:
+        with open(file_name, "r", encoding="utf-8") as file:
             file_data = file.read()
         return self.preReadFromStream(file_data, args, kwargs)
 
@@ -68,7 +68,7 @@ class GCodeReader(MeshReader):
         return self._flavor_reader.processGCodeStream(stream, filename)
 
     def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
-        with open(file_name, "r", encoding = "utf-8") as file:
+        with open(file_name, "r", encoding="utf-8") as file:
             file_data = file.read()
         result = []  # type: List[SceneNode]
         node = self.readFromStream(file_data, file_name)

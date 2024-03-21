@@ -13,18 +13,18 @@ from UM.Stage import Stage
 # * The MainComponent is the component that will be drawn starting from the bottom of the stageBar and fills the rest
 #   of the screen.
 class CuraStage(Stage):
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def stageId(self) -> str:
         return self.getPluginId()
 
-    @pyqtProperty(QUrl, constant = True)
+    @pyqtProperty(QUrl, constant=True)
     def mainComponent(self) -> QUrl:
         return self.getDisplayComponent("main")
 
-    @pyqtProperty(QUrl, constant = True)
+    @pyqtProperty(QUrl, constant=True)
     def stageMenuComponent(self) -> QUrl:
         return self.getDisplayComponent("menu")
 

@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import argparse
 import os
 from typing import Optional, List, TextIO
@@ -125,8 +126,8 @@ def merge_duplicate_vt(in_obj, out_obj):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Reduce the size of a .obj file")
-    parser.add_argument("input_file", type = str, help = "Input .obj file name")
-    parser.add_argument("--output_file", default = "output.obj", type = str, help = "Output .obj file name")
+    parser = argparse.ArgumentParser(description="Reduce the size of a .obj file")
+    parser.add_argument("input_file", type=str, help="Input .obj file name")
+    parser.add_argument("--output_file", default="output.obj", type=str, help="Output .obj file name")
     args = parser.parse_args()
     process_obj(args.input_file, args.output_file)

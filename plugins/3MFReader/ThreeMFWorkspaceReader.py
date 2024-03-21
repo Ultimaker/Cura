@@ -183,7 +183,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The default ContainerStack.deserialize() will connect signals, which is not desired in this case.
             # Since we know that the stack files are INI files, so we directly use the ConfigParser to parse them.
             serialized = archive.open(file_name).read().decode("utf-8")
-            stack_config = ConfigParser(interpolation = None)
+            stack_config = ConfigParser(interpolation=None)
             stack_config.read_string(serialized)
 
             # sanity check
@@ -201,7 +201,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                            stack_type, file_name, project_file_name)
 
         if len(global_stack_file_list) > 1:
-            Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list = global_stack_file_list))
+            Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list=global_stack_file_list))
             #But we can recover by just getting the first global stack file.
         if len(global_stack_file_list) == 0:
             Logger.log("e", "No global stack file found!")
@@ -260,7 +260,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
             container_id = self._stripFileToId(definition_container_file)
-            definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
+            definitions = self._container_registry.findDefinitionContainersMetadata(id=container_id)
             serialized = archive.open(definition_container_file).read().decode("utf-8")
 
             if not definitions:
@@ -271,9 +271,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
                 machine_definition_id = container_id
-                machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
+                machine_definition_containers = self._container_registry.findDefinitionContainers(id=machine_definition_id)
                 if machine_definition_containers and updatable_machines is not None:
-                    updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
+                    updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type="machine") if machine.definition == machine_definition_containers[0]]
                 machine_type = definition_container["name"]
                 variant_type_name = definition_container.get("variants_name", variant_type_name)
 
@@ -306,7 +306,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 reverse_material_id_dict.update(reverse_map)
 
                 material_ids_to_names_map[container_id] = self._getMaterialLabelFromSerialized(serialized)
-                if self._container_registry.findContainersMetadata(id = container_id): #This material already exists.
+                if self._container_registry.findContainersMetadata(id=container_id):  # This material already exists.
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
@@ -359,14 +359,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 values = parser["values"] if parser.has_section("values") else dict()
                 num_settings_overridden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
-                                                                                  type = "quality_changes")
+                quality_changes = self._container_registry.findInstanceContainers(name=custom_quality_name,
+                                                                                  type="quality_changes")
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
                     instance_container = InstanceContainer(container_id)
                     try:
-                        instance_container.deserialize(serialized, file_name = instance_container_file_name)
+                        instance_container.deserialize(serialized, file_name=instance_container_file_name)
                     except ContainerFormatError:
                         Logger.logException("e", "Failed to deserialize InstanceContainer %s from project file %s",
                                             instance_container_file_name, file_name)
@@ -416,7 +416,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if id_list[7] != machine_definition_id:
             machine_definition_id = id_list[7]
 
-        stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
+        stacks = self._container_registry.findContainerStacks(name=machine_name, type="machine")
         existing_global_stack = None
         global_stack = None
 
@@ -436,7 +436,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             containers_found_dict["machine"] = True
 
         # Get quality type
-        parser = ConfigParser(interpolation = None)
+        parser = ConfigParser(interpolation=None)
         parser.read_string(serialized)
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
@@ -444,14 +444,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if quality_container_id in instance_container_info_dict:
                 quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
             else:  # If a version upgrade changed the quality profile in the stack, we'll need to look for it in the built-in profiles instead of the workspace.
-                quality_matches = ContainerRegistry.getInstance().findContainersMetadata(id = quality_container_id)
+                quality_matches = ContainerRegistry.getInstance().findContainersMetadata(id=quality_container_id)
                 if quality_matches:  # If there's no profile with this ID, leave it empty_quality.
                     quality_type = quality_matches[0]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
-        parser = ConfigParser(interpolation = None)
+        parser = ConfigParser(interpolation=None)
         parser.read_string(serialized)
         definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
         if definition_changes_id not in ("empty", "empty_definition_changes"):
@@ -574,14 +574,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return WorkspaceReader.PreReadResult.failed
 
         # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
-        def_results = self._container_registry.findDefinitionContainersMetadata(id = machine_definition_id)
+        def_results = self._container_registry.findDefinitionContainersMetadata(id=machine_definition_id)
         if not def_results:
             message = Message(i18n_catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> contains an unknown machine type"
                                                  " <message>{1}</message>. Cannot import the machine."
                                                  " Models will be imported instead.", file_name, machine_definition_id),
-                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"),
-                                                 message_type = Message.MessageType.WARNING)
+                                                 title=i18n_catalog.i18nc("@info:title", "Open Project File"),
+                                                 message_type=Message.MessageType.WARNING)
             message.show()
 
             Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
@@ -748,16 +748,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         except EnvironmentError as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
-                              title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
-                              message_type = Message.MessageType.ERROR)
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
         except zipfile.BadZipFile as e:
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.", file_name, str(e)),
-                              title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
-                              message_type = Message.MessageType.ERROR)
+                              title=i18n_catalog.i18nc("@info:title", "Can't Open Project File"),
+                              message_type=Message.MessageType.ERROR)
             message.show()
             self.setWorkspaceName("")
             return [], {}
@@ -817,23 +817,23 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(global_stack)
         else:
             # Find the machine which will be overridden
-            global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
+            global_stacks = self._container_registry.findContainerStacks(id=self._dialog.getMachineToOverride(), type="machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!",
                                                      "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura.", file_name),
-                                  message_type = Message.MessageType.ERROR)
+                                  message_type=Message.MessageType.ERROR)
                 message.show()
                 self.setWorkspaceName("")
                 return [], {}
             global_stack = global_stacks[0]
-            extruder_stacks = self._container_registry.findContainerStacks(machine = global_stack.getId(),
-                                                                           type = "extruder_train")
+            extruder_stacks = self._container_registry.findContainerStacks(machine=global_stack.getId(),
+                                                                           type="extruder_train")
             extruder_stack_dict = {stack.getMetaDataEntry("position"): stack for stack in extruder_stacks}
 
             # Make sure that those extruders have the global stack as the next stack or later some value evaluation
             # will fail.
             for stack in extruder_stacks:
-                stack.setNextStack(global_stack, connect_signals = False)
+                stack.setNextStack(global_stack, connect_signals=False)
 
         if not self._is_ucp:
             Logger.log("d", "Workspace loading is checking definitions...")
@@ -842,18 +842,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             for definition_container_file in definition_container_files:
                 container_id = self._stripFileToId(definition_container_file)
 
-                definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
+                definitions = self._container_registry.findDefinitionContainersMetadata(id=container_id)
                 if not definitions:
                     definition_container = DefinitionContainer(container_id)
                     try:
                         definition_container.deserialize(archive.open(definition_container_file).read().decode("utf-8"),
-                                                         file_name = definition_container_file)
+                                                         file_name=definition_container_file)
                     except ContainerFormatError:
                         # We cannot just skip the definition file because everything else later will just break if the
                         # machine definition cannot be found.
                         Logger.logException("e", "Failed to deserialize definition file %s in project file %s",
                                             definition_container_file, file_name)
-                        definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
+                        definition_container = self._container_registry.findDefinitionContainers(id="fdmprinter")[0] #Fall back to defaults.
                     self._container_registry.addContainer(definition_container)
                 Job.yieldThread()
                 QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
@@ -869,7 +869,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     to_deserialize_material = False
                     container_id = self._stripFileToId(material_container_file)
                     need_new_name = False
-                    materials = self._container_registry.findInstanceContainers(id = container_id)
+                    materials = self._container_registry.findInstanceContainers(id=container_id)
 
                     if not materials:
                         # No material found, deserialize this material later and add it
@@ -895,7 +895,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         material_container = xml_material_profile(container_id)
                         try:
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
-                                                           file_name = container_id + "." + self._material_container_suffix)
+                                                           file_name=container_id + "." + self._material_container_suffix)
                         except ContainerFormatError:
                             Logger.logException("e", "Failed to deserialize material file %s in project file %s",
                                                 material_container_file, file_name)
@@ -948,10 +948,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
-            Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname = file_name))
+            Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname=file_name))
             return result
         except EnvironmentError as e:
-            Logger.logException("w", "Unable to retrieve metadata from {fname}: File is inaccessible. Error: {err}".format(fname = file_name, err = str(e)))
+            Logger.logException("w", "Unable to retrieve metadata from {fname}: File is inaccessible. Error: {err}".format(fname=file_name, err=str(e)))
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
@@ -977,7 +977,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # Get the correct extruder definition IDs for quality changes
             machine_definition_id_for_quality = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
-            machine_definition_for_quality = self._container_registry.findDefinitionContainers(id = machine_definition_id_for_quality)[0]
+            machine_definition_for_quality = self._container_registry.findDefinitionContainers(id=machine_definition_id_for_quality)[0]
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
@@ -1011,8 +1011,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             else:
                 # Find the existing containers
-                quality_changes_containers = self._container_registry.findInstanceContainers(name = quality_changes_name,
-                                                                                             type = "quality_changes")
+                quality_changes_containers = self._container_registry.findInstanceContainers(name=quality_changes_name,
+                                                                                             type="quality_changes")
                 for container in quality_changes_containers:
                     extruder_position = container.getMetaDataEntry("position")
                     if extruder_position is None:
@@ -1097,7 +1097,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 machine_extruder_count = int(self._machine_info.definition_changes_info.parser["values"]["machine_extruder_count"])
             except ValueError:
                 Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
-                           .format(file_name = self._machine_info.definition_changes_info.file_name))
+                           .format(file_name=self._machine_info.definition_changes_info.file_name))
         return machine_extruder_count
 
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
@@ -1329,7 +1329,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not quality_changes_group:
                     Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
                     return
-                machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
+                machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog=True)
             else:
                 self._quality_type_to_apply = self._quality_type_to_apply.lower() if self._quality_type_to_apply else None
                 quality_group_dict = container_tree.getCurrentQualityGroups()
@@ -1343,7 +1343,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
 
                 if quality_group is not None:
-                    machine_manager.setQualityGroup(quality_group, no_dialog = True)
+                    machine_manager.setQualityGroup(quality_group, no_dialog=True)
 
                     # Also apply intent if available
                     available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
@@ -1368,7 +1368,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _getContainerIdListFromSerialized(serialized):
         """Get the list of ID's of all containers in a container stack by partially parsing it's serialized data."""
 
-        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
         parser.read_string(serialized)
 
         container_ids = []
@@ -1390,13 +1390,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _getMachineNameFromSerializedStack(serialized):
-        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
 
     @staticmethod
     def _getMetaDataDictFromSerializedStack(serialized: str) -> Dict[str, str]:
-        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser = ConfigParser(interpolation=None, empty_lines_in_values=False)
         parser.read_string(serialized)
         return dict(parser["metadata"])
 
@@ -1432,4 +1432,3 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 missing_packages.append(package)
 
         return missing_packages
-

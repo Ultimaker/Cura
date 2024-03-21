@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Set, Dict, List, Any
 
 from PyQt6.QtCore import Qt, QObject, QTimer
@@ -127,5 +128,3 @@ class ActiveIntentQualitiesModel(ListModel):
                                          "intent_category": self._intent_category
                                          })
         return extruder_intents
-
-

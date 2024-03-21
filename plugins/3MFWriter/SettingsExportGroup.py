@@ -14,7 +14,7 @@ class SettingsExportGroup(QObject):
         Extruder = 1
         Model = 2
 
-    def __init__(self, stack, name, category, settings, category_details = '', extruder_index = 0, extruder_color = ''):
+    def __init__(self, stack, name, category, settings, category_details='', extruder_index=0, extruder_color=''):
         super().__init__()
         self.stack = stack
         self._name = name

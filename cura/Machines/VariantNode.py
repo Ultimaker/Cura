@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import TYPE_CHECKING
 
 from UM.Logger import Logger
@@ -34,7 +35,7 @@ class VariantNode(ContainerNode):
         self.materialsChanged = Signal()
 
         container_registry = ContainerRegistry.getInstance()
-        self.variant_name = container_registry.findContainersMetadata(id = container_id)[0]["name"]  # Store our own name so that we can filter more easily.
+        self.variant_name = container_registry.findContainersMetadata(id=container_id)[0]["name"]  # Store our own name so that we can filter more easily.
         container_registry.containerAdded.connect(self._materialAdded)
         container_registry.containerRemoved.connect(self._materialRemoved)
         self._loadAll()
@@ -46,14 +47,14 @@ class VariantNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
 
         if not self.machine.has_materials:
-            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
+            self.materials["empty_material"] = MaterialNode("empty_material", variant=self)
             return  # There should not be any materials loaded for this printer.
 
         # Find all the materials for this variant's name.
         else:  # Printer has its own material profiles. Look for material profiles with this printer's definition.
-            base_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
-            printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id)
-            variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant_name = self.variant_name)  # If empty_variant, this won't return anything.
+            base_materials = container_registry.findInstanceContainersMetadata(type="material", definition="fdmprinter")
+            printer_specific_materials = container_registry.findInstanceContainersMetadata(type="material", definition=self.machine.container_id)
+            variant_specific_materials = container_registry.findInstanceContainersMetadata(type="material", definition=self.machine.container_id, variant_name=self.variant_name)  # If empty_variant, this won't return anything.
             materials_per_base_file = {material["base_file"]: material for material in base_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
@@ -65,10 +66,10 @@ class VariantNode(ContainerNode):
         for material in filtered_materials:
             base_file = material["base_file"]
             if base_file not in self.materials:
-                self.materials[base_file] = MaterialNode(material["id"], variant = self)
+                self.materials[base_file] = MaterialNode(material["id"], variant=self)
                 self.materials[base_file].materialChanged.connect(self.materialsChanged)
         if not self.materials:
-            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
+            self.materials["empty_material"] = MaterialNode("empty_material", variant=self)
 
     def preferredMaterial(self, approximate_diameter: int) -> MaterialNode:
         """Finds the preferred material for this printer with this nozzle in one of the extruders.
@@ -101,10 +102,10 @@ class VariantNode(ContainerNode):
 
         fallback = next(iter(self.materials.values()))  # Should only happen with empty material node.
         Logger.log("w", "Could not find preferred material {preferred_material} with diameter {diameter} for variant {variant_id}, falling back to {fallback}.".format(
-            preferred_material = self.machine.preferred_material,
-            diameter = approximate_diameter,
-            variant_id = self.container_id,
-            fallback = fallback.container_id
+            preferred_material=self.machine.preferred_material,
+            diameter=approximate_diameter,
+            variant_id=self.container_id,
+            fallback=fallback.container_id
         ))
         return fallback
 
@@ -114,7 +115,7 @@ class VariantNode(ContainerNode):
 
         if container.getMetaDataEntry("type") != "material":
             return  # Not interested.
-        if not ContainerRegistry.getInstance().findContainersMetadata(id = container.getId()):
+        if not ContainerRegistry.getInstance().findContainersMetadata(id=container.getId()):
             # CURA-6889
             # containerAdded and removed signals may be triggered in the next event cycle. If a container gets added
             # and removed in the same event cycle, in the next cycle, the connections should just ignore the signals.
@@ -142,13 +143,13 @@ class VariantNode(ContainerNode):
             material_variant = container.getMetaDataEntry("variant_name")
             if new_definition != self.machine.container_id or material_variant != self.variant_name:
                 return  # Doesn't match this set-up.
-            original_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = self.materials[base_file].container_id)[0]
+            original_metadata = ContainerRegistry.getInstance().findContainersMetadata(id=self.materials[base_file].container_id)[0]
             if "variant_name" in original_metadata or material_variant is None:
                 return  # Original was already specific or just as unspecific as the new one.
 
         if "empty_material" in self.materials:
             del self.materials["empty_material"]
-        self.materials[base_file] = MaterialNode(container.getId(), variant = self)
+        self.materials[base_file] = MaterialNode(container.getId(), variant=self)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
 
@@ -166,7 +167,7 @@ class VariantNode(ContainerNode):
 
         # Now a different material from the same base file may have been hidden because it was not as specific as the one we deleted.
         # Search for any submaterials from that base file that are still left.
-        materials_same_base_file = ContainerRegistry.getInstance().findContainersMetadata(base_file = base_file)
+        materials_same_base_file = ContainerRegistry.getInstance().findContainersMetadata(base_file=base_file)
         if materials_same_base_file:
             most_specific_submaterial = None
             for submaterial in materials_same_base_file:
@@ -181,9 +182,9 @@ class VariantNode(ContainerNode):
                 Logger.log("w", "Material %s removed, but no suitable replacement found", base_file)
             else:
                 Logger.log("i", "Material %s (%s) overridden by %s", base_file, self.variant_name, most_specific_submaterial.get("id"))
-                self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant = self)
+                self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant=self)
                 self.materialsChanged.emit(self.materials[base_file])
 
         if not self.materials:  # The last available material just got deleted and there is nothing with the same base file to replace it.
-            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
+            self.materials["empty_material"] = MaterialNode("empty_material", variant=self)
             self.materialsChanged.emit(self.materials["empty_material"])

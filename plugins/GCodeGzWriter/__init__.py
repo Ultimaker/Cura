@@ -22,4 +22,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "mesh_writer": GCodeGzWriter.GCodeGzWriter() }
+    return {"mesh_writer": GCodeGzWriter.GCodeGzWriter()}

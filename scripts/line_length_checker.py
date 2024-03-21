@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import re
 import sys
 
@@ -13,10 +16,10 @@ def getValue(line: str, key: str, default = None):
         return default
     try:
         return int(m.group(0))
-    except ValueError: #Not an integer.
+    except ValueError:  # Not an integer.
         try:
             return float(m.group(0))
-        except ValueError: #Not a number at all.
+        except ValueError:  # Not a number at all.
             return default
 
 def analyse(gcode, distance_to_report, print_layers = False):

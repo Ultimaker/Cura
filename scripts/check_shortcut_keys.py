@@ -26,7 +26,7 @@ class ShortcutKeysChecker:
         """
         Checks if the given file has duplicate shortcut keys.
         """
-        with open(filename, "r", encoding = "utf-8") as f:
+        with open(filename, "r", encoding="utf-8") as f:
             all_lines = f.readlines()
 
         all_lines = [l.strip() for l in all_lines]
