@@ -2,9 +2,7 @@
 
 import polib
 import git
-import sys
 import os
-import tempfile
 import argparse
 from collections import OrderedDict
 
@@ -25,9 +23,9 @@ def list_entries(file):
 
     return entries
 
-def process_file(actual_file_path, previous_version_file_path, restore_missing):
+def process_file(actual_file_path, previous_version_file_data, restore_missing):
     actual_file = polib.pofile(actual_file_path, wrapwidth=10000)
-    previous_file = polib.pofile(previous_version_file_path, wrapwidth=10000)
+    previous_file = polib.pofile(previous_version_file_data, wrapwidth=10000)
 
     previous_entries = list_entries(previous_file)
     actual_entries = list_entries(actual_file)
@@ -91,11 +89,9 @@ for language_dir in language_dirs:
     for translation_file in os.listdir(language_dir):
         if translation_file.endswith('.po'):
             translation_file_path = '/'.join([language_dir, translation_file])
-            blob = repo.commit(args.previous_version).tree / translation_file_path
             print(f'Processing file {translation_file_path}')
-            with tempfile.NamedTemporaryFile(suffix='.po') as tmp_file:
-                tmp_file.write(blob.data_stream.read())
-                process_file(translation_file_path, tmp_file.name, args.restore_missing)
+            blob = repo.commit(args.previous_version).tree / translation_file_path
+            process_file(translation_file_path, blob.data_stream.read().decode('utf-8'), args.restore_missing)
 
 with open('report.csv', 'w') as report_file:
     for missing_key, files in missing_keys.items():
