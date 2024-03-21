@@ -5,6 +5,7 @@ import git
 import sys
 import os
 import tempfile
+import argparse
 from collections import OrderedDict
 
 
@@ -73,14 +74,11 @@ def process_file(actual_file_path, previous_version_file_path, restore_missing):
         actual_file.save()
 
 
-try:
-    previous_version = sys.argv[1]
-    restore_missing = "--restore-missing" in sys.argv
-except:
-    print("Compares the translations present in the current folder with the same files from an other commit/branch. This will write a report.csv file containing the missing translations and the locations where they were expected. Make sure to run this script at the root of Cura/Uranium")
-    print(f"How to use: {sys.argv[0]} previous_version [--restore-missing]")
-    print("  --restore-missing    * Superbonus * This will also restore the translations missing from the previous file into the actual one")
-    sys.exit(1)
+args_parser = argparse.ArgumentParser(description="Compares the translations present in the current folder with the same files from an other commit/branch. This will write a report.csv file containing the missing translations and the locations where they were expected. Make sure to run this script at the root of Cura/Uranium")
+args_parser.add_argument("previous_version", help="Git branch or commit hash of the version to be compared with")
+args_parser.add_argument("--restore-missing", action="store_true", help="* Superbonus * This will also restore the translations missing from the previous file into the actual one")
+
+args = args_parser.parse_args()
 
 repo = git.Repo('.')
 
@@ -93,11 +91,11 @@ for language_dir in language_dirs:
     for translation_file in os.listdir(language_dir):
         if translation_file.endswith('.po'):
             translation_file_path = os.path.join(language_dir, translation_file)
-            blob = repo.commit(previous_version).tree / translation_file_path
+            blob = repo.commit(args.previous_version).tree / translation_file_path
             print(f'Processing file {translation_file_path}')
             with tempfile.NamedTemporaryFile(suffix='.po') as tmp_file:
                 tmp_file.write(blob.data_stream.read())
-                process_file(translation_file_path, tmp_file.name, restore_missing)
+                process_file(translation_file_path, tmp_file.name, args.restore_missing)
 
 with open('report.csv', 'w') as report_file:
     for missing_key, files in missing_keys.items():
