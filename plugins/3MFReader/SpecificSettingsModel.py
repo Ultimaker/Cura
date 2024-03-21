@@ -41,7 +41,7 @@ class SpecificSettingsModel(ListModel):
                 "label": stack.getProperty(setting, "label"),
                 "value": value
             })
-            self.modelChanged.emit()
+        self.modelChanged.emit()
 
     def _update(self):
         Logger.debug(f"Updating {self.__class__.__name__}")
