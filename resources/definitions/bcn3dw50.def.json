@@ -1,0 +1,53 @@
+{
+    "version": 2,
+    "name": "Epsilon W50",
+    "inherits": "bcn3dprinter",
+    "metadata": {
+        "weight": "1",
+        "file_formats": "text/x-gcode",
+        "platform": "bcn3depsilon_bed.3mf",
+        "visible": true,
+        "machine_extruder_trains": {
+            "0": "bcn3dw50_extruder_left",
+            "1": "bcn3dw50_extruder_right"
+        },
+        "supports_cloud_connection": true,
+        "supports_firmware_updates": false
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Epsilon W50" },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "machine_width": { "default_value": 420 },
+        "gantry_height": { "value": 12 },
+        "machine_max_feedrate_x": { "default_value": 200 },
+        "machine_max_feedrate_y": { "default_value": 200 },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_e": { "default_value": 1000 },
+        "machine_acceleration": { "default_value": 2500 },
+        "machine_max_jerk_xy": { "value": 12.5 },
+        "machine_heated_build_volume": { "default_value": true },
+        "machine_min_cool_heat_time_window": { "value": "15" },
+        "material_bed_temperature": { "maximum_value": 120, "maximum_value_warning": 115 },
+
+        "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
+        "acceleration_print": { "value": 3500 },
+        "acceleration_support": { "value": "math.ceil(acceleration_print * 2000 / 3500)" },
+        "acceleration_topbottom": { "value": "math.ceil(acceleration_print * 1000 / 3500)" },
+        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 3500)" },
+        "acceleration_wall": { "value": "math.ceil(acceleration_print * 1500 / 3500)" },
+        "cool_min_layer_time": { "value": 5 },
+        "cool_min_speed": { "value": 10 },
+        "retraction_count_max": { "value": 10 },
+        "retraction_hop_after_extruder_switch_height": { "value": 3 },
+        "retraction_speed": { "maximum_value_warning": "machine_max_feedrate_e" },
+        "speed_travel": { "value": 200 },
+        "support_join_distance": { "value": 6 },
+        "support_xy_distance_overhang": { "value": 0.5, "maximum_value_warning": 10 },
+        "switch_extruder_prime_speed": { "value": "min(retraction_speed, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+        "switch_extruder_retraction_speed": { "value": "min(switch_extruder_retraction_speeds, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+        "switch_extruder_retraction_speeds": { "maximum_value_warning": "machine_max_feedrate_e" },
+
+        "start_purge_distance": { "value": 10 }
+    }
+}

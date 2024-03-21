@@ -1,0 +1,48 @@
+{
+    "version": 2,
+    "name": "Sigma",
+    "inherits": "bcn3dprinter",
+    "metadata": {
+        "weight": "7",
+        "file_formats": "text/x-gcode",
+        "platform": "bcn3dsigma_bed.3mf",
+        "visible": true,
+        "machine_extruder_trains": {
+            "0": "bcn3dsigma_extruder_left",
+            "1": "bcn3dsigma_extruder_right"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Sigma" },
+        "machine_depth": { "default_value": 297 },
+        "machine_width": { "default_value": 210 },
+        "machine_height": { "default_value": 210 },
+        "machine_max_feedrate_x": { "default_value": 200 },
+        "machine_max_feedrate_y": { "default_value": 200 },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_e": { "default_value": 135 },
+        "machine_acceleration": { "default_value": 2000 },
+        "machine_max_jerk_xy": { "value": 15 },
+        "material_bed_temperature": { "maximum_value": 105, "maximum_value_warning": 100 },
+
+        "acceleration_print": { "value": "machine_acceleration" },
+        "acceleration_support": { "value": "acceleration_wall_x" },
+        "acceleration_topbottom": { "value": "acceleration_wall_x" },
+        "acceleration_travel": { "value": 800 },
+        "acceleration_wall_x": { "value": "round(acceleration_print - (acceleration_print - acceleration_wall_0)/ 2.)" },
+        "cool_min_layer_time": { "value": 0 },
+        "cool_min_speed": { "value": "speed_wall_0" },
+        "print_sequence": { "enabled": true },
+        "retraction_count_max": { "value": "10 * retraction_extrusion_window" },
+        "retraction_hop_after_extruder_switch_height": { "value": 2 },
+        "retraction_speed": { "maximum_value_warning": 45, "default_value": 30 },
+        "speed_travel": { "value": 100 },
+        "support_join_distance": { "value": 2 },
+        "support_xy_distance_overhang": { "value": "machine_nozzle_size" },
+        "switch_extruder_prime_speed": { "value": "min(retraction_speed * 0.25, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+        "switch_extruder_retraction_speed": { "value": "min(switch_extruder_retraction_speeds, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+        "switch_extruder_retraction_speeds": { "value": "min(retraction_speed, machine_max_feedrate_e)", "maximum_value_warning": "machine_max_feedrate_e" },
+
+        "start_purge_distance": { "value": 15 }
+    }
+}
