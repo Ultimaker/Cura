@@ -25,9 +25,9 @@ class MaterialOutputModel(QObject):
     def getMaterialFromDefinition(guid, type, brand, name):
 
         _MATERIAL_MAP = {	"abs"       :{"name" :"ABS"           ,"guid": "2780b345-577b-4a24-a2c5-12e6aad3e690"},
-                             "abs-cf10": {"name": "ABS-CF", "guid": "495a0ce5-9daf-4a16-b7b2-06856d82394d"},
+                            "abs-cf10"  :{"name": "ABS-CF"        ,"guid": "495a0ce5-9daf-4a16-b7b2-06856d82394d"},
                             "abs-wss1"  :{"name" :"ABS-R"         ,"guid": "88c8919c-6a09-471a-b7b6-e801263d862d"},
-                            "asa"       :{"name" :"ASA"           ,"guid": "416eead4-0d8e-4f0b-8bfc-a91a519befa5"},
+                            "asa"       :{"name" :"ASA"           ,"guid": "f79bc612-21eb-482e-ad6c-87d75bdde066"},
                             "nylon12-cf":{"name": "Nylon 12 CF"   ,"guid": "3c6f2877-71cc-4760-84e6-4b89ab243e3b"},
                             "nylon"     :{"name" :"Nylon"         ,"guid": "283d439a-3490-4481-920c-c51d8cdecf9c"},
                             "pc"        :{"name" :"PC"            ,"guid": "62414577-94d1-490d-b1e4-7ef3ec40db02"},
