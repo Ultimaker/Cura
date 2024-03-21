@@ -82,15 +82,15 @@ args = args_parser.parse_args()
 
 repo = git.Repo('.')
 
-languages_dir = os.path.join('resources', 'i18n')
+languages_dir = '/'.join(['resources', 'i18n'])
 
-language_dirs = [os.path.join(languages_dir, dir_path) for dir_path in os.listdir('resources/i18n')]
+language_dirs = ['/'.join([languages_dir, dir_path]) for dir_path in os.listdir('resources/i18n')]
 language_dirs = [language for language in language_dirs if os.path.isdir(language)]
 
 for language_dir in language_dirs:
     for translation_file in os.listdir(language_dir):
         if translation_file.endswith('.po'):
-            translation_file_path = os.path.join(language_dir, translation_file)
+            translation_file_path = '/'.join([language_dir, translation_file])
             blob = repo.commit(args.previous_version).tree / translation_file_path
             print(f'Processing file {translation_file_path}')
             with tempfile.NamedTemporaryFile(suffix='.po') as tmp_file:
