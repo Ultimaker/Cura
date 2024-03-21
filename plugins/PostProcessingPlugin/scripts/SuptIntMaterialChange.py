@@ -573,10 +573,10 @@ class SuptIntMaterialChange(Script):
         for back_num in range(index, -1, -1):
             if re.search("G1 F(\d*) E(\d.*)", lines[back_num]) is not None or re.search("G1 F(\d*) E-(\d.*)", lines[back_num]) is not None or "G10" in lines[back_num]:
                 is_retraction = True
-                if e_loc is None:
+                if e_loc is None and " E" in lines[back_num]:
                     e_loc = self.getValue(lines[back_num], "E")
-                    if "G10" in lines[back_num]:
-                        e_loc = "0"
+                if "G10" in lines[back_num]:
+                    e_loc = "0"
                 if ret_x is not None: break
             if lines[back_num].startswith("G0") and " X" in lines[back_num] and " Y" in lines[back_num] and ret_x is None:
                 ret_x = self.getValue(lines[back_num], "X")
@@ -600,19 +600,19 @@ class SuptIntMaterialChange(Script):
                         ## Catch a retraction whether extrusions are Absolute or Relative or whether firmware retraction is enabled.
                         if re.search("G1 F(\d*) E-(\d.*)", lines2[back_num2]) is not None or re.search("G1 F(\d*) E(\d.*)", lines2[back_num2]) is not None or "G10" in lines2[back_num2]:
                             is_retraction = True
-                            if e_loc is None:
+                            if e_loc is None and " E" in lines2[back_num2]:
                                 e_loc = self.getValue(lines2[back_num2], "E")
-                                if "G10" in lines2[back_num2]:
-                                    e_loc = "0"
+                            if "G10" in lines2[back_num2]:
+                                e_loc = "0"
                         elif is_retraction is None and "G11" in lines2[back_num2]:
                             is_retraction = False
                             e_loc = 0
-                        elif re.search("G1 F(\d*) X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None or re.search("G1 X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None:
+                        elif re.search("G1 F(\d*) X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None or re.search("G1 X(\d.*) Y(\d.*) E(\d.*)", lines2[back_num2]) is not None or "G11" in lines2[back_num2]:
                             is_retraction = False
-                            if e_loc is None:
+                            if e_loc is None and " E" in lines2[back_num2]:
                                 e_loc = self.getValue(lines2[back_num2], "E")
-                                if "G11" in lines2[back_num2]:
-                                    e_loc = "0"
+                            if "G11" in lines2[back_num2]:
+                                e_loc = "0"
                     if ret_x is None:
                         if " X" in lines2[back_num2] and " Y" in lines2[back_num2]:
                             ret_x = self.getValue(lines2[back_num2], "X")
