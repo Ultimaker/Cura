@@ -50,4 +50,4 @@ msgstr "Reimpostare la durata del flusso"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "Per ogni spostamento del percorso superiore a questo valore, il flusso del materiale viene reimpostato sul quello target dei percorsi."
+msgstr "Per ogni spostamento del percorso superiore a questo valore, il flusso del materiale viene reimpostato su quello target dei percorsi."

@@ -135,7 +135,7 @@ msgstr "Il tempo necessario per eseguire il G-code di inizio, quando si passa a 
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
-msgstr "Assoluto posizione avvio estrusore"
+msgstr "Posizione assoluta avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
@@ -159,7 +159,7 @@ msgstr "ID ugello"
 
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
-msgstr "X posizione avvio estrusore"
+msgstr "Posizione X avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
@@ -167,7 +167,7 @@ msgstr "La coordinata x della posizione di partenza all’accensione dell’estr
 
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
-msgstr "Y posizione avvio estrusore"
+msgstr "Posizione Y avvio estrusore"
 
 msgctxt "machine_settings label"
 msgid "Machine"
@@ -175,7 +175,7 @@ msgstr "Macchina"
 
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "Impostazioni macchina specifiche"
+msgstr "Impostazioni specifiche della macchina"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
