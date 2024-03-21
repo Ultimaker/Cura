@@ -21,11 +21,10 @@ class Directory(Linter):
         """ Check if there is a dot in the directory name, MacOS has trouble signing and notarizing otherwise """
         if any("." in p for p in self._file.parent.parts):
             yield Diagnostic(
-                file = self._file,
-                diagnostic_name = "diagnostic-resources-macos-app-directory-name",
-                message = f"Directory name containing a `.` not allowed {self._file.suffix}, rename directory containing this file e.q: `_`",
-                level = "Error",
-                offset = 1
+                file=self._file,
+                diagnostic_name="diagnostic-resources-macos-app-directory-name",
+                message=f"Directory name containing a `.` not allowed {self._file.suffix}, rename directory containing this file e.q: `_`",
+                level="Error",
+                offset=1
             )
         yield
-

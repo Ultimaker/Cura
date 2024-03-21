@@ -28,11 +28,11 @@ class Meshes(Linter):
         """ Check if mesh is in supported format """
         if self._file.suffix.lower() not in (".3mf", ".obj", ".stl"):
             yield Diagnostic(
-                file = self._file,
-                diagnostic_name = "diagnostic-mesh-file-extension",
-                message = f"Extension {self._file.suffix} not supported, use 3mf, obj or stl",
-                level = "Error",
-                offset = 1
+                file=self._file,
+                diagnostic_name="diagnostic-mesh-file-extension",
+                message=f"Extension {self._file.suffix} not supported, use 3mf, obj or stl",
+                level="Error",
+                offset=1
             )
         yield
 
@@ -40,10 +40,10 @@ class Meshes(Linter):
         """ Check if file is within size limits for Cura """
         if self._file.stat().st_size > self._max_file_size:
             yield Diagnostic(
-                file = self._file,
-                diagnostic_name = "diagnostic-mesh-file-size",
-                message = f"Mesh file with a size {self._file.stat().st_size} is bigger then allowed maximum of {self._max_file_size}",
-                level = "Error",
-                offset = 1
+                file=self._file,
+                diagnostic_name="diagnostic-mesh-file-size",
+                message=f"Mesh file with a size {self._file.stat().st_size} is bigger then allowed maximum of {self._max_file_size}",
+                level="Error",
+                offset=1
             )
         yield

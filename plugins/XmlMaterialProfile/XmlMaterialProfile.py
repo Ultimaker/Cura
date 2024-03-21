@@ -67,7 +67,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
-            Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
+            Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key=key, material_id=self.getId()))
             return
 
         # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
@@ -83,7 +83,7 @@ class XmlMaterialProfile(InstanceContainer):
             # material container that can be found in the container registry.
             container_query = [self]
         else:
-            container_query = registry.findContainers(base_file = self.getMetaDataEntry("base_file"))
+            container_query = registry.findContainers(base_file=self.getMetaDataEntry("base_file"))
 
         for container in container_query:
             if key not in container.getMetaData() or container.getMetaData()[key] != value:
@@ -113,7 +113,7 @@ class XmlMaterialProfile(InstanceContainer):
         basefile = self.getMetaDataEntry("base_file", self.getId())  # if basefile is self.getId, this is a basefile.
         # Update the basefile as well, this is actually what we're trying to do
         # Update all containers that share GUID and basefile
-        containers = registry.findInstanceContainers(base_file = basefile)
+        containers = registry.findInstanceContainers(base_file=basefile)
         for container in containers:
             container.setName(new_name)
 
@@ -124,7 +124,7 @@ class XmlMaterialProfile(InstanceContainer):
         base_file = self.getMetaDataEntry("base_file", None)
         registry = ContainerRegistry.getInstance()
         if base_file is not None and base_file != self.getId() and not registry.isReadOnly(base_file):
-            containers = registry.findContainers(id = base_file)
+            containers = registry.findContainers(id=base_file)
             if containers:
                 containers[0].setDirty(dirty)
 
@@ -226,7 +226,7 @@ class XmlMaterialProfile(InstanceContainer):
         machine_variant_map = {}  # type: Dict[str, Dict[str, Any]]
 
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
-        all_containers = registry.findInstanceContainers(base_file = root_material_id)
+        all_containers = registry.findInstanceContainers(base_file=root_material_id)
 
         for container in all_containers:
             definition_id = container.getMetaDataEntry("definition")
@@ -253,7 +253,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         for definition_id, container in machine_container_map.items():
             definition_id = container.getMetaDataEntry("definition")
-            definition_metadata = registry.findDefinitionContainersMetadata(id = definition_id)[0]
+            definition_metadata = registry.findDefinitionContainersMetadata(id=definition_id)[0]
 
             product = definition_id
             for product_name, product_id_list in product_id_map.items():
@@ -365,7 +365,7 @@ class XmlMaterialProfile(InstanceContainer):
         stream = io.BytesIO()
         tree = ET.ElementTree(root)
         # this makes sure that the XML header states encoding="utf-8"
-        tree.write(stream, encoding = "utf-8", xml_declaration = True)
+        tree.write(stream, encoding="utf-8", xml_declaration=True)
 
         return stream.getvalue().decode("utf-8")
 
@@ -386,7 +386,7 @@ class XmlMaterialProfile(InstanceContainer):
     def _loadFile(self, file_name):
         path = Resources.getPath(CuraApplication.getInstance().ResourceTypes.MaterialInstanceContainer, file_name + ".xml.fdm_material")
 
-        with open(path, encoding = "utf-8") as f:
+        with open(path, encoding="utf-8") as f:
             contents = f.read()
 
         self._inherited_files.append(path)
@@ -592,7 +592,7 @@ class XmlMaterialProfile(InstanceContainer):
         validation_message = XmlMaterialValidator.validateMaterialMetaData(meta_data)
         if validation_message is not None:
             ConfigurationErrorMessage.getInstance().addFaultyContainers(self.getId())
-            Logger.log("e", "Not a valid material profile: {message}".format(message = validation_message))
+            Logger.log("e", "Not a valid material profile: {message}".format(message=validation_message))
             return
 
         property_values = {}
@@ -696,7 +696,7 @@ class XmlMaterialProfile(InstanceContainer):
                 if not machine_id_list:
                     machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
                 for machine_id in machine_id_list:
-                    definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id=machine_id)
                     if not definitions:
                         continue
 
@@ -713,7 +713,7 @@ class XmlMaterialProfile(InstanceContainer):
                     # In the case if a derived material already exists, override that material container because if
                     # the data in the parent material has been changed, the derived ones should be updated too.
                     if ContainerRegistry.getInstance().isLoaded(new_material_id):
-                        new_material = ContainerRegistry.getInstance().findContainers(id = new_material_id)[0]
+                        new_material = ContainerRegistry.getInstance().findContainers(id=new_material_id)[0]
                         is_new_material = False
                     else:
                         new_material = XmlMaterialProfile(new_material_id)
@@ -751,7 +751,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                         # Same as machine compatibility, keep the derived material containers consistent with the parent material
                         if ContainerRegistry.getInstance().isLoaded(new_hotend_specific_material_id):
-                            new_hotend_material = ContainerRegistry.getInstance().findContainers(id = new_hotend_specific_material_id)[0]
+                            new_hotend_material = ContainerRegistry.getInstance().findContainers(id=new_hotend_specific_material_id)[0]
                             is_new_material = False
                         else:
                             new_hotend_material = XmlMaterialProfile(new_hotend_specific_material_id)
@@ -937,7 +937,7 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
                 for machine_id in machine_id_list:
-                    definition_metadatas = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
+                    definition_metadatas = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id=machine_id)
                     if not definition_metadatas:
                         continue
 
@@ -972,10 +972,10 @@ class XmlMaterialProfile(InstanceContainer):
                         if buildplate_id is None:
                             continue
 
-                        variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(id = buildplate_id)
+                        variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(id=buildplate_id)
                         if not variant_metadata:
                             # It is not really properly defined what "ID" is so also search for variants by name.
-                            variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition = machine_id, name = buildplate_id)
+                            variant_metadata = ContainerRegistry.getInstance().findInstanceContainersMetadata(definition=machine_id, name=buildplate_id)
 
                         if not variant_metadata:
                             continue
@@ -1142,7 +1142,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
         product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
-        with open(product_to_id_file, encoding = "utf-8") as f:
+        with open(product_to_id_file, encoding="utf-8") as f:
             contents = ""
             for line in f:
                 contents += line if "#" not in line else "".join([line.replace("#", str(n)) for n in range(1, 12)])
@@ -1161,7 +1161,7 @@ class XmlMaterialProfile(InstanceContainer):
     def __str__(self):
         """Small string representation for debugging."""
 
-        return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
+        return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id=self.getId(), name=self.getName(), base_file=self.getMetaDataEntry("base_file"))
 
     _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
 

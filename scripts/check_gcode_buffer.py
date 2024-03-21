@@ -127,7 +127,7 @@ class Command:
         self._is_comment = False  # type: bool
         self._is_empty = False  # type: bool
 
-        #Fields taken from CuraEngine's implementation.
+        # Fields taken from CuraEngine's implementation.
         self._recalculate = False
         self._accelerate_until = 0
         self._decelerate_after = 0
@@ -152,18 +152,18 @@ class Command:
         initial_feedrate = self._nominal_feedrate * entry_factor
         final_feedrate = self._nominal_feedrate * exit_factor
 
-        #How far are we accelerating and how far are we decelerating?
+        # How far are we accelerating and how far are we decelerating?
         accelerate_distance = calc_acceleration_distance(initial_feedrate, self._nominal_feedrate, self._acceleration)
         decelerate_distance = calc_acceleration_distance(self._nominal_feedrate, final_feedrate, -self._acceleration)
-        plateau_distance = self._distance - accelerate_distance - decelerate_distance #And how far in between at max speed?
+        plateau_distance = self._distance - accelerate_distance - decelerate_distance  # And how far in between at max speed?
 
-        #Is the plateau negative size? That means no cruising, and we'll have to
-        #use intersection_distance to calculate when to abort acceleration and
-        #start braking in order to reach the final_rate exactly at the end of
-        #this command.
+        # Is the plateau negative size? That means no cruising, and we'll have to
+        # use intersection_distance to calculate when to abort acceleration and
+        # start braking in order to reach the final_rate exactly at the end of
+        # this command.
         if plateau_distance < 0:
             accelerate_distance = calc_intersection_distance(initial_feedrate, final_feedrate, self._acceleration, self._distance)
-            accelerate_distance = max(accelerate_distance, 0) #Due to rounding errors.
+            accelerate_distance = max(accelerate_distance, 0)  # Due to rounding errors.
             accelerate_distance = min(accelerate_distance, self._distance)
             plateau_distance = 0
 
@@ -213,12 +213,12 @@ class Command:
 
         # G10: Retract. Make this behave as if it's a retraction of 25mm.
         if cmd_num == 10:
-            #TODO: If already retracted, this shouldn't add anything to the time.
+            # TODO: If already retracted, this shouldn't add anything to the time.
             cmd_num = 1
             parts = ["G1", "E" + str(buf.current_position[3] - 25)]
         # G11: Unretract. Make this behave as if it's an unretraction of 25mm.
         elif cmd_num == 11:
-            #TODO: If already unretracted, this shouldn't add anything to the time.
+            # TODO: If already unretracted, this shouldn't add anything to the time.
             cmd_num = 1
             parts = ["G1", "E" + str(buf.current_position[3] + 25)]
 
@@ -257,7 +257,7 @@ class Command:
                     feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_Y)
                     feedrate_factor = min(feedrate_factor, buf.max_z_feedrate)
                     feedrate_factor = min(feedrate_factor, MACHINE_MAX_FEEDRATE_E)
-                    #TODO: XY_FREQUENCY_LIMIT
+                    # TODO: XY_FREQUENCY_LIMIT
 
                     current_feedrate = [f * feedrate_factor for f in current_feedrate]
                     current_abs_feedrate = [f * feedrate_factor for f in current_abs_feedrate]
@@ -301,7 +301,7 @@ class Command:
 
                     self.calculate_trapezoid(self._entry_speed / self._nominal_feedrate, safe_speed / self._nominal_feedrate)
 
-                    self.estimated_exec_time = -1 #Signal that we need to include this in our second pass.
+                    self.estimated_exec_time = -1  # Signal that we need to include this in our second pass.
 
         # G4: Dwell, pause the machine for a period of time.
         elif cmd_num == 4:
@@ -383,37 +383,37 @@ class CommandBuffer:
                 continue
             self._all_commands.append(cmd)
 
-        #Second pass: Reverse kernel.
+        # Second pass: Reverse kernel.
         kernel_commands = [None, None, None]
         for cmd in reversed(self._all_commands):
             if cmd.estimated_exec_time >= 0:
-                continue #Not a movement command.
+                continue  # Not a movement command.
             kernel_commands[2] = kernel_commands[1]
             kernel_commands[1] = kernel_commands[0]
             kernel_commands[0] = cmd
             self.reverse_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
 
-        #Third pass: Forward kernel.
+        # Third pass: Forward kernel.
         kernel_commands = [None, None, None]
         for cmd in self._all_commands:
             if cmd.estimated_exec_time >= 0:
-                continue #Not a movement command.
+                continue  # Not a movement command.
             kernel_commands[0] = kernel_commands[1]
             kernel_commands[1] = kernel_commands[2]
             kernel_commands[2] = cmd
             self.forward_pass_kernel(kernel_commands[0], kernel_commands[1], kernel_commands[2])
         self.forward_pass_kernel(kernel_commands[1], kernel_commands[2], None)
 
-        #Fourth pass: Recalculate the commands that have _recalculate set.
+        # Fourth pass: Recalculate the commands that have _recalculate set.
         previous = None
         current = None
         for current in self._all_commands:
             if current.estimated_exec_time >= 0:
                 current = None
-                continue #Not a movement command.
+                continue  # Not a movement command.
 
             if previous:
-                #Recalculate if current command entry or exit junction speed has changed.
+                # Recalculate if current command entry or exit junction speed has changed.
                 if previous._recalculate or current._recalculate:
                     #Note: Entry and exit factors always >0 by all previous logic operators.
                     previous.calculate_trapezoid(previous._entry_speed / previous._nominal_feedrate, current._entry_speed / previous._nominal_feedrate)
@@ -424,10 +424,10 @@ class CommandBuffer:
             current.calculate_trapezoid(current._entry_speed / current._nominal_feedrate, MINIMUM_PLANNER_SPEED / current._nominal_feedrate)
             current._recalculate = False
 
-        #Fifth pass: Compute time for movement commands.
+        # Fifth pass: Compute time for movement commands.
         for cmd in self._all_commands:
             if cmd.estimated_exec_time >= 0:
-                continue #Not a movement command.
+                continue  # Not a movement command.
             plateau_distance = cmd._decelerate_after - cmd._accelerate_until
             cmd.estimated_exec_time = calc_acceleration_time_from_distance(cmd._initial_feedrate, cmd._accelerate_until, cmd._acceleration)
             cmd.estimated_exec_time += plateau_distance / cmd._nominal_feedrate
@@ -470,15 +470,15 @@ class CommandBuffer:
         if not current or not next:
             return
 
-        #If entry speed is already at the maximum entry speed, no need to
-        #recheck. The command is cruising. If not, the command is in state of
-        #acceleration or deceleration. Reset entry speed to maximum and check
-        #for maximum allowable speed reductions to ensure maximum possible
-        #planned speed.
+        # If entry speed is already at the maximum entry speed, no need to
+        # recheck. The command is cruising. If not, the command is in state of
+        # acceleration or deceleration. Reset entry speed to maximum and check
+        # for maximum allowable speed reductions to ensure maximum possible
+        # planned speed.
         if current._entry_speed != current._max_entry_speed:
-            #If nominal length is true, max junction speed is guaranteed to be
-            #reached. Only compute for max allowable speed if block is
-            #decelerating and nominal length is false.
+            # If nominal length is true, max junction speed is guaranteed to be
+            # reached. Only compute for max allowable speed if block is
+            # decelerating and nominal length is false.
             if not current._nominal_length and current._max_entry_speed > next._max_entry_speed:
                 current._entry_speed = min(current._max_entry_speed, calc_max_allowable_speed(-current._acceleration, next._entry_speed, current._distance))
             else:
@@ -489,12 +489,12 @@ class CommandBuffer:
         if not previous:
             return
 
-        #If the previous command is an acceleration command, but it is not long
-        #enough to complete the full speed change within the command, we need to
-        #adjust the entry speed accordingly. Entry speeds have already been
-        #reset, maximised and reverse planned by the reverse planner. If nominal
-        #length is set, max junction speed is guaranteed to be reached. No need
-        #to recheck.
+        # If the previous command is an acceleration command, but it is not long
+        # enough to complete the full speed change within the command, we need to
+        # adjust the entry speed accordingly. Entry speeds have already been
+        # reset, maximised and reverse planned by the reverse planner. If nominal
+        # length is set, max junction speed is guaranteed to be reached. No need
+        # to recheck.
         if not previous._nominal_length:
             if previous._entry_speed < current._entry_speed:
                 entry_speed = min(current._entry_speed, calc_max_allowable_speed(-previous._acceleration, previous._entry_speed, previous._distance))
@@ -505,18 +505,18 @@ class CommandBuffer:
 
     def to_file(self, file_name: str) -> None:
         all_lines = [str(c) for c in self._all_commands]
-        with open(file_name, "w", encoding = "utf-8") as f:
+        with open(file_name, "w", encoding="utf-8") as f:
             f.writelines(all_lines)
             f.write(";---TOTAL ESTIMATED TIME:" + str(self.total_time))
 
     def report(self) -> None:
         for item in self._bad_frame_ranges:
             print("Potential buffer underrun from line {start_line} to {end_line}, code count = {code_count}, in {time}s ({speed} cmd/s)".format(
-                start_line = item["start_line"],
-                end_line = item["end_line"],
-                code_count = item["cmd_count"],
-                time = round(item["time"], 4),
-                speed = round(item["cmd_count"] / item["time"], 2)))
+                start_line=item["start_line"],
+                end_line=item["end_line"],
+                code_count=item["cmd_count"],
+                time=round(item["time"], 4),
+                speed=round(item["cmd_count"] / item["time"], 2)))
         print("Total predicted number of buffer underruns:", len(self._bad_frame_ranges))
 
 
@@ -529,7 +529,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         out_filename = sys.argv[2]
 
-    with open(in_filename, "r", encoding = "utf-8") as f:
+    with open(in_filename, "r", encoding="utf-8") as f:
         all_lines = f.readlines()
 
     buf = CommandBuffer(all_lines)
