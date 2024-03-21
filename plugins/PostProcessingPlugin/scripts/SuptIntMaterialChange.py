@@ -17,6 +17,7 @@ from ..Script import Script
 from cura.CuraApplication import CuraApplication
 from UM.Message import Message
 import re
+from UM.Logger import Logger
 
 class SuptIntMaterialChange(Script):
 
@@ -31,12 +32,17 @@ class SuptIntMaterialChange(Script):
         self._instance.setProperty("park_y", "maximum_value", machine_depth)
         self._instance.setProperty("model_temp", "value", extruder[0].getProperty("material_print_temperature", "value"))
         self._instance.setProperty("extra_prime_amt", "value", extruder[0].getProperty("retraction_amount", "value"))
-
         if ext_count > 1:
-            Message(title = "[Supt-Interface Material Change]", text = "Only a single extruder can be enabled in order to use this post processor.  The post processor will exit if more than a single extruder is enabled because tool change retractions interfere.").show()
-            return
+            enabled_list = list([mycura.isEnabled for mycura in mycura.extruderList])
+            if int(mycura.getProperty("extruders_enabled_count", "value")) > 1 or str(enabled_list[0]) == "False":
+                Logger.log("w", "[Supt Interface Mat'l Change]: Only T0 may be enabled.  The script will not run.")
+                Message(title = "[Support-Interface Mat'l Change]", text = "Only T0 (Extruder 1) may be enabled for this script to run.").show()
+
         if str(mycura.getProperty("adhesion_type", "value")) == "raft":
             Message(title = "[Supt-Interface Material Change]", text = "When using a raft set the Raft Air Gap to 0.  Use the layer numbers in the Cura preview and the script will make the adjustments.").show()
+
+        if mycura.getProperty("print_sequence", "value") == "one_at_a_time":
+            Message(title = "[Supt-Interface Material Change]", text = "Is not compatible with 'One-at-a-Time' mode.").show()
 
     def getSettingDataString(self):
             return """{
@@ -77,14 +83,6 @@ class SuptIntMaterialChange(Script):
                     "unit": "minutes   ",
                     "enabled": "pause_method == 'g_4'"
                 },
-                "gcode_after_pause":
-                {
-                    "label": "    Gcode after pause",
-                    "description": "Some printers require a buffer after the pause when M25 is used. Typically 6 M105's works well.  Delimit multiple commands with a comma EX: M105,M105,M105",
-                    "type": "str",
-                    "default_value": "M105,M105,M105,M105,M105,M105",
-                    "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
-                },
                 "custom_pause_command":
                 {
                     "label": "    Enter your pause command",
@@ -92,6 +90,14 @@ class SuptIntMaterialChange(Script):
                     "type": "str",
                     "default_value": "",
                     "enabled": "pause_method == 'custom'"
+                },
+                "gcode_after_pause":
+                {
+                    "label": "    Gcode after pause",
+                    "description": "Some printers require a buffer after the pause when M25 is used. Typically 6 M105's works well.  Delimit multiple commands with a comma EX: M105,M105,M105",
+                    "type": "str",
+                    "default_value": "M105,M105,M105,M105,M105,M105",
+                    "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
                 },
                 "layers_of_interest":
                 {
@@ -249,15 +255,14 @@ class SuptIntMaterialChange(Script):
         extruder = mycura.extruderList
         ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
         # Exit if the printer is a multi-extruder and more than 1 tool is enabled
-        ext_enabled = 0
         if ext_count > 1:
             enabled_list = list([mycura.isEnabled for mycura in mycura.extruderList])
-            for num in range(0,len(enabled_list)):
-                if bool(enabled_list[num]):
-                    ext_enabled += 1
-        if ext_enabled > 1:
-            Message(title = "[Supt-Interface Material Change]", text = "Is not compatible with more than a single enabled extruder.").show()
-            data[0] += ";  [Supt-Interface Material Change] Did not run because more than one extruder is enabled.\n"
+            if int(mycura.getProperty("extruders_enabled_count", "value")) > 1 or str(enabled_list[0]) == "False":
+                Logger.log("w", "[Supt Interface Mat'l Change]: Only T0 may be enabled.  The script did not run.")
+                Message(title = "[Support-Interface Mat'l Change]", text = "Only T0 (Extruder 1) may be enabled.  The script did not run.").show()
+                return data
+        if mycura.getProperty("print_sequence", "value") == "one_at_a_time":
+            Message(title = "[Support-Interface Mat'l Change]", text = "Is not compatible with 'One-at-a-Time' mode and did not run.").show()
             return data
 
         # Count the raft layers
@@ -461,7 +466,7 @@ class SuptIntMaterialChange(Script):
         purge_str_model += "M400; Complete all moves\n"
         purge_str_model += "M300 P250; Beep\n"
         purge_str_model += "G4 S2; Wait for 2 seconds\n"
-        
+
         ## Purge Lines Interface
         purge_str_interface = "M83; Relative extrusion\n"
         nozzle_size = CuraApplication.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value")
@@ -475,7 +480,7 @@ class SuptIntMaterialChange(Script):
         purge_str_interface += "M400; Complete all moves\n"
         purge_str_interface += "M300 P250; Beep\n"
         purge_str_interface += "G4 S2; Wait for 2 seconds\n"
-            
+
 
         ## Put together the preliminary strings for the interface material and model material
         interface_replacement_pre_string_1 = ";TYPE:CUSTOM" + str('-' * 15) + "; Supt-Interface Material Change - Change to Interface Material" + "\n" + m84_line + "\nG91; Relative movement\nM83; Relative extrusion\n"
@@ -539,7 +544,7 @@ class SuptIntMaterialChange(Script):
                 else:
                     start_retract_str = retract_line
                     start_unretract_str = unretract_line
-        
+
                 startout_to_str = "G0 F" + str(speed_travel) + startout_location + "; Return to print\n"
                 startout_final_str = interface_replacement_pre_string_1 + start_retract_str + z_raise + interface_replacement_pre_string_2 + load_str + purge_str_model + startout_to_str + "G91; Relative movement\n" + z_lower + start_unretract_str + start_e_reset_str + flow_rate_str + "G90; Absolute movement\n" + ext_mode_str + ";" + str('-' * 26) + "; End of Material Change"
 
