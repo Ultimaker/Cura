@@ -1610,7 +1610,7 @@ msgstr "Завершающий G-код экструдера"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
-msgstr ""
+msgstr "Продолжительность завершения G-кода экструдера"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
