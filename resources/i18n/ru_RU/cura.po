@@ -483,7 +483,7 @@ msgid "Apply Extruder offsets to GCode"
 msgstr "Применить смещения экструдера к G-коду"
 
 msgctxt "@info:title"
-msgid "Are you ready for cloud printing?"коду
+msgid "Are you ready for cloud printing?"
 msgstr "Вы готовы к облачной печати?"
 
 msgctxt "@label %1 is the name of a print job."
