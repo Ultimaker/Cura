@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM import i18nCatalog
 from UM.Message import Message
 from cura.CuraApplication import CuraApplication
@@ -9,13 +10,13 @@ class NewPrinterDetectedMessage(Message):
     i18n_catalog = i18nCatalog("cura")
 
     def __init__(self, num_printers_found: int) -> None:
-        super().__init__(title = self.i18n_catalog.i18ncp("info:status",
+        super().__init__(title=self.i18n_catalog.i18ncp("info:status",
                                                           "New printer detected from your Ultimaker account",
                                                           "New printers detected from your Ultimaker account",
                                                           num_printers_found),
-                         progress = 0,
-                         lifetime = 0,
-                         message_type = Message.MessageType.POSITIVE)
+                         progress=0,
+                         lifetime=0,
+                         message_type=Message.MessageType.POSITIVE)
         self._printers_added = 0
         self._num_printers_found = num_printers_found
 

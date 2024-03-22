@@ -112,15 +112,16 @@ def test_prepareLocals(legacy_profile_reader, parser_data, defaults):
         else:
             assert output[key] == defaults[key] # Otherwise must be equal to the default.
 
+
 test_prepareLocalsNoSectionErrorData = [
-    ( # Section does not exist.
-        { # Parser data.
+    (  # Section does not exist.
+        {  # Parser data.
             "some_other_name":
             {
                 "foo": "bar"
             },
         },
-        { # Defaults.
+        {  # Defaults.
             "foo": "baz"
         }
     )
@@ -137,31 +138,33 @@ def test_prepareLocalsNoSectionError(legacy_profile_reader, parser_data, default
     with pytest.raises(configparser.NoSectionError):
         legacy_profile_reader.prepareLocals(parser, "profile", defaults)
 
+
 intercepted_data = ""
 
 @pytest.mark.parametrize("file_name", ["normal_case.ini"])
 def test_read(legacy_profile_reader, file_name):
     # Mock out all dependencies. Quite a lot!
     global_stack = unittest.mock.MagicMock()
-    global_stack.getProperty = unittest.mock.MagicMock(return_value = 1) # For machine_extruder_count setting.
-    def getMetaDataEntry(key, default_value = ""):
+    global_stack.getProperty = unittest.mock.MagicMock(return_value=1)  # For machine_extruder_count setting.
+
+    def getMetaDataEntry(key, default_value=""):
         if key == "quality_definition":
             return "mocked_quality_definition"
         if key == "has_machine_quality":
             return "True"
     global_stack.definition.getMetaDataEntry = getMetaDataEntry
-    global_stack.definition.getId = unittest.mock.MagicMock(return_value = "mocked_global_definition")
+    global_stack.definition.getId = unittest.mock.MagicMock(return_value="mocked_global_definition")
     application = unittest.mock.MagicMock()
-    application.getGlobalContainerStack = unittest.mock.MagicMock(return_value = global_stack)
-    application_getInstance = unittest.mock.MagicMock(return_value = application)
+    application.getGlobalContainerStack = unittest.mock.MagicMock(return_value=global_stack)
+    application_getInstance = unittest.mock.MagicMock(return_value=application)
     container_registry = unittest.mock.MagicMock()
-    container_registry_getInstance = unittest.mock.MagicMock(return_value = container_registry)
-    container_registry.uniqueName = unittest.mock.MagicMock(return_value = "Imported Legacy Profile")
-    container_registry.findDefinitionContainers = unittest.mock.MagicMock(return_value = [global_stack.definition])
+    container_registry_getInstance = unittest.mock.MagicMock(return_value=container_registry)
+    container_registry.uniqueName = unittest.mock.MagicMock(return_value="Imported Legacy Profile")
+    container_registry.findDefinitionContainers = unittest.mock.MagicMock(return_value=[global_stack.definition])
     UM.Settings.InstanceContainer.setContainerRegistry(container_registry)
     plugin_registry = unittest.mock.MagicMock()
-    plugin_registry_getInstance = unittest.mock.MagicMock(return_value = plugin_registry)
-    plugin_registry.getPluginPath = unittest.mock.MagicMock(return_value = os.path.dirname(LegacyProfileReaderModule.__file__))
+    plugin_registry_getInstance = unittest.mock.MagicMock(return_value=plugin_registry)
+    plugin_registry.getPluginPath = unittest.mock.MagicMock(return_value=os.path.dirname(LegacyProfileReaderModule.__file__))
 
     # Mock out the resulting InstanceContainer so that we can intercept the data before it's passed through the version upgrader.
     def deserialize(self, data, filename): # Intercepts the serialised data that we'd perform the version upgrade from when deserializing.
@@ -194,4 +197,4 @@ def test_read(legacy_profile_reader, file_name):
     assert parser["metadata"]["type"] == "quality_changes"
     assert parser["metadata"]["quality_type"] == "normal"
     assert parser["metadata"]["position"] == "0"
-    assert parser["metadata"]["setting_version"] == "5" # Yes, before we upgraded.
+    assert parser["metadata"]["setting_version"] == "5"  # Yes, before we upgraded.

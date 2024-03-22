@@ -73,14 +73,14 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         if state != self.state:
             Logger.log("w", f"The provided state was not correct. Got {state} and expected {self.state}")
             token_response = AuthenticationResponse(
-                success = False,
-                err_message = catalog.i18nc("@message", "The provided state is not correct.")
+                success=False,
+                err_message=catalog.i18nc("@message", "The provided state is not correct.")
             )
         elif code and self.authorization_helpers is not None and self.verification_code is not None:
             Logger.log("d", "Timeout when authenticating with the account server.")
             token_response = AuthenticationResponse(
-                success = False,
-                err_message = catalog.i18nc("@message", "Timeout when authenticating with the account server.")
+                success=False,
+                err_message=catalog.i18nc("@message", "Timeout when authenticating with the account server.")
             )
             # If the code was returned we get the access token.
             lock = Lock()
@@ -91,30 +91,30 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
                 token_response = response
                 lock.release()
             self.authorization_helpers.getAccessTokenUsingAuthorizationCode(code, self.verification_code, callback)
-            lock.acquire(timeout = 60)  # Block thread until request is completed (which releases the lock). If not acquired, the timeout message stays.
+            lock.acquire(timeout=60)  # Block thread until request is completed (which releases the lock). If not acquired, the timeout message stays.
 
         elif self._queryGet(query, "error_code") == "user_denied":
             # Otherwise we show an error message (probably the user clicked "Deny" in the auth dialog).
             Logger.log("d", "User did not give the required permission when authorizing this application")
             token_response = AuthenticationResponse(
-                success = False,
-                err_message = catalog.i18nc("@message", "Please give the required permissions when authorizing this application.")
+                success=False,
+                err_message=catalog.i18nc("@message", "Please give the required permissions when authorizing this application.")
             )
 
         else:
             # We don't know what went wrong here, so instruct the user to check the logs.
             Logger.log("w", f"Unexpected error when logging in. Error_code: {self._queryGet(query, 'error_code')}, State: {state}")
             token_response = AuthenticationResponse(
-                success = False,
-                error_message = catalog.i18nc("@message", "Something unexpected happened when trying to log in, please try again.")
+                success=False,
+                error_message=catalog.i18nc("@message", "Something unexpected happened when trying to log in, please try again.")
             )
         if self.authorization_helpers is None:
             return ResponseData(), token_response
 
         return ResponseData(
-            status = HTTP_STATUS["REDIRECT"],
-            data_stream = b"Redirecting...",
-            redirect_uri = self.authorization_helpers.settings.AUTH_SUCCESS_REDIRECT if token_response.success else
+            status=HTTP_STATUS["REDIRECT"],
+            data_stream=b"Redirecting...",
+            redirect_uri=self.authorization_helpers.settings.AUTH_SUCCESS_REDIRECT if token_response.success else
             self.authorization_helpers.settings.AUTH_FAILED_REDIRECT
         ), token_response
 
@@ -122,7 +122,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     def _handleNotFound() -> ResponseData:
         """Handle all other non-existing server calls."""
 
-        return ResponseData(status = HTTP_STATUS["NOT_FOUND"], content_type = "text/html", data_stream = b"Not found.")
+        return ResponseData(status=HTTP_STATUS["NOT_FOUND"], content_type="text/html", data_stream=b"Not found.")
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
         self.send_response(status.code, status.message)

@@ -29,7 +29,7 @@ class SingleInstance:
         single_instance_socket = QLocalSocket(self._application)
         Logger.log("d", "Full single instance server name: %s", single_instance_socket.fullServerName())
         single_instance_socket.connectToServer("ultimaker-cura")
-        single_instance_socket.waitForConnected(msecs = 3000)  # wait for 3 seconds
+        single_instance_socket.waitForConnected(msecs=3000)  # wait for 3 seconds
 
         if single_instance_socket.state() != QLocalSocket.LocalSocketState.ConnectedState:
             return False
@@ -48,14 +48,14 @@ class SingleInstance:
 
             if self._application.getPreferences().getValue("cura/single_instance_clear_before_load"):
                 payload = {"command": "clear-all"}
-                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             payload = {"command": "focus"}
-            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             for filename in self._files_to_open:
                 payload = {"command": "open", "filePath": os.path.abspath(filename)}
-                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             for url in self._url_to_open:
                 payload = {"command": "open-url", "urlPath": url.toString()}
@@ -89,7 +89,7 @@ class SingleInstance:
         line = connection.readLine()
         while len(line) != 0:  # There is also a .canReadLine()
             try:
-                payload = json.loads(str(line, encoding = "ascii").strip())
+                payload = json.loads(str(line, encoding="ascii").strip())
                 command = payload["command"]
 
                 # Command: Remove all models from the build plate.

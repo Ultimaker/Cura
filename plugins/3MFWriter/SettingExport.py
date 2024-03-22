@@ -29,7 +29,7 @@ class SettingExport(QObject):
             self._selected = selected
             self.selectedChanged.emit(self._selected)
 
-    @pyqtProperty(bool, fset = setSelected, notify = selectedChanged)
+    @pyqtProperty(bool, fset=setSelected, notify=selectedChanged)
     def selected(self):
         return self._selected
 

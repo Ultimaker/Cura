@@ -66,10 +66,10 @@ class CloudPackageChecker(QObject):
         self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
         url = CloudApiModel.api_url_user_packages
         self._application.getHttpRequestManager().get(url,
-                                                      callback = self._onUserPackagesRequestFinished,
-                                                      error_callback = self._onUserPackagesRequestFinished,
-                                                      timeout = 10,
-                                                      scope = self._scope)
+                                                      callback=self._onUserPackagesRequestFinished,
+                                                      error_callback=self._onUserPackagesRequestFinished,
+                                                      timeout=10,
+                                                      scope=self._scope)
 
     def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if error is not None or HttpRequestManager.safeHttpStatus(reply) != 200:
@@ -142,12 +142,12 @@ class CloudPackageChecker(QObject):
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
             "Do you want to sync material and software packages with your account?"),
-            title = self._i18n_catalog.i18nc("@info:title", "Changes detected from your UltiMaker account", ))
+            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your UltiMaker account", ))
         sync_message.addAction("sync",
-                               name = self._i18n_catalog.i18nc("@action:button", "Sync"),
-                               icon = "",
-                               description = "Sync your plugins and print profiles to Ultimaker Cura.",
-                               button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
+                               name=self._i18n_catalog.i18nc("@action:button", "Sync"),
+                               icon="",
+                               description="Sync your plugins and print profiles to Ultimaker Cura.",
+                               button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
         sync_message.actionTriggered.connect(self._onSyncButtonClicked)
         sync_message.show()
         self._message = sync_message

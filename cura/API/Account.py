@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import enum
 from datetime import datetime
 import json
@@ -76,7 +77,7 @@ class Account(QObject):
                     "library.project.read library.project.write cura.printjob.read cura.printjob.write " \
                     "cura.mesh.read cura.mesh.write"
 
-    def __init__(self, application: "CuraApplication", parent = None) -> None:
+    def __init__(self, application: "CuraApplication", parent=None) -> None:
         super().__init__(parent)
         self._application = application
         self._new_cloud_printers_detected = False
@@ -96,7 +97,7 @@ class Account(QObject):
         self._oauth_root = UltimakerCloudConstants.CuraCloudAccountAPIRoot
 
         self._oauth_settings = OAuth2Settings(
-            OAUTH_SERVER_URL= self._oauth_root,
+            OAUTH_SERVER_URL=self._oauth_root,
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
             CLIENT_ID="um----------------------------ultimaker_cura",
@@ -196,8 +197,8 @@ class Account(QObject):
                 self._error_message.hide()
             Logger.log("w", "Failed to login: %s", error_message)
             self._error_message = Message(error_message,
-                                          title = i18n_catalog.i18nc("@info:title", "Login failed"),
-                                          message_type = Message.MessageType.ERROR)
+                                          title=i18n_catalog.i18nc("@info:title", "Login failed"),
+                                          message_type=Message.MessageType.ERROR)
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
@@ -261,13 +262,13 @@ class Account(QObject):
                 return
         self._authorization_service.startAuthorizationFlow(force_logout_before_login)
 
-    @pyqtProperty(str, notify = userProfileChanged)
+    @pyqtProperty(str, notify=userProfileChanged)
     def userName(self):
         if not self._user_profile:
             return ""
         return self._user_profile.username
 
-    @pyqtProperty(str, notify = userProfileChanged)
+    @pyqtProperty(str, notify=userProfileChanged)
     def profileImageUrl(self):
         if not self._user_profile:
             return ""
@@ -277,7 +278,7 @@ class Account(QObject):
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 
-    @pyqtProperty("QVariantMap", notify = userProfileChanged)
+    @pyqtProperty("QVariantMap", notify=userProfileChanged)
     def userProfile(self) -> Dict[str, Optional[str]]:
         """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
         if not self._user_profile:
@@ -320,21 +321,21 @@ class Account(QObject):
 
         self._authorization_service.deleteAuthData()
 
-    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
+    @deprecated("Get permissions from the 'permissions' property", since="5.2.0")
     def updateAdditionalRight(self, **kwargs) -> None:
         """Update the additional rights of the account.
         The argument(s) are the rights that need to be set"""
         self._additional_rights.update(kwargs)
         self.additionalRightsChanged.emit(self._additional_rights)
 
-    @deprecated("Get permissions from the 'permissions' property", since = "5.2.0")
-    @pyqtProperty("QVariantMap", notify = additionalRightsChanged)
+    @deprecated("Get permissions from the 'permissions' property", since="5.2.0")
+    @pyqtProperty("QVariantMap", notify=additionalRightsChanged)
     def additionalRights(self) -> Dict[str, Any]:
         """A dictionary which can be queried for additional account rights."""
         return self._additional_rights
 
     permissionsChanged = pyqtSignal()
-    @pyqtProperty("QVariantList", notify = permissionsChanged)
+    @pyqtProperty("QVariantList", notify=permissionsChanged)
     def permissions(self) -> List[str]:
         """
         The permission keys that the user has in his account.
@@ -373,10 +374,10 @@ class Account(QObject):
             Logger.error(f"Request for user permissions list failed. Network error: {error}")
 
         HttpRequestManager.getInstance().get(
-            url = f"{self._oauth_root}/users/permissions",
-            scope = JsonDecoratorScope(UltimakerCloudScope(self._application)),
-            callback = callback,
-            error_callback = error_callback,
-            timeout = 10
+            url=f"{self._oauth_root}/users/permissions",
+            scope=JsonDecoratorScope(UltimakerCloudScope(self._application)),
+            callback=callback,
+            error_callback=error_callback,
+            timeout=10
         )
 

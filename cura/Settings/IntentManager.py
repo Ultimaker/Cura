@@ -71,7 +71,7 @@ class IntentManager(QObject):
         categories = set()
         for intent in self.intentMetadatas(definition_id, nozzle_id, material_id):
             categories.add(intent["intent_category"])
-        categories.add("default") #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
+        categories.add("default")  # The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
         return list(categories)
 
     def getCurrentAvailableIntents(self) -> List[Tuple[str, str]]:
@@ -105,7 +105,7 @@ class IntentManager(QObject):
 
         result = set()  # type: Set[Tuple[str, str]]
         for intent_id in final_intent_ids:
-            intent_metadata = application.getContainerRegistry().findContainersMetadata(id = intent_id)[0]
+            intent_metadata = application.getContainerRegistry().findContainersMetadata(id=intent_id)[0]
             result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
         return list(result)
 
@@ -142,7 +142,7 @@ class IntentManager(QObject):
         """
         return empty_intent_container
 
-    @pyqtProperty(str, notify = intentCategoryChanged)
+    @pyqtProperty(str, notify=intentCategoryChanged)
     def currentIntentCategory(self) -> str:
         application = cura.CuraApplication.CuraApplication.getInstance()
         active_extruder_stack = application.getMachineManager().activeStack
@@ -183,7 +183,7 @@ class IntentManager(QObject):
             for id, intent_node in quality_node.intents.items():
                 if intent_node.intent_category == intent_category:
                     intent_id = id
-            intent = application.getContainerRegistry().findContainers(id = intent_id)
+            intent = application.getContainerRegistry().findContainers(id=intent_id)
             if intent:
                 extruder_stack.intent = intent[0]
             else:

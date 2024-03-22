@@ -31,4 +31,3 @@ def register(app):
 
     app.addNonSliceableExtension(".ufp")
     return {"mesh_reader": UFPReader.UFPReader()}
-

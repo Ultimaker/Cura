@@ -104,11 +104,11 @@ class ExtrudersModel(ListModel):
             self.addOptionalExtruderChanged.emit()
             self._updateExtruders()
 
-    @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
+    @pyqtProperty(bool, fset=setAddOptionalExtruder, notify=addOptionalExtruderChanged)
     def addOptionalExtruder(self):
         return self._add_optional_extruder
 
-    def _extrudersChanged(self, machine_id = None):
+    def _extrudersChanged(self, machine_id=None):
         """Links to the stack-changed signal of the new extruders when an extruder is swapped out or added in the
          current machine.
 
@@ -135,7 +135,7 @@ class ExtrudersModel(ListModel):
         self._active_machine_extruders = []
         extruder_manager = Application.getInstance().getExtruderManager()
         for extruder in extruder_manager.getActiveExtruderStacks():
-            if extruder is None: #This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
+            if extruder is None:  # This extruder wasn't loaded yet. This happens asynchronously while this model is constructed from QML.
                 continue
             extruder.containersChanged.connect(self._onExtruderStackContainersChanged)
             extruder.enabledChanged.connect(self._updateExtruders)
@@ -175,7 +175,7 @@ class ExtrudersModel(ListModel):
             machine_extruder_count = global_container_stack.getProperty("machine_extruder_count", "value")
 
             for extruder in Application.getInstance().getExtruderManager().getActiveExtruderStacks():
-                position = extruder.getMetaDataEntry("position", default = "0")
+                position = extruder.getMetaDataEntry("position", default="0")
                 try:
                     position = int(position)
                 except ValueError:
@@ -185,8 +185,8 @@ class ExtrudersModel(ListModel):
                     continue
 
                 default_color = self.defaultColors[position] if 0 <= position < len(self.defaultColors) else self.defaultColors[0]
-                color = extruder.material.getMetaDataEntry("color_code", default = default_color) if extruder.material else default_color
-                material_brand = extruder.material.getMetaDataEntry("brand", default = "generic")
+                color = extruder.material.getMetaDataEntry("color_code", default=default_color) if extruder.material else default_color
+                material_brand = extruder.material.getMetaDataEntry("brand", default="generic")
                 color_name = extruder.material.getMetaDataEntry("color_name")
                 # construct an item with only the relevant information
                 item = {
@@ -209,7 +209,7 @@ class ExtrudersModel(ListModel):
 
         if extruders_changed:
             # sort by extruder index
-            items.sort(key = lambda i: i["index"])
+            items.sort(key=lambda i: i["index"])
 
             # We need optional extruder to be last, so add it after we do sorting.
             # This way we can simply interpret the -1 of the index as the last item (which it now always is)

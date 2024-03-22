@@ -102,7 +102,6 @@ class SettingsExportModel(QObject):
         for child in node.getChildren():
             self._appendNodeSettings(child, f"Children of {node.getName()}", SettingsExportGroup.Category.Model)
 
-
     @pyqtProperty(list, constant=True)
     def settingsGroups(self) -> List[SettingsExportGroup]:
         return self._settings_groups

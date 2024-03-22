@@ -358,16 +358,16 @@ class FlavorParser:
 
         self._message = Message(catalog.i18nc("@info:status", "Parsing G-code"),
                                 lifetime=0,
-                                title = catalog.i18nc("@info:title", "G-code Details"))
+                                title=catalog.i18nc("@info:title", "G-code Details"))
 
-        assert(self._message is not None) # use for typing purposes
+        assert(self._message is not None)  # use for typing purposes
         self._message.setProgress(0)
         self._message.show()
 
         Logger.log("d", "Parsing g-code...")
 
         current_position = Position(0, 0, 0, 0, [0] * self.MAX_EXTRUDER_COUNT)
-        current_path = [] #type: List[List[float]]
+        current_path = []  # type: List[List[float]]
         min_layer_number = 0
         negative_layers = 0
         previous_layer = 0
@@ -470,7 +470,7 @@ class FlavorParser:
                 self._layer_number += 1
                 current_path.clear()
 
-        material_color_map = numpy.zeros((8, 4), dtype = numpy.float32)
+        material_color_map = numpy.zeros((8, 4), dtype=numpy.float32)
         material_color_map[0, :] = [0.0, 0.7, 0.9, 1.0]
         material_color_map[1, :] = [0.7, 0.9, 0.0, 1.0]
         material_color_map[2, :] = [0.9, 0.0, 0.7, 1.0]
@@ -492,7 +492,7 @@ class FlavorParser:
         # gcode_dict stores gcode_lists for a number of build plates.
         active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         gcode_dict = {active_build_plate_id: gcode_list}
-        CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict #type: ignore #Because gcode_dict is generated dynamically.
+        CuraApplication.getInstance().getController().getScene().gcode_dict = gcode_dict  # type: ignore #Because gcode_dict is generated dynamically.
 
         Logger.log("d", "Finished parsing g-code.")
         self._message.hide()
@@ -512,8 +512,8 @@ class FlavorParser:
                 "@info:generic",
                 "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."),
                 lifetime=0,
-                title = catalog.i18nc("@info:title", "G-code Details"),
-                message_type = Message.MessageType.WARNING)
+                title=catalog.i18nc("@info:title", "G-code Details"),
+                message_type=Message.MessageType.WARNING)
             caution_message.show()
 
         # The "save/print" button's state is bound to the backend state.

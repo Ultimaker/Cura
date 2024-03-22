@@ -62,34 +62,34 @@ class CloudMaterialSync(QObject):
 
     def _showSyncNewMaterialsMessage(self) -> None:
         sync_materials_message = Message(
-                text = catalog.i18nc("@action:button",
+                text=catalog.i18nc("@action:button",
                                      "Please sync the material profiles with your printers before starting to print."),
-                title = catalog.i18nc("@action:button", "New materials installed"),
-                message_type = Message.MessageType.WARNING,
-                lifetime = 0
+                title=catalog.i18nc("@action:button", "New materials installed"),
+                message_type=Message.MessageType.WARNING,
+                lifetime=0
         )
 
         sync_materials_message.addAction(
                 "sync",
-                name = catalog.i18nc("@action:button", "Sync materials"),
-                icon = "",
-                description = "Sync your newly installed materials with your printers.",
-                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
+                name=catalog.i18nc("@action:button", "Sync materials"),
+                icon="",
+                description="Sync your newly installed materials with your printers.",
+                button_align=Message.ActionButtonAlignment.ALIGN_RIGHT
         )
 
         sync_materials_message.addAction(
                 "learn_more",
-                name = catalog.i18nc("@action:button", "Learn more"),
-                icon = "",
-                description = "Learn more about syncing your newly installed materials with your printers.",
-                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
-                button_style = Message.ActionButtonStyle.LINK
+                name=catalog.i18nc("@action:button", "Learn more"),
+                icon="",
+                description="Learn more about syncing your newly installed materials with your printers.",
+                button_align=Message.ActionButtonAlignment.ALIGN_LEFT,
+                button_style=Message.ActionButtonStyle.LINK
         )
         sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
 
         # Show the message only if there are printers that support material export
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        global_stacks = container_registry.findContainerStacks(type = "machine")
+        global_stacks = container_registry.findContainerStacks(type="machine")
         if any([stack.supportsMaterialExport for stack in global_stacks]):
             sync_materials_message.show()
 
@@ -100,7 +100,7 @@ class CloudMaterialSync(QObject):
         elif sync_message_action == "learn_more":
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
 
-    @pyqtSlot(result = QUrl)
+    @pyqtSlot(result=QUrl)
     def getPreferredExportAllPath(self) -> QUrl:
         """
         Get the preferred path to export materials to.
@@ -128,18 +128,18 @@ class CloudMaterialSync(QObject):
 
         # Create empty archive.
         try:
-            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression = zipfile.ZIP_DEFLATED)
+            archive = zipfile.ZipFile(file_path.toLocalFile(), "w", compression=zipfile.ZIP_DEFLATED)
         except OSError as e:
             Logger.log("e", f"Can't write to destination {file_path.toLocalFile()}: {type(e)} - {str(e)}")
             error_message = Message(
-                text = catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
-                title = catalog.i18nc("@message:title", "Failed to save material archive"),
-                message_type = Message.MessageType.ERROR
+                text=catalog.i18nc("@message:text", "Could not save material archive to {}:").format(file_path.toLocalFile()) + " " + str(e),
+                title=catalog.i18nc("@message:title", "Failed to save material archive"),
+                message_type=Message.MessageType.ERROR
             )
             error_message.show()
             return
 
-        materials_metadata = registry.findInstanceContainersMetadata(type = "material")
+        materials_metadata = registry.findInstanceContainersMetadata(type="material")
         for index, metadata in enumerate(materials_metadata):
             if notify_progress is not None:
                 progress = index / len(materials_metadata)
@@ -151,7 +151,7 @@ class CloudMaterialSync(QObject):
             # Ignore materials that are marked as not visible for whatever reason
             if not bool(metadata.get("visible", True)):
                 continue
-            material = registry.findContainers(id = metadata["id"])[0]
+            material = registry.findContainers(id=metadata["id"])[0]
             suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
             filename = metadata["id"] + "." + suffix
             try:
@@ -161,7 +161,7 @@ class CloudMaterialSync(QObject):
 
     exportUploadStatusChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = exportUploadStatusChanged)
+    @pyqtProperty(str, notify=exportUploadStatusChanged)
     def exportUploadStatus(self) -> str:
         return self._export_upload_status
 
@@ -200,7 +200,7 @@ class CloudMaterialSync(QObject):
         self._export_progress = progress
         self.exportProgressChanged.emit(self._export_progress)
 
-    @pyqtProperty(float, fset = setExportProgress, notify = exportProgressChanged)
+    @pyqtProperty(float, fset=setExportProgress, notify=exportProgressChanged)
     def exportProgress(self) -> float:
         return self._export_progress
 
@@ -210,7 +210,7 @@ class CloudMaterialSync(QObject):
         self._printer_status = new_status
         self.printerStatusChanged.emit()
 
-    @pyqtProperty("QVariantMap", fset = setPrinterStatus, notify = printerStatusChanged)
+    @pyqtProperty("QVariantMap", fset=setPrinterStatus, notify=printerStatusChanged)
     def printerStatus(self) -> Dict[str, str]:
         return self._printer_status
 

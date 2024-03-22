@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+
 import os
 from typing import Optional, List
 
@@ -18,8 +19,8 @@ from .DigitalFactoryController import DigitalFactoryController
 class DigitalFactoryOutputDevice(ProjectOutputDevice):
     """Implements an OutputDevice that supports saving to the digital factory library."""
 
-    def __init__(self, plugin_id, df_controller: DigitalFactoryController, add_to_output_devices: bool = False, parent = None) -> None:
-        super().__init__(device_id = "digital_factory", add_to_output_devices = add_to_output_devices, parent = parent)
+    def __init__(self, plugin_id, df_controller: DigitalFactoryController, add_to_output_devices: bool = False, parent=None) -> None:
+        super().__init__(device_id="digital_factory", add_to_output_devices=add_to_output_devices, parent=parent)
 
         self.setName("Digital Library")  # Doesn't need to be translated
         self.setShortDescription("Save to Library")
@@ -63,7 +64,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         :param limit_mimetypes: Limit the possible mimetypes to use for writing to these types.
         :param file_handler: The handler responsible for reading and writing mesh files.
         :param kwargs: Keyword arguments.
-        """
+        """# Copyright (c) 2021 Ultimaker B.V.
 
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
@@ -73,7 +74,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
             self._controller.nodes = nodes
 
             df_workspace_information = self._current_workspace_information.getPluginMetadata("digital_factory")
-            self._controller.initialize(preselected_project_id = df_workspace_information.get("library_project_id"))
+            self._controller.initialize(preselected_project_id=df_workspace_information.get("library_project_id"))
 
             if not self._dialog:
                 Logger.log("e", "Unable to create the Digital Library Save dialog.")
@@ -112,7 +113,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         self._writing = True
         if new_name and Version(ApplicationMetadata.CuraSDKVersion) >= Version("7.8.0"):
             # setLastOutputName is only supported in sdk version 7.8.0 and up
-            self.setLastOutputName(new_name) # On saving, the user can change the name, this should propagate.
+            self.setLastOutputName(new_name)  # On saving, the user can change the name, this should propagate.
         self.writeStarted.emit(self)
 
     def _onWriteFinished(self) -> None:

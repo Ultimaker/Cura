@@ -5,6 +5,7 @@ from . import X3DReader
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
+
 def getMetaData():
     return {
         "mesh_reader": [

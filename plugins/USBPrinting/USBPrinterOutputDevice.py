@@ -38,7 +38,7 @@ catalog = i18nCatalog("cura")
 
 class USBPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, serial_port: str, baud_rate: Optional[int] = None) -> None:
-        super().__init__(serial_port, connection_type = ConnectionType.UsbConnection)
+        super().__init__(serial_port, connection_type=ConnectionType.UsbConnection)
         self.setName(catalog.i18nc("@item:inmenu", "USB printing"))
         self.setShortDescription(catalog.i18nc("@action:button Preceded by 'Ready to'.", "Print via USB"))
         self.setDescription(catalog.i18nc("@info:tooltip", "Print via USB"))
@@ -51,7 +51,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._timeout = 3
 
         # List of gcode lines to be printed
-        self._gcode = [] # type: List[str]
+        self._gcode = []  # type: List[str]
         self._gcode_position = 0
 
         self._use_auto_detect = True
@@ -61,14 +61,14 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target = self._update, daemon = True, name = "USBPrinterUpdate")
+        self._update_thread = Thread(target=self._update, daemon=True, name="USBPrinterUpdate")
 
         self._last_temperature_request = None  # type: Optional[int]
         self._firmware_idle_count = 0
 
         self._is_printing = False  # A print is being sent.
 
-        ## Set when print is started in order to check running time.
+        # Set when print is started in order to check running time.
         self._print_start_time = None  # type: Optional[float]
         self._print_estimated_time = None  # type: Optional[int]
 
@@ -131,10 +131,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         """
 
         if self._is_printing:
-            message = Message(text = catalog.i18nc("@message",
+            message = Message(text=catalog.i18nc("@message",
                                                    "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."),
-                              title = catalog.i18nc("@message", "Print in Progress"),
-                              message_type = Message.MessageType.ERROR)
+                              title=catalog.i18nc("@message", "Print in Progress"),
+                              message_type=Message.MessageType.ERROR)
             message.show()
             return  # Already printing
         self.writeStarted.emit(self)
@@ -205,7 +205,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
                 Logger.warning("An exception occurred while trying to create serial connection.")
                 return
             except OSError as e:
-                Logger.warning("The serial device is suddenly unavailable while trying to create a serial connection: {err}".format(err = str(e)))
+                Logger.warning("The serial device is suddenly unavailable while trying to create a serial connection: {err}".format(err=str(e)))
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
@@ -220,7 +220,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         # Ensure that a printer is created.
         controller = GenericOutputController(self)
         controller.setCanUpdateFirmware(True)
-        self._printers = [PrinterOutputModel(output_controller = controller, number_of_extruders = num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=controller, number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
 
     def close(self):
@@ -229,7 +229,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._serial.close()
 
         # Re-create the thread so it can be started again later.
-        self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
+        self._update_thread = Thread(target=self._update, daemon=True, name="USBPrinterUpdate")
         self._serial = None
 
     def sendCommand(self, command: Union[str, bytes]):
@@ -244,7 +244,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._serial is None or self._connection_state != ConnectionState.Connected:
             return
 
-        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode() # type: bytes
+        new_command = cast(bytes, command) if type(command) is bytes else cast(str, command).encode()  # type: bytes
         if not new_command.endswith(b"\n"):
             new_command += b"\n"
         try:
@@ -361,7 +361,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def resumePrint(self):
         self._paused = False
-        self._sendNextGcodeLine() #Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
+        self._sendNextGcodeLine()  # Send one line of g-code next so that we'll trigger an "ok" response loop even if we're not polling temperatures.
 
     def cancelPrint(self):
         self._gcode_position = 0

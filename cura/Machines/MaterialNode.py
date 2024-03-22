@@ -28,7 +28,7 @@ class MaterialNode(ContainerNode):
         self.materialChanged = Signal()  # Triggered when the material is removed or its metadata is updated.
 
         container_registry = ContainerRegistry.getInstance()
-        my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+        my_metadata = container_registry.findContainersMetadata(id=container_id)[0]
         self.base_file = my_metadata["base_file"]
         self.material_type = my_metadata["material"]
         self.brand = my_metadata["brand"]
@@ -52,10 +52,10 @@ class MaterialNode(ContainerNode):
                 return quality_node
         fallback = next(iter(self.qualities.values()))  # Should only happen with empty quality node.
         Logger.log("w", "Could not find preferred quality type {preferred_quality_type} for material {material_id} and variant {variant_id}, falling back to {fallback}.".format(
-            preferred_quality_type = self.variant.machine.preferred_quality_type,
-            material_id = self.container_id,
-            variant_id = self.variant.container_id,
-            fallback = fallback.container_id
+            preferred_quality_type=self.variant.machine.preferred_quality_type,
+            material_id=self.container_id,
+            variant_id=self.variant.container_id,
+            fallback=fallback.container_id
         ))
         return fallback
 
@@ -64,35 +64,35 @@ class MaterialNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
         # Find all quality profiles that fit on this material.
         if not self.variant.machine.has_machine_quality:  # Need to find the global qualities.
-            qualities = container_registry.findInstanceContainersMetadata(type = "quality",
-                                                                          definition = "fdmprinter")
+            qualities = container_registry.findInstanceContainersMetadata(type="quality",
+                                                                          definition="fdmprinter")
         elif not self.variant.machine.has_materials:
-            qualities = container_registry.findInstanceContainersMetadata(type = "quality",
-                                                                          definition = self.variant.machine.quality_definition)
+            qualities = container_registry.findInstanceContainersMetadata(type="quality",
+                                                                          definition=self.variant.machine.quality_definition)
         else:
             if self.variant.machine.has_variants:
                 # Need to find the qualities that specify a material profile with the same material type.
-                qualities = container_registry.findInstanceContainersMetadata(type = "quality",
-                                                                              definition = self.variant.machine.quality_definition,
-                                                                              variant = self.variant.variant_name,
-                                                                              material = self.base_file)  # First try by exact material ID.
+                qualities = container_registry.findInstanceContainersMetadata(type="quality",
+                                                                              definition=self.variant.machine.quality_definition,
+                                                                              variant=self.variant.variant_name,
+                                                                              material=self.base_file)  # First try by exact material ID.
                 # CURA-7070
                 # The quality profiles only reference a material with the material_root_id. They will never state something
                 # such as "generic_pla_ultimaker_s5_AA_0.4". So we search with the "base_file" which is the material_root_id.
             else:
-                qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, material = self.base_file)
+                qualities = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition, material=self.base_file)
 
             if not qualities:
                 my_material_type = self.material_type
                 if self.variant.machine.has_variants:
-                    qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality",
-                                                                                               definition = self.variant.machine.quality_definition,
-                                                                                               variant = self.variant.variant_name)
+                    qualities_any_material = container_registry.findInstanceContainersMetadata(type="quality",
+                                                                                               definition=self.variant.machine.quality_definition,
+                                                                                               variant=self.variant.variant_name)
                 else:
-                    qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition)
+                    qualities_any_material = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition)
 
                 # First we attempt to find materials that have the same brand but not the right color
-                all_material_base_files_right_brand = {material_metadata["base_file"] for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type, brand = self.brand)}
+                all_material_base_files_right_brand = {material_metadata["base_file"] for material_metadata in container_registry.findInstanceContainersMetadata(type="material", material=my_material_type, brand=self.brand)}
 
                 right_brand_no_color_qualities = [quality for quality in qualities_any_material if quality.get("material") in all_material_base_files_right_brand]
 
@@ -110,7 +110,7 @@ class MaterialNode(ContainerNode):
 
                 if not qualities:  # No quality profiles found. Go by GUID then.
                     my_guid = self.guid
-                    for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", guid = my_guid):
+                    for material_metadata in container_registry.findInstanceContainersMetadata(type="material", guid=my_guid):
                         qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["base_file"]))
 
                 if not qualities:
@@ -122,9 +122,9 @@ class MaterialNode(ContainerNode):
         for quality in qualities:
             quality_id = quality["id"]
             if quality_id not in self.qualities:
-                self.qualities[quality_id] = QualityNode(quality_id, parent = self)
+                self.qualities[quality_id] = QualityNode(quality_id, parent=self)
         if not self.qualities:
-            self.qualities["empty_quality"] = QualityNode("empty_quality", parent = self)
+            self.qualities["empty_quality"] = QualityNode("empty_quality", parent=self)
 
     def _onRemoved(self, container: ContainerInterface) -> None:
         """Triggered when any container is removed, but only handles it when the container is removed that this node
@@ -138,7 +138,7 @@ class MaterialNode(ContainerNode):
             if self.base_file in self.variant.materials:
                 del self.variant.materials[self.base_file]
                 if not self.variant.materials:
-                    self.variant.materials["empty_material"] = MaterialNode("empty_material", variant = self.variant)
+                    self.variant.materials["empty_material"] = MaterialNode("empty_material", variant=self.variant)
             self.materialChanged.emit(self)
 
     def _onMetadataChanged(self, container: ContainerInterface, **kwargs: Any) -> None:

@@ -1,5 +1,6 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import numpy
 
 from typing import Optional
@@ -223,7 +224,7 @@ class Snapshot:
         # Scale it to the correct size
         scaled_image = cropped_image.scaled(
             width, height,
-            aspectRatioMode = QtCore.Qt.AspectRatioMode.IgnoreAspectRatio,
-            transformMode = QtCore.Qt.TransformationMode.SmoothTransformation)
+            aspectRatioMode=QtCore.Qt.AspectRatioMode.IgnoreAspectRatio,
+            transformMode=QtCore.Qt.TransformationMode.SmoothTransformation)
 
         return scaled_image
