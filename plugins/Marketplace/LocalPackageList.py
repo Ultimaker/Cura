@@ -44,7 +44,7 @@ class LocalPackageList(PackageList):
 
     def _sortSectionsOnUpdate(self) -> None:
         section_order = dict(zip([i for k, v in self.PACKAGE_CATEGORIES.items() for i in self.PACKAGE_CATEGORIES[k].values()], ["a", "b", "c", "d"]))
-        self.sort(lambda model: (section_order[model.sectionTitle], not model.canUpdate, model.displayName.lower()), key = "package")
+        self.sort(lambda model: (section_order[model.sectionTitle], not model.canUpdate, model.displayName.lower()), key="package")
 
     def _removePackageModel(self, package_id: str) -> None:
         """
@@ -97,8 +97,8 @@ class LocalPackageList(PackageList):
 
         self._ongoing_requests["check_updates"] = HttpRequestManager.getInstance().get(
             request_url,
-            scope = self._scope,
-            callback = self._parseResponse
+            scope=self._scope,
+            callback=self._parseResponse
         )
 
     def _parseResponse(self, reply: "QNetworkReply") -> None:

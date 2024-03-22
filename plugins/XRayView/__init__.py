@@ -15,4 +15,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "view": XRayView.XRayView() }
+    return {"view": XRayView.XRayView()}

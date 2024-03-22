@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, TYPE_CHECKING
 
 from PyQt6.QtCore import QObject, pyqtProperty
@@ -31,7 +32,7 @@ class CuraAPI(QObject):
     #   Since the API is intended to be used by plugins, the cura application should have already created this.
     def __new__(cls, application: Optional["CuraApplication"] = None):
         if cls.__instance is not None:
-            raise RuntimeError("Tried to create singleton '{class_name}' more than once.".format(class_name = CuraAPI.__name__))
+            raise RuntimeError("Tried to create singleton '{class_name}' more than once.".format(class_name=CuraAPI.__name__))
         if application is None:
             raise RuntimeError("Upon first time creation, the application must be set.")
         instance = super(CuraAPI, cls).__new__(cls)
@@ -39,7 +40,7 @@ class CuraAPI(QObject):
         return instance
 
     def __init__(self, application: Optional["CuraApplication"] = None) -> None:
-        super().__init__(parent = CuraAPI._application)
+        super().__init__(parent=CuraAPI._application)
         CuraAPI.__instance = self
 
         self._account = Account(self._application)
@@ -54,13 +55,13 @@ class CuraAPI(QObject):
     def initialize(self) -> None:
         self._account.initialize()
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def account(self) -> "Account":
         """Accounts API"""
 
         return self._account
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def connectionStatus(self) -> "ConnectionStatus":
         return self._connectionStatus
 

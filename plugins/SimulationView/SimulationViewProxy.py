@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty
@@ -106,27 +107,27 @@ class SimulationViewProxy(QObject):
     def getSimulationRunning(self):
         return self._simulation_view.isSimulationRunning()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def minFeedrate(self):
         return self._simulation_view.getMinFeedrate()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def maxFeedrate(self):
         return self._simulation_view.getMaxFeedrate()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def minThickness(self):
         return self._simulation_view.getMinThickness()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def maxThickness(self):
         return self._simulation_view.getMaxThickness()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def maxLineWidth(self):
         return self._simulation_view.getMaxLineWidth()
 
-    @pyqtProperty(float, notify = colorSchemeLimitsChanged)
+    @pyqtProperty(float, notify=colorSchemeLimitsChanged)
     def minLineWidth(self):
         return self._simulation_view.getMinLineWidth()
 

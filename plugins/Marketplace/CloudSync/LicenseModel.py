@@ -17,7 +17,7 @@ class LicenseModel(QObject):
     licenseTextChanged = pyqtSignal()
     iconChanged = pyqtSignal()
 
-    def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT, parent = None) -> None:
+    def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT, parent=None) -> None:
         super().__init__(parent)
 
         self._current_page_idx = 0
@@ -28,11 +28,11 @@ class LicenseModel(QObject):
         self._icon_url = ""
         self._decline_button_text = decline_button_text
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def acceptButtonText(self):
         return self.ACCEPT_BUTTON_TEXT
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def declineButtonText(self):
         return self._decline_button_text
 

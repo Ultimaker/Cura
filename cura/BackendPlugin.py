@@ -1,5 +1,6 @@
 # Copyright (c) 2023 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import socket
 import os
 import subprocess
@@ -100,22 +101,22 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
             Logger.log("e", f"Couldn't start EnginePlugin: {self._plugin_id} No permission to execute process.")
             self._showMessage(self.catalog.i18nc("@info:plugin_failed",
                                                  f"Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."),
-                              message_type = Message.MessageType.ERROR)
+                              message_type=Message.MessageType.ERROR)
         except FileNotFoundError:
             Logger.logException("e", f"Unable to find local EnginePlugin server executable for: {self._plugin_id}")
             self._showMessage(self.catalog.i18nc("@info:plugin_failed",
                                                  f"Unable to find local EnginePlugin server executable for: {self._plugin_id}"),
-                              message_type = Message.MessageType.ERROR)
+                              message_type=Message.MessageType.ERROR)
         except BlockingIOError:
             Logger.logException("e", f"Couldn't start EnginePlugin: {self._plugin_id} Resource is temporarily unavailable")
             self._showMessage(self.catalog.i18nc("@info:plugin_failed",
                                                  f"Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"),
-                              message_type = Message.MessageType.ERROR)
+                              message_type=Message.MessageType.ERROR)
         except OSError as e:
             Logger.logException("e", f"Couldn't start EnginePlugin {self._plugin_id} Operating system is blocking it (antivirus?)")
             self._showMessage(self.catalog.i18nc("@info:plugin_failed",
                                                  f"Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"),
-                              message_type = Message.MessageType.ERROR)
+                              message_type=Message.MessageType.ERROR)
         return False
 
     def stop(self) -> bool:
@@ -133,9 +134,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
             Logger.log("e", f"Unable to kill running EnginePlugin: {self._plugin_id} Access is denied.")
             self._showMessage(self.catalog.i18nc("@info:plugin_failed",
                                                  f"Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."),
-                              message_type = Message.MessageType.ERROR)
+                              message_type=Message.MessageType.ERROR)
             return False
 
     def _showMessage(self, message: str, message_type: Message.MessageType = Message.MessageType.ERROR) -> None:
-        Message(message, title=self.catalog.i18nc("@info:title", "EnginePlugin"), message_type = message_type).show()
-
+        Message(message, title=self.catalog.i18nc("@info:title", "EnginePlugin"), message_type=message_type).show()

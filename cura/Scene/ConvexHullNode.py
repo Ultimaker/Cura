@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, TYPE_CHECKING
 
 from UM.Application import Application
@@ -60,7 +61,7 @@ class ConvexHullNode(SceneNode):
             if self._thickness == 0:
                 if hull_mesh_builder.addConvexPolygon(
                     self._hull.getPoints()[::],  # bottom layer is reversed
-                    self._mesh_height, color = self._color):
+                    self._mesh_height, color=self._color):
                     hull_mesh_builder.resetNormals()
 
                     hull_mesh = hull_mesh_builder.build()
@@ -68,7 +69,7 @@ class ConvexHullNode(SceneNode):
             else:
                 if hull_mesh_builder.addConvexPolygonExtrusion(
                     self._hull.getPoints()[::-1],  # bottom layer is reversed
-                    self._mesh_height - thickness, self._mesh_height, color = self._color):
+                    self._mesh_height - thickness, self._mesh_height, color=self._color):
                     hull_mesh_builder.resetNormals()
                     hull_mesh = hull_mesh_builder.build()
                     self.setMeshData(hull_mesh)
@@ -89,13 +90,13 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
         batch = renderer.getNamedBatch("convex_hull_node")
         if not batch:
-            batch = renderer.createRenderBatch(transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
-            renderer.addRenderBatch(batch, name = "convex_hull_node")
-        batch.addItem(self.getWorldTransformation(copy = False), self.getMeshData())
+            batch = renderer.createRenderBatch(transparent=True, shader=ConvexHullNode.shader, backface_cull=True, sort=-8)
+            renderer.addRenderBatch(batch, name="convex_hull_node")
+        batch.addItem(self.getWorldTransformation(copy=False), self.getMeshData())
         if self._convex_hull_head_mesh:
             # The full head. Rendered as a hint to the user: If this area overlaps another object A; this object
             # cannot be printed after A, because the head would hit A while printing the current object
-            renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
+            renderer.queueNode(self, shader=ConvexHullNode.shader, transparent=True, mesh=self._convex_hull_head_mesh, backface_cull=True, sort=-8)
 
         return True
 

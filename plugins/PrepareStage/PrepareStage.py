@@ -10,7 +10,7 @@ from cura.Stages.CuraStage import CuraStage
 class PrepareStage(CuraStage):
     """Stage for preparing model (slicing)."""
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         Application.getInstance().engineCreatedSignal.connect(self._engineCreated)
 

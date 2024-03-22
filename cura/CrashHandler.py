@@ -264,9 +264,9 @@ class CrashHandler:
             return catalog.i18nc("@label", "Not yet initialized") + "<br />"
 
         info = "<ul>"
-        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
-        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor = opengl_instance.getGPUVendorName())
-        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer = opengl_instance.getGPUType())
+        info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version=opengl_instance.getOpenGLVersion())
+        info += catalog.i18nc("@label OpenGL vendor", "<li>OpenGL Vendor: {vendor}</li>").format(vendor=opengl_instance.getGPUVendorName())
+        info += catalog.i18nc("@label OpenGL renderer", "<li>OpenGL Renderer: {renderer}</li>").format(renderer=opengl_instance.getGPUType())
         info += "</ul>"
 
         self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
@@ -360,7 +360,7 @@ class CrashHandler:
 
             json_metadata_file = os.path.join(directory, "plugin.json")
             try:
-                with open(json_metadata_file, "r", encoding = "utf-8") as f:
+                with open(json_metadata_file, "r", encoding="utf-8") as f:
                     try:
                         metadata = json.loads(f.read())
                         module_version = metadata["version"]
@@ -391,11 +391,11 @@ class CrashHandler:
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
-        tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix = "cura-crash", text = True)
+        tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix="cura-crash", text=True)
         os.close(tmp_file_fd)
-        with open(tmp_file_path, "w", encoding = "utf-8") as f:
+        with open(tmp_file_path, "w", encoding="utf-8") as f:
             faulthandler.dump_traceback(f, all_threads=True)
-        with open(tmp_file_path, "r", encoding = "utf-8") as f:
+        with open(tmp_file_path, "r", encoding="utf-8") as f:
             logdata = f.read()
 
         text_area.setText(logdata)
@@ -428,7 +428,7 @@ class CrashHandler:
                 if not Logger.getLoggers():
                     # No loggers have been loaded yet, so we don't have any breadcrumbs :(
                     # So add them manually so we at least have some info...
-                    add_breadcrumb(level = "info", message = "SentryLogging was not initialised yet")
+                    add_breadcrumb(level="info", message="SentryLogging was not initialised yet")
                     for log_type, line in Logger.getUnloggedLines():
                         add_breadcrumb(message=line)
 

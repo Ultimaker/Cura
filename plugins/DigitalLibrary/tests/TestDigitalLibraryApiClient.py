@@ -12,13 +12,13 @@ from src.PaginationManager import PaginationManager
 
 @pytest.fixture
 def application():
-    app = MagicMock(spec=CuraApplication, name = "Mocked Cura Application")
+    app = MagicMock(spec=CuraApplication, name="Mocked Cura Application")
     return app
 
 
 @pytest.fixture
 def pagination_manager():
-    manager = MagicMock(name = "Mocked Pagination Manager")
+    manager = MagicMock(name="Mocked Pagination Manager")
     return manager
 
 
@@ -40,7 +40,7 @@ def test_getProjectsFirstPage(api_client):
     failed_callback = MagicMock()
 
     # Call
-    api_client.getProjectsFirstPage(search_filter = "filter", on_finished = finished_callback, failed = failed_callback)
+    api_client.getProjectsFirstPage(search_filter="filter", on_finished=finished_callback, failed=failed_callback)
 
     # Asserts
     pagination_manager.reset.assert_called_once()  # Should be called since we asked for new set of projects
@@ -53,7 +53,7 @@ def test_getProjectsFirstPage(api_client):
     # Change the limit & try again
     http_manager.get.reset_mock()
     pagination_manager.limit = 80
-    api_client.getProjectsFirstPage(search_filter = "filter", on_finished = finished_callback, failed = failed_callback)
+    api_client.getProjectsFirstPage(search_filter="filter", on_finished=finished_callback, failed=failed_callback)
     args = http_manager.get.call_args_list[0]
 
     # Ensure that it's called with the right limit
@@ -61,7 +61,7 @@ def test_getProjectsFirstPage(api_client):
 
 
 def test_getMoreProjects_noNewProjects(api_client):
-    api_client.hasMoreProjectsToLoad = MagicMock(return_value = False)
+    api_client.hasMoreProjectsToLoad = MagicMock(return_value=False)
     http_manager = MagicMock()
     api_client._http = http_manager
 
@@ -73,7 +73,7 @@ def test_getMoreProjects_noNewProjects(api_client):
 
 
 def test_getMoreProjects_hasNewProjects(api_client):
-    api_client.hasMoreProjectsToLoad = MagicMock(return_value = True)
+    api_client.hasMoreProjectsToLoad = MagicMock(return_value=True)
     http_manager = MagicMock()
     api_client._http = http_manager
 
