@@ -7,7 +7,7 @@ import cura.CuraApplication  # To listen to changes to the preferences.
 class FavoriteMaterialsModel(BaseMaterialsModel):
     """Model that shows the list of favorite materials."""
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
         self._onChanged()
@@ -40,6 +40,6 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
                 item_list.append(item)
 
         # Sort the item list alphabetically by name
-        item_list = sorted(item_list, key = lambda d: d["brand"].upper())
+        item_list = sorted(item_list, key=lambda d: d["brand"].upper())
 
         self.setItems(item_list)

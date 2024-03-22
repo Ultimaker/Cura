@@ -97,14 +97,14 @@ class GenericOutputController(PrinterOutputController):
         except ValueError:
             return  # Got invalid values, can't pre-heat.
 
-        self.setTargetBedTemperature(printer, temperature = temperature)
+        self.setTargetBedTemperature(printer, temperature=temperature)
         self._preheat_bed_timer.setInterval(duration * 1000)
         self._preheat_bed_timer.start()
         self._preheat_printer = printer
         printer.updateIsPreheating(True)
 
     def cancelPreheatBed(self, printer: "PrinterOutputModel") -> None:
-        self.setTargetBedTemperature(printer, temperature = 0)
+        self.setTargetBedTemperature(printer, temperature=0)
         self._preheat_bed_timer.stop()
         printer.updateIsPreheating(False)
 

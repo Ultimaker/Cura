@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 import re
 import sys
@@ -48,7 +51,7 @@ class InvalidImportsChecker:
         :return: True if checks passed, False when the test fails
         """
         passed = True
-        with open(file_path, 'r', encoding = "utf-8") as inputFile:
+        with open(file_path, 'r', encoding="utf-8") as inputFile:
             # loop through each line in file
             for line_i, line in enumerate(inputFile, 1):
                 # check if we have a regex match

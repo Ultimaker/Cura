@@ -27,7 +27,7 @@ def lionbridge_import(source: str) -> None:
         print("================ Processing language:", language, "================")
         directory = os.path.join(source, language)
         for file_pot in (file for file in os.listdir(directory) if file.endswith(".pot")):
-            source_file = file_pot[:-4] #Strip extension.
+            source_file = file_pot[:-4]  # Strip extension.
             if source_file in cura_files:
                 destination_file = os.path.join(destination_cura(), language.replace("-", "_"), source_file + ".po")
                 print("Merging", source_file, "(Cura) into", destination_file)
@@ -37,12 +37,12 @@ def lionbridge_import(source: str) -> None:
             else:
                 raise Exception("Unknown file: " + source_file + "... Is this Cura or Uranium?")
 
-            with io.open(os.path.join(directory, file_pot), encoding = "utf8") as f:
+            with io.open(os.path.join(directory, file_pot), encoding="utf8") as f:
                 source_str = f.read()
-            with io.open(destination_file, encoding = "utf8") as f:
+            with io.open(destination_file, encoding="utf8") as f:
                 destination_str = f.read()
             result = merge(source_str, destination_str)
-            with io.open(destination_file, "w", encoding = "utf8") as f:
+            with io.open(destination_file, "w", encoding="utf8") as f:
                 f.write(result)
 
 
@@ -114,12 +114,12 @@ def merge(source: str, destination: str) -> str:
                 last_destination["msgstr"] = find_translation(source, last_destination["msgctxt"], last_destination["msgid"]) #Actually place the translation in.
             if last_destination["msgctxt"] != "\"\"\n" or last_destination["msgid"] != "\"\"\n" or last_destination["msgid_plural"] != "\"\"\n" or last_destination["msgstr"] != "\"\"\n":
                 if last_destination["msgctxt"] != "\"\"\n":
-                    result_lines.append("msgctxt {msgctxt}".format(msgctxt = last_destination["msgctxt"][:-1])) #The [:-1] to strip the last newline.
-                result_lines.append("msgid {msgid}".format(msgid = last_destination["msgid"][:-1]))
+                    result_lines.append("msgctxt {msgctxt}".format(msgctxt=last_destination["msgctxt"][:-1]))  # The [:-1] to strip the last newline.
+                result_lines.append("msgid {msgid}".format(msgid=last_destination["msgid"][:-1]))
                 if last_destination["msgid_plural"] != "\"\"\n":
-                    result_lines.append("msgid_plural {msgid_plural}".format(msgid_plural = last_destination["msgid_plural"][:-1]))
+                    result_lines.append("msgid_plural {msgid_plural}".format(msgid_plural=last_destination["msgid_plural"][:-1]))
                 else:
-                    result_lines.append("msgstr {msgstr}".format(msgstr = last_destination["msgstr"][:-1]))
+                    result_lines.append("msgstr {msgstr}".format(msgstr=last_destination["msgstr"][:-1]))
             last_destination = {
                 "msgctxt": "\"\"\n",
                 "msgid": "\"\"\n",
@@ -185,7 +185,7 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
                 "msgid_plural": "\"\"\n"
             }
 
-    #Still here? Then the entire msgctxt+msgid combination was not found at all.
+    # Still here? Then the entire msgctxt+msgid combination was not found at all.
     print("!!! Missing translation for {" + msgctxt.strip() + "}", msgid.strip(), "!!!")
     return "\"\"\n"
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
    python3 /path/to/lionbridge_import.py /home/username/Desktop/cura_translations
 """)
 
-    argparser = argparse.ArgumentParser(description = "Import translation files from Lionbridge.")
+    argparser = argparse.ArgumentParser(description="Import translation files from Lionbridge.")
     argparser.add_argument("source")
     args = argparser.parse_args()
     lionbridge_import(args.source)

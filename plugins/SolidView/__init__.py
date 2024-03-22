@@ -16,4 +16,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "view": SolidView.SolidView() }
+    return {"view": SolidView.SolidView()}

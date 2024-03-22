@@ -46,11 +46,11 @@ def generate_appimage_builder_config(dist_path, version, appimage_filename):
         appimage_builder = appimage_builder_file.read()
 
     template = Template(appimage_builder)
-    appimage_builder = template.render(app_dir = "./AppDir",
-                                       icon = "cura-icon.png",
-                                       version = version,
-                                       arch = "x86_64",
-                                       file_name = appimage_filename)
+    appimage_builder = template.render(app_dir="./AppDir",
+                                       icon="cura-icon.png",
+                                       version=version,
+                                       arch="x86_64",
+                                       file_name=appimage_filename)
 
     with open(os.path.join(Path(__file__).parent, "AppImageBuilder.yml"), "w") as appimage_builder_file:
         appimage_builder_file.write(appimage_builder)
@@ -73,7 +73,7 @@ def copy_files(dist_path):
     packaging_dir = os.path.dirname(__file__)
     for source, dest in copied_files.items():
         dest_file_path = os.path.join(dist_path, dest)
-        os.makedirs(os.path.dirname(dest_file_path), exist_ok = True)
+        os.makedirs(os.path.dirname(dest_file_path), exist_ok=True)
         shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
 
 
@@ -93,10 +93,10 @@ def sign_appimage(appimage_filename):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Create AppImages of Cura.")
-    parser.add_argument("dist_path", type = str, help = "Path to where PyInstaller installed the distribution of Cura.")
-    parser.add_argument("version", type = str, help = "Full version number of Cura (e.g. '5.1.0-beta')")
-    parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
+    parser = argparse.ArgumentParser(description="Create AppImages of Cura.")
+    parser.add_argument("dist_path", type=str, help="Path to where PyInstaller installed the distribution of Cura.")
+    parser.add_argument("version", type=str, help="Full version number of Cura (e.g. '5.1.0-beta')")
+    parser.add_argument("filename", type=str, help="Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
     prepare_workspace(args.dist_path, args.filename)
     build_appimage(args.dist_path, args.version, args.filename)

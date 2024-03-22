@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional
 
 from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
@@ -20,7 +21,7 @@ class ExtruderConfigurationModel(QObject):
     def setPosition(self, position: int) -> None:
         self._position = position
 
-    @pyqtProperty(int, fset = setPosition, notify = extruderConfigurationChanged)
+    @pyqtProperty(int, fset=setPosition, notify=extruderConfigurationChanged)
     def position(self) -> int:
         return self._position
 
@@ -30,11 +31,11 @@ class ExtruderConfigurationModel(QObject):
         self._material = material
         self.extruderConfigurationChanged.emit()
 
-    @pyqtProperty(QObject, fset = setMaterial, notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, fset=setMaterial, notify=extruderConfigurationChanged)
     def activeMaterial(self) -> Optional[MaterialOutputModel]:
         return self._material
 
-    @pyqtProperty(QObject, fset = setMaterial, notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, fset=setMaterial, notify=extruderConfigurationChanged)
     def material(self) -> Optional[MaterialOutputModel]:
         return self._material
 
@@ -56,7 +57,7 @@ class ExtruderConfigurationModel(QObject):
             return _EXTRUDER_NAME_MAP[hotendId]
         return hotendId
 
-    @pyqtProperty(str, fset = setHotendID, notify = extruderConfigurationChanged)
+    @pyqtProperty(str, fset=setHotendID, notify=extruderConfigurationChanged)
     def hotendID(self) -> Optional[str]:
         return self._hotend_id
 

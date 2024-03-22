@@ -22,12 +22,12 @@ class CuraView(View):
                                                                                 "EmptyViewMenuComponent.qml"))
         self._use_empty_menu_placeholder = use_empty_menu_placeholder
 
-    @pyqtProperty(QUrl, constant = True)
+    @pyqtProperty(QUrl, constant=True)
     def mainComponent(self) -> QUrl:
         return self.getDisplayComponent("main")
 
 
-    @pyqtProperty(QUrl, constant = True)
+    @pyqtProperty(QUrl, constant=True)
     def stageMenuComponent(self) -> QUrl:
         url = self.getDisplayComponent("menu")
         if not url.toString() and self._use_empty_menu_placeholder:

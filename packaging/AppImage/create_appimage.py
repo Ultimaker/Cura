@@ -56,7 +56,7 @@ def copy_metadata_files(dist_path, version):
     with open(template_path, "r") as f:
         desktop_file = Template(f.read())
     with open(desktop_path, "w") as f:
-        f.write(desktop_file.render(cura_version = version))
+        f.write(desktop_file.render(cura_version=version))
 
 def generate_appimage(dist_path, appimage_filename):
     appimage_path = os.path.join(dist_path, "..", appimage_filename)
@@ -74,9 +74,9 @@ def sign_appimage(dist_path, appimage_filename):
         raise RuntimeError(f"The GPG command returned non-zero: {result}")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description = "Create AppImages of Cura.")
+    parser = argparse.ArgumentParser(description="Create AppImages of Cura.")
     parser.add_argument("dist_path", type=str, help="Path to where PyInstaller installed the distribution of Cura.")
     parser.add_argument("version", type=str, help="Full version number of Cura (e.g. '5.1.0-beta')")
-    parser.add_argument("filename", type = str, help = "Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
+    parser.add_argument("filename", type=str, help="Filename of the AppImage (e.g. 'UltiMaker-Cura-5.1.0-beta-Linux-X64.AppImage')")
     args = parser.parse_args()
     build_appimage(args.dist_path, args.version, args.filename)

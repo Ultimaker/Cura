@@ -68,7 +68,7 @@ class WorkspaceDialog(QObject):
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = MachineListModel(self, listenToChanges = False, showCloudPrinters = True)
+        self._updatable_machines_model = MachineListModel(self, listenToChanges=False, showCloudPrinters=True)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
@@ -105,7 +105,7 @@ class WorkspaceDialog(QObject):
     isCompatibleMachineChanged = pyqtSignal()
     isUcpChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = isPrinterGroupChanged)
+    @pyqtProperty(bool, notify=isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
         return self._is_printer_group
 
@@ -149,7 +149,7 @@ class WorkspaceDialog(QObject):
             self._objects_on_plate = objects_on_plate
             self.objectsOnPlateChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = materialLabelsChanged)
+    @pyqtProperty("QVariantList", notify=materialLabelsChanged)
     def materialLabels(self) -> List[str]:
         return self._material_labels
 
@@ -167,7 +167,7 @@ class WorkspaceDialog(QObject):
             self._extruders = extruders
             self.extrudersChanged.emit()
 
-    @pyqtProperty(str, notify = machineNameChanged)
+    @pyqtProperty(str, notify=machineNameChanged)
     def machineName(self) -> str:
         return self._machine_name
 
@@ -179,7 +179,7 @@ class WorkspaceDialog(QObject):
     def setCurrentMachineName(self, machine: str) -> None:
         self._current_machine_name = machine
 
-    @pyqtProperty(str, notify = machineNameChanged)
+    @pyqtProperty(str, notify=machineNameChanged)
     def currentMachineName(self) -> str:
         return self._current_machine_name
 
@@ -190,14 +190,14 @@ class WorkspaceDialog(QObject):
                 return i
         return defaultIndex
 
-    @pyqtProperty(int, notify = machineNameChanged)
+    @pyqtProperty(int, notify=machineNameChanged)
     def currentMachinePositionIndex(self):
         return self._current_machine_pos_index
 
-    @pyqtProperty(QObject, notify = updatableMachinesChanged)
+    @pyqtProperty(QObject, notify=updatableMachinesChanged)
     def updatableMachinesModel(self) -> MachineListModel:
         if self._current_machine_name != "":
-            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name, defaultIndex = 0)
+            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name, defaultIndex=0)
         else:
             self._current_machine_pos_index = 0
         return cast(MachineListModel, self._updatable_machines_model)
@@ -206,7 +206,7 @@ class WorkspaceDialog(QObject):
         self._updatable_machines_model.set_machines_filter(updatable_machines)
         self.updatableMachinesChanged.emit()
 
-    @pyqtProperty(bool, notify = isAbstractMachineChanged)
+    @pyqtProperty(bool, notify=isAbstractMachineChanged)
     def isAbstractMachine(self) -> bool:
         return self._is_abstract_machine
 
@@ -215,7 +215,7 @@ class WorkspaceDialog(QObject):
         self._is_abstract_machine = is_abstract_machine
         self.isAbstractMachineChanged.emit()
 
-    @pyqtProperty(bool, notify = isNetworkedChanged)
+    @pyqtProperty(bool, notify=isNetworkedChanged)
     def isNetworked(self) -> bool:
         return self._is_networked_machine
 
@@ -250,7 +250,7 @@ class WorkspaceDialog(QObject):
             self._quality_name = quality_name
             self.qualityNameChanged.emit()
 
-    @pyqtProperty(str, notify = intentNameChanged)
+    @pyqtProperty(str, notify=intentNameChanged)
     def intentName(self) -> str:
         return self._intent_name
 
@@ -277,7 +277,7 @@ class WorkspaceDialog(QObject):
             self._active_mode = i18n_catalog.i18nc("@title:tab", "Custom")
         self.activeModeChanged.emit()
 
-    @pyqtProperty(bool, notify = hasVisibleSettingsFieldChanged)
+    @pyqtProperty(bool, notify=hasVisibleSettingsFieldChanged)
     def hasVisibleSettingsField(self) -> bool:
         return self._has_visible_settings_field
 
@@ -285,14 +285,14 @@ class WorkspaceDialog(QObject):
         self._has_visible_settings_field = has_visible_settings_field
         self.hasVisibleSettingsFieldChanged.emit()
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def totalNumberOfSettings(self) -> int:
-        general_definition_containers = ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")
+        general_definition_containers = ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")
         if not general_definition_containers:
             return 0
         return len(general_definition_containers[0].getAllKeys())
 
-    @pyqtProperty(int, notify = numVisibleSettingsChanged)
+    @pyqtProperty(int, notify=numVisibleSettingsChanged)
     def numVisibleSettings(self) -> int:
         return self._num_visible_settings
 
@@ -301,7 +301,7 @@ class WorkspaceDialog(QObject):
             self._num_visible_settings = num_visible_settings
             self.numVisibleSettingsChanged.emit()
 
-    @pyqtProperty(bool, notify = machineConflictChanged)
+    @pyqtProperty(bool, notify=machineConflictChanged)
     def machineConflict(self) -> bool:
         return self._has_machine_conflict
 
@@ -336,7 +336,7 @@ class WorkspaceDialog(QObject):
                 self._is_compatible_machine = new_compatible_machine
                 self.isCompatibleMachineChanged.emit()
 
-    @pyqtProperty(bool, notify = isCompatibleMachineChanged)
+    @pyqtProperty(bool, notify=isCompatibleMachineChanged)
     def isCompatibleMachine(self) -> bool:
         return self._is_compatible_machine
 
@@ -352,7 +352,7 @@ class WorkspaceDialog(QObject):
     def setAllowCreatemachine(self, allow_create_machine):
         self._allow_create_machine = allow_create_machine
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def allowCreateMachine(self):
         return self._allow_create_machine
 

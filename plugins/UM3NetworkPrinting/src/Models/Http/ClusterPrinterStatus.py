@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from itertools import product
 from typing import List, Union, Dict, Optional, Any
 
@@ -70,7 +71,7 @@ class ClusterPrinterStatus(BaseModel):
 
         :param controller: - The controller of the model.
         """
-        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
+        model = PrinterOutputModel(controller, len(self.configuration), firmware_version=self.firmware_version)
         self.updateOutputModel(model)
         return model
 
@@ -107,9 +108,9 @@ class ClusterPrinterStatus(BaseModel):
 
     def _updateAvailableConfigurations(self, model: PrinterOutputModel) -> None:
         available_configurations = [self._createAvailableConfigurationFromPrinterConfiguration(
-            left_slot = left_slot,
-            right_slot = right_slot,
-            printer_configuration = model.printerConfiguration
+            left_slot=left_slot,
+            right_slot=right_slot,
+            printer_configuration=model.printerConfiguration
         ) for left_slot, right_slot in product(self._getSlotsForExtruder(0), self._getSlotsForExtruder(1))]
         model.setAvailableConfigurations(available_configurations)
 
@@ -122,8 +123,8 @@ class ClusterPrinterStatus(BaseModel):
         if not self.material_station:  # typing guard
             return []
         slots = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
-            slot = slot,
-            extruder_index = extruder_index
+            slot=slot,
+            extruder_index=extruder_index
         )]
         return slots or [self._createEmptyMaterialSlot(extruder_index)]
 
@@ -140,9 +141,9 @@ class ClusterPrinterStatus(BaseModel):
     def _createEmptyMaterialSlot(extruder_index: int) -> ClusterPrinterMaterialStationSlot:
         """Create an empty material slot with a fake empty material."""
 
-        empty_material = ClusterPrinterConfigurationMaterial(guid = "", material = "empty", brand = "", color = "")
-        return ClusterPrinterMaterialStationSlot(slot_index = 0, extruder_index = extruder_index,
-                                                 compatible = True, material_remaining = 0, material = empty_material)
+        empty_material = ClusterPrinterConfigurationMaterial(guid="", material="empty", brand="", color="")
+        return ClusterPrinterMaterialStationSlot(slot_index=0, extruder_index=extruder_index,
+                                                 compatible=True, material_remaining=0, material=empty_material)
 
     @staticmethod
     def _createAvailableConfigurationFromPrinterConfiguration(left_slot: ClusterPrinterMaterialStationSlot,

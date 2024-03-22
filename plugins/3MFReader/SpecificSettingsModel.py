@@ -13,8 +13,8 @@ class SpecificSettingsModel(ListModel):
     LabelRole = Qt.ItemDataRole.UserRole + 2
     ValueRole = Qt.ItemDataRole.UserRole + 3
 
-    def __init__(self, parent = None):
-        super().__init__(parent = parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.addRoleName(self.CategoryRole, "category")
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.ValueRole, "value")

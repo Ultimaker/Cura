@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import sys
 
 from PyQt6.QtCore import Qt
@@ -330,7 +331,7 @@ class SimulationView(CuraView):
 
             if not node.render(renderer):
                 if (node.getMeshData()) and node.isVisible():
-                    renderer.queueNode(node, transparent = True, shader = self._ghost_shader)
+                    renderer.queueNode(node, transparent=True, shader=self._ghost_shader)
 
     def setLayer(self, value: int) -> None:
         """
@@ -482,16 +483,16 @@ class SimulationView(CuraView):
         return self._extruder_count
 
     def getMinFeedrate(self) -> float:
-        if abs(self._min_feedrate - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
-            return 0.0 # If it's still max-float, there are no measurements. Use 0 then.
+        if abs(self._min_feedrate - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
         return self._min_feedrate
 
     def getMaxFeedrate(self) -> float:
         return self._max_feedrate
 
     def getMinThickness(self) -> float:
-        if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
-            return 0.0 # If it's still max-float, there are no measurements. Use 0 then.
+        if abs(self._min_thickness - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
         return self._min_thickness
 
     def getMaxThickness(self) -> float:

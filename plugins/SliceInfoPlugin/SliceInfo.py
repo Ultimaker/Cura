@@ -78,7 +78,7 @@ class SliceInfo(QObject, Extension):
         dialog = self._application.createQmlComponent(file_path, {"manager": self})
         return dialog
 
-    @pyqtSlot(result = str)
+    @pyqtSlot(result=str)
     def getExampleData(self) -> Optional[str]:
         if self._example_data_content is None:
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
@@ -88,7 +88,7 @@ class SliceInfo(QObject, Extension):
             file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
                 try:
-                    with open(file_path, "r", encoding = "utf-8") as f:
+                    with open(file_path, "r", encoding="utf-8") as f:
                         self._example_data_content = f.read()
                 except EnvironmentError as e:
                     Logger.error(f"Unable to read example slice info data to show to the user: {e}")
@@ -163,7 +163,7 @@ class SliceInfo(QObject, Extension):
             # add extruder specific data to slice info
             data["extruders"] = []
             extruders = global_stack.extruderList
-            extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
+            extruders = sorted(extruders, key=lambda extruder: extruder.getMetaDataEntry("position"))
 
             for extruder in extruders:
                 extruder_dict = dict()
@@ -209,7 +209,7 @@ class SliceInfo(QObject, Extension):
                                              "maximum": {"x": bounding_box.maximum.x,
                                                          "y": bounding_box.maximum.y,
                                                          "z": bounding_box.maximum.z}}
-                    model["transformation"] = {"data": str(node.getWorldTransformation(copy = False).getData()).replace("\n", "")}
+                    model["transformation"] = {"data": str(node.getWorldTransformation(copy=False).getData()).replace("\n", "")}
                     extruder_position = node.callDecoration("getActiveExtruderPosition")
                     model["extruder"] = 0 if extruder_position is None else int(extruder_position)
 
@@ -303,8 +303,8 @@ class SliceInfo(QObject, Extension):
 
             # Send slice info non-blocking
             network_manager = self._application.getHttpRequestManager()
-            network_manager.post(self.info_url, data = binary_data,
-                                 callback = self._onRequestFinished, error_callback = self._onRequestError)
+            network_manager.post(self.info_url, data=binary_data,
+                                 callback=self._onRequestFinished, error_callback=self._onRequestError)
         except Exception:
             # We really can't afford to have a mistake here, as this would break the sending of g-code to a device
             # (Either saving or directly to a printer). The functionality of the slice data is not *that* important.

@@ -30,7 +30,7 @@ def parsePOFile(filename: str) -> List[Msg]:
         iterator = iter(f.readlines())
         for line in iterator:
             if line.startswith("msgctxt"):
-                #  Start of a translation item block
+                # Start of a translation item block
                 msg = Msg()
                 msg.msgctxt = line
 
@@ -41,7 +41,7 @@ def parsePOFile(filename: str) -> List[Msg]:
                         break
 
                 while True:
-                    #  msgstr can be split over multiple lines
+                    # msgstr can be split over multiple lines
                     line = next(iterator)
                     if line == "\n":
                         break
@@ -56,7 +56,7 @@ def parsePOFile(filename: str) -> List[Msg]:
 
 
 def getDifferentMessages(messages_original: List[Msg], messages_new: List[Msg]) -> List[Msg]:
-    #  Return messages that have changed in messages_new
+    # Return messages that have changed in messages_new
     different_messages = []
 
     for m_new in messages_new:
@@ -76,16 +76,16 @@ def updatePOFile(input_filename: str, output_filename: str, messages: List[Msg])
         for line in iterator:
             output_file.write(line)
             if line.startswith("msgctxt"):
-                #  Start of translation block
+                # Start of translation block
                 msgctxt = line
 
                 msgid = next(iterator)
                 output_file.write(msgid)
 
-                #  Check for updated version of msgstr
+                # Check for updated version of msgstr
                 message = list(filter(lambda m: m.msgctxt == msgctxt and m.msgid == msgid, messages))
                 if message and message[0]:
-                    #  Write update translation
+                    # Write update translation
                     output_file.write(message[0].msgstr)
 
                     # Skip lines until next translation. This should skip multiline msgstr

@@ -123,7 +123,7 @@ msgstr "&Сохранить проект..."
 
 msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
 msgid "&Save Universal Cura Project..."
-msgstr ""
+msgstr "Сохранить универсальный Cura проект"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
@@ -273,7 +273,7 @@ msgstr[3] ""
 
 msgctxt "@text"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
-msgstr ""
+msgstr "Очень плотная и прочная деталь, но печать требует более медленного времени. Отлично подходит для функциональных деталей."
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -511,7 +511,7 @@ msgstr "Анонимн"
 
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
-msgstr ""
+msgstr "Анонимный отчет об ошибке"
 
 msgctxt "@label Description for application component"
 msgid "Application framework"
@@ -519,7 +519,7 @@ msgstr "Фреймворк приложения"
 
 msgctxt "@title:column"
 msgid "Applies on"
-msgstr ""
+msgstr "Применяется к"
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -709,7 +709,7 @@ msgstr "Вычислено"
 
 msgctxt "@window:text"
 msgid "Camera navigation:"
-msgstr ""
+msgstr "Управление камерой:"
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -832,7 +832,7 @@ msgstr "Очистить стол"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr "Очистите печатную пластину перед загрузкой модели в единственный экземпляр"
+msgstr "Очистите стол перед загрузкой модели в единственный экземпляр"
 
 msgctxt "@text"
 msgid "Click the export material archive button."
@@ -1211,7 +1211,7 @@ msgstr "Плагин CuraEngine для постепенного сглажива
 
 msgctxt "name"
 msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
+msgstr "Постепенный поток CuraEngine"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1443,7 +1443,7 @@ msgstr "Черновой"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
-msgstr ""
+msgstr "Поместить все модели на стол"
 
 msgctxt "@action:button"
 msgid "Duplicate"
@@ -1472,7 +1472,7 @@ msgstr "Извлечь"
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Извлекает внешний носитель {0}"
+msgstr "Извлечь внешний носитель {0}"
 
 #, python-brace-format
 msgctxt "@info:status"
@@ -1573,7 +1573,7 @@ msgstr "Экспорт выбранного..."
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
-msgstr ""
+msgstr "Экспортировать Universal Cura Project"
 
 msgctxt "@button"
 msgid "Export material archive"
@@ -1618,12 +1618,12 @@ msgstr "Стартовый G-код экструдера"
 
 msgctxt "@label"
 msgid "Extruder Start G-code duration"
-msgstr ""
+msgstr "Длительность стартового G-кода экструдера"
 
 #, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
-msgstr ""
+msgstr "Экструдер {0}"
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1694,7 +1694,7 @@ msgstr "Архив материалов не сохранен"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
-msgstr ""
+msgstr "Не удалось записать на конкретный облачный принтер: {0} не в удаленных кластерах."
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
@@ -1838,7 +1838,7 @@ msgid "Force layer view compatibility mode (restart required)"
 msgstr "Просматривать слои в режиме совместимости (требуется перезапуск)"
 
 msgid "FreeCAD trackpad"
-msgstr ""
+msgstr "FreeCAD трекпад"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
@@ -1850,15 +1850,15 @@ msgstr "Вид спереди"
 
 msgctxt "@item:inlistbox"
 msgid "G File"
-msgstr "Файл G"
+msgstr "G Файл"
 
 msgctxt "@info:title"
 msgid "G-code Details"
-msgstr "Параметры G-code"
+msgstr "Параметры G-кода"
 
 msgctxt "@item:inlistbox"
 msgid "G-code File"
-msgstr "Файл G-code"
+msgstr "Файл G-код"
 
 msgctxt "name"
 msgid "G-code Profile Reader"
@@ -1866,7 +1866,7 @@ msgstr "Средство считывания профиля из G-кода"
 
 msgctxt "name"
 msgid "G-code Reader"
-msgstr "Чтение G-code"
+msgstr "Чтение G-кода"
 
 msgctxt "name"
 msgid "G-code Writer"
@@ -1930,7 +1930,7 @@ msgstr "Приступить"
 
 msgctxt "@label"
 msgid "Global"
-msgstr ""
+msgstr "Глобальный"
 
 msgctxt "@title:tab"
 msgid "Global Settings"
@@ -1983,7 +1983,7 @@ msgstr "Скрыть все подключенные принтеры"
 
 msgctxt "@action:button"
 msgid "Hide settings"
-msgstr ""
+msgstr "Скрыть настройки"
 
 msgctxt "@action:menu"
 msgid "Hide this setting"
@@ -2063,7 +2063,7 @@ msgstr "Для работы с пакетом необходимо переза�
 
 msgctxt "@option:radio"
 msgid "Include UltiMaker account name"
-msgstr ""
+msgstr "Включая имя учетной записи UltiMaker"
 
 msgctxt "@label"
 msgid "Infill"
@@ -2774,7 +2774,7 @@ msgstr "Поиск с текущим фильтром не дал результ
 
 msgctxt "@label"
 msgid "No specific value has been set"
-msgstr ""
+msgstr "Конкретное значение не задано"
 
 msgctxt "@label"
 msgid "No time estimation available"
@@ -2875,11 +2875,11 @@ msgstr "Показать только верхние слои"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
+msgstr "Только один файл G-кода  может быть загружен в момент времени. Пропускаю импортирование {0}"
 
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
-msgstr ""
+msgstr "Упс! Во время процесса нарезки произошла непредвиденная ошибка. Будьте уверены, мы автоматически получили журналы сбоев для анализа, если вы не отключили обмен данными в своих настройках. Чтобы помочь нам в дальнейшем, рассмотрите возможность поделиться информацией о своем проекте в нашем трекере ошибок."
 
 msgctxt "@action:button"
 msgid "Open"
@@ -2891,7 +2891,7 @@ msgstr "Открыть недавние"
 
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
-msgstr "Open Compressed Triangle Mesh"
+msgstr "Открыть сжатую треугольную сетку"
 
 msgctxt "@title:window"
 msgid "Open File(s)"
@@ -2911,11 +2911,11 @@ msgstr "Открыть файл проекта"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP)"
-msgstr ""
+msgstr "Открыть Universal Cura Project (UCP)"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP) file"
-msgstr ""
+msgstr "Открыть Universal Cura Project (UCP) файл"
 
 msgctxt "@action:label"
 msgid "Open With"
@@ -2923,7 +2923,7 @@ msgstr "Открыть с помощью"
 
 msgctxt "@action:button"
 msgid "Open as UCP"
-msgstr ""
+msgstr "Открыть как UCP"
 
 msgctxt "@action:button"
 msgid "Open as project"
@@ -3018,7 +3018,7 @@ msgstr "Упаковка Python-приложений"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
-msgstr "Обработка G-code"
+msgstr "Обработка G-кода"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
@@ -3145,7 +3145,7 @@ msgstr "Войдите, чтобы получить проверенные вс�
 
 msgctxt "@info:tooltip"
 msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
-msgstr ""
+msgstr "Пожалуйста, войдите в свою учетную запись UltiMaker, чтобы разрешить отправку неанонимных данных."
 
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
@@ -3562,7 +3562,7 @@ msgstr "Предоставляет поддержку для чтения фай
 
 msgctxt "description"
 msgid "Provides support for writing 3MF and UCP files."
-msgstr ""
+msgstr "Обеспечивает поддержку записи файлов 3MF и UCP."
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
@@ -3807,11 +3807,11 @@ msgstr "Сохранить проект Cura"
 
 msgctxt "@option"
 msgid "Save Cura project and .makerbot print file"
-msgstr ""
+msgstr "Сохраните проект Cura и файл печати .makerbot"
 
 msgctxt "@option"
 msgid "Save Cura project and .ufp print file"
-msgstr ""
+msgstr "Сохраните проект Cura и файл печати .ufp"
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3839,7 +3839,7 @@ msgstr "Сохранить новый профиль"
 
 msgctxt "@action:button"
 msgid "Save project"
-msgstr ""
+msgstr "Сохранить проект"
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
@@ -3946,15 +3946,15 @@ msgstr "Отправить отчет о сбое в UltiMaker"
 
 msgctxt "@info:tooltip"
 msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
-msgstr ""
+msgstr "Отправлять отчеты о сбоях, используя зарегистрированное имя учетной записи UltiMaker и название проекта, в UltiMaker Sentry. Фактические данные модели не отправляются."
 
 msgctxt "@info:tooltip"
 msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
-msgstr ""
+msgstr "Отправлять отчеты о сбоях без какой-либо личной информации или данных моделей в UltiMaker."
 
 msgctxt "@option:check"
 msgid "Send engine crash reports"
-msgstr ""
+msgstr "Отправлять отчеты о сбоях движка"
 
 msgctxt "@action:button"
 msgid "Send report"
@@ -4010,7 +4010,7 @@ msgstr "Параметры"
 
 msgctxt "@action:label"
 msgid "Settings Loaded from UCP file"
-msgstr ""
+msgstr "Настройки загружены из файла UCP"
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -4082,7 +4082,7 @@ msgstr "Открывать файлы с компьютера и из внешн
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
-msgstr ""
+msgstr "Следует ли автоматически сообщать Ultimaker о сбоях нарезки? Обратите внимание: никакие модели, IP-адреса или другая личная информация не отправляются и не сохраняются без вашего явного разрешения."
 
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
@@ -4142,7 +4142,7 @@ msgstr "Показать подробный отчет о сбое"
 
 msgctxt "@action:button"
 msgid "Show settings"
-msgstr ""
+msgstr "Показать настройки"
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
@@ -4230,7 +4230,7 @@ msgstr "Сглаживание"
 
 msgctxt "@label"
 msgid "Solid"
-msgstr ""
+msgstr "Твердый"
 
 msgctxt "name"
 msgid "Solid View"
@@ -4359,11 +4359,11 @@ msgstr "Профиль {0} успешно импортирован."
 
 msgctxt "@action:label"
 msgid "Suggested Material settings"
-msgstr ""
+msgstr "Рекомендуемые настройки материала"
 
 msgctxt "@action:label"
 msgid "Suggested Profile settings"
-msgstr ""
+msgstr "Рекомендуемые настройки профиля"
 
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
@@ -4375,7 +4375,7 @@ msgstr ""
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
-msgstr ""
+msgstr "Резюме - Проект Universal Cura"
 
 msgctxt "@label"
 msgid "Support"
@@ -4762,7 +4762,7 @@ msgstr "Данная конфигурация недоступна, поскол
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr ""
+msgstr "Это файл проекта Cura Universal. Хотите ли вы открыть его как проект Cura или Cura Universal Project или импортировать из него модели?"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -5123,11 +5123,11 @@ msgstr "Единица"
 
 msgctxt "@item:inlistbox"
 msgid "Universal Cura Project"
-msgstr ""
+msgstr "Универсальный Cura Project"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr ""
+msgstr "Файлы Universal Cura Project можно распечатывать на различных 3D-принтерах, сохраняя при этом данные о положении и выбранные настройки. При экспорте будут включены все модели, присутствующие на столе, вместе с их текущим положением, ориентацией и масштабом. Вы также можете выбрать, какие настройки экструдера или модели следует включить, чтобы обеспечить правильную печать."
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
@@ -5356,7 +5356,7 @@ msgstr "Вспомогательные функции, включая генер
 
 msgctxt "@title:column"
 msgid "Value"
-msgstr ""
+msgstr "Значение"
 
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
@@ -5464,7 +5464,7 @@ msgstr "Обновление версии 5.4 до 5.5"
 
 msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
-msgstr ""
+msgstr "Обновление версии 5.6 до 5.7"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5545,7 +5545,7 @@ msgstr "Какой принтер вы хотите настроить?"
 
 msgctxt "@info:tooltip"
 msgid "What type of camera navigation should be used?"
-msgstr ""
+msgstr "Какой тип навигации камеры следует использовать?"
 
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"

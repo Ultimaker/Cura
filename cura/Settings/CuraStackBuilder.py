@@ -34,11 +34,11 @@ class CuraStackBuilder:
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
-        definitions = registry.findDefinitionContainers(id = definition_id)
+        definitions = registry.findDefinitionContainers(id=definition_id)
         if not definitions:
             if show_warning_message:
                 ConfigurationErrorMessage.getInstance().addFaultyContainers(definition_id)
-            Logger.log("w", "Definition {definition} was not found!", definition = definition_id)
+            Logger.log("w", "Definition {definition} was not found!", definition=definition_id)
             return None
 
         machine_definition = definitions[0]
@@ -48,15 +48,15 @@ class CuraStackBuilder:
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
         # Note that we don't go for uniqueName() immediately because that function matches with ignore_case set to true
-        if registry.findContainersMetadata(id = generated_name):
+        if registry.findContainersMetadata(id=generated_name):
             generated_name = registry.uniqueName(generated_name)
 
         new_global_stack = cls.createGlobalStack(
-            new_stack_id = generated_name,
-            definition = machine_definition,
-            variant_container = application.empty_variant_container,
-            material_container = application.empty_material_container,
-            quality_container = machine_node.preferredGlobalQuality().container,
+            new_stack_id=generated_name,
+            definition=machine_definition,
+            variant_container=application.empty_variant_container,
+            material_container=application.empty_material_container,
+            quality_container=machine_node.preferredGlobalQuality().container,
         )
         new_global_stack.setName(generated_name)
 
@@ -66,7 +66,7 @@ class CuraStackBuilder:
             try:
                 cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
             except IndexError as e:
-                Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
+                Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos=position, err=str(e)))
                 return None
 
         # If given, set the machine_extruder_count when creating the machine, or else the extruderList used below will
@@ -101,7 +101,7 @@ class CuraStackBuilder:
         extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
         extruder_definition_id = extruder_definition_dict[str(extruder_position)]
         try:
-            extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
+            extruder_definition = registry.findDefinitionContainers(id=extruder_definition_id)[0]
         except IndexError:
             # It still needs to break, but we want to know what extruder ID made it break.
             msg = "Unable to find extruder definition with the id [%s]" % extruder_definition_id
@@ -115,7 +115,7 @@ class CuraStackBuilder:
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
         if not extruder_variant_node:
-            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name = machine_node.preferred_variant_name, fallback = next(iter(machine_node.variants))))
+            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name=machine_node.preferred_variant_name, fallback=next(iter(machine_node.variants))))
             extruder_variant_node = next(iter(machine_node.variants.values()))
         extruder_variant_container = extruder_variant_node.container
         material_node = extruder_variant_node.preferredMaterial(approximate_diameter)
@@ -125,12 +125,12 @@ class CuraStackBuilder:
         new_extruder_id = registry.uniqueName(extruder_definition_id)
         new_extruder = cls.createExtruderStack(
             new_extruder_id,
-            extruder_definition = extruder_definition,
-            machine_definition_id = global_stack.definition.getId(),
-            position = extruder_position,
-            variant_container = extruder_variant_container,
-            material_container = material_container,
-            quality_container = quality_node.container
+            extruder_definition=extruder_definition,
+            machine_definition_id=global_stack.definition.getId(),
+            positio=extruder_position,
+            variant_container=extruder_variant_container,
+            material_container=material_container,
+            quality_container=quality_node.container
         )
         new_extruder.setNextStack(global_stack)
 
@@ -168,7 +168,7 @@ class CuraStackBuilder:
         stack.setMetaDataEntry("position", str(position))
 
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", machine_definition_id, new_stack_id,
-                                                        is_global_stack = False)
+                                                        is_global_stack=False)
 
         stack.definitionChanges = cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings")
         stack.variant = variant_container
@@ -219,7 +219,7 @@ class CuraStackBuilder:
 
         # Create user container
         user_container = cls.createUserChangesContainer(new_stack_id + "_user", definition.getId(), new_stack_id,
-                                                        is_global_stack = True)
+                                                        is_global_stack=True)
 
         stack.definitionChanges = cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings")
         stack.variant = variant_container
@@ -281,7 +281,7 @@ class CuraStackBuilder:
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
 
-        abstract_machines = registry.findContainerStacks(id = abstract_machine_id)
+        abstract_machines = registry.findContainerStacks(id=abstract_machine_id)
         if abstract_machines:
             return cast(GlobalStack, abstract_machines[0])
 

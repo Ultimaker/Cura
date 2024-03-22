@@ -17,7 +17,7 @@ class MaterialOutputModel(QObject):
         self._brand = brand
         self._name = name
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def guid(self) -> str:
         return self._guid if self._guid else ""
 
@@ -49,19 +49,19 @@ class MaterialOutputModel(QObject):
         return name, guid
 
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def type(self) -> str:
         return self._type
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def brand(self) -> str:
         return self._brand
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def color(self) -> str:
         return self._color
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def name(self) -> str:
         return self._name
 

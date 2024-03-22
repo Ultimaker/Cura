@@ -84,16 +84,16 @@ class DFFileUploader:
         if self._finished:
             raise ValueError("The upload is already finished")
         if isinstance(self._df_file, DFLibraryFileUploadResponse):
-            Logger.log("i", "Uploading Cura project file '{file_name}' via link '{upload_url}'".format(file_name = self._df_file.file_name, upload_url = self._df_file.upload_url))
+            Logger.log("i", "Uploading Cura project file '{file_name}' via link '{upload_url}'".format(file_name=self._df_file.file_name, upload_url=self._df_file.upload_url))
         elif isinstance(self._df_file, DFPrintJobUploadResponse):
-            Logger.log("i", "Uploading Cura print file '{file_name}' via link '{upload_url}'".format(file_name = self._df_file.job_name, upload_url = self._df_file.upload_url))
+            Logger.log("i", "Uploading Cura print file '{file_name}' via link '{upload_url}'".format(file_name=self._df_file.job_name, upload_url=self._df_file.upload_url))
         self._http.put(
-            url = cast(str, self._df_file.upload_url),
-            headers_dict = {"Content-Type": cast(str, self._df_file.content_type)},
-            data = self._data,
-            callback = self._onUploadFinished,
-            error_callback = self._onUploadError,
-            upload_progress_callback = self._onUploadProgressChanged
+            url=cast(str, self._df_file.upload_url),
+            headers_dict={"Content-Type": cast(str, self._df_file.content_type)},
+            data=self._data,
+            callback=self._onUploadFinished,
+            error_callback=self._onUploadError,
+            upload_progress_callback=self._onUploadProgressChanged
         )
 
     def _onUploadProgressChanged(self, bytes_sent: int, bytes_total: int) -> None:
