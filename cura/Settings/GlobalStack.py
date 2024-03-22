@@ -59,7 +59,7 @@ class GlobalStack(CuraContainerStack):
     extrudersChanged = pyqtSignal()
     configuredConnectionTypesChanged = pyqtSignal()
 
-    @pyqtProperty("QVariantList", notify = extrudersChanged)
+    @pyqtProperty("QVariantList", notify=extrudersChanged)
     def extruderList(self) -> List["ExtruderStack"]:
         result_tuple_list = sorted(list(self._extruders.items()), key=lambda x: int(x[0]))
         result_list = [item[1] for item in result_tuple_list]
@@ -67,7 +67,7 @@ class GlobalStack(CuraContainerStack):
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")
         return result_list[:machine_extruder_count]
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def maxExtruderCount(self):
         return len(self.getMetaDataEntry("machine_extruder_trains"))
 
@@ -75,7 +75,7 @@ class GlobalStack(CuraContainerStack):
     def supportsNetworkConnection(self):
         return self.getMetaDataEntry("supports_network_connection", False)
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def supportsMaterialExport(self):
         """
         Whether the printer supports Cura's export format of material profiles.
@@ -115,7 +115,7 @@ class GlobalStack(CuraContainerStack):
     # connected if its connection types contain one of the following values:
     #   - ConnectionType.NetworkConnection
     #   - ConnectionType.CloudConnection
-    @pyqtProperty(bool, notify = configuredConnectionTypesChanged)
+    @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
     def hasRemoteConnection(self) -> bool:
         has_remote_connection = False
 
@@ -163,7 +163,7 @@ class GlobalStack(CuraContainerStack):
             name = self.variant.getName()
         return name
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def preferred_output_file_formats(self) -> str:
         return self.getMetaDataEntry("file_formats")
 
@@ -178,7 +178,7 @@ class GlobalStack(CuraContainerStack):
 
         position = extruder.getMetaDataEntry("position")
         if position is None:
-            Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
+            Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder=extruder.id, stack=self.id)
             return
 
         if any(item.getId() == extruder.id for item in self._extruders.values()):
@@ -204,14 +204,14 @@ class GlobalStack(CuraContainerStack):
         :return: The value of the property for the specified setting, or None if not found.
         """
 
-        if not self.definition.findDefinitions(key = key):
+        if not self.definition.findDefinitions(key=key):
             return None
 
         if context:
             context.pushContainer(self)
 
         # Handle the "resolve" property.
-        #TODO: Why the hell does this involve threading?
+        # TODO: Why the hell does this involve threading?
         # Answer: Because if multiple threads start resolving properties that have the same underlying properties that's
         # related, without taking a note of which thread a resolve paths belongs to, they can bump into each other and
         # generate unexpected behaviours.
@@ -235,7 +235,7 @@ class GlobalStack(CuraContainerStack):
                         context.popContainer()
                     return result
             else:
-                Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting = key)
+                Logger.log("e", "Setting {setting} has limit_to_extruder but is not settable per extruder!", setting=key)
 
         result = super().getProperty(key, property_name, context)
         if context:
@@ -282,7 +282,7 @@ class GlobalStack(CuraContainerStack):
         Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
         """
         container_registry = ContainerRegistry.getInstance()
-        extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = self.getId())
+        extruder_trains = container_registry.findContainerStacks(type="extruder_train", machine=self.getId())
 
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")
         extruder_check_position = set()
@@ -297,19 +297,19 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def hasMaterials(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def hasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
-    @pyqtSlot(result = str)
+    @pyqtSlot(result=str)
     def getDefaultFirmwareName(self) -> str:
         """Get default firmware file name if one is specified in the firmware"""
 
@@ -353,9 +353,9 @@ class GlobalStack(CuraContainerStack):
 
 ## private:
 global_stack_mime = MimeType(
-    name = "application/x-cura-globalstack",
-    comment = "Cura Global Stack",
-    suffixes = ["global.cfg"]
+    name="application/x-cura-globalstack",
+    comment="Cura Global Stack",
+    suffixes=["global.cfg"]
 )
 
 MimeTypeDatabase.addMimeType(global_stack_mime)

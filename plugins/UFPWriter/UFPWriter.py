@@ -1,5 +1,6 @@
 # Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 from dataclasses import asdict
 from typing import cast, List, Dict
@@ -35,13 +36,13 @@ catalog = i18nCatalog("cura")
 
 class UFPWriter(MeshWriter):
     def __init__(self):
-        super().__init__(add_to_recent_files = False)
+        super().__init__(add_to_recent_files=False)
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-ufp",
-                comment = "UltiMaker Format Package",
-                suffixes = ["ufp"]
+                name="application/x-ufp",
+                comment="UltiMaker Format Package",
+                suffixes=["ufp"]
             )
         )
 
@@ -58,7 +59,7 @@ class UFPWriter(MeshWriter):
             self._writeObjectList(archive)
 
             # Store the g-code from the scene.
-            archive.addContentType(extension = "gcode", mime_type = "text/x-gcode")
+            archive.addContentType(extension="gcode", mime_type="text/x-gcode")
         except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
@@ -73,8 +74,8 @@ class UFPWriter(MeshWriter):
         try:
             gcode = archive.getStream("/3D/model.gcode")
             gcode.write(gcode_textio.getvalue().encode("UTF-8"))
-            archive.addRelation(virtual_path = "/3D/model.gcode",
-                                relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
+            archive.addRelation(virtual_path="/3D/model.gcode",
+                                relation_type="http://schemas.ultimaker.org/package/2018/relationships/gcode")
         except EnvironmentError as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
@@ -99,7 +100,7 @@ class UFPWriter(MeshWriter):
         snapshot = None if getattr(backend, "getLatestSnapshot", None) is None else backend.getLatestSnapshot()
         if snapshot:
             try:
-                archive.addContentType(extension = "png", mime_type = "image/png")
+                archive.addContentType(extension="png", mime_type="image/png")
                 thumbnail = archive.getStream("/Metadata/thumbnail.png")
 
                 thumbnail_buffer = QBuffer()
@@ -107,8 +108,8 @@ class UFPWriter(MeshWriter):
                 snapshot.save(thumbnail_buffer, "PNG")
 
                 thumbnail.write(thumbnail_buffer.data())
-                archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
-                                    relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
+                archive.addRelation(virtual_path="/Metadata/thumbnail.png",
+                                    relation_type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
                                     origin = "/3D/model.gcode")
             except EnvironmentError as e:
                 error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
@@ -128,7 +129,7 @@ class UFPWriter(MeshWriter):
         material_mime_type = "application/x-ultimaker-material-profile"
 
         try:
-            archive.addContentType(extension = material_extension, mime_type = material_mime_type)
+            archive.addContentType(extension=material_extension, mime_type=material_mime_type)
         except OPCError:
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
@@ -147,9 +148,9 @@ class UFPWriter(MeshWriter):
                 continue
 
             material_root_id = material.getMetaDataEntry("base_file")
-            material_root_query = container_registry.findContainers(id = material_root_id)
+            material_root_query = container_registry.findContainers(id=material_root_id)
             if not material_root_query:
-                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id = material_root_id))
+                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id=material_root_id))
                 return False
             material_container = material_root_query[0]
 
@@ -162,9 +163,9 @@ class UFPWriter(MeshWriter):
             try:
                 material_file = archive.getStream(material_file_name)
                 material_file.write(serialized_material.encode("UTF-8"))
-                archive.addRelation(virtual_path = material_file_name,
-                                    relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
-                                    origin = "/3D/model.gcode")
+                archive.addRelation(virtual_path=material_file_name,
+                                    relation_type="http://schemas.ultimaker.org/package/2018/relationships/material",
+                                    origin="/3D/model.gcode")
             except EnvironmentError as e:
                 error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
                 self.setInformation(error_msg)

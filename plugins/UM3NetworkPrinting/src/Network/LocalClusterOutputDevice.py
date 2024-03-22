@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 from typing import Optional, Dict, List, Callable, Any
 
@@ -124,14 +125,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
         """Get a list of materials that are installed on the cluster host."""
 
-        self._getApiClient().getMaterials(on_finished = on_finished)
+        self._getApiClient().getMaterials(on_finished=on_finished)
 
     def sendMaterialProfiles(self) -> None:
         """Sync the material profiles in Cura with the printer.
 
         This gets called when connecting to a printer as well as when sending a print.
         """
-        job = SendMaterialJob(device = self)
+        job = SendMaterialJob(device=self)
         job.run()
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
@@ -242,5 +243,5 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """Get the API client instance."""
 
         if not self._cluster_api:
-            self._cluster_api = ClusterApiClient(self.address, on_error = lambda error: Logger.log("e", str(error)))
+            self._cluster_api = ClusterApiClient(self.address, on_error=lambda error: Logger.log("e", str(error)))
         return self._cluster_api

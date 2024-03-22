@@ -51,11 +51,11 @@ class AuthorizationHelpers:
         headers = {"Content-type": "application/x-www-form-urlencoded"}
         HttpRequestManager.getInstance().post(
             self._token_url,
-            data = urllib.parse.urlencode(data).encode("UTF-8"),
-            headers_dict = headers,
-            callback = lambda response: self.parseTokenResponse(response, callback),
-            error_callback = lambda response, _: self.parseTokenResponse(response, callback),
-            timeout = REQUEST_TIMEOUT
+            data=urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict=headers,
+            callback=lambda response: self.parseTokenResponse(response, callback),
+            error_callback=lambda response, _: self.parseTokenResponse(response, callback),
+            timeout=REQUEST_TIMEOUT
         )
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str, callback: Callable[[AuthenticationResponse], None]) -> None:
@@ -76,12 +76,12 @@ class AuthorizationHelpers:
         headers = {"Content-type": "application/x-www-form-urlencoded"}
         HttpRequestManager.getInstance().post(
             self._token_url,
-            data = urllib.parse.urlencode(data).encode("UTF-8"),
-            headers_dict = headers,
-            callback = lambda response: self.parseTokenResponse(response, callback),
-            error_callback = lambda response, _: self.parseTokenResponse(response, callback),
-            urgent = True,
-            timeout = REQUEST_TIMEOUT
+            data=urllib.parse.urlencode(data).encode("UTF-8"),
+            headers_dict=headers,
+            callback=lambda response: self.parseTokenResponse(response, callback),
+            error_callback=lambda response, _: self.parseTokenResponse(response, callback),
+            urgent=True,
+            timeout=REQUEST_TIMEOUT
         )
 
     def parseTokenResponse(self, token_response: QNetworkReply, callback: Callable[[AuthenticationResponse], None]) -> None:
@@ -92,20 +92,20 @@ class AuthorizationHelpers:
         """
         token_data = HttpRequestManager.readJSON(token_response)
         if not token_data:
-            callback(AuthenticationResponse(success = False, err_message = catalog.i18nc("@message", "Could not read response.")))
+            callback(AuthenticationResponse(success=False, err_message=catalog.i18nc("@message", "Could not read response.")))
             return
 
         if token_response.error() != QNetworkReply.NetworkError.NoError:
-            callback(AuthenticationResponse(success = False, err_message = token_data["error_description"]))
+            callback(AuthenticationResponse(success=False, err_message=token_data["error_description"]))
             return
 
-        callback(AuthenticationResponse(success = True,
-                                        token_type = token_data["token_type"],
-                                        access_token = token_data["access_token"],
-                                        refresh_token = token_data["refresh_token"],
-                                        expires_in = token_data["expires_in"],
-                                        scope = token_data["scope"],
-                                        received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
+        callback(AuthenticationResponse(success=True,
+                                        token_type=token_data["token_type"],
+                                        access_token=token_data["access_token"],
+                                        refresh_token=token_data["refresh_token"],
+                                        expires_in=token_data["expires_in"],
+                                        scope=token_data["scope"],
+                                        received_at=datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT)))
         return
 
     def checkToken(self, access_token: str, success_callback: Optional[Callable[[UserProfile], None]] = None, failed_callback: Optional[Callable[[], None]] = None) -> None:
@@ -124,10 +124,10 @@ class AuthorizationHelpers:
         }
         HttpRequestManager.getInstance().get(
             check_token_url,
-            headers_dict = headers,
-            callback = lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
-            error_callback = lambda _, _2: failed_callback() if failed_callback is not None else None,
-            timeout = REQUEST_TIMEOUT
+            headers_dict=headers,
+            callback=lambda reply: self._parseUserProfile(reply, success_callback, failed_callback),
+            error_callback=lambda _, _2: failed_callback() if failed_callback is not None else None,
+            timeout=REQUEST_TIMEOUT
         )
 
     def _parseUserProfile(self, reply: QNetworkReply, success_callback: Optional[Callable[[UserProfile], None]], failed_callback: Optional[Callable[[], None]] = None) -> None:
@@ -162,11 +162,11 @@ class AuthorizationHelpers:
 
         if success_callback is not None:
             success_callback(UserProfile(
-                user_id = profile_data["user_id"],
-                username = profile_data["username"],
-                profile_image_url = profile_data.get("profile_image_url", ""),
-                organization_id = profile_data.get("organization", {}).get("organization_id"),
-                subscriptions = profile_data.get("subscriptions", [])
+                user_id=profile_data["user_id"],
+                username=profile_data["username"],
+                profile_image_url=profile_data.get("profile_image_url", ""),
+                organization_id=profile_data.get("organization", {}).get("organization_id"),
+                subscriptions=profile_data.get("subscriptions", [])
             ))
 
     @staticmethod
@@ -188,4 +188,4 @@ class AuthorizationHelpers:
         """
 
         encoded = sha512(verification_code.encode()).digest()
-        return b64encode(encoded, altchars = b"_-").decode()
+        return b64encode(encoded, altchars=b"_-").decode()

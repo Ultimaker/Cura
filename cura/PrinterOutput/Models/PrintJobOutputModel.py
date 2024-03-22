@@ -26,7 +26,7 @@ class PrintJobOutputModel(QObject):
     previewImageChanged = pyqtSignal()
     compatibleMachineFamiliesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent = None) -> None:
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""
@@ -79,7 +79,7 @@ class PrintJobOutputModel(QObject):
             self._configuration = configuration
             self.configurationChanged.emit()
 
-    @pyqtProperty(str, notify = ownerChanged)
+    @pyqtProperty(str, notify=ownerChanged)
     def owner(self) -> str:
         return self._owner
 
@@ -88,7 +88,7 @@ class PrintJobOutputModel(QObject):
             self._owner = owner
             self.ownerChanged.emit()
 
-    @pyqtProperty(bool, notify = ownerChanged)
+    @pyqtProperty(bool, notify=ownerChanged)
     def isMine(self) -> bool:
         """
         Returns whether this print job was sent by the currently logged in user.
@@ -122,7 +122,7 @@ class PrintJobOutputModel(QObject):
             self._key = key
             self.keyChanged.emit()
 
-    @pyqtProperty(str, notify = nameChanged)
+    @pyqtProperty(str, notify=nameChanged)
     def name(self):
         return self._name
 
@@ -131,20 +131,20 @@ class PrintJobOutputModel(QObject):
             self._name = name
             self.nameChanged.emit()
 
-    @pyqtProperty(int, notify = timeTotalChanged)
+    @pyqtProperty(int, notify=timeTotalChanged)
     def timeTotal(self) -> int:
         return int(self._time_total)
 
-    @pyqtProperty(int, notify = timeElapsedChanged)
+    @pyqtProperty(int, notify=timeElapsedChanged)
     def timeElapsed(self) -> int:
         return int(self._time_elapsed)
 
-    @pyqtProperty(int, notify = timeElapsedChanged)
+    @pyqtProperty(int, notify=timeElapsedChanged)
     def timeRemaining(self) -> int:
         # Never get a negative time remaining
         return int(max(self.timeTotal - self.timeElapsed, 0))
 
-    @pyqtProperty(float, notify = timeElapsedChanged)
+    @pyqtProperty(float, notify=timeElapsedChanged)
     def progress(self) -> float:
         result = float(self.timeElapsed) / max(self.timeTotal, 1.0)  # Prevent a division by zero exception.
         return min(result, 1.0)  # Never get a progress past 1.0

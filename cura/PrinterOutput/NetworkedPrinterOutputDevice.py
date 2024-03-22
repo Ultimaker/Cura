@@ -1,9 +1,9 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.FileHandler.FileHandler import FileHandler #For typing.
+from UM.FileHandler.FileHandler import FileHandler  # For typing.
 from UM.Logger import Logger
-from UM.Scene.SceneNode import SceneNode #For typing.
+from UM.Scene.SceneNode import SceneNode  # For typing.
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 
@@ -33,7 +33,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
     def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
+        super().__init__(device_id=device_id, connection_type=connection_type, parent=parent)
         self._manager = None    # type: Optional[QNetworkAccessManager]
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
 
@@ -67,7 +67,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             self._authentication_state = authentication_state
             self.authenticationStateChanged.emit()
 
-    @pyqtProperty(int, notify = authenticationStateChanged)
+    @pyqtProperty(int, notify=authenticationStateChanged)
     def authenticationState(self) -> AuthState:
         return self._authentication_state
 
@@ -208,7 +208,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         """
         self._validateManager()
 
-        request = self._createEmptyRequest(url, content_type = content_type)
+        request = self._createEmptyRequest(url, content_type=content_type)
         self._last_request_time = time()
 
         if not self._manager:
@@ -317,7 +317,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self.postFormWithParts(target, [post_part], on_finished, on_progress)
 
     def _onAuthenticationRequired(self, reply: QNetworkReply, authenticator: QAuthenticator) -> None:
-        Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url = reply.url().toString()))
+        Logger.log("w", "Request to {url} required authentication, which was not implemented".format(url=reply.url().toString()))
 
     def _createNetworkManager(self) -> None:
         Logger.log("d", "Creating network manager")
@@ -387,7 +387,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def getProperties(self):
         return self._properties
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def key(self) -> str:
         """Get the unique key of this machine
 
@@ -395,25 +395,25 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         """
         return self._id
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def address(self) -> str:
         """The IP address of the printer."""
 
         return self._properties.get(b"address", b"").decode("utf-8")
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def name(self) -> str:
         """Name of the printer (as returned from the ZeroConf properties)"""
 
         return self._properties.get(b"name", b"").decode("utf-8")
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def firmwareVersion(self) -> str:
         """Firmware version (as returned from the ZeroConf properties)"""
 
         return self._properties.get(b"firmware_version", b"").decode("utf-8")
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def printerType(self) -> str:
         return NetworkedPrinterOutputDevice.applyPrinterTypeMapping(self._properties.get(b"printer_type", b"Unknown").decode("utf-8"))
 
@@ -428,7 +428,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             return _PRINTER_TYPE_NAME[printer_type]
         return printer_type
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def ipAddress(self) -> str:
         """IP address of this printer"""
 

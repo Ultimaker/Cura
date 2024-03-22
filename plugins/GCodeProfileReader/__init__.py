@@ -17,4 +17,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "profile_reader": GCodeProfileReader.GCodeProfileReader() }
+    return {"profile_reader": GCodeProfileReader.GCodeProfileReader()}

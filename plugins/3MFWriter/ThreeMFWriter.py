@@ -1,5 +1,6 @@
 #  Copyright (c) 2015-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import re
 import threading
@@ -168,7 +169,7 @@ class ThreeMFWriter(MeshWriter):
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
             savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
-                                                                           exported_settings = exported_settings)
+                                                                           exported_settings=exported_settings)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -194,9 +195,9 @@ class ThreeMFWriter(MeshWriter):
 
         painter.end()
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
-        self._archive = None # Reset archive
-        archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
+    def write(self, stream, nodes, mode=MeshWriter.OutputMode.BinaryMode, export_settings_model=None) -> bool:
+        self._archive = None  # Reset archive
+        archive = zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_DEFLATED)
         try:
             model_file = zipfile.ZipInfo(MODEL_PATH)
             # Because zipfile is stupid and ignores archive-level compression settings when writing with ZipInfo.
@@ -205,15 +206,15 @@ class ThreeMFWriter(MeshWriter):
             # Create content types file
             content_types_file = zipfile.ZipInfo("[Content_Types].xml")
             content_types_file.compress_type = zipfile.ZIP_DEFLATED
-            content_types = ET.Element("Types", xmlns = self._namespaces["content-types"])
-            rels_type = ET.SubElement(content_types, "Default", Extension = "rels", ContentType = "application/vnd.openxmlformats-package.relationships+xml")
-            model_type = ET.SubElement(content_types, "Default", Extension = "model", ContentType = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml")
+            content_types = ET.Element("Types", xmlns=self._namespaces["content-types"])
+            rels_type = ET.SubElement(content_types, "Default", Extension="rels", ContentType="application/vnd.openxmlformats-package.relationships+xml")
+            model_type = ET.SubElement(content_types, "Default", Extension="model", ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml")
 
             # Create _rels/.rels file
             relations_file = zipfile.ZipInfo("_rels/.rels")
             relations_file.compress_type = zipfile.ZIP_DEFLATED
-            relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
-            model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + MODEL_PATH, Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
+            relations_element = ET.Element("Relationships", xmlns=self._namespaces["relationships"])
+            model_relation_element = ET.SubElement(relations_element, "Relationship", Target="/" + MODEL_PATH, Id="rel0", Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()

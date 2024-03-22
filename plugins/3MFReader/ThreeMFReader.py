@@ -114,7 +114,7 @@ class ThreeMFReader(MeshReader):
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
-        um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
+        um_node = CuraSceneNode()  # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         try:
             um_node.addDecorator(ConvexHullDecorator())
@@ -258,9 +258,9 @@ class ThreeMFReader(MeshReader):
                 # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
                 # build volume.
                 if global_container_stack:
-                    translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
-                                                y = -global_container_stack.getProperty("machine_depth", "value") / 2,
-                                                z = 0)
+                    translation_vector = Vector(x=-global_container_stack.getProperty("machine_width", "value") / 2,
+                                                y=-global_container_stack.getProperty("machine_depth", "value") / 2,
+                                                z=0)
                     translation_matrix = Matrix()
                     translation_matrix.setByTranslation(translation_vector)
                     transformation_matrix.multiply(translation_matrix)

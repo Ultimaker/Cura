@@ -24,7 +24,7 @@ class BaseMaterialsModel(ListModel):
     extruderPositionChanged = pyqtSignal()
     enabledChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         from cura.CuraApplication import CuraApplication
 
@@ -107,7 +107,7 @@ class BaseMaterialsModel(ListModel):
             self._updateExtruderStack()
             self.extruderPositionChanged.emit()
 
-    @pyqtProperty(int, fset = setExtruderPosition, notify = extruderPositionChanged)
+    @pyqtProperty(int, fset=setExtruderPosition, notify=extruderPositionChanged)
     def extruderPosition(self) -> int:
         return self._extruder_position
 
@@ -119,7 +119,7 @@ class BaseMaterialsModel(ListModel):
                 self._onChanged()
             self.enabledChanged.emit()
 
-    @pyqtProperty(bool, fset = setEnabled, notify = enabledChanged)
+    @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
     def enabled(self):
         return self._enabled
 
@@ -187,14 +187,14 @@ class BaseMaterialsModel(ListModel):
         """This is another convenience function which is shared by all material models so it's put here to avoid having
          so much duplicated code. """
 
-        metadata_list = CuraContainerRegistry.getInstance().findContainersMetadata(id = container_node.container_id)
+        metadata_list = CuraContainerRegistry.getInstance().findContainersMetadata(id=container_node.container_id)
         if not metadata_list:
             return None
         metadata = metadata_list[0]
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],
-            "container_id":         metadata["id"], # TODO: Remove duplicate in material manager qml
+            "container_id":         metadata["id"],  # TODO: Remove duplicate in material manager qml
             "GUID":                 metadata["GUID"],
             "name":                 metadata["name"],
             "brand":                metadata["brand"],

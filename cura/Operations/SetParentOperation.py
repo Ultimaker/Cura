@@ -1,5 +1,6 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional
 
 from UM.Scene.SceneNode import SceneNode
@@ -57,7 +58,7 @@ class SetParentOperation(Operation.Operation):
                 else:
                     # A node is inserted into the chain, so use the inverse of the parent to set the transformation of it's children.
                     parent_transformation = new_parent.getLocalTransformation()
-                    result = parent_transformation.getInverse().multiply(child_transformation, copy = True)
+                    result = parent_transformation.getInverse().multiply(child_transformation, copy=True)
                     self._node.setTransformation(result)
 
         self._node.setParent(new_parent)

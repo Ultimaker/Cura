@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import math
 
 from UM.Math.Color import Color
@@ -117,7 +118,7 @@ class SimulationPass(RenderPass):
 
         self.bind()
 
-        tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
+        tool_handle_batch = RenderBatch(self._tool_handle_shader, type=RenderBatch.RenderType.Overlay, backface_cull=True)
         disabled_batch = RenderBatch(self._disabled_shader)
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
@@ -126,7 +127,7 @@ class SimulationPass(RenderPass):
         for node in DepthFirstIterator(self._scene.getRoot()):
 
             if isinstance(node, ToolHandle):
-                tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
+                tool_handle_batch.addItem(node.getWorldTransformation(), mesh=node.getSolidMesh())
 
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
@@ -203,17 +204,17 @@ class SimulationPass(RenderPass):
 
                     # The first line does not have a previous line: add a MoveCombingType in front for start detection
                     # this way the first start of the layer can also be drawn
-                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype=numpy.float32), layer_data._attributes["line_types"]["value"]])
                     # Remove the last element
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
-                    layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
+                    layers_batch = RenderBatch(self._current_shader, type=RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range=(start, end), backface_cull=True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
                     layers_batch.render(self._scene.getActiveCamera())
 
                     # Current selected layer is rendered
-                    current_layer_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end))
+                    current_layer_batch = RenderBatch(self._layer_shader, type=RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range=(current_layer_start, current_layer_end))
                     current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
                     current_layer_batch.render(self._scene.getActiveCamera())
 
@@ -224,7 +225,7 @@ class SimulationPass(RenderPass):
                         self._layer_shader.setUniformValue("u_last_line_ratio", vertex_distance_ratio)
                         last_line_start = current_layer_end
                         last_line_end = current_layer_end + towards_next_vertex
-                        last_line_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range = (last_line_start, last_line_end))
+                        last_line_batch = RenderBatch(self._layer_shader, type=RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range=(last_line_start, last_line_end))
                         last_line_batch.addItem(node.getWorldTransformation(), layer_data)
                         last_line_batch.render(self._scene.getActiveCamera())
 
@@ -232,7 +233,7 @@ class SimulationPass(RenderPass):
                     self._old_current_path = self._layer_view.getCurrentPath()
 
                 # Create a new batch that is not range-limited
-                batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
+                batch = RenderBatch(self._layer_shader, type=RenderBatch.RenderType.Solid)
 
                 if self._layer_view.getCurrentLayerMesh():
                     batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerMesh())
@@ -248,8 +249,8 @@ class SimulationPass(RenderPass):
         if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
             if head_position is not None:
                 nozzle_node.setPosition(head_position)
-                nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
-                nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
+                nozzle_batch = RenderBatch(self._nozzle_shader, type=RenderBatch.RenderType.Transparent)
+                nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh=nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
 
         if len(disabled_batch.items) > 0:

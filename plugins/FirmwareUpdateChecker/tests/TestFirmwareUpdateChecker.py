@@ -58,5 +58,5 @@ def test_FirmwareUpdateCheckerLookup(id, name):
 def test_FirmwareUpdateCheckerJob_getCurrentVersion(name, version):
     machine_data = json_data.get(name)
     job = FirmwareUpdateChecker.FirmwareUpdateCheckerJob.FirmwareUpdateCheckerJob(False, name, machine_data, MagicMock)
-    job.getUrlResponse = MagicMock(return_value = str(version))  # Pretend like we got a good response from the server
+    job.getUrlResponse = MagicMock(return_value=str(version))  # Pretend like we got a good response from the server
     assert job.getCurrentVersion() == version

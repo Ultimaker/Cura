@@ -22,7 +22,7 @@ class PrinterConfigurationModel(QObject):
     def setPrinterType(self, printer_type: str) -> None:
         self._printer_type = printer_type
 
-    @pyqtProperty(str, fset = setPrinterType, notify = configurationChanged)
+    @pyqtProperty(str, fset=setPrinterType, notify=configurationChanged)
     def printerType(self) -> str:
         return self._printer_type
 
@@ -35,7 +35,7 @@ class PrinterConfigurationModel(QObject):
 
             self.configurationChanged.emit()
 
-    @pyqtProperty("QVariantList", fset = setExtruderConfigurations, notify = configurationChanged)
+    @pyqtProperty("QVariantList", fset=setExtruderConfigurations, notify=configurationChanged)
     def extruderConfigurations(self):
         return self._extruder_configurations
 

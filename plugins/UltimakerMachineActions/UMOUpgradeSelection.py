@@ -26,7 +26,7 @@ class UMOUpgradeSelection(MachineAction):
 
     heatedBedChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = heatedBedChanged)
+    @pyqtProperty(bool, notify=heatedBedChanged)
     def hasHeatedBed(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:

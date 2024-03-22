@@ -22,7 +22,7 @@ class FirmwareUpdater(QObject):
 
         self._output_device = output_device
 
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name="FirmwareUpdateThread")
 
         self._firmware_file = ""
         self._firmware_progress = 0
@@ -52,12 +52,12 @@ class FirmwareUpdater(QObject):
         """Cleanup after a successful update"""
 
         # Clean up for next attempt.
-        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")
+        self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name="FirmwareUpdateThread")
         self._firmware_file = ""
         self._onFirmwareProgress(100)
         self._setFirmwareUpdateState(FirmwareUpdateState.completed)
 
-    @pyqtProperty(int, notify = firmwareProgressChanged)
+    @pyqtProperty(int, notify=firmwareProgressChanged)
     def firmwareProgress(self) -> int:
         return self._firmware_progress
 
@@ -84,4 +84,3 @@ class FirmwareUpdateState(IntEnum):
     communication_error = 4
     io_error = 5
     firmware_not_found_error = 6
-

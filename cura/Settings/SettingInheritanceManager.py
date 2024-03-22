@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List, Optional, TYPE_CHECKING
 
 from PyQt6.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
@@ -45,7 +46,7 @@ class SettingInheritanceManager(QObject):
 
     settingsWithIntheritanceChanged = pyqtSignal()
 
-    @pyqtSlot(str, result = "QStringList")
+    @pyqtSlot(str, result="QStringList")
     def getChildrenKeysWithOverride(self, key: str) -> List[str]:
         """Get the keys of all children settings with an override."""
 
@@ -61,11 +62,11 @@ class SettingInheritanceManager(QObject):
                 result.append(key)
         return result
 
-    @pyqtSlot(str, str, result = bool)
+    @pyqtSlot(str, str, result=bool)
     def hasOverrides(self, key: str, extruder_index: str):
         return key in self.getOverridesForExtruder(key, extruder_index)
 
-    @pyqtSlot(str, str, result = "QStringList")
+    @pyqtSlot(str, str, result="QStringList")
     def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:
         if self._global_container_stack is None:
             return []
@@ -76,7 +77,7 @@ class SettingInheritanceManager(QObject):
             Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
             return result
 
-        definitions = self._global_container_stack.definition.findDefinitions(key = key)
+        definitions = self._global_container_stack.definition.findDefinitions(key=key)
         if not definitions:
             Logger.log("w", "Could not find definition for key [%s] (2)", key)
             return result
@@ -116,7 +117,7 @@ class SettingInheritanceManager(QObject):
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if (property_name == "value" or property_name == "enabled") and self._global_container_stack:
-            definitions = self._global_container_stack.definition.findDefinitions(key = key)  # type: List["SettingDefinition"]
+            definitions = self._global_container_stack.definition.findDefinitions(key=key)  # type: List["SettingDefinition"]
             if not definitions:
                 return
 
@@ -164,7 +165,7 @@ class SettingInheritanceManager(QObject):
                     return True
         return False
 
-    @pyqtProperty("QVariantList", notify = settingsWithIntheritanceChanged)
+    @pyqtProperty("QVariantList", notify=settingsWithIntheritanceChanged)
     def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
@@ -199,7 +200,7 @@ class SettingInheritanceManager(QObject):
         if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 
-        ##  Mash all containers for all the stacks together.
+        # Mash all containers for all the stacks together.
         while stack:
             containers.extend(stack.getContainers())
             stack = stack.getNextStack()
@@ -243,7 +244,7 @@ class SettingInheritanceManager(QObject):
                 self._settings_with_inheritance_warning.append(setting_key)
 
         # Check all the categories if any of their children have their inheritance overwritten.
-        for category in self._global_container_stack.definition.findDefinitions(type = "category"):
+        for category in self._global_container_stack.definition.findDefinitions(type="category"):
             if self._recursiveCheck(category):
                 self._settings_with_inheritance_warning.append(category.key)
 

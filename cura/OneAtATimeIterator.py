@@ -68,7 +68,7 @@ class OneAtATimeIterator(Iterator.Iterator):
 
         # Sort the original list so that items that block the most other objects are at the beginning.
         # This does not decrease the worst case running time, but should improve it in most cases.
-        node_list = sorted(node_list, key = cmp_to_key(hit_checker.calculateScore))
+        node_list = sorted(node_list, key=cmp_to_key(hit_checker.calculateScore))
 
         todo_node_list = [_ObjectOrder([], node_list)]
         while len(todo_node_list) > 0:
