@@ -476,14 +476,14 @@ msgstr "Фреймворк приложения"
 
 msgctxt "@title:column"
 msgid "Applies on"
-msgstr "Applies on"
+msgstr "Применить к"
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr "Применить смещения экструдера к GCode"
+msgstr "Применить смещения экструдера к G-коду"
 
 msgctxt "@info:title"
-msgid "Are you ready for cloud printing?"
+msgid "Are you ready for cloud printing?"коду
 msgstr "Вы готовы к облачной печати?"
 
 msgctxt "@label %1 is the name of a print job."
@@ -688,7 +688,7 @@ msgstr "Невозможно импортировать профиль из <fil
 
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr "Невозможно открыть любой другой файл, если G-code файл уже загружен. Пропускаю импортирование {0}"
+msgstr "Невозможно открыть любой другой файл, если G-код файл уже загружен. Пропускаю импортирование {0}"
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -1703,11 +1703,11 @@ msgstr "Файл G"
 
 msgctxt "@info:title"
 msgid "G-code Details"
-msgstr "Параметры G-code"
+msgstr "Параметры G-кода"
 
 msgctxt "@item:inlistbox"
 msgid "G-code File"
-msgstr "Файл G-code"
+msgstr "Файл G-кода"
 
 msgctxt "@label"
 msgid "G-code flavor"
@@ -2239,7 +2239,7 @@ msgstr "Убедитесь, что все ваши принтеры включе
 
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
-msgstr "Перед отправкой G-code на принтер удостоверьтесь в его соответствии вашему принтеру и его настройкам. Возможны неточности в G-code."
+msgstr "Перед отправкой G-кода на принтер удостоверьтесь в его соответствии вашему принтеру и его настройкам. Возможны неточности в G-кода."
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
@@ -2665,7 +2665,7 @@ msgstr "Показать только верхние слои"
 
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
+msgstr "Только один файл G-кода может быть загружен в момент времени. Пропускаю импортирование {0}"
 
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
@@ -2681,7 +2681,7 @@ msgstr "Открыть недавние"
 
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
-msgstr "Open Compressed Triangle Mesh"
+msgstr "Открыть сжатую треугольную сетку"
 
 msgctxt "@title:window"
 msgid "Open File(s)"
@@ -2809,7 +2809,7 @@ msgstr "Упаковка Python-приложений"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
-msgstr "Обработка G-code"
+msgstr "Обработка G-кода"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
@@ -4487,7 +4487,7 @@ msgstr "Сейчас вы можете отрегулировать ваш ст�
 
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "Для печати непосредственно на принтере через сеть необходимо подключить принтер к сети с помощью сетевого кабеля или подключить его к сети Wi-Fi. Если вы не подключили Cura к принтеру, вы можете использовать USB-накопитель для переноса файлов G-Code на принтер."
+msgstr "Для печати непосредственно на принтере через сеть необходимо подключить принтер к сети с помощью сетевого кабеля или подключить его к сети Wi-Fi. Если вы не подключили Cura к принтеру, вы можете использовать USB-накопитель для переноса файлов G-кода на принтер."
 
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
@@ -5104,7 +5104,7 @@ msgstr "Соединение с сетью UltiMaker"
 
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
-msgstr "Предоставляет поддержку для импортирования профилей из G-Code файлов."
+msgstr "Предоставляет поддержку для импортирования профилей из G-код файлов."
 
 msgctxt "name"
 msgid "G-code Profile Reader"
@@ -5136,7 +5136,7 @@ msgstr "Чтение 3MF"
 
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Принимает G-Code и отправляет его на принтер. Плагин также может обновлять прошивку."
+msgstr "Принимает G-код и отправляет его на принтер. Плагин также может обновлять прошивку."
 
 msgctxt "name"
 msgid "USB printing"
@@ -5392,11 +5392,11 @@ msgstr "Обновление версии 5.4 до 5.5"
 
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
-msgstr "Позволяет загружать и отображать файлы G-code."
+msgstr "Позволяет загружать и отображать файлы G-код."
 
 msgctxt "name"
 msgid "G-code Reader"
-msgstr "Чтение G-code"
+msgstr "Чтение G-кода"
 
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
