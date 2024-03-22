@@ -18,7 +18,7 @@ msgstr ""
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
-msgstr ""
+msgstr "Кайма вокруг модели могут касаться другой модели там, где это нежелательно. При этом у моделей без полей удаляются все поля на этом расстоянии."
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -158,7 +158,7 @@ msgstr "Все параметры, которые влияют на разреш
 
 msgctxt "user_defined_print_order_enabled description"
 msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
-msgstr ""
+msgstr "Позволяет упорядочить список объектов, чтобы вручную задать последовательность печати. Первый объект из списка будет напечатан первым."
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -262,7 +262,7 @@ msgstr "Сзади справа"
 
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
-msgstr "Bits from Bytes"
+msgstr "Биты из байтов"
 
 msgctxt "magic_mesh_surface_mode option both"
 msgid "Both"
@@ -422,7 +422,7 @@ msgstr "Количество линий каймы"
 
 msgctxt "brim_location label"
 msgid "Brim Location"
-msgstr ""
+msgstr "Положение каймы"
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -886,7 +886,7 @@ msgstr "Включить вентиляторы"
 
 msgctxt "ppr_enable label"
 msgid "Enable Print Process Reporting"
-msgstr ""
+msgstr "Включить отчет о процессе печати"
 
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
@@ -922,7 +922,7 @@ msgstr "Разрешает печать внешней защиты от выт�
 
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
-msgstr ""
+msgstr "Включите отчет о процессе печати для установки пороговых значений и обнаружения возможных неисправностей."
 
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
@@ -958,7 +958,7 @@ msgstr "Принудительная печать каймы вокруг мод
 
 msgctxt "brim_location option everywhere"
 msgid "Everywhere"
-msgstr ""
+msgstr "Везде"
 
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
@@ -1066,7 +1066,7 @@ msgstr "Коэффициент выравнивания потока"
 
 msgctxt "flow_anomaly_limit label"
 msgid "Flow Limit"
-msgstr ""
+msgstr "Лимит потока"
 
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
@@ -1082,7 +1082,7 @@ msgstr "График температуры потока"
 
 msgctxt "flow_warn_limit label"
 msgid "Flow Warning"
-msgstr ""
+msgstr "Предупреждение о пределе потока"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
