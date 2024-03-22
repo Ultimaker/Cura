@@ -1,16 +1,16 @@
 # By GregValiant (Greg Foresi) November 2023
-# This script allows the users of single extruder printers to print Support-Interface with a second material.  It adds filament change pauses (to the selected layers) before and after any 'Support-Interface' sections within the layer.  Be advised that there can be a lot of filament changing going on as there are two pauses for each Interface on each affected layer.  Check your gcode to insure it is correct.  Searching the gcode for 'custom' will find the pauses.
-#  This script works really well with large flat interfaces.  Because horizontal holes have limited contact with the support on any individual layer there can be a lot of pauses and the value of this script falls off as the annoyance factor goes up.
-#  I tried printing a TPU model with both PLA as the interface and PETG as the interface.  TPU seems to stick well to both of them so the testing failed.
+## This script allows the users of single extruder printers to print Support-Interface with a second material.  It adds filament change pauses (to the selected layers) before and after any 'Support-Interface' sections within the layer.  Be advised that there can be a lot of filament changing going on as there are two pauses for each Interface on each affected layer.  Check your gcode to insure it is correct.  Searching the gcode for 'custom' will find the pauses.
+##  This script works really well with large flat interfaces.  Because round horizontal holes have limited contact with the support on any individual layer there can be a lot of pauses and the value of this script falls off as the annoyance factor goes up.
+##  The success of this script depends on the different materials not sticking to each other.  PETG with a PLA interface (or vice-versa) works well.  TPU seems to stick well to both PLA and PETG so something else would need to be used.
 
 # RULES:
+##   This script can be used on 'Floors' but I don't bother.  It can eliminate scarring of the model when removing the interface material.
+##   Suggested parameters:  Air gap between the model and the floor/roof 0.0 with an Interface Density of 100% and the pattern 'Lines'.
 ##   If insufficient material is purged, then the two materials may mix for the first few cm's of model extrusion.  That will affect the layer adhesion for that portion of the print.  It will also affect the color as the interface material might not be the same color as the print material.
-##   Rafts are allowed.  Set the raft "Air Gap" to 0.0 and the Support Bottom Distance to 0.0.  If you try to use this script on the 2 topmost layers of a raft you will get back-to-back filament changes because rafts take up the entire layer and jumping between layers in post process isn't really allowed.  Using a second material for only the top raft layer works well.
-##   If this script is used on the bottom interface then you can set the bottom distance to 0.  When used on a top interface the interface density should be 100% and the "Top Distance" 0.
-##   Multi-extruder printers are allowed but may only have a single extruder enabled (tool change retractions are a problem).
+##   Rafts are allowed.  Set the raft "Air Gap" to 0.0 and the Support Bottom Distance to 0.0.  If you try to use this script on the 2 topmost layers of a raft you will get back-to-back filament changes because rafts take up the entire layer and jumping between layers in post process isn't really allowed.  Using a second material for just the top raft layer works well.
+##   Multi-extruder printers are allowed but may only have a single extruder enabled and it must be T0 (Extruder 1).
 ##   The layer numbers you enter are the only ones searched for "TYPE:SUPPORT-INTERFACE" so be accurate when you pick the "layers of interest".  Checking the output gcode is a really good idea.
-
-##   My normal setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  My Ender 3 Pro is a bowden printer and 470mm of unload and 370mm of reload works well.  Yours will vary according to the length of the filament path from the extruder to the hot end.
+##   My normal setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  My bowden printer requires 470mm of unload and 380mm of reload.  Yours will vary according to the length of the filament path from the extruder to the hot end.
 
 
 from ..Script import Script
@@ -27,9 +27,18 @@ class SuptIntMaterialChange(Script):
         extruder = mycura.extruderList
         ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
         machine_width = int(mycura.getProperty("machine_width", "value"))
-        self._instance.setProperty("park_x", "maximum_value", machine_width)
         machine_depth = int(mycura.getProperty("machine_depth", "value"))
-        self._instance.setProperty("park_y", "maximum_value", machine_depth)
+        machine_center_is_0 = str(mycura.getProperty("machine_center_is_zero", "value"))
+        if machine_center_is_0 == "True":
+            self._instance.setProperty("park_x_max", "value", int(machine_width/2))
+            self._instance.setProperty("park_y_max", "value", int(machine_depth/2))
+            self._instance.setProperty("park_x_min", "value", int(machine_width/-2))
+            self._instance.setProperty("park_y_min", "value", int(machine_depth/-2))            
+        else:
+            self._instance.setProperty("park_x_max", "value", machine_width)
+            self._instance.setProperty("park_y_max", "value", machine_depth)
+            self._instance.setProperty("park_x_min", "value", 0)
+            self._instance.setProperty("park_y_min", "value", 0)
         self._instance.setProperty("model_temp", "value", extruder[0].getProperty("material_print_temperature", "value"))
         self._instance.setProperty("extra_prime_amt", "value", extruder[0].getProperty("retraction_amount", "value"))
         if ext_count > 1:
@@ -96,7 +105,7 @@ class SuptIntMaterialChange(Script):
                     "label": "    Gcode after pause",
                     "description": "Some printers require a buffer after the pause when M25 is used. Typically 6 M105's works well.  Delimit multiple commands with a comma EX: M105,M105,M105",
                     "type": "str",
-                    "default_value": "M105,M105,M105,M105,M105,M105",
+                    "default_value": "",
                     "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
                 },
                 "layers_of_interest":
@@ -219,7 +228,8 @@ class SuptIntMaterialChange(Script):
                     "description": "The X location to park the head for all pauses.",
                     "type": "int",
                     "default_value": 0,
-                    "maximum_value": 500,
+                    "maximum_value": "park_x_max",
+                    "minimum_value": "park_x_min",
                     "enabled": "park_head"
                 },
                 "park_y":
@@ -228,8 +238,41 @@ class SuptIntMaterialChange(Script):
                     "description": "The Y location to park the head for all pauses.",
                     "type": "int",
                     "default_value": 0,
-                    "maximum_value": 500,
+                    "maximum_value": "park_y_max",
+                    "minimum_value": "park_y_min",
                     "enabled": "park_head"
+                },
+                "park_x_max":
+                {
+                    "label": "    Park X Max",
+                    "description": "Hidden value.",
+                    "type": "int",
+                    "value": 0,
+                    "enabled": false
+                },
+                "park_y_max":
+                {
+                    "label": "    Park Y max",
+                    "description": "Hidden value.",
+                    "type": "int",
+                    "value": 0,
+                    "enabled": false
+                },
+                "park_x_min":
+                {
+                    "label": "    Park X Min",
+                    "description": "Hidden value.",
+                    "type": "int",
+                    "value": 0,
+                    "enabled": false
+                },
+                "park_y_min":
+                {
+                    "label": "    Park Y Min",
+                    "description": "Hidden value.",
+                    "type": "int",
+                    "value": 0,
+                    "enabled": false
                 },
                 "m300_add":
                 {
