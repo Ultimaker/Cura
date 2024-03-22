@@ -44,5 +44,5 @@ class NozzleNode(SceneNode):
             self._shader.setUniformValue("u_opacity", 0)
 
         if self.getMeshData():
-            renderer.queueNode(self, shader = self._shader, transparent = True)
+            renderer.queueNode(self, shader=self._shader, transparent=True)
             return True

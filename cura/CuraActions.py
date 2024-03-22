@@ -1,5 +1,6 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List, cast
 
 from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
@@ -104,7 +105,7 @@ class CuraActions(QObject):
                 center_y = 0
 
             # Move the object so that it's bottom is on to of the buildplate
-            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
+            center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position=True)
             operation.addOperation(center_operation)
         operation.push()
     @pyqtSlot(int)
@@ -113,7 +114,7 @@ class CuraActions(QObject):
         :param count: The number of times to multiply the selection.
         """
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8))
         job.start()
 
     @pyqtSlot(int)
@@ -135,7 +136,7 @@ class CuraActions(QObject):
         if not cura.CuraApplication.CuraApplication.getInstance().getController().getToolsEnabled():
             return
 
-        removed_group_nodes = [] #type: List[SceneNode]
+        removed_group_nodes = []  # type: List[SceneNode]
         op = GroupedOperation()
         nodes = Selection.getAllSelectedObjects()
         for node in nodes:
@@ -166,7 +167,7 @@ class CuraActions(QObject):
         for node in Selection.getAllSelectedObjects():
             # If the node is a group, apply the active extruder to all children of the group.
             if node.callDecoration("isGroup"):
-                for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                for grouped_node in BreadthFirstIterator(node):  # type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     if grouped_node.callDecoration("getActiveExtruder") == extruder_id:
                         continue
 
@@ -265,7 +266,7 @@ class CuraActions(QObject):
         # Add the new nodes to the scene, and arrange them
 
         arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
-        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene = True)
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene=True)
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes

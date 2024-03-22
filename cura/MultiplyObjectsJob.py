@@ -29,9 +29,9 @@ class MultiplyObjectsJob(Job):
         self._grid_arrange: bool = grid_arrange
 
     def run(self) -> None:
-        status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime = 0,
-                                 dismissable = False, progress = 0,
-                                 title = i18n_catalog.i18nc("@info:title", "Placing Objects"))
+        status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime=0,
+                                 dismissable=False, progress=0,
+                                 title=i18n_catalog.i18nc("@info:title", "Placing Objects"))
         status_message.show()
         scene = Application.getInstance().getController().getScene()
 
@@ -99,6 +99,6 @@ class MultiplyObjectsJob(Job):
         if not found_solution_for_all:
             no_full_solution_message = Message(
                 i18n_catalog.i18nc("@info:status", "Unable to find a location within the build volume for all objects"),
-                title = i18n_catalog.i18nc("@info:title", "Placing Object"),
-                message_type = Message.MessageType.WARNING)
+                title=i18n_catalog.i18nc("@info:title", "Placing Object"),
+                message_type=Message.MessageType.WARNING)
             no_full_solution_message.show()

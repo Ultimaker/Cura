@@ -35,4 +35,4 @@ def register(app):
     if "UFPWriter.UFPWriter" not in sys.modules:
         return {}
 
-    return { "mesh_writer": UFPWriter.UFPWriter() }
+    return {"mesh_writer": UFPWriter.UFPWriter()}

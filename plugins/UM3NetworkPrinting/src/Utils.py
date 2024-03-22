@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime, timedelta
 
 from UM import i18nCatalog
@@ -7,7 +8,7 @@ from UM import i18nCatalog
 
 def formatTimeCompleted(seconds_remaining: int) -> str:
     completed = datetime.now() + timedelta(seconds=seconds_remaining)
-    return "{hour:02d}:{minute:02d}".format(hour = completed.hour, minute = completed.minute)
+    return "{hour:02d}:{minute:02d}".format(hour=completed.hour, minute=completed.minute)
 
 
 def formatDateCompleted(seconds_remaining: int) -> str:
@@ -18,7 +19,7 @@ def formatDateCompleted(seconds_remaining: int) -> str:
 
     # If finishing date is more than 7 days out, using "Mon Dec 3 at HH:MM" format
     if days >= 7:
-        return completed.strftime("%a %b ") + "{day}".format(day = completed.day)
+        return completed.strftime("%a %b ") + "{day}".format(day=completed.day)
     # If finishing date is within the next week, use "Monday at HH:MM" format
     elif days >= 2:
         return completed.strftime("%a")

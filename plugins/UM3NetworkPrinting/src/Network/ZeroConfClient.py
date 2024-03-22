@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from queue import Queue
 from threading import Thread, Event
 from time import time
@@ -48,7 +49,7 @@ class ZeroConfClient:
             Logger.logException("e", "Failed to create zeroconf instance.")
             return
 
-        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True, name = "ZeroConfServiceChangedThread")
+        self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True, name="ZeroConfServiceChangedThread")
         self._service_changed_request_thread.start()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, self.ZERO_CONF_NAME, [self._queueService])
 

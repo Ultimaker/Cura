@@ -17,9 +17,9 @@ avr_chip_db = {
     },
 }
 
+
 def getChipFromDB(sig):
     for chip in avr_chip_db.values():
         if chip["signature"] == sig:
             return chip
     return False
-

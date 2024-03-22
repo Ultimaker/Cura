@@ -102,7 +102,7 @@ class DigitalFactoryController(QObject):
         self.file_upload_manager = None  # type: Optional[DFFileExportAndUploadManager]
         self._has_preselected_project = False  # type: bool
 
-        self._api = DigitalFactoryApiClient(self._application, on_error = lambda error: Logger.log("e", str(error)), projects_limit_per_page = 20)
+        self._api = DigitalFactoryApiClient(self._application, on_error=lambda error: Logger.log("e", str(error)), projects_limit_per_page=20)
 
         # Indicates whether there are more pages of projects that can be loaded from the API
         self._has_more_projects_to_load = False
@@ -168,7 +168,7 @@ class DigitalFactoryController(QObject):
         :return: True if the user account has Digital Library access, else False
         """
         if self._user_has_access:
-            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
+            self._api.checkUserCanCreateNewLibraryProject(callback=self.setCanCreateNewLibraryProject)
         return self._user_has_access
 
     def initialize(self, preselected_project_id: Optional[str] = None) -> None:
@@ -177,9 +177,9 @@ class DigitalFactoryController(QObject):
         if self._account.isLoggedIn and self.userAccountHasLibraryAccess():
             self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
             if preselected_project_id:
-                self._api.getProject(preselected_project_id, on_finished = self.setProjectAsPreselected, failed = self._onGetProjectFailed)
+                self._api.getProject(preselected_project_id, on_finished=self.setProjectAsPreselected, failed=self._onGetProjectFailed)
             else:
-                self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+                self._api.getProjectsFirstPage(search_filter=self._project_filter, on_finished=self._onGetProjectsFirstPageFinished, failed=self._onGetProjectsFailed)
 
     def setProjectAsPreselected(self, df_project: DigitalFactoryProjectResponse) -> None:
         """
@@ -216,7 +216,7 @@ class DigitalFactoryController(QObject):
         """
         Initiates the process of retrieving the next page of the projects list from the API.
         """
-        self._api.getMoreProjects(on_finished = self.loadMoreProjectsFinished, failed = self._onGetProjectsFailed)
+        self._api.getMoreProjects(on_finished=self.loadMoreProjectsFinished, failed=self._onGetProjectsFailed)
         self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
 
     def loadMoreProjectsFinished(self, df_projects: List[DigitalFactoryProjectResponse]) -> None:
@@ -291,9 +291,9 @@ class DigitalFactoryController(QObject):
         if 0 <= project_idx < len(self._project_model.items):
             library_project_id = self._project_model.items[project_idx]["libraryProjectId"]
             self.setRetrievingFilesStatus(self.RetrievalStatus.InProgress)
-            self._api.getListOfFilesInProject(library_project_id, on_finished = self.getProjectFilesFinished, failed = self.getProjectFilesFailed)
+            self._api.getListOfFilesInProject(library_project_id, on_finished=self.getProjectFilesFinished, failed=self.getProjectFilesFailed)
 
-    @pyqtProperty(int, fset = setSelectedProjectIndex, notify = selectedProjectIndexChanged)
+    @pyqtProperty(int, fset=setSelectedProjectIndex, notify=selectedProjectIndexChanged)
     def selectedProjectIndex(self) -> int:
         return self._selected_project_idx
 
@@ -323,7 +323,7 @@ class DigitalFactoryController(QObject):
     """
     projectFilterChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = projectFilterChanged, fset = setProjectFilter)
+    @pyqtProperty(str, notify=projectFilterChanged, fset=setProjectFilter)
     def projectFilter(self) -> str:
         """
         The current search filter being applied to the project list.
@@ -338,13 +338,13 @@ class DigitalFactoryController(QObject):
         """
         self.clear()
         self.projectFilterChanged.emit()
-        self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
+        self._api.getProjectsFirstPage(search_filter=self._project_filter, on_finished=self._onGetProjectsFirstPageFinished, failed=self._onGetProjectsFailed)
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def digitalFactoryProjectModel(self) -> "DigitalFactoryProjectModel":
         return self._project_model
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def digitalFactoryFileModel(self) -> "DigitalFactoryFileModel":
         return self._file_model
 
@@ -358,7 +358,7 @@ class DigitalFactoryController(QObject):
             self._has_more_projects_to_load = has_more_projects_to_load
             self.hasMoreProjectsToLoadChanged.emit()
 
-    @pyqtProperty(bool, fset = setHasMoreProjectsToLoad, notify = hasMoreProjectsToLoadChanged)
+    @pyqtProperty(bool, fset=setHasMoreProjectsToLoad, notify=hasMoreProjectsToLoadChanged)
     def hasMoreProjectsToLoad(self) -> bool:
         """
         :return: whether there are more pages for projects that can be loaded from the API
@@ -400,7 +400,7 @@ class DigitalFactoryController(QObject):
         self.retrieving_projects_status = new_status
         self.retrievingProjectsStatusChanged.emit(int(new_status))
 
-    @pyqtProperty(int, fset = setRetrievingProjectsStatus, notify = retrievingProjectsStatusChanged)
+    @pyqtProperty(int, fset=setRetrievingProjectsStatus, notify=retrievingProjectsStatusChanged)
     def retrievingProjectsStatus(self) -> int:
         return int(self.retrieving_projects_status)
 
@@ -413,7 +413,7 @@ class DigitalFactoryController(QObject):
         self.retrieving_files_status = new_status
         self.retrievingFilesStatusChanged.emit(int(new_status))
 
-    @pyqtProperty(int, fset = setRetrievingFilesStatus, notify = retrievingFilesStatusChanged)
+    @pyqtProperty(int, fset=setRetrievingFilesStatus, notify=retrievingFilesStatusChanged)
     def retrievingFilesStatus(self) -> int:
         return int(self.retrieving_files_status)
 
@@ -426,7 +426,7 @@ class DigitalFactoryController(QObject):
         self.creating_new_project_status = new_status
         self.creatingNewProjectStatusChanged.emit(int(new_status))
 
-    @pyqtProperty(int, fset = setCreatingNewProjectStatus, notify = creatingNewProjectStatusChanged)
+    @pyqtProperty(int, fset=setCreatingNewProjectStatus, notify=creatingNewProjectStatusChanged)
     def creatingNewProjectStatus(self) -> int:
         return int(self.creating_new_project_status)
 
@@ -502,15 +502,15 @@ class DigitalFactoryController(QObject):
         if not download_url:
             Logger.log("e", "No download url for file '{}'".format(file_name))
             getBackwardsCompatibleMessage(
-                    text = "Download error",
-                    title = f"No download url could be found for '{file_name}'.",
-                    message_type_str = "ERROR",
-                    lifetime = 0
+                    text="Download error",
+                    title=f"No download url could be found for '{file_name}'.",
+                    message_type_str="ERROR",
+                    lifetime=0
             ).show()
             return
 
-        progress_message = Message(text = "{0}/{1}".format(project_name, file_name), dismissable = False, lifetime = 0,
-                                   progress = 0, title = "Downloading...")
+        progress_message = Message(text="{0}/{1}".format(project_name, file_name), dismissable=False, lifetime=0,
+                                   progress=0, title="Downloading...")
         progress_message.setProgress(0)
         progress_message.show()
 
@@ -531,30 +531,30 @@ class DigitalFactoryController(QObject):
                 Logger.logException("e", "Can't write Digital Library file {0}/{1} download to temp-directory {2}.",
                                     ex, project_name, file_name, temp_dir)
                 getBackwardsCompatibleMessage(
-                        text = "Failed to write to temporary file for '{}'.".format(file_name),
-                        title = "File-system error",
+                        text="Failed to write to temporary file for '{}'.".format(file_name),
+                        title="File-system error",
                         message_type_str="ERROR",
-                        lifetime = 10
+                        lifetime=10
                 ).show()
                 return
 
             CuraApplication.getInstance().readLocalFile(
-                    QUrl.fromLocalFile(temp_file_name), add_to_recent_files = False)
+                    QUrl.fromLocalFile(temp_file_name), add_to_recent_files=False)
 
-        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, p = project_name,
+        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, p=project_name,
                           f = file_name) -> None:
             progress_message.hide()
             Logger.error("An error {0} {1} occurred while downloading {2}/{3}".format(str(error), str(reply), p, f))
             getBackwardsCompatibleMessage(
-                    text = "Failed Digital Library download for '{}'.".format(f),
-                    title = "Network error {}".format(error),
+                    text="Failed Digital Library download for '{}'.".format(f),
+                    title="Network error {}".format(error),
                     message_type_str="ERROR",
-                    lifetime = 10
+                    lifetime=10
             ).show()
 
         download_manager = HttpRequestManager.getInstance()
-        download_manager.get(download_url, callback = finishedCallback, download_progress_callback = progressCallback,
-                             error_callback = errorCallback, scope = UltimakerCloudScope(CuraApplication.getInstance()))
+        download_manager.get(download_url, callback=finishedCallback, download_progress_callback=progressCallback,
+                             error_callback=errorCallback, scope=UltimakerCloudScope(CuraApplication.getInstance()))
 
     def setHasPreselectedProject(self, new_has_preselected_project: bool) -> None:
         if not new_has_preselected_project:
@@ -562,13 +562,13 @@ class DigitalFactoryController(QObject):
             # false, we also need to clean it from the projects model
             self._project_model.clearProjects()
             self.setSelectedProjectIndex(-1)
-            self._api.getProjectsFirstPage(search_filter = self._project_filter, on_finished = self._onGetProjectsFirstPageFinished, failed = self._onGetProjectsFailed)
-            self._api.checkUserCanCreateNewLibraryProject(callback = self.setCanCreateNewLibraryProject)
+            self._api.getProjectsFirstPage(search_filter=self._project_filter, on_finished=self._onGetProjectsFirstPageFinished, failed=self._onGetProjectsFailed)
+            self._api.checkUserCanCreateNewLibraryProject(callback=self.setCanCreateNewLibraryProject)
             self.setRetrievingProjectsStatus(self.RetrievalStatus.InProgress)
         self._has_preselected_project = new_has_preselected_project
         self.preselectedProjectChanged.emit()
 
-    @pyqtProperty(bool, fset = setHasPreselectedProject, notify = preselectedProjectChanged)
+    @pyqtProperty(bool, fset=setHasPreselectedProject, notify=preselectedProjectChanged)
     def hasPreselectedProject(self) -> bool:
         return self._has_preselected_project
 
@@ -576,7 +576,7 @@ class DigitalFactoryController(QObject):
         self._user_account_can_create_new_project = can_create_new_library_project
         self.userCanCreateNewLibraryProjectChanged.emit(self._user_account_can_create_new_project)
 
-    @pyqtProperty(bool, fset = setCanCreateNewLibraryProject, notify = userCanCreateNewLibraryProjectChanged)
+    @pyqtProperty(bool, fset=setCanCreateNewLibraryProject, notify=userCanCreateNewLibraryProjectChanged)
     def userAccountCanCreateNewLibraryProject(self) -> bool:
         return self._user_account_can_create_new_project
 
@@ -591,20 +591,20 @@ class DigitalFactoryController(QObject):
         if self._selected_project_idx == -1:
             Logger.log("e", "No DF Library project is selected.")
             getBackwardsCompatibleMessage(
-                    text = "No Digital Library project was selected",
-                    title = "No project selected",
-                    message_type_str = "ERROR",
-                    lifetime = 0
+                    text="No Digital Library project was selected",
+                    title="No project selected",
+                    message_type_str="ERROR",
+                    lifetime=0
             ).show()
             return
 
         if filename == "":
             Logger.log("w", "The file name cannot be empty.")
             getBackwardsCompatibleMessage(
-                    text = "Cannot upload file with an empty name to the Digital Library",
-                    title = "Empty file name provided",
-                    message_type_str = "ERROR",
-                    lifetime = 0
+                    text="Cannot upload file with an empty name to the Digital Library",
+                    title="Empty file name provided",
+                    message_type_str="ERROR",
+                    lifetime=0
             ).show()
             return
 
@@ -618,19 +618,19 @@ class DigitalFactoryController(QObject):
         library_project_name = self._project_model.items[self._selected_project_idx]["displayName"]
 
         # Use the file upload manager to export and upload the 3mf and/or ufp files to the DF Library project
-        self.file_upload_manager = DFFileExportAndUploadManager(file_handlers = self.file_handlers, nodes = cast(List[SceneNode], self.nodes),
-                                                                library_project_id = library_project_id,
-                                                                library_project_name = library_project_name,
-                                                                file_name = filename, formats = formats,
-                                                                on_upload_error = self.uploadFileError.emit,
-                                                                on_upload_success = self.uploadFileSuccess.emit,
-                                                                on_upload_finished = self.uploadFileFinished.emit,
-                                                                on_upload_progress = self.uploadFileProgress.emit)
+        self.file_upload_manager = DFFileExportAndUploadManager(file_handlers=self.file_handlers, nodes=cast(List[SceneNode], self.nodes),
+                                                                library_project_id=library_project_id,
+                                                                library_project_name=library_project_name,
+                                                                file_name=filename, formats=formats,
+                                                                on_upload_error=self.uploadFileError.emit,
+                                                                on_upload_success=self.uploadFileSuccess.emit,
+                                                                on_upload_finished=self.uploadFileFinished.emit,
+                                                                on_upload_progress=self.uploadFileProgress.emit)
         self.file_upload_manager.start()
 
         # Save the project id to make sure it will be preselected the next time the user opens the save dialog
         self._current_workspace_information.setEntryToStore("digital_factory", "library_project_id", library_project_id)
 
-    @pyqtProperty(str, notify = projectCreationErrorTextChanged)
+    @pyqtProperty(str, notify=projectCreationErrorTextChanged)
     def projectCreationErrorText(self) -> str:
         return self._project_creation_error_text

@@ -57,13 +57,13 @@ class DriveApiService:
 
         HttpRequestManager.getInstance().get(
             self.BACKUP_URL,
-            callback= callback,
-            error_callback = callback,
+            callback=callback,
+            error_callback=callback,
             scope=self._json_cloud_scope
         )
 
     def createBackup(self) -> None:
-        self.creatingStateChanged.emit(is_creating = True)
+        self.creatingStateChanged.emit(is_creating=True)
         upload_backup_job = CreateBackupJob(self.BACKUP_URL)
         upload_backup_job.finished.connect(self._onUploadFinished)
         upload_backup_job.start()
@@ -71,18 +71,18 @@ class DriveApiService:
     def _onUploadFinished(self, job: "CreateBackupJob") -> None:
         if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
+            self.creatingStateChanged.emit(is_creating=False, error_message=job.backup_upload_error_message)
         else:
-            self.creatingStateChanged.emit(is_creating = False)
+            self.creatingStateChanged.emit(is_creating=False)
 
     def restoreBackup(self, backup: Dict[str, Any]) -> None:
-        self.restoringStateChanged.emit(is_restoring = True)
+        self.restoringStateChanged.emit(is_restoring=True)
         download_url = backup.get("download_url")
         if not download_url:
             # If there is no download URL, we can't restore the backup.
             Logger.warning("backup download_url is missing. Aborting backup.")
-            self.restoringStateChanged.emit(is_restoring = False,
-                                            error_message = catalog.i18nc("@info:backup_status",
+            self.restoringStateChanged.emit(is_restoring=False,
+                                            error_message=catalog.i18nc("@info:backup_status",
                                                                         "There was an error trying to restore your backup."))
             return
 
@@ -93,9 +93,9 @@ class DriveApiService:
     def _onRestoreFinished(self, job: "RestoreBackupJob") -> None:
         if job.restore_backup_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.restoringStateChanged.emit(is_restoring = False)
+            self.restoringStateChanged.emit(is_restoring=False)
         else:
-            self.restoringStateChanged.emit(is_restoring = False, error_message = job.restore_backup_error_message)
+            self.restoringStateChanged.emit(is_restoring=False, error_message=job.restore_backup_error_message)
 
     def deleteBackup(self, backup_id: str, finished_callable: Callable[[bool], None]):
 
@@ -106,10 +106,10 @@ class DriveApiService:
             self._onDeleteRequestCompleted(reply, ca, error)
 
         HttpRequestManager.getInstance().delete(
-            url = "{}/{}".format(self.BACKUP_URL, backup_id),
-            callback = finishedCallback,
-            error_callback = errorCallback,
-            scope= self._json_cloud_scope
+            url="{}/{}".format(self.BACKUP_URL, backup_id),
+            callback=finishedCallback,
+            error_callback=errorCallback,
+            scope=self._json_cloud_scope
         )
 
     @staticmethod

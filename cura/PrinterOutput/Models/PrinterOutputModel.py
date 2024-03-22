@@ -38,7 +38,7 @@ class PrinterOutputModel(QObject):
         self._unique_name = ""  # Unique name (used in Connect)
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
-        self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
+        self._extruders = [ExtruderOutputModel(printer=self, position=i) for i in range(number_of_extruders)]
         self._active_printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
@@ -56,7 +56,7 @@ class PrinterOutputModel(QObject):
 
         self._camera_url = QUrl()  # type: QUrl
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def firmwareVersion(self) -> str:
         return self._firmware_version
 
@@ -65,7 +65,7 @@ class PrinterOutputModel(QObject):
             self._camera_url = camera_url
             self.cameraUrlChanged.emit()
 
-    @pyqtProperty(QUrl, fset = setCameraUrl, notify = cameraUrlChanged)
+    @pyqtProperty(QUrl, fset=setCameraUrl, notify=cameraUrlChanged)
     def cameraUrl(self) -> "QUrl":
         return self._camera_url
 
@@ -78,7 +78,7 @@ class PrinterOutputModel(QObject):
     def isPreheating(self) -> bool:
         return self._is_preheating
 
-    @pyqtProperty(str, notify = typeChanged)
+    @pyqtProperty(str, notify=typeChanged)
     def type(self) -> str:
         return self._printer_type
 
@@ -89,7 +89,7 @@ class PrinterOutputModel(QObject):
             self.typeChanged.emit()
             self.configurationChanged.emit()
 
-    @pyqtProperty(str, notify = buildplateChanged)
+    @pyqtProperty(str, notify=buildplateChanged)
     def buildplate(self) -> str:
         return self._buildplate
 
@@ -121,11 +121,11 @@ class PrinterOutputModel(QObject):
     def sendRawCommand(self, command: str) -> None:
         self._controller.sendRawCommand(self, command)
 
-    @pyqtProperty("QVariantList", constant = True)
+    @pyqtProperty("QVariantList", constant=True)
     def extruders(self) -> List["ExtruderOutputModel"]:
         return self._extruders
 
-    @pyqtProperty(QVariant, notify = headPositionChanged)
+    @pyqtProperty(QVariant, notify=headPositionChanged)
     def headPosition(self) -> Dict[str, float]:
         return {"x": self._head_position.x, "y": self._head_position.y, "z": self.head_position.z}
 
@@ -181,7 +181,7 @@ class PrinterOutputModel(QObject):
     def getController(self) -> "PrinterOutputController":
         return self._controller
 
-    @pyqtProperty(str, notify = nameChanged)
+    @pyqtProperty(str, notify=nameChanged)
     def name(self) -> str:
         return self._name
 
@@ -193,7 +193,7 @@ class PrinterOutputModel(QObject):
             self._name = name
             self.nameChanged.emit()
 
-    @pyqtProperty(str, notify = nameChanged)
+    @pyqtProperty(str, notify=nameChanged)
     def uniqueName(self) -> str:
         return self._unique_name
 
@@ -238,66 +238,66 @@ class PrinterOutputModel(QObject):
             self._printer_state = printer_state
             self.stateChanged.emit()
 
-    @pyqtProperty(QObject, notify = activePrintJobChanged)
+    @pyqtProperty(QObject, notify=activePrintJobChanged)
     def activePrintJob(self) -> Optional["PrintJobOutputModel"]:
         return self._active_print_job
 
-    @pyqtProperty(str, notify = stateChanged)
+    @pyqtProperty(str, notify=stateChanged)
     def state(self) -> str:
         return self._printer_state
 
-    @pyqtProperty(float, notify = bedTemperatureChanged)
+    @pyqtProperty(float, notify=bedTemperatureChanged)
     def bedTemperature(self) -> float:
         return self._bed_temperature
 
-    @pyqtProperty(float, notify = targetBedTemperatureChanged)
+    @pyqtProperty(float, notify=targetBedTemperatureChanged)
     def targetBedTemperature(self) -> float:
         return self._target_bed_temperature
 
     # Does the printer support pre-heating the bed at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canPreHeatBed(self) -> bool:
         if self._controller:
             return self._controller.can_pre_heat_bed
         return False
 
     # Does the printer support pre-heating the bed at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canPreHeatHotends(self) -> bool:
         if self._controller:
             return self._controller.can_pre_heat_hotends
         return False
 
     # Does the printer support sending raw G-code at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canSendRawGcode(self) -> bool:
         if self._controller:
             return self._controller.can_send_raw_gcode
         return False
 
     # Does the printer support pause at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canPause(self) -> bool:
         if self._controller:
             return self._controller.can_pause
         return False
 
     # Does the printer support abort at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canAbort(self) -> bool:
         if self._controller:
             return self._controller.can_abort
         return False
 
     # Does the printer support manual control at all
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canControlManually(self) -> bool:
         if self._controller:
             return self._controller.can_control_manually
         return False
 
     # Does the printer support upgrading firmware
-    @pyqtProperty(bool, notify = canUpdateFirmwareChanged)
+    @pyqtProperty(bool, notify=canUpdateFirmwareChanged)
     def canUpdateFirmware(self) -> bool:
         if self._controller:
             return self._controller.can_update_firmware
@@ -308,7 +308,7 @@ class PrinterOutputModel(QObject):
         self.canUpdateFirmwareChanged.emit()
 
     # Returns the active configuration (material, variant and buildplate) of the current printer
-    @pyqtProperty(QObject, notify = configurationChanged)
+    @pyqtProperty(QObject, notify=configurationChanged)
     def printerConfiguration(self) -> Optional[PrinterConfigurationModel]:
         if self._active_printer_configuration.isValid():
             return self._active_printer_configuration
@@ -316,7 +316,7 @@ class PrinterOutputModel(QObject):
 
     peripheralsChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = peripheralsChanged)
+    @pyqtProperty(str, notify=peripheralsChanged)
     def peripherals(self) -> str:
         return ", ".join([peripheral.name for peripheral in self._peripherals])
 
@@ -332,7 +332,7 @@ class PrinterOutputModel(QObject):
 
     # The availableConfigurations are configuration options that a printer can switch to, but doesn't currently have
     # active (eg; Automatic tool changes, material loaders, etc).
-    @pyqtProperty("QVariantList", notify = availableConfigurationsChanged)
+    @pyqtProperty("QVariantList", notify=availableConfigurationsChanged)
     def availableConfigurations(self) -> List[PrinterConfigurationModel]:
         return self._available_printer_configurations
 

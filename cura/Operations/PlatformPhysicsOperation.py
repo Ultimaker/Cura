@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Math.Vector import Vector
 from UM.Operations.Operation import Operation
 from UM.Operations.GroupedOperation import GroupedOperation

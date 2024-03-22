@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Logger import Logger
 
 from PyQt6.QtCore import Qt, pyqtSlot, QObject, QTimer
@@ -151,4 +154,4 @@ class CuraSceneController(QObject):
     def createCuraSceneController():
         objects_model = Application.getInstance().getObjectsModel()
         multi_build_plate_model = Application.getInstance().getMultiBuildPlateModel()
-        return CuraSceneController(objects_model = objects_model, multi_build_plate_model = multi_build_plate_model)
+        return CuraSceneController(objects_model=objects_model, multi_build_plate_model=multi_build_plate_model)

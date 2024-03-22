@@ -32,10 +32,10 @@ class MaterialManagementModel(QObject):
     """
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
-        super().__init__(parent = parent)
+        super().__init__(parent=parent)
         self._material_sync = CloudMaterialSync(parent=self)
 
-    @pyqtSlot("QVariant", result = bool)
+    @pyqtSlot("QVariant", result=bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
         """Can a certain material be deleted, or is it still in use in one of the container stacks anywhere?
 
@@ -49,8 +49,8 @@ class MaterialManagementModel(QObject):
         """
 
         container_registry = CuraContainerRegistry.getInstance()
-        ids_to_remove = {metadata.get("id", "") for metadata in container_registry.findInstanceContainersMetadata(base_file = material_node.base_file)}
-        for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
+        ids_to_remove = {metadata.get("id", "") for metadata in container_registry.findInstanceContainersMetadata(base_file=material_node.base_file)}
+        for extruder_stack in container_registry.findContainerStacks(type="extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:
                 return False
         return True
@@ -68,7 +68,7 @@ class MaterialManagementModel(QObject):
         if container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
             return
-        return container_registry.findContainers(id = root_material_id)[0].setName(name)
+        return container_registry.findContainers(id=root_material_id)[0].setName(name)
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
@@ -86,19 +86,19 @@ class MaterialManagementModel(QObject):
         Logger.info(f"Removing material {material_node.container_id}")
 
         container_registry = CuraContainerRegistry.getInstance()
-        materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
+        materials_this_base_file = container_registry.findContainersMetadata(base_file=material_node.base_file)
 
         # The material containers belonging to the same material file are supposed to work together. This postponeSignals()
         # does two things:
         #   - optimizing the signal emitting.
         #   - making sure that the signals will only be emitted after all the material containers have been removed.
-        with postponeSignals(container_registry.containerRemoved, compress = CompressTechnique.CompressPerParameterValue):
+        with postponeSignals(container_registry.containerRemoved, compress=CompressTechnique.CompressPerParameterValue):
             # CURA-6886: Some containers may not have been loaded. If remove one material container, its material file
             # will be removed. If later we remove a sub-material container which hasn't been loaded previously, it will
             # crash because removeContainer() requires to load the container first, but the material file was already
             # gone.
             for material_metadata in materials_this_base_file:
-                container_registry.findInstanceContainers(id = material_metadata["id"])
+                container_registry.findInstanceContainers(id=material_metadata["id"])
             for material_metadata in materials_this_base_file:
                 container_registry.removeContainer(material_metadata["id"])
 
@@ -117,9 +117,9 @@ class MaterialManagementModel(QObject):
 
         container_registry = CuraContainerRegistry.getInstance()
 
-        root_materials = container_registry.findContainers(id = base_file)
+        root_materials = container_registry.findContainers(id=base_file)
         if not root_materials:
-            Logger.log("i", "Unable to duplicate the root material with ID {root_id}, because it doesn't exist.".format(root_id = base_file))
+            Logger.log("i", "Unable to duplicate the root material with ID {root_id}, because it doesn't exist.".format(root_id=base_file))
             return None
         root_material = root_materials[0]
 
@@ -138,7 +138,7 @@ class MaterialManagementModel(QObject):
         new_containers = [new_root_material]
 
         # Clone all submaterials.
-        for container_to_copy in container_registry.findInstanceContainers(base_file = base_file):
+        for container_to_copy in container_registry.findInstanceContainers(base_file=base_file):
             if container_to_copy.getId() == base_file:
                 continue  # We already have that one. Skip it.
             new_id = new_base_id
@@ -168,7 +168,7 @@ class MaterialManagementModel(QObject):
         # between those two events, the ContainerTree will have nodes that contain invalid data.
         #
         # This sort fixes the problem by emitting the most specific containers first.
-        new_containers = sorted(new_containers, key = lambda x: x.getId(), reverse = True)
+        new_containers = sorted(new_containers, key=lambda x: x.getId(), reverse=True)
 
         # Optimization. Serving the same purpose as the postponeSignals() in removeMaterial()
         # postpone the signals emitted when duplicating materials. This is easier on the event loop; changes the
@@ -186,7 +186,7 @@ class MaterialManagementModel(QObject):
 
         return new_base_id
 
-    @pyqtSlot("QVariant", result = str)
+    @pyqtSlot("QVariant", result=str)
     def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None,
                           new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
         """Creates a duplicate of a material with the same GUID and base_file metadata
@@ -202,7 +202,7 @@ class MaterialManagementModel(QObject):
         Logger.info(f"Duplicating material {material_node.base_file} to {new_base_id}")
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
-    @pyqtSlot(result = str)
+    @pyqtSlot(result=str)
     def createMaterial(self) -> str:
         """Create a new material by cloning the preferred material for the current material diameter and generate a new
         GUID.
@@ -234,7 +234,7 @@ class MaterialManagementModel(QObject):
                         "GUID": str(uuid.uuid4()),
                         }
 
-        self.duplicateMaterial(preferred_material_node, new_base_id = new_id, new_metadata = new_metadata)
+        self.duplicateMaterial(preferred_material_node, new_base_id=new_id, new_metadata=new_metadata)
         return new_id
 
     @pyqtSlot(str)
@@ -267,7 +267,7 @@ class MaterialManagementModel(QObject):
             application.saveSettings()
             self.favoritesChanged.emit(material_base_file)
         except ValueError:  # Material was not in the favorites list.
-            Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
+            Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file=material_base_file))
 
     @pyqtSlot()
     def openSyncAllWindow(self) -> None:
@@ -275,4 +275,3 @@ class MaterialManagementModel(QObject):
         Opens the window to sync all materials.
         """
         self._material_sync.openSyncAllWindow()
-

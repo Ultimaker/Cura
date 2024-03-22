@@ -21,7 +21,7 @@ class SetObjectExtruderOperation(Operation):
             self._node.callDecoration("setActiveExtruder", self._previous_extruder_id)
 
     def redo(self):
-        stack = self._node.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
+        stack = self._node.callDecoration("getStack")  # Don't try to get the active extruder since it may be None anyway.
         if not stack:
             self._node.addDecorator(SettingOverrideDecorator())
 

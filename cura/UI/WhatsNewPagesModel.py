@@ -98,16 +98,16 @@ class WhatsNewPagesModel(WelcomePagesModel):
         else:
             return None
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def subpageCount(self) -> int:
         return len(self._subpages)
 
-    @pyqtSlot(int, result = str)
+    @pyqtSlot(int, result=str)
     def getSubpageImageSource(self, page: int) -> str:
         result = self._getSubpageItem(page, WhatsNewPagesModel.image_key)
         return "file:///" + (result if result else Resources.getPath(Resources.Images, "cura-icon.png"))
 
-    @pyqtSlot(int, result = str)
+    @pyqtSlot(int, result=str)
     def getSubpageText(self, page: int) -> str:
         result = self._getSubpageItem(page, WhatsNewPagesModel.text_key)
         return result if result else "* * *"

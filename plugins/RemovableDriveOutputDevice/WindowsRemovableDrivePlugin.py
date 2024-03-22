@@ -1,6 +1,7 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Copyright (c) 2013 David Braam
 # Uranium is released under the terms of the LGPLv3 or higher.
+
 from . import RemovableDrivePlugin
 
 import string
@@ -11,25 +12,25 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 # Ignore windows error popups. Fixes the whole "Can't open drive X" when user has an SD card reader.
-ctypes.windll.kernel32.SetErrorMode(1) #type: ignore
+ctypes.windll.kernel32.SetErrorMode(1)  # type: ignore
 
 # WinAPI Constants that we need
 # Hardcoded here due to stupid WinDLL stuff that does not give us access to these values.
-DRIVE_REMOVABLE = 2 # [CodeStyle: Windows Enum value]
+DRIVE_REMOVABLE = 2  # [CodeStyle: Windows Enum value]
 
-GENERIC_READ = 2147483648 # [CodeStyle: Windows Enum value]
-GENERIC_WRITE = 1073741824 # [CodeStyle: Windows Enum value]
+GENERIC_READ = 2147483648  # [CodeStyle: Windows Enum value]
+GENERIC_WRITE = 1073741824  # [CodeStyle: Windows Enum value]
 
-FILE_SHARE_READ = 1 # [CodeStyle: Windows Enum value]
-FILE_SHARE_WRITE = 2 # [CodeStyle: Windows Enum value]
+FILE_SHARE_READ = 1  # [CodeStyle: Windows Enum value]
+FILE_SHARE_WRITE = 2  # [CodeStyle: Windows Enum value]
 
-IOCTL_STORAGE_EJECT_MEDIA = 2967560 # [CodeStyle: Windows Enum value]
+IOCTL_STORAGE_EJECT_MEDIA = 2967560  # [CodeStyle: Windows Enum value]
 
-OPEN_EXISTING = 3 # [CodeStyle: Windows Enum value]
+OPEN_EXISTING = 3  # [CodeStyle: Windows Enum value]
 
 # Setup the DeviceIoControl function arguments and return type.
 # See ctypes documentation for details on how to call C functions from python, and why this is important.
-ctypes.windll.kernel32.DeviceIoControl.argtypes = [ #type: ignore
+ctypes.windll.kernel32.DeviceIoControl.argtypes = [  # type: ignore
     wintypes.HANDLE,                    # _In_          HANDLE hDevice
     wintypes.DWORD,                     # _In_          DWORD dwIoControlCode
     wintypes.LPVOID,                    # _In_opt_      LPVOID lpInBuffer
@@ -39,7 +40,7 @@ ctypes.windll.kernel32.DeviceIoControl.argtypes = [ #type: ignore
     ctypes.POINTER(wintypes.DWORD),     # _Out_opt_     LPDWORD lpBytesReturned
     wintypes.LPVOID                     # _Inout_opt_   LPOVERLAPPED lpOverlapped
 ]
-ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL #type: ignore
+ctypes.windll.kernel32.DeviceIoControl.restype = wintypes.BOOL  # type: ignore
 
 
 class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):

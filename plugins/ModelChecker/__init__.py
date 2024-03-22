@@ -8,4 +8,4 @@ def getMetaData():
     return {}
 
 def register(app):
-    return { "extension": ModelChecker.ModelChecker() }
+    return {"extension": ModelChecker.ModelChecker()}

@@ -17,4 +17,4 @@ def getMetaData():
     }
 
 def register(app):
-    return { "tool": SupportEraser.SupportEraser() }
+    return {"tool": SupportEraser.SupportEraser()}

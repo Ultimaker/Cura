@@ -77,11 +77,11 @@ class UploadMaterialsJob(Job):
         Generates an archive of materials and starts uploading that archive to the cloud.
         """
         self._printer_metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(
-            type = "machine",
-            connection_type = "3",  # Only cloud printers.
-            is_online = "True",  # Only online printers. Otherwise the server gives an error.
-            host_guid = "*",  # Required metadata field. Otherwise we get a KeyError.
-            um_cloud_cluster_id = "*"  # Required metadata field. Otherwise we get a KeyError.
+            type="machine",
+            connection_type="3",  # Only cloud printers.
+            is_online="True",  # Only online printers. Otherwise the server gives an error.
+            host_guid="*",  # Required metadata field. Otherwise we get a KeyError.
+            um_cloud_cluster_id="*"  # Required metadata field. Otherwise we get a KeyError.
         )
 
         # Filter out any printer not capable of the 'import_material' capability. Needs FW 7.0.1-RC at the least!
@@ -95,10 +95,10 @@ class UploadMaterialsJob(Job):
             self._printer_sync_status[printer["host_guid"]] = self.PrinterStatus.UPLOADING.value
 
         try:
-            archive_file = tempfile.NamedTemporaryFile("wb", delete = False)
+            archive_file = tempfile.NamedTemporaryFile("wb", delete=False)
             archive_file.close()
             self._archive_filename = archive_file.name
-            self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress = self.processProgressChanged)
+            self._material_sync.exportAll(QUrl.fromLocalFile(self._archive_filename), notify_progress=self.processProgressChanged)
         except OSError as e:
             Logger.error(f"Failed to create archive of materials to sync with printers: {type(e)} - {e}")
             self.failed(UploadMaterialsError(catalog.i18nc("@text:error", "Failed to create archive of materials to sync with printers.")))
@@ -123,11 +123,11 @@ class UploadMaterialsJob(Job):
 
         http = HttpRequestManager.getInstance()
         http.put(
-            url = self.UPLOAD_REQUEST_URL,
-            data = request_payload,
-            callback = self.onUploadRequestCompleted,
-            error_callback = self.onError,
-            scope = self._scope
+            url=self.UPLOAD_REQUEST_URL,
+            data=request_payload,
+            callback=self.onUploadRequestCompleted,
+            error_callback=self.onError,
+            scope=self._scope
         )
 
     def onUploadRequestCompleted(self, reply: "QNetworkReply") -> None:
@@ -166,11 +166,11 @@ class UploadMaterialsJob(Job):
             return
         http = HttpRequestManager.getInstance()
         http.put(
-            url = upload_url,
-            data = file_data,
-            callback = self.onUploadCompleted,
-            error_callback = self.onError,
-            scope = self._scope
+            url=upload_url,
+            data=file_data,
+            callback=self.onUploadCompleted,
+            error_callback=self.onError,
+            scope=self._scope
         )
 
     def onUploadCompleted(self, reply: "QNetworkReply") -> None:
@@ -185,11 +185,11 @@ class UploadMaterialsJob(Job):
 
             http = HttpRequestManager.getInstance()
             http.post(
-                url = self.UPLOAD_CONFIRM_URL.format(cluster_id = cluster_id, cluster_printer_id = printer_id),
-                callback = functools.partial(self.onUploadConfirmed, printer_id),
-                error_callback = functools.partial(self.onUploadConfirmed, printer_id),  # Let this same function handle the error too.
-                scope = self._scope,
-                data = json.dumps({"data": {"material_profile_id": self._archive_remote_id}}).encode("UTF-8")
+                url=self.UPLOAD_CONFIRM_URL.format(cluster_id=cluster_id, cluster_printer_id=printer_id),
+                callback=functools.partial(self.onUploadConfirmed, printer_id),
+                error_callback=functools.partial(self.onUploadConfirmed, printer_id),  # Let this same function handle the error too.
+                scope=self._scope,
+                data=json.dumps({"data": {"material_profile_id": self._archive_remote_id}}).encode("UTF-8")
             )
 
     def onUploadConfirmed(self, printer_id: str, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:

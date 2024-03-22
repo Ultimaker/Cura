@@ -52,9 +52,9 @@ class PickingPass(RenderPass):
         batch = RenderBatch(self._shader)
 
         # Fill up the batch with objects that can be sliced. `
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):  # type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
             if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
-                batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
+                batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
 
         self.bind()
         batch.render(self._scene.getActiveCamera())
@@ -78,8 +78,8 @@ class PickingPass(RenderPass):
         if px < 0 or px > (output.width() - 1) or py < 0 or py > (output.height() - 1):
             return -1
 
-        distance = output.pixel(px, py) # distance in micron, from in r, g & b channels
-        distance = (distance & 0x00ffffff) / 1000. # drop the alpha channel and convert to mm
+        distance = output.pixel(px, py)  # distance in micron, from in r, g & b channels
+        distance = (distance & 0x00ffffff) / 1000.  # drop the alpha channel and convert to mm
         return distance
 
     def getPickedPosition(self, x: int, y: int) -> Vector:

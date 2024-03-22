@@ -24,7 +24,7 @@ class GlobalStacksModel(ListModel):
     RemovalWarningRole = Qt.ItemDataRole.UserRole + 7
     IsOnlineRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent=None) -> None:
         super().__init__(parent)
 
         self._catalog = i18nCatalog("cura")
@@ -62,7 +62,7 @@ class GlobalStacksModel(ListModel):
             self._filter_connection_type = new_filter
             self.filterConnectionTypeChanged.emit()
 
-    @pyqtProperty(int, fset = setFilterConnectionType, notify = filterConnectionTypeChanged)
+    @pyqtProperty(int, fset=setFilterConnectionType, notify=filterConnectionTypeChanged)
     def filterConnectionType(self) -> int:
         """
         The connection type to filter the list of printers by.
@@ -79,7 +79,7 @@ class GlobalStacksModel(ListModel):
             self._filter_online_only = new_filter
             self.filterOnlineOnlyChanged.emit()
 
-    @pyqtProperty(bool, fset = setFilterOnlineOnly, notify = filterOnlineOnlyChanged)
+    @pyqtProperty(bool, fset=setFilterOnlineOnly, notify=filterOnlineOnlyChanged)
     def filterOnlineOnly(self) -> bool:
         """
         Whether to filter the global stacks to show only printers that are online.
@@ -91,7 +91,7 @@ class GlobalStacksModel(ListModel):
             self._filter_capabilities = new_filter
             self.filterCapabilitiesChanged.emit()
 
-    @pyqtProperty("QStringList", fset = setFilterCapabilities, notify = filterCapabilitiesChanged)
+    @pyqtProperty("QStringList", fset=setFilterCapabilities, notify=filterCapabilitiesChanged)
     def filterCapabilities(self) -> List[str]:
         """
         Capabilities to require on the list of printers.
@@ -105,7 +105,7 @@ class GlobalStacksModel(ListModel):
             self._filter_abstract_machines = new_filter
             self.filterAbstractMachinesChanged.emit()
 
-    @pyqtProperty(bool, fset = setFilterAbstractMachines, notify = filterAbstractMachinesChanged)
+    @pyqtProperty(bool, fset=setFilterAbstractMachines, notify=filterAbstractMachinesChanged)
     def filterAbstractMachines(self) -> Optional[bool]:
         """
         Weather we include abstract printers, non-abstract printers or both
@@ -129,7 +129,7 @@ class GlobalStacksModel(ListModel):
     def _update(self) -> None:
         items = []
 
-        container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
         for container_stack in container_stacks:
             if self._filter_connection_type is not None:  # We want to filter on connection types.
                 if not any((connection_type == self._filter_connection_type for connection_type in container_stack.configuredConnectionTypes)):

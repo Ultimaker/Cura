@@ -1,3 +1,6 @@
+# Copyright (c) 2016 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 import urllib.parse
 from configparser import ConfigParser
@@ -15,26 +18,26 @@ class SettingVisibilityPreset(QObject):
     onWeightChanged = pyqtSignal()
     onIdChanged = pyqtSignal()
 
-    def __init__(self, preset_id: str = "", name: str = "", weight: int = 0, parent = None) -> None:
+    def __init__(self, preset_id: str = "", name: str = "", weight: int = 0, parent=None) -> None:
         super().__init__(parent)
         self._settings = []  # type: List[str]
         self._id = preset_id
         self._weight = weight
         self._name = name
 
-    @pyqtProperty("QStringList", notify = onSettingsChanged)
+    @pyqtProperty("QStringList", notify=onSettingsChanged)
     def settings(self) -> List[str]:
         return self._settings
 
-    @pyqtProperty(str, notify = onIdChanged)
+    @pyqtProperty(str, notify=onIdChanged)
     def presetId(self) -> str:
         return self._id
 
-    @pyqtProperty(int, notify = onWeightChanged)
+    @pyqtProperty(int, notify=onWeightChanged)
     def weight(self) -> int:
         return self._weight
 
-    @pyqtProperty(str, notify = onNameChanged)
+    @pyqtProperty(str, notify=onNameChanged)
     def name(self) -> str:
         return self._name
 
@@ -69,7 +72,7 @@ class SettingVisibilityPreset(QObject):
             Logger.log("e", "[%s] is not a file", file_path)
             return None
 
-        parser = ConfigParser(interpolation = None, allow_no_value = True)  # Accept options without any value,
+        parser = ConfigParser(interpolation=None, allow_no_value=True)  # Accept options without any value,
 
         parser.read([file_path])
         if not parser.has_option("general", "name") or not parser.has_option("general", "weight"):
@@ -87,4 +90,3 @@ class SettingVisibilityPreset(QObject):
         self.setId(item_id)
         self.setName(parser["general"]["name"])
         self.setWeight(int(parser["general"]["weight"]))
-

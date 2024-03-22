@@ -67,17 +67,17 @@ class SolidView(View):
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
         self._xray_warning_message = Message(
             catalog.i18nc("@info:status", "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."),
-            lifetime = 60 * 5, # leave message for 5 minutes
-            title = catalog.i18nc("@info:title", "Model Errors"),
-            option_text = catalog.i18nc("@info:option_text", "Do not show this message again"),
-            option_state = False,
+            lifetime=60 * 5, # leave message for 5 minutes
+            title=catalog.i18nc("@info:title", "Model Errors"),
+            option_text=catalog.i18nc("@info:option_text", "Do not show this message again"),
+            option_state=False,
             message_type=Message.MessageType.WARNING
         )
         self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)
         self._xray_warning_message.addAction("manifold", catalog.i18nc("@action:button", "Learn more"), "[no_icon]", "[no_description]",
-                          button_style = Message.ActionButtonStyle.LINK,
-                          button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
+                          button_style=Message.ActionButtonStyle.LINK,
+                          button_align=Message.ActionButtonAlignment.ALIGN_LEFT)
         self._xray_warning_message.actionTriggered.connect(self._onNonManifoldLearnMoreClicked)
 
         application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
@@ -217,12 +217,12 @@ class SolidView(View):
                 if self._support_angle >= 0 and self._support_angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
                 else:
-                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
+                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))  # Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
         self._enabled_shader.setUniformValue("u_lowestPrintableHeight", self._lowest_printable_height)
-        disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
-        normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
+        disabled_batch = renderer.createRenderBatch(shader=self._disabled_shader)
+        normal_object_batch = renderer.createRenderBatch(shader=self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
         renderer.addRenderBatch(normal_object_batch)
         for node in DepthFirstIterator(scene.getRoot()):
@@ -267,11 +267,11 @@ class SolidView(View):
 
                 if node.callDecoration("isNonPrintingMesh"):
                     if per_mesh_stack and (node.callDecoration("isInfillMesh") or node.callDecoration("isCuttingMesh")):
-                        renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
+                        renderer.queueNode(node, shader=self._non_printing_shader, uniforms=uniforms, transparent=True)
                     else:
-                        renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
+                        renderer.queueNode(node, shader=self._non_printing_shader, transparent=True)
                 elif getattr(node, "_outside_buildarea", False):
-                    disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation = node.getCachedNormalMatrix())
+                    disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
                 elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                     # Render support meshes with a vertical stripe that is darker
                     shade_factor = 0.6
@@ -281,11 +281,11 @@ class SolidView(View):
                         uniforms["diffuse_color"][2] * shade_factor,
                         1.0
                     ]
-                    renderer.queueNode(node, shader = self._support_mesh_shader, uniforms = uniforms)
+                    renderer.queueNode(node, shader=self._support_mesh_shader, uniforms=uniforms)
                 else:
-                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms, normal_transformation = node.getCachedNormalMatrix())
+                    normal_object_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), uniforms=uniforms, normal_transformation=node.getCachedNormalMatrix())
             if node.callDecoration("isGroup") and Selection.isSelected(node):
-                renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
+                renderer.queueNode(scene.getRoot(), mesh=node.getBoundingBoxMesh(), mode=RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
         # check whether the xray overlay is showing badness
