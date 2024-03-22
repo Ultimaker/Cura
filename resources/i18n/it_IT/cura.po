@@ -118,7 +118,7 @@ msgstr "&Salva progetto..."
 
 msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
 msgid "&Save Universal Cura Project..."
-msgstr "&Salva il Universal Cura Project..."
+msgstr "&Salva il Progetto Universale Cura..."
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
@@ -1435,7 +1435,7 @@ msgstr "Esporta selezione..."
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
-msgstr "Esportare il Universal Cura Project"
+msgstr "Esportare il Progetto Universale Cura"
 
 msgctxt "@button"
 msgid "Export material archive"
@@ -2686,11 +2686,11 @@ msgstr "Apri file progetto"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP)"
-msgstr "Aprire il Universal Cura Project (UCP)"
+msgstr "Aprire il Progetto Universale Cura (UCP)"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP) file"
-msgstr "Aprire il file del Universal Cura Project (UCP)"
+msgstr "Aprire il file del Progetto Universale Cura (UCP)"
 
 msgctxt "@action:label"
 msgid "Open With"
@@ -3966,11 +3966,11 @@ msgstr "Riepilogo - Progetto Cura"
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Open Universal Cura Project (UCP)"
-msgstr "Riepilogo - Aprire il Universal Cura Project (UCP)"
+msgstr "Riepilogo - Aprire il Progetto Universale Cura (UCP)"
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
-msgstr "Riepilogo - Universal Cura Project"
+msgstr "Riepilogo - Progetto Universale Cura"
 
 msgctxt "@label"
 msgid "Support"
@@ -4337,7 +4337,7 @@ msgstr "Questa configurazione non è disponibile perché %1 non viene riconosciu
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr "Questo è un file del Universal Cura Project. Si desidera aprirlo come progetto Cura o Universal Cura Project o importare i modelli da esso?"
+msgstr "Questo è un file del Progetto Universale Cura. Si desidera aprirlo come progetto Cura o Progetto Universale Cura o importare i modelli da esso?"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4419,11 +4419,11 @@ msgstr "Questa impostazione viene risolta dai valori in conflitto specifici dell
 
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
-msgstr "Questa impostazione potrebbe non funzionare bene durante l'esportazione nel Universal Cura Project. Gli utenti sono invitati ad aggiungerla a proprio rischio."
+msgstr "Questa impostazione potrebbe non funzionare bene durante l'esportazione nel Progetto Universale Cura. Gli utenti sono invitati ad aggiungerla a proprio rischio."
 
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
-msgstr "Quest'impostazione potrebbe non funzionare bene durante l'esportazione nel Universal Cura Project. Gli utenti sono invitati ad aggiungerla a proprio rischio."
+msgstr "Quest'impostazione potrebbe non funzionare bene durante l'esportazione nel Progetto Universale Cura. Gli utenti sono invitati ad aggiungerla a proprio rischio."
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
@@ -4644,11 +4644,11 @@ msgstr "Unità"
 
 msgctxt "@item:inlistbox"
 msgid "Universal Cura Project"
-msgstr "Universal Cura Project"
+msgstr "Progetto Universale Cura"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr "I file del Universal Cura Project possono essere riprodotti su diverse stampanti 3D, mantenendo i dati di posizione e le impostazioni selezionate. Quando vengono esportati, tutti i modelli presenti sulla piano di stampa saranno inclusi con la posizione, l'orientamento e la scala attuali. È inoltre possibile selezionare che le impostazioni per estrusore o per modello siano incluse per garantire una stampa corretta."
+msgstr "I file del Progetto Universale Cura possono essere riprodotti su diverse stampanti 3D, mantenendo i dati di posizione e le impostazioni selezionate. Quando vengono esportati, tutti i modelli presenti sulla piano di stampa saranno inclusi con la posizione, l'orientamento e la scala attuali. È inoltre possibile selezionare che le impostazioni per estrusore o per modello siano incluse per garantire una stampa corretta."
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
