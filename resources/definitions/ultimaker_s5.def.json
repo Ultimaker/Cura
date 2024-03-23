@@ -15,6 +15,11 @@
             214476,
             214477
         ],
+        "exclude_materials": [
+            "generic_hips",
+            "generic_flexible",
+            "structur3d_"
+        ],
         "firmware_update_info":
         {
             "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
@@ -104,7 +109,7 @@
             "default_value": false,
             "enabled": true
         },
-        "prime_tower_mode": { "value": "normal" },
+        "prime_tower_enable": { "value": "True" },
         "retraction_amount": { "value": "6.5" },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_hop": { "value": "2" },

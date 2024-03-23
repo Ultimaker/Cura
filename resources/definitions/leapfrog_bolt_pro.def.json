@@ -80,7 +80,7 @@
         "material_final_print_temperature": { "value": "default_material_print_temperature" },
         "material_initial_print_temperature": { "value": "default_material_print_temperature" },
         "material_standby_temperature": { "enabled": false },
-        "prime_tower_mode": { "resolve": "'normal' if extruders_enabled_count > 1 else 'none'" },
+        "prime_tower_enable": { "resolve": "extruders_enabled_count > 1" },
         "retraction_amount": { "default_value": 2 },
         "retraction_combing": { "value": "'all'" },
         "skirt_line_count": { "default_value": 3 },

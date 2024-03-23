@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,6 +40,10 @@ msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Завершающий G-код экструдера"
 
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr ""
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "Абсолютная конечная позиция экструдера"
@@ -71,6 +75,10 @@ msgstr "Охлаждающий вентилятор экструдера, исп
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "Стартовый G-код экструдера"
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr ""
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -155,6 +163,14 @@ msgstr "Идентификатор сопла для экструдера, на�
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Номер охлаждающего вентилятора, используемого при печати и ассоциированного с этим экструдером. Применяемое по умолчанию значение 0 следует менять только при наличии другого охлаждающего вентилятора, используемого при печати, для каждого экструдера."
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr ""
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr ""
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

@@ -39,7 +39,7 @@ Item
     property alias printObjectAfterNext: printObjectAfterNextAction
 
     property alias multiplyObject: multiplyObjectAction
-
+    property alias dropAll: dropAllAction
     property alias selectAll: selectAllAction
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
@@ -488,6 +488,14 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
         onTriggered: Printer.arrangeAllInGrid()
         shortcut: "Shift+Ctrl+R"
+    }
+
+    Action
+    {
+        id: dropAllAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Drop All Models to buildplate")
+        shortcut: "Ctrl+B"
+        onTriggered: CuraApplication.setWorkplaceDropToBuildplate()
     }
 
     Action

@@ -71,6 +71,7 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.reloadAll }
     Cura.MenuItem { action: Cura.Actions.resetAllTranslation }
     Cura.MenuItem { action: Cura.Actions.resetAll }
+    Cura.MenuItem { action: Cura.Actions.dropAll }
 
     // Group actions
     Cura.MenuSeparator {}

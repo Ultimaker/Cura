@@ -263,6 +263,7 @@ class SliceInfo(QObject, Extension):
             print_settings["retraction_enable"] = global_stack.getProperty("retraction_enable", "value")
 
             # Prime tower settings
+            print_settings["prime_tower_enable"] = global_stack.getProperty("prime_tower_enable", "value")
             print_settings["prime_tower_mode"] = global_stack.getProperty("prime_tower_mode", "value")
 
             # Infill settings
