@@ -751,7 +751,7 @@
                 },
                "minimal_segment_length":
                 {
-                    "label": "The minimal length a straight line segment should have.",
+                    "label": "Minimum straight line length",
                     "description": "When approximating curves by straight lines (e.g. in the spiral z-hop) the discretization will be done based on this value.",
                     "type": "float",
                     "unit": "mm",
