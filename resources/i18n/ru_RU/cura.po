@@ -612,7 +612,7 @@ msgstr "Вид снизу"
 
 msgctxt "@label"
 msgid "Brand"
-msgstr "Брэнд"
+msgstr "Бренд"
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -800,7 +800,7 @@ msgstr "Цветовая схема"
 
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "Сравнивайте и экономьте."
+msgstr "Сравнить и сохранить."
 
 msgctxt "@label"
 msgid "Compatibility Mode"
