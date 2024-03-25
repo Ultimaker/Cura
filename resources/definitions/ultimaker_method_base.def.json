@@ -428,9 +428,6 @@
         "wall_x_material_flow": { "value": "material_flow" },
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": "xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
-        "z_seam_position": { "value": "'backright'" },
-        "z_seam_type": { "value": "'sharpest_corner'" },
         "zig_zaggify_infill": { "value": true }
     }
 }
