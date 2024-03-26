@@ -455,7 +455,19 @@ class SuptIntMaterialChange(Script):
         ## Park Head
         park_head = self.getSettingValueByKey("park_head")
         park_x = self.getSettingValueByKey("park_x")
+        park_x_max = self.getSettingValueByKey("park_x_max")
+        park_x_min = self.getSettingValueByKey("park_x_min")
+        if park_x > park_x_max:
+            park_x = park_x_max
+        if park_x < park_x_min:
+            park_x = park_x_min
         park_y = self.getSettingValueByKey("park_y")
+        park_y_max = self.getSettingValueByKey("park_y_max")
+        park_y_min = self.getSettingValueByKey("park_y_min")
+        if park_y > park_y_max:
+            park_y = park_y_max
+        if park_y < park_y_min:
+            park_y = park_y_min
         if park_head:
             park_str = f"G0 F{round(float(speed_travel))} X{park_x} Y{park_y}; Move to park position\n"
         else:
