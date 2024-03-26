@@ -1225,7 +1225,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 node = machine_node.variants.get(machine_node.preferred_variant_name, next(iter(machine_node.variants.values())))
             else:
                 variant_name = extruder_info.variant_info.parser["general"]["name"]
-                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
+                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants.get(variant_name, next(iter(machine_node.variants.values())))
             extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
