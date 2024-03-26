@@ -305,7 +305,8 @@ class AuthorizationService:
                                                                        message_type = Message.MessageType.ERROR)
                             Logger.warning("Unable to get user profile using auth data from preferences.")
                             self._unable_to_get_data_message.show()
-                self.getUserProfile(callback)
+                if self._get_user_profile:
+                    self.getUserProfile(callback)
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 

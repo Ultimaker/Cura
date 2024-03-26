@@ -915,10 +915,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Prepare the machine
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
-            else:
-                # Just clear the settings now, so that we can change the active machine without conflicts
-                self._clearMachineSettings(global_stack, {})
-
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
