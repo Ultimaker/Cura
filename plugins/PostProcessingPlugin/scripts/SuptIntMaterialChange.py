@@ -4,13 +4,13 @@
 ##  The success of this script depends on the different materials not sticking to each other.  PETG with a PLA interface (or vice-versa) works well.  TPU seems to stick well to both PLA and PETG so something else would need to be used.
 
 # RULES:
-##   This script can be used on 'Floors' but I don't bother.  It can eliminate scarring of the model when removing the interface material.
+##   This script can be used on 'Floors' as well as 'Roofs'.  It can eliminate scarring of the model when removing the interface material.
 ##   Suggested parameters:  Air gap between the model and the floor/roof 0.0 with an Interface Density of 100% and the pattern 'Lines'.
 ##   If insufficient material is purged, then the two materials may mix for the first few cm's of model extrusion.  That will affect the layer adhesion for that portion of the print.  It will also affect the color as the interface material might not be the same color as the print material.
 ##   Rafts are allowed.  Set the raft "Air Gap" to 0.0 and the Support Bottom Distance to 0.0.  If you try to use this script on the 2 topmost layers of a raft you will get back-to-back filament changes because rafts take up the entire layer and jumping between layers in post process isn't really allowed.  Using a second material for just the top raft layer works well.
 ##   Multi-extruder printers are allowed but may only have a single extruder enabled and it must be T0 (Extruder 1).
 ##   The layer numbers you enter are the only ones searched for "TYPE:SUPPORT-INTERFACE" so be accurate when you pick the "layers of interest".  Checking the output gcode is a really good idea.
-##   My normal setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  My bowden printer requires 470mm of unload and 380mm of reload.  Yours will vary according to the length of the filament path from the extruder to the hot end.
+##   A 'normal' setup is for the top two interface layers at 100% density and 0 air gap.  75mm of purge seems to be a sufficient for PLA and PETG.  If you purge then there will be a beep and a 2 second wait before the print resumes.  That allows you to grab the string.  FYI My bowden printer requires 470mm of unload and 380mm of reload.  Yours will vary according to the length of the filament path from the extruder to the hot end.
 
 
 from ..Script import Script
@@ -61,6 +61,14 @@ class SuptIntMaterialChange(Script):
             "version": 2,
             "settings":
             {
+                "enable_support_interface_matl_change":
+                {
+                    "label": "Enable Supt Int Mat'l Change",
+                    "description": "It must be enabled for it to work.  You can leave it active and turn this off and it will stay in the list but will not run.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": true
+                },
                 "pause_method":
                 {
                     "label": "Pause Command",
@@ -79,7 +87,7 @@ class SuptIntMaterialChange(Script):
                     "g_4": "G4 (dwell)",
                     "custom": "Custom Command"},
                     "default_value": "marlin",
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "g4_dwell_time":
                 {
@@ -90,7 +98,7 @@ class SuptIntMaterialChange(Script):
                     "minimum_value": 0.5,
                     "maximum_value_warning": 30.0,
                     "unit": "minutes   ",
-                    "enabled": "pause_method == 'g_4'"
+                    "enabled": "pause_method == 'g_4' and enable_support_interface_matl_change"
                 },
                 "custom_pause_command":
                 {
@@ -98,7 +106,7 @@ class SuptIntMaterialChange(Script):
                     "description": "If none of the the stock options work with your printer you can enter a custom command here.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "pause_method == 'custom'"
+                    "enabled": "pause_method == 'custom' and enable_support_interface_matl_change"
                 },
                 "gcode_after_pause":
                 {
@@ -106,7 +114,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Some printers require a buffer after the pause when M25 is used. Typically 6 M105's works well.  Delimit multiple commands with a comma EX: M105,M105,M105",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4']"
+                    "enabled": "pause_method not in ['marlin','marlin2','griffin','g_4'] and enable_support_interface_matl_change"
                 },
                 "layers_of_interest":
                 {
@@ -114,7 +122,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Use the Cura preview layer numbers.  Enter the layer numbers that you want to change material for the support interfaces.  The numbers must be ascending.  Delimit individual layer numbers with a ',' comma and delimit layer ranges with a '-' dash.  Spaces are not allowed.  If there is no 'SUPPORT-INTERFACE' on a layer then it is ignored.",
                     "type": "str",
                     "default_value": "10,15,28-31",
-                    "enabled": true
+                    "enabled":  "enable_support_interface_matl_change"
                 },
                 "model_str":
                 {
@@ -122,7 +130,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Message to appear on the LCD for the filament change.",
                     "type": "str",
                     "default_value": "PLA",
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "model_temp":
                 {
@@ -131,7 +139,7 @@ class SuptIntMaterialChange(Script):
                     "type": "int",
                     "value": 205,
                     "default_value": 205,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "interface_str":
                 {
@@ -139,7 +147,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Message to appear on the LCD for the filament change.",
                     "type": "str",
                     "default_value": "PETG",
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "interface_temp":
                 {
@@ -148,7 +156,7 @@ class SuptIntMaterialChange(Script):
                     "type": "int",
                     "value": 235,
                     "default_value": 235,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "interface_flow":
                 {
@@ -160,7 +168,7 @@ class SuptIntMaterialChange(Script):
                     "default_value": 100,
                     "minimum_value": 50,
                     "maximum_value": 150,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "unload_dist":
                 {
@@ -171,7 +179,7 @@ class SuptIntMaterialChange(Script):
                     "default_value": 0,
                     "minimum_value": 0,
                     "maximum_value": 800,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "load_dist":
                 {
@@ -182,7 +190,7 @@ class SuptIntMaterialChange(Script):
                     "default_value": 0,
                     "minimum_value": 0,
                     "maximum_value": 800,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "enable_purge":
                 {
@@ -190,29 +198,29 @@ class SuptIntMaterialChange(Script):
                     "description": "Enable a filament purge before resuming the print.  Not purging can have side-effects.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "purge_amt_model":
                 {
-                    "label": "    Model Matl Purge Amt",
-                    "description": "How much MODEL filament to purge before printing the INTERFACE.  If the amount is too little then the adhesion to the interface will be greater as the model material will mix with the interface material until it clears it out.  Purge occurs at the park position.",
+                    "label": "    Interface Matl Purge Amt",
+                    "description": "How much INTERFACE filament to use to clear out the model material before printing the INTERFACE.  If the amount is too little then the adhesion to the interface will be greater as the model material will mix with the interface material until it clears it out.  Purge occurs at the park position.",
                     "type": "int",
                     "default_value": 75,
                     "maximum_value": 150,
                     "minimum_value": 10,
                     "unit": "mm  ",
-                    "enabled": "enable_purge"
+                    "enabled": "enable_purge and enable_support_interface_matl_change"
                 },
                 "purge_amt_interface":
                 {
-                    "label": "    Interface Matl Purge Amt",
-                    "description": "How much INTERFACE filament to purge before resuming the MODEL.  If the amount is too little then layer adhesion will suffer for the first couple of layers until the interface material clears out.  Purge occurs at the park position.",
+                    "label": "    Model Matl Purge Amt",
+                    "description": "How much MODEL filament to use to clear out the interface material before resuming the MODEL.  If the amount is too little then layer adhesion will suffer for the first couple of layers until the interface material clears out.  Purge occurs at the park position.",
                     "type": "int",
                     "default_value": 75,
                     "maximum_value": 150,
                     "minimum_value": 10,
                     "unit": "mm  ",
-                    "enabled": "enable_purge"
+                    "enabled": "enable_purge and enable_support_interface_matl_change"
                 },
                 "park_head":
                 {
@@ -220,7 +228,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Whether to park the head when changing filament. The park position is the same for all pauses.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "park_x":
                 {
@@ -230,7 +238,7 @@ class SuptIntMaterialChange(Script):
                     "default_value": 0,
                     "maximum_value": "park_x_max",
                     "minimum_value": "park_x_min",
-                    "enabled": "park_head"
+                    "enabled": "park_head and enable_support_interface_matl_change"
                 },
                 "park_y":
                 {
@@ -240,7 +248,7 @@ class SuptIntMaterialChange(Script):
                     "default_value": 0,
                     "maximum_value": "park_y_max",
                     "minimum_value": "park_y_min",
-                    "enabled": "park_head"
+                    "enabled": "park_head and enable_support_interface_matl_change"
                 },
                 "park_x_max":
                 {
@@ -280,7 +288,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Add M300 line to beep at each pause.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "pause_method != 'm600fil_change'"
+                    "enabled": "pause_method != 'm600fil_change' and enable_support_interface_matl_change"
                 },
                 "m118_add":
                 {
@@ -288,16 +296,20 @@ class SuptIntMaterialChange(Script):
                     "description": "M118 bounces the M117 messages over the USB to a print server (like Pronterface or Octoprint).",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": true
+                    "enabled": "enable_support_interface_matl_change"
                 }
             }
         }"""
 
     def execute(self, data):
+        # Exit if the post is not enabled
+        if not bool(self.getSettingValueByKey("enable_support_interface_matl_change")):
+            Logger.log("i", "Support Interface Material Change is not enabled")
+            return data
         mycura = CuraApplication.getInstance().getGlobalContainerStack()
         extruder = mycura.extruderList
         ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
-        # Exit if the printer is a multi-extruder and more than 1 tool is enabled
+        # Exit if the printer is a multi-extruder and more than 1 tool is enabled and the tool is other than T0
         if ext_count > 1:
             enabled_list = list([mycura.isEnabled for mycura in mycura.extruderList])
             if int(mycura.getProperty("extruders_enabled_count", "value")) > 1 or str(enabled_list[0]) == "False":
@@ -417,7 +429,7 @@ class SuptIntMaterialChange(Script):
             "griffin": self.putValue(M = 0),
             "bq": self.putValue(M = 25),
             "reprap": self.putValue(M = 226),
-            "repetier": self.putValue("@pause now change filament and press continue printing"),
+            "repetier": self.putValue("@pause ; Now change filament and press continue printing"),
             "alt_octo": self.putValue(M = 125),
             "raise_3d": self.putValue(M = 2000),
             "klipper": self.putValue("PAUSE"),
