@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Voron Legacy Base",
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": false,
+        "author": "uncholowapo",
+        "quality_definition": "voron2_base"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 230 },
+        "machine_height": { "default_value": 240 },
+        "machine_name": { "default_value": "VORON Legacy" },
+        "machine_width": { "default_value": 230 }
+    }
+}
