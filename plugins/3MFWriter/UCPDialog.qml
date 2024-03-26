@@ -36,13 +36,23 @@ UM.Dialog
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.rightMargin: anchors.leftMargin
 
-            UM.Label
+            RowLayout
             {
-                id: titleLabel
-                text: catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Universal Cura Project")
-                font: UM.Theme.getFont("large")
+                UM.Label
+                {
+                    id: titleLabel
+                    text: catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Universal Cura Project")
+                    font: UM.Theme.getFont("large")
+                }
+                Cura.TertiaryButton
+                {
+                    id: learnMoreButton
+                    text: catalog.i18nc("@button", "Learn more")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+                }
             }
-
             UM.Label
             {
                 id: descriptionLabel
