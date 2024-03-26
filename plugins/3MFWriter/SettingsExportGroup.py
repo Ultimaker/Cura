@@ -23,6 +23,7 @@ class SettingsExportGroup(QObject):
         self._category_details = category_details
         self._extruder_index = extruder_index
         self._extruder_color = extruder_color
+        self._visible_settings = []
 
     @pyqtProperty(str, constant=True)
     def name(self):
@@ -31,6 +32,14 @@ class SettingsExportGroup(QObject):
     @pyqtProperty(list, constant=True)
     def settings(self):
         return self._settings
+
+    @pyqtProperty(list, constant=True)
+    def visibleSettings(self):
+        if self._visible_settings == []:
+            for item in self._settings:
+                if item.isVisible:
+                    self._visible_settings.append(item)
+        return self._visible_settings
 
     @pyqtProperty(int, constant=True)
     def category(self):
