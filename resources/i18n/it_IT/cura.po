@@ -4935,7 +4935,7 @@ msgctxt "@label"
 msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgstr[0] "Si sta per rimuovere la stampante {0} da Cura. Questa azione non può essere annullata.\nContinuare?"
-msgstr[1] "Si sta per rimuovere le stampanti {0} da Cura. Questa azione non può essere annullata.\nContinuare?"
+msgstr[1] "Si stanno per rimuovere {0} stampanti da Cura. Questa azione non può essere annullata.\nContinuare?"
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
