@@ -33,6 +33,7 @@ from UM.Message import Message
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
+from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Preferences import Preferences
@@ -1457,7 +1458,11 @@ class CuraApplication(QtApplication):
             self._scene_bounding_box = scene_bounding_box
             self.sceneBoundingBoxChanged.emit()
 
-        self._platform_activity = True if count > 0 else False
+        if count > 0:
+            ProjectOutputDevice.setLastOutputName(None)
+            self._platform_activity = True
+        else:
+            self._platform_activity = False
         self.activityChanged.emit()
 
     @pyqtSlot()
