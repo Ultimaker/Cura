@@ -24,29 +24,29 @@ UM.Dialog
     {
         height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
-
-        UM.Label
+        RowLayout
         {
-            id: titleLabel
-            text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
-            font: UM.Theme.getFont("large")
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: UM.Theme.getSize("default_margin").height
-        }
-
-        Cura.TertiaryButton
-        {
-            id: learnMoreButton
-            visible: manager.isUcp
-            anchors.right: parent.right
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.rightMargin: UM.Theme.getSize("default_margin").height
-            text: catalog.i18nc("@button", "Learn more")
-            iconSource: UM.Theme.getIcon("LinkExternal")
-            isIconOnRightSide: true
-            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+            UM.Label
+            {
+                id: titleLabel
+                text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
+                font: UM.Theme.getFont("large")
+                anchors.left: parent.left
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                anchors.leftMargin: UM.Theme.getSize("default_margin").height
+            }
+            Cura.TertiaryButton
+            {
+                id: learnMoreButton
+                visible: manager.isUcp
+                text: catalog.i18nc("@button", "Learn more")
+                iconSource: UM.Theme.getIcon("LinkExternal")
+                anchors.left: titleLabel.right
+                anchors.topMargin: UM.Theme.getSize("default_margin").height
+                anchors.leftMargin: UM.Theme.getSize("default_margin").height
+                isIconOnRightSide: true
+                onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+            }
         }
     }
 
