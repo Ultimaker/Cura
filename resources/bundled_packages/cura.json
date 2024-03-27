@@ -1732,14 +1732,14 @@
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "1.4.0",
             "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com/in/cura/materials/ultimaker-cpe-plus/printing-guidelines",
+            "website": "https://ultimaker.com/materials/s-series-cpe-plus/",
             "author": {
                 "author_id": "UltimakerPackages",
                 "display_name": "UltiMaker",
                 "email": "materials@ultimaker.com",
                 "website": "https://ultimaker.com",
                 "description": "Professional 3D printing made accessible.",
-                "support_website": "https://ultimaker.com/en/resources/troubleshooting/materials"
+                "support_website": "https://ultimaker.com/in/cura/materials/ultimaker-cpe-plus/printing-guidelines"
             }
         }
     },
