@@ -7,7 +7,6 @@ from PyQt6.QtGui import QOpenGLContext, QImage
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Color import Color
-from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Event import Event

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-31 19:13+0100\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -121,6 +121,10 @@ msgstr "&Újra"
 
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
+msgstr ""
+
+msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
+msgid "&Save Universal Cura Project..."
 msgstr ""
 
 msgctxt "@title:menu menubar:toplevel"
@@ -263,6 +267,10 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] ""
 msgstr[1] ""
+
+msgctxt "@text"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -498,9 +506,17 @@ msgctxt "@label"
 msgid "Anonymous"
 msgstr "Névtelen"
 
+msgctxt "@option:radio"
+msgid "Anonymous crash reports"
+msgstr ""
+
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Alkalmazás keretrendszer"
+
+msgctxt "@title:column"
+msgid "Applies on"
+msgstr ""
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -687,6 +703,10 @@ msgstr "COLLADA digitális eszközcsere"
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Számított"
+
+msgctxt "@window:text"
+msgid "Camera navigation:"
+msgstr ""
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -1410,6 +1430,10 @@ msgctxt "@label"
 msgid "Draft"
 msgstr ""
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Drop All Models to buildplate"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Másolat"
@@ -1536,6 +1560,10 @@ msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Kiválasztás exportálása..."
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Export Universal Cura Project"
+msgstr ""
+
 msgctxt "@button"
 msgid "Export material archive"
 msgstr ""
@@ -1569,9 +1597,22 @@ msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Extruder G-kód zárás"
 
+msgctxt "@label"
+msgid "Extruder End G-code duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "Extruder G-kód kezdés"
+
+msgctxt "@label"
+msgid "Extruder Start G-code duration"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@label"
+msgid "Extruder {0}"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1637,6 +1678,11 @@ msgstr ""
 
 msgctxt "@message:title"
 msgid "Failed to save material archive"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr ""
 
 msgctxt "@label:category menu label"
@@ -1780,6 +1826,9 @@ msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "A rétegnézet kompatibilis módjának kényszerítése (újraindítás szükséges)"
 
+msgid "FreeCAD trackpad"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Előlnézet"
@@ -1868,6 +1917,10 @@ msgctxt "@action"
 msgid "Get started"
 msgstr "Kezdjük el"
 
+msgctxt "@label"
+msgid "Global"
+msgstr ""
+
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Általános beállítások"
@@ -1915,6 +1968,10 @@ msgstr "Segítők"
 
 msgctxt "@label"
 msgid "Hide all connected printers"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Hide settings"
 msgstr ""
 
 msgctxt "@action:menu"
@@ -1991,6 +2048,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
+msgstr ""
+
+msgctxt "@option:radio"
+msgid "Include UltiMaker account name"
 msgstr ""
 
 msgctxt "@label"
@@ -2697,6 +2758,10 @@ msgid "No results found with current filter"
 msgstr ""
 
 msgctxt "@label"
+msgid "No specific value has been set"
+msgstr ""
+
+msgctxt "@label"
 msgid "No time estimation available"
 msgstr "Nincs időbecslés"
 
@@ -2797,6 +2862,10 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Egyszerre csak egy G-kód fájlt lehet betölteni. Az importálás kihagyva {0}"
 
+msgctxt "@message"
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Megnyitás"
@@ -2825,8 +2894,20 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Projekt fájl megnyitása"
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP) file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Open With"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Open as UCP"
 msgstr ""
 
 msgctxt "@action:button"
@@ -3041,6 +3122,10 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr ""
 
+msgctxt "@info:tooltip"
+msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr ""
@@ -3136,6 +3221,14 @@ msgstr "Elsődleges torony"
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Nyomtatás"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Nyomtatás után"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Nyomtatás előtt"
 
 msgctxt "@label"
 msgid "Print Selected Model With:"
@@ -3443,8 +3536,8 @@ msgid "Provides support for reading model files."
 msgstr "Támogatást nyújt a modellfájlok olvasásához."
 
 msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Támogatást nyújt a 3MF fájlok írásához."
+msgid "Provides support for writing 3MF and UCP files."
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
@@ -3688,7 +3781,11 @@ msgid "Save Cura project"
 msgstr ""
 
 msgctxt "@option"
-msgid "Save Cura project and print file"
+msgid "Save Cura project and .makerbot print file"
+msgstr ""
+
+msgctxt "@option"
+msgid "Save Cura project and .ufp print file"
 msgstr ""
 
 msgctxt "@title:window"
@@ -3713,6 +3810,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Save new profile"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Save project"
 msgstr ""
 
 msgctxt "@text"
@@ -3818,6 +3919,18 @@ msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "Hibajelentés küldése az UltiMaker -nek"
 
+msgctxt "@info:tooltip"
+msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Send engine crash reports"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "Jelentés küldés"
@@ -3869,6 +3982,10 @@ msgstr "Beállítások"
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Beállítások"
+
+msgctxt "@action:label"
+msgid "Settings Loaded from UCP file"
+msgstr ""
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -3939,6 +4056,10 @@ msgid "Should opening files from the desktop or external applications open in th
 msgstr ""
 
 msgctxt "@info:tooltip"
+msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr ""
 
@@ -3993,6 +4114,10 @@ msgstr "Konfigurációs mappa megnyitása"
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "Hibajelentés részletei"
+
+msgctxt "@action:button"
+msgid "Show settings"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
@@ -4070,10 +4195,6 @@ msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr ""
 
-msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr ""
-
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Szeletelés..."
@@ -4081,6 +4202,10 @@ msgstr "Szeletelés..."
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Simítás"
+
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
 
 msgctxt "name"
 msgid "Solid View"
@@ -4207,9 +4332,25 @@ msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr ""
 
+msgctxt "@action:label"
+msgid "Suggested Material settings"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Suggested Profile settings"
+msgstr ""
+
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Összegzés - Cura Project"
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Universal Cura Project"
+msgstr ""
 
 msgctxt "@label"
 msgid "Support"
@@ -4584,6 +4725,10 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "Ez a konfiguráció nem érhető el, mert a(z) %1 nem azonosítható. Kérjük, látogasson el a %2 webhelyre a megfelelő anyagprofil letöltéséhez."
 
 msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr ""
+
+msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "Ez egy Cura projekt fájl. Szeretné projektként megnyitni, vagy importálni a modelleket?"
 
@@ -4670,6 +4815,14 @@ msgstr "Ezt a beállítást nem használjuk, mert minden ezen beállítással be
 
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
 msgstr ""
 
 msgctxt "@info:warning"
@@ -4901,6 +5054,11 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr ""
 
+#, python-brace-format
+msgctxt "@info:error"
+msgid "Unable to write to file: {0}"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Elérhetetlen"
@@ -4919,6 +5077,14 @@ msgstr ""
 
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:description Don't translate 'Universal Cura Project'"
+msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
 msgctxt "@label Description for development tool"
@@ -5110,6 +5276,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Egyedi firmware feltöltése"
@@ -5140,6 +5310,10 @@ msgstr ""
 
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
+msgstr ""
+
+msgctxt "@title:column"
+msgid "Value"
 msgstr ""
 
 msgctxt "name"
@@ -5246,6 +5420,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
 
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr ""
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr ""
@@ -5321,6 +5499,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "What printer would you like to setup?"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "What type of camera navigation should be used?"
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -5528,6 +5710,10 @@ msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
+msgctxt "@label"
+msgid "s"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "today"
 msgstr "ma"
@@ -5556,6 +5742,10 @@ msgstr ""
 #~ msgctxt "@error:zip"
 #~ msgid "Error writing 3mf file."
 #~ msgstr "Hiba a 3mf fájl írásakor."
+
+#~ msgctxt "description"
+#~ msgid "Provides support for writing 3MF files."
+#~ msgstr "Támogatást nyújt a 3MF fájlok írásához."
 
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"
