@@ -117,9 +117,7 @@ class SettingsExportModel(QObject):
         is_exportable = any(key in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS for key in user_keys)
 
         for setting_to_export in user_keys:
-            show_in_menu = True
-            if setting_to_export  in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS:
-                show_in_menu = False
+            show_in_menu = setting_to_export not in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS
             label = settings_stack.getProperty(setting_to_export, "label")
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
