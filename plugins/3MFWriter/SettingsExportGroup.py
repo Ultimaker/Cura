@@ -36,9 +36,7 @@ class SettingsExportGroup(QObject):
     @pyqtProperty(list, constant=True)
     def visibleSettings(self):
         if self._visible_settings == []:
-            for item in self._settings:
-                if item.isVisible:
-                    self._visible_settings.append(item)
+            self._visible_settings = list(filter(lambda item : item.isVisible, self._settings))
         return self._visible_settings
 
     @pyqtProperty(int, constant=True)
