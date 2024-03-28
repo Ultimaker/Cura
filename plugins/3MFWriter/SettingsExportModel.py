@@ -121,6 +121,8 @@ class SettingsExportModel(QObject):
             label = settings_stack.getProperty(setting_to_export, "label")
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
+            options = settings_stack.getProperty(setting_to_export, "options")
+            value_name = value if options == {} else options[value]
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
@@ -131,6 +133,7 @@ class SettingsExportModel(QObject):
             settings_export.append(SettingExport(setting_to_export,
                                                  label,
                                                  value,
+                                                 value_name,
                                                  is_exportable or setting_to_export in exportable_settings,
                                                  show_in_menu))
 
