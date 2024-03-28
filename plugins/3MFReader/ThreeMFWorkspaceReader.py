@@ -10,6 +10,8 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Vector import Vector
 from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
@@ -935,6 +937,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         nodes = self._3mf_mesh_reader.read(file_name)
         if nodes is None:
             nodes = []
+
+        if self._is_ucp:
+            # We might be on a different printer than the one this project was made on.
+            # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
+            full_extents = None  # Don't initialize to 'Null'!
+            for node in nodes:
+                extents = node.getMeshData().getExtents() if node.getMeshData() else None
+                if extents is not None:
+                    pos = node.getPosition()
+                    node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
+                    if full_extents is None:
+                        full_extents = node_box
+                    else:
+                        full_extents = full_extents + node_box
+            if full_extents.isValid():
+                for node in nodes:
+                    pos = node.getPosition()
+                    node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
 
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
