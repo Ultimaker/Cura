@@ -1459,9 +1459,9 @@ class CuraApplication(QtApplication):
             self.sceneBoundingBoxChanged.emit()
 
         if count > 0:
-            ProjectOutputDevice.setLastOutputName(None)
             self._platform_activity = True
         else:
+            ProjectOutputDevice.setLastOutputName(None)
             self._platform_activity = False
         self.activityChanged.emit()
 
