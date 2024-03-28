@@ -216,6 +216,16 @@ UM.Dialog
                                 headers: ["category", "label", "value"]
                                 rows: manager.exportedSettingModelItems
                             }
+
+                            Connections
+                            {
+                                target: manager
+                                function onExportedSettingModelChanged()
+                                {
+                                    tableModel.clear()
+                                    tableModel.rows = manager.exportedSettingModelItems
+                                }
+                            }
                         }
                     }
 

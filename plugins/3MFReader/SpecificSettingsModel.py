@@ -33,6 +33,10 @@ class SpecificSettingsModel(ListModel):
             if setting_type is not None:
                 # This is not very good looking, but will do for now
                 value = str(SettingDefinition.settingValueToString(setting_type, value)) + " " + str(unit)
+                if setting_type  == "enum":
+                    options = stack.getProperty(setting, "options")
+                    value = options[stack.getProperty(setting, "value")]
+
             else:
                 value = str(value)
 
