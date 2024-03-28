@@ -36,7 +36,7 @@
         },
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 250 },
-        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_max_acceleration_e": { "value": 2500 },
         "machine_max_acceleration_x": { "value": 2500.0 },
         "machine_max_acceleration_y": { "value": 2500.0 },
         "machine_max_acceleration_z": { "value": 500.0 },
