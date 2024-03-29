@@ -6,6 +6,7 @@ from typing import Optional, cast, List, Dict, Pattern, Set
 
 from PyQt6.QtCore import QObject, pyqtProperty
 
+from UM import i18nCatalog
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
@@ -109,6 +110,7 @@ class SettingsExportModel(QObject):
 
     @staticmethod
     def _exportSettings(settings_stack):
+        settings_catalog = i18nCatalog("fdmprinter.def.json")
         user_settings_container = settings_stack.userChanges
         user_keys = user_settings_container.getAllKeys()
         exportable_settings = SettingsExportModel.EXPORTABLE_SETTINGS
@@ -118,9 +120,15 @@ class SettingsExportModel(QObject):
 
         for setting_to_export in user_keys:
             show_in_menu = setting_to_export not in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS
-            label = settings_stack.getProperty(setting_to_export, "label")
+            label_msgtxt = f"{str(setting_to_export)} label"
+            label_msgid = settings_stack.getProperty(setting_to_export, "label")
+            label = settings_catalog.i18nc(label_msgtxt, label_msgid)
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
+            options = settings_stack.getProperty(setting_to_export, "options")
+            value_msgctxt = f"{str(setting_to_export)} option {str(value)}"
+            value_msgid = options.get(value, "")
+            value_name = settings_catalog.i18nc(value_msgctxt, value_msgid)
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
@@ -131,6 +139,7 @@ class SettingsExportModel(QObject):
             settings_export.append(SettingExport(setting_to_export,
                                                  label,
                                                  value,
+                                                 value_name,
                                                  is_exportable or setting_to_export in exportable_settings,
                                                  show_in_menu))
 
