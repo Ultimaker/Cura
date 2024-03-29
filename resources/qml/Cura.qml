@@ -864,6 +864,7 @@ UM.MainWindow
                 if(!visible)
                 {
                     wizardDialog = null
+                    Cura.API.account.startSyncing()
                 }
             }
         }
@@ -891,6 +892,7 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
+            Cura.API.account.stopSyncing()
             wizardDialog = addMachineDialogLoader.createObject()
             wizardDialog.show()
         }
