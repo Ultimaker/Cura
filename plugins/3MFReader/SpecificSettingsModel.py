@@ -20,7 +20,7 @@ class SpecificSettingsModel(ListModel):
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.ValueRole, "value")
 
-        self._i18n_catalog = i18nCatalog("cura")
+        self._settings_catalog = i18nCatalog("fdmprinter.def.json")
         self._update()
 
     modelChanged = pyqtSignal()
@@ -40,7 +40,7 @@ class SpecificSettingsModel(ListModel):
                     options = stack.getProperty(setting, "options")
                     msgctxt = f"{str(setting)} option {str(value)}"
                     msgid = options[stack.getProperty(setting, "value")]
-                    value = self._i18n_catalog.i18nc(msgctxt, msgid)
+                    value = self._settings_catalog.i18nc(msgctxt, msgid)
             else:
                 value = str(value)
 

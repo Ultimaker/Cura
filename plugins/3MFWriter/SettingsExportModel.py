@@ -110,7 +110,7 @@ class SettingsExportModel(QObject):
 
     @staticmethod
     def _exportSettings(settings_stack):
-        i18n_catalog = i18nCatalog("cura")
+        settings_catalog = i18nCatalog("fdmprinter.def.json")
         user_settings_container = settings_stack.userChanges
         user_keys = user_settings_container.getAllKeys()
         exportable_settings = SettingsExportModel.EXPORTABLE_SETTINGS
@@ -126,7 +126,7 @@ class SettingsExportModel(QObject):
             options = settings_stack.getProperty(setting_to_export, "options")
             msgctxt = f"{setting_to_export} option {value}"
             msgid = options.get(value, "")
-            value_name = i18n_catalog.i18nc(msgctxt, msgid)
+            value_name = settings_catalog.i18nc(msgctxt, msgid)
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:
