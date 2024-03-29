@@ -6,6 +6,7 @@ from typing import Optional, cast, List, Dict, Pattern, Set
 
 from PyQt6.QtCore import QObject, pyqtProperty
 
+from UM import i18nCatalog
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingFunction import SettingFunction
@@ -109,6 +110,7 @@ class SettingsExportModel(QObject):
 
     @staticmethod
     def _exportSettings(settings_stack):
+        i18n_catalog = i18nCatalog("cura")
         user_settings_container = settings_stack.userChanges
         user_keys = user_settings_container.getAllKeys()
         exportable_settings = SettingsExportModel.EXPORTABLE_SETTINGS
@@ -122,7 +124,9 @@ class SettingsExportModel(QObject):
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
             options = settings_stack.getProperty(setting_to_export, "options")
-            value_name = value if options == {} else options[value]
+            msgctxt = f"{setting_to_export} option {value}"
+            msgid = options.get(value, "")
+            value_name = i18n_catalog.i18nc(msgctxt, msgid)
 
             setting_type = settings_stack.getProperty(setting_to_export, "type")
             if setting_type is not None:

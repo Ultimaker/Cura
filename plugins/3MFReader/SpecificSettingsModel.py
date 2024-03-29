@@ -3,6 +3,7 @@
 
 from PyQt6.QtCore import Qt, pyqtSignal
 
+from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Qt.ListModel import ListModel
@@ -19,7 +20,7 @@ class SpecificSettingsModel(ListModel):
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.ValueRole, "value")
 
-        self._i18n_catalog = None
+        self._i18n_catalog = i18nCatalog("cura")
         self._update()
 
     modelChanged = pyqtSignal()
@@ -32,11 +33,14 @@ class SpecificSettingsModel(ListModel):
             setting_type = stack.getProperty(setting, "type")
             if setting_type is not None:
                 # This is not very good looking, but will do for now
-                value = str(SettingDefinition.settingValueToString(setting_type, value)) + " " + str(unit)
+                value = str(SettingDefinition.settingValueToString(setting_type, value))
+                if unit:
+                    value += " " + str(unit)
                 if setting_type  == "enum":
                     options = stack.getProperty(setting, "options")
-                    value = options[stack.getProperty(setting, "value")]
-
+                    msgctxt = f"{str(setting)} option {str(value)}"
+                    msgid = options[stack.getProperty(setting, "value")]
+                    value = self._i18n_catalog.i18nc(msgctxt, msgid)
             else:
                 value = str(value)
 
