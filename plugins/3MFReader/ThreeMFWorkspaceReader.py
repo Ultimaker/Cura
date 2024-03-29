@@ -941,7 +941,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._is_ucp:
             # We might be on a different printer than the one this project was made on.
             # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
-            full_extents = None  # Don't initialize to 'Null'!
+            full_extents = None
             for node in nodes:
                 extents = node.getMeshData().getExtents() if node.getMeshData() else None
                 if extents is not None:
