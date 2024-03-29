@@ -951,7 +951,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         full_extents = node_box
                     else:
                         full_extents = full_extents + node_box
-            if full_extents.isValid():
+            if full_extents and full_extents.isValid():
                 for node in nodes:
                     pos = node.getPosition()
                     node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
