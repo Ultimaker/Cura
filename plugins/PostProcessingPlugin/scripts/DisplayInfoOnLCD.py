@@ -33,9 +33,19 @@ from UM.Qt.Duration import DurationFormat
 import time
 import datetime
 import math
+import re
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
+
+    def initialize(self) -> None:
+        super().initialize()
+        try:
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
+                enable_countdown = True
+                self._instance.setProperty("enable_countdown", "value", enable_countdown)
+        except:
+            pass
 
     def getSettingDataString(self):
         return """{
@@ -154,13 +164,29 @@ class DisplayInfoOnLCD(Script):
                     "default_value": 100,
                     "enabled": "enable_end_message or display_option == 'display_progress'"
                 },
+                "enable_countdown":
+                {
+                    "label": "Enable Countdown to Pauses",
+                    "description": "If print sequence is 'one_at_a_time' this is false.  This setting is always hidden.",
+                    "type": "bool",
+                    "value": false,
+                    "enabled": false
+                },
                 "countdown_to_pause":
                 {
                     "label": "Countdown to Pauses",
-                    "description": "Instead of the remaining print time the LCD will show the estimated time to pause (TP).",
+                    "description": "Instead of the remaining print time the LCD will show the estimated time to the next layer that has a pause (TP).",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "display_option == 'display_progress'"
+                    "enabled": "display_option == 'display_progress' and enable_countdown"
+                },
+                "pause_cmd":
+                {
+                    "label": "     What pause command(s) are used?",
+                    "description": "This might be M0, or M25 or M600 if Filament Change is used.  If you have mixed commands then delimit them with a comma ',' (Ex: M0,M600).  Spaces are not allowed.",
+                    "type": "str",
+                    "default_value": "M0",
+                    "enabled": "countdown_to_pause and enable_countdown"
                 },
                 "enable_end_message":
                 {
@@ -173,7 +199,7 @@ class DisplayInfoOnLCD(Script):
                 "print_start_time":
                 {
                     "label": "Print Start Time (Ex 16:45)",
-                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print will start Now.  If you enter a guesstimate of your printer start time and that time is before 'Now' the guesstimate will consider that the print will start tomorrow at the entered time.  ",
+                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print will start Now.  If you enter a guesstimate of your printer start time and that time is before 'Now' then the guesstimate will consider that the print will start tomorrow at the entered time.  ",
                     "type": "str",
                     "default_value": "",
                     "unit": "hrs  ",
@@ -239,7 +265,13 @@ class DisplayInfoOnLCD(Script):
 
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
-        # get settings
+            print_sequence = Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")
+            ## Add the Initial Layer Height just below Layer Height in data[0]
+            init_layer_hgt_line = ";Initial Layer Height: " + str(Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value"))
+            nozzle_size_line = ";Nozzle Size T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value"))
+            match = re.search(";Layer height: (\d\.\d*)", data[0])[0]
+            data[0] = re.sub(match, match + "\n" + init_layer_hgt_line + "\n" + nozzle_size_line, data[0])
+        # Get settings
             display_total_layers = self.getSettingValueByKey("display_total_layers")
             display_remaining_time = self.getSettingValueByKey("display_remaining_time")
             speed_factor = self.getSettingValueByKey("speed_factor") / 100
@@ -249,6 +281,9 @@ class DisplayInfoOnLCD(Script):
                 m73_time = True
             if add_m73_line and add_m73_percent:
                 m73_percent = True
+            if add_m73_line:
+                data[1] = "M75\n" + data[1]
+                data[len(data)-1] += "M77\n"
         # initialize global variables
             first_layer_index = 0
             time_total = 0
@@ -268,25 +303,34 @@ class DisplayInfoOnLCD(Script):
                     orig_hhh = cura_time/3600
                     orig_hr = round(orig_hhh // 1)
                     orig_mmm = math.floor((orig_hhh % 1) * 60)
-                    orig_sec = round((((orig_hhh % 1) * 60) % 1) * 60)
-                    if add_m118_line: lines.insert(tindex + 3,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
-                    lines.insert(tindex + 3,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
-                    # add M73 line at beginning
+                                                                      
+                    if add_m118_line: lines.insert(tindex + 5,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
+                    lines.insert(tindex + 5,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    ## Add M73 line at beginning
                     mins = int(60 * hr + mmm)
                     if m73_time:
-                        lines.insert(tindex + 3, "M73 R{}".format(mins))
+                        lines.insert(tindex + 4, "M73 R{}".format(mins))
                     if m73_percent:
-                        lines.insert(tindex + 3, "M73 P0")
+                        lines.insert(tindex + 4, "M73 P0")
                     # If Countdonw to pause is enabled then count the pauses
                     pause_str = ""
                     if bool(self.getSettingValueByKey("countdown_to_pause")):
                         pause_count = 0
-                        for num in range(2,len(data) - 1, 1):
-                            if "PauseAtHeight.py" in data[num]:
-                                pause_count += 1
-                            pause_str = f" with {pause_count} pause(s)"
+                        pause_setting = self.getSettingValueByKey("pause_cmd").upper()
+                        pause_cmd = []
+                        if "," in pause_setting:
+                            pause_cmd = pause_setting.split(",")
+                        else:
+                            pause_cmd.append(pause_setting)
+                        for q in range(0, len(pause_cmd)):
+                            pause_cmd[q] = "\n" + pause_cmd[q]
+                        for num in range(2,len(data) - 2, 1):
+                            for q in range(0,len(pause_cmd)):
+                                if pause_cmd[q] in data[num]:
+                                    pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
+                        pause_str = f" with {pause_count} pause(s)"
                     # This line goes in to convert seconds to hours and minutes
-                    lines.insert(tindex + 3, f";Cura Time Estimate:  {cura_time}sec = {orig_hr}hr {orig_mmm}min {orig_sec}sec {pause_str}")
+                    lines.insert(tindex + 5, f";Cura Time Estimate: {orig_hr}hr {orig_mmm}min {pause_str}")
                     data[0] = "\n".join(lines)
                     data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
                     if add_m118_line: data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
@@ -308,6 +352,11 @@ class DisplayInfoOnLCD(Script):
                     for line in data_section.split("\n"):
                         if line.startswith(";LAYER_COUNT:"):
                             number_of_layers = int(line.split(":")[1])
+                        if print_sequence == "one_at_a_time":
+                            number_of_layers = 1
+                            for lay in range(2,len(data)-1,1):
+                                if ";LAYER:" in data[lay]:
+                                    number_of_layers += 1
                         elif line.startswith(";TIME:"):
                             time_total = int(line.split(":")[1])
         # for all layers...
@@ -381,34 +430,39 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith(";TIME_ELAPSED:"):
                             this_time = (float(line.split(":")[1]))*speed_factor
                             time_list.append(str(this_time))
-                            if "PauseAtHeight.py" in layer:
-                                for qnum in range(num - 1, pause_index, -1):
-                                    time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
-                                pause_index = num-1
+                            for p_cmd in pause_cmd:
+                                if p_cmd in layer:
+                                    for qnum in range(num - 1, pause_index, -1):
+                                        time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
+                                    pause_index = num-1
+                                    break
 
         # Make the adjustments to the M117 (and M118) lines that are prior to a pause
                 for num in range (2, len(data) - 1,1):
                     layer = data[num]
                     lines = layer.split("\n")
                     for line in lines:
-                        if line.startswith("M117") and "|" in line and "P" in time_list[num]:
-                            M117_line = line.split("|")[0] + "| TP "
-                            alt_time = time_list[num][:-1]
-                            hhh = int(float(alt_time) / 3600)
-                            if hhh > 0:
-                                hhr = str(hhh) + "h"
-                            else:
-                                hhr = ""
-                            mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
-                            sss = int((mmm - int(mmm)) * 60)
-                            mmm = str(round(mmm)) + "m"
-                            time_to_go = str(hhr) + str(mmm)
-                            if hhr == "": time_to_go = time_to_go + str(sss) + "s"
-                            M117_line = M117_line + time_to_go
-                            layer = layer.replace(line, M117_line)
-                        if line.startswith("M118") and "|" in line and "P" in time_list[num]:
-                            M118_line = line.split("|")[0] + "| TP " + time_to_go
-                            layer = layer.replace(line, M118_line)
+                        try:
+                            if line.startswith("M117") and "|" in line and "P" in time_list[num]:
+                                M117_line = line.split("|")[0] + "| TP "
+                                alt_time = time_list[num][:-1]
+                                hhh = int(float(alt_time) / 3600)
+                                if hhh > 0:
+                                    hhr = str(hhh) + "h"
+                                else:
+                                    hhr = ""
+                                mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
+                                sss = int((mmm - int(mmm)) * 60)
+                                mmm = str(round(mmm)) + "m"
+                                time_to_go = str(hhr) + str(mmm)
+                                if hhr == "": time_to_go = time_to_go + str(sss) + "s"
+                                M117_line = M117_line + time_to_go
+                                layer = layer.replace(line, M117_line)
+                            if line.startswith("M118") and "|" in line and "P" in time_list[num]:
+                                M118_line = line.split("|")[0] + "| TP " + time_to_go
+                                layer = layer.replace(line, M118_line)
+                        except:
+                            continue
                     data[num] = layer
             setting_data = ""
             if bool(self.getSettingValueByKey("enable_end_message")):
@@ -476,7 +530,7 @@ class DisplayInfoOnLCD(Script):
         if print_start_time != "":
             print_start_str = "Print Start Time................." + str(print_start_time) + "hrs"
         else:
-            print_start_str = "Print Start Time.................Now."
+            print_start_str = "Print Start Time.................Now"
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
         finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
