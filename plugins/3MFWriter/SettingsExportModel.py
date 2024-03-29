@@ -120,13 +120,13 @@ class SettingsExportModel(QObject):
 
         for setting_to_export in user_keys:
             show_in_menu = setting_to_export not in SettingsExportModel.PER_MODEL_EXPORTABLE_SETTINGS_KEYS
-            label_msgtxt = settings_stack.getProperty(setting_to_export, "label")
-            label_msgid = f"{str(setting_to_export)} label"
+            label_msgtxt = f"{str(setting_to_export)} label"
+            label_msgid = settings_stack.getProperty(setting_to_export, "label")
             label = settings_catalog.i18nc(label_msgtxt, label_msgid)
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
             options = settings_stack.getProperty(setting_to_export, "options")
-            value_msgctxt = f"{setting_to_export} option {value}"
+            value_msgctxt = f"{str(setting_to_export)} option {str(value)}"
             value_msgid = options.get(value, "")
             value_name = settings_catalog.i18nc(value_msgctxt, value_msgid)
 
