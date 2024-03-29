@@ -56,7 +56,7 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "support_structure"
                 propertyRemoveUnusedValue: false
-                updateAllExtruders: true
+                updateAllExtruders: false
                 defaultExtruderIndex: supportExtruderProvider.properties.value
             }
         },
@@ -73,7 +73,12 @@ RecommendedSettingSection
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {
                 extruderSettingName: "support_extruder_nr"
-                onSelectedIndexChanged: support.forceUpdateSettings()
+                onSelectedIndexChanged:
+                {
+                    support.updateAllExtruders = true
+                    support.forceUpdateSettings()
+                    support.updateAllExtruders = false
+                }
             }
         },
         RecommendedSettingItem
