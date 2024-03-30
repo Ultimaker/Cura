@@ -8013,247 +8013,250 @@
                     "resolve": "any(extruderValues('bridge_settings_enabled'))",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "bridge_wall_min_length":
-                {
-                    "label": "Minimum Bridge Wall Length",
-                    "description": "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "default_value": 5,
-                    "value": "line_width + support_xy_distance + 1.0",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false
-                },
-                "bridge_skin_support_threshold":
-                {
-                    "label": "Bridge Skin Support Threshold",
-                    "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
-                    "unit": "%",
-                    "default_value": 50,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_sparse_infill_max_density":
-                {
-                    "label": "Bridge Sparse Infill Max Density",
-                    "description": "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_wall_coast":
-                {
-                    "label": "Bridge Wall Coasting",
-                    "description": "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "500",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_wall_speed":
-                {
-                    "label": "Bridge Wall Speed",
-                    "description": "The speed at which the bridge walls are printed.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "300",
-                    "default_value": 15,
-                    "value": "max(cool_min_speed, speed_wall_0 / 2)",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_wall_material_flow":
-                {
-                    "label": "Bridge Wall Flow",
-                    "description": "When printing bridge walls, the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default_value": 50,
-                    "type": "float",
-                    "minimum_value": "5",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "250",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_speed":
-                {
-                    "label": "Bridge Skin Speed",
-                    "description": "The speed at which bridge skin regions are printed.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "300",
-                    "default_value": 15,
-                    "value": "max(cool_min_speed, speed_topbottom / 2)",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_material_flow":
-                {
-                    "label": "Bridge Skin Flow",
-                    "description": "When printing bridge skin regions, the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default_value": 60,
-                    "type": "float",
-                    "minimum_value": "5",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "250",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_density":
-                {
-                    "label": "Bridge Skin Density",
-                    "description": "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "type": "float",
-                    "minimum_value": "5",
-                    "minimum_value_warning": "20",
-                    "maximum_value_warning": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_fan_speed":
-                {
-                    "label": "Bridge Fan Speed",
-                    "description": "Percentage fan speed to use when printing bridge walls and skin.",
-                    "unit": "%",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 100,
-                    "type": "float",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_enable_more_layers":
-                {
-                    "label": "Bridge Has Multiple Layers",
-                    "description": "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_speed_2":
-                {
-                    "label": "Bridge Second Skin Speed",
-                    "description": "Print speed to use when printing the second bridge skin layer.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "300",
-                    "default_value": 25,
-                    "value": "bridge_skin_speed",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_material_flow_2":
-                {
-                    "label": "Bridge Second Skin Flow",
-                    "description": "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "type": "float",
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_density_2":
-                {
-                    "label": "Bridge Second Skin Density",
-                    "description": "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
-                    "unit": "%",
-                    "default_value": 75,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "20",
-                    "maximum_value_warning": "100",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_fan_speed_2":
-                {
-                    "label": "Bridge Second Skin Fan Speed",
-                    "description": "Percentage fan speed to use when printing the second bridge skin layer.",
-                    "unit": "%",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 0,
-                    "type": "float",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_speed_3":
-                {
-                    "label": "Bridge Third Skin Speed",
-                    "description": "Print speed to use when printing the third bridge skin layer.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "300",
-                    "default_value": 15,
-                    "value": "bridge_skin_speed",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_material_flow_3":
-                {
-                    "label": "Bridge Third Skin Flow",
-                    "description": "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default_value": 110,
-                    "type": "float",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_skin_density_3":
-                {
-                    "label": "Bridge Third Skin Density",
-                    "description": "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
-                    "unit": "%",
-                    "default_value": 80,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "20",
-                    "maximum_value_warning": "100",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
-                },
-                "bridge_fan_speed_3":
-                {
-                    "label": "Bridge Third Skin Fan Speed",
-                    "description": "Percentage fan speed to use when printing the third bridge skin layer.",
-                    "unit": "%",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 0,
-                    "type": "float",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
-                    "settable_per_mesh": true
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "bridge_wall_min_length":
+                        {
+                            "label": "Minimum Bridge Wall Length",
+                            "description": "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "default_value": 5,
+                            "value": "line_width + support_xy_distance + 1.0",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": false
+                        },
+                        "bridge_skin_support_threshold":
+                        {
+                            "label": "Bridge Skin Support Threshold",
+                            "description": "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings.",
+                            "unit": "%",
+                            "default_value": 50,
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_sparse_infill_max_density":
+                        {
+                            "label": "Bridge Sparse Infill Max Density",
+                            "description": "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_wall_coast":
+                        {
+                            "label": "Bridge Wall Coasting",
+                            "description": "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge.",
+                            "unit": "%",
+                            "default_value": 100,
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "500",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_wall_speed":
+                        {
+                            "label": "Bridge Wall Speed",
+                            "description": "The speed at which the bridge walls are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "300",
+                            "default_value": 15,
+                            "value": "max(cool_min_speed, speed_wall_0 / 2)",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_wall_material_flow":
+                        {
+                            "label": "Bridge Wall Flow",
+                            "description": "When printing bridge walls, the amount of material extruded is multiplied by this value.",
+                            "unit": "%",
+                            "default_value": 50,
+                            "type": "float",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "250",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_speed":
+                        {
+                            "label": "Bridge Skin Speed",
+                            "description": "The speed at which bridge skin regions are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "300",
+                            "default_value": 15,
+                            "value": "max(cool_min_speed, speed_topbottom / 2)",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_material_flow":
+                        {
+                            "label": "Bridge Skin Flow",
+                            "description": "When printing bridge skin regions, the amount of material extruded is multiplied by this value.",
+                            "unit": "%",
+                            "default_value": 60,
+                            "type": "float",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "250",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_density":
+                        {
+                            "label": "Bridge Skin Density",
+                            "description": "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                            "unit": "%",
+                            "default_value": 100,
+                            "type": "float",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "20",
+                            "maximum_value_warning": "100",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_fan_speed":
+                        {
+                            "label": "Bridge Fan Speed",
+                            "description": "Percentage fan speed to use when printing bridge walls and skin.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 100,
+                            "type": "float",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_enable_more_layers":
+                        {
+                            "label": "Bridge Has Multiple Layers",
+                            "description": "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings.",
+                            "type": "bool",
+                            "default_value": true,
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_speed_2":
+                        {
+                            "label": "Bridge Second Skin Speed",
+                            "description": "Print speed to use when printing the second bridge skin layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "300",
+                            "default_value": 25,
+                            "value": "bridge_skin_speed",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_material_flow_2":
+                        {
+                            "label": "Bridge Second Skin Flow",
+                            "description": "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value.",
+                            "unit": "%",
+                            "default_value": 100,
+                            "type": "float",
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_density_2":
+                        {
+                            "label": "Bridge Second Skin Density",
+                            "description": "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                            "unit": "%",
+                            "default_value": 75,
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "20",
+                            "maximum_value_warning": "100",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_fan_speed_2":
+                        {
+                            "label": "Bridge Second Skin Fan Speed",
+                            "description": "Percentage fan speed to use when printing the second bridge skin layer.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 0,
+                            "type": "float",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_speed_3":
+                        {
+                            "label": "Bridge Third Skin Speed",
+                            "description": "Print speed to use when printing the third bridge skin layer.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "300",
+                            "default_value": 15,
+                            "value": "bridge_skin_speed",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_material_flow_3":
+                        {
+                            "label": "Bridge Third Skin Flow",
+                            "description": "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value.",
+                            "unit": "%",
+                            "default_value": 110,
+                            "type": "float",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_skin_density_3":
+                        {
+                            "label": "Bridge Third Skin Density",
+                            "description": "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines.",
+                            "unit": "%",
+                            "default_value": 80,
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "20",
+                            "maximum_value_warning": "100",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        },
+                        "bridge_fan_speed_3":
+                        {
+                            "label": "Bridge Third Skin Fan Speed",
+                            "description": "Percentage fan speed to use when printing the third bridge skin layer.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 0,
+                            "type": "float",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "clean_between_layers":
                 {
