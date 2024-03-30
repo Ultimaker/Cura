@@ -7941,45 +7941,48 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "adaptive_layer_height_variation":
-                {
-                    "label": "Adaptive Layers Maximum Variation",
-                    "description": "The maximum allowed height different from the base layer height.",
-                    "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
-                    "unit": "mm",
-                    "default_value": 0.1,
-                    "minimum_value": "0.0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "adaptive_layer_height_variation_step":
-                {
-                    "label": "Adaptive Layers Variation Step Size",
-                    "description": "The difference in height of the next layer height compared to the previous one.",
-                    "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
-                    "default_value": 0.01,
-                    "unit": "mm",
-                    "settable_per_mesh": false,
-                    "minimum_value": "0.001",
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "adaptive_layer_height_threshold":
-                {
-                    "label": "Adaptive Layers Topography Size",
-                    "description": "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together.",
-                    "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
-                    "default_value": 0.2,
-                    "unit": "mm",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "adaptive_layer_height_variation":
+                        {
+                            "label": "Adaptive Layers Maximum Variation",
+                            "description": "The maximum allowed height different from the base layer height.",
+                            "type": "float",
+                            "enabled": "adaptive_layer_height_enabled",
+                            "unit": "mm",
+                            "default_value": 0.1,
+                            "minimum_value": "0.0",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        },
+                        "adaptive_layer_height_variation_step":
+                        {
+                            "label": "Adaptive Layers Variation Step Size",
+                            "description": "The difference in height of the next layer height compared to the previous one.",
+                            "type": "float",
+                            "enabled": "adaptive_layer_height_enabled",
+                            "default_value": 0.01,
+                            "unit": "mm",
+                            "settable_per_mesh": false,
+                            "minimum_value": "0.001",
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        },
+                        "adaptive_layer_height_threshold":
+                        {
+                            "label": "Adaptive Layers Topography Size",
+                            "description": "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together.",
+                            "type": "float",
+                            "enabled": "adaptive_layer_height_enabled",
+                            "default_value": 0.2,
+                            "unit": "mm",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        }
+                    }
                 },
                 "wall_overhang_angle":
                 {
