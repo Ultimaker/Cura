@@ -26,7 +26,7 @@ UM.Dialog
     minimumHeight: maximumHeight
     minimumWidth: maximumWidth
 
-    modality: Qt.WindowModal
+    modality: Qt.ApplicationModal
 
     property var fileUrl
     property var addToRecent: true //Whether to add this file to the recent files list after reading it.
