@@ -2298,21 +2298,24 @@
                     "default_value": false,
                     "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "infill_support_angle":
-                {
-                    "label": "Infill Overhang Angle",
-                    "description": "The minimum angle of internal overhangs for which infill is added. At a value of 0\u00b0 objects are totally filled with infill, 90\u00b0 will not provide any infill.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "2",
-                    "maximum_value": "90",
-                    "default_value": 40,
-                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_line_distance > 0 and infill_support_enabled",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "infill_support_angle":
+                        {
+                            "label": "Infill Overhang Angle",
+                            "description": "The minimum angle of internal overhangs for which infill is added. At a value of 0\u00b0 objects are totally filled with infill, 90\u00b0 will not provide any infill.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "2",
+                            "maximum_value": "90",
+                            "default_value": 40,
+                            "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_line_distance > 0 and infill_support_enabled",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "skin_edge_support_thickness":
                 {
