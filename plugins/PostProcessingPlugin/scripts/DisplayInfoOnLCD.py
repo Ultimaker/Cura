@@ -7,7 +7,8 @@
 # Cura Post-Process plugin
 # Combines 'Display Filename and Layer on the LCD' with 'Display Progress'
 # Combined and with additions by: GregValiant (Greg Foresi)
-# Date:       September 8, 2023
+# Date:  September 8, 2023
+# Date:  March 31, 2024 - Bug fix for problem with adding M118 lines if 'Remaining Time' was not checked.
 # NOTE:  This combined post processor will make 'Display Filename and Layer on the LCD' and 'Display Progress' obsolete
 # Description:  Display Filename and Layer options:
 #       Status messages sent to the printer...
@@ -34,8 +35,18 @@ import time
 import datetime
 import math
 from UM.Message import Message
+import re
 
 class DisplayInfoOnLCD(Script):
+
+    def initialize(self) -> None:
+        super().initialize()
+        try:
+            if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
+                enable_countdown = True
+                self._instance.setProperty("enable_countdown", "value", enable_countdown)
+        except:
+            pass
 
     def getSettingDataString(self):
         return """{
@@ -77,7 +88,7 @@ class DisplayInfoOnLCD(Script):
                     "label": "Initial layer number:",
                     "description": "Choose which number you prefer for the initial layer, 0 or 1",
                     "type": "int",
-                    "default_value": 0,
+                    "default_value": 1,
                     "minimum_value": 0,
                     "maximum_value": 1,
                     "enabled": "display_option == 'filename_layer'"
@@ -114,17 +125,40 @@ class DisplayInfoOnLCD(Script):
                     "default_value": true,
                     "enabled": "display_option == 'display_progress'"
                 },
+                "add_m117_line":
+                {
+                    "label": "Add M117 Line",
+                    "description": "M117 sends a message to the LCD screen.  Some screen firmware will not accept or display messages.",
+                    "type": "bool",
+                    "default_value": true
+                },
                 "add_m118_line":
                 {
                     "label": "Add M118 Line",
                     "description": "Adds M118 in addition to the M117.  It will bounce the message back through the USB port to a computer print server (if a printer server like Octoprint or Pronterface is in use).",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": true
+                },
+                "add_m118_a1":
+                {
+                    "label": "    Add A1 to M118 Line",
+                    "description": "Adds A1 parameter.  A1 adds a double foreslash '//' to the response.  Octoprint may require this.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "add_m118_line"
+                },
+                "add_m118_p0":
+                {
+                    "label": "    Add P0 to M118 Line",
+                    "description": "Adds P0 parameter.  P0 has the printer send the response out through all it's ports.  Octoprint may require this.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "add_m118_line"
                 },
                 "add_m73_line":
                 {
                     "label": "Add M73 Line(s)",
-                    "description": "Adds M73 in addition to the M117.  For some firmware this will set the printers time and or percentage.",
+                    "description": "Adds M73 in addition to the M117.  For some firmware this will set the printers time and or percentage.  M75 is added to the beginning of the file and M77 is added to the end of the file.  M73 will be added if one or both of the following options is chosen.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "display_option == 'display_progress'"
@@ -132,7 +166,7 @@ class DisplayInfoOnLCD(Script):
                 "add_m73_percent":
                 {
                     "label": "     Add M73 Percentage",
-                    "description": "Adds M73 with the P parameter.  For some firmware this will set the printers 'percentage' of layers completed and it will count upward.",
+                    "description": "Adds M73 with the P parameter to the start of each layer.  For some firmware this will set the printers 'percentage' of layers completed and it will count upward.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "add_m73_line and display_option == 'display_progress'"
@@ -140,10 +174,10 @@ class DisplayInfoOnLCD(Script):
                 "add_m73_time":
                 {
                     "label": "     Add M73 Time",
-                    "description": "Adds M73 with the R parameter.  For some firmware this will set the printers 'print time' and it will count downward.",
+                    "description": "Adds M73 with the R parameter to the start of each layer.  For some firmware this will set the printers 'print time' and it will count downward.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "add_m73_line and display_option == 'display_progress'"
+                    "enabled": "add_m73_line and display_option == 'display_progress' and display_remaining_time"
                 },
                 "speed_factor":
                 {
@@ -154,13 +188,29 @@ class DisplayInfoOnLCD(Script):
                     "default_value": 100,
                     "enabled": "enable_end_message or display_option == 'display_progress'"
                 },
+                "enable_countdown":
+                {
+                    "label": "Enable Countdown to Pauses",
+                    "description": "If print sequence is 'one_at_a_time' this is false.  This setting is always hidden.",
+                    "type": "bool",
+                    "value": false,
+                    "enabled": false
+                },
                 "countdown_to_pause":
                 {
                     "label": "Countdown to Pauses",
-                    "description": "Instead of the remaining print time the LCD will show the estimated time to pause (TP).",
+                    "description": "This must run AFTER any script that adds a pause.  Instead of the remaining print time the LCD will show the estimated time to the next layer that has a pause (TP).",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "display_option == 'display_progress'"
+                    "enabled": "display_option == 'display_progress' and enable_countdown and display_remaining_time"
+                },
+                "pause_cmd":
+                {
+                    "label": "     What pause command(s) are used?",
+                    "description": "This might be M0, or M25 or M600 if Filament Change is used.  If you have mixed commands then delimit them with a comma ',' (Ex: M0,M600).  Spaces are not allowed.",
+                    "type": "str",
+                    "default_value": "M0",
+                    "enabled": "countdown_to_pause and enable_countdown and display_remaining_time"
                 },
                 "enable_end_message":
                 {
@@ -173,40 +223,57 @@ class DisplayInfoOnLCD(Script):
                 "print_start_time":
                 {
                     "label": "Print Start Time (Ex 16:45)",
-                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print will start Now.  If you enter a guesstimate of your printer start time and that time is before 'Now' the guesstimate will consider that the print will start tomorrow at the entered time.  ",
+                    "description": "Use 'Military' time.  16:45 would be 4:45PM.  09:30 would be 9:30AM.  If you leave this blank it will be assumed that the print will start Now.  If you enter a guesstimate of your printer start time and that time is before 'Now' then the guesstimate will consider that the print will start tomorrow at the entered time.  ",
                     "type": "str",
                     "default_value": "",
                     "unit": "hrs  ",
                     "enabled": "enable_end_message"
                 }
-
             }
         }"""
 
     def execute(self, data):
         display_option = self.getSettingValueByKey("display_option")
+        add_m117_line = self.getSettingValueByKey("add_m117_line")
         add_m118_line = self.getSettingValueByKey("add_m118_line")
+        add_m118_a1 = self.getSettingValueByKey("add_m118_a1")
+        add_m118_p0 = self.getSettingValueByKey("add_m118_p0")
+        m118_text = "M118 "
+        m118_str = "M118 "
+        if add_m118_line:
+            if add_m118_a1 and not add_m118_p0:
+                m118_str = "M118 A1 "
+            if add_m118_p0 and not add_m118_a1:
+                m118_str = "M118 P0 "
+            if add_m118_p0 and add_m118_a1:
+                m118_str = "M118 A1 P0 "
         add_m73_line = self.getSettingValueByKey("add_m73_line")
         add_m73_time = self.getSettingValueByKey("add_m73_time")
         add_m73_percent = self.getSettingValueByKey("add_m73_percent")
+        m73_str = ""
 
     # This is Display Filename and Layer on LCD---------------------------------------------------------
         if display_option == "filename_layer":
             max_layer = 0
             lcd_text = "M117 "
+            octo_text = "M118 "
             if self.getSettingValueByKey("file_name") != "":
                 file_name = self.getSettingValueByKey("file_name")
             else:
                 file_name = Application.getInstance().getPrintInformation().jobName
             if self.getSettingValueByKey("addPrefixPrinting"):
                 lcd_text += "Printing "
+                octo_text += "Printing "
             if not self.getSettingValueByKey("scroll"):
                 lcd_text += "Layer "
+                octo_text += "Layer "
             else:
                 lcd_text += file_name + " - Layer "
+                octo_text += file_name + " - Layer "
             i = self.getSettingValueByKey("startNum")
             for layer in data:
                 display_text = lcd_text + str(i)
+                m118_text = octo_text + str(i)
                 layer_index = data.index(layer)
                 lines = layer.split("\n")
                 for line in lines:
@@ -217,18 +284,29 @@ class DisplayInfoOnLCD(Script):
                             max_layer = str(int(max_layer) - 1)
                     if line.startswith(";LAYER:"):
                         if self.getSettingValueByKey("maxlayer"):
-                            display_text = display_text + " of " + max_layer
+                            display_text += " of " + max_layer
+                            m118_text += " of " + max_layer
                             if not self.getSettingValueByKey("scroll"):
-                                display_text = display_text + " " + file_name
+                                display_text += " " + file_name
+                                m118_text += " " + file_name
                         else:
                             if not self.getSettingValueByKey("scroll"):
-                                display_text = display_text + " " + file_name + "!"
+                                display_text += " " + file_name + "!"
+                                m118_text += " " + file_name + "!"
                             else:
-                                display_text = display_text + "!"
+                                display_text += "!"
+                                m118_text += "!"
                         line_index = lines.index(line)
-                        lines.insert(line_index + 1, display_text)
+                        if add_m117_line:
+                            lines.insert(line_index + 1, display_text)
                         if add_m118_line:
-                            lines.insert(line_index + 2, str(display_text.replace("M117", "M118", 1)))
+                            if add_m118_a1 and not add_m118_p0:
+                                m118_str = m118_text.replace("M118 ","M118 A1 ")
+                            if add_m118_p0 and not add_m118_a1:
+                                m118_str = m118_text.replace("M118 ","M118 P0 ")
+                            if add_m118_p0 and add_m118_a1:
+                                m118_str = m118_text.replace("M118 ","M118 A1 P0 ")
+                            lines.insert(line_index + 2, m118_str)
                         i += 1
                 final_lines = "\n".join(lines)
                 data[layer_index] = final_lines
@@ -239,7 +317,13 @@ class DisplayInfoOnLCD(Script):
 
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
-        # get settings
+            print_sequence = Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")
+            ## Add the Initial Layer Height just below Layer Height in data[0]
+            init_layer_hgt_line = ";Initial Layer Height: " + str(Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value"))
+            nozzle_size_line = ";Nozzle Size T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value"))
+            match = re.search(";Layer height: (\d\.\d*)", data[0])[0]
+            data[0] = re.sub(match, match + "\n" + init_layer_hgt_line + "\n" + nozzle_size_line, data[0])
+            ## Get settings
             display_total_layers = self.getSettingValueByKey("display_total_layers")
             display_remaining_time = self.getSettingValueByKey("display_remaining_time")
             speed_factor = self.getSettingValueByKey("speed_factor") / 100
@@ -249,12 +333,16 @@ class DisplayInfoOnLCD(Script):
                 m73_time = True
             if add_m73_line and add_m73_percent:
                 m73_percent = True
-        # initialize global variables
+            if add_m73_line:
+                data[1] = "M75\n" + data[1]
+                data[len(data)-1] += "M77\n"
+            ## Initialize some variables
             first_layer_index = 0
-            time_total = 0
+            time_total = int(data[0].split(";TIME:")[1].split("\n")[0])
             number_of_layers = 0
             time_elapsed = 0
-        # if at least one of the settings is disabled, there is enough room on the display to display "layer"
+
+            ## If at least one of the settings is disabled, there is enough room on the display to display "layer"
             first_section = data[0]
             lines = first_section.split("\n")
             for line in lines:
@@ -268,28 +356,40 @@ class DisplayInfoOnLCD(Script):
                     orig_hhh = cura_time/3600
                     orig_hr = round(orig_hhh // 1)
                     orig_mmm = math.floor((orig_hhh % 1) * 60)
-                    orig_sec = round((((orig_hhh % 1) * 60) % 1) * 60)
-                    if add_m118_line: lines.insert(tindex + 3,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
-                    lines.insert(tindex + 3,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
-                    # add M73 line at beginning
+                    if add_m118_line: lines.insert(tindex + 5, m118_str + "Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
+                    if add_m117_line: lines.insert(tindex + 5,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    ## Add M73 line at beginning
                     mins = int(60 * hr + mmm)
-                    if m73_time:
-                        lines.insert(tindex + 3, "M73 R{}".format(mins))
-                    if m73_percent:
-                        lines.insert(tindex + 3, "M73 P0")
-                    # If Countdonw to pause is enabled then count the pauses
+                    if add_m73_line and (add_m73_time or add_m73_percent):
+                        if m73_time:
+                            m73_str += " R{}".format(mins)
+                        if m73_percent:
+                            m73_str += " P0"
+                        lines.insert(tindex + 4, "M73" + m73_str)
+                    # If Countdown to pause is enabled then count the pauses
                     pause_str = ""
                     if bool(self.getSettingValueByKey("countdown_to_pause")):
                         pause_count = 0
-                        for num in range(2,len(data) - 1, 1):
-                            if "PauseAtHeight.py" in data[num]:
-                                pause_count += 1
-                            pause_str = f" with {pause_count} pause(s)"
-                    # This line goes in to convert seconds to hours and minutes
-                    lines.insert(tindex + 3, f";Cura Time Estimate:  {cura_time}sec = {orig_hr}hr {orig_mmm}min {orig_sec}sec {pause_str}")
+                        pause_setting = self.getSettingValueByKey("pause_cmd").upper()
+                        pause_cmd = []
+                        if "," in pause_setting:
+                            pause_cmd = pause_setting.split(",")
+                        else:
+                            pause_cmd.append(pause_setting)
+                        for q in range(0, len(pause_cmd)):
+                            pause_cmd[q] = "\n" + pause_cmd[q]
+                        for num in range(2,len(data) - 2, 1):
+                            for q in range(0,len(pause_cmd)):
+                                if pause_cmd[q] in data[num]:
+                                    pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
+                        pause_str = f" with {pause_count} pause(s)"
+                    ## This line goes in to convert seconds to hours and minutes
+                    lines.insert(tindex + 5, f";Cura Time Estimate: {orig_hr}hr {orig_mmm}min {pause_str}")
                     data[0] = "\n".join(lines)
-                    data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
-                    if add_m118_line: data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
+                    if add_m117_line:
+                        data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
+                    if add_m118_line:
+                        data[len(data)-1] += m118_str + " Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
             if not display_total_layers or not display_remaining_time:
                 base_display_text = "layer "
             else:
@@ -308,6 +408,11 @@ class DisplayInfoOnLCD(Script):
                     for line in data_section.split("\n"):
                         if line.startswith(";LAYER_COUNT:"):
                             number_of_layers = int(line.split(":")[1])
+                        if print_sequence == "one_at_a_time":
+                            number_of_layers = 1
+                            for lay in range(2,len(data)-1,1):
+                                if ";LAYER:" in data[lay]:
+                                    number_of_layers += 1
                         elif line.startswith(";TIME:"):
                             time_total = int(line.split(":")[1])
         # for all layers...
@@ -352,15 +457,26 @@ class DisplayInfoOnLCD(Script):
         # insert the text AFTER the first line of the layer (in case other scripts use ";LAYER:")
                 for l_index, line in enumerate(lines):
                     if line.startswith(";LAYER:"):
-                        lines[l_index] += "\nM117 " + display_text
-                        # add M73 line
-                        mins = int(60 * h + m)
-                        if m73_time:
-                            lines[l_index] += "\nM73 R{}".format(mins)
-                        if m73_percent:
-                            lines[l_index] += "\nM73 P" + str(round(int(current_layer) / int(number_of_layers) * 100))
+                        if add_m117_line:
+                            lines[l_index] += "\nM117 " + display_text
                         if add_m118_line:
-                            lines[l_index] += "\nM118 " + display_text
+                            a1_str = ""
+                            p0_str = ""
+                            if add_m118_a1:
+                                a1_str = "A1 "
+                            if add_m118_p0:
+                                p0_str = "P0 "
+                            lines[l_index] += "\nM118 " + a1_str + p0_str + display_text
+                        # add M73 line
+                        if display_remaining_time:
+                            mins = int(60 * h + m)
+                        if add_m73_line and (add_m73_time or add_m73_percent):
+                            m73_str = ""
+                            if m73_time and display_remaining_time:
+                                m73_str += " R{}".format(mins)
+                            if m73_percent:
+                                m73_str += " P" + str(round(int(current_layer) / int(number_of_layers) * 100))
+                            lines[l_index] += "\nM73" + m73_str
                         break
         # overwrite the layer with the modified layer
                 data[layer_index] = "\n".join(lines)
@@ -381,34 +497,29 @@ class DisplayInfoOnLCD(Script):
                         if line.startswith(";TIME_ELAPSED:"):
                             this_time = (float(line.split(":")[1]))*speed_factor
                             time_list.append(str(this_time))
-                            if "PauseAtHeight.py" in layer:
-                                for qnum in range(num - 1, pause_index, -1):
-                                    time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
-                                pause_index = num-1
+                            for p_cmd in pause_cmd:
+                                if p_cmd in layer:
+                                    for qnum in range(num - 1, pause_index, -1):
+                                        time_list[qnum] = str(float(this_time) - float(time_list[qnum])) + "P"
+                                    pause_index = num-1
+                                    break
 
         # Make the adjustments to the M117 (and M118) lines that are prior to a pause
                 for num in range (2, len(data) - 1,1):
                     layer = data[num]
                     lines = layer.split("\n")
                     for line in lines:
-                        if line.startswith("M117") and "|" in line and "P" in time_list[num]:
-                            M117_line = line.split("|")[0] + "| TP "
-                            alt_time = time_list[num][:-1]
-                            hhh = int(float(alt_time) / 3600)
-                            if hhh > 0:
-                                hhr = str(hhh) + "h"
-                            else:
-                                hhr = ""
-                            mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
-                            sss = int((mmm - int(mmm)) * 60)
-                            mmm = str(round(mmm)) + "m"
-                            time_to_go = str(hhr) + str(mmm)
-                            if hhr == "": time_to_go = time_to_go + str(sss) + "s"
-                            M117_line = M117_line + time_to_go
-                            layer = layer.replace(line, M117_line)
-                        if line.startswith("M118") and "|" in line and "P" in time_list[num]:
-                            M118_line = line.split("|")[0] + "| TP " + time_to_go
-                            layer = layer.replace(line, M118_line)
+                        try:
+                            if line.startswith("M117") and "|" in line and "P" in time_list[num]:
+                                time_to_go = self.get_time_to_go(time_list[num])
+                                M117_line = line.split("|")[0] + "| TP " + time_to_go
+                                layer = layer.replace(line, M117_line)
+                            if line.startswith("M118") and "|" in line and "P" in time_list[num]:
+                                time_to_go = self.get_time_to_go(time_list[num])
+                                M118_line = line.split("|")[0] + "| TP " + time_to_go
+                                layer = layer.replace(line, M118_line)
+                        except:
+                            continue
                     data[num] = layer
             setting_data = ""
             if bool(self.getSettingValueByKey("enable_end_message")):
@@ -476,8 +587,22 @@ class DisplayInfoOnLCD(Script):
         if print_start_time != "":
             print_start_str = "Print Start Time................." + str(print_start_time) + "hrs"
         else:
-            print_start_str = "Print Start Time.................Now."
+            print_start_str = "Print Start Time.................Now"
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
         finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
         return finish_str, estimate_str, adjusted_str, print_start_str
+
+    def get_time_to_go(self, time_str: str):
+        alt_time = time_str[:-1]
+        hhh = int(float(alt_time) / 3600)
+        if hhh > 0:
+            hhr = str(hhh) + "h"
+        else:
+            hhr = ""
+        mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
+        sss = int((mmm - int(mmm)) * 60)
+        mmm = str(round(mmm)) + "m"
+        time_to_go = str(hhr) + str(mmm)
+        if hhr == "": time_to_go = time_to_go + str(sss) + "s"
+        return time_to_go
