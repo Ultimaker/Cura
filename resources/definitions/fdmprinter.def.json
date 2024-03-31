@@ -1733,126 +1733,129 @@
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_only_highest_layer":
-                {
-                    "label": "Iron Only Highest Layer",
-                    "description": "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_pattern":
-                {
-                    "label": "Ironing Pattern",
-                    "description": "The pattern to use for ironing top surfaces.",
-                    "type": "enum",
-                    "options":
+                    "settable_per_mesh": true,
+                    "children":
                     {
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "zigzag",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_monotonic":
-                {
-                    "label": "Monotonic Ironing Order",
-                    "description": "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "ironing_enabled and ironing_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_line_spacing":
-                {
-                    "label": "Ironing Line Spacing",
-                    "description": "The distance between the lines of ironing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.1,
-                    "minimum_value": "0.001",
-                    "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_flow":
-                {
-                    "label": "Ironing Flow",
-                    "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
-                    "type": "float",
-                    "unit": "%",
-                    "default_value": 10.0,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "50",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "ironing_inset":
-                {
-                    "label": "Ironing Inset",
-                    "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.35,
-                    "value": "wall_line_width_0 / 2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "wall_line_width_0",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "speed_ironing":
-                {
-                    "label": "Ironing Speed",
-                    "description": "The speed at which to pass over the top surface.",
-                    "type": "float",
-                    "unit": "mm/s",
-                    "default_value": 20.0,
-                    "value": "speed_topbottom * 20 / 30",
-                    "minimum_value": "0.001",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "100",
-                    "enabled": "ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "acceleration_ironing":
-                {
-                    "label": "Ironing Acceleration",
-                    "description": "The acceleration with which ironing is performed.",
-                    "unit": "mm/s\u00b2",
-                    "type": "float",
-                    "minimum_value": "0.1",
-                    "minimum_value_warning": "100",
-                    "maximum_value_warning": "10000",
-                    "default_value": 3000,
-                    "value": "acceleration_topbottom",
-                    "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "jerk_ironing":
-                {
-                    "label": "Ironing Jerk",
-                    "description": "The maximum instantaneous velocity change while performing ironing.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "50",
-                    "default_value": 20,
-                    "value": "jerk_topbottom",
-                    "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
+                        "ironing_only_highest_layer":
+                        {
+                            "label": "Iron Only Highest Layer",
+                            "description": "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish.",
+                            "type": "bool",
+                            "default_value": false,
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "ironing_pattern":
+                        {
+                            "label": "Ironing Pattern",
+                            "description": "The pattern to use for ironing top surfaces.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "concentric": "Concentric",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default_value": "zigzag",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "ironing_monotonic":
+                        {
+                            "label": "Monotonic Ironing Order",
+                            "description": "Print ironing lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                            "type": "bool",
+                            "default_value": false,
+                            "enabled": "ironing_enabled and ironing_pattern != 'concentric'",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "ironing_line_spacing":
+                        {
+                            "label": "Ironing Line Spacing",
+                            "description": "The distance between the lines of ironing.",
+                            "type": "float",
+                            "unit": "mm",
+                            "default_value": 0.1,
+                            "minimum_value": "0.001",
+                            "maximum_value_warning": "machine_nozzle_tip_outer_diameter",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "ironing_flow":
+                        {
+                            "label": "Ironing Flow",
+                            "description": "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 10.0,
+                            "minimum_value": "0",
+                            "maximum_value_warning": "50",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "ironing_inset":
+                        {
+                            "label": "Ironing Inset",
+                            "description": "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print.",
+                            "type": "float",
+                            "unit": "mm",
+                            "default_value": 0.35,
+                            "value": "wall_line_width_0 / 2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "wall_line_width_0",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "speed_ironing":
+                        {
+                            "label": "Ironing Speed",
+                            "description": "The speed at which to pass over the top surface.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "default_value": 20.0,
+                            "value": "speed_topbottom * 20 / 30",
+                            "minimum_value": "0.001",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "100",
+                            "enabled": "ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "acceleration_ironing":
+                        {
+                            "label": "Ironing Acceleration",
+                            "description": "The acceleration with which ironing is performed.",
+                            "unit": "mm/s\u00b2",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_topbottom",
+                            "enabled": "resolveOrValue('acceleration_enabled') and ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "jerk_ironing":
+                        {
+                            "label": "Ironing Jerk",
+                            "description": "The maximum instantaneous velocity change while performing ironing.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_topbottom",
+                            "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "skin_overlap":
                 {
