@@ -887,7 +887,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "infill_sparse_density > 0",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -2039,13 +2039,14 @@
                         "infill_line_distance":
                         {
                             "label": "Infill Line Distance",
-                            "description": "Distance between the printed infill lines. This setting is calculated by the infill density and the infill line width.",
+                            "description": "Distance between the printed infill lines. This setting is calculated from the infill density and the infill line width and varies depending on the Infill Pattern. Overriding the calculated value of this setting may result in other settings based on the Infill Density being calculated incorrectly. Setting this to zero is equivalent to setting the Infill Density to zero.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 2,
+                            "enabled": "infill_sparse_density > 0",
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else (1.6 if infill_pattern == 'lightning' else 1)))))",
+                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else (1.6 if infill_pattern == 'lightning' else 1))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -2086,7 +2087,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and (infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2097,7 +2098,7 @@
                     "type": "bool",
                     "default_value": true,
                     "value": "(infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0) and infill_wall_line_count > 0",
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'lightning' and (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2107,7 +2108,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'gyroid', 'lightning') and infill_sparse_density > 0",
+                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'gyroid', 'lightning') and infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2118,7 +2119,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2129,7 +2130,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2140,7 +2141,7 @@
                     "type": "bool",
                     "default_value": false,
                     "warning_value": "True if infill_pattern not in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic') else None",
-                    "enabled": "not (infill_pattern == 'lightning' or (infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and not (infill_pattern == 'lightning' or (infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2153,7 +2154,7 @@
                     "maximum_value": "999999",
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2165,7 +2166,7 @@
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value": "999999",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2179,7 +2180,7 @@
                     "value": "wall_line_width_x",
                     "minimum_value_warning": "-1 * infill_line_distance",
                     "maximum_value_warning": "5 * infill_line_distance",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern == 'cubicsubdiv'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'cubicsubdiv'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2193,7 +2194,7 @@
                     "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                     "minimum_value_warning": "-50",
                     "maximum_value_warning": "100",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'concentric'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -2208,7 +2209,7 @@
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "0.5 * (infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
-                            "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
                     }
@@ -2223,7 +2224,7 @@
                     "value": "wall_line_width_0 / 4 if wall_line_count == 1 else wall_line_width_x / 4",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "machine_nozzle_size",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2238,7 +2239,7 @@
                     "maximum_value_warning": "0.75 * machine_nozzle_size",
                     "maximum_value": "resolveOrValue('layer_height') * 8 if infill_line_distance > 0 else 999999",
                     "value": "resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2251,7 +2252,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "1 if (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric') else 5",
                     "maximum_value": "999999 if infill_line_distance == 0 else (20 - math.log(infill_line_distance) / math.log(2))",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2264,7 +2265,7 @@
                     "default_value": 1.5,
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
-                    "enabled": "infill_sparse_density > 0 and gradual_infill_steps > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and gradual_infill_steps > 0 and infill_pattern not in ['cubicsubdiv', 'cross', 'cross_3d', 'lightning']",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2274,7 +2275,7 @@
                     "description": "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "infill_sparse_density > 0 and wall_x_extruder_nr == infill_extruder_nr",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and wall_x_extruder_nr == infill_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "min_infill_area":
@@ -2285,6 +2286,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2294,7 +2296,7 @@
                     "description": "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2308,7 +2310,7 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 40,
-                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_support_enabled",
+                    "enabled": "infill_pattern != 'lightning' and infill_sparse_density > 0 and infill_line_distance > 0 and infill_support_enabled",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2324,7 +2326,7 @@
                     "type": "float",
                     "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -2339,7 +2341,7 @@
                             "maximum_value": "999999",
                             "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
                             "limit_to_extruder": "infill_extruder_nr",
-                            "enabled": "infill_sparse_density > 0",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                             "settable_per_mesh": true
                         }
                     }
@@ -2355,7 +2357,7 @@
                     "maximum_value_warning": "75",
                     "default_value": 40,
                     "limit_to_extruder": "infill_extruder_nr",
-                    "enabled": "infill_pattern == 'lightning'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'lightning'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
@@ -2371,7 +2373,7 @@
                             "maximum_value_warning": "75",
                             "default_value": 40,
                             "limit_to_extruder": "infill_extruder_nr",
-                            "enabled": "infill_pattern == 'lightning'",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'lightning'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "value": "lightning_infill_support_angle"
@@ -2387,7 +2389,7 @@
                             "maximum_value_warning": "75",
                             "default_value": 40,
                             "limit_to_extruder": "infill_extruder_nr",
-                            "enabled": "infill_pattern == 'lightning'",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'lightning'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "value": "lightning_infill_support_angle"
@@ -2403,7 +2405,7 @@
                             "maximum_value_warning": "75",
                             "default_value": 40,
                             "limit_to_extruder": "infill_extruder_nr",
-                            "enabled": "infill_pattern == 'lightning'",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'lightning'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "value": "lightning_infill_support_angle"
@@ -2949,7 +2951,7 @@
                             "minimum_value": "0.0001",
                             "minimum_value_warning": "50",
                             "maximum_value_warning": "150",
-                            "enabled": "infill_sparse_density > 0",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3165,7 +3167,7 @@
                             "maximum_value_warning": "150",
                             "default_value": 60,
                             "value": "speed_print",
-                            "enabled": "infill_sparse_density > 0",
+                            "enabled": "infill_sparse_density > 0 and infill_line_distance > 0",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3533,7 +3535,7 @@
                             "maximum_value_warning": "10000",
                             "default_value": 3000,
                             "value": "acceleration_print",
-                            "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('acceleration_enabled') and infill_sparse_density > 0 and infill_line_distance > 0",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3865,7 +3867,7 @@
                             "maximum_value_warning": "50",
                             "default_value": 20,
                             "value": "jerk_print",
-                            "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0",
+                            "enabled": "resolveOrValue('jerk_enabled') and infill_sparse_density > 0 and infill_line_distance > 0",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -7777,7 +7779,7 @@
                     "value": "infill_line_distance",
                     "minimum_value": "0",
                     "maximum_value_warning": "infill_line_distance * math.sqrt(2)",
-                    "enabled": "infill_pattern == 'cross_3d'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and infill_pattern == 'cross_3d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -7787,7 +7789,7 @@
                     "description": "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
+                    "enabled": "infill_sparse_density > 0 and infill_line_distance > 0 and (infill_pattern == 'cross' or infill_pattern == 'cross_3d')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
