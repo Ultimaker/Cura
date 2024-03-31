@@ -2921,25 +2921,22 @@
                             "maximum_value_warning": "150",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "roofing_material_flow":
+                        {
+                            "label": "Top Surface Skin Flow",
+                            "description": "Flow compensation on lines of the areas at the top of the print.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "skin_material_flow",
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true,
-                            "children":
-                            {
-                                "roofing_material_flow":
-                                {
-                                    "label": "Top Surface Skin Flow",
-                                    "description": "Flow compensation on lines of the areas at the top of the print.",
-                                    "unit": "%",
-                                    "type": "float",
-                                    "default_value": 100,
-                                    "value": "skin_material_flow",
-                                    "minimum_value": "0.0001",
-                                    "minimum_value_warning": "50",
-                                    "maximum_value_warning": "150",
-                                    "limit_to_extruder": "roofing_extruder_nr",
-                                    "settable_per_mesh": true,
-                                    "enabled": "roofing_layer_count > 0 and top_layers > 0"
-                                }
-                            }
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
                         },
                         "infill_material_flow":
                         {
