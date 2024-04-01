@@ -7157,18 +7157,21 @@
                     "enabled": "all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
-                },
-                "alternate_carve_order":
-                {
-                    "label": "Alternate Mesh Removal",
-                    "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "carve_multiple_volumes and all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
+                    "settable_per_meshgroup": true,
+                    "children":
+                    {
+                        "alternate_carve_order":
+                        {
+                            "label": "Alternate Mesh Removal",
+                            "description": "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes.",
+                            "type": "bool",
+                            "default_value": true,
+                            "enabled": "carve_multiple_volumes and all(p != 'surface' for p in extruderValues('magic_mesh_surface_mode'))",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": true
+                        }
+                    }
                 },
                 "remove_empty_first_layers":
                 {
@@ -7235,42 +7238,45 @@
                     "label": "Enable Fluid Motion",
                     "description": "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions.",
                     "type": "bool",
-                    "default_value": true
-                },
-                "meshfix_fluid_motion_shift_distance":
-                {
-                    "label": "Fluid Motion Shift Distance",
-                    "description": "Distance points are shifted to smooth the path",
-                    "enabled": "meshfix_fluid_motion_enabled",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.1,
-                    "minimum_value": "0.01",
-                    "maximum_value": "1"
-                },
-                "meshfix_fluid_motion_small_distance":
-                {
-                    "label": "Fluid Motion Small Distance",
-                    "description": "Distance points are shifted to smooth the path",
-                    "enabled": "meshfix_fluid_motion_enabled",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.01,
-                    "minimum_value": "0.01",
-                    "maximum_value": "0.1"
-                },
-                "meshfix_fluid_motion_angle":
-                {
-                    "label": "Fluid Motion Angle",
-                    "description": "If a toolpath-segment deviates more than this angle from the general motion it is smoothed.",
-                    "enabled": "meshfix_fluid_motion_enabled",
-                    "type": "float",
-                    "unit": "\u00b0",
-                    "default_value": 15,
-                    "maximum_value": "90",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "1",
-                    "maximum_value_warning": "35"
+                    "default_value": true,
+                    "children":
+                    {
+                        "meshfix_fluid_motion_shift_distance":
+                        {
+                            "label": "Fluid Motion Shift Distance",
+                            "description": "Distance points are shifted to smooth the path",
+                            "enabled": "meshfix_fluid_motion_enabled",
+                            "type": "float",
+                            "unit": "mm",
+                            "default_value": 0.1,
+                            "minimum_value": "0.01",
+                            "maximum_value": "1"
+                        },
+                        "meshfix_fluid_motion_small_distance":
+                        {
+                            "label": "Fluid Motion Small Distance",
+                            "description": "Distance points are shifted to smooth the path",
+                            "enabled": "meshfix_fluid_motion_enabled",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.01,
+                            "minimum_value": "0.01",
+                            "maximum_value": "0.1"
+                        },
+                        "meshfix_fluid_motion_angle":
+                        {
+                            "label": "Fluid Motion Angle",
+                            "description": "If a toolpath-segment deviates more than this angle from the general motion it is smoothed.",
+                            "enabled": "meshfix_fluid_motion_enabled",
+                            "type": "float",
+                            "unit": "\u00b0",
+                            "default_value": 15,
+                            "maximum_value": "90",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "1",
+                            "maximum_value_warning": "35"
+                        }
+                    }
                 }
             }
         },
