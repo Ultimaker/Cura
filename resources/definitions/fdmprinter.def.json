@@ -7296,17 +7296,20 @@
                     "enabled": "extruders_enabled_count == 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "user_defined_print_order_enabled":
-                {
-                    "label": "Set Print Sequence Manually",
-                    "description": "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "enabled": "print_sequence == 'one_at_a_time'"
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "user_defined_print_order_enabled":
+                        {
+                            "label": "Set Print Sequence Manually",
+                            "description": "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first.",
+                            "type": "bool",
+                            "default_value": false,
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "enabled": "print_sequence == 'one_at_a_time'"
+                        }
+                    }
                 },
                 "infill_mesh":
                 {
@@ -7350,45 +7353,48 @@
                     "description": "Print models as a mold, which can be cast in order to get a model which resembles the models on the build plate.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true
-                },
-                "mold_width":
-                {
-                    "label": "Minimal Mold Width",
-                    "description": "The minimal distance between the outside of the mold and the outside of the model.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value_warning": "wall_line_width_0 * 2",
-                    "maximum_value_warning": "100",
-                    "default_value": 5,
                     "settable_per_mesh": true,
-                    "enabled": "mold_enabled"
-                },
-                "mold_roof_height":
-                {
-                    "label": "Mold Roof Height",
-                    "description": "The height above horizontal parts in your model which to print mold.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "5",
-                    "default_value": 0.5,
-                    "settable_per_mesh": true,
-                    "enabled": "mold_enabled"
-                },
-                "mold_angle":
-                {
-                    "label": "Mold Angle",
-                    "description": "The angle of overhang of the outer walls created for the mold. 0\u00b0 will make the outer shell of the mold vertical, while 90\u00b0 will make the outside of the model follow the contour of the model.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "-89",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "support_angle",
-                    "maximum_value": "90",
-                    "default_value": 40,
-                    "settable_per_mesh": true,
-                    "enabled": "mold_enabled"
+                    "children":
+                    {
+                        "mold_width":
+                        {
+                            "label": "Minimal Mold Width",
+                            "description": "The minimal distance between the outside of the mold and the outside of the model.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value_warning": "wall_line_width_0 * 2",
+                            "maximum_value_warning": "100",
+                            "default_value": 5,
+                            "settable_per_mesh": true,
+                            "enabled": "mold_enabled"
+                        },
+                        "mold_roof_height":
+                        {
+                            "label": "Mold Roof Height",
+                            "description": "The height above horizontal parts in your model which to print mold.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "5",
+                            "default_value": 0.5,
+                            "settable_per_mesh": true,
+                            "enabled": "mold_enabled"
+                        },
+                        "mold_angle":
+                        {
+                            "label": "Mold Angle",
+                            "description": "The angle of overhang of the outer walls created for the mold. 0\u00b0 will make the outer shell of the mold vertical, while 90\u00b0 will make the outside of the model follow the contour of the model.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "-89",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "support_angle",
+                            "maximum_value": "90",
+                            "default_value": 40,
+                            "settable_per_mesh": true,
+                            "enabled": "mold_enabled"
+                        }
+                    }
                 },
                 "support_mesh":
                 {
@@ -7433,17 +7439,20 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "smooth_spiralized_contours":
-                {
-                    "label": "Smooth Spiralized Contours",
-                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "magic_spiralize",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "smooth_spiralized_contours":
+                        {
+                            "label": "Smooth Spiralized Contours",
+                            "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                            "type": "bool",
+                            "default_value": true,
+                            "enabled": "magic_spiralize",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false
+                        }
+                    }
                 },
                 "relative_extrusion":
                 {
