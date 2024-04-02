@@ -190,6 +190,20 @@ class Account(QObject):
     def isLoggedIn(self) -> bool:
         return self._logged_in
 
+    @pyqtSlot()
+    def stopSyncing(self) -> None:
+        Logger.debug(f"Stopping sync of cloud printers")
+        self._setManualSyncEnabled(True)
+        if self._update_timer.isActive():
+            self._update_timer.stop()
+
+    @pyqtSlot()
+    def startSyncing(self) -> None:
+        Logger.debug(f"Starting sync of cloud printers")
+        self._setManualSyncEnabled(False)
+        if not self._update_timer.isActive():
+            self._update_timer.start()
+
     def _onLoginStateChanged(self, logged_in: bool = False, error_message: Optional[str] = None) -> None:
         if error_message:
             if self._error_message:
