@@ -1,4 +1,4 @@
-version: "5.7.0-beta.1"
+version: "5.7.0"
 requirements:
   - "uranium/5.7.0"
   - "curaengine/5.7.0"
