@@ -22,7 +22,7 @@ UM.Dialog
     minimumHeight: height
     minimumWidth: width
 
-    modality: Qt.WindowModal
+    modality: Qt.ApplicationModal
 
     property var fileUrls: []
     property var addToRecent: true
