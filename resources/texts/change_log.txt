@@ -55,12 +55,12 @@
 - The support type is now updated in recommended when it’s changed in custom
 - The skirt height is now generated on the innermost skirt instead of the outermost skirt again
 - Fixed the skirt distance for dual extrusion printers
-- The Brim Only Inside setting will not generate a brim when it’s not defined
+- The Brim Only Inside setting will not generate a brim on support when it’s not defined
 - Fixed a bug where the project name would accidentally revert after saving, resolves https://github.com/Ultimaker/Cura/issues/11276
 - Improved handling of a fractional layer with tree support, contributed by @ThomasRahm
 
 * Printer definitions, profiles and materials:
-- Introduced high-speed profiles for the layer heights <0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
+- Introduced high-speed profiles for the layer heights smaller than 0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
 - Updated Initial Layer Speed settings for UltiMaker S3, and UltiMaker S5
 - Updated the Shrinkage Factor for PET CF to improve dimensional accuracy
 - Renamed UltiMaker PP Transparent to UltiMaker PP Natural
