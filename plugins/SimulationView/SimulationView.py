@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import math
 import sys
 
 from PyQt6.QtCore import Qt
@@ -216,7 +217,8 @@ class SimulationView(CuraView):
                 Logger.warn(
                     f"Binary search error (out of bounds): index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
 
-            fractional_value = (self._current_time - left_value) / (right_value - left_value)
+            segment_duration = right_value - left_value
+            fractional_value = 0.0 if segment_duration == 0.0 else (self._current_time - left_value) / segment_duration
 
             self.setPath(i + fractional_value)
 
