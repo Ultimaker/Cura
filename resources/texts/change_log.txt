@@ -7,7 +7,7 @@
 - Introduced an analyzing tool in the cura engine to better track slicing crashes, and started fixing the biggest reports coming in.
 - New Primetower option; Sparse, next to the current Bucket, contributed by @wawanbreton
 - Brim only on the inside setting
-- Allowing to define print sequence manually when printing One at a time, contributed by @alexandr-vladimirov (Github)
+- Allowing to define print sequence manually when printing One at a time, contributed by @alexandr-vladimirov
 - Introduced a setting to apply Monotonic ordering to the Raft Top Surface
 - Introduced a Raft Wall Line Count for the Bottom, Middle and Top of the raft
 - The play speed of the nozzle in the preview is now closer to the movement of the printhead
@@ -42,6 +42,22 @@
 - Improved behavior for loading 3mfs by giving the models original names, contributed by @pietchaki, resolves https://github.com/Ultimaker/Cura/issues/12089
 - Added an error so LimitXYAccelJerk doesn't run unless Accel Control is enabled in Cura, contributed by @Gregvaliant
 - Some helpful code cleanup contributed by @dmitrygribenchuk
+
+* Bugs resolved since the Beta Release
+- Resolved some crashes when opening project files
+- Resolved the biggest crashes coming in via the analyzing tool in the cura engine
+- Added links to support pages for Method materials to help find the best material compatibility
+- Introduced several visual improvements for the loading Universal Cura Projects window
+- Universal Cura Projects will now be opened in the center of the buildplate
+- The prime tower no longer primes extruders that are not being used
+- Fixed file association for stl, obj, 3mf, gcode, and ufp for MacOS
+- MacOS users can use the open menu multiple times in a row again
+- The support type is now updated in recommended when it’s changed in custom
+- The skirt height is now generated on the innermost skirt instead of the outermost skirt again
+- Fixed the skirt distance for dual extrusion printers
+- The Brim Only Inside setting will not generate a brim when it’s not defined
+- Fixed a bug where the project name would accidentally revert after saving, resolves https://github.com/Ultimaker/Cura/issues/11276
+- Improved handling of a fractional layer with tree support, contributed by @ThomasRahm
 
 * Printer definitions, profiles and materials:
 - Introduced high-speed profiles for the layer heights <0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
