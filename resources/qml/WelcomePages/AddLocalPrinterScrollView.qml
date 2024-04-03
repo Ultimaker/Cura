@@ -43,25 +43,22 @@ Item
             const item = machineList.model.getItem(i);
             if (item.section == section)
             {
-                machineList.currentIndex = i;
+                updateCurrentItem(i)
                 break;
             }
         }
     }
 
-    function getMachineName()
+    function updateCurrentItem(index)
     {
-        return machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : "";
-    }
-
-    function getMachineMetaDataEntry(key)
-    {
-        var metadata = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).metadata : undefined;
-        if (metadata)
+        machineList.currentIndex = index;
+        currentItem = machineList.model.getItem(index);
+        if (currentItem != undefined)
         {
-            return metadata[key];
+            machineName.text = currentItem.name
+            manufacturer.text = currentItem.metadata["manufacturer"]
+            author.text = currentItem.metadata["author"]
         }
-        return undefined;
     }
 
     Timer
@@ -90,8 +87,6 @@ Item
         placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
         font: UM.Theme.getFont("default_italic")
         leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-        property var expandedCategories
-        property bool lastFindingPrinters: false
 
         UM.ColorImage
         {
@@ -113,11 +108,7 @@ Item
         {
             machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
             base.findingPrinters = (text.length > 0)
-            if (base.findingPrinters != lastFindingPrinters)
-            {
-                updateDefinitionModel()
-                lastFindingPrinters = base.findingPrinters
-            }
+            updateDefinitionModel()
         }
 
         Keys.onEscapePressed: filter.text = ""
@@ -134,11 +125,10 @@ Item
                         base.currentSections.add(sectionexpanded);
                     }
                 }
-                updateCurrentItemUponSectionChange(base.currentSections[0]);
+                base.updateCurrentItem(0)
+
                 // Trigger update on base.currentSections
                 base.currentSections = base.currentSections;
-                // Set the machineName to the first element of the list
-                machineList.currentIndex = 0
             }
             else
             {
@@ -146,9 +136,9 @@ Item
                 base.currentSections.clear();
                 base.currentSections.add(initialSection);
                 updateCurrentItemUponSectionChange(initialSection);
+                updateCurrentItem(0)
                 // Trigger update on base.currentSections
                 base.currentSections = base.currentSections;
-                machineList.currentIndex = 0
             }
 
         }
@@ -242,11 +232,6 @@ Item
 
                 onClicked:
                 {
-                    changeVisibility()
-                }
-
-                function changeVisibility()
-                {
                     if (base.currentSections.has(section))
                     {
                         base.currentSections.delete(section);
@@ -277,7 +262,7 @@ Item
                 checked: machineList.currentIndex == index
                 text: name
                 visible: base.currentSections.has(section)
-                onClicked: machineList.currentIndex = index
+                onClicked: base.updateCurrentItem(index)
             }
         }
 
@@ -301,8 +286,8 @@ Item
 
             UM.Label
             {
+                id: machineName
                 width: parent.width - (2 * UM.Theme.getSize("default_margin").width)
-                text: base.getMachineName()
                 color: UM.Theme.getColor("primary_button")
                 font: UM.Theme.getFont("huge")
                 elide: Text.ElideRight
@@ -323,7 +308,7 @@ Item
                 }
                 UM.Label
                 {
-                    text: base.getMachineMetaDataEntry("manufacturer")
+                    id: manufacturer
                     width: parent.width - manufacturerLabel.width
                     wrapMode: Text.WordWrap
                 }
@@ -334,7 +319,7 @@ Item
                 }
                 UM.Label
                 {
-                    text: base.getMachineMetaDataEntry("author")
+                    id: author
                     width: parent.width - profileAuthorLabel.width
                     wrapMode: Text.WordWrap
                 }
