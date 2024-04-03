@@ -15,7 +15,7 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
-    property bool findingPrinter: false
+    property bool findingPrinters: false
     // The currently selected machine item in the local machine list.
     property var currentItem: machineList.currentIndex >= 0 ? machineList.model.getItem(machineList.currentIndex) : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
@@ -63,6 +63,7 @@ Item
         }
         return undefined;
     }
+
     Timer
     {
         id: printerSearchTimer
@@ -110,43 +111,53 @@ Item
         onTextChanged: printerSearchTimer.restart()
         onEditingFinished:
         {
-            console.log("here")
             machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
-            findingPrinters = (text.length > 0)
-            if (findingPrinters != lastFindingPrinters)
+            base.findingPrinters = (text.length > 0)
+            if (base.findingPrinters != lastFindingPrinters)
             {
                 updateDefinitionModel()
-                lastFindingPrinters = findingPrinters
+                lastFindingPrinters = base.findingPrinters
             }
         }
 
         Keys.onEscapePressed: filter.text = ""
         function updateDefinitionModel()
         {
-            if (findingPrinters)
+            if (base.findingPrinters)
             {
-                expandedCategories = machineDefinitionsModel.expanded.slice()
-                machineDefinitionsModel.expanded = [""]  // keep categories closed while to prevent render while making settings visible one by one
-                machineDefinitionsModel.showAncestors = true
-                machineDefinitionsModel.showAll = true
-                machineDefinitionsModel.expanded = ["*"]
+                base.currentSections.clear()
+                for (var i = 0; i < machineDefinitionsModel.count; i++)
+                {
+                    var sectionexpanded = machineDefinitionsModel.getItem(i)["section"]
+                    if (!base.currentSections.has(sectionexpanded))
+                    {
+                        base.currentSections.add(sectionexpanded);
+                    }
+                }
+                updateCurrentItemUponSectionChange(base.currentSections[0]);
+                // Trigger update on base.currentSections
+                base.currentSections = base.currentSections;
+                // Set the machineName to the first element of the list
+                machineList.currentIndex = 0
             }
             else
             {
-                if (expandedCategories)
-                {
-                    machineDefinitionsModel.expanded = expandedCategories
-                }
-                machineDefinitionsModel.showAncestors = false
-                machineDefinitionsModel.showAll = false
+                const initialSection = "Ultimaker B.V.";
+                base.currentSections.clear();
+                base.currentSections.add(initialSection);
+                updateCurrentItemUponSectionChange(initialSection);
+                // Trigger update on base.currentSections
+                base.currentSections = base.currentSections;
+                machineList.currentIndex = 0
             }
+
         }
     }
     UM.SimpleButton
     {
         id: clearFilterButton
         iconSource: UM.Theme.getIcon("Cancel")
-        visible: findingPrinters
+        visible: base.findingPrinters
 
         height: Math.round(filter.height * 0.4)
         width: visible ? height : 0
@@ -230,6 +241,11 @@ Item
                 }
 
                 onClicked:
+                {
+                    changeVisibility()
+                }
+
+                function changeVisibility()
                 {
                     if (base.currentSections.has(section))
                     {
