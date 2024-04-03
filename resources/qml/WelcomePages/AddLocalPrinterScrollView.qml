@@ -15,7 +15,7 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
-
+    property bool findingPrinter: false
     // The currently selected machine item in the local machine list.
     property var currentItem: machineList.currentIndex >= 0 ? machineList.model.getItem(machineList.currentIndex) : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
@@ -63,6 +63,14 @@ Item
         }
         return undefined;
     }
+    Timer
+    {
+        id: printerSearchTimer
+        onTriggered: filter.editingFinished()
+        interval: 500
+        running: false
+        repeat: false
+    }
 
     Component.onCompleted:
     {
@@ -71,6 +79,90 @@ Item
         updateCurrentItemUponSectionChange(initialSection);
         // Trigger update on base.currentSections
         base.currentSections = base.currentSections;
+    }
+
+    Cura.TextField
+    {
+        id: filter
+        width: Math.floor(parent.width * 0.48)
+        implicitHeight: parent.height
+        placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
+        font: UM.Theme.getFont("default_italic")
+        leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
+        property var expandedCategories
+        property bool lastFindingPrinters: false
+
+        UM.ColorImage
+        {
+            id: searchIcon
+            source: UM.Theme.getIcon("Magnifier")
+            anchors
+            {
+                verticalCenter: parent.verticalCenter
+                left: parent.left
+                leftMargin: UM.Theme.getSize("default_margin").width
+            }
+            height: UM.Theme.getSize("small_button_icon").height
+            width: height
+            color: UM.Theme.getColor("text")
+        }
+
+        onTextChanged: printerSearchTimer.restart()
+        onEditingFinished:
+        {
+            console.log("here")
+            machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
+            findingPrinters = (text.length > 0)
+            if (findingPrinters != lastFindingPrinters)
+            {
+                updateDefinitionModel()
+                lastFindingPrinters = findingPrinters
+            }
+        }
+
+        Keys.onEscapePressed: filter.text = ""
+        function updateDefinitionModel()
+        {
+            if (findingPrinters)
+            {
+                expandedCategories = machineDefinitionsModel.expanded.slice()
+                machineDefinitionsModel.expanded = [""]  // keep categories closed while to prevent render while making settings visible one by one
+                machineDefinitionsModel.showAncestors = true
+                machineDefinitionsModel.showAll = true
+                machineDefinitionsModel.expanded = ["*"]
+            }
+            else
+            {
+                if (expandedCategories)
+                {
+                    machineDefinitionsModel.expanded = expandedCategories
+                }
+                machineDefinitionsModel.showAncestors = false
+                machineDefinitionsModel.showAll = false
+            }
+        }
+    }
+    UM.SimpleButton
+    {
+        id: clearFilterButton
+        iconSource: UM.Theme.getIcon("Cancel")
+        visible: findingPrinters
+
+        height: Math.round(filter.height * 0.4)
+        width: visible ? height : 0
+
+        anchors.verticalCenter: filter.verticalCenter
+        anchors.right: filter.right
+        anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+        color: UM.Theme.getColor("setting_control_button")
+        hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+        onClicked:
+        {
+            filter.text = ""
+            filter.forceActiveFocus()
+        }
     }
 
     Row
@@ -83,8 +175,8 @@ Item
         {
             id: machineList
             width: Math.floor(parent.width * 0.48)
-            height: parent.height
-
+            height: parent.height - filter.height
+            y: filter.height
             clip: true
             ScrollBar.vertical: UM.ScrollBar {}
 
