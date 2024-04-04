@@ -10,6 +10,8 @@ from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
 
+from UM.Math.AxisAlignedBox import AxisAlignedBox
+from UM.Math.Vector import Vector
 from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
@@ -915,10 +917,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Prepare the machine
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
-            else:
-                # Just clear the settings now, so that we can change the active machine without conflicts
-                self._clearMachineSettings(global_stack, {})
-
 
             Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
             # Actually change the active machine.
@@ -939,6 +937,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         nodes = self._3mf_mesh_reader.read(file_name)
         if nodes is None:
             nodes = []
+
+        if self._is_ucp:
+            # We might be on a different printer than the one this project was made on.
+            # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
+            full_extents = None
+            for node in nodes:
+                extents = node.getMeshData().getExtents() if node.getMeshData() else None
+                if extents is not None:
+                    pos = node.getPosition()
+                    node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
+                    if full_extents is None:
+                        full_extents = node_box
+                    else:
+                        full_extents = full_extents + node_box
+            if full_extents and full_extents.isValid():
+                for node in nodes:
+                    pos = node.getPosition()
+                    node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
 
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
@@ -1229,7 +1245,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 node = machine_node.variants.get(machine_node.preferred_variant_name, next(iter(machine_node.variants.values())))
             else:
                 variant_name = extruder_info.variant_info.parser["general"]["name"]
-                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
+                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants.get(variant_name, next(iter(machine_node.variants.values())))
             extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
@@ -1244,7 +1260,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
-            material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
+            available_materials = machine_node.variants[extruder_stack.variant.getName()].materials
+            if root_material_id not in available_materials:
+                continue
+            material_node = available_materials[root_material_id]
             extruder_stack.material = material_node.container
 
     def _clearMachineSettings(self, global_stack, extruder_stack_dict):
