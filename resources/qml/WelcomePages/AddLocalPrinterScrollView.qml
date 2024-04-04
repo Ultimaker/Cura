@@ -120,7 +120,7 @@ Item
                     onTextChanged: printerSearchTimer.restart()
                     onEditingFinished:
                     {
-                        machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
+                        machineDefinitionsModel.filter = {"name" : "*" + text.toLowerCase() + "*", "visible": true}
                         base.hasSearchFilter = (text.length > 0)
                         updateDefinitionModel()
                     }
