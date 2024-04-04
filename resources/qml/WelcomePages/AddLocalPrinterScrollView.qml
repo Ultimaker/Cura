@@ -15,7 +15,7 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
-    property bool searchFilterApplied: false
+    property bool hasSearchFilter: false
     // The currently selected machine item in the local machine list.
     property var currentItem: machineList.currentIndex >= 0 ? machineList.model.getItem(machineList.currentIndex) : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
@@ -121,14 +121,14 @@ Item
                     onEditingFinished:
                     {
                         machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
-                        base.searchFilterApplied = (text.length > 0)
+                        base.hasSearchFilter = (text.length > 0)
                         updateDefinitionModel()
                     }
 
                     Keys.onEscapePressed: filter.text = ""
                     function updateDefinitionModel()
                     {
-                        if (base.searchFilterApplied)
+                        if (base.hasSearchFilter)
                         {
                             base.currentSections.clear()
                             for (var i = 0; i < machineDefinitionsModel.count; i++)
@@ -162,7 +162,7 @@ Item
                 {
                     id: clearFilterButton
                     iconSource: UM.Theme.getIcon("Cancel")
-                    visible: base.searchFilterApplied
+                    visible: base.hasSearchFilter
 
                     height: Math.round(filter.height * 0.4)
                     width: visible ? height : 0
