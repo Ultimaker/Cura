@@ -15,7 +15,7 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
-    property bool findingPrinters: false
+    property bool searchFilterApplied: false
     // The currently selected machine item in the local machine list.
     property var currentItem: machineList.currentIndex >= 0 ? machineList.model.getItem(machineList.currentIndex) : null
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
@@ -65,7 +65,7 @@ Item
     {
         id: printerSearchTimer
         onTriggered: filter.editingFinished()
-        interval: 500
+        interval: 50
         running: false
         repeat: false
     }
@@ -79,190 +79,201 @@ Item
         base.currentSections = base.currentSections;
     }
 
-    Cura.TextField
-    {
-        id: filter
-        width: Math.floor(parent.width * 0.48)
-        implicitHeight: parent.height
-        placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
-        font: UM.Theme.getFont("default_italic")
-        leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
-
-        UM.ColorImage
-        {
-            id: searchIcon
-            source: UM.Theme.getIcon("Magnifier")
-            anchors
-            {
-                verticalCenter: parent.verticalCenter
-                left: parent.left
-                leftMargin: UM.Theme.getSize("default_margin").width
-            }
-            height: UM.Theme.getSize("small_button_icon").height
-            width: height
-            color: UM.Theme.getColor("text")
-        }
-
-        onTextChanged: printerSearchTimer.restart()
-        onEditingFinished:
-        {
-            machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
-            base.findingPrinters = (text.length > 0)
-            updateDefinitionModel()
-        }
-
-        Keys.onEscapePressed: filter.text = ""
-        function updateDefinitionModel()
-        {
-            if (base.findingPrinters)
-            {
-                base.currentSections.clear()
-                for (var i = 0; i < machineDefinitionsModel.count; i++)
-                {
-                    var sectionexpanded = machineDefinitionsModel.getItem(i)["section"]
-                    if (!base.currentSections.has(sectionexpanded))
-                    {
-                        base.currentSections.add(sectionexpanded);
-                    }
-                }
-                base.updateCurrentItem(0)
-
-                // Trigger update on base.currentSections
-                base.currentSections = base.currentSections;
-            }
-            else
-            {
-                const initialSection = "Ultimaker B.V.";
-                base.currentSections.clear();
-                base.currentSections.add(initialSection);
-                updateCurrentItemUponSectionChange(initialSection);
-                updateCurrentItem(0)
-                // Trigger update on base.currentSections
-                base.currentSections = base.currentSections;
-            }
-
-        }
-    }
-    UM.SimpleButton
-    {
-        id: clearFilterButton
-        iconSource: UM.Theme.getIcon("Cancel")
-        visible: base.findingPrinters
-
-        height: Math.round(filter.height * 0.4)
-        width: visible ? height : 0
-
-        anchors.verticalCenter: filter.verticalCenter
-        anchors.right: filter.right
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-        color: UM.Theme.getColor("setting_control_button")
-        hoverColor: UM.Theme.getColor("setting_control_button_hover")
-
-        onClicked:
-        {
-            filter.text = ""
-            filter.forceActiveFocus()
-        }
-    }
-
     Row
     {
         id: localPrinterSelectionItem
         anchors.fill: parent
 
-        //Selecting a local printer to add from this list.
-        ListView
+        Column
         {
-            id: machineList
+            id: root
             width: Math.floor(parent.width * 0.48)
-            height: parent.height - filter.height
-            y: filter.height
-            clip: true
-            ScrollBar.vertical: UM.ScrollBar {}
-
-            model: UM.DefinitionContainersModel
+            height: parent.height
+            Item
             {
-                id: machineDefinitionsModel
-                filter: { "visible": true }
-                sectionProperty: "manufacturer"
-                preferredSections: preferredCategories
-            }
-
-            section.property: "section"
-            section.delegate: Button
-            {
-                id: button
-                width: machineList.width
-                height: UM.Theme.getSize("action_button").height
-                text: section
-
-                property bool isActive: base.currentSections.has(section)
-
-                background: Rectangle
+                width: root.width
+                height: filter.height
+                Cura.TextField
                 {
-                    anchors.fill: parent
-                    color: isActive ? UM.Theme.getColor("setting_control_highlight") : "transparent"
-                }
-
-                contentItem: Item
-                {
-                    width: childrenRect.width
-                    height: UM.Theme.getSize("action_button").height
+                    id: filter
+                    width:parent.width
+                    implicitHeight: parent.height
+                    placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
+                    font: UM.Theme.getFont("default_italic")
+                    leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
                     UM.ColorImage
                     {
-                        id: arrow
-                        anchors.left: parent.left
-                        width: UM.Theme.getSize("standard_arrow").width
-                        height: UM.Theme.getSize("standard_arrow").height
+                        id: searchIcon
+                        source: UM.Theme.getIcon("Magnifier")
+                        anchors
+                        {
+                            verticalCenter: parent.verticalCenter
+                            left: parent.left
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                        }
+                        height: UM.Theme.getSize("small_button_icon").height
+                        width: height
                         color: UM.Theme.getColor("text")
-                        source: isActive ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
                     }
 
-                    UM.Label
+                    onTextChanged: printerSearchTimer.restart()
+                    onEditingFinished:
                     {
-                        id: label
-                        anchors.left: arrow.right
-                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        text: button.text
-                        font: UM.Theme.getFont("default_bold")
+                        machineDefinitionsModel.filter = {"id" : "*" + text.toLowerCase() + "*", "visible": true}
+                        base.searchFilterApplied = (text.length > 0)
+                        updateDefinitionModel()
+                    }
+
+                    Keys.onEscapePressed: filter.text = ""
+                    function updateDefinitionModel()
+                    {
+                        if (base.searchFilterApplied)
+                        {
+                            base.currentSections.clear()
+                            for (var i = 0; i < machineDefinitionsModel.count; i++)
+                            {
+                                var sectionexpanded = machineDefinitionsModel.getItem(i)["section"]
+                                if (!base.currentSections.has(sectionexpanded))
+                                {
+                                    base.currentSections.add(sectionexpanded);
+                                }
+                            }
+                            base.updateCurrentItem(0)
+
+                            // Trigger update on base.currentSections
+                            base.currentSections = base.currentSections;
+                        }
+                        else
+                        {
+                            const initialSection = "Ultimaker B.V.";
+                            base.currentSections.clear();
+                            base.currentSections.add(initialSection);
+                            updateCurrentItemUponSectionChange(initialSection);
+                            updateCurrentItem(0)
+                            // Trigger update on base.currentSections
+                            base.currentSections = base.currentSections;
+                        }
+
                     }
                 }
 
-                onClicked:
+                UM.SimpleButton
                 {
-                    if (base.currentSections.has(section))
+                    id: clearFilterButton
+                    iconSource: UM.Theme.getIcon("Cancel")
+                    visible: base.searchFilterApplied
+
+                    height: Math.round(filter.height * 0.4)
+                    width: visible ? height : 0
+
+                    anchors.verticalCenter: filter.verticalCenter
+                    anchors.right: filter.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+
+                    color: UM.Theme.getColor("setting_control_button")
+                    hoverColor: UM.Theme.getColor("setting_control_button_hover")
+
+                    onClicked:
                     {
-                        base.currentSections.delete(section);
+                        filter.text = ""
+                        filter.forceActiveFocus()
                     }
-                    else
-                    {
-                        base.currentSections.add(section);
-                        base.updateCurrentItemUponSectionChange(section);
-                    }
-                    // Trigger update on base.currentSections
-                    base.currentSections = base.currentSections;
                 }
             }
 
-            delegate: Cura.RadioButton
+            //Selecting a local printer to add from this list.
+            ListView
             {
-                id: radioButton
-                anchors
+                id: machineList
+                width:root.width
+                height: root.height - filter.height
+                clip: true
+                ScrollBar.vertical: UM.ScrollBar {}
+
+                model: UM.DefinitionContainersModel
                 {
-                    left: parent !== null ? parent.left : undefined
-                    leftMargin: UM.Theme.getSize("standard_list_lineheight").width
-
-                    right: parent !== null ? parent.right : undefined
-                    rightMargin: UM.Theme.getSize("default_margin").width
+                    id: machineDefinitionsModel
+                    filter: { "visible": true }
+                    sectionProperty: "manufacturer"
+                    preferredSections: preferredCategories
                 }
-                height: visible ? UM.Theme.getSize("standard_list_lineheight").height : 0 //This causes the scrollbar to vary in length due to QTBUG-76830.
 
-                checked: machineList.currentIndex == index
-                text: name
-                visible: base.currentSections.has(section)
-                onClicked: base.updateCurrentItem(index)
+                section.property: "section"
+                section.delegate: Button
+                {
+                    id: button
+                    width: machineList.width
+                    height: UM.Theme.getSize("action_button").height
+                    text: section
+
+                    property bool isActive: base.currentSections.has(section)
+
+                    background: Rectangle
+                    {
+                        anchors.fill: parent
+                        color: isActive ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                    }
+
+                    contentItem: Item
+                    {
+                        width: childrenRect.width
+                        height: UM.Theme.getSize("action_button").height
+
+                        UM.ColorImage
+                        {
+                            id: arrow
+                            anchors.left: parent.left
+                            width: UM.Theme.getSize("standard_arrow").width
+                            height: UM.Theme.getSize("standard_arrow").height
+                            color: UM.Theme.getColor("text")
+                            source: isActive ? UM.Theme.getIcon("ChevronSingleDown") : UM.Theme.getIcon("ChevronSingleRight")
+                        }
+
+                        UM.Label
+                        {
+                            id: label
+                            anchors.left: arrow.right
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                            text: button.text
+                            font: UM.Theme.getFont("default_bold")
+                        }
+                    }
+
+                    onClicked:
+                    {
+                        if (base.currentSections.has(section))
+                        {
+                            base.currentSections.delete(section);
+                        }
+                        else
+                        {
+                            base.currentSections.add(section);
+                            base.updateCurrentItemUponSectionChange(section);
+                        }
+                        // Trigger update on base.currentSections
+                        base.currentSections = base.currentSections;
+                    }
+                }
+
+                delegate: Cura.RadioButton
+                {
+                    id: radioButton
+                    anchors
+                    {
+                        left: parent !== null ? parent.left : undefined
+                        leftMargin: UM.Theme.getSize("standard_list_lineheight").width
+
+                        right: parent !== null ? parent.right : undefined
+                        rightMargin: UM.Theme.getSize("default_margin").width
+                    }
+                    height: visible ? UM.Theme.getSize("standard_list_lineheight").height : 0 //This causes the scrollbar to vary in length due to QTBUG-76830.
+
+                    checked: machineList.currentIndex == index
+                    text: name
+                    visible: base.currentSections.has(section)
+                    onClicked: base.updateCurrentItem(index)
+                }
             }
         }
 
