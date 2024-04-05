@@ -61,15 +61,6 @@ Item
         }
     }
 
-    Timer
-    {
-        id: printerSearchTimer
-        onTriggered: filter.editingFinished()
-        interval: 50
-        running: false
-        repeat: false
-    }
-
     Component.onCompleted:
     {
         const initialSection = "Ultimaker B.V.";
@@ -117,7 +108,7 @@ Item
                         color: UM.Theme.getColor("text")
                     }
 
-                    onTextChanged: printerSearchTimer.restart()
+                    onTextChanged: filter.editingFinished()
                     onEditingFinished:
                     {
                         machineDefinitionsModel.filter = {"name" : "*" + text.toLowerCase() + "*", "visible": true}
