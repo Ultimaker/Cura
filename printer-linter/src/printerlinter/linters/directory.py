@@ -11,8 +11,11 @@ class Directory(Linter):
         super().__init__(file, settings)
 
     def check(self) -> Iterator[Diagnostic]:
-        if self._settings["checks"].get("diagnostic-resources-macos-app-directory-name", False):
+        if self._file.exists() and self._settings["checks"].get("diagnostic-resources-macos-app-directory-name", False):
             for check in self.checkForDotInDirName():
+                yield check
+        if self._settings["checks"].get("diagnostic-resource-file-deleted", False):
+            for check in self.checkFilesDeleted():
                 yield check
 
         yield
@@ -29,3 +32,14 @@ class Directory(Linter):
             )
         yield
 
+    def checkFilesDeleted(self) -> Iterator[Diagnostic]:
+        """ Check if there is a file that is deleted, this causes upgrade scripts to not work properly """
+
+        yield Diagnostic(
+            file = self._file,
+            diagnostic_name = "diagnostic-resource-file-deleted",
+            message = f"File: {self._file} must not be deleted as it is not allowed. It will create issues upgrading Cura",
+            level = "Error",
+            offset = 1
+        )
+        yield

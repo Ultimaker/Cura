@@ -37,6 +37,10 @@ jobs:
       - name: Create results directory
         run: mkdir printer-linter-result
 
+      - name: Check Deleted Files(s)
+        if: env.GIT_DIFF
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$GIT_DIFF" | grep '^D')
+
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES
         run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
@@ -56,5 +60,5 @@ jobs:
         uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          clang_tidy_fixes: result.yml
+          clang_tidy_fixes: printer-linter-pr-post.yml
           request_changes: true
