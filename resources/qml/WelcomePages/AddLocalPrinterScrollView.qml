@@ -108,7 +108,7 @@ Item
                         color: UM.Theme.getColor("text")
                     }
 
-                    onTextChanged: filter.editingFinished()
+                    onTextChanged: editingFinished()
                     onEditingFinished:
                     {
                         machineDefinitionsModel.filter = {"name" : "*" + text.toLowerCase() + "*", "visible": true}
