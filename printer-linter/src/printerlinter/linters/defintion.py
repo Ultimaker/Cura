@@ -118,7 +118,7 @@ class Definition(Linter):
     def _isDefinedInParent(self, key, value_dict, inherits_from):
         if self._ignore(key, "diagnostic-definition-redundant-override"):
             return False, None, None, None, None
-        if key not in self._definitions[inherits_from]["overrides"]:
+        if "overrides" not in self._definitions[inherits_from] or key not in self._definitions[inherits_from]["overrides"]:
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
         parent = self._definitions[inherits_from]["overrides"]
