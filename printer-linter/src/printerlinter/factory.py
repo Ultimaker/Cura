@@ -6,6 +6,7 @@ from .linters.defintion import Definition
 from .linters.linter import Linter
 from .linters.meshes import Meshes
 from .linters.directory import Directory
+from .linters.formulas import Formulas
 
 
 def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
@@ -14,12 +15,12 @@ def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
         return None
 
     if ".inst" in file.suffixes and ".cfg" in file.suffixes:
-        return [Directory(file, settings), Profile(file, settings)]
+        return [Directory(file, settings), Profile(file, settings), Formulas(file, settings)]
 
     if ".def" in file.suffixes and ".json" in file.suffixes:
         if file.stem in ("fdmprinter.def", "fdmextruder.def"):
             return None
-        return [Directory(file, settings), Definition(file, settings)]
+        return [Directory(file, settings), Definition(file, settings), Formulas(file, settings)]
 
     if file.parent.stem == "meshes":
         return [Meshes(file, settings)]
