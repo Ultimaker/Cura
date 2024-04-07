@@ -1,14 +1,15 @@
-version: "5.7.0-beta.0"
+version: "5.8.0-alpha.0"
 requirements:
-  - "uranium/(latest)@ultimaker/stable"
-  - "curaengine/(latest)@ultimaker/stable"
-  - "cura_binary_data/(latest)@ultimaker/stable"
-  - "fdm_materials/(latest)@ultimaker/stable"
+  - "uranium/(latest)@ultimaker/testing"
+  - "curaengine/(latest)@ultimaker/testing"
+  - "cura_binary_data/(latest)@ultimaker/testing"
+  - "fdm_materials/(latest)@ultimaker/testing"
   - "curaengine_plugin_gradual_flow/0.1.0-beta.3"
   - "dulcificum/latest@ultimaker/testing"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
   - "curaengine_grpc_definitions/0.2.0"
+  - "native_cad_plugin/2.0.0"
 requirements_internal:
   - "fdm_materials/(latest)@internal/testing"
   - "cura_private_data/(latest)@internal/testing"
@@ -41,6 +42,14 @@ pyinstaller:
             package: "curaengine_plugin_gradual_flow"
             src: "res/bundled_packages"
             dst: "share/cura/resources/bundled_packages"
+        native_cad_plugin:
+          package: "native_cad_plugin"
+          src: "res/plugins/NativeCADplugin"
+          dst: "share/cura/plugins/NativeCADplugin"
+        native_cad_plugin_bundled:
+          package: "native_cad_plugin"
+          src: "res/bundled_packages"
+          dst: "share/cura/resources/bundled_packages"
         cura_resources:
             package: "cura"
             src: "resources"
