@@ -1,31 +1,23 @@
+import difflib
 import json
-import os
+import re
 from pathlib import Path
 from typing import Iterator
 
-from UM.VersionUpgradeManager import VersionUpgradeManager
-from unittest.mock import MagicMock
+
+from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 from ..diagnostic import Diagnostic
 from .linter import Linter
 from configparser import ConfigParser
-from cura.CuraApplication import CuraApplication  # To compare against the current SettingVersion.
-from UM.Settings.DefinitionContainer import DefinitionContainer
 
 class Formulas(Linter):
     """ Finds issues in definition files, such as overriding default parameters """
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
-        self._all_keys = self.collectAllSettingIds()
+        self._cura_formula_functions = CuraFormulaFunctions(self)
+        self._correct_formulas = ["extruderValue", "extruderValues", "anyExtruderWithMaterial", "anyExtruderNrWithOrDefault"
+                              , "resolveOrValue", "defaultExtruderPosition", "valueFromContainer", "extruderValueFromContainer"]
         self._definition = {}
-
-    def collectAllSettingIds(self):
-        VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
-        CuraApplication._initializeSettingDefinitions()
-        definition_container = DefinitionContainer("whatever")
-        with open(os.path.join(os.path.dirname(__file__), "..", "..","..","..", "resources", "definitions", "fdmprinter.def.json"),
-                encoding="utf-8") as data:
-            definition_container.deserialize(data.read())
-        return definition_container.getAllKeys()
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-incorrect-formula", False):
@@ -46,11 +38,10 @@ class Formulas(Linter):
                     if value in ("enable", "resolve", "value", "minimum_value_warning", "maximum_value_warning", "maximum_value", "minimum_value"):
                          value_incorrect = self.checkValueIncorrect(value_dict[value].strip("="))
                          if value_incorrect:
-
                              yield Diagnostic(
                                  file=self._file,
                                  diagnostic_name="diagnostic-incorrect-formula",
-                                 message=f"Given formula {value_dict} to calulate {key} of seems incorrect, please correct the formula and try again.",
+                                 message=f"Given formula {value_dict} to calulate {key} of seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
                                  level="Error",
                                  offset=1
                              )
@@ -89,8 +80,25 @@ class Formulas(Linter):
         return file_data
 
     def checkValueIncorrect(self, formula:str) -> bool:
-        try:
-            compiled_formula = compile(formula, "", "eval")
-        except SyntaxError:
+        self._correct_formula = self._correctFormula(formula)
+        if self._correct_formula == formula:
+            return False
+        else:
             return True
-        return False
+
+    def _correctFormula(self, input_sentence: str) -> str:
+        # Find all alphanumeric words, '()' and content inside them, and punctuation
+        chunks = re.split(r'(\(.*?\))', input_sentence)  # split input by parentheses
+
+        corrected_chunks = []
+        for chunk in chunks:
+            if chunk.startswith('(') and chunk.endswith(')'):  # if chunk is a formula in parentheses
+                corrected_chunks.append(chunk)  # leave it as is
+            else:  # if chunk is outside parentheses
+                words = re.findall(r'\w+', chunk)  # find potential function names
+                for word in words:
+                    if difflib.get_close_matches(word, self._correct_formulas, n=1,cutoff=0.6):  # if there's a close match in correct formulas
+                        chunk = chunk.replace(word, difflib.get_close_matches(word, self._correct_formulas, n=1, cutoff=0.6)[0])  # replace it
+                corrected_chunks.append(chunk)
+
+        return ''.join(corrected_chunks)  # join chunks back together
