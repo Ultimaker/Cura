@@ -38,9 +38,9 @@ jobs:
         run: mkdir printer-linter-result
 
       - name: Check Deleted Files(s)
-
         run:  |
-          deletedFiles="$(git log -m -1 --name-status --pretty="format:" | awk '/^D/ {print $2}' | tr '\n' ' ')"
+          - name: Get deleted files
+          git diff --name-only --diff-filter=D origin/main
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Diagnose file(s)
