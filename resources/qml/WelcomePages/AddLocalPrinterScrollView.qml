@@ -155,7 +155,7 @@ Item
                     iconSource: UM.Theme.getIcon("Cancel")
                     visible: base.hasSearchFilter
 
-                    height: Math.round(filter.height * 0.4)
+                    height: Math.round(filter.height * 0.5)
                     width: visible ? height : 0
 
                     anchors.verticalCenter: filter.verticalCenter
