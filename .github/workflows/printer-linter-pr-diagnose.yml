@@ -23,11 +23,6 @@ jobs:
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
 
-      - name: Check Deleted Files(s)
-        run:  |
-
-          git diff FETCH_HEAD ${{ github.sha }} --diff-filter=D  --name-only
-          python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Setup Python and pip
         if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
@@ -47,6 +42,11 @@ jobs:
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES
         run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
+
+      - name: Check Deleted Files(s)
+        run:  |
+          git diff FETCH_HEAD ${{ github.sha }} --diff-filter=D  --name-only
+          python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Save PR metadata
         run: |
