@@ -22,6 +22,12 @@ jobs:
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
 
+      - name: Check Deleted Files(s)
+        run:  |
+          git fetch origin ${{ github.event.base.ref }}
+          git diff --name-only --diff-filter=D FETCH_HEAD ${{ github.sha }}
+          python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
+
       - name: Setup Python and pip
         if: env.GIT_DIFF && !env.MATCHED_FILES  # If nothing happens with python and/or pip after, the clean-up crashes.
         uses: actions/setup-python@v4
@@ -36,11 +42,6 @@ jobs:
 
       - name: Create results directory
         run: mkdir printer-linter-result
-
-      - name: Check Deleted Files(s)
-        run:  |
-          git diff --name-only --diff-filter=D ${{ github.event.before }} ${{ github.sha }}
-          python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES
