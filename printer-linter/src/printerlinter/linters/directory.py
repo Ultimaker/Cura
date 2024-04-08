@@ -36,7 +36,7 @@ class Directory(Linter):
         """ Check if there is a file that is deleted, this causes upgrade scripts to not work properly """
 
         yield Diagnostic(
-            file = self._file,
+            file = self._file.parent,
             diagnostic_name = "diagnostic-resource-file-deleted",
             message = f"File: {self._file} must not be deleted as it is not allowed. It will create issues upgrading Cura",
             level = "Error",
