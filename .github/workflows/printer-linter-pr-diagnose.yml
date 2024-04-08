@@ -45,7 +45,7 @@ jobs:
 
       - name: Check Deleted Files(s)
         run:  |
-          tj-actions/changed-files@v44.0
+          tj-actions/changed-files@v44
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Save PR metadata
