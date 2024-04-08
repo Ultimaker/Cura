@@ -19,6 +19,7 @@ jobs:
       - uses: technote-space/get-diff-action@v6
         id: git_diff
         with:
+          DIFF_FILTER: AMRCD
           PATTERNS: |
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
@@ -45,7 +46,6 @@ jobs:
 
       - name: Check Deleted Files(s)
         run:  |
-          tj-actions/changed-files@v44
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Save PR metadata
