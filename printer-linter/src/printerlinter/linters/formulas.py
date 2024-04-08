@@ -57,10 +57,10 @@ class Formulas(Linter):
             self._definition[definition_name] = json.loads(definition_file.read_text())
 
         if definition_file.suffix == ".cfg":
-            self._definition[definition_name] = self.parse_cfg(definition_file)
+            self._definition[definition_name] = self._parseCfg(definition_file)
 
 
-    def parse_cfg(self, file_path:Path) -> dict:
+    def _parseCfg(self, file_path:Path) -> dict:
         config = ConfigParser()
         config.read([file_path])
         file_data  ={}
