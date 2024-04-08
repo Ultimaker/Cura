@@ -45,7 +45,7 @@ jobs:
 
       - name: Check Deleted Files(s)
         run:  |
-          git diff FETCH_HEAD ${{ github.sha }} --diff-filter=D  --name-only
+          tj-actions/changed-files@v44.0
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Save PR metadata
