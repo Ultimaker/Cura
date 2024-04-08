@@ -39,7 +39,7 @@ jobs:
 
       - name: Check Deleted Files(s)
         run:  |
-          git diff --name-only --diff-filter=D origin/main
+          git diff --name-only --diff-filter=D ${{ github.event.before }} ${{ github.sha }}
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
       - name: Diagnose file(s)
