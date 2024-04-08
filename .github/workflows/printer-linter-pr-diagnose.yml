@@ -25,7 +25,7 @@ jobs:
 
       - name: Check Deleted Files(s)
         run:  |
-          echo "Deleted: ${{ steps.git_diff.outputs.deleted }}"
+          echo "Deleted: ${{ env.outputs.deleted }}"
           git diff --name-only --diff-filter=D FETCH_HEAD ${{ github.sha }}
           python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml $(echo "$deletedFiles")
 
