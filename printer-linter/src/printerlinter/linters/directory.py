@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Iterator
 
-from ..diagnostic import Diagnostic
+from ..diagnostic import Diagnostic, GitComment
 from .linter import Linter
 
 
@@ -14,7 +14,7 @@ class Directory(Linter):
         if self._file.exists() and self._settings["checks"].get("diagnostic-resources-macos-app-directory-name", False):
             for check in self.checkForDotInDirName():
                 yield check
-        if self._settings["checks"].get("diagnostic-resource-file-deleted", False):
+        elif self._settings["checks"].get("diagnostic-resource-file-deleted", False):
             for check in self.checkFilesDeleted():
                 yield check
 
@@ -32,14 +32,8 @@ class Directory(Linter):
             )
         yield
 
-    def checkFilesDeleted(self) -> Iterator[Diagnostic]:
-        """ Check if there is a file that is deleted, this causes upgrade scripts to not work properly """
-
-        yield Diagnostic(
-            file = self._file.parent,
-            diagnostic_name = "diagnostic-resource-file-deleted",
-            message = f"File: {self._file} must not be deleted as it is not allowed. It will create issues upgrading Cura",
-            level = "Error",
-            offset = 1
-        )
+    def checkFilesDeleted(self) -> Iterator[GitComment]:
+        if not self._file.exists():
+            """ Check if there is a file that is deleted, this causes upgrade scripts to not work properly """
+            yield GitComment( f"File: {self._file} must not be deleted as it is not allowed. It will create issues upgrading Cura" )
         yield
