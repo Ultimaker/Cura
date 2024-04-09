@@ -52,7 +52,7 @@ def main() -> None:
     if args.deleted:
         for file in args.Files:
             deletedFiles = diagnoseIssuesWithFile(file, settings )
-            comments_check["GitComment"].extend([d.toDict() for d in deletedFiles])
+            comments_check["Git Comment"].extend([d.toDict() for d in deletedFiles])
 
             results = yaml.dump(comments_check, default_flow_style=False, indent=4, width=240)
 
