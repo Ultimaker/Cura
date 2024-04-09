@@ -44,7 +44,7 @@ jobs:
 
       - name: Check Deleted Files(s)
         if: env.GIT_DIFF
-        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ env.GIT_DIFF_FILTERED }}
 
       - name: Save PR metadata
         run: |

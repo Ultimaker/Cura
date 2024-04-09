@@ -42,18 +42,19 @@ def main() -> None:
         settings = yaml.load(f, yaml.FullLoader)
 
     full_body_check = {"Diagnostics": []}
+    comments_check = {"Git Comment": []}
 
     for file in files:
         if not path.exists(file):
             print(f"Can't find the file: {file}")
             return
 
-    if args.deleted and files ==[]:
+    if args.deleted:
         for file in args.Files:
             deletedFiles = diagnoseIssuesWithFile(file, settings )
-            full_body_check["Diagnostics"].extend([d.toDict() for d in deletedFiles])
+            comments_check["GitComment"].extend([d.toDict() for d in deletedFiles])
 
-            results = yaml.dump(full_body_check, default_flow_style=False, indent=4, width=240)
+            results = yaml.dump(comments_check, default_flow_style=False, indent=4, width=240)
 
             if report:
                 report.write_text(results)

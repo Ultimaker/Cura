@@ -72,6 +72,13 @@ jobs:
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
 
+      - name: Run PR Comments
+        uses: peter-evans/find-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-path: printer-linter-result/comment.md
+
       - name: Run clang-tidy-pr-comments action
         uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
         with:
