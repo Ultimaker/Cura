@@ -22,7 +22,7 @@ class Formulas(Linter):
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-incorrect-formula", False):
-            for check in self.checkFormulas:
+            for check in self.checkFormulas():
                 yield check
 
         yield
@@ -56,7 +56,7 @@ class Formulas(Linter):
                             yield Diagnostic(
                                  file=self._file,
                                  diagnostic_name="diagnostic-incorrect-formula",
-                                 message=f"Given formula {value_dict} to calulate {key} of seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
+                                 message=f"Given formula {value_dict} to calulate {key} seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
                                  level="Error",
                                  offset=found.span(0)[0],
                                  replacements=replacements
