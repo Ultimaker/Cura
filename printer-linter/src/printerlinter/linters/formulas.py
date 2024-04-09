@@ -7,6 +7,7 @@ from typing import Iterator
 
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 from ..diagnostic import Diagnostic
+from ..replacement import Replacement
 from .linter import Linter
 from configparser import ConfigParser
 
@@ -21,7 +22,7 @@ class Formulas(Linter):
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-incorrect-formula", False):
-            for check in self.checkFormulas():
+            for check in self.checkFormulas:
                 yield check
 
         yield
@@ -36,16 +37,37 @@ class Formulas(Linter):
             for key, value_dict in definition["overrides"].items():
                 for value in value_dict:
                     if value in ("enable", "resolve", "value", "minimum_value_warning", "maximum_value_warning", "maximum_value", "minimum_value"):
-                         value_incorrect = self.checkValueIncorrect(value_dict[value].strip("="))
-                         if value_incorrect:
-                             yield Diagnostic(
+                        value_incorrect = self.checkValueIncorrect(self._removeLeadingEqual(value_dict[value]))
+                        if value_incorrect:
+                            if self._file.suffix =='.cfg':
+                                key_with_incorrectValue =  re.compile(r'(\b' + key + r'\b\s*=\s*[^=\n]+.*)')
+                            else:
+                                key_with_incorrectValue = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
+                            found = key_with_incorrectValue.search(self._content)
+                            if len(found.group().splitlines()) > 1:
+                                replacements = []
+                            else:
+                                replacement_text = found.group().replace(self._removeLeadingEqual(value_dict[value]), self._correct_formula )
+                                replacements = [Replacement(
+                                     file=self._file,
+                                     offset=found.span(1)[0],
+                                     length=len(found.group()),
+                                     replacement_text=replacement_text)]
+                            yield Diagnostic(
                                  file=self._file,
                                  diagnostic_name="diagnostic-incorrect-formula",
                                  message=f"Given formula {value_dict} to calulate {key} of seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
                                  level="Error",
-                                 offset=1
-                             )
+                                 offset=found.span(0)[0],
+                                 replacements=replacements
+
+                            )
         yield
+
+    def _removeLeadingEqual(self, input_value):
+        if isinstance(input_value, str) and input_value.startswith('='):
+            return input_value[1:]
+        return input_value
 
     def _loadDefinitionFiles(self, definition_file) -> None:
         """ Loads definition file contents into self._definition. Also load parent definition if it exists. """
@@ -79,12 +101,14 @@ class Formulas(Linter):
 
         return file_data
 
-    def checkValueIncorrect(self, formula:str) -> bool:
-        self._correct_formula = self._correctFormula(formula)
-        if self._correct_formula == formula:
-            return False
-        else:
+    def checkValueIncorrect(self, formula) -> bool:
+        if isinstance(formula, str):
+            self._correct_formula = self._correctFormula(formula)
+            if self._correct_formula == formula:
+                return False
             return True
+        else:
+            return False
 
     def _correctFormula(self, input_sentence: str) -> str:
         # Find all alphanumeric words, '()' and content inside them, and punctuation
