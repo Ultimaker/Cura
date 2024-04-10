@@ -19,6 +19,7 @@ def main() -> None:
     parser.add_argument("--report", required=False, type=Path, help="Path where the diagnostic report should be stored")
     parser.add_argument("--format", action="store_true", help="Format the files")
     parser.add_argument("--diagnose", action="store_true", help="Diagnose the files")
+    parser.add_argument("--deleted", action="store_true", help="Check for deleted files")
     parser.add_argument("--fix", action="store_true", help="Attempt to apply the suggested fixes on the files")
     parser.add_argument("Files", metavar="F", type=Path, nargs="+", help="Files or directories to format")
 
@@ -41,11 +42,24 @@ def main() -> None:
         settings = yaml.load(f, yaml.FullLoader)
 
     full_body_check = {"Diagnostics": []}
+    comments_check = {"Git Comment": []}
 
     for file in files:
         if not path.exists(file):
             print(f"Can't find the file: {file}")
             return
+
+    if args.deleted:
+        for file in args.Files:
+            deletedFiles = diagnoseIssuesWithFile(file, settings )
+            comments_check["Git Comment"].extend([d.toDict() for d in deletedFiles])
+
+            results = yaml.dump(comments_check, default_flow_style=False, indent=4, width=240)
+
+            if report:
+                report.write_text(results)
+            else:
+                print(results)
 
     if to_fix or to_diagnose:
         for file in files:
@@ -81,7 +95,6 @@ def diagnoseIssuesWithFile(file: Path, settings: dict) -> List[Diagnostic]:
         linter_results.extend(list(filter(lambda d: d is not None, linter.check())))
 
     return linter_results
-
 
 def applyFixesToFile(file, settings, full_body_check) -> None:
     if not file.exists():

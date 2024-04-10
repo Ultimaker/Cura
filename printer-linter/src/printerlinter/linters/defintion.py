@@ -90,7 +90,7 @@ class Definition(Linter):
 
                     yield Diagnostic(
                         file=self._file,
-                        diagnostic_name="diagnostic-definition-redundant-override",
+                        diagnostic_name="diagnostic-material-temperature-defined",
                         message=f"Overriding {key} as it belongs to material temperature catagory and shouldn't be placed in machine definitions",
                         level="Warning",
                         offset=found.span(0)[0],

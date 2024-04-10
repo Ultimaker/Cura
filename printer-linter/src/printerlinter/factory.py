@@ -11,7 +11,7 @@ from .linters.directory import Directory
 def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
     """ Returns a Linter depending on the file format """
     if not file.exists():
-        return None
+        return [Directory(file, settings)]
 
     if ".inst" in file.suffixes and ".cfg" in file.suffixes:
         return [Directory(file, settings), Profile(file, settings)]
