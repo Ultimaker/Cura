@@ -78,15 +78,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - stat: path='printer-linter-result/comment.md'
-        register: comment_path
+      - name: Check if comments file exists
+        id: checkfile
+        uses: andstor/file-exists-action@v1
+        with:
+          path: 'printer-linter-result/comment.md'
 
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
-        if: comment_path.stat.exists
         with:
           issue-number: ${{ steps.pr.outputs.pull_request_number }}
           body-path: 'printer-linter-result/comment.md'
+        if: steps.checkfile.outputs.exists == 'true'
 
       - name: Run clang-tidy-pr-comments action
         uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
