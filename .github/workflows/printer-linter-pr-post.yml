@@ -75,9 +75,8 @@ jobs:
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
         with:
-          comment-id: 557858210
+          comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
           body-path: printer-linter-result/comment.md
 
       - name: Run clang-tidy-pr-comments action
