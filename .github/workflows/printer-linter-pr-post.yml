@@ -73,7 +73,7 @@ jobs:
           unzip printer-linter-result.zip -d printer-linter-result
 
       - name: Run PR Comments
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
