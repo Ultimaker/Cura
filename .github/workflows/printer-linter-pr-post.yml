@@ -78,8 +78,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Check if file exists using stat module
+      - stat:
+          path: 'printer-linter-result/comment.md'
+        register: register_name
+
+
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
+        if: register_name.stat.exists
         with:
           issue-number: ${{ steps.pr.outputs.pull_request_number }}
           body-path: 'printer-linter-result/comment.md'
