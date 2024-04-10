@@ -5,12 +5,6 @@ import re
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Iterator
-from unittest.mock import MagicMock
-
-from UM.Settings.DefinitionContainer import DefinitionContainer
-from UM.VersionUpgradeManager import VersionUpgradeManager
-from cura.CuraApplication import CuraApplication
-from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from ..diagnostic import Diagnostic
 from ..replacement import Replacement
@@ -33,13 +27,19 @@ class Formulas(Linter):
         self._definition = {}
 
     def getCuraSettingList(self) -> list:
-        if VersionUpgradeManager._VersionUpgradeManager__instance is None:
-            VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
-        CuraApplication._initializeSettingDefinitions()
-        definition_container = DefinitionContainer("whatever")
-        with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "resources", "definitions", "fdmprinter.def.json"), encoding="utf-8") as data:
-            definition_container.deserialize(data.read())
-        return definition_container.getAllKeys()
+        with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "resources", "definitions", "fdmprinter.def.json")) as data:
+            json_data = json.load(data)
+        return self.extractKeys(json_data)
+
+    def extractKeys(self, json_obj, parent_key=''):
+        keys_with_value = []
+        for key, values in json_obj.items():
+            new_key = key
+            if isinstance(values, dict):
+                if 'label' in values:
+                    keys_with_value.append(new_key)
+                keys_with_value.extend(self.extractKeys(values, new_key))
+        return keys_with_value
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-incorrect-formula", False):
