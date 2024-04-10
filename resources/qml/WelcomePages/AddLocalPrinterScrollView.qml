@@ -32,7 +32,7 @@ Item
 
     onCurrentItemChanged:
     {
-        printerName = currentItem == null ? "" : currentItem.name
+        printerName = currentItem && currentItem.name? currentItem.name: ""
     }
 
     function updateCurrentItemUponSectionChange(section)
@@ -53,11 +53,17 @@ Item
     {
         machineList.currentIndex = index;
         currentItem = machineList.model.getItem(index);
-        if (currentItem != undefined)
+        if (currentItem && currentItem.name)
         {
             machineName.text = currentItem.name
             manufacturer.text = currentItem.metadata["manufacturer"]
             author.text = currentItem.metadata["author"]
+        }
+        else
+        {
+            machineName.text = "No printers Found"
+            manufacturer.text = ""
+            author.text = ""
         }
     }
 
@@ -93,7 +99,6 @@ Item
                         id: background
                         color: UM.Theme.getColor("main_background")
                         radius: 2
-                        border.width: 1
                         border.color:  UM.Theme.getColor("primary_button")
                     }
                     height: UM.Theme.getSize("small_button_icon").height*2
