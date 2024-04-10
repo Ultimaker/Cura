@@ -1,10 +1,14 @@
 import difflib
 import json
 import re
+import os
 from pathlib import Path
 from typing import Iterator
+from unittest.mock import MagicMock
 
-
+from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.VersionUpgradeManager import VersionUpgradeManager
+from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 from ..diagnostic import Diagnostic
 from ..replacement import Replacement
@@ -16,15 +20,24 @@ class Formulas(Linter):
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
         self._cura_formula_functions = CuraFormulaFunctions(self)
-        self._correct_formulas = ["extruderValue", "extruderValues", "anyExtruderWithMaterial", "anyExtruderNrWithOrDefault"
+        formula_names = ["extruderValue", "extruderValues", "anyExtruderWithMaterial", "anyExtruderNrWithOrDefault"
                               , "resolveOrValue", "defaultExtruderPosition", "valueFromContainer", "extruderValueFromContainer"]
+        self._cura_settings_list = list(self.getCuraSettingsList()) + formula_names
         self._definition = {}
+
+    def getCuraSettingsList(self) -> list:
+        if VersionUpgradeManager._VersionUpgradeManager__instance ==None:
+            VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
+        CuraApplication._initializeSettingDefinitions()
+        definition_container = DefinitionContainer("whatever")
+        with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "resources", "definitions", "fdmprinter.def.json"), encoding="utf-8") as data:
+            definition_container.deserialize(data.read())
+        return definition_container.getAllKeys()
 
     def check(self) -> Iterator[Diagnostic]:
         if self._settings["checks"].get("diagnostic-incorrect-formula", False):
             for check in self.checkFormulas():
                 yield check
-
         yield
 
     def checkFormulas(self) -> Iterator[Diagnostic]:
@@ -36,38 +49,48 @@ class Formulas(Linter):
         if "overrides" in definition:
             for key, value_dict in definition["overrides"].items():
                 for value in value_dict:
-                    if value in ("enable", "resolve", "value", "minimum_value_warning", "maximum_value_warning", "maximum_value", "minimum_value"):
-                        value_incorrect = self.checkValueIncorrect(self._removeLeadingEqual(value_dict[value]))
+                    if value in ("enable", "resolve", "value", "minimum_value_warning", "maximum_value_warning",
+                            "maximum_value", "minimum_value"):
+                        key_incorrect = self.checkValueIncorrect(key)
+                        if key_incorrect:
+                            found = self._appendCorrections(key, key)
+                        value_incorrect = self.checkValueIncorrect(value_dict[value])
                         if value_incorrect:
-                            if self._file.suffix =='.cfg':
-                                key_with_incorrectValue =  re.compile(r'(\b' + key + r'\b\s*=\s*[^=\n]+.*)')
-                            else:
-                                key_with_incorrectValue = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
-                            found = key_with_incorrectValue.search(self._content)
+                            found = self._appendCorrections(key, value_dict[value])
+                        if key_incorrect or value_incorrect:
+
                             if len(found.group().splitlines()) > 1:
                                 replacements = []
                             else:
-                                replacement_text = found.group().replace(self._removeLeadingEqual(value_dict[value]), self._correct_formula )
                                 replacements = [Replacement(
-                                     file=self._file,
-                                     offset=found.span(1)[0],
-                                     length=len(found.group()),
-                                     replacement_text=replacement_text)]
+                                    file=self._file,
+                                    offset=found.span(1)[0],
+                                    length=len(found.group()),
+                                    replacement_text=self._replacement_text)]
                             yield Diagnostic(
-                                 file=self._file,
-                                 diagnostic_name="diagnostic-incorrect-formula",
-                                 message=f"Given formula {value_dict} to calulate {key} seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
-                                 level="Error",
-                                 offset=found.span(0)[0],
-                                 replacements=replacements
-
+                                file=self._file,
+                                diagnostic_name="diagnostic-incorrect-formula",
+                                message=f"Given formula {found.group()} seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
+                                level="Error",
+                                offset=found.span(0)[0],
+                                replacements=replacements
                             )
+
         yield
 
-    def _removeLeadingEqual(self, input_value):
-        if isinstance(input_value, str) and input_value.startswith('='):
-            return input_value[1:]
-        return input_value
+    def _appendCorrections(self, key, incorrectString):
+
+        if self._file.suffix == '.cfg':
+            key_with_incorrectValue = re.compile(r'(\b' + key + r'\b\s*=\s*[^=\n]+.*)')
+        else:
+            key_with_incorrectValue = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
+        found = key_with_incorrectValue.search(self._content)
+        if len(found.group().splitlines()) > 1:
+            self._replacement_text = ''
+        else:
+            self._replacement_text = found.group().replace(incorrectString, self._correct_formula)
+        return found
+
 
     def _loadDefinitionFiles(self, definition_file) -> None:
         """ Loads definition file contents into self._definition. Also load parent definition if it exists. """
@@ -103,26 +126,28 @@ class Formulas(Linter):
 
     def checkValueIncorrect(self, formula) -> bool:
         if isinstance(formula, str):
-            self._correct_formula = self._correctFormula(formula)
+            self._correct_formula = self._correctTyposInFormula(formula)
             if self._correct_formula == formula:
                 return False
             return True
         else:
             return False
 
-    def _correctFormula(self, input_sentence: str) -> str:
-        # Find all alphanumeric words, '()' and content inside them, and punctuation
-        chunks = re.split(r'(\(.*?\))', input_sentence)  # split input by parentheses
+    def _correctTyposInFormula(self, input):
+        delimiters = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{','}', ' ', '^']
 
-        corrected_chunks = []
-        for chunk in chunks:
-            if chunk.startswith('(') and chunk.endswith(')'):  # if chunk is a formula in parentheses
-                corrected_chunks.append(chunk)  # leave it as is
-            else:  # if chunk is outside parentheses
-                words = re.findall(r'\w+', chunk)  # find potential function names
-                for word in words:
-                    if difflib.get_close_matches(word, self._correct_formulas, n=1,cutoff=0.6):  # if there's a close match in correct formulas
-                        chunk = chunk.replace(word, difflib.get_close_matches(word, self._correct_formulas, n=1, cutoff=0.6)[0])  # replace it
-                corrected_chunks.append(chunk)
+        # Create pattern
+        pattern = '|'.join(delimiters)
 
-        return ''.join(corrected_chunks)  # join chunks back together
+        # Split string based on pattern
+        tokens = re.split(pattern, input)
+        output = input
+        for token in tokens:
+            # If the token does not contain a parenthesis, we treat it as a word
+            if '(' not in token and ')' not in token:
+                cleaned_token = re.sub(r'[^\w\s]', '', token)
+                matches = difflib.get_close_matches(cleaned_token, self._cura_settings_list, n=1, cutoff=0.8)
+                if matches:
+                    output = output.replace(cleaned_token, matches[0])
+
+        return output
