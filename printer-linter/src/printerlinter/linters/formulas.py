@@ -95,7 +95,7 @@ class Formulas(Linter):
         if len(found.group().splitlines()) > 1:
             self._replacement_text = ''
         else:
-            self._replacement_text = found.group().replace(incorrectString, self._correct_formula)
+            self._replacement_text = found.group().replace(incorrectString, self._correct_formula).strip(' ')
         return found
 
 
