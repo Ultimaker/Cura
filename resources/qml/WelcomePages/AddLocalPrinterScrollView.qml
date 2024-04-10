@@ -89,8 +89,17 @@ Item
                     id: filter
                     width:parent.width
                     implicitHeight: parent.height
+                    background: Rectangle {
+                        id: background
+                        color: UM.Theme.getColor("main_background")
+                        radius: 2
+                        border.width: 1
+                        border.color:  UM.Theme.getColor("primary_button")
+                    }
+                    height: UM.Theme.getSize("small_button_icon").height*2
                     placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
-                    font: UM.Theme.getFont("default_italic")
+                    placeholderTextColor: UM.Theme.getColor("primary_button")
+                    font: UM.Theme.getFont("medium_italic")
                     leftPadding: searchIcon.width + UM.Theme.getSize("default_margin").width * 2
 
                     UM.ColorImage
