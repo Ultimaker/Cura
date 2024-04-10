@@ -72,10 +72,16 @@ jobs:
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
 
+      - name: Get Pull Request Number
+        id: pr
+        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
         with:
-          issue-number: ${{github.event.issue.number}}
+          issue-number: ${{ steps.pr.outputs.pull_request_number }}
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
