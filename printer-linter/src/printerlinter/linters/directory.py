@@ -35,5 +35,5 @@ class Directory(Linter):
     def checkFilesDeleted(self) -> Iterator[GitComment]:
         if not self._file.exists():
             """ Check if there is a file that is deleted, this causes upgrade scripts to not work properly """
-            yield GitComment( f'File: **{self._file}** must not be deleted as it is not allowed. It will create issues upgrading Cura' )
+            yield GitComment( f"File: '**{self._file}**' must not be deleted as it is not allowed. It will create issues upgrading Cura" )
         yield
