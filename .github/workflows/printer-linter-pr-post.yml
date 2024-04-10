@@ -72,6 +72,12 @@ jobs:
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
 
+      - id: find-pull-request
+        uses: jwalton/gh-find-current-pr@v1
+        with:
+          # Can be "open", "closed", or "all".  Defaults to "open".
+          state: open
+
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
         with:
