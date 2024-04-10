@@ -75,7 +75,7 @@ jobs:
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
         with:
-          issue-number: ${{github.event.number}}
+          issue-number: ${{github.event.issue.number}}
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
