@@ -4,6 +4,7 @@ checks:
     diagnostic-definition-redundant-override: true
     diagnostic-resources-macos-app-directory-name: true
     diagnostic-incorrect-formula: true
+    diagnostic-resource-file-deleted: true
     diagnostic-material-temperature-defined: true
 fixes:
     diagnostic-definition-redundant-override: true
