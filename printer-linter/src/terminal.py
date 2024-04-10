@@ -51,15 +51,16 @@ def main() -> None:
 
     if args.deleted:
         for file in args.Files:
-            deletedFiles = diagnoseIssuesWithFile(file, settings )
-            comments_check["Error Files"].extend([d.toDict() for d in deletedFiles])
+            if file not in files:
+                deletedFiles = diagnoseIssuesWithFile(file, settings)
+                comments_check["Error Files"].extend([d.toDict() for d in deletedFiles])
 
-            results = yaml.dump(comments_check, default_flow_style=False, indent=4, width=240)
+                results = yaml.dump(comments_check, default_flow_style=False, indent=4, width=240)
 
-            if report:
-                report.write_text(results)
-            else:
-                print(results)
+                if report:
+                    report.write_text(results)
+                else:
+                    print(results)
 
     if to_fix or to_diagnose:
         for file in files:
