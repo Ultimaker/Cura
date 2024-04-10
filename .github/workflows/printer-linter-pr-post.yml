@@ -72,14 +72,10 @@ jobs:
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
 
-      - name: Get PR Number
-        id: get-pr-number
-        uses: mgaitan/gha-get-pr-number
-
       - name: Run PR Comments
         uses: peter-evans/create-or-update-comment@v4
         with:
-          issue-number: ${{ steps.get-pr-number.outputs.number }}
+          issue-number: ${{github.event.number}}
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
