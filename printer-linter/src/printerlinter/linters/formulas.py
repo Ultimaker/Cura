@@ -1,7 +1,8 @@
 import difflib
 import json
-import re
 import os
+import re
+from configparser import ConfigParser
 from pathlib import Path
 from typing import Iterator
 from unittest.mock import MagicMock
@@ -10,23 +11,29 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.VersionUpgradeManager import VersionUpgradeManager
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
+
 from ..diagnostic import Diagnostic
 from ..replacement import Replacement
 from .linter import Linter
-from configparser import ConfigParser
+
+FORMULA_NAMES = [
+    "extruderValue", "extruderValues", "anyExtruderWithMaterial", "anyExtruderNrWithOrDefault",
+    "resolveOrValue", "defaultExtruderPosition", "valueFromContainer", "extruderValueFromContainer"
+]
+
+DELIMITERS = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{', '}', ' ', '^']
+
 
 class Formulas(Linter):
-    """ Finds issues in definition files, such as overriding default parameters """
+    """Finds issues in definition files, such as overriding default parameters."""
+
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
-        self._cura_formula_functions = CuraFormulaFunctions(self)
-        formula_names = ["extruderValue", "extruderValues", "anyExtruderWithMaterial", "anyExtruderNrWithOrDefault"
-                              , "resolveOrValue", "defaultExtruderPosition", "valueFromContainer", "extruderValueFromContainer"]
-        self._cura_settings_list = list(self.getCuraSettingsList()) + formula_names
+        self._cura_correction_strings = FORMULA_NAMES + list(self.getCuraSettingList())
         self._definition = {}
 
-    def getCuraSettingsList(self) -> list:
-        if VersionUpgradeManager._VersionUpgradeManager__instance ==None:
+    def getCuraSettingList(self) -> list:
+        if VersionUpgradeManager._VersionUpgradeManager__instance is None:
             VersionUpgradeManager._VersionUpgradeManager__instance = VersionUpgradeManager(MagicMock())
         CuraApplication._initializeSettingDefinitions()
         definition_container = DefinitionContainer("whatever")
@@ -133,21 +140,16 @@ class Formulas(Linter):
         else:
             return False
 
-    def _correctTyposInFormula(self, input):
-        delimiters = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{','}', ' ', '^']
+    def _correctTyposInFormula(self, formula):
+        pattern = '|'.join(DELIMITERS)
+        tokens = re.split(pattern, formula)
 
-        # Create pattern
-        pattern = '|'.join(delimiters)
-
-        # Split string based on pattern
-        tokens = re.split(pattern, input)
-        output = input
+        output = formula
         for token in tokens:
-            # If the token does not contain a parenthesis, we treat it as a word
             if '(' not in token and ')' not in token:
                 cleaned_token = re.sub(r'[^\w\s]', '', token)
-                matches = difflib.get_close_matches(cleaned_token, self._cura_settings_list, n=1, cutoff=0.8)
-                if matches:
-                    output = output.replace(cleaned_token, matches[0])
-
+                possible_matches = difflib.get_close_matches(cleaned_token, self._cura_correction_strings, n=1, cutoff=0.8)
+                if possible_matches:
+                    output = output.replace(cleaned_token, possible_matches[0])
         return output
+
