@@ -76,7 +76,6 @@ jobs:
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: 1
-          comment-author: 'github-actions[bot]'
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
