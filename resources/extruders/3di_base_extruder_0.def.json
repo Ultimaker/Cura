@@ -9,8 +9,8 @@
     },
     "overrides":
     {
+        "default_material_temperature": { "default_value": 1.75 },
         "extruder_nr": { "default_value": 0 },
-        "machine_nozzle_size": { "default_value": 0.4 },
-        "default_material_temperature": { "default_value": 1.75 }
+        "machine_nozzle_size": { "default_value": 0.4 }
     }
 }
