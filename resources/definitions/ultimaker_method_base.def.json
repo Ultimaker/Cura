@@ -28,7 +28,6 @@
             "generic_hips_175",
             "generic_pc_175",
             "ultimaker_rapidrinse_175",
-            "ultimaker_sr30_175",
             "generic_tpu_175",
             "goofoo_",
             "ideagen3D_",
@@ -99,7 +98,7 @@
         "acceleration_print":
         {
             "enabled": false,
-            "value": 300
+            "value": 800
         },
         "acceleration_print_layer_0":
         {
@@ -234,7 +233,7 @@
         "jerk_print":
         {
             "enabled": false,
-            "value": 12.5
+            "value": 6.25
         },
         "jerk_print_layer_0":
         {
@@ -279,7 +278,7 @@
         "jerk_travel":
         {
             "enabled": false,
-            "value": 12.5
+            "value": "jerk_print"
         },
         "jerk_travel_enabled":
         {
@@ -361,8 +360,10 @@
         "raft_interface_line_width": { "value": 0.7 },
         "raft_interface_speed": { "value": 90 },
         "raft_interface_thickness": { "value": 0.3 },
-        "raft_margin": { "value": 3 },
+        "raft_interface_wall_count": { "value": "raft_wall_count" },
+        "raft_margin": { "value": 1.2 },
         "raft_surface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable and extruderValue(support_extruder_nr,'material_is_support_material') else raft_base_extruder_nr" },
+        "raft_surface_wall_count": { "value": "raft_wall_count" },
         "retraction_amount": { "value": 0.75 },
         "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "value": "speed_travel / 10" },
@@ -371,19 +372,17 @@
         "retraction_hop": { "value": 0.4 },
         "retraction_hop_enabled": { "value": true },
         "retraction_hop_only_when_collides": { "value": false },
-        "retraction_min_travel": { "value": "line_width * 4" },
         "retraction_prime_speed": { "value": "retraction_speed" },
         "retraction_speed": { "value": 5 },
         "roofing_layer_count": { "value": 2 },
-        "roofing_material_flow": { "value": "material_flow" },
         "roofing_monotonic": { "value": true },
         "skin_material_flow": { "value": "0.95*material_flow" },
-        "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
         "skirt_brim_material_flow": { "value": "material_flow" },
         "skirt_brim_minimal_length": { "value": 500 },
+        "small_skin_width": { "value": 4 },
         "speed_equalize_flow_width_factor": { "value": 0 },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": 50 },
@@ -424,7 +423,7 @@
         "travel_avoid_other_parts": { "value": false },
         "wall_0_inset": { "value": 0 },
         "wall_0_material_flow": { "value": "material_flow" },
-        "wall_0_wipe_dist": { "value": 0 },
+        "wall_0_wipe_dist": { "value": 0.8 },
         "wall_material_flow": { "value": "material_flow" },
         "wall_x_material_flow": { "value": "material_flow" },
         "xy_offset": { "value": 0 },
