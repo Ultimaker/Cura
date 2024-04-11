@@ -39,6 +39,11 @@ jobs:
           echo "pr_id=$(cat printer-linter-result/pr-id.txt)" >> $GITHUB_ENV
           echo "pr_head_repo=$(cat printer-linter-result/pr-head-repo.txt)" >> $GITHUB_ENV
           echo "pr_head_ref=$(cat printer-linter-result/pr-head-ref.txt)" >> $GITHUB_ENV
+          if [[ -f "printer-linter-result/comment.md" ]]; then
+             echo "commentFileExists=true" >> $GITHUB_ENV
+          else
+             echo "commentFileExists=false" >> $GITHUB_ENV
+          fi
 
       - uses: actions/checkout@v3
         with:
@@ -72,16 +77,11 @@ jobs:
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
 
-      - name: Get Pull Request Number
-        id: pr
-        run: echo "::set-output name=pull_request_number::$(gh pr view --json number -q .number || echo "")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run PR Comments
+        if: env.commentFileExists == 'true'
         uses: peter-evans/create-or-update-comment@v4
         with:
-          issue-number: ${{ steps.pr.outputs.pull_request_number }}
+          issue-number: ${{ env.pr_id }}
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
