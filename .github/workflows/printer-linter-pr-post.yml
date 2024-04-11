@@ -39,6 +39,11 @@ jobs:
           echo "pr_id=$(cat printer-linter-result/pr-id.txt)" >> $GITHUB_ENV
           echo "pr_head_repo=$(cat printer-linter-result/pr-head-repo.txt)" >> $GITHUB_ENV
           echo "pr_head_ref=$(cat printer-linter-result/pr-head-ref.txt)" >> $GITHUB_ENV
+          if [[ -f "printer-linter-result/comment.md" ]]; then
+             echo "commentFileExists=true" >> $GITHUB_ENV
+          else
+             echo "commentFileExists=false" >> $GITHUB_ENV
+          fi
 
       - uses: actions/checkout@v3
         with:
@@ -71,6 +76,13 @@ jobs:
         run: |
           mkdir printer-linter-result
           unzip printer-linter-result.zip -d printer-linter-result
+
+      - name: Run PR Comments
+        if: env.commentFileExists == 'true'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ env.pr_id }}
+          body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
         uses: platisd/clang-tidy-pr-comments@bc0bb7da034a8317d54e7fe1e819159002f4cc40
