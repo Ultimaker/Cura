@@ -93,7 +93,7 @@ Item
                 Cura.TextField
                 {
                     id: filter
-                    width:parent.width
+                    width: parent.width
                     implicitHeight: parent.height
                     background: Rectangle {
                         id: background
