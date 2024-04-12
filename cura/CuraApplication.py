@@ -2281,8 +2281,8 @@ class CuraApplication(QtApplication):
         return 0
 
     @pyqtSlot()
-    def deleteAll(self, only_selectable: bool = True) -> None:
-        super().deleteAll(only_selectable = only_selectable)
+    def deleteAll(self, only_selectable: bool = True, clear_all:bool = False) -> None:
+        super().deleteAll(only_selectable = only_selectable, clear_all = clear_all)
 
         # Also remove nodes with LayerData
         self._removeNodesWithLayerData(only_selectable = only_selectable)
