@@ -1,0 +1,52 @@
+name: Linux Installer
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_conan_version:
+        description: 'Cura Conan Version'
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        description: 'Conan args: eq.: --require-override'
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        required: true
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        required: true
+        type: boolean
+      architecture:
+        description: 'Architecture'
+        required: true
+        default: 'X64'
+        type: choice
+        options:
+          - X64
+      operating_system:
+        description: 'OS'
+        required: true
+        default: 'ubuntu-22.04'
+        type: choice
+        options:
+          - ubuntu-22.04
+
+jobs:
+  linux-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
+    with:
+      cura_conan_version: ${{ inputs.cura_conan_version }}
+      conan_args: ${{ inputs.conan_args }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging }}
+      architecture: ${{ inputs.architecture }}
+      operating_system: ${{ inputs.operating_system }}
+    secrets: inherit

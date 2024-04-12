@@ -213,7 +213,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return
 
         # Export the scene to the correct file type.
-        job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
+        job = ExportFileJob(
+            file_handler=file_handler,
+            nodes=nodes,
+            firmware_version=self.firmwareVersion,
+            print_type=self.printerType,
+        )
         job.finished.connect(self._onPrintJobCreated)
         job.start()
 
@@ -319,14 +324,29 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeError.emit()
 
     @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
+    def isMethod(self) -> bool:
+        """Whether the printer that this output device represents is a Method series printer."""
+
+        if not self._printers:
+            return False
+
+        [printer, *_] = self._printers
+        return printer.type in ("MakerBot Method X", "MakerBot Method XL")
+
+    @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:
         """Whether the printer that this output device represents supports print job actions via the cloud."""
 
         if not self._printers:
             return False
+
+        if self.isMethod:
+            return True
+
         version_number = self.printers[0].firmwareVersion.split(".")
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
+
 
     @pyqtProperty(bool, constant = True)
     def supportsPrintJobQueue(self) -> bool:

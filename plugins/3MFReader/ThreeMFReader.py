@@ -16,6 +16,7 @@ from UM.Mesh.MeshReader import MeshReader
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -41,7 +42,7 @@ class ThreeMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                name="application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 comment="3MF",
                 suffixes=["3mf"]
             )
@@ -56,7 +57,8 @@ class ThreeMFReader(MeshReader):
     def emptyFileHintSet(self) -> bool:
         return self._empty_project
 
-    def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
+    @staticmethod
+    def _createMatrixFromTransformationString(transformation: str) -> Matrix:
         if transformation == "":
             return Matrix()
 
@@ -90,7 +92,8 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+    @staticmethod
+    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
         :returns: Scene node.
@@ -119,7 +122,7 @@ class ThreeMFReader(MeshReader):
             pass
         um_node.setName(node_name)
         um_node.setId(node_id)
-        transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
+        transformation = ThreeMFReader._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
 
@@ -138,7 +141,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = self._convertSavitarNodeToUMNode(child)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child)
             if child_node:
                 um_node.addChild(child_node)
 
@@ -175,6 +178,12 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
+                if key == "print_order":
+                    um_node.printOrder = int(setting_value)
+                    continue
+                if key =="drop_to_buildplate":
+                    um_node.setSetting(SceneNodeSettings.AutoDropDown, eval(setting_value))
+                    continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
                 else:
@@ -184,6 +193,13 @@ class ThreeMFReader(MeshReader):
             if len(um_node.getAllChildren()) == 1:
                 # We don't want groups of one, so move the node up one "level"
                 child_node = um_node.getChildren()[0]
+                # Move all the meshes of children so that toolhandles are shown in the correct place.
+                if child_node.getMeshData():
+                    extents = child_node.getMeshData().getExtents()
+                    move_matrix = Matrix()
+                    move_matrix.translate(-extents.center)
+                    child_node.setMeshData(child_node.getMeshData().getTransformed(move_matrix))
+                    child_node.translate(extents.center)
                 parent_transformation = um_node.getLocalTransformation()
                 child_transformation = child_node.getLocalTransformation()
                 child_node.setTransformation(parent_transformation.multiply(child_transformation))
@@ -214,7 +230,7 @@ class ThreeMFReader(MeshReader):
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 
             for node in scene_3mf.getSceneNodes():
-                um_node = self._convertSavitarNodeToUMNode(node, file_name)
+                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
 
@@ -300,8 +316,23 @@ class ThreeMFReader(MeshReader):
         if unit is None:
             unit = "millimeter"
         elif unit not in conversion_to_mm:
-            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit = unit))
+            Logger.log("w", "Unrecognised unit {unit} used. Assuming mm instead.".format(unit=unit))
             unit = "millimeter"
 
         scale = conversion_to_mm[unit]
         return Vector(scale, scale, scale)
+
+    @staticmethod
+    def stringToSceneNodes(scene_string: str) -> List[SceneNode]:
+        parser = Savitar.ThreeMFParser()
+        scene = parser.parse(scene_string)
+
+        # Convert the scene to scene nodes
+        nodes = []
+        for savitar_node in scene.getSceneNodes():
+            scene_node = ThreeMFReader._convertSavitarNodeToUMNode(savitar_node, "file_name")
+            if scene_node is None:
+                continue
+            nodes.append(scene_node)
+
+        return nodes

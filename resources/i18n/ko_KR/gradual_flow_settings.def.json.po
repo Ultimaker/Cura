@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ko_KR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "점진적 흐름 활성화됨"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "점진적 흐름 변경을 활성화합니다. 활성화하면 흐름이 목표 흐름까지 점진적으로 증가/감소합니다. 이는 압출기 모터가 시작/정지될 때 흐름이 즉시 변경되지 않는 보우덴 튜브가 있는 프린터에 유용합니다."
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "점진적 흐름 최대 가속"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "점진적 흐름 변경에 대한 최대 가속"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "초기 레이어 최대 흐름 가속"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "첫 번째 레이어의 점진적 흐름 변경에 대한 최소 속도"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "점진적 흐름 이산화 단계 크기"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "흐름 지속 시간 재설정"
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "이 값보다 긴 이동에 대해서는 재료 흐름이 경로 목표 흐름으로 재설정됩니다"
