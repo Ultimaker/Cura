@@ -69,15 +69,15 @@ class UCPDialog(QObject):
         device.writeSuccess.connect(lambda: self._onSuccess())
         device.writeFinished.connect(lambda: self._onFinished())
 
-        file_name = CuraApplication.getInstance().getPrintInformation().baseName
+        file_name = f"UCP_{CuraApplication.getInstance().getPrintInformation().baseName}"
 
         try:
             device.requestWrite(
                 nodes,
                 file_name,
-                ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                ["application/x-ucp"],
                 workspace_handler,
-                preferred_mimetype_list="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"
+                preferred_mimetype_list="application/x-ucp"
             )
         except OutputDeviceError.UserCanceledError:
             self._onRejected()

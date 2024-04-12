@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: workspaceDialog
-    title: manager.isUcp? catalog.i18nc("@title:window", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
+    title: manager.isUcp? catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Open Universal Cura Project (UCP)"): catalog.i18nc("@title:window", "Open Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -24,16 +24,34 @@ UM.Dialog
     {
         height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
-
-        UM.Label
+        ColumnLayout
         {
-            id: titleLabel
-            text: manager.isUcp? catalog.i18nc("@action:title", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
-            font: UM.Theme.getFont("large")
+            id: headerColumn
+
             anchors.top: parent.top
             anchors.left: parent.left
+            anchors.right: parent.right
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: UM.Theme.getSize("default_margin").height
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: anchors.leftMargin
+            RowLayout
+            {
+                UM.Label
+                {
+                    id: titleLabel
+                    text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
+                    font: UM.Theme.getFont("large")
+                }
+                Cura.TertiaryButton
+                {
+                    id: learnMoreButton
+                    visible: manager.isUcp
+                    text: catalog.i18nc("@button", "Learn more")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+                }
+            }
         }
     }
 
@@ -158,46 +176,6 @@ UM.Dialog
 
                 WorkspaceSection
                 {
-                    id: profileSection
-                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Profile settings"):catalog.i18nc("@action:label", "Profile settings")
-                    iconSource: UM.Theme.getIcon("Sliders")
-                    content: Column
-                    {
-                        id: profileSettingsValuesTable
-                        spacing: UM.Theme.getSize("default_margin").height
-                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
-
-                        WorkspaceRow
-                        {
-                            leftLabelText: catalog.i18nc("@action:label", "Name")
-                            rightLabelText: manager.qualityName
-                            visible: manager.isCompatibleMachine
-                        }
-
-                        WorkspaceRow
-                        {
-                            leftLabelText: catalog.i18nc("@action:label", "Intent")
-                            rightLabelText: manager.intentName
-                            visible: manager.isCompatibleMachine
-                        }
-
-                        WorkspaceRow
-                        {
-                            leftLabelText: catalog.i18nc("@action:label", "Not in profile")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
-                            visible: manager.numUserSettings != 0 && manager.isCompatibleMachine
-                        }
-
-                        WorkspaceRow
-                        {
-                            leftLabelText: catalog.i18nc("@action:label", "Derivative from")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
-                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.isCompatibleMachine
-                        }
-                    }
-                }
-                WorkspaceSection
-                {
                     id: ucpProfileSection
                     visible: manager.isUcp
                     title: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
@@ -211,8 +189,9 @@ UM.Dialog
 
                         WorkspaceRow
                         {
+                            id: numberOfOverrides
                             leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModelRowCount).arg(manager.exportedSettingModelRowCount)
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
@@ -235,15 +214,18 @@ UM.Dialog
                             {
                                 id: tableModel
                                 headers: ["category", "label", "value"]
-                                rows: manager.exportedSettingModel.items
+                                rows: manager.exportedSettingModelItems
                             }
-                        }
 
-                        property var modelRows: manager.exportedSettingModel.items
-                        onModelRowsChanged:
-                        {
-                            tableModel.clear()
-                            tableModel.rows = modelRows
+                            Connections
+                            {
+                                target: manager
+                                function onExportedSettingModelChanged()
+                                {
+                                    tableModel.clear()
+                                    tableModel.rows = manager.exportedSettingModelItems
+                                }
+                            }
                         }
                     }
 
@@ -275,6 +257,47 @@ UM.Dialog
                         onCurrentIndexChanged:
                         {
                             manager.setResolveStrategy("quality_changes", resolveStrategiesModel.get(currentIndex).key)
+                        }
+                    }
+                }
+
+                WorkspaceSection
+                {
+                    id: profileSection
+                    title: manager.isUcp? catalog.i18nc("@action:label", "Suggested Profile settings"):catalog.i18nc("@action:label", "Profile settings")
+                    iconSource: UM.Theme.getIcon("Sliders")
+                    content: Column
+                    {
+                        id: profileSettingsValuesTable
+                        spacing: UM.Theme.getSize("default_margin").height
+                        leftPadding: UM.Theme.getSize("medium_button_icon").width + UM.Theme.getSize("default_margin").width
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Name")
+                            rightLabelText: manager.qualityName
+                            visible: manager.isCompatibleMachine
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Intent")
+                            rightLabelText: manager.intentName
+                            visible: manager.isCompatibleMachine
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Not in profile")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.numUserSettings).arg(manager.numUserSettings)
+                            visible: manager.numUserSettings != 0 && !manager.isUcp
+                        }
+
+                        WorkspaceRow
+                        {
+                            leftLabelText: catalog.i18nc("@action:label", "Derivative from")
+                            rightLabelText: catalog.i18ncp("@action:label", "%1, %2 override", "%1, %2 overrides", manager.numSettingsOverridenByQualityChanges).arg(manager.qualityType).arg(manager.numSettingsOverridenByQualityChanges)
+                            visible: manager.numSettingsOverridenByQualityChanges != 0 && manager.isCompatibleMachine
                         }
                     }
                 }

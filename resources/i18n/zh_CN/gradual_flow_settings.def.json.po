@@ -1,0 +1,53 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "启用渐变流量"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "启用渐变流量变化。启用之后,流量将会逐渐增加/减少到目标流量。这对于带有波登管的打印机非常有用,因为当挤出机电机启动/停止时,流量并不会立即改变。"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "渐变流量最大加速度"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "渐变流量变化的最大加速度"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "初始层最大流量加速"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "第一层渐变流量变化的最小速度"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "渐变流量离散化步长"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "渐变流量变化中每个步骤的持续时间"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "重置流量持续时间"
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "对于任何长于此值的移动,材料流量将被重置为路径的目标流量"

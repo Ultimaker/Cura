@@ -12,7 +12,7 @@ import Cura 1.1 as Cura
 UM.Dialog
 {
     id: exportDialog
-    title: catalog.i18nc("@title:window", "Export Universal Cura Project")
+    title: catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Export Universal Cura Project")
 
     margin: UM.Theme.getSize("default_margin").width
     minimumWidth: UM.Theme.getSize("modal_window_minimum").width
@@ -36,17 +36,27 @@ UM.Dialog
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.rightMargin: anchors.leftMargin
 
-            UM.Label
+            RowLayout
             {
-                id: titleLabel
-                text: catalog.i18nc("@action:title", "Summary - Universal Cura Project")
-                font: UM.Theme.getFont("large")
+                UM.Label
+                {
+                    id: titleLabel
+                    text: catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Universal Cura Project")
+                    font: UM.Theme.getFont("large")
+                }
+                Cura.TertiaryButton
+                {
+                    id: learnMoreButton
+                    text: catalog.i18nc("@button", "Learn more")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+                }
             }
-
             UM.Label
             {
                 id: descriptionLabel
-                text: catalog.i18nc("@action:description", "When exporting a Universal Cura Project, all the models present on the build plate will be included with their current position, orientation and scale. You can also select which per-extruder or per-model settings should be included to ensure a proper printing of the batch, even on different printers.")
+                text: catalog.i18nc("@action:description Don't translate 'Universal Cura Project'", "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing.")
                 font: UM.Theme.getFont("default")
                 wrapMode: Text.Wrap
                 Layout.maximumWidth: headerColumn.width
