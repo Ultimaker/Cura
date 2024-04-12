@@ -1,0 +1,55 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Uranium json setting files\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"PO-Revision-Date: 2024-04-01 22:35+0200\n"
+"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
+"Language-Team: none\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Duração de cada passo na mudança gradual de fluxo"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Habilita mudanças graduais de fluxo. Quando habilitado, o fluxo é gradualmente aumentado ou diminuído ao fluxo-alvo. Isto é útil para impressoras com tubo bowden em que o fluxo não é imediatamente alterado quando o motor de extrusor para ou inicia."
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Para cada movimento de percurso menor que este valor, o fluxo de material é resetado para o fluxo-alvo dos caminhos"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Tamanho de passo de discretização gradual de fluxo"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Fluxo gradual habilitado"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Aceleração máximo de fluxo gradual"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Aceleração máxima de fluxo da camada inicial"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Aceleração máxima para mudanças de fluxo gradual"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Velocidade mínima para mudanças de fluxo gradual da primeira camada"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Duração de reset de fluxo"

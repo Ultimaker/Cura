@@ -8,8 +8,8 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "exclude_materials": [
-            "generic_hips",
-            "structur3d_dap100silicone"
+            "structur3d_",
+            "generic_hips"
         ]
     },
     "overrides":
@@ -96,12 +96,9 @@
         "raft_interface_thickness": { "value": "(raft_base_thickness + raft_surface_thickness) / 2" },
         "raft_speed": { "value": 15 },
         "raft_surface_fan_speed": { "value": "cool_fan_speed_min" },
+        "raft_surface_monotonic": { "value": true },
         "raft_surface_speed": { "value": "speed_topbottom" },
-        "relative_extrusion":
-        {
-            "enabled": false,
-            "value": false
-        },
+        "relative_extrusion": { "enabled": false },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_combing_max_distance": { "value": 15 },
         "retraction_count_max": { "value": 25 },

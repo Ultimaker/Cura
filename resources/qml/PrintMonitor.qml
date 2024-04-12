@@ -129,11 +129,9 @@ ScrollView
         {
             id: bedTemperature
             containerStack: Cura.MachineManager.activeMachine
-            key: "material_bed_temperature"
+            key: "material_bed_temperature_layer_0"
             watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
             storeIndex: 0
-
-            property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
         }
 
         UM.SettingPropertyProvider

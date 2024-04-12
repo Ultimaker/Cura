@@ -148,7 +148,7 @@ class VariantNode(ContainerNode):
 
         if "empty_material" in self.materials:
             del self.materials["empty_material"]
-        self.materials[base_file] = MaterialNode(container.getId(), variant = self)
+        self.materials[base_file] = MaterialNode(container.getId(), variant = self, container = container)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
 

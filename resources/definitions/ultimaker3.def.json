@@ -13,16 +13,15 @@
             9066
         ],
         "exclude_materials": [
-            "generic_hips",
             "generic_cffcpe",
             "generic_cffpa",
+            "generic_flexible",
             "generic_gffcpe",
             "generic_gffpa",
+            "generic_hips",
             "generic_petcf",
-            "ultimaker_petcf_black",
-            "ultimaker_petcf_blue",
-            "ultimaker_petcf_gray",
-            "structur3d_dap100silicone"
+            "structur3d_",
+            "ultimaker_petcf"
         ],
         "firmware_update_info":
         {

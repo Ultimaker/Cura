@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -56,6 +56,14 @@ msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
 msgstr ""
 
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr ""
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr ""
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr ""
@@ -86,6 +94,14 @@ msgstr ""
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
+msgstr ""
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr ""
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
 msgstr ""
 
 msgctxt "machine_extruder_start_pos_abs label"
