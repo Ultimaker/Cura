@@ -98,10 +98,10 @@ Item
                     background: Rectangle {
                         id: background
                         color: UM.Theme.getColor("main_background")
-                        radius: 2
-                        border.color:  UM.Theme.getColor("primary_button")
+                        radius: UM.Theme.getSize("default_radius").width
+                        border.color: UM.Theme.getColor("primary_button")
                     }
-                    height: UM.Theme.getSize("small_button_icon").height*2
+                    height: UM.Theme.getSize("small_button_icon").height * 2
                     placeholderText: catalog.i18nc("@label:textbox", "Search Printer")
                     placeholderTextColor: UM.Theme.getColor("primary_button")
                     font: UM.Theme.getFont("medium_italic")
