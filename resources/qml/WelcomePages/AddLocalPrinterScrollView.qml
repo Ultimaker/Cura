@@ -191,7 +191,7 @@ Item
             ListView
             {
                 id: machineList
-                width:root.width
+                width: root.width
                 height: root.height - filter.height
                 clip: true
                 ScrollBar.vertical: UM.ScrollBar {}
