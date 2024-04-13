@@ -80,6 +80,116 @@ class GridArrange(Arranger):
 
         self._allowed_grid_idx = self._build_plate_grid_ids.difference(self._fixed_nodes_grid_ids)
 
+        self._drawDebugSvg()
+
+    def _drawDebugSvg(self):
+        with open("Builvolume_test.svg", "w") as f:
+            build_volume_bounding_box = self._build_volume.getBoundingBox()
+
+            f.write(
+                f"""<svg xmlns="http://www.w3.org/2000/svg"  viewBox="{build_volume_bounding_box.left - 100} {build_volume_bounding_box.back - 100} {build_volume_bounding_box.width + 200} {build_volume_bounding_box.depth + 200}">""")
+
+            if self._build_volume.getShape() == "elliptic":
+                f.write(
+                    f"""
+                    <ellipse
+                        cx="{(build_volume_bounding_box.left + build_volume_bounding_box.right) * 0.5}"
+                        cy="{(build_volume_bounding_box.back + build_volume_bounding_box.front) * 0.5}"
+                        rx="{build_volume_bounding_box.width * 0.5}" 
+                        ry="{build_volume_bounding_box.depth * 0.5}" 
+                        fill='lightgrey'
+                    />
+                    """)
+            else:
+                f.write(
+                    f"""
+                    <rect
+                        x="{build_volume_bounding_box.left}"
+                        y="{build_volume_bounding_box.back}"
+                        width="{build_volume_bounding_box.width}" 
+                        height="{build_volume_bounding_box.depth}" 
+                        fill='lightgrey'
+                    />
+                    """)
+
+            for grid_x in range(-2, 20):
+                for grid_y in range(-2, 20):
+                    if (grid_x, grid_y) in self._allowed_grid_idx:
+                        fill_color = "rgba(0, 255, 0, 0.5)"
+                    elif (grid_x, grid_y) in self._build_plate_grid_ids:
+                        fill_color = "rgba(255, 165, 0, 0.5)"
+                    else:
+                        fill_color = "rgba(255, 0, 0, 0.5)"
+
+                    f.write(self._polygonToSvgPath(self._gridIdToPolygon(grid_x, grid_y), fill_color=fill_color,
+                                                   stroke="black", stroke_width=0.1))
+                    coord_grid_x, coord_grid_y = self._gridSpaceToCoordSpace(grid_x, grid_y)
+                    f.write(f"""
+                        <text 
+                            font-size="4"
+                            text-anchor="middle"
+                            alignment-baseline="middle"
+                            x="{coord_grid_x + self._grid_width * 0.5}" 
+                            y="{coord_grid_y + self._grid_height * 0.5}"
+                        >
+                            {grid_x},{grid_y}
+                        </text>
+                        """)
+            for node in self._fixed_nodes:
+                bounding_box = node.getBoundingBox()
+                f.write(f"""
+                    <rect
+                        x="{bounding_box.left}" 
+                        y="{bounding_box.back}"
+                        width="{bounding_box.width}"
+                        height="{bounding_box.depth}" 
+                        fill="red"
+                    />
+                """)
+
+            for polygon in self._build_volume.getDisallowedAreas():
+                # Extract individual points and convert them to tuples
+                f.write(self._polygonToSvgPath(polygon, stroke="black", fill_color="rgba(0,0,0,0.5)"))
+
+            for polygon in self._fixed_nodes:
+                adhesion_polygon = polygon.callDecoration("getAdhesionArea")
+                if adhesion_polygon is not None:
+                    f.write(self._polygonToSvgPath(adhesion_polygon, stroke="black", fill_color="rgba(0,255,0,0.5)"))
+
+                convex_hull = polygon.callDecoration("getConvexHull")
+                if convex_hull is not None:
+                    f.write(self._polygonToSvgPath(convex_hull, stroke="black", fill_color="rgba(0,0,255,0.5)"))
+
+            # coord_build_plate_center_x = self._build_volume.getBoundingBox().width * 0.5 + self._build_volume.getBoundingBox().left
+            # coord_build_plate_center_y = self._build_volume.getBoundingBox().depth * 0.5 + self._build_volume.getBoundingBox().back
+            # f.write(f"""
+            #     <circle
+            #         cx="{coord_build_plate_center_x}"
+            #         cy="{coord_build_plate_center_y}"
+            #         r="2"
+            #         stroke="blue"
+            #         fill="none"
+            #     />""")
+
+            f.write(f"</svg>")
+
+    @staticmethod
+    def _polygonToSvgPath(polygon: Polygon, stroke: str = "none", fill_color: str = "none",
+                          stroke_width: float = 1.0) -> str:
+        return f"""
+            <polygon 
+                points='{" ".join([f"{x},{y}" for x, y in polygon.getPoints()])}'
+                fill='{fill_color}' 
+                stroke='{stroke}' 
+                stroke-width='{stroke_width}' 
+            />
+        """
+
+    def _gridIdToPolygon(self, grid_x: int, grid_y: int) -> Polygon:
+        min_x, min_y = self._gridSpaceToCoordSpace(grid_x, grid_y)
+        max_x, max_y = self._gridSpaceToCoordSpace(grid_x + 1, grid_y + 1)
+        return Polygon([(min_x, min_y), (max_x, min_y), (max_x, max_y), (min_x, max_y)])
+
     def createGroupOperationForArrange(self, add_new_nodes_in_scene: bool = False) -> Tuple[GroupedOperation, int]:
         # Find the sequence in which items are placed
         coord_build_plate_center_x = self._build_volume_bounding_box.width * 0.5 + self._build_volume_bounding_box.left
