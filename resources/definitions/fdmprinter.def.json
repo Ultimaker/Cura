@@ -949,7 +949,7 @@
                                     "minimum_value_warning": "0.4 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "type": "float",
-                                    "enabled": "(support_enable or support_meshes_present) and support_roof_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
                                     "limit_to_extruder": "support_roof_extruder_nr",
                                     "value": "extruderValue(support_roof_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
@@ -965,7 +965,7 @@
                                     "minimum_value_warning": "0.4 * machine_nozzle_size",
                                     "maximum_value_warning": "2 * machine_nozzle_size",
                                     "type": "float",
-                                    "enabled": "(support_enable or support_meshes_present) and support_bottom_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
                                     "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_line_width')",
                                     "settable_per_mesh": false,
@@ -3012,7 +3012,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
-                                    "enabled": "(support_enable or support_meshes_present) and support_roof_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
                                     "limit_to_extruder": "support_roof_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -3028,7 +3028,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
-                                    "enabled": "(support_enable or support_meshes_present) and support_bottom_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
@@ -3331,7 +3331,7 @@
                                             "minimum_value": "0.1",
                                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                             "maximum_value_warning": "150",
-                                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
                                             "limit_to_extruder": "support_roof_extruder_nr",
                                             "value": "extruderValue(support_roof_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
@@ -3347,7 +3347,7 @@
                                             "minimum_value": "0.1",
                                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                                             "maximum_value_warning": "150",
-                                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
                                             "value": "extruderValue(support_bottom_extruder_nr, 'speed_support_interface')",
                                             "settable_per_mesh": false,
@@ -3705,7 +3705,7 @@
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "acceleration_enabled and support_roof_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable and acceleration_enabled",
                                             "limit_to_extruder": "support_roof_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -3721,7 +3721,7 @@
                                             "minimum_value": "0.1",
                                             "minimum_value_warning": "100",
                                             "maximum_value_warning": "10000",
-                                            "enabled": "acceleration_enabled and support_bottom_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable and acceleration_enabled",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -4026,7 +4026,7 @@
                                             "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0",
                                             "maximum_value_warning": "50",
-                                            "enabled": "resolveOrValue('jerk_enabled') and support_roof_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable and resolveOrValue('jerk_enabled')",
                                             "limit_to_extruder": "support_roof_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -4041,7 +4041,7 @@
                                             "value": "extruderValue(support_roof_extruder_nr, 'jerk_support_interface')",
                                             "minimum_value": "0",
                                             "maximum_value_warning": "50",
-                                            "enabled": "resolveOrValue('jerk_enabled') and support_bottom_enable and (support_enable or support_meshes_present)",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable and resolveOrValue('jerk_enabled')",
                                             "limit_to_extruder": "support_bottom_extruder_nr",
                                             "settable_per_mesh": false,
                                             "settable_per_extruder": true
@@ -4454,102 +4454,108 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_speed":
-                {
-                    "label": "Fan Speed",
-                    "description": "The speed at which the print cooling fans spin.",
-                    "unit": "%",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 100,
-                    "value": "100.0 if cool_fan_enabled else 0.0",
-                    "enabled": "cool_fan_enabled",
-                    "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "cool_fan_speed_min":
+                        "cool_fan_speed":
                         {
-                            "label": "Regular Fan Speed",
-                            "description": "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed.",
+                            "label": "Fan Speed",
+                            "description": "The speed at which the print cooling fans spin.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
                             "maximum_value": "100",
-                            "value": "cool_fan_speed",
                             "default_value": 100,
+                            "value": "100.0 if cool_fan_enabled else 0.0",
+                            "enabled": "cool_fan_enabled",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "cool_fan_speed_min":
+                                {
+                                    "label": "Regular Fan Speed",
+                                    "description": "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value": "100",
+                                    "value": "cool_fan_speed",
+                                    "default_value": 100,
+                                    "enabled": "cool_fan_enabled",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "cool_fan_speed_max":
+                                {
+                                    "label": "Maximum Fan Speed",
+                                    "description": "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value": "100",
+                                    "default_value": 100,
+                                    "enabled": "cool_fan_enabled",
+                                    "value": "cool_fan_speed",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        },
+                        "cool_min_layer_time_fan_speed_max":
+                        {
+                            "label": "Regular/Maximum Fan Speed Threshold",
+                            "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
+                            "unit": "s",
+                            "type": "float",
+                            "default_value": 10,
+                            "maximum_value_warning": "600",
                             "enabled": "cool_fan_enabled",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "cool_fan_speed_max":
+                        "cool_fan_speed_0":
                         {
-                            "label": "Maximum Fan Speed",
-                            "description": "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit.",
+                            "label": "Initial Fan Speed",
+                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
                             "maximum_value": "100",
-                            "default_value": 100,
+                            "default_value": 0,
                             "enabled": "cool_fan_enabled",
-                            "value": "cool_fan_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
-                        }
-                    }
-                },
-                "cool_min_layer_time_fan_speed_max":
-                {
-                    "label": "Regular/Maximum Fan Speed Threshold",
-                    "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
-                    "unit": "s",
-                    "type": "float",
-                    "default_value": 10,
-                    "maximum_value_warning": "600",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_speed_0":
-                {
-                    "label": "Initial Fan Speed",
-                    "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
-                    "unit": "%",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 0,
-                    "enabled": "cool_fan_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_full_at_height":
-                {
-                    "label": "Regular Fan Speed at Height",
-                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.5,
-                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10.0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "cool_fan_full_layer":
+                        },
+                        "cool_fan_full_at_height":
                         {
-                            "label": "Regular Fan Speed at Layer",
-                            "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
-                            "type": "int",
-                            "default_value": 2,
-                            "minimum_value": "1",
-                            "maximum_value_warning": "10 / resolveOrValue('layer_height')",
-                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "label": "Regular Fan Speed at Height",
+                            "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.5,
+                            "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10.0",
+                            "enabled": "cool_fan_enabled",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "cool_fan_full_layer":
+                                {
+                                    "label": "Regular Fan Speed at Layer",
+                                    "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
+                                    "type": "int",
+                                    "default_value": 2,
+                                    "minimum_value": "1",
+                                    "maximum_value_warning": "10 / resolveOrValue('layer_height')",
+                                    "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                                      "enabled": "cool_fan_enabled",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         }
                     }
                 },
@@ -4678,7 +4684,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1 and support_roof_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable and extruders_enabled_count > 1",
                                     "resolve": "max(extruderValues('support_roof_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -4690,7 +4696,7 @@
                                     "type": "extruder",
                                     "default_value": "0",
                                     "value": "support_interface_extruder_nr",
-                                    "enabled": "(support_enable or support_meshes_present) and extruders_enabled_count > 1 and support_bottom_enable",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable and extruders_enabled_count > 1",
                                     "resolve": "max(extruderValues('support_bottom_extruder_nr'))",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": false
@@ -4698,82 +4704,6 @@
                             }
                         }
                     }
-                },
-                "support_structure":
-                {
-                    "label": "Support Structure",
-                    "description": "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "normal": "Normal",
-                        "tree": "Tree"
-                    },
-                    "enabled": "support_enable",
-                    "default_value": "normal",
-                    "resolve": "extruderValue(support_extruder_nr, 'support_structure')",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "support_tree_angle":
-                {
-                    "label": "Maximum Branch Angle",
-                    "description": "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "20",
-                    "maximum_value": "89",
-                    "maximum_value_warning": "85",
-                    "default_value": 60,
-                    "value": "max(min(support_angle, 85), 20)",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_diameter":
-                {
-                    "label": "Branch Diameter",
-                    "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "support_tree_tip_diameter",
-                    "minimum_value_warning": "support_line_width * 2",
-                    "default_value": 5,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_max_diameter":
-                {
-                    "label": "Trunk Diameter",
-                    "description": "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "support_tree_branch_diameter",
-                    "minimum_value_warning": "support_line_width * 5",
-                    "default_value": 25,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_tree_branch_diameter_angle":
-                {
-                    "label": "Branch Diameter Angle",
-                    "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "89.9999",
-                    "maximum_value_warning": "15",
-                    "default_value": 7,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
                 },
                 "support_type":
                 {
@@ -4791,145 +4721,340 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "support_tree_angle_slow":
+                "support_structure":
                 {
-                    "label": "Preferred Branch Angle",
-                    "description": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "10",
-                    "maximum_value": "support_tree_angle",
-                    "maximum_value_warning": "support_tree_angle-1",
-                    "default_value": 50,
-                    "value": "support_tree_angle * 2 / 3",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_max_diameter_increase_by_merges_when_support_to_model":
-                {
-                    "label": "Diameter Increase To Model",
-                    "description": "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "default_value": 1,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_min_height_to_model":
-                {
-                    "label": "Minimum Height To Model",
-                    "description": "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "5",
-                    "default_value": 3,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_bp_diameter":
-                {
-                    "label": "Initial Layer Diameter",
-                    "description": "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "20",
-                    "default_value": 7.5,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_top_rate":
-                {
-                    "label": "Branch Density",
-                    "description": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top.",
-                    "unit": "%",
-                    "type": "float",
-                    "minimum_value": "0.1",
-                    "minimum_value_warning": "5",
-                    "maximum_value_warning": "35",
-                    "default_value": 15,
-                    "value": "30 if support_roof_enable else 10",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_tip_diameter":
-                {
-                    "label": "Tip Diameter",
-                    "description": "The diameter of the top of the tip of the branches of tree support.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "min_wall_line_width",
-                    "maximum_value": "support_tree_branch_diameter",
-                    "default_value": 0.4,
-                    "value": "support_line_width * 2",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_tree_limit_branch_reach":
-                {
-                    "label": "Limit Branch Reach",
-                    "description": "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "support_enable and support_structure=='tree'",
-                    "settable_per_mesh": true
-                },
-                "support_tree_branch_reach_limit":
-                {
-                    "label": "Optimal Branch Range",
-                    "description": "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) ",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
-                    "default_value": 30,
-                    "enabled": "support_enable and support_tree_limit_branch_reach and support_structure=='tree'",
-                    "settable_per_mesh": true
-                },
-                "support_tree_rest_preference":
-                {
-                    "label": "Rest Preference",
-                    "description": "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model.",
+                    "label": "Support Structure",
+                    "description": "Chooses between the techniques available to generate support. \"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible.",
                     "type": "enum",
                     "options":
                     {
-                        "buildplate": "On buildplate when possible",
-                        "graceful": "On model if required"
+                        "normal": "Normal",
+                        "tree": "Tree"
                     },
-                    "default_value": "buildplate",
-                    "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
-                    "resolve": "'buildplate' if 'buildplate' in extruderValues('support_tree_rest_preference') else 'graceful'",
-                    "enabled": "support_enable and support_structure=='tree' and support_type == 'everywhere'",
-                    "settable_per_mesh": true
-                },
-                "support_angle":
-                {
-                    "label": "Support Overhang Angle",
-                    "description": "The minimum angle of overhangs for which support is added. At a value of 0\u00b0 all overhangs are supported, 90\u00b0 will not provide any support.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "90",
-                    "maximum_value_warning": "80",
-                    "default_value": 50,
-                    "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
                     "enabled": "support_enable",
-                    "settable_per_mesh": true
+                    "default_value": "normal",
+                    "resolve": "extruderValue(support_extruder_nr, 'support_structure')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "children":
+                    {
+                        "support_tree_angle":
+                        {
+                            "label": "Maximum Branch Angle",
+                            "description": "The maximum angle of the branches while they grow around the model. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "20",
+                            "maximum_value": "89",
+                            "maximum_value_warning": "85",
+                            "default_value": 60,
+                            "value": "max(min(support_angle, 85), 20)",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_branch_diameter":
+                        {
+                            "label": "Branch Diameter",
+                            "description": "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "support_tree_tip_diameter",
+                            "minimum_value_warning": "support_line_width * 2",
+                            "default_value": 5,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_max_diameter":
+                        {
+                            "label": "Trunk Diameter",
+                            "description": "The diameter of the widest branches of tree support. A thicker trunk is more sturdy; a thinner trunk takes up less space on the build plate.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "support_tree_branch_diameter",
+                            "minimum_value_warning": "support_line_width * 5",
+                            "default_value": 25,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_branch_diameter_angle":
+                        {
+                            "label": "Branch Diameter Angle",
+                            "description": "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "89.9999",
+                            "maximum_value_warning": "15",
+                            "default_value": 7,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_angle_slow":
+                        {
+                            "label": "Preferred Branch Angle",
+                            "description": "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "10",
+                            "maximum_value": "support_tree_angle",
+                            "maximum_value_warning": "support_tree_angle-1",
+                            "default_value": 50,
+                            "value": "support_tree_angle * 2 / 3",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_max_diameter_increase_by_merges_when_support_to_model":
+                        {
+                            "label": "Diameter Increase To Model",
+                            "description": "The most the diameter of a branch that has to connect to the model may increase by merging with branches that could reach the buildplate. Increasing this reduces print time, but increases the area of support that rests on model",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "default_value": 1,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_min_height_to_model":
+                        {
+                            "label": "Minimum Height To Model",
+                            "description": "How tall a branch has to be if it is placed on the model. Prevents small blobs of support. This setting is ignored when a branch is supporting a support roof.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "5",
+                            "default_value": 3,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree' and resolveOrValue('support_type') == 'everywhere' ",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_bp_diameter":
+                        {
+                            "label": "Initial Layer Diameter",
+                            "description": "Diameter every branch tries to achieve when reaching the buildplate. Improves bed adhesion.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "20",
+                            "default_value": 7.5,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_top_rate":
+                        {
+                            "label": "Branch Density",
+                            "description": "Adjusts the density of the support structure used to generate the tips of the branches. A higher value results in better overhangs, but the supports are harder to remove. Use Support Roof for very high values or ensure support density is similarly high at the top.",
+                            "unit": "%",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "5",
+                            "maximum_value_warning": "35",
+                            "default_value": 15,
+                            "value": "30 if support_interface_enable and support_roof_enable else 10",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_tip_diameter":
+                        {
+                            "label": "Tip Diameter",
+                            "description": "The diameter of the top of the tip of the branches of tree support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "min_wall_line_width",
+                            "maximum_value": "support_tree_branch_diameter",
+                            "default_value": 0.4,
+                            "value": "support_line_width * 2",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "support_tree_limit_branch_reach":
+                        {
+                            "label": "Limit Branch Reach",
+                            "description": "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)",
+                            "type": "bool",
+                            "default_value": true,
+                            "enabled": "support_enable and support_structure=='tree'",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "support_tree_branch_reach_limit":
+                                {
+                                    "label": "Optimal Branch Range",
+                                    "description": "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) ",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "minimum_value": "1",
+                                    "minimum_value_warning": "10",
+                                    "default_value": 30,
+                                    "enabled": "support_enable and support_tree_limit_branch_reach and support_structure=='tree'",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        },
+                        "support_tree_rest_preference":
+                        {
+                            "label": "Rest Preference",
+                            "description": "The preferred placement of the support structures. If structures can't be placed at the preferred location, they will be place elsewhere, even if that means placing them on the model.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "buildplate": "On buildplate when possible",
+                                "graceful": "On model if required"
+                            },
+                            "default_value": "buildplate",
+                            "value": "'buildplate' if support_type == 'buildplate' else 'graceful'",
+                            "resolve": "'buildplate' if 'buildplate' in extruderValues('support_tree_rest_preference') else 'graceful'",
+                            "enabled": "support_enable and support_structure=='tree' and support_type == 'everywhere'",
+                            "settable_per_mesh": true
+                        },
+                        "support_bottom_stair_step_height":
+                        {
+                            "label": "Support Stair Step Height",
+                            "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.3,
+                            "value": "0 if support_interface_enable and support_bottom_enable else 0.3",
+                            "limit_to_extruder": "support_bottom_extruder_nr if support_interface_enable and support_bottom_enable else support_infill_extruder_nr",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "1.0",
+                            "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "support_bottom_stair_step_width":
+                                {
+                                    "label": "Support Stair Step Maximum Width",
+                                    "description": "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 5.0,
+                                    "limit_to_extruder": "support_interface_extruder_nr if support_interface_enable and support_bottom_enable else support_infill_extruder_nr",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "10.0",
+                                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
+                                    "settable_per_mesh": true
+                                },
+                                "support_bottom_stair_step_min_slope":
+                                {
+                                    "label": "Support Stair Step Minimum Slope Angle",
+                                    "description": "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model.",
+                                    "unit": "\u00b0",
+                                    "type": "float",
+                                    "default_value": 10.0,
+                                    "limit_to_extruder": "support_bottom_extruder_nr if support_interface_enable and support_bottom_enable else support_infill_extruder_nr",
+                                    "minimum_value": "0.01",
+                                    "maximum_value": "89.99",
+                                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        },
+                        "support_join_distance":
+                        {
+                            "label": "Support Join Distance",
+                            "description": "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 2.0,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "10",
+                            "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_offset":
+                        {
+                            "label": "Support Horizontal Expansion",
+                            "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.8,
+                            "value": "support_line_width + 0.4 if support_structure == 'normal' else 0.0",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "minimum_value_warning": "-1 * machine_nozzle_size",
+                            "maximum_value_warning": "10 * machine_nozzle_size",
+                            "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_use_towers":
+                        {
+                            "label": "Use Towers",
+                            "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
+                            "type": "bool",
+                            "default_value": true,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "support_enable and support_structure == 'normal'",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "support_tower_diameter":
+                                {
+                                    "label": "Tower Diameter",
+                                    "description": "The diameter of a special tower.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 3.0,
+                                    "limit_to_extruder": "support_infill_extruder_nr",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2 * machine_nozzle_size",
+                                    "maximum_value_warning": "20",
+                                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
+                                    "settable_per_mesh": true
+                                },
+                                "support_tower_maximum_supported_diameter":
+                                {
+                                    "label": "Maximum Tower-Supported Diameter",
+                                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 3.0,
+                                    "limit_to_extruder": "support_infill_extruder_nr",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2 * machine_nozzle_size",
+                                    "maximum_value_warning": "20",
+                                    "maximum_value": "support_tower_diameter",
+                                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
+                                    "settable_per_mesh": true
+                                },
+                                "support_tower_roof_angle":
+                                {
+                                    "label": "Tower Roof Angle",
+                                    "description": "The angle of a rooftop of a tower. A higher value results in pointed tower roofs, a lower value results in flattened tower roofs.",
+                                    "unit": "\u00b0",
+                                    "type": "int",
+                                    "minimum_value": "0",
+                                    "maximum_value": "90",
+                                    "default_value": 65,
+                                    "limit_to_extruder": "support_infill_extruder_nr",
+                                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        }
+                    }
                 },
                 "support_pattern":
                 {
@@ -4951,6 +5076,20 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "support_angle":
+                {
+                    "label": "Support Overhang Angle",
+                    "description": "The minimum angle of overhangs for which support is added. At a value of 0\u00b0 all overhangs are supported, 90\u00b0 will not provide any support.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "80",
+                    "default_value": 50,
+                    "limit_to_extruder": "support_roof_extruder_nr if support_interface_enable and support_roof_enable else support_infill_extruder_nr",
+                    "enabled": "support_enable",
+                    "settable_per_mesh": true
                 },
                 "support_wall_count":
                 {
@@ -5087,19 +5226,19 @@
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        },
+                        "support_infill_angles":
+                        {
+                            "label": "Support Infill Line Directions",
+                            "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees.",
+                            "type": "[int]",
+                            "default_value": "[ ]",
+                            "enabled": "(support_enable or support_meshes_present) and support_pattern != 'concentric' and support_infill_rate > 0",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
-                },
-                "support_infill_angles":
-                {
-                    "label": "Support Infill Line Directions",
-                    "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees.",
-                    "type": "[int]",
-                    "default_value": "[ ]",
-                    "enabled": "(support_enable or support_meshes_present) and support_pattern != 'concentric' and support_infill_rate > 0",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 },
                 "support_brim_enable":
                 {
@@ -5110,37 +5249,40 @@
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_brim_width":
-                {
-                    "label": "Support Brim Width",
-                    "description": "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 1.2,
-                    "minimum_value": "0.0",
-                    "maximum_value_warning": "50.0",
-                    "value": "(skirt_brim_line_width * initial_layer_line_width_factor / 100.0) * 3",
-                    "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
-                    "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "support_infill_extruder_nr",
                     "children":
                     {
-                        "support_brim_line_count":
+                        "support_brim_width":
                         {
-                            "label": "Support Brim Line Count",
-                            "description": "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material.",
-                            "type": "int",
-                            "default_value": 3,
-                            "minimum_value": "0",
-                            "maximum_value_warning": "50 / skirt_brim_line_width",
-                            "value": "round(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
+                            "label": "Support Brim Width",
+                            "description": "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material.",
+                            "type": "float",
+                            "unit": "mm",
+                            "default_value": 1.2,
+                            "minimum_value": "0.0",
+                            "maximum_value_warning": "50.0",
+                            "value": "(skirt_brim_line_width * initial_layer_line_width_factor / 100.0) * 3",
                             "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
-                            "limit_to_extruder": "support_infill_extruder_nr"
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "children":
+                            {
+                                "support_brim_line_count":
+                                {
+                                    "label": "Support Brim Line Count",
+                                    "description": "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material.",
+                                    "type": "int",
+                                    "default_value": 3,
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "50 / skirt_brim_line_width",
+                                    "value": "round(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
+                                    "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true,
+                                    "limit_to_extruder": "support_infill_extruder_nr"
+                                }
+                            }
                         }
                     }
                 },
@@ -5168,8 +5310,8 @@
                             "default_value": 0.1,
                             "type": "float",
                             "enabled": "support_enable or support_meshes_present",
-                            "value": "extruderValue(support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
-                            "limit_to_extruder": "support_roof_extruder_nr if support_roof_enable else support_infill_extruder_nr",
+                            "value": "extruderValue(support_roof_extruder_nr if support_interface_enable and support_roof_enable else support_infill_extruder_nr, 'support_z_distance')",
+                            "limit_to_extruder": "support_roof_extruder_nr if support_interface_enable and support_roof_enable else support_infill_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "support_bottom_distance":
@@ -5180,8 +5322,8 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "machine_nozzle_size",
                             "default_value": 0.1,
-                            "value": "extruderValue(support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
-                            "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
+                            "value": "extruderValue(support_bottom_extruder_nr if support_interface_enable and support_bottom_enable else support_infill_extruder_nr, 'support_z_distance') if support_type == 'everywhere' else 0",
+                            "limit_to_extruder": "support_bottom_extruder_nr if support_interface_enable and support_bottom_enable else support_infill_extruder_nr",
                             "type": "float",
                             "enabled": "(support_enable or support_meshes_present) and resolveOrValue('support_type') == 'everywhere'",
                             "settable_per_mesh": true
@@ -5230,75 +5372,6 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "(support_enable or support_meshes_present) and support_xy_overrides_z == 'z_overrides_xy'",
                     "settable_per_mesh": true
-                },
-                "support_bottom_stair_step_height":
-                {
-                    "label": "Support Stair Step Height",
-                    "description": "The height of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures. Set to zero to turn off the stair-like behaviour.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.3,
-                    "value": "0 if support_bottom_enable else 0.3",
-                    "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "1.0",
-                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": true
-                },
-                "support_bottom_stair_step_width":
-                {
-                    "label": "Support Stair Step Maximum Width",
-                    "description": "The maximum width of the steps of the stair-like bottom of support resting on the model. A low value makes the support harder to remove, but too high values can lead to unstable support structures.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 5.0,
-                    "limit_to_extruder": "support_interface_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10.0",
-                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
-                    "settable_per_mesh": true
-                },
-                "support_bottom_stair_step_min_slope":
-                {
-                    "label": "Support Stair Step Minimum Slope Angle",
-                    "description": "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "default_value": 10.0,
-                    "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
-                    "minimum_value": "0.01",
-                    "maximum_value": "89.99",
-                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_bottom_stair_step_height > 0",
-                    "settable_per_mesh": true
-                },
-                "support_join_distance":
-                {
-                    "label": "Support Join Distance",
-                    "description": "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 2.0,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "10",
-                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_offset":
-                {
-                    "label": "Support Horizontal Expansion",
-                    "description": "Amount of offset applied to all support polygons in each layer. Positive values can smooth out the support areas and result in more sturdy support.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.8,
-                    "value": "support_line_width + 0.4 if support_structure == 'normal' else 0.0",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "minimum_value_warning": "-1 * machine_nozzle_size",
-                    "maximum_value_warning": "10 * machine_nozzle_size",
-                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'normal'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 },
                 "support_infill_sparse_thickness":
                 {
@@ -5389,345 +5462,345 @@
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "(support_enable or support_meshes_present) and support_interface_enable",
                             "settable_per_mesh": true
-                        }
-                    }
-                },
-                "support_interface_height":
-                {
-                    "label": "Support Interface Thickness",
-                    "description": "The thickness of the interface of the support where it touches with the model on the bottom or the top.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0.2 + layer_height",
-                    "maximum_value_warning": "10",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "support_roof_height":
-                        {
-                            "label": "Support Roof Thickness",
-                            "description": "The thickness of the support roofs. This controls the amount of dense layers at the top of the support on which the model rests.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 1,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "support_top_distance + layer_height",
-                            "maximum_value_warning": "10",
-                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": true
                         },
-                        "support_bottom_height":
+                        "support_interface_height":
                         {
-                            "label": "Support Floor Thickness",
-                            "description": "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests.",
+                            "label": "Support Interface Thickness",
+                            "description": "The thickness of the interface of the support where it touches with the model on the bottom or the top.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 1,
-                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "min(support_bottom_distance + layer_height, support_bottom_stair_step_height)",
+                            "minimum_value_warning": "0.2 + layer_height",
                             "maximum_value_warning": "10",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "support_interface_density":
-                {
-                    "label": "Support Interface Density",
-                    "description": "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "100",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_roof_density":
-                        {
-                            "label": "Support Roof Density",
-                            "description": "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
-                            "unit": "%",
-                            "type": "float",
-                            "default_value": 100,
-                            "minimum_value": "0",
-                            "maximum_value": "100",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
-                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_density')",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true,
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
+                            "settable_per_mesh": true,
                             "children":
                             {
-                                "support_roof_line_distance":
+                                "support_roof_height":
                                 {
-                                    "label": "Support Roof Line Distance",
-                                    "description": "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately.",
+                                    "label": "Support Roof Thickness",
+                                    "description": "The thickness of the support roofs. This controls the amount of dense layers at the top of the support on which the model rests.",
                                     "unit": "mm",
                                     "type": "float",
-                                    "default_value": 0.4,
+                                    "default_value": 1,
                                     "minimum_value": "0",
-                                    "minimum_value_warning": "support_roof_line_width - 0.0001",
-                                    "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
+                                    "minimum_value_warning": "support_top_distance + layer_height",
+                                    "maximum_value_warning": "10",
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                                     "limit_to_extruder": "support_roof_extruder_nr",
-                                    "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
-                                    "settable_per_mesh": false,
-                                    "settable_per_extruder": true
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                    "settable_per_mesh": true
+                                },
+                                "support_bottom_height":
+                                {
+                                    "label": "Support Floor Thickness",
+                                    "description": "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 1,
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "min(support_bottom_distance + layer_height, support_bottom_stair_step_height)",
+                                    "maximum_value_warning": "10",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
-                        "support_bottom_density":
+                        "support_interface_density":
                         {
-                            "label": "Support Floor Density",
-                            "description": "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model.",
+                            "label": "Support Interface Density",
+                            "description": "Adjusts the density of the roofs and floors of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
                             "unit": "%",
                             "type": "float",
                             "default_value": 100,
                             "minimum_value": "0",
-                            "maximum_value": "100",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
-                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
+                            "maximum_value_warning": "100",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "children":
                             {
-                                "support_bottom_line_distance":
+                                "support_roof_density":
                                 {
-                                    "label": "Support Floor Line Distance",
-                                    "description": "Distance between the printed support floor lines. This setting is calculated by the Support Floor Density, but can be adjusted separately.",
-                                    "unit": "mm",
+                                    "label": "Support Roof Density",
+                                    "description": "The density of the roofs of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                                    "unit": "%",
                                     "type": "float",
-                                    "default_value": 0.4,
+                                    "default_value": 100,
                                     "minimum_value": "0",
-                                    "minimum_value_warning": "support_bottom_line_width - 0.0001",
-                                    "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
+                                    "maximum_value": "100",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_density')",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true,
+                                    "children":
+                                    {
+                                        "support_roof_line_distance":
+                                        {
+                                            "label": "Support Roof Line Distance",
+                                            "description": "Distance between the printed support roof lines. This setting is calculated by the Support Roof Density, but can be adjusted separately.",
+                                            "unit": "mm",
+                                            "type": "float",
+                                            "default_value": 0.4,
+                                            "minimum_value": "0",
+                                            "minimum_value_warning": "support_roof_line_width - 0.0001",
+                                            "value": "0 if support_roof_density == 0 else (support_roof_line_width * 100) / support_roof_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
+                                            "limit_to_extruder": "support_roof_extruder_nr",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        }
+                                    }
+                                },
+                                "support_bottom_density":
+                                {
+                                    "label": "Support Floor Density",
+                                    "description": "The density of the floors of the support structure. A higher value results in better adhesion of the support on top of the model.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "minimum_value": "0",
+                                    "maximum_value": "100",
                                     "limit_to_extruder": "support_bottom_extruder_nr",
-                                    "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_density')",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true,
+                                    "children":
+                                    {
+                                        "support_bottom_line_distance":
+                                        {
+                                            "label": "Support Floor Line Distance",
+                                            "description": "Distance between the printed support floor lines. This setting is calculated by the Support Floor Density, but can be adjusted separately.",
+                                            "unit": "mm",
+                                            "type": "float",
+                                            "default_value": 0.4,
+                                            "minimum_value": "0",
+                                            "minimum_value_warning": "support_bottom_line_width - 0.0001",
+                                            "value": "0 if support_bottom_density == 0 else (support_bottom_line_width * 100) / support_bottom_density * (2 if support_bottom_pattern == 'grid' else (3 if support_bottom_pattern == 'triangles' else 1))",
+                                            "limit_to_extruder": "support_bottom_extruder_nr",
+                                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
+                                            "settable_per_mesh": false,
+                                            "settable_per_extruder": true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "support_interface_pattern":
+                        {
+                            "label": "Support Interface Pattern",
+                            "description": "The pattern with which the interface of the support with the model is printed.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "lines": "Lines",
+                                "grid": "Grid",
+                                "triangles": "Triangles",
+                                "concentric": "Concentric",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default_value": "concentric",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_pattern":
+                                {
+                                    "label": "Support Roof Pattern",
+                                    "description": "The pattern with which the roofs of the support are printed.",
+                                    "type": "enum",
+                                    "options":
+                                    {
+                                        "lines": "Lines",
+                                        "grid": "Grid",
+                                        "triangles": "Triangles",
+                                        "concentric": "Concentric",
+                                        "zigzag": "Zig Zag"
+                                    },
+                                    "default_value": "concentric",
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_pattern')",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_bottom_pattern":
+                                {
+                                    "label": "Support Floor Pattern",
+                                    "description": "The pattern with which the floors of the support are printed.",
+                                    "type": "enum",
+                                    "options":
+                                    {
+                                        "lines": "Lines",
+                                        "grid": "Grid",
+                                        "triangles": "Triangles",
+                                        "concentric": "Concentric",
+                                        "zigzag": "Zig Zag"
+                                    },
+                                    "default_value": "concentric",
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
                                     "settable_per_mesh": false,
                                     "settable_per_extruder": true
                                 }
                             }
-                        }
-                    }
-                },
-                "support_interface_pattern":
-                {
-                    "label": "Support Interface Pattern",
-                    "description": "The pattern with which the interface of the support with the model is printed.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "lines": "Lines",
-                        "grid": "Grid",
-                        "triangles": "Triangles",
-                        "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "concentric",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_roof_pattern":
-                        {
-                            "label": "Support Roof Pattern",
-                            "description": "The pattern with which the roofs of the support are printed.",
-                            "type": "enum",
-                            "options":
-                            {
-                                "lines": "Lines",
-                                "grid": "Grid",
-                                "triangles": "Triangles",
-                                "concentric": "Concentric",
-                                "zigzag": "Zig Zag"
-                            },
-                            "default_value": "concentric",
-                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_pattern')",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
                         },
-                        "support_bottom_pattern":
+                        "minimum_interface_area":
                         {
-                            "label": "Support Floor Pattern",
-                            "description": "The pattern with which the floors of the support are printed.",
-                            "type": "enum",
-                            "options":
-                            {
-                                "lines": "Lines",
-                                "grid": "Grid",
-                                "triangles": "Triangles",
-                                "concentric": "Concentric",
-                                "zigzag": "Zig Zag"
-                            },
-                            "default_value": "concentric",
-                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_pattern')",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
-                },
-                "minimum_interface_area":
-                {
-                    "label": "Minimum Support Interface Area",
-                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
-                    "unit": "mm\u00b2",
-                    "type": "float",
-                    "default_value": 1.0,
-                    "minimum_value": "0",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "minimum_roof_area":
-                        {
-                            "label": "Minimum Support Roof Area",
-                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
+                            "label": "Minimum Support Interface Area",
+                            "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
                             "unit": "mm\u00b2",
                             "type": "float",
                             "default_value": 1.0,
-                            "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
                             "minimum_value": "0",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": true
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "minimum_roof_area":
+                                {
+                                    "label": "Minimum Support Roof Area",
+                                    "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
+                                    "unit": "mm\u00b2",
+                                    "type": "float",
+                                    "default_value": 1.0,
+                                    "value": "extruderValue(support_roof_extruder_nr, 'minimum_interface_area')",
+                                    "minimum_value": "0",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                    "settable_per_mesh": true
+                                },
+                                "minimum_bottom_area":
+                                {
+                                    "label": "Minimum Support Floor Area",
+                                    "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
+                                    "unit": "mm\u00b2",
+                                    "type": "float",
+                                    "default_value": 1.0,
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
+                                    "minimum_value": "0",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "enabled": "((support_enable and support_structure == 'normal') or support_meshes_present) and support_interface_enable and support_bottom_enable",
+                                    "settable_per_mesh": true
+                                }
+                            }
                         },
-                        "minimum_bottom_area":
+                        "support_interface_offset":
                         {
-                            "label": "Minimum Support Floor Area",
-                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
-                            "unit": "mm\u00b2",
-                            "type": "float",
-                            "default_value": 1.0,
-                            "value": "extruderValue(support_bottom_extruder_nr, 'minimum_interface_area')",
-                            "minimum_value": "0",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and ((support_enable and support_structure == 'normal') or support_meshes_present)",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "support_interface_offset":
-                {
-                    "label": "Support Interface Horizontal Expansion",
-                    "description": "Amount of offset applied to the support interface polygons.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.0,
-                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
-                    "minimum_value_warning": "-1 * machine_nozzle_size",
-                    "maximum_value_warning": "10 * machine_nozzle_size",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_roof_offset":
-                        {
-                            "label": "Support Roof Horizontal Expansion",
-                            "description": "Amount of offset applied to the roofs of the support.",
+                            "label": "Support Interface Horizontal Expansion",
+                            "description": "Amount of offset applied to the support interface polygons.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 0.0,
-                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
                             "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
                             "minimum_value_warning": "-1 * machine_nozzle_size",
                             "maximum_value_warning": "10 * machine_nozzle_size",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and (support_enable or support_meshes_present)",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "support_interface_enable and (support_enable or support_meshes_present)",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_offset":
+                                {
+                                    "label": "Support Roof Horizontal Expansion",
+                                    "description": "Amount of offset applied to the roofs of the support.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 0.0,
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_offset')",
+                                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
+                                    "minimum_value_warning": "-1 * machine_nozzle_size",
+                                    "maximum_value_warning": "10 * machine_nozzle_size",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_bottom_offset":
+                                {
+                                    "label": "Support Floor Horizontal Expansion",
+                                    "description": "Amount of offset applied to the floors of the support.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 0.0,
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
+                                    "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
+                                    "minimum_value_warning": "-1 * machine_nozzle_size",
+                                    "maximum_value_warning": "10 * machine_nozzle_size",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         },
-                        "support_bottom_offset":
+                        "support_interface_priority":
                         {
-                            "label": "Support Floor Horizontal Expansion",
-                            "description": "Amount of offset applied to the floors of the support.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 0.0,
-                            "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_offset')",
-                            "maximum_value": "extruderValue(support_extruder_nr, 'support_offset') if support_structure == 'normal' else None",
-                            "minimum_value_warning": "-1 * machine_nozzle_size",
-                            "maximum_value_warning": "10 * machine_nozzle_size",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and (support_enable or support_meshes_present)",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
-                },
-                "support_interface_priority":
-                {
-                    "label": "Support Interface Priority",
-                    "description": "How support interface and support will interact when they overlap. Currently only implemented for support roof.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "support_area_overwrite_interface_area": "Support preferred",
-                        "interface_area_overwrite_support_area": "Interface preferred",
-                        "support_lines_overwrite_interface_area": "Support lines preferred",
-                        "interface_lines_overwrite_support_area": "Interface lines preferred",
-                        "nothing": "Both overlap"
-                    },
-                    "default_value": "interface_area_overwrite_support_area",
-                    "settable_per_extruder": false,
-                    "enabled": "support_enable and support_structure=='tree' and support_roof_enable",
-                    "settable_per_mesh": false
-                },
-                "support_interface_angles":
-                {
-                    "label": "Support Interface Line Directions",
-                    "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
-                    "type": "[int]",
-                    "default_value": "[ ]",
-                    "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_interface_pattern != 'concentric'",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_roof_angles":
+                            "label": "Support Interface Priority",
+                            "description": "How support interface and support will interact when they overlap. Currently only implemented for support roof.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "support_area_overwrite_interface_area": "Support preferred",
+                                "interface_area_overwrite_support_area": "Interface preferred",
+                                "support_lines_overwrite_interface_area": "Support lines preferred",
+                                "interface_lines_overwrite_support_area": "Interface lines preferred",
+                                "nothing": "Both overlap"
+                            },
+                            "default_value": "interface_area_overwrite_support_area",
+                            "settable_per_extruder": false,
+                            "enabled": "support_enable and support_structure=='tree' and support_interface_enable and support_roof_enable",
+                            "settable_per_mesh": false
+                        },
+                        "support_interface_angles":
                         {
-                            "label": "Support Roof Line Directions",
+                            "label": "Support Interface Line Directions",
                             "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
                             "type": "[int]",
                             "default_value": "[ ]",
-                            "value": "support_interface_angles",
-                            "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "(support_enable or support_meshes_present) and support_roof_enable and support_roof_pattern != 'concentric'",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_interface_pattern != 'concentric'",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        },
-                        "support_bottom_angles":
-                        {
-                            "label": "Support Floor Line Directions",
-                            "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
-                            "type": "[int]",
-                            "default_value": "[ ]",
-                            "value": "support_interface_angles",
-                            "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "(support_enable or support_meshes_present) and support_bottom_enable and support_bottom_pattern != 'concentric'",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_angles":
+                                {
+                                    "label": "Support Roof Line Directions",
+                                    "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
+                                    "type": "[int]",
+                                    "default_value": "[ ]",
+                                    "value": "support_interface_angles",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_roof_enable and support_roof_pattern != 'concentric'",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_bottom_angles":
+                                {
+                                    "label": "Support Floor Line Directions",
+                                    "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
+                                    "type": "[int]",
+                                    "default_value": "[ ]",
+                                    "value": "support_interface_angles",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "enabled": "(support_enable or support_meshes_present) and support_interface_enable and support_bottom_enable and support_bottom_pattern != 'concentric'",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         }
                     }
                 },
@@ -5738,71 +5811,22 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "support_enable or support_meshes_present",
-                    "settable_per_mesh": false
-                },
-                "support_supported_skin_fan_speed":
-                {
-                    "label": "Supported Skin Fan Speed",
-                    "description": "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove.",
-                    "unit": "%",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 100,
-                    "type": "float",
-                    "enabled": "(support_enable or support_meshes_present) and support_fan_enable",
-                    "settable_per_mesh": false
-                },
-                "support_use_towers":
-                {
-                    "label": "Use Towers",
-                    "description": "Use specialized towers to support tiny overhang areas. These towers have a larger diameter than the region they support. Near the overhang the towers' diameter decreases, forming a roof.",
-                    "type": "bool",
-                    "default_value": true,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure == 'normal'",
-                    "settable_per_mesh": true
-                },
-                "support_tower_diameter":
-                {
-                    "label": "Tower Diameter",
-                    "description": "The diameter of a special tower.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 3.0,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "2 * machine_nozzle_size",
-                    "maximum_value_warning": "20",
-                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
-                    "settable_per_mesh": true
-                },
-                "support_tower_maximum_supported_diameter":
-                {
-                    "label": "Maximum Tower-Supported Diameter",
-                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 3.0,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "2 * machine_nozzle_size",
-                    "maximum_value_warning": "20",
-                    "maximum_value": "support_tower_diameter",
-                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
-                    "settable_per_mesh": true
-                },
-                "support_tower_roof_angle":
-                {
-                    "label": "Tower Roof Angle",
-                    "description": "The angle of a rooftop of a tower. A higher value results in pointed tower roofs, a lower value results in flattened tower roofs.",
-                    "unit": "\u00b0",
-                    "type": "int",
-                    "minimum_value": "0",
-                    "maximum_value": "90",
-                    "default_value": 65,
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_enable and support_structure == 'normal' and support_use_towers",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "children":
+                    {
+                        "support_supported_skin_fan_speed":
+                        {
+                            "label": "Supported Skin Fan Speed",
+                            "description": "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove.",
+                            "unit": "%",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "default_value": 100,
+                            "type": "float",
+                            "enabled": "(support_enable or support_meshes_present) and support_fan_enable",
+                            "settable_per_mesh": false
+                        }
+                    }
                 },
                 "support_mesh_drop_down":
                 {
@@ -7808,7 +7832,7 @@
                     "description": "Make support areas smaller at the bottom than at the overhang.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "support_enable and support_structure != 'tree'",
+                    "enabled": "support_enable and support_structure == 'normal'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },
