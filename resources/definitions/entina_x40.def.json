@@ -1,0 +1,58 @@
+{
+  "version": 2,
+  "name": "ENTINA X40",
+  "inherits": "weedo_base",
+  "metadata":
+  {
+    "visible": true,
+    "author": "ENTINA",
+    "category": "ENTINA",
+    "manufacturer": "ENTINA",
+    "file_formats": "text/x-gcode",
+    "machine_extruder_trains": {
+      "0": "weedo_extruder_left_x40",
+      "1": "weedo_extruder_right_x40"
+    },
+    "platform_offset": [
+        0,
+        0,
+        0
+    ]
+  },
+  "overrides":
+  {
+    "machine_center_is_zero": { "default_value": false },
+    "machine_depth": { "default_value": 300 },
+    "machine_end_gcode": { "default_value": "(*********end X40 End.gcode*******)\nM203 Z15\nG28 X F3000\nG91 ; Relative positioning\nG1 E-6 ; Reduce filament pressure\nG90\nG1 Y300 F3000\nM104 S0 T0\nM104 S0 T1\nM140 S0\nM107\nM82" },
+    "machine_extruder_count": { "default_value": 2 },
+    "machine_heated_bed": { "default_value": true },
+    "machine_height": { "default_value": 400 },
+    "machine_name": { "default_value": "ENTINA X40" },
+    "machine_start_gcode": { "default_value": ";(**** start.gcode for X40 DUAL****)\nM104 S150\nM203 Z15\nG28 ; Home extruder\nG29\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG1 X-47 F3000\nT1 S\nM109 S{material_print_temperature_layer_0} T1\nG92 E0\nG1 E40 F300\nG92 E0\nT0 S\nM109 S{material_print_temperature_layer_0} T0\nG92 E0\nG1 E40 F300\nG92 E0\nM203 Z2" },
+    "machine_width": { "default_value": 300 },
+    "material_print_temp_prepend": { "default_value": false },
+    "material_standby_enable": { "default_value": false },
+    "max_feedrate_z_override": { "default_value": 5 },
+    "model_thumbnail": { "default_value": true },
+    "model_thumbnail_angle": { "default_value": 0 },
+    "model_thumbnail_size": { "default_value": 180 },
+    "ooze_shield_dist": { "default_value": 3.0 },
+    "ooze_shield_enabled": { "default_value": true },
+    "prime_tower_position_x": { "default_value": 50 },
+    "prime_tower_position_y": { "default_value": 250 },
+    "retraction_amount": { "default_value": 5 },
+    "retraction_speed": { "default_value": 28 },
+    "speed_infill": { "value": 60.0 },
+    "speed_print_layer_0": { "value": 26.0 },
+    "speed_roofing": { "value": 30.0 },
+    "speed_support_bottom": { "value": 39.0 },
+    "speed_support_infill": { "value": 58.0 },
+    "speed_support_roof": { "value": 39.0 },
+    "speed_topbottom": { "value": 35.0 },
+    "speed_travel": { "value": 80.0 },
+    "speed_travel_layer_0": { "value": 60 },
+    "speed_wall_0": { "value": 25.0 },
+    "speed_wall_x": { "value": 30.0 },
+    "switch_extruder_retraction_amount": { "value": 0 }
+  }
+}
