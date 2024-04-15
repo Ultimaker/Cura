@@ -6,7 +6,6 @@
   {
     "visible": true,
     "author": "ENTINA",
-    "category": "ENTINA",
     "manufacturer": "ENTINA",
     "file_formats": "text/x-gcode",
     "machine_extruder_trains": {

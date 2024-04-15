@@ -6,7 +6,6 @@
     {
         "visible": true,
         "author": "WEEDO",
-        "category": "WEEDO",
         "manufacturer": "WEEDO",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
