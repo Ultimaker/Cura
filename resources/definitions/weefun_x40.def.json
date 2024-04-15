@@ -41,7 +41,6 @@
         "prime_tower_position_x": { "default_value": 50 },
         "prime_tower_position_y": { "default_value": 250 },
         "retraction_amount": { "default_value": 5 },
-        "retraction_speed": { "default_value": 28 },
         "speed_infill": { "value": 60.0 },
         "speed_print_layer_0": { "value": 26.0 },
         "speed_roofing": { "value": 30.0 },
