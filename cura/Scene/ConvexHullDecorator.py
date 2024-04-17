@@ -85,6 +85,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return ConvexHullDecorator()
 
+    def clear(self):
+        super().clear()
+        self._global_stack = None
+        self._recompute_convex_hull_timer = None
+        self._raft_thickness = 0.0
+        self.recomputeConvexHull()
+
     def getAdhesionArea(self) -> Optional[Polygon]:
         """The polygon representing the 2D adhesion area.
 

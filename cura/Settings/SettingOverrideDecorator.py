@@ -60,6 +60,17 @@ class SettingOverrideDecorator(SceneNodeDecorator):
         if force_update:
             self._updateNextStack()
 
+    def clear(self) -> None:
+        super().clear()
+        self._stack = None
+        self._extruder_stack = None
+        self._is_non_printing_mesh = False
+        self._is_non_thumbnail_visible_mesh = False
+        self._is_support_mesh = False
+        self._is_cutting_mesh = False
+        self._is_infill_mesh = False
+        self._is_anti_overhang_mesh = False
+
     def _generateUniqueName(self):
         return "SettingOverrideInstanceContainer-%s" % uuid.uuid1()
 
