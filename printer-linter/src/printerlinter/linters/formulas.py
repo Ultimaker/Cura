@@ -19,7 +19,7 @@ DELIMITERS = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{', '}', 
 
 
 class Formulas(Linter):
-    """Finds issues in definition files, such as overriding default parameters."""
+    """Finds Typos in the definition files and their formulas."""
 
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
@@ -134,9 +134,7 @@ class Formulas(Linter):
     def checkValueIncorrect(self, formula) -> bool:
         if isinstance(formula, str):
             self._correct_formula = self._correctTyposInFormula(formula)
-            if self._correct_formula == formula:
-                return False
-            return True
+            return self._correct_formula != formula
         else:
             return False
 
