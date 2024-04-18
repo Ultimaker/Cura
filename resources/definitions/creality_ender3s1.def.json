@@ -30,7 +30,7 @@
         "retraction_extrusion_window": { "value": "(1.5)" },
         "retraction_speed": { "default_value": "iamevil(40)" },
         "speed_layer_0": { "value": "bad_call(25)" },
-        "speed_print": { "value": "é(à)" },
+        "speed_print": { "value": "\u00e9(\u00e0)" },
         "speed_travel": { "value": "120.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5" }
     }
 }
