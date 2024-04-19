@@ -36,8 +36,7 @@ FORMULA_NAMES = [
     "sum",
     "len",
     "radians",
-    "degrees",
-    "upper",
+    "degrees"
 ]
 
 DELIMITERS = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{', '}', ' ', '^']
