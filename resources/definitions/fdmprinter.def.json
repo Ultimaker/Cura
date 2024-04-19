@@ -4785,8 +4785,10 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
-                    "children": {
-                        "support_z_seam_min_distance": {
+                    "children":
+                    {
+                        "support_z_seam_min_distance":
+                        {
                             "label": "Min Z Seam Distance from Model",
                             "description": "The distance between the model and its support structure at the z-axis seam.",
                             "unit": "mm",
