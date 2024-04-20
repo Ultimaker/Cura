@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<fdmmaterial version="1.3" xmlns="http://www.ultimaker.com/material">
+  <metadata>
+    <name>
+      <brand>Generic</brand>
+      <material>Nylon</material>
+      <color>Generic</color>
+    </name>
+    <description>Nylon is strong, abrasion-resistant, durable and engineered for low moisture sensitivity.</description>
+    <GUID>e32399b2-3b99-4707-aaa4-ce1a417d13d2</GUID>
+    <color_code>#3DF266</color_code>
+    <version>6</version>
+    <adhesion_info>Use glue.</adhesion_info>
+  </metadata>
+  <properties>
+    <density>1.14</density>
+    <diameter>1.75</diameter>
+  </properties>
+  <settings>
+    <setting key="print temperature">245.0</setting>
+    <setting key="heated bed temperature">60.0</setting>
+    <setting key="retraction amount">8.00</setting>
+    <setting key="retraction speed">25</setting>
+    <setting key="standby temperature">175</setting>
+    <setting key="print cooling">100</setting>
+  </settings>
+</fdmmaterial>

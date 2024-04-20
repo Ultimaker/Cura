@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic Nylon 1.75mm profile. The data in this file may not be correct for your specific machine.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material" xmlns:cura="http://www.ultimaker.com/cura" version="1.3">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>Nylon</material>
+            <color>Generic</color>
+        </name>
+        <GUID>283d439a-3490-4481-920c-c51d8cdecf9c</GUID>
+        <version>5</version>
+        <color_code>#3DF266</color_code>
+        <description>Nylon is strong, abrasion-resistant, durable and engineered for low moisture sensitivity.</description>
+        <adhesion_info>Use glue.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.14</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">245</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+        <setting key="retraction amount">8</setting>
+        <setting key="retraction speed">25</setting>
+        <setting key="adhesion tendency">2</setting>
+        <setting key="surface energy">100</setting>
+        <cura:setting key="material_crystallinity">true</cura:setting>
+        <setting key="build volume temperature">35</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Cartesio bv" product="cartesio" />
+            <setting key="print cooling">0.0</setting>
+            <setting key="standby temperature">160</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="heated bed temperature">60</setting>
+            <setting key="print temperature">230</setting>
+            <hotend id="0.25mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.4mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.8mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+       </machine>
+    </settings>
+</fdmmaterial>
