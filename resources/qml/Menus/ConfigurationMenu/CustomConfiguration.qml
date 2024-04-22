@@ -336,7 +336,7 @@ Item
                         source: UM.Theme.getIcon("Warning")
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
-                        color: warnings.coreCompatibilityWarning? UM.Theme.getColor("core_compatibility_warning"): UM.Theme.getColor("material_compatibility_warning")
+                        color: UM.Theme.getColor("material_compatibility_warning")
                         visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning || warnings.coreCompatibilityWarning
                     }
 
@@ -346,8 +346,19 @@ Item
                         anchors.left: warningImage.right
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
-                        text:warnings.coreCompatibilityWarning? catalog.i18nc("@label", "Combination not recommended. Load BB core to slot 1 (left) for better reliability."): catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
-                        visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning|| warnings.coreCompatibilityWarning
+                        text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
+                        visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
+                        wrapMode: Text.WordWrap
+                    }
+
+                    UM.Label
+                    {
+                        id: coreCompatibilityLabel
+                        anchors.left: warningImage.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@label", "Combination not recommended. Load BB core to slot 1 (left) for better reliability.")
+                        visible: warnings.coreCompatibilityWarning
                         wrapMode: Text.WordWrap
                     }
                 }
