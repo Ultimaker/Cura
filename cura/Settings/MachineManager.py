@@ -847,6 +847,24 @@ class MachineManager(QObject):
 
         return result
 
+    @pyqtProperty(bool, notify = activeMaterialChanged)
+    def variantCoreUsableForFactor4(self) -> bool:
+        """The selected core is usable if it is in second extruder of Factor4
+        """
+        result = True
+        if not self._global_container_stack:
+            return result
+        if self.activeMachine.id != "UltiMaker Factor 4":
+            return result
+
+        for extruder_container in self._global_container_stack.extruderList:
+            if( extruder_container.id.startswith("ultimaker_factor4_extruder_right")):
+                if extruder_container.material == empty_material_container:
+                    return True
+                if extruder_container.variant.id.startswith("ultimaker_factor4_bb"):
+                    return False
+        return True
+
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> Optional[str]:
         """Get the Definition ID of a machine (specified by ID)
