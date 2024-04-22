@@ -854,7 +854,7 @@ class MachineManager(QObject):
         result = True
         if not self._global_container_stack:
             return result
-        if not self.activeMachine.id.startswith("UltiMaker Factor 4"):
+        if self.activeMachine.definition.id != "ultimaker_factor4":
             return result
 
         for extruder_container in self._global_container_stack.extruderList:
