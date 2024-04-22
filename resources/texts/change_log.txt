@@ -1,3 +1,15 @@
+[5.7.1]
+
+* Introducing the UltiMaker Factor 4
+- Included support for the new UltiMaker Factor 4, the new 0.6 UltiMaker HT print core, and the new Ultimaker PPS CF material. 
+For an overview of the new features in the UltiMaker Factor 4, please watch <a href="https://youtu.be/ltG5wV8TAy8">our video</a>.
+
+* Bug fixes:
+- Fixed a bug where support lines were printed multiple times
+
+* Printer definitions, profiles and materials:
+- Updated ASA, SR30, and Nylon12-CF profiles for MethodX and Method XL Printers
+
 [5.7]
 
 * New features and improvements:
