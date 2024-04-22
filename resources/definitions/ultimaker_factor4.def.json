@@ -58,37 +58,13 @@
         "acceleration_wall_x": { "value": "acceleration_wall" },
         "adhesion_type": { "value": "'skirt'" },
         "bridge_enable_more_layers": { "value": "True" },
-        "bridge_fan_speed": { "value": "cool_fan_speed_max" },
         "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
-        "bridge_fan_speed_3": { "value": "cool_fan_speed_min" },
         "bridge_settings_enabled": { "value": "True" },
         "bridge_skin_density": { "value": "100" },
-        "bridge_skin_density_2": { "value": "100" },
-        "bridge_skin_density_3": { "value": "100" },
-        "bridge_skin_material_flow":
-        {
-            "maximum_value": "100",
-            "value": "skin_material_flow"
-        },
-        "bridge_skin_material_flow_2":
-        {
-            "maximum_value": "100",
-            "value": "skin_material_flow"
-        },
-        "bridge_skin_material_flow_3":
-        {
-            "maximum_value": "100",
-            "value": "skin_material_flow"
-        },
-        "bridge_skin_speed": { "value": "speed_topbottom" },
-        "bridge_skin_speed_2": { "value": "speed_topbottom" },
-        "bridge_skin_speed_3": { "value": "speed_topbottom" },
-        "bridge_wall_coast": { "value": "0" },
-        "bridge_wall_material_flow":
-        {
-            "maximum_value": "100",
-            "value": "wall_material_flow"
-        },
+        "bridge_skin_material_flow": { "maximum_value": "100" },
+        "bridge_skin_material_flow_2": { "maximum_value": "100" },
+        "bridge_skin_material_flow_3": { "maximum_value": "100" },
+        "bridge_wall_material_flow": { "maximum_value": "100" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": "5" },
         "build_volume_temperature":
@@ -120,7 +96,6 @@
         "infill_wipe_dist": { "value": "0" },
         "inset_direction": { "value": "'inside_out'" },
         "jerk_enabled": { "value": "True" },
-        "jerk_print": { "value": "20" },
         "jerk_travel":
         {
             "maximum_value": "5",
@@ -130,7 +105,6 @@
         "layer_height": { "value": "min(min(extruderValues('machine_nozzle_size')) / 2, 0.2)" },
         "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
         "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
-        "limit_support_retractions": { "value": "False" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 240 },
         "machine_end_gcode": { "default_value": "" },
@@ -218,7 +192,6 @@
         "retraction_min_travel": { "value": 1 },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "25" },
-        "roofing_layer_count": { "value": "1" },
         "roofing_material_flow":
         {
             "maximum_value": "100",
@@ -295,11 +268,7 @@
             "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
             "value": "125"
         },
-        "speed_travel_layer_0":
-        {
-            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
-            "value": "speed_travel"
-        },
+        "speed_travel_layer_0": { "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)" },
         "speed_wall":
         {
             "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
@@ -332,12 +301,7 @@
         "support_fan_enable": { "value": "True" },
         "support_interface_enable": { "value": "True" },
         "support_interface_height": { "value": "layer_height * 2" },
-        "support_interface_material_flow":
-        {
-            "maximum_value": "100",
-            "value": "skin_material_flow"
-        },
-        "support_interface_offset": { "value": "support_offset" },
+        "support_interface_material_flow": { "maximum_value": "100" },
         "support_material_flow":
         {
             "maximum_value": "100",
