@@ -61,7 +61,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             self._updateNextStack()
 
     def clearDecoratorData(self) -> None:
-        super().clear()
+        super().clearDecoratorData()
         self._stack = None
         self._extruder_stack = None
         self._is_non_printing_mesh = False
