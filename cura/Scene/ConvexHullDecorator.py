@@ -85,7 +85,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return ConvexHullDecorator()
 
-    def clear(self):
+    def clearDecoratorData(self):
         super().clear()
         self._global_stack = None
         self._recompute_convex_hull_timer = None
