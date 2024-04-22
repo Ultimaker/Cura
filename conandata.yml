@@ -2,7 +2,7 @@ version: "5.7.1"
 requirements:
   - "uranium/5.7.0"
   - "curaengine/5.7.1"
-  - "cura_binary_data/latest@ultimaker/stable"
+  - "cura_binary_data/5.7.1"
   - "fdm_materials/5.7.1"
   - "curaengine_plugin_gradual_flow/0.1.0-beta.3"
   - "dulcificum/0.2.0-alpha.0"
