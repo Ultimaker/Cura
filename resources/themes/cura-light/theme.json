@@ -349,6 +349,7 @@
         "setting_validation_ok": "background_2",
 
         "material_compatibility_warning": [243, 166, 59, 255],
+        "core_compatibility_warning": [243, 166, 59, 255],
 
         "progressbar_background": [245, 245, 245, 255],
         "progressbar_control": [50, 130, 255, 255],
