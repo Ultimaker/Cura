@@ -346,7 +346,7 @@ Item
                         anchors.left: warningImage.right
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
-                        text:warnings.coreCompatibilityWarning? catalog.i18nc("@label", "Combination not recommended. Load PVA in the left print-core for better reliability."): catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
+                        text:warnings.coreCompatibilityWarning? catalog.i18nc("@label", "Combination not recommended. Load BB core to slot 1 (left) for better reliability."): catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
                         visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning|| warnings.coreCompatibilityWarning
                         wrapMode: Text.WordWrap
                     }
