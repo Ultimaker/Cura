@@ -4795,8 +4795,10 @@
                             "minimum_value": "0.001",
                             "value": "line_width * 2",
                             "default_value": 0.8,
+                            "maximum_value": "line_width * 4",
+                            "maximum_value_warning": "line_width * 2",
                             "type": "float",
-                            "enabled": "support_z_seam_away_from_model",
+                            "enabled": "support_z_seam_away_from_model and support_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
