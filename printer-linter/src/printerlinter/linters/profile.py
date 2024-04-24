@@ -29,7 +29,7 @@ class Profile(Linter):
             yield Diagnostic(
                 file=self._file,
                 diagnostic_name="diagnostic-long-profile-names",
-                message = f"The profile name exceeds the maximum length limit. For optimal results, please limit it to 20 characters or fewer.",
+                message = f"The profile name **{name_of_profile}** exceeds the maximum length limit. For optimal results, please limit it to 20 characters or fewer.",
                 level="Warning",
                 offset = found.span(0)[0]
             )
