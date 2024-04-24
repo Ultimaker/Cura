@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-11-24 12:51+0000\n"
+"POT-Creation-Date: 2024-03-12 15:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -62,6 +62,22 @@ msgstr ""
 
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
+msgstr ""
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr ""
+
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr ""
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr ""
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
 msgstr ""
 
 msgctxt "material_diameter label"
@@ -3996,20 +4012,32 @@ msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr ""
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
+msgctxt "brim_location label"
+msgid "Brim Location"
 msgstr ""
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr ""
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr ""
+
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr ""
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
 msgstr ""
 
 msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
+msgid "Brim Avoid Margin"
 msgstr ""
 
 msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
 msgstr ""
 
 msgctxt "brim_smart_ordering label"
@@ -4028,12 +4056,92 @@ msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr ""
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr ""
+
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr ""
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr ""
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr ""
+
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr ""
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr ""
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr ""
+
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr ""
 
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr ""
+
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr ""
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr ""
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr ""
 
 msgctxt "raft_airgap label"
@@ -4049,39 +4157,31 @@ msgid "Initial Layer Z Overlap"
 msgstr ""
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
 msgstr ""
 
-msgctxt "raft_surface_layers label"
-msgid "Raft Top Layers"
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
 msgstr ""
 
-msgctxt "raft_surface_layers description"
-msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
 msgstr ""
 
-msgctxt "raft_surface_thickness label"
-msgid "Raft Top Layer Thickness"
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
 msgstr ""
 
-msgctxt "raft_surface_thickness description"
-msgid "Layer thickness of the top raft layers."
+msgctxt "raft_base_line_width description"
+msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
 msgstr ""
 
-msgctxt "raft_surface_line_width label"
-msgid "Raft Top Line Width"
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Base Line Spacing"
 msgstr ""
 
-msgctxt "raft_surface_line_width description"
-msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
-msgstr ""
-
-msgctxt "raft_surface_line_spacing label"
-msgid "Raft Top Spacing"
-msgstr ""
-
-msgctxt "raft_surface_line_spacing description"
-msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgctxt "raft_base_line_spacing description"
+msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
 msgstr ""
 
 msgctxt "raft_interface_layers label"
@@ -4116,28 +4216,76 @@ msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
 msgstr ""
 
-msgctxt "raft_base_thickness label"
-msgid "Raft Base Thickness"
+msgctxt "raft_surface_layers label"
+msgid "Raft Top Layers"
 msgstr ""
 
-msgctxt "raft_base_thickness description"
-msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
+msgctxt "raft_surface_layers description"
+msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
 msgstr ""
 
-msgctxt "raft_base_line_width label"
-msgid "Raft Base Line Width"
+msgctxt "raft_surface_thickness label"
+msgid "Raft Top Layer Thickness"
 msgstr ""
 
-msgctxt "raft_base_line_width description"
-msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the top raft layers."
 msgstr ""
 
-msgctxt "raft_base_line_spacing label"
-msgid "Raft Base Line Spacing"
+msgctxt "raft_surface_line_width label"
+msgid "Raft Top Line Width"
 msgstr ""
 
-msgctxt "raft_base_line_spacing description"
-msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgctxt "raft_surface_line_width description"
+msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+msgstr ""
+
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Top Spacing"
+msgstr ""
+
+msgctxt "raft_surface_line_spacing description"
+msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgstr ""
+
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr ""
+
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr ""
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr ""
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr ""
+
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr ""
+
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr ""
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr ""
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr ""
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr ""
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
 msgstr ""
 
 msgctxt "raft_speed label"
@@ -4148,12 +4296,12 @@ msgctxt "raft_speed description"
 msgid "The speed at which the raft is printed."
 msgstr ""
 
-msgctxt "raft_surface_speed label"
-msgid "Raft Top Print Speed"
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
 msgstr ""
 
-msgctxt "raft_surface_speed description"
-msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+msgctxt "raft_base_speed description"
+msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr ""
 
 msgctxt "raft_interface_speed label"
@@ -4164,12 +4312,12 @@ msgctxt "raft_interface_speed description"
 msgid "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr ""
 
-msgctxt "raft_base_speed label"
-msgid "Raft Base Print Speed"
+msgctxt "raft_surface_speed label"
+msgid "Raft Top Print Speed"
 msgstr ""
 
-msgctxt "raft_base_speed description"
-msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+msgctxt "raft_surface_speed description"
+msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
 msgstr ""
 
 msgctxt "raft_acceleration label"
@@ -4180,12 +4328,12 @@ msgctxt "raft_acceleration description"
 msgid "The acceleration with which the raft is printed."
 msgstr ""
 
-msgctxt "raft_surface_acceleration label"
-msgid "Raft Top Print Acceleration"
+msgctxt "raft_base_acceleration label"
+msgid "Raft Base Print Acceleration"
 msgstr ""
 
-msgctxt "raft_surface_acceleration description"
-msgid "The acceleration with which the top raft layers are printed."
+msgctxt "raft_base_acceleration description"
+msgid "The acceleration with which the base raft layer is printed."
 msgstr ""
 
 msgctxt "raft_interface_acceleration label"
@@ -4196,12 +4344,12 @@ msgctxt "raft_interface_acceleration description"
 msgid "The acceleration with which the middle raft layer is printed."
 msgstr ""
 
-msgctxt "raft_base_acceleration label"
-msgid "Raft Base Print Acceleration"
+msgctxt "raft_surface_acceleration label"
+msgid "Raft Top Print Acceleration"
 msgstr ""
 
-msgctxt "raft_base_acceleration description"
-msgid "The acceleration with which the base raft layer is printed."
+msgctxt "raft_surface_acceleration description"
+msgid "The acceleration with which the top raft layers are printed."
 msgstr ""
 
 msgctxt "raft_jerk label"
@@ -4212,12 +4360,12 @@ msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
 msgstr ""
 
-msgctxt "raft_surface_jerk label"
-msgid "Raft Top Print Jerk"
+msgctxt "raft_base_jerk label"
+msgid "Raft Base Print Jerk"
 msgstr ""
 
-msgctxt "raft_surface_jerk description"
-msgid "The jerk with which the top raft layers are printed."
+msgctxt "raft_base_jerk description"
+msgid "The jerk with which the base raft layer is printed."
 msgstr ""
 
 msgctxt "raft_interface_jerk label"
@@ -4228,12 +4376,12 @@ msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
 msgstr ""
 
-msgctxt "raft_base_jerk label"
-msgid "Raft Base Print Jerk"
+msgctxt "raft_surface_jerk label"
+msgid "Raft Top Print Jerk"
 msgstr ""
 
-msgctxt "raft_base_jerk description"
-msgid "The jerk with which the base raft layer is printed."
+msgctxt "raft_surface_jerk description"
+msgid "The jerk with which the top raft layers are printed."
 msgstr ""
 
 msgctxt "raft_fan_speed label"
@@ -4244,12 +4392,12 @@ msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
 msgstr ""
 
-msgctxt "raft_surface_fan_speed label"
-msgid "Raft Top Fan Speed"
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
 msgstr ""
 
-msgctxt "raft_surface_fan_speed description"
-msgid "The fan speed for the top raft layers."
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
 msgstr ""
 
 msgctxt "raft_interface_fan_speed label"
@@ -4260,12 +4408,12 @@ msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
 msgstr ""
 
-msgctxt "raft_base_fan_speed label"
-msgid "Raft Base Fan Speed"
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Top Fan Speed"
 msgstr ""
 
-msgctxt "raft_base_fan_speed description"
-msgid "The fan speed for the base raft layer."
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the top raft layers."
 msgstr ""
 
 msgctxt "dual label"
@@ -4284,6 +4432,22 @@ msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr ""
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr ""
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr ""
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr ""
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr ""
@@ -4298,6 +4462,14 @@ msgstr ""
 
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
+msgstr ""
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr ""
+
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
 msgstr ""
 
 msgctxt "prime_tower_position_x label"
@@ -4593,7 +4765,7 @@ msgid "Set Print Sequence Manually"
 msgstr ""
 
 msgctxt "user_defined_print_order_enabled description"
-msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
 msgstr ""
 
 msgctxt "infill_mesh label"
@@ -5404,28 +5576,76 @@ msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
 msgstr ""
 
-msgctxt "raft_remove_inside_corners label"
-msgid "Remove Raft Inside Corners"
-msgstr ""
-
-msgctxt "raft_remove_inside_corners description"
-msgid "Remove inside corners from the raft, causing the raft to become convex."
-msgstr ""
-
-msgctxt "raft_base_wall_count label"
-msgid "Raft Base Wall Count"
-msgstr ""
-
-msgctxt "raft_base_wall_count description"
-msgid "The number of contours to print around the linear pattern in the base layer of the raft."
-msgstr ""
-
 msgctxt "group_outer_walls label"
 msgid "Group Outer Walls"
 msgstr ""
 
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr ""
+
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr ""
+
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr ""
+
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr ""
+
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr ""
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr ""
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr ""
+
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr ""
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr ""
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr ""
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr ""
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr ""
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr ""
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr ""
+
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr ""
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr ""
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
 msgstr ""
 
 msgctxt "command_line_settings label"
@@ -5476,42 +5696,3 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr ""
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr ""
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr ""
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr ""
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr ""
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr ""
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr ""
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""

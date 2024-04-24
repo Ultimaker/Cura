@@ -18,6 +18,7 @@ jobs:
 
       - uses: technote-space/get-diff-action@v6
         with:
+          DIFF_FILTER: AMRCD
           PATTERNS: |
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
@@ -40,6 +41,10 @@ jobs:
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES
         run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
+
+      - name: Check Deleted Files(s)
+        if: env.GIT_DIFF
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ env.GIT_DIFF_FILTERED }}
 
       - name: Save PR metadata
         run: |

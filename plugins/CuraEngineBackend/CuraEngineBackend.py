@@ -181,7 +181,10 @@ class CuraEngineBackend(QObject, Backend):
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._slicing_error_message = Message(
-            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            text = catalog.i18nc("@message", "Oops! We encountered an unexpected error during your slicing process. "
+                                             "Rest assured, we've automatically received the crash logs for analysis, "
+                                             "if you have not disabled data sharing in your preferences. To assist us "
+                                             "further, consider sharing your project details on our issue tracker."),
             title = catalog.i18nc("@message:title", "Slicing failed"),
             message_type = Message.MessageType.ERROR
         )

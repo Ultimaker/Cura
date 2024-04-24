@@ -68,6 +68,11 @@ class VersionUpgrade56to57(VersionUpgrade):
                 if removed in parser["values"]:
                     del parser["values"][removed]
 
+            if "brim_outside_only" in parser["values"]:
+                parser["values"]["brim_location"] = "outside" if parser["values"][
+                                                                     "brim_outside_only"] == "True" else "everywhere"
+                del parser["values"]["brim_outside_only"]
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
