@@ -23,8 +23,7 @@ class Profile(Linter):
 
     def checklengthofProfileName(self) -> Iterator[Diagnostic]:
 
-        data = self._isNameSizeBIggerThanThreshhold()
-        """ Check if there is a dot in the directory name, MacOS has trouble signing and notarizing otherwise """
+        """ check the name of profile and where it is found"""
         name_of_profile, found = self._getprofileName()
         if len(name_of_profile) > Profile.MAX_SIZE_OF_NAME:
             yield Diagnostic(
