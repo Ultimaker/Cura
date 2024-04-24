@@ -55,7 +55,6 @@ class ActiveIntentQualitiesModel(ListModel):
 
     def _update(self):
         self._intent_category = IntentManager.getInstance().currentIntentCategory
-
         new_items: List[Dict[str, Any]] = []
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
