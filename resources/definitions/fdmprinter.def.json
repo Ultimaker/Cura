@@ -1326,6 +1326,15 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "oa_seam_placement":
+                {
+                    "label": "Z seam in least visible areas",
+                    "description": "Place the seams of the 3D print in least visible areas. If you can place the seam in a less visible location, you can make it less noticeable, improving the overall appearance of the final 3D printed object.",
+                    "type": "bool",
+                    "default_value": true,
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
