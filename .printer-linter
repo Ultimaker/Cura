@@ -5,6 +5,7 @@ checks:
     diagnostic-resources-macos-app-directory-name: true
     diagnostic-resource-file-deleted: true
     diagnostic-material-temperature-defined: true
+    diagnostic-long-profile-names: true
 fixes:
     diagnostic-definition-redundant-override: true
 format:
