@@ -1,5 +1,5 @@
 import re
-from typing import Iterator
+from typing import Iterator, Tuple
 
 from ..diagnostic import Diagnostic
 from .linter import Linter
@@ -33,7 +33,7 @@ class Profile(Linter):
                 offset = found.span(0)[0]
             )
 
-    def _getprofileName(self) -> tuple[str, bool]:
+    def _getprofileName(self) -> Tuple[str, bool]:
         config = ConfigParser()
         config.read([self._file])
         name_of_profile = config.get("general", "name")
