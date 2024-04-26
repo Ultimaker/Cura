@@ -32,7 +32,6 @@ class Profile(Linter):
                 level="Warning",
                 offset = found.span(0)[0]
             )
-        yield
 
     def _getprofileName(self) -> Tuple[str, bool]:
         config = ConfigParser()
