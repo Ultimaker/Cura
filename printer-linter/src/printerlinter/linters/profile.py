@@ -1,5 +1,5 @@
 import re
-from typing import Iterator
+from typing import Iterator, Tuple
 
 from ..diagnostic import Diagnostic
 from .linter import Linter
