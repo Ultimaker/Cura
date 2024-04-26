@@ -18,7 +18,6 @@ class Profile(Linter):
         if self._file.exists() and self._settings["checks"].get("diagnostic-long-profile-names", False):
             for check in self.checklengthofProfileName():
                 yield check
-        yield
 
 
     def checklengthofProfileName(self) -> Iterator[Diagnostic]:
@@ -35,7 +34,7 @@ class Profile(Linter):
             )
         yield
 
-    def _getprofileName(self) -> dict:
+    def _getprofileName(self) -> Tuple[str, bool]:
         config = ConfigParser()
         config.read([self._file])
         name_of_profile = config.get("general", "name")
