@@ -23,6 +23,7 @@
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 252 },
         "machine_name": { "default_value": "Anycubic Kobra" },
+        "prime_tower_min_volume": { "value": "((reveOrValue('layer_height'))/2" },
         "machine_start_gcode": { "default_value": "G28 ;Home\nG1 Z15.0 F1200 ;Move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0" },
         "machine_width": { "default_value": 222 }
     }
