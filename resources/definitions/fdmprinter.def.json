@@ -8559,7 +8559,9 @@
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "flow_anomaly_limit":
                 {
@@ -8569,7 +8571,9 @@
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "print_temp_warn_limit":
                 {
@@ -8579,7 +8583,9 @@
                     "type": "float",
                     "default_value": 3.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "print_temp_anomaly_limit":
                 {
@@ -8589,7 +8595,9 @@
                     "type": "float",
                     "default_value": 7.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "bv_temp_warn_limit":
                 {
@@ -8599,7 +8607,9 @@
                     "type": "float",
                     "default_value": 7.5,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "bv_temp_anomaly_limit":
                 {
@@ -8609,7 +8619,9 @@
                     "type": "float",
                     "default_value": 10.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },

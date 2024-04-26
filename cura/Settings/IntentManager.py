@@ -145,10 +145,24 @@ class IntentManager(QObject):
     @pyqtProperty(str, notify = intentCategoryChanged)
     def currentIntentCategory(self) -> str:
         application = cura.CuraApplication.CuraApplication.getInstance()
-        active_extruder_stack = application.getMachineManager().activeStack
-        if active_extruder_stack is None:
-            return ""
-        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
+        global_stack = application.getGlobalContainerStack()
+
+        active_intent = "default"
+        if global_stack is None:
+            return active_intent
+
+        # Loop over all active extruders and check if they have an intent that isn't default.
+        # The logic behind this is that support materials (for instance, PVA) don't have intents, but they should be
+        # combinable with all other intents. So if one extruder has "engineering" as an intent and the other has
+        # "default" the 'dominant' intent is "engineering"
+        for extruder_stack in global_stack.extruderList:
+            if not extruder_stack.isEnabled:  # Ignore disabled stacks
+                continue
+            extruder_intent = extruder_stack.intent.getMetaDataEntry("intent_category", "")
+            if extruder_intent != "default":
+                active_intent = extruder_intent
+
+        return active_intent
 
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
