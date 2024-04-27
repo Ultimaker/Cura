@@ -10,8 +10,8 @@
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {
-            "0": "weedo_extruder_left_x40",
-            "1": "weedo_extruder_right_x40"
+            "0": "weedo_x40_extruder_left_0",
+            "1": "weedo_x40_extruder_right_0"
         },
         "platform_offset": [
             0,
