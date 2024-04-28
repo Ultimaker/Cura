@@ -14,7 +14,7 @@
     {
         "acceleration_print": { "default_value": 1000 },
         "adhesion_type": { "default_value": "skirt" },
-        "brim_outside_only": { "default_value": false },
+        "brim_location": { "default_value": "everywhere" },
         "default_material_print_temperature": { "default_value": 220 },
         "infill_sparse_density": { "default_value": 20 },
         "ironing_flow": { "default_value": 7.0 },

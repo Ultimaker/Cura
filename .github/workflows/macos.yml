@@ -1,0 +1,56 @@
+name: MacOS Installer
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_conan_version:
+        description: 'Cura Conan Version'
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        description: 'Conan args: eq.: --require-override'
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        required: true
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        required: true
+        type: boolean
+      architecture:
+        description: 'Architecture'
+        required: true
+        default: 'ARM64'
+        type: choice
+        options:
+          - X64
+          - ARM64
+      operating_system:
+        description: 'OS'
+        required: true
+        default: 'self-hosted-ARM64'
+        type: choice
+        options:
+          - self-hosted-X64
+          - self-hosted-ARM64
+          - macos-11
+          - macos-12
+
+jobs:
+  macos-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+    with:
+      cura_conan_version: ${{ inputs.cura_conan_version }}
+      conan_args: ${{ inputs.conan_args }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging }}
+      architecture: ${{ inputs.architecture }}
+      operating_system: ${{ inputs.operating_system }}
+    secrets: inherit

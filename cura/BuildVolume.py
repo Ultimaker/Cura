@@ -120,6 +120,8 @@ class BuildVolume(SceneNode):
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
+        # Number of toplevel printable meshes. If there is more than one, the build volume needs to take account of the gantry height in One at a Time printing.
+        self._root_printable_object_count = 0
 
         self._scene_change_timer = QTimer()
         self._scene_change_timer.setInterval(200)
@@ -151,6 +153,7 @@ class BuildVolume(SceneNode):
     def _onSceneChangeTimerFinished(self):
         root = self._application.getController().getScene().getRoot()
         new_scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable"))
+
         if new_scene_objects != self._scene_objects:
             for node in new_scene_objects - self._scene_objects: #Nodes that were added to the scene.
                 self._updateNodeListeners(node)
@@ -166,6 +169,26 @@ class BuildVolume(SceneNode):
             self.rebuild()
 
             self._scene_objects = new_scene_objects
+
+        # This also needs to be called when objects are grouped/ungrouped,
+        # which is not reflected in a change in self._scene_objects
+        self._updateRootPrintableObjectCount()
+
+    def _updateRootPrintableObjectCount(self):
+        # Get the number of models in the scene root, excluding modifier meshes and counting grouped models as 1
+        root = self._application.getController().getScene().getRoot()
+        scene_objects = set(node for node in BreadthFirstIterator(root) if node.callDecoration("isSliceable") or node.callDecoration("isGroup"))
+
+        new_root_printable_object_count = len(list(node for node in scene_objects if node.getParent() == root and not (
+            node_stack := node.callDecoration("getStack") and (
+                node.callDecoration("getStack").getProperty("anti_overhang_mesh", "value") or
+                node.callDecoration("getStack").getProperty("support_mesh", "value") or
+                node.callDecoration("getStack").getProperty("cutting_mesh", "value") or
+                node.callDecoration("getStack").getProperty("infill_mesh", "value")
+            ))
+        ))
+        if new_root_printable_object_count != self._root_printable_object_count:
+            self._root_printable_object_count = new_root_printable_object_count
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
 
     def _updateNodeListeners(self, node: SceneNode):
@@ -202,6 +225,9 @@ class BuildVolume(SceneNode):
     def setShape(self, shape: str) -> None:
         if shape:
             self._shape = shape
+
+    def getShape(self) -> str:
+        return self._shape
 
     def getDiagonalSize(self) -> float:
         """Get the length of the 3D diagonal through the build volume.
@@ -486,20 +512,20 @@ class BuildVolume(SceneNode):
         if not self._disallowed_areas:
             return None
 
+        bounding_box = Polygon(numpy.array([[min_w, min_d], [min_w, max_d], [max_w, max_d], [max_w, min_d]], numpy.float32))
+
         mb = MeshBuilder()
         color = self._disallowed_area_color
         for polygon in self._disallowed_areas:
-            points = polygon.getPoints()
-            if len(points) == 0:
+            intersection = polygon.intersectionConvexHulls(bounding_box)
+            points = numpy.flipud(intersection.getPoints())
+            if len(points) < 3:
                 continue
 
-            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                           self._clamp(points[0][1], min_d, max_d))
-            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                    self._clamp(points[0][1], min_d, max_d))
-            for point in points:
-                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                   self._clamp(point[1], min_d, max_d))
+            first = Vector(points[0][0], disallowed_area_height, points[0][1])
+            previous_point = Vector(points[1][0], disallowed_area_height, points[1][1])
+            for point in points[2:]:
+                new_point = Vector(point[0], disallowed_area_height, point[1])
                 mb.addFace(first, previous_point, new_point, color=color)
                 previous_point = new_point
 
@@ -647,12 +673,14 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
-                if self._height < (machine_height * self._scale_vector.z):
+            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and self._root_printable_object_count > 1:
+                new_height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
+
+                if self._height > new_height:
                     self._build_volume_message.show()
-                else:
+                elif self._height < new_height:
                     self._build_volume_message.hide()
+                self._height = new_height
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
@@ -687,14 +715,21 @@ class BuildVolume(SceneNode):
         update_extra_z_clearance = True
 
         for setting_key in self._changed_settings_since_last_rebuild:
+            if setting_key in ["print_sequence", "support_mesh", "infill_mesh", "cutting_mesh", "anti_overhang_mesh"]:
+                self._updateRootPrintableObjectCount()
+
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
-                if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z, machine_height)
-                    if self._height < (machine_height * self._scale_vector.z):
+                if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and self._root_printable_object_count > 1:
+                    new_height = min(
+                        self._global_container_stack.getProperty("gantry_height", "value") * self._scale_vector.z,
+                        machine_height)
+
+                    if self._height > new_height:
                         self._build_volume_message.show()
-                    else:
+                    elif self._height < new_height:
                         self._build_volume_message.hide()
+                    self._height = new_height
                 else:
                     self._height = self._global_container_stack.getProperty("machine_height", "value") * self._scale_vector.z
                     self._build_volume_message.hide()
@@ -804,7 +839,7 @@ class BuildVolume(SceneNode):
             prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
             for extruder_id in prime_tower_areas:
                 for area_index, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
-                    for area in result_areas[extruder_id]:
+                    for area in result_areas_no_brim[extruder_id]:
                         if prime_tower_area.intersectsPolygon(area) is not None:
                             prime_tower_collision = True
                             break
@@ -851,13 +886,24 @@ class BuildVolume(SceneNode):
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
             prime_tower_x = self._global_container_stack.getProperty("prime_tower_position_x", "value")
             prime_tower_y = - self._global_container_stack.getProperty("prime_tower_position_y", "value")
+            prime_tower_brim_enable = self._global_container_stack.getProperty("prime_tower_brim_enable", "value")
+            prime_tower_base_size = self._global_container_stack.getProperty("prime_tower_base_size", "value")
+            prime_tower_base_height = self._global_container_stack.getProperty("prime_tower_base_height", "value")
+            adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
+
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
             radius = prime_tower_size / 2
-            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 24)
-            prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+            delta_x = -radius
+            delta_y = -radius
+
+            if prime_tower_base_size > 0 and ((prime_tower_brim_enable and prime_tower_base_height > 0) or adhesion_type == "raft"):
+                radius += prime_tower_base_size
+
+            prime_tower_area = Polygon.approximatedCircle(radius, num_segments = 32)
+            prime_tower_area = prime_tower_area.translate(prime_tower_x + delta_x, prime_tower_y + delta_y)
 
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
@@ -1162,7 +1208,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_layers", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable", "prime_tower_base_size", "prime_tower_base_height"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "skirt_brim_extruder_nr", "raft_base_extruder_nr", "raft_interface_extruder_nr", "raft_surface_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.

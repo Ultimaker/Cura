@@ -1,0 +1,51 @@
+{
+    "version": 2,
+    "name": "UltiMaker S7",
+    "inherits": "ultimaker_s5",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_s7_platform.obj",
+        "bom_numbers": [5078167, 5078168],
+        "firmware_update_info":
+        {
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/5078167/stable/um-update.swu.version" ],
+            "id": 5078167,
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_s7_extruder_left",
+            "1": "ultimaker_s7_extruder_right"
+        },
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "UltimakerS7backplate.png",
+        "preferred_material": "ultimaker_pla_blue",
+        "preferred_variant_name": "AA 0.4",
+        "quality_definition": "ultimaker_s5",
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_material_export": true,
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Print core",
+        "weight": -2
+    },
+    "overrides":
+    {
+        "default_material_print_temperature": { "maximum_value_warning": "320" },
+        "machine_name": { "default_value": "Ultimaker S7" },
+        "material_print_temperature_layer_0": { "maximum_value_warning": "320" }
+    }
+}

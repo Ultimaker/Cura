@@ -1,0 +1,272 @@
+name: All installers
+run-name: ${{ inputs.cura_conan_version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_conan_version:
+        description: 'Cura Conan Version'
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        description: 'Conan args: eq.: --require-override'
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        required: true
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        required: true
+        type: boolean
+      nightly:
+        description: 'Upload to nightly release'
+        default: false
+        required: true
+        type: boolean
+
+  schedule:
+    # Daily at 4:15 CET (main-branch) and 5:15 CET (release-branch)
+    - cron: '15 3 * * *'
+    - cron: '15 4 * * *'
+
+env:
+  CONAN_ARGS: ${{ inputs.conan_args || '' }}
+  ENTERPRISE: ${{ inputs.enterprise || false }}
+  STAGING: ${{ inputs.staging || false }}
+
+jobs:
+  default_values:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@main
+    with:
+      cura_conan_version: ${{ inputs.cura_conan_version }}
+      latest_release: '5.6'
+      latest_release_schedule_hour: 4
+      latest_release_tag: 'nightly'
+
+  windows-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
+    needs: [ default_values ]
+    with:
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
+      conan_args: ${{ github.event.inputs.conan_args }}
+      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+      staging: ${{ github.event.inputs.staging == 'true' }}
+      architecture: X64
+      operating_system: self-hosted-Windows-X64
+    secrets: inherit
+
+  linux-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
+    needs: [ default_values ]
+    with:
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
+      conan_args: ${{ github.event.inputs.conan_args }}
+      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+      staging: ${{ github.event.inputs.staging == 'true' }}
+      architecture: X64
+      operating_system: ubuntu-22.04
+    secrets: inherit
+
+  macos-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+    needs: [ default_values ]
+    with:
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
+      conan_args: ${{ github.event.inputs.conan_args }}
+      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+      staging: ${{ github.event.inputs.staging == 'true' }}
+      architecture: X64
+      operating_system: self-hosted-X64
+    secrets: inherit
+
+  macos-arm-installer:
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+    needs: [ default_values ]
+    with:
+      cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
+      conan_args: ${{ github.event.inputs.conan_args }}
+      enterprise: ${{ github.event.inputs.enterprise == 'true' }}
+      staging: ${{ github.event.inputs.staging == 'true' }}
+      architecture: ARM64
+      operating_system: self-hosted-ARM64
+    secrets: inherit
+
+  # Run and update nightly release when the nightly input is set to true or if the schedule is triggered
+  update-nightly-release:
+    if: ${{ inputs.nightly || github.event_name == 'schedule' }}
+    runs-on: ubuntu-latest
+    needs: [ default_values, windows-installer, linux-installer, macos-installer, macos-arm-installer ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Download the run info
+        uses: actions/download-artifact@v2
+        with:
+          name: linux-run-info
+
+      - name: Set the run info as environment variables
+        run: |
+          . run_info.sh 
+
+      - name: Output the name file name and extension
+        id: filename
+        shell: python
+        run: |
+          import os
+          import datetime
+          enterprise = "-Enterprise" if "${{ github.event.inputs.enterprise }}" == "true" else ""
+          linux = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-linux-X64"
+          mac_x64_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+          mac_x64_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-X64"
+          mac_arm_dmg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+          mac_arm_pkg = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-macos-ARM64"
+          win_msi = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+          win_exe = installer_filename = f"UltiMaker-Cura-{os.getenv('CURA_VERSION_FULL')}{enterprise}-win64-X64"
+          nightly_name = "UltiMaker-Cura-" + os.getenv('CURA_VERSION_FULL').split("+")[0]
+          nightly_creation_time = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+          output_env = os.environ["GITHUB_OUTPUT"]
+          content = ""
+          if os.path.exists(output_env):
+              with open(output_env, "r") as f:
+                  content = f.read()
+          with open(output_env, "w") as f:
+              f.write(content)
+              f.writelines(f"LINUX={linux}\n")
+              f.writelines(f"MAC_X64_DMG={mac_x64_dmg}\n")
+              f.writelines(f"MAC_X64_PKG={mac_x64_pkg}\n")
+              f.writelines(f"MAC_ARM_DMG={mac_arm_dmg}\n")
+              f.writelines(f"MAC_ARM_PKG={mac_arm_pkg}\n")
+              f.writelines(f"WIN_MSI={win_msi}\n")
+              f.writelines(f"WIN_EXE={win_exe}\n")
+              f.writelines(f"NIGHTLY_NAME={nightly_name}\n")
+              f.writelines(f"NIGHTLY_TIME={nightly_creation_time}\n")
+
+      - name: Download linux installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.LINUX }}-AppImage
+          path: installers
+
+      - name: Download linux installer jobs asc artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.LINUX }}-asc
+          path: installers
+
+      - name: Rename Linux installer to nightlies
+        run: |
+          mv installers/${{ steps.filename.outputs.LINUX }}.AppImage installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage
+          mv installers/${{ steps.filename.outputs.LINUX }}.AppImage.asc installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc
+
+      - name: Update nightly release for Linux
+        run: |
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-linux-X64.AppImage.asc  --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download win msi installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.WIN_MSI }}-msi
+          path: installers
+
+      - name: Download win exe installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.WIN_EXE }}-exe
+          path: installers
+
+      - name: Rename Windows installers to nightlies
+        run: |
+          mv installers/${{ steps.filename.outputs.WIN_MSI }}.msi installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi
+          mv installers/${{ steps.filename.outputs.WIN_EXE }}.exe installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe
+
+      - name: Update nightly release for Windows
+        run: |
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.msi --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-win64-X64.exe --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download MacOS (X64) dmg installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.MAC_X64_DMG }}-dmg
+          path: installers
+
+      - name: Download MacOS (X64) pkg installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.MAC_X64_PKG }}-pkg
+          path: installers
+
+      - name: Rename MacOS (X64) installers to nightlies
+        run: |
+          mv installers/${{ steps.filename.outputs.MAC_X64_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg
+          mv installers/${{ steps.filename.outputs.MAC_X64_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg
+
+      - name: Update nightly release for MacOS (X64)
+        run: |
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.dmg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-X64.pkg --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download MacOS (ARM-64) dmg installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
+          path: installers
+
+      - name: Download MacOS (ARM-64) pkg installer jobs artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
+          path: installers
+
+      - name: Rename MacOS (ARM-64) installers to nightlies
+        run: |
+          mv installers/${{ steps.filename.outputs.MAC_ARM_DMG }}.dmg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg
+          mv installers/${{ steps.filename.outputs.MAC_ARM_PKG }}.pkg installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg
+
+      - name: Update nightly release for MacOS (ARM-64)
+        run: |
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.dmg --clobber
+          gh release upload ${{ needs.default_values.outputs.release_tag }} installers/${{ steps.filename.outputs.NIGHTLY_NAME }}-macos-ARM64.pkg --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: create the release notes
+        shell: python
+        run: |
+          import os
+          import datetime
+          from jinja2 import Template
+          
+          with open(".github/workflows/release_notes.md.jinja", "r") as f:
+              release_notes = Template(f.read())
+          
+          current_nightly_beta = "${{ needs.default_values.outputs.release_tag }}".split("nightly-")[-1]
+          with open("release-notes.md", "w") as f:
+              f.write(release_notes.render(
+                timestamp="${{ steps.filename.outputs.NIGHTLY_TIME }}",
+                branch="" if "${{ needs.default-values.outputs.release_tag == 'nightly' }}" == 'true' else current_nightly_beta,
+                branch_specific="" if os.getenv("GITHUB_REF") == "refs/heads/main" else f"?branch={current_nightly_beta}",
+              ))
+
+      - name: Update nightly release description (with date)
+        if: always()
+        run: |
+          gh release edit ${{ needs.default_values.outputs.release_tag }} --title "${{ steps.filename.outputs.NIGHTLY_NAME }}" --notes-file release-notes.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

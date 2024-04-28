@@ -1,0 +1,122 @@
+{
+    "version": 2,
+    "name": "UltiMaker Method X",
+    "inherits": "ultimaker_method_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-makerbot",
+        "platform": "ultimaker_method_platform.stl",
+        "exclude_materials": [
+            "dsm_",
+            "Essentium_",
+            "imade3d_",
+            "chromatik_",
+            "3D-Fuel_",
+            "bestfilament_",
+            "emotiontech_",
+            "eryone_",
+            "eSUN_",
+            "Extrudr_",
+            "fabtotum_",
+            "fdplast_",
+            "filo3d_",
+            "generic_asa_175",
+            "generic_abs_175",
+            "generic_bvoh_175",
+            "generic_petg_175",
+            "generic_pla_175",
+            "generic_tough_pla_175",
+            "generic_pva_175",
+            "generic_cffpa_175",
+            "generic_cpe_175",
+            "generic_nylon_175",
+            "generic_hips_175",
+            "generic_pc_175",
+            "generic_tpu_175",
+            "goofoo_",
+            "ideagen3D_",
+            "imade3d_",
+            "innofill_",
+            "layer_one_",
+            "leapfrog_",
+            "polyflex_pla",
+            "polymax_pla",
+            "polyplus_pla",
+            "polywood_pla",
+            "redd_",
+            "tizyx_",
+            "verbatim_",
+            "Vertex_",
+            "volumic_",
+            "xyzprinting_",
+            "zyyx_pro_",
+            "octofiber_",
+            "fiberlogy_"
+        ],
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_methodx_extruder_left",
+            "1": "ultimaker_methodx_extruder_right"
+        },
+        "platform_offset": [
+            0,
+            0,
+            16
+        ],
+        "platform_texture": "MakerbotMethod.png",
+        "preferred_material": "ultimaker_absr_175",
+        "preferred_quality_type": "draft",
+        "preferred_variant_name": "1XA",
+        "reference_machine_id": "lava_f",
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variant_definition": "ultimaker_methodx",
+        "variants_name": "Extruder",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 236.48 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-141.65, -118.11],
+                    [141.65, -118.11],
+                    [141.65, -94],
+                    [-141.65, -94]
+                ],
+                [
+                    [-141.65, 118.37],
+                    [141.65, 118.37],
+                    [141.65, 94],
+                    [-141.65, 94]
+                ],
+                [
+                    [-141.65, -118.11],
+                    [-75, -118.11],
+                    [-75, 118.37],
+                    [-141.65, 118.37]
+                ],
+                [
+                    [75, -118.11],
+                    [141.65, -118.11],
+                    [141.65, 118.37],
+                    [75, 118.37]
+                ]
+            ]
+        },
+        "machine_height": { "default_value": 196 },
+        "machine_name": { "default_value": "UltiMaker Method X" },
+        "machine_width": { "default_value": 283.3 },
+        "prime_tower_position_x": { "value": "(150 / 2 + resolveOrValue('prime_tower_size') / 2) if resolveOrValue('machine_shape') == 'elliptic' else (150 - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_x'))), 1)) - (150 / 2 if resolveOrValue('machine_center_is_zero') else 0)" },
+        "prime_tower_position_y": { "value": "190 - prime_tower_size - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (190 / 2 if resolveOrValue('machine_center_is_zero') else 0)" }
+    }
+}

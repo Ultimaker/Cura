@@ -3,9 +3,9 @@
 
 import copy
 import io
-import json #To parse the product-to-id mapping file.
-import os.path #To find the product-to-id mapping.
-from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
+import json # To parse the product-to-id mapping file.
+import os.path # To find the product-to-id mapping.
+from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
 from UM.PluginRegistry import PluginRegistry
@@ -579,8 +579,9 @@ class XmlMaterialProfile(InstanceContainer):
 
             meta_data[tag_name] = entry.text
 
-            if tag_name in self.__material_metadata_setting_map:
-                common_setting_values[self.__material_metadata_setting_map[tag_name]] = entry.text
+            for tag_name, value in meta_data.items():
+                if tag_name in self.__material_metadata_setting_map:
+                    common_setting_values[self.__material_metadata_setting_map[tag_name]] = value
 
         if "description" not in meta_data:
             meta_data["description"] = ""
@@ -910,6 +911,9 @@ class XmlMaterialProfile(InstanceContainer):
         base_metadata["properties"] = property_values
         base_metadata["definition"] = "fdmprinter"
 
+        # Certain materials are loaded but should not be visible / selectable to the user.
+        base_metadata["visible"] = not base_metadata.get("abstract_color", False)
+
         compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
         try:
             common_compatibility = cls._parseCompatibleValue(next(compatible_entries).text) # type: ignore
@@ -1219,7 +1223,9 @@ class XmlMaterialProfile(InstanceContainer):
         "diameter": "material_diameter"
     }
     __material_metadata_setting_map = {
-        "GUID": "material_guid"
+        "GUID": "material_guid",
+        "material": "material_type",
+        "brand": "material_brand",
     }
 
     # Map of recognised namespaces with a proper prefix.
