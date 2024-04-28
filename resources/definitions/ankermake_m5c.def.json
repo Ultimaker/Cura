@@ -99,7 +99,7 @@
     "bridge_wall_speed": { "value": 20 },
     "bridge_skin_speed": { "value": 20 },
     "bridge_skin_material_flow": { "value": 100 },
-    
+
     "bridge_skin_speed_2": { "value": 50 },
     "bridge_skin_material_flow_2": { "value": 80 },
     "bridge_skin_density_2": { "value": 80 },
@@ -107,7 +107,7 @@
     "bridge_skin_speed_3": { "value": 50 },
     "bridge_fan_speed_3": { "value": 100 },
     "bridge_wall_material_flow": { "value": 100 },
-    "bridge_split_min_length": { "value": 5 },
+    "bridge_wall_min_length ": { "value": 5 },
     "bridge_shrink_length": { "value": 0.01 },
 
     "speed_travel": {
@@ -242,14 +242,6 @@
 
     "material_density": { "value": 1.24 },
     "material_linear_density": { "value": 2.98 },
-    "material_print_temperature": { "value": 220 },
-    "material_print_temperature_layer_0": { "value": 230 },
-    "material_initial_print_temperature": { "value": 220 },
-    "material_final_print_temperature": { "value": 205 },
-    "default_material_bed_temperature": { "value": 65 },
-    "material_bed_temperature": { "value": 65 },
-    "material_bed_temperature_layer_0": { "value": 65 },
-    "material_break_preparation_temperature": { "value": 220 },
     "material_no_load_move_factor": { "value": 0.94 },
 
     "support_infill_rate": { "value": 30 },
