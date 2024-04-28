@@ -27,7 +27,7 @@
             "maximum_value": "90",
             "maximum_value_warning": "70"
         },
-        "speed_print": { "default_value": 60.0 },
+        "speed_print": { "value": 60.0 },
         "speed_support": { "value": "round(speed_print * 0.96, 1)" },
         "speed_topbottom": { "value": "round(speed_print * 0.58, 1)" },
         "speed_wall": { "value": "speed_print / 2" }

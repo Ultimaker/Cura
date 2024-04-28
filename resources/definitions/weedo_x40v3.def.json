@@ -37,7 +37,7 @@
         "ooze_shield_dist": { "default_value": 3.0 },
         "ooze_shield_enabled": { "default_value": true },
         "retraction_amount": { "default_value": 4 },
-        "speed_print": { "default_value": 60.0 },
+        "speed_print": { "value": 60.0 },
         "speed_support": { "value": "round(speed_print * 0.96, 1)" },
         "speed_topbottom": { "value": "round(speed_print * 0.58, 1)" },
         "speed_wall": { "value": "speed_print / 2" },
