@@ -77,7 +77,7 @@ Control
 
                     Repeater {
                         model: [
-                            catalog.i18nc("@info", "Sign in into UltiMaker Digilal Factory"),
+                            catalog.i18nc("@info", "Sign in into UltiMaker Digital Factory"),
                             catalog.i18nc("@info", "Follow the procedure to add a new printer"),
                             catalog.i18nc("@info", "Your new printer will automatically appear in Cura"),
                         ]
@@ -133,7 +133,7 @@ Control
                         text = catalog.i18nc("@button", "Waiting for new printers")
                         busy = true;
                         enabled = false;
-                        Cura.API.account.login();
+                        Cura.API.account.isLoggedIn? Cura.API.account.sync():Cura.API.account.login();
                     }
                 }
             }

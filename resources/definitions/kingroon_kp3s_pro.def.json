@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "Kingroon KP3S Pro",
+    "inherits": "kingroon_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "willuhmjs",
+        "platform": "kingroon_kp3s.stl",
+        "quality_definition": "kingroon_base"
+    },
+    "overrides":
+    {
+        "machine_acceleration": { "value": 1000 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_max_acceleration_e": { "value": 1000 },
+        "machine_max_acceleration_x": { "value": 1000 },
+        "machine_max_acceleration_y": { "value": 1000 },
+        "machine_max_acceleration_z": { "value": 100 },
+        "machine_max_feedrate_e": { "value": 100 },
+        "machine_max_feedrate_x": { "value": 200 },
+        "machine_max_feedrate_y": { "value": 200 },
+        "machine_max_feedrate_z": { "value": 4 },
+        "machine_max_jerk_xy": { "value": 15 },
+        "machine_max_jerk_z": { "value": 0.4 },
+        "machine_name": { "default_value": "Kingroon KP3S Pro" },
+        "machine_steps_per_mm_e": { "value": 764 },
+        "machine_steps_per_mm_x": { "value": 160 },
+        "machine_steps_per_mm_y": { "value": 160 },
+        "machine_steps_per_mm_z": { "value": 800 },
+        "machine_width": { "default_value": 200 },
+        "retraction_amount": { "value": 1 },
+        "retraction_extrusion_window": { "value": 1 },
+        "retraction_speed": { "value": 40 },
+        "speed_z_hop": { "value": 4 }
+    }
+}

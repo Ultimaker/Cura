@@ -5,7 +5,7 @@
 # online cloud connected printers are represented within this ListModel. Additional information such as the number of
 # connected printers for each printer type is gathered.
 
-from typing import Optional, List, cast
+from typing import Optional, List, cast, Dict, Any
 
 from PyQt6.QtCore import Qt, QTimer, QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -30,10 +30,10 @@ class MachineListModel(ListModel):
     ComponentTypeRole = Qt.ItemDataRole.UserRole + 8
     IsNetworkedMachineRole = Qt.ItemDataRole.UserRole + 9
 
-    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True) -> None:
+    def __init__(self, parent: Optional[QObject] = None, machines_filter: List[GlobalStack] = None, listenToChanges: bool = True, showCloudPrinters: bool = False) -> None:
         super().__init__(parent)
 
-        self._show_cloud_printers = False
+        self._show_cloud_printers = showCloudPrinters
         self._machines_filter = machines_filter
 
         self._catalog = i18nCatalog("cura")
@@ -110,22 +110,22 @@ class MachineListModel(ListModel):
 
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
-            online_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = True)
+            connected_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = False)
 
-            online_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), online_machine_stacks))
-            online_machine_stacks.sort(key=lambda machine: machine.getName().upper())
+            connected_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), connected_machine_stacks))
+            connected_machine_stacks.sort(key=lambda machine: machine.getName().upper())
 
             if abstract_machine in other_machine_stacks:
                 other_machine_stacks.remove(abstract_machine)
 
-            if abstract_machine in online_machine_stacks:
-                online_machine_stacks.remove(abstract_machine)
+            if abstract_machine in connected_machine_stacks:
+                connected_machine_stacks.remove(abstract_machine)
 
             # Create a list item for abstract machine
-            self.addItem(abstract_machine, True, len(online_machine_stacks))
+            self.addItem(abstract_machine, True, len(connected_machine_stacks))
 
             # Create list of machines that are children of the abstract machine
-            for stack in online_machine_stacks:
+            for stack in connected_machine_stacks:
                 if self._show_cloud_printers:
                     self.addItem(stack, True)
                 # Remove this machine from the other stack list
@@ -159,3 +159,8 @@ class MachineListModel(ListModel):
             "machineCount": machine_count,
             "catergory": "connected" if is_online else "other",
         })
+
+    def getItems(self) -> Dict[str, Any]:
+        if self.count > 0:
+            return self.items
+        return {}

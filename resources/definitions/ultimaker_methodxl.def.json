@@ -1,0 +1,74 @@
+{
+    "version": 2,
+    "name": "UltiMaker Method XL",
+    "inherits": "ultimaker_methodx",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-makerbot",
+        "platform": "ultimaker_method_xl_platform.stl",
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_methodxl_extruder_left",
+            "1": "ultimaker_methodxl_extruder_right"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "MakerbotMethod.png",
+        "preferred_quality_type": "draft",
+        "reference_machine_id": "magma_10",
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Extruder",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 320 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-204, -160],
+                    [204, -160],
+                    [204, -154.5],
+                    [-204, -154.5]
+                ],
+                [
+                    [-204, 160],
+                    [204, 160],
+                    [204, 154.5],
+                    [-204, 154.5]
+                ],
+                [
+                    [-205, -160],
+                    [-154.5, -160],
+                    [-154.5, 160],
+                    [-205, 160]
+                ],
+                [
+                    [154.5, -160],
+                    [205, -160],
+                    [205, 160],
+                    [154.5, 160]
+                ]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 320 },
+        "machine_name": { "default_value": "UltiMaker Method XL" },
+        "machine_width": { "default_value": 410 },
+        "prime_tower_position_x": { "value": "(305 - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_x'))), 1)) - (305 / 2)" },
+        "prime_tower_position_y": { "value": "305 - prime_tower_size - (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) - max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (305 / 2)" },
+        "speed_travel": { "value": 500 }
+    }
+}
