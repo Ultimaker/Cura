@@ -14,6 +14,6 @@
         },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code":{ "default_value": "G91 ; Relative positioning\nG1 E14 F300\nG1 E-5 F1800\nG90\nG92 E-4.5" },
-        "machine_extruder_end_code":{"default_value":"M605 S0 ;Disable auto-park\nG91 ; Relative positioning\nG1 E-8 1680\nG90\nG0 X-47 F3000\n"}
+        "machine_extruder_end_code":{"default_value":"M605 S0 ;Disable auto-park\nG91 ; Relative positioning\nG1 E-8 1680\nG90\nG0 X-49 F3000\n"}
     }
 }
