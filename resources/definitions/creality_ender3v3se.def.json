@@ -1,0 +1,55 @@
+{
+    "version": 2,
+    "name": "Creality Ender-3 V3 SE",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "manufacturer": "Creality3D",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "creality_base_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "creality_base",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 38 },
+        "machine_depth": { "default_value": 220 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-36, -18],
+                [-20, -42],
+                [6, -42],
+                [30, -18],
+                [30, 52],
+                [-3, 56],
+                [-36, 52]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_max_acceleration_x": { "value": 5000.0 },
+        "machine_max_acceleration_y": { "value": 5000.0 },
+        "machine_max_acceleration_z": { "value": 500.0 },
+        "machine_max_feedrate_e": { "value": 100 },
+        "machine_max_feedrate_x": { "value": 500 },
+        "machine_max_feedrate_y": { "value": 500 },
+        "machine_max_feedrate_z": { "value": 30 },
+        "machine_name": { "default_value": "Creality Ender-3 V3 SE" },
+        "machine_start_gcode": { "default_value": "M220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\nM420 S1; Use saved mesh leveling data\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X-3 Y20 Z0.28 F5000.0 ;Move to start position\nM190 S{material_bed_temperature_layer_0} ; Set bed temperature and wait\nM109 S{material_print_temperature_layer_0} ; Set hotend temperature and wait\nG1 X-3 Y100.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X-2 Y100.0 Z0.28 F5000.0 ;Move to side a little\nG1 X-2 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 E-1.0000 F1800 ;Retract a bit\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 E0.0000 F1800 \n" },
+        "machine_width": { "default_value": 220 },
+        "retraction_amount": { "value": 0.8 },
+        "retraction_speed": { "default_value": 40 },
+        "speed_layer_0": { "value": 30 },
+        "speed_print": { "value": 180 }
+    }
+}

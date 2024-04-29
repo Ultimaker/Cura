@@ -1,6 +1,6 @@
 {
-    "name": "Voron2 300",
     "version": 2,
+    "name": "Voron2 300",
     "inherits": "voron2_base",
     "metadata":
     {
@@ -10,9 +10,9 @@
     },
     "overrides":
     {
-        "machine_name":     { "default_value": "VORON2 300" },
-        "machine_width":    { "default_value": 300 },
-        "machine_depth":    { "default_value": 300 },
-        "machine_height":   { "default_value": 300 }
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 300 },
+        "machine_name": { "default_value": "VORON2 300" },
+        "machine_width": { "default_value": 300 }
     }
 }

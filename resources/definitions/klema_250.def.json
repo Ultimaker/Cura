@@ -1,0 +1,34 @@
+{
+    "version": 2,
+    "name": "KLEMA 250",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "KLEMA LTD",
+        "manufacturer": "KLEMA",
+        "file_formats": "text/x-gcode",
+        "has_machine_quality": false,
+        "has_materials": true,
+        "has_variants": false,
+        "machine_extruder_trains": { "0": "klema_250_m1_t1_extruder_1" },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "preferred_variant_name": "Standard 0.4mm",
+        "quality_definition": "klema",
+        "variants_name": "KLEMA 250 Size"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 250 },
+        "machine_end_gcode": { "default_value": "M104 S0 ;\nM140 S0 ;\nM107 ;\nG91 ;\nG1 E-1 F300 ;\nG1 Z+65 E-2 X-20 Y-20 F2000 ;\nG28 X0 Y0 ;\nG90" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 350 },
+        "machine_name": { "default_value": "KLEMA 250" },
+        "machine_start_gcode": { "default_value": "M140 S{material_bed_temperature_layer_0} ;\nM190 S{material_bed_temperature_layer_0} ;\nM501 ;\nM104 S150 ;\nG28 ;\nG90 ;\nG0 X0 Y0 F6000 ;\nM109 S{material_print_temperature_layer_0} ;\nG0 Z0.3 F300 ;\nG92 E0 ;\nG1 X70 E10 F500 ;\nG92 E0 ;\nG1 E-1 F500 ;\nG92 E0 ;\nG1 Z1 ;\nG1 X100 F6000 ;\nG1 E-1 F500 ;\nG92 E0" },
+        "machine_width": { "default_value": 250 }
+    }
+}

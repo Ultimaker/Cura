@@ -1,0 +1,27 @@
+{
+    "version": 2,
+    "name": "Tank M3",
+    "inherits": "tank_m_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "tank_m_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 0 },
+        "machine_depth": { "default_value": 235 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Tank M3" },
+        "machine_width": { "default_value": 235 }
+    }
+}

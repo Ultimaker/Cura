@@ -1,59 +1,31 @@
 {
-    "name": "Abax PRi5",
     "version": 2,
+    "name": "Abax PRi5",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Abax 3D Technologies",
         "manufacturer": "Abax 3D Technologies",
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "abax_pri5_extruder_0"
-        }
+        "has_machine_quality": "true",
+        "machine_extruder_trains": { "0": "abax_pri5_extruder_0" }
     },
-    "overrides": {
-        "machine_start_gcode": {
-            "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z5.0 F200          ;move Z to position 5.0 mm\nG92 E0                  ;zero the extruded length\n; -- end of START GCODE --"
-        },
-        "machine_end_gcode": {
-            "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nM140 S0  ;set temp of bed to Zero  \nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament a bit to release some of the pressure\nG1 F2000 X0 Y300                 ;move X to min and Y to max \nG90                     ;set to absolute positioning\nM84                     ;turn off steppers\n; -- end of END GCODE --"
-        },
-        "machine_width": {
-            "default_value": 310
-        },
-        "machine_depth": {
-            "default_value": 310
-        },
-        "machine_height": {
-            "default_value": 300
-        },
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap"
-        },
-        "layer_height": {
-            "default_value": 0.2
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "wall_thickness": {
-            "value": "1"
-        },
-        "top_bottom_thickness": {
-            "default_value": 1
-        },
-        "speed_print": {
-            "default_value": 40
-        },
-        "support_enable": {
-            "default_value": true
-        }
+    "overrides":
+    {
+        "layer_height": { "default_value": 0.2 },
+        "layer_height_0": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 310 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM104 S0                 ;set extruder temperature to zero (turned off)\nM140 S0  ;set temp of bed to Zero  \nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament a bit to release some of the pressure\nG1 F2000 X0 Y300                 ;move X to min and Y to max \nG90                     ;set to absolute positioning\nM84                     ;turn off steppers\n; -- end of END GCODE --" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 300 },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28 X0 Y0               ;move to the X/Y origin (Home)\nG28 Z0                  ;move to the Z origin (Home)\nG1 Z5.0 F200          ;move Z to position 5.0 mm\nG92 E0                  ;zero the extruded length\n; -- end of START GCODE --" },
+        "machine_width": { "default_value": 310 },
+        "speed_print": { "default_value": 40 },
+        "support_enable": { "default_value": true },
+        "top_bottom_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" }
     }
 }

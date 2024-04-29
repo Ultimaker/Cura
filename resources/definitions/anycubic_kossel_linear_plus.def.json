@@ -1,36 +1,22 @@
 {
-    "name": "Anycubic Kossel Linear Plus",
     "version": 2,
+    "name": "Anycubic Kossel Linear Plus",
     "inherits": "anycubic_kossel",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "platform": "kossel_pro_build_platform.3mf",
-        "platform_offset": [0, -0.25, 0],
-        "machine_extruder_trains": {
-            "0": "anycubic_kossel_extruder_0"
-        }
+        "machine_extruder_trains": { "0": "anycubic_kossel_extruder_0" },
+        "platform_offset": [
+            0,
+            -0.25,
+            0
+        ]
     },
-    "overrides": {
-        "machine_name": {
-            "default_value": "Anycubic Kossel Linear Plus"
-        },
-        "machine_width": {
-            "default_value": 240
-        },
-        "machine_depth": {
-            "default_value": 240
-        },
-        "machine_disallowed_areas": {
-            "default_value": [
-                [[-50, -115], [-115, -115], [-90, -90]],
-                [[-115, -115], [-115, -50], [-90, -90]],
-                [[50, -115], [115, -115], [90, -90]],
-                [[115, -115], [115, -50], [90, -90]],
-                [[-50, 115], [-115, 115], [-90, 90]],
-                [[-115, 115], [-115, 50], [-90, 90]],
-                [[50, 115], [115, 115], [90, 90]],
-                [[115, 115], [115, 50], [90, 90]]
-            ]
-        }
+    "overrides":
+    {
+        "machine_depth": { "default_value": 240 },
+        "machine_name": { "default_value": "Anycubic Kossel Linear Plus" },
+        "machine_width": { "default_value": 240 }
     }
 }

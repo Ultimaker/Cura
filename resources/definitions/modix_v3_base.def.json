@@ -1,0 +1,87 @@
+{
+    "version": 2,
+    "name": "Modix Base Printer",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "author": "Modix",
+        "manufacturer": "Modix",
+        "file_formats": "text/x-gcode",
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "modix_v3_extruder_0",
+            "1": "modix_v3_extruder_1"
+        },
+        "preferred_variant_name": "0.4 mm Nozzle",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
+        "fill_outline_gaps": { "value": false },
+        "gantry_height": { "value": "90.0" },
+        "infill_before_walls": { "value": false },
+        "infill_overlap": { "value": 30.0 },
+        "infill_pattern": { "value": "'cubic'" },
+        "infill_sparse_density": { "value": "15" },
+        "layer_height_0": { "value": "round(machine_nozzle_size / 2, 1)" },
+        "line_width": { "value": "machine_nozzle_size * 1.05" },
+        "machine_end_gcode": { "default_value": "M83 ; extruder relative moves \nG1 E-5 F2700 ;retract a bit \nG10 P0 S0 R0 ; turn off extruder 0 \nG10 P1 S0 R0 ; turn off extruder 1 \nM106 S0 ; turn off fans \nT-1 P0 ; deselect any tools \nG4 P1 ; dwell 1ms \nG91 ;relative positioning \nG1 Z2 F500 ; Move print head up 2mm \nG90 ; absolute positioning \nG1 X{move.axes[0].min+2} Y{move.axes[1].max-2} F6000 ; move to the back left \nM84 ; disable motors" },
+        "machine_gcode_flavor": { "default_value": "RepRap (RepRap)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-100, 30],
+                [-100, 65],
+                [30, -105],
+                [-31, -100]
+            ]
+        },
+        "machine_name": { "default_value": "Modix Base Printer" },
+        "machine_start_gcode": { "default_value": "G28 ; home all axes" },
+        "material_diameter": { "default_value": 1.75 },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+        "minimum_interface_area": { "value": 10 },
+        "minimum_support_area": { "value": "2 if support_structure == 'normal' else 0" },
+        "optimize_wall_printing_order": { "value": "True" },
+        "retraction_amount": { "value": 1 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'infill'" },
+        "retraction_combing_max_distance": { "value": 5 },
+        "retraction_count_max": { "value": 50 },
+        "retraction_extrusion_window": { "value": 1 },
+        "retraction_hop": { "value": "layer_height*4" },
+        "retraction_hop_enabled": { "value": "support_enable" },
+        "retraction_prime_speed": { "value": 40 },
+        "retraction_retract_speed": { "value": 40 },
+        "retraction_speed": { "default_value": 40 },
+        "skin_overlap": { "value": 10.0 },
+        "skirt_brim_minimal_length": { "default_value": 200 },
+        "skirt_gap": { "value": 5.0 },
+        "skirt_line_count": { "value": 3 },
+        "speed_layer_0": { "value": 20.0 },
+        "speed_prime_tower": { "value": "speed_topbottom" },
+        "speed_support": { "value": "speed_wall_0" },
+        "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_travel": { "value": 110.0 },
+        "speed_wall_x": { "value": "speed_wall" },
+        "speed_z_hop": { "value": 5 },
+        "support_angle": { "value": 55 },
+        "support_brim_enable": { "value": true },
+        "support_brim_width": { "value": 5 },
+        "support_infill_rate": { "value": "0 if support_enable and support_structure == 'tree' else 15" },
+        "support_interface_density": { "value": 40 },
+        "support_interface_enable": { "value": true },
+        "support_interface_height": { "value": "layer_height * 3" },
+        "support_xy_distance": { "value": "wall_line_width_0 * 2" },
+        "support_xy_distance_overhang": { "value": "wall_line_width_0" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.2 else layer_height * 2" },
+        "top_bottom_thickness": { "value": "layer_height_0 + layer_height * 3" },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true },
+        "wall_thickness": { "value": "line_width * 2" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" }
+    }
+}

@@ -111,11 +111,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # Parent can be None if node is just loaded.
         if self._isSingularOneAtATimeNode():
-            hull = self.getConvexHullHeadFull()
-            if hull is None:
-                return None
-            hull = self._add2DAdhesionMargin(hull)
-            return hull
+            return self.getConvexHullHeadFull()
 
         return self._compute2DConvexHull()
 
@@ -323,6 +319,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
+        convex_hull = self._add2DAdhesionMargin(convex_hull)
         if convex_hull:
             return convex_hull.getMinkowskiHull(self._getHeadAndFans())
         return None
@@ -390,7 +387,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 # Find the root node that's placed in the scene; the root of the mesh group.
                 ancestor = self.getNode()
-                while ancestor.getParent() != self._root:
+                while ancestor.getParent() != self._root and ancestor.getParent() is not None:
                     ancestor = ancestor.getParent()
                 center = ancestor.getBoundingBox().center
             else:

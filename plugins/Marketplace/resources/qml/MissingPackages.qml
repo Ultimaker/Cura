@@ -5,7 +5,7 @@ import UM 1.4 as UM
 
 Packages
 {
-    pageTitle: catalog.i18nc("@header", "Install Materials")
+    pageTitle: catalog.i18nc("@header", "Install Packages")
 
     bannerVisible: false
     showUpdateButton: false

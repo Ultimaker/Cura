@@ -1,257 +1,281 @@
 {
-    "name": "Extruder",
     "version": 2,
+    "name": "Extruder",
     "metadata":
     {
-        "type": "extruder",
+        "visible": false,
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 20,
-        "visible": false,
-        "position": "0"
+        "position": "0",
+        "setting_version": 23,
+        "type": "extruder"
     },
     "settings":
     {
         "machine_settings":
         {
-            "label": "Machine",
-            "type": "category",
-            "description": "Machine specific settings",
             "children":
             {
                 "extruder_nr":
                 {
-                    "label": "Extruder",
-                    "description": "The extruder train used for printing. This is used in multi-extrusion.",
-                    "type": "extruder",
                     "default_value": "0",
+                    "description": "The extruder train used for printing. This is used in multi-extrusion.",
+                    "label": "Extruder",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
                     "settable_per_mesh": true,
-                    "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_nozzle_id":
-                {
-                    "label": "Nozzle ID",
-                    "description": "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\".",
-                    "type": "str",
-                    "default_value": "unknown",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "machine_nozzle_size":
-                {
-                    "label": "Nozzle Diameter",
-                    "description": "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.4,
-                    "minimum_value": "0.001",
-                    "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "machine_nozzle_offset_x":
-                {
-                    "label": "Nozzle X Offset",
-                    "description": "The x-coordinate of the offset of the nozzle.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_nozzle_offset_y":
-                {
-                    "label": "Nozzle Y Offset",
-                    "description": "The y-coordinate of the offset of the nozzle.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_start_code":
-                {
-                    "label": "Extruder Start G-Code",
-                    "description": "Start g-code to execute when switching to this extruder.",
-                    "type": "str",
-                    "default_value": "",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_start_pos_abs":
-                {
-                    "label": "Extruder Start Position Absolute",
-                    "description": "Make the extruder starting position absolute rather than relative to the last-known location of the head.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_start_pos_x":
-                {
-                    "label": "Extruder Start Position X",
-                    "description": "The x-coordinate of the starting position when turning the extruder on.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_start_pos_y":
-                {
-                    "label": "Extruder Start Position Y",
-                    "description": "The y-coordinate of the starting position when turning the extruder on.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_end_code":
-                {
-                    "label": "Extruder End G-Code",
-                    "description": "End g-code to execute when switching away from this extruder.",
-                    "type": "str",
-                    "default_value": "",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_end_pos_abs":
-                {
-                    "label": "Extruder End Position Absolute",
-                    "description": "Make the extruder ending position absolute rather than relative to the last-known location of the head.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_end_pos_x":
-                {
-                    "label": "Extruder End Position X",
-                    "description": "The x-coordinate of the ending position when turning the extruder off.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
-                },
-                "machine_extruder_end_pos_y":
-                {
-                    "label": "Extruder End Position Y",
-                    "description": "The y-coordinate of the ending position when turning the extruder off.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false,
-                    "settable_globally": false
+                    "type": "extruder"
                 },
                 "extruder_prime_pos_z":
                 {
-                    "label": "Extruder Prime Z Position",
+                    "default_value": 0,
                     "description": "The Z coordinate of the position where the nozzle primes at the start of printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "minimum_value_warning": "0",
+                    "label": "Extruder Prime Z Position",
                     "maximum_value": "machine_height",
+                    "minimum_value_warning": "0",
+                    "settable_per_extruder": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "type": "float",
+                    "unit": "mm"
                 },
-               "machine_extruder_cooling_fan_number":
+                "machine_extruder_cooling_fan_number":
                 {
-                    "label": "Extruder Print Cooling Fan",
+                    "default_value": 0,
                     "description": "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder.",
-                    "type": "int",
-                    "default_value": 0,
+                    "label": "Extruder Print Cooling Fan",
                     "minimum_value": "0",
-                    "settable_per_mesh": false,
+                    "settable_globally": false,
                     "settable_per_extruder": true,
+                    "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
-                    "settable_globally": false
-               }
-            }
-        },
-        "platform_adhesion":
-        {
-            "label": "Build Plate Adhesion",
-            "type": "category",
-            "icon": "Adhesion",
-            "description": "Adhesion",
-            "children":
-            {
-                "extruder_prime_pos_x":
-                {
-                    "label": "Extruder Prime X Position",
-                    "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "minimum_value_warning": "machine_nozzle_offset_x",
-                    "maximum_value": "machine_width",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "enabled": false
+                    "type": "int"
                 },
-                "extruder_prime_pos_y":
+                "machine_extruder_end_code":
                 {
-                    "label": "Extruder Prime Y Position",
-                    "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "minimum_value_warning": "machine_nozzle_offset_y",
-                    "maximum_value_warning": "machine_depth",
-                    "settable_per_mesh": false,
+                    "default_value": "",
+                    "description": "End g-code to execute when switching away from this extruder.",
+                    "label": "Extruder End G-Code",
+                    "settable_globally": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "str"
+                },
+                "machine_extruder_end_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it takes to execute the end g-code, when switching away from this extruder.",
+                    "label": "Extruder End G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
+                },
+                "machine_extruder_end_pos_abs":
+                {
+                    "default_value": false,
+                    "description": "Make the extruder ending position absolute rather than relative to the last-known location of the head.",
+                    "label": "Extruder End Position Absolute",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
+                },
+                "machine_extruder_end_pos_x":
+                {
+                    "default_value": 0,
+                    "description": "The x-coordinate of the ending position when turning the extruder off.",
+                    "label": "Extruder End Position X",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_extruder_end_pos_y":
+                {
+                    "default_value": 0,
+                    "description": "The y-coordinate of the ending position when turning the extruder off.",
+                    "label": "Extruder End Position Y",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_extruder_start_code":
+                {
+                    "default_value": "",
+                    "description": "Start g-code to execute when switching to this extruder.",
+                    "label": "Extruder Start G-Code",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "str"
+                },
+                "machine_extruder_start_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it'll take to execute the start g-code, when switching to this extruder.",
+                    "label": "Extruder Start G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
+                },
+                "machine_extruder_start_pos_abs":
+                {
+                    "default_value": false,
+                    "description": "Make the extruder starting position absolute rather than relative to the last-known location of the head.",
+                    "label": "Extruder Start Position Absolute",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
+                },
+                "machine_extruder_start_pos_x":
+                {
+                    "default_value": 0,
+                    "description": "The x-coordinate of the starting position when turning the extruder on.",
+                    "label": "Extruder Start Position X",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_extruder_start_pos_y":
+                {
+                    "default_value": 0,
+                    "description": "The y-coordinate of the starting position when turning the extruder on.",
+                    "label": "Extruder Start Position Y",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_id":
+                {
+                    "default_value": "unknown",
+                    "description": "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\".",
+                    "label": "Nozzle ID",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "str"
+                },
+                "machine_nozzle_offset_x":
+                {
+                    "default_value": 0,
+                    "description": "The x-coordinate of the offset of the nozzle.",
+                    "label": "Nozzle X Offset",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_offset_y":
+                {
+                    "default_value": 0,
+                    "description": "The y-coordinate of the offset of the nozzle.",
+                    "label": "Nozzle Y Offset",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_size":
+                {
+                    "default_value": 0.4,
+                    "description": "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size.",
+                    "label": "Nozzle Diameter",
+                    "maximum_value_warning": "10",
+                    "minimum_value": "0.001",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "mm"
                 }
-            }
+            },
+            "description": "Machine specific settings",
+            "label": "Machine",
+            "type": "category"
         },
         "material":
         {
-            "label": "Material",
-            "icon": "Spool",
-            "description": "Material",
-            "type": "category",
             "children":
             {
                 "material_diameter":
                 {
-                    "label": "Diameter",
-                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
-                    "unit": "mm",
-                    "type": "float",
                     "default_value": 2.85,
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "label": "Diameter",
+                    "maximum_value_warning": "3.5",
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "0.4",
-                    "maximum_value_warning": "3.5",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_extruder": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "type": "float",
+                    "unit": "mm"
                 }
-            }
+            },
+            "description": "Material",
+            "icon": "Spool",
+            "label": "Material",
+            "type": "category"
+        },
+        "platform_adhesion":
+        {
+            "children":
+            {
+                "extruder_prime_pos_x":
+                {
+                    "default_value": 0,
+                    "description": "The X coordinate of the position where the nozzle primes at the start of printing.",
+                    "enabled": false,
+                    "label": "Extruder Prime X Position",
+                    "maximum_value": "machine_width",
+                    "minimum_value_warning": "machine_nozzle_offset_x",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "extruder_prime_pos_y":
+                {
+                    "default_value": 0,
+                    "description": "The Y coordinate of the position where the nozzle primes at the start of printing.",
+                    "enabled": false,
+                    "label": "Extruder Prime Y Position",
+                    "maximum_value_warning": "machine_depth",
+                    "minimum_value_warning": "machine_nozzle_offset_y",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "mm"
+                }
+            },
+            "description": "Adhesion",
+            "icon": "Adhesion",
+            "label": "Build Plate Adhesion",
+            "type": "category"
         }
     }
 }

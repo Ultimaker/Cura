@@ -1,9 +1,11 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+import urllib.parse
 from json import JSONDecodeError
 from time import time
 from typing import Callable, List, Type, TypeVar, Union, Optional, Tuple, Dict, Any, cast
+from pathlib import Path
 
 from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
@@ -17,6 +19,7 @@ from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .ToolPathUploader import ToolPathUploader
 from ..Models.BaseModel import BaseModel
+from ..Models.Http.CloudClusterWithConfigResponse import CloudClusterWithConfigResponse
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudError import CloudError
@@ -36,19 +39,21 @@ class CloudApiClient:
 
     # The cloud URL to use for this remote cluster.
     ROOT_PATH = UltimakerCloudConstants.CuraCloudAPIRoot
-    CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
-    CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
+    CLUSTER_API_ROOT = f"{ROOT_PATH}/connect/v1"
+    CURA_API_ROOT = f"{ROOT_PATH}/cura/v1"
 
     DEFAULT_REQUEST_TIMEOUT = 10  # seconds
 
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
 
+    # Custom machine definition ID to cloud cluster name mapping
+    _machine_id_to_name: Dict[str, str] = None
+
     def __init__(self, app: CuraApplication, on_error: Callable[[List[CloudError]], None]) -> None:
         """Initializes a new cloud API client.
 
         :param app:
-        :param account: The user's account object
         :param on_error: The callback to be called whenever we receive errors from the server.
         """
         super().__init__()
@@ -57,12 +62,11 @@ class CloudApiClient:
         self._scope = JsonDecoratorScope(UltimakerCloudScope(app))
         self._http = HttpRequestManager.getInstance()
         self._on_error = on_error
-        self._upload = None  # type: Optional[ToolPathUploader]
+        self._upload: Optional[ToolPathUploader] = None
 
     @property
     def account(self) -> Account:
         """Gets the account used for the API."""
-
         return self._account
 
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any], failed: Callable) -> None:
@@ -71,12 +75,35 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
+        url = f"{self.CLUSTER_API_ROOT}/clusters?status=active"
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, CloudClusterResponse, failed),
-                       error_callback = failed,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
+
+    def getClustersByMachineType(self, machine_type, on_finished: Callable[[List[CloudClusterWithConfigResponse]], Any], failed: Callable) -> None:
+        # HACK: There is something weird going on with the API, as it reports printer types in formats like
+        # "ultimaker_s3", but wants "Ultimaker S3" when using the machine_variant filter query. So we need to do some
+        # conversion!
+        # API points to "MakerBot Method" for a makerbot printertypes which we already changed to allign with other printer_type
+
+        machine_id_to_name = self.getMachineIDMap()
+        if machine_type in machine_id_to_name:
+            machine_type = machine_id_to_name[machine_type]
+        else:
+            machine_type = machine_type.replace("_plus", "+")
+            machine_type = machine_type.replace("_", " ")
+            machine_type = machine_type.replace("ultimaker", "ultimaker ")
+            machine_type = machine_type.replace("  ", " ")
+            machine_type = machine_type.title()
+            machine_type = urllib.parse.quote_plus(machine_type)
+        url = f"{self.CLUSTER_API_ROOT}/clusters?machine_variant={machine_type}"
+        self._http.get(url,
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterWithConfigResponse, failed),
+                       error_callback=failed,
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def getClusterStatus(self, cluster_id: str, on_finished: Callable[[CloudClusterStatus], Any]) -> None:
         """Retrieves the status of the given cluster.
@@ -85,11 +112,11 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/clusters/{}/status".format(self.CLUSTER_API_ROOT, cluster_id)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/status"
         self._http.get(url,
-                       scope = self._scope,
-                       callback = self._parseCallback(on_finished, CloudClusterStatus),
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       callback=self._parseCallback(on_finished, CloudClusterStatus),
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def requestUpload(self, request: CloudPrintJobUploadRequest,
                       on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
@@ -100,14 +127,14 @@ class CloudApiClient:
         :param on_finished: The function to be called after the result is parsed.
         """
 
-        url = "{}/jobs/upload".format(self.CURA_API_ROOT)
+        url = f"{self.CURA_API_ROOT}/jobs/upload"
         data = json.dumps({"data": request.toDict()}).encode()
 
         self._http.put(url,
-                        scope = self._scope,
-                        data = data,
-                        callback = self._parseCallback(on_finished, CloudPrintJobResponse),
-                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                       scope=self._scope,
+                       data=data,
+                       callback=self._parseCallback(on_finished, CloudPrintJobResponse),
+                       timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def uploadToolPath(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
                        on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
@@ -131,13 +158,13 @@ class CloudApiClient:
     #  specific to sending print jobs) such as lost connection, unparsable responses, etc. are not returned here, but
     #  handled in a generic way by the CloudApiClient.
     def requestPrint(self, cluster_id: str, job_id: str, on_finished: Callable[[CloudPrintResponse], Any], on_error) -> None:
-        url = "{}/clusters/{}/print/{}".format(self.CLUSTER_API_ROOT, cluster_id, job_id)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print/{job_id}"
         self._http.post(url,
-                       scope = self._scope,
-                       data = b"",
-                       callback = self._parseCallback(on_finished, CloudPrintResponse),
-                       error_callback = on_error,
-                       timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                        scope=self._scope,
+                        data=b"",
+                        callback=self._parseCallback(on_finished, CloudPrintResponse),
+                        error_callback=on_error,
+                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
                          data: Optional[Dict[str, Any]] = None) -> None:
@@ -147,19 +174,20 @@ class CloudApiClient:
         :param cluster_id: The ID of the cluster.
         :param cluster_job_id: The ID of the print job within the cluster.
         :param action: The name of the action to execute.
+        :param data: Optional data to send with the POST request
         """
 
         body = json.dumps({"data": data}).encode() if data else b""
-        url = "{}/clusters/{}/print_jobs/{}/action/{}".format(self.CLUSTER_API_ROOT, cluster_id, cluster_job_id, action)
+        url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print_jobs/{cluster_job_id}/action/{action}"
         self._http.post(url,
-                        scope = self._scope,
-                        data = body,
-                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
+                        scope=self._scope,
+                        data=body,
+                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
-        :param url: The URL to request
+        :param path: The URL to request
         :param content_type: The type of the body contents.
         """
 
@@ -168,7 +196,7 @@ class CloudApiClient:
             request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
         access_token = self._account.accessToken
         if access_token:
-            request.setRawHeader(b"Authorization", "Bearer {}".format(access_token).encode())
+            request.setRawHeader(b"Authorization", f"Bearer {access_token}".encode())
         return request
 
     @staticmethod
@@ -189,9 +217,12 @@ class CloudApiClient:
             Logger.logException("e", "Could not parse the stardust response: %s", error.toDict())
             return status_code, {"errors": [error.toDict()]}
 
-    def _parseModels(self, response: Dict[str, Any], on_finished: Union[Callable[[CloudApiClientModel], Any],
-                     Callable[[List[CloudApiClientModel]], Any]], model_class: Type[CloudApiClientModel]) -> None:
-        """Parses the given models and calls the correct callback depending on the result.
+    def _parseResponse(self,
+                       response: Dict[str, Any],
+                       on_finished: Union[Callable[[CloudApiClientModel], Any],
+                                          Callable[[List[CloudApiClientModel]], Any]],
+                       model_class: Type[CloudApiClientModel]) -> None:
+        """Parses the given response and calls the correct callback depending on the result.
 
         :param response: The response from the server, after being converted to a dict.
         :param on_finished: The callback in case the response is successful.
@@ -200,7 +231,10 @@ class CloudApiClient:
 
         if "data" in response:
             data = response["data"]
-            if isinstance(data, list):
+            if "status" in data and data["status"] == "wait_approval":
+                on_finished_empty = cast(Callable[[List], Any], on_finished)
+                on_finished_empty([])
+            elif isinstance(data, list):
                 results = [model_class(**c) for c in data]  # type: List[CloudApiClientModel]
                 on_finished_list = cast(Callable[[List[CloudApiClientModel]], Any], on_finished)
                 on_finished_list(results)
@@ -242,7 +276,18 @@ class CloudApiClient:
             if status_code >= 300 and on_error is not None:
                 on_error()
             else:
-                self._parseModels(response, on_finished, model)
+                self._parseResponse(response, on_finished, model)
 
         self._anti_gc_callbacks.append(parse)
         return parse
+
+    @classmethod
+    def getMachineIDMap(cls) -> Dict[str, str]:
+        if cls._machine_id_to_name is None:
+            try:
+                with open(Path(__file__).parent / "machine_id_to_name.json", "rt") as f:
+                    cls._machine_id_to_name = json.load(f)
+            except Exception as e:
+                Logger.logException("e", f"Could not load machine_id_to_name.json: '{e}'")
+                cls._machine_id_to_name = {}
+        return cls._machine_id_to_name

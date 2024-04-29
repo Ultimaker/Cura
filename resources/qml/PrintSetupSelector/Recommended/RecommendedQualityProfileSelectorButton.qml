@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2023 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -19,6 +19,8 @@ Rectangle
     property bool selected: false
     property string profileName: ""
     property string icon: ""
+    property string custom_icon: ""
+    property alias tooltipText: tooltip.text
 
     signal clicked()
 
@@ -28,6 +30,14 @@ Rectangle
         anchors.fill: parent
         hoverEnabled: true
         onClicked: base.clicked()
+    }
+
+    UM.ToolTip
+    {
+        id: tooltip
+        visible: mouseArea.containsMouse
+        targetPoint: Qt.point(base.x + (base.width / 2), base.y + (base.height / 2))
+        width: UM.Theme.getSize("tooltip").width
     }
 
     Item
@@ -46,12 +56,22 @@ Rectangle
             id: intentIcon
             width: UM.Theme.getSize("recommended_button_icon").width
             height: UM.Theme.getSize("recommended_button_icon").height
+
             UM.ColorImage
             {
                 anchors.fill: parent
                 anchors.centerIn: parent
-                visible: icon != ""
+                visible: icon !== ""
                 source: UM.Theme.getIcon(icon)
+                color: UM.Theme.getColor("icon")
+            }
+
+            UM.ColorImage
+            {
+                anchors.fill: parent
+                anchors.centerIn: parent
+                visible: custom_icon !== ""
+                source: custom_icon
                 color: UM.Theme.getColor("icon")
             }
 
@@ -61,9 +81,10 @@ Rectangle
                 anchors.fill: parent
                 radius: width
                 anchors.verticalCenter: parent.verticalCenter
-                visible: icon == ""
+                visible: icon === "" && custom_icon === ""
                 border.width: UM.Theme.getSize("thick_lining").width
                 border.color: UM.Theme.getColor("text")
+                color: "transparent"
 
                 UM.Label
                 {

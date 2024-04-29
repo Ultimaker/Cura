@@ -2,36 +2,38 @@
     "version": 2,
     "name": "BQ Hephestos 2",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "BQ",
         "manufacturer": "BQ",
-        "platform": "bq_hephestos_2_platform.3mf",
-        "platform_offset": [6, 1320, 0 ],
         "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "bq_hephestos_2_extruder_0"
-        }
+        "platform": "bq_hephestos_2_platform.3mf",
+        "machine_extruder_trains": { "0": "bq_hephestos_2_extruder_0" },
+        "platform_offset": [
+            6,
+            1320,
+            0
+        ]
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "BQ Hephestos 2" },
-        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature}\nG28 ; Zero-ing position\nG29 ; Auto bed-leveling\nG0 X4 Y297 Z15 F4000 ; Fast move to BQ's start position\nG90 ; Set to Absolute Positioning\nG92 E0 ; Reset extruder 0\nG1 F1800 ; Set default feedrate\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
-        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Marlin G-CODE to fire end print procedure\n; -- end of END GCODE --" },
-        "machine_width": { "default_value": 210 },
-        "machine_depth": { "default_value": 297 },
-        "machine_height": { "default_value": 220 },
-        "machine_heated_bed": { "default_value": false },
-        "machine_center_is_zero": { "default_value": false },
+    "overrides":
+    {
+        "infill_sparse_density": { "default_value": 20 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },
-        "wall_thickness": { "value": "1.2" },
-        "top_bottom_thickness": { "default_value": 1.2 },
-        "infill_sparse_density": { "default_value": 20 },
-        "speed_print": { "default_value": 60 },
-        "skirt_line_count": { "default_value": 4 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 297 },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Marlin G-CODE to fire end print procedure\n; -- end of END GCODE --" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_height": { "default_value": 220 },
+        "machine_name": { "default_value": "BQ Hephestos 2" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature}\nG28 ; Zero-ing position\nG29 ; Auto bed-leveling\nG0 X4 Y297 Z15 F4000 ; Fast move to BQ's start position\nG90 ; Set to Absolute Positioning\nG92 E0 ; Reset extruder 0\nG1 F1800 ; Set default feedrate\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
+        "machine_width": { "default_value": 210 },
         "skirt_brim_minimal_length": { "default_value": 30 },
-        "skirt_gap": { "default_value": 6 }
+        "skirt_gap": { "default_value": 6 },
+        "skirt_line_count": { "default_value": 4 },
+        "speed_print": { "default_value": 60 },
+        "top_bottom_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" }
     }
 }

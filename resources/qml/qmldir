@@ -2,6 +2,7 @@ module Cura
 
 MachineSelector 1.0 MachineSelector.qml
 MachineSelectorButton 1.0 MachineSelectorButton.qml
+MachineListButton 1.0 MachineListButton.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
 ProfileOverview 1.6 ProfileOverview.qml
@@ -16,7 +17,7 @@ PrinterTypeLabel 1.0 PrinterTypeLabel.qml
 ViewsSelector 1.0 ViewsSelector.qml
 SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
-
+PrintSelectorCard 1.0 PrintSelectorCard.qml
 
 # Cura/WelcomePages
 
@@ -36,6 +37,11 @@ ScrollView          1.0 ScrollView.qml
 Menu                1.0 Menu.qml
 MenuItem            1.0 MenuItem.qml
 MenuSeparator       1.0 MenuSeparator.qml
+SingleSettingExtruderSelectorBar        1.7 SingleSettingExtruderSelectorBar.qml
+ExtruderButton                          1.7 ExtruderButton.qml
+SingleSettingComboBox                   1.7 SingleSettingComboBox.qml
+SingleSettingSlider                     1.7 SingleSettingSlider.qml
+SingleSettingTextField                  1.7 SingleSettingTextField.qml
 
 
 # Cura/MachineSettings

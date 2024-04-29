@@ -1,9 +1,13 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
+
 import configparser
 from io import StringIO
+from threading import Lock
 import zipfile
+from typing import Dict, Any
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -13,15 +17,23 @@ from UM.Workspace.WorkspaceWriter import WorkspaceWriter
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-from cura.Utils.Threading import call_on_qt_thread
+from .ThreeMFWriter import ThreeMFWriter
+from .SettingsExportModel import SettingsExportModel
+from .SettingsExportGroup import SettingsExportGroup
+
+USER_SETTINGS_PATH = "Cura/user-settings.json"
 
 
 class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def __init__(self):
         super().__init__()
+        self._ucp_model: Optional[SettingsExportModel] = None
 
-    @call_on_qt_thread
-    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+    def setExportModel(self, model: SettingsExportModel) -> None:
+        if self._ucp_model != model:
+            self._ucp_model = model
+
+    def _write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
 
@@ -34,18 +46,20 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         global_stack = machine_manager.activeMachine
         if global_stack is None:
-            self.setInformation(catalog.i18nc("@error", "There is no workspace yet to write. Please add a printer first."))
+            self.setInformation(
+                catalog.i18nc("@error", "There is no workspace yet to write. Please add a printer first."))
             Logger.error("Tried to write a 3MF workspace before there was a global stack.")
             return False
 
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
         mesh_writer.setStoreArchive(True)
-        mesh_writer.write(stream, nodes, mode)
+        if not mesh_writer.write(stream, nodes, mode, self._ucp_model):
+            self.setInformation(mesh_writer.getInformation())
+            return False
 
         archive = mesh_writer.getArchive()
         if archive is None:  # This happens if there was no mesh data to write.
-            archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
-
+            archive = zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_DEFLATED)
 
         try:
             # Add global container stack data to the archive.
@@ -60,15 +74,21 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 self._writeContainerToArchive(extruder_stack, archive)
                 for container in extruder_stack.getContainers():
                     self._writeContainerToArchive(container, archive)
+
+            # Write user settings data
+            if self._ucp_model is not None:
+                user_settings_data = self._getUserSettings(self._ucp_model)
+                ThreeMFWriter._storeMetadataJson(user_settings_data, archive, USER_SETTINGS_PATH)
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
             return False
 
         # Write preferences to archive
-        original_preferences = Application.getInstance().getPreferences() #Copy only the preferences that we use to the workspace.
+        original_preferences = Application.getInstance().getPreferences()  # Copy only the preferences that we use to the workspace.
         temp_preferences = Preferences()
-        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded", "metadata/setting_version"}:
+        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded",
+                           "metadata/setting_version"}:
             temp_preferences.addPreference(preference, None)
             temp_preferences.setValue(preference, original_preferences.getValue(preference))
         preferences_string = StringIO()
@@ -79,7 +99,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
             # Save Cura version
             version_file = zipfile.ZipInfo("Cura/version.ini")
-            version_config_parser = configparser.ConfigParser(interpolation = None)
+            version_config_parser = configparser.ConfigParser(interpolation=None)
             version_config_parser.add_section("versions")
             version_config_parser.set("versions", "cura_version", application.getVersion())
             version_config_parser.set("versions", "build_type", application.getBuildType())
@@ -98,11 +118,17 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             Logger.error("No permission to write workspace to this stream.")
             return False
         except EnvironmentError as e:
-            self.setInformation(catalog.i18nc("@error:zip", "The operating system does not allow saving a project file to this location or with this file name."))
-            Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err = str(e)))
+            self.setInformation(catalog.i18nc("@error:zip", str(e)))
+            Logger.error("EnvironmentError when writing workspace to this stream: {err}".format(err=str(e)))
             return False
         mesh_writer.setStoreArchive(False)
+
         return True
+
+    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+        success = self._write(stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode)
+        self._ucp_model = None
+        return success
 
     @staticmethod
     def _writePluginMetadataToArchive(archive: zipfile.ZipFile) -> None:
@@ -156,6 +182,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 "connection_type",
                 "capabilities",
                 "octoprint_api_key",
+                "is_online",
             }
             serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
@@ -163,3 +190,26 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         except (FileNotFoundError, EnvironmentError):
             Logger.error("File became inaccessible while writing to it: {archive_filename}".format(archive_filename = archive.fp.name))
             return
+
+    @staticmethod
+    def _getUserSettings(model: SettingsExportModel) -> Dict[str, Dict[str, Any]]:
+        user_settings = {}
+
+        for group in model.settingsGroups:
+            category = ''
+            if group.category == SettingsExportGroup.Category.Global:
+                category = 'global'
+            elif group.category == SettingsExportGroup.Category.Extruder:
+                category = f"extruder_{group.extruder_index}"
+
+            if len(category) > 0:
+                settings_values = {}
+                stack = group.stack
+
+                for setting in group.settings:
+                    if setting.selected:
+                        settings_values[setting.id] = stack.getProperty(setting.id, "value")
+
+                user_settings[category] = settings_values
+
+        return user_settings

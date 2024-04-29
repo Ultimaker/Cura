@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "name": "Fusion3 Base Printer",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Keith Varin",
+        "manufacturer": "Fusion3Design",
+        "file_formats": "text/x-gcode",
+        "exclude_materials": [
+            "dsm_arnitel2045",
+            "dsm_novamid1070",
+            "Extrudr_GreenTECPro_Anthracite",
+            "Extrudr_GreenTECPro_Black",
+            "Extrudr_GreenTECPro_Blue",
+            "Extrudr_GreenTECPro_Nature",
+            "Extrudr_GreenTECPro_Red",
+            "Extrudr_GreenTECPro_Silver",
+            "Extrudr_GreenTECPro_White",
+            "generic_bvoh",
+            "generic_hips",
+            "generic_pva",
+            "imade3d_petg",
+            "imade3d_pla",
+            "innofill_innoflex60",
+            "verbatim_bvoh"
+        ],
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "fusion3_extruder_0" },
+        "preferred_material": "generic_abs",
+        "preferred_quality_type": "normal",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "variants_name": "Nozzle Size"
+    }
+}

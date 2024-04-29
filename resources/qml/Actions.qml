@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Ultimaker B.V.
+// Copyright (c) 2023 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
@@ -6,7 +6,7 @@ pragma Singleton
 import QtQuick 2.10
 import QtQuick.Controls 2.4
 import UM 1.1 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 Item
 {
@@ -35,13 +35,16 @@ Item
     property alias mergeObjects: mergeObjectsAction
     //property alias unMergeObjects: unMergeObjectsAction
 
-    property alias multiplyObject: multiplyObjectAction
+    property alias printObjectBeforePrevious: printObjectBeforePreviousAction
+    property alias printObjectAfterNext: printObjectAfterNextAction
 
+    property alias multiplyObject: multiplyObjectAction
+    property alias dropAll: dropAllAction
     property alias selectAll: selectAllAction
     property alias deleteAll: deleteAllAction
     property alias reloadAll: reloadAllAction
     property alias arrangeAll: arrangeAllAction
-    property alias arrangeSelection: arrangeSelectionAction
+    property alias arrangeAllGrid: arrangeAllGridAction
     property alias resetAllTranslation: resetAllTranslationAction
     property alias resetAll: resetAllAction
 
@@ -60,6 +63,7 @@ Item
     property alias showProfileFolder: showProfileFolderAction
     property alias documentation: documentationAction
     property alias showTroubleshooting: showTroubleShootingAction
+    property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
     property alias whatsNew: whatsNewAction
     property alias about: aboutAction
@@ -70,6 +74,15 @@ Item
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
     property alias browsePackages: browsePackagesAction
+
+    property alias paste: pasteAction
+    property alias copy: copyAction
+    property alias cut: cutAction
+
+    readonly property bool copy_paste_enabled: {
+        const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
+        return all_enabled_packages.includes("3MFReader") && all_enabled_packages.includes("3MFWriter");
+    }
 
     UM.I18nCatalog{id: catalog; name: "cura"}
 
@@ -83,6 +96,13 @@ Item
 
     Action
     {
+        id: openSponsershipPageAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-cura/sponsor/")
+        text: catalog.i18nc("@action:inmenu", "Sponsor Cura")
+    }
+
+    Action
+    {
         id: toggleFullScreenAction
         shortcut: StandardKey.FullScreen
         text: catalog.i18nc("@action:inmenu", "Toggle Full Screen")
@@ -92,7 +112,6 @@ Item
     Action
     {
         id: exitFullScreenAction
-        shortcut: StandardKey.Cancel
         text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         icon.name: "view-fullscreen"
     }
@@ -103,8 +122,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo")
         icon.name: "edit-undo"
         shortcut: StandardKey.Undo
-        onTriggered: UM.OperationStack.undo()
-        enabled: UM.OperationStack.canUndo
+        onTriggered: CuraActions.undo()
+        enabled: CuraActions.canUndo
     }
 
     Action
@@ -113,8 +132,8 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo")
         icon.name: "edit-redo"
         shortcut: StandardKey.Redo
-        onTriggered: UM.OperationStack.redo()
-        enabled: UM.OperationStack.canRedo
+        onTriggered: CuraActions.redo()
+        enabled: CuraActions.canRedo
     }
 
     Action
@@ -187,6 +206,8 @@ Item
         //- https://doc.qt.io/qt-5/qmenubar.html#qmenubar-as-a-global-menu-bar
         text: (Qt.platform.os == "osx") ? "Configure Cura..." : catalog.i18nc("@action:inmenu", "Configure Cura...")
         icon.name: "configure"
+        // on MacOS it us customary to assign the ctrl+, hotkey to open a general settings menu
+        shortcut: (Qt.platform.os == "osx") ? "Ctrl+," : ""
     }
 
     Action
@@ -213,7 +234,7 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of Ultimaker's, so don't translate.", "Add more materials from Marketplace")
+        text: catalog.i18nc("@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate.", "Add more materials from Marketplace")
     }
 
     Action
@@ -309,6 +330,33 @@ Item
 
     Action
     {
+        id: copyAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Copy to clipboard")
+        onTriggered: CuraActions.copy()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection && copy_paste_enabled
+        shortcut: StandardKey.Copy
+    }
+
+    Action
+    {
+        id: pasteAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Paste from clipboard")
+        onTriggered: CuraActions.paste()
+        enabled: UM.Controller.toolsEnabled && copy_paste_enabled
+        shortcut: StandardKey.Paste
+    }
+
+    Action
+    {
+        id: cutAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Cut")
+        onTriggered: CuraActions.cut()
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection && copy_paste_enabled
+        shortcut: StandardKey.Cut
+    }
+
+    Action
+    {
         id: multiplySelectionAction
         text: catalog.i18nc("@action:inmenu menubar:edit", "Multiply Selected")
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection
@@ -358,6 +406,26 @@ Item
         icon.name: "object-ungroup"
         shortcut: "Ctrl+Shift+G"
         onTriggered: CuraApplication.ungroupSelected()
+    }
+
+    Action
+    {
+        id: printObjectBeforePreviousAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print Before") + " " + PrintOrderManager.previousNodeName
+        enabled: PrintOrderManager.shouldEnablePrintBeforeAction
+        icon.name: "print-before"
+        shortcut: "PgUp"
+        onTriggered: PrintOrderManager.swapSelectedAndPreviousNodes()
+    }
+
+    Action
+    {
+        id: printObjectAfterNextAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Print After") + " " + PrintOrderManager.nextNodeName
+        enabled: PrintOrderManager.shouldEnablePrintAfterAction
+        icon.name: "print-after"
+        shortcut: "PgDown"
+        onTriggered: PrintOrderManager.swapSelectedAndNextNodes()
     }
 
     Action
@@ -416,9 +484,18 @@ Item
 
     Action
     {
-        id: arrangeSelectionAction
-        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange Selection")
-        onTriggered: Printer.arrangeSelection()
+        id: arrangeAllGridAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Arrange All Models in a grid")
+        onTriggered: Printer.arrangeAllInGrid()
+        shortcut: "Shift+Ctrl+R"
+    }
+
+    Action
+    {
+        id: dropAllAction
+        text: catalog.i18nc("@action:inmenu menubar:edit","Drop All Models to buildplate")
+        shortcut: "Ctrl+B"
+        onTriggered: CuraApplication.setWorkplaceDropToBuildplate()
     }
 
     Action
@@ -445,6 +522,13 @@ Item
         // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
         // enabled instead, and Ctrl+O is assigned to the local file provider
         shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
+    }
+
+    Action
+    {
+        id: arrangeSelectionAction
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Arrange Selection")
+        onTriggered: Printer.arrangeSelection()
     }
 
     Action

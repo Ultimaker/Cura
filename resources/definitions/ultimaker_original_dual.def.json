@@ -2,74 +2,72 @@
     "version": 2,
     "name": "Ultimaker Original Dual Extrusion",
     "inherits": "ultimaker",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "weight": 4,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker_platform.3mf",
-        "has_materials": true,
+        "exclude_materials": [
+            "generic_cffcpe",
+            "generic_cffpa",
+            "generic_flexible",
+            "generic_gffcpe",
+            "generic_gffpa",
+            "generic_hips",
+            "generic_petcf",
+            "generic_petg",
+            "generic_pva",
+            "generic_tough_pla",
+            "structur3d_",
+            "ultimaker_bam",
+            "ultimaker_petcf",
+            "ultimaker_petg",
+            "ultimaker_pva",
+            "ultimaker_tough_pla"
+        ],
+        "firmware_file": "MarlinUltimaker-{baudrate}-dual.hex",
+        "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}-dual.hex",
+        "first_start_actions": [
+            "UMOUpgradeSelection",
+            "BedLevel"
+        ],
         "has_machine_quality": true,
-        "quality_definition": "ultimaker_original",
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone", "ultimaker_petg_blue", "ultimaker_petg_grey", "ultimaker_petg_black", "ultimaker_petg_green", "ultimaker_petg_white", "ultimaker_petg_orange", "ultimaker_petg_silver", "ultimaker_petg_yellow", "ultimaker_petg_transparent", "ultimaker_petg_red_translucent", "ultimaker_petg_blue_translucent", "ultimaker_petg_green_translucent", "ultimaker_petg_yellow_fluorescent", "ultimaker_petg_red" ],
+        "has_materials": true,
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",
             "1": "ultimaker_original_dual_2nd"
         },
-        "firmware_file": "MarlinUltimaker-{baudrate}-dual.hex",
-        "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}-dual.hex",
-        "first_start_actions": ["UMOUpgradeSelection", "BedLevel"],
-        "supported_actions": ["UMOUpgradeSelection", "BedLevel"]
+        "quality_definition": "ultimaker_original",
+        "supported_actions": [
+            "UMOUpgradeSelection",
+            "BedLevel"
+        ],
+        "weight": 4
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "Ultimaker Original" },
-        "machine_width": {
-            "default_value": 205
-        },
-        "machine_height": {
-            "default_value": 200
-        },
-        "machine_depth": {
-            "default_value": 195
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
+    "overrides":
+    {
+        "gantry_height": { "value": "55" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 195 },
+        "machine_end_gcode": { "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -75, 35 ],
-                [ -75, -18 ],
-                [ 18, 35 ],
-                [ 18, -18 ]
+                [-75, 35],
+                [-75, -18],
+                [18, 35],
+                [18, -18]
             ]
         },
-        "gantry_height": {
-            "value": "55"
-        },
-        "machine_use_extruder_offset_to_offset_coords": {
-            "default_value": true
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nT1 ;Switch to the 2nd extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F200 E-{switch_extruder_retraction_amount}\nT0 ;Switch to the 1st extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning"
-        },
-        "machine_extruder_count": {
-            "default_value": 2
-        },
-        "prime_tower_position_x": {
-            "value": "195"
-        },
-        "prime_tower_position_y": {
-            "value": "149"
-        }
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Ultimaker Original" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nT1 ;Switch to the 2nd extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F200 E-{switch_extruder_retraction_amount}\nT0 ;Switch to the 1st extruder\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..." },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_width": { "default_value": 205 }
     }
 }

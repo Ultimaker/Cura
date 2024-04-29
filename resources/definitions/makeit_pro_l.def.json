@@ -2,7 +2,8 @@
     "version": 2,
     "name": "Makeit Pro-L",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
         "author": "unknown",
         "manufacturer": "Makeit 3D",
@@ -14,86 +15,38 @@
             "1": "makeit_l_dual_2nd"
         }
     },
-
-    "overrides": {
-        "machine_name": { "default_value": "MAKEiT Pro-L" },
-        "machine_width": {
-            "default_value": 305
-        },
-        "machine_height": {
-            "default_value": 330
-        },
-        "machine_depth": {
-            "default_value": 254
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
+    "overrides":
+    {
+        "adhesion_type": { "default_value": "skirt" },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 5 },
+        "gantry_height": { "value": "330" },
+        "infill_sparse_density": { "default_value": 20 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 254 },
+        "machine_end_gcode": { "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-5 F9000  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+5 X+20 Y+20 F9000 ;move Z up a bit\nM117 MAKEiT Pro@Done\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning\nM81" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [ -305, 28 ],
-                [ -305, -28 ],
-                [ 305, 28 ],
-                [ 305, -28 ]
+                [-305, 28],
+                [-305, -28],
+                [305, 28],
+                [305, -28]
             ]
         },
-        "gantry_height": {
-            "value": "330"
-        },
-        "machine_use_extruder_offset_to_offset_coords": {
-            "default_value": true
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "machine_start_gcode": {
-            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG92 E0 ;zero the extruded length\nG28 ;home\nG1 F200 E30 ;extrude 30 mm of feed stock\nG92 E0 ;zero the extruded length\nG1 E-5 ;retract 5 mm\nG28 SC ;Do homeing, clean nozzles and let printer to know that printing started\nG92 X-6 ;Sets Curas checker board to match printers heated bed coordinates\nG1 F{speed_travel}\nM117 Printing..."
-        },
-        "machine_end_gcode": {
-            "default_value": "M104 T0 S0 ;1st extruder heater off\nM104 T1 S0 ;2nd extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-5 F9000  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+5 X+20 Y+20 F9000 ;move Z up a bit\nM117 MAKEiT Pro@Done\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning\nM81"
-        },
-        "machine_extruder_count": {
-            "default_value": 2
-        },
-        "print_sequence": {
-            "enabled": true
-        },
-        "prime_tower_position_x": {
-            "value": "185"
-        },
-        "prime_tower_position_y": {
-            "value": "160"
-        },
-        "layer_height": {
-          "default_value": 0.2
-        },
-        "retraction_speed": {
-          "default_value": 180
-        },
-        "infill_sparse_density": {
-          "default_value": 20
-        },
-        "retraction_amount": {
-          "default_value": 6
-        },
-        "speed_print": {
-          "default_value": 60
-        },
-        "wall_thickness": {
-          "value": "1.2"
-        },
-        "cool_min_layer_time_fan_speed_max": {
-          "default_value": 5
-        },
-        "adhesion_type": {
-          "default_value": "skirt"
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_heat_zone_length": {
-            "default_value": 20
-        }
+        "machine_heat_zone_length": { "default_value": 20 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 330 },
+        "machine_name": { "default_value": "MAKEiT Pro-L" },
+        "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG92 E0 ;zero the extruded length\nG28 ;home\nG1 F200 E30 ;extrude 30 mm of feed stock\nG92 E0 ;zero the extruded length\nG1 E-5 ;retract 5 mm\nG28 SC ;Do homeing, clean nozzles and let printer to know that printing started\nG92 X-6 ;Sets Curas checker board to match printers heated bed coordinates\nG1 F{speed_travel}\nM117 Printing..." },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_width": { "default_value": 305 },
+        "print_sequence": { "enabled": true },
+        "retraction_amount": { "default_value": 6 },
+        "retraction_speed": { "default_value": 180 },
+        "speed_print": { "default_value": 60 },
+        "wall_thickness": { "value": "1.2" }
     }
 }

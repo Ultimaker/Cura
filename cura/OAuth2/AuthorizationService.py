@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -6,13 +6,14 @@ from datetime import datetime, timedelta
 from typing import Callable, Dict, Optional, TYPE_CHECKING, Union
 from urllib.parse import urlencode, quote_plus
 
-from PyQt6.QtCore import QUrl
+from PyQt6.QtCore import QUrl, QTimer
 from PyQt6.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
 from UM.i18n import i18nCatalog
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To download log-in tokens.
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse, BaseModel
@@ -25,26 +26,32 @@ if TYPE_CHECKING:
 
 MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
 
+REFRESH_TOKEN_MAX_RETRIES = 15
+REFRESH_TOKEN_RETRY_INTERVAL = 1000
 
 class AuthorizationService:
     """The authorization service is responsible for handling the login flow, storing user credentials and providing
     account information.
     """
 
-    # Emit signal when authentication is completed.
-    onAuthStateChanged = Signal()
+    def __init__(self,
+                 settings: "OAuth2Settings",
+                 preferences: Optional["Preferences"] = None,
+                 get_user_profile: bool = True) -> None:
+        # Emit signal when authentication is completed.
+        self.onAuthStateChanged = Signal()
 
-    # Emit signal when authentication failed.
-    onAuthenticationError = Signal()
+        # Emit signal when authentication failed.
+        self.onAuthenticationError = Signal()
 
-    accessTokenChanged = Signal()
+        self.accessTokenChanged = Signal()
 
-    def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
         self._auth_url = "{}/authorize".format(self._settings.OAUTH_SERVER_URL)
         self._auth_data: Optional[AuthenticationResponse] = None
         self._user_profile: Optional["UserProfile"] = None
+        self._get_user_profile: bool = get_user_profile
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
         self._currently_refreshing_token = False  # Whether we are currently in the process of refreshing auth. Don't make new requests while busy.
@@ -52,6 +59,12 @@ class AuthorizationService:
         self._unable_to_get_data_message: Optional[Message] = None
 
         self.onAuthStateChanged.connect(self._authChanged)
+
+        self._refresh_token_retries = 0
+        self._refresh_token_retry_timer = QTimer()
+        self._refresh_token_retry_timer.setInterval(REFRESH_TOKEN_RETRY_INTERVAL)
+        self._refresh_token_retry_timer.setSingleShot(True)
+        self._refresh_token_retry_timer.timeout.connect(self.refreshAccessToken)
 
     def _authChanged(self, logged_in):
         if logged_in and self._unable_to_get_data_message is not None:
@@ -163,16 +176,29 @@ class AuthorizationService:
             return
 
         def process_auth_data(response: AuthenticationResponse) -> None:
+            self._currently_refreshing_token = False
+
             if response.success:
+                self._refresh_token_retries = 0
                 self._storeAuthData(response)
+                HttpRequestManager.getInstance().setDelayRequests(False)
                 self.onAuthStateChanged.emit(logged_in = True)
             else:
-                Logger.warning("Failed to get a new access token from the server.")
-                self.onAuthStateChanged.emit(logged_in = False)
+                if self._refresh_token_retries >= REFRESH_TOKEN_MAX_RETRIES:
+                    self._refresh_token_retries = 0
+                    Logger.warning("Failed to get a new access token from the server, giving up.")
+                    HttpRequestManager.getInstance().setDelayRequests(False)
+                    self.onAuthStateChanged.emit(logged_in = False)
+                else:
+                    # Retry a bit later, network may be offline right now and will hopefully be back soon
+                    Logger.warning("Failed to get a new access token from the server, retrying later.")
+                    self._refresh_token_retries += 1
+                    self._refresh_token_retry_timer.start()
 
         if self._currently_refreshing_token:
             Logger.debug("Was already busy refreshing token. Do not start a new request.")
             return
+        HttpRequestManager.getInstance().setDelayRequests(True)
         self._currently_refreshing_token = True
         self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token, process_auth_data)
 
@@ -274,12 +300,13 @@ class AuthorizationService:
                             self._unable_to_get_data_message.show()
                         else:
                             self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
-                                                                                          "Unable to reach the Ultimaker account server."),
+                                                                                          "Unable to reach the UltiMaker account server."),
                                                                        title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
                                                                        message_type = Message.MessageType.ERROR)
                             Logger.warning("Unable to get user profile using auth data from preferences.")
                             self._unable_to_get_data_message.show()
-                self.getUserProfile(callback)
+                if self._get_user_profile:
+                    self.getUserProfile(callback)
         except (ValueError, TypeError):
             Logger.logException("w", "Could not load auth data from preferences")
 
@@ -294,7 +321,8 @@ class AuthorizationService:
         self._auth_data = auth_data
         self._currently_refreshing_token = False
         if auth_data:
-            self.getUserProfile()
+            if self._get_user_profile:
+                self.getUserProfile()
             self._preferences.setValue(self._settings.AUTH_DATA_PREFERENCE_KEY, json.dumps(auth_data.dump()))
         else:
             Logger.log("d", "Clearing the user profile")

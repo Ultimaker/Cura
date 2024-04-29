@@ -73,6 +73,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("general/use_tray_icon")
+        trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
+
         UM.Preferences.resetPreference("cura/single_instance")
         singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
         UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
@@ -98,6 +101,7 @@ UM.PreferencesPage
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
         invertZoomCheckbox.checked = boolCheck(UM.Preferences.getValue("view/invert_zoom"))
+        UM.Preferences.resetPreference("view/navigation_style");
         UM.Preferences.resetPreference("view/zoom_to_mouse");
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         //UM.Preferences.resetPreference("view/top_layer_count");
@@ -117,6 +121,13 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("info/send_slice_info")
         sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+
+        UM.Preferences.resetPreference("info/send_engine_crash")
+        sendEngineCrashCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+
+        UM.Preferences.resetPreference("info/anonymous_engine_crash_report")
+        sendEngineCrashCheckboxAnonymous.checked = boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+
         UM.Preferences.resetPreference("info/automatic_update_check")
         checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
 
@@ -329,6 +340,23 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "Show an icon and notifications in the system notification area.")
+
+                UM.CheckBox
+                {
+                    id: trayIconCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("general/use_tray_icon"))
+                    onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
+
+                    text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                }
+            }
+
             UM.Label
             {
                 id: languageCaption
@@ -337,6 +365,7 @@ UM.PreferencesPage
                 text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
                 wrapMode: Text.WordWrap
                 font.italic: true
+
             }
 
             Item
@@ -481,10 +510,12 @@ UM.PreferencesPage
                     id: dropDownCheckbox
                     text: catalog.i18nc("@option:check", "Automatically drop models to the build plate")
                     checked: boolCheck(UM.Preferences.getValue("physics/automatic_drop_down"))
-                    onCheckedChanged: UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("physics/automatic_drop_down", checked)
+                    }
                 }
             }
-
 
             UM.TooltipArea
             {
@@ -583,6 +614,55 @@ UM.PreferencesPage
                 }
             }
 
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "What type of camera navigation should be used?")
+                Column
+                {
+                    spacing: UM.Theme.getSize("narrow_margin").height
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@window:text", "Camera navigation:")
+                    }
+                    ListModel
+                    {
+                        id: navigationStylesList 
+                        Component.onCompleted:
+                        {
+                            append({ text: "Cura", code: "cura" })
+                            append({ text: catalog.i18n("FreeCAD trackpad"), code: "freecad_trackpad" })
+                        }
+                    }
+
+                    Cura.ComboBox
+                    {
+                        id: cameraNavigationComboBox
+
+                        model: navigationStylesList 
+                        textRole: "text"
+                        width: UM.Theme.getSize("combobox").width
+                        height: UM.Theme.getSize("combobox").height
+
+                        currentIndex:
+                        {
+                            var code = UM.Preferences.getValue("view/navigation_style");
+                            for(var i = 0; i < comboBoxList.count; ++i)
+                            {
+                                if(model.get(i).code == code)
+                                {
+                                    return i
+                                }
+                            }
+                            return 0
+                        }
+                        onActivated: UM.Preferences.setValue("view/navigation_style", model.get(index).code)
+                    }
+                }
+            }
+
             Item
             {
                 //: Spacer
@@ -599,6 +679,8 @@ UM.PreferencesPage
             UM.TooltipArea
             {
                 width: childrenRect.width
+                // Mac only allows applications to run as a single instance, so providing the option for this os doesn't make much sense
+                visible: Qt.platform.os !== "osx"
                 height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
 
@@ -834,11 +916,68 @@ UM.PreferencesPage
                 font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label", "Privacy")
             }
+
             UM.TooltipArea
             {
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
+                text: catalog.i18nc("@info:tooltip", "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission.")
+
+                UM.CheckBox
+                {
+                    id: sendEngineCrashCheckbox
+                    text: catalog.i18nc("@option:check","Send engine crash reports")
+                    checked: boolCheck(UM.Preferences.getValue("info/send_engine_crash"))
+                    onCheckedChanged: UM.Preferences.setValue("info/send_engine_crash", checked)
+                }
+            }
+
+            ButtonGroup
+            {
+                id: curaCrashGroup
+                buttons: [sendEngineCrashCheckboxAnonymous, sendEngineCrashCheckboxUser]
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Send crash reports without any personally identifiable information or models data to UltiMaker.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxAnonymous
+                    text: catalog.i18nc("@option:radio", "Anonymous crash reports")
+                    enabled: sendEngineCrashCheckbox.checked && Cura.API.account.isLoggedIn
+                    checked: boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", true)
+                }
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: Cura.API.account.isLoggedIn ?
+                      catalog.i18nc("@info:tooltip", "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send.") :
+                      catalog.i18nc("@info:tooltip", "Please sign in to your UltiMaker account to allow sending non-anonymous data.")
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                Cura.RadioButton
+                {
+                    id: sendEngineCrashCheckboxUser
+                    text: catalog.i18nc("@option:radio", "Include UltiMaker account name")
+                    enabled: sendEngineCrashCheckbox.checked && Cura.API.account.isLoggedIn
+                    checked: !boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report")) && Cura.API.account.isLoggedIn
+                    onClicked: UM.Preferences.setValue("info/anonymous_engine_crash_report", false)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: visible ? childrenRect.height : 0
+                text: catalog.i18nc("@info:tooltip", "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
 
                 UM.CheckBox
                 {

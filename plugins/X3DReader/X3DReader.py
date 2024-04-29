@@ -134,7 +134,7 @@ class X3DReader(MeshReader):
                 geometry = self.resolveDefUse(sub_node)
 
         # TODO: appearance is completely ignored. At least apply the material color...
-        if not geometry is None:
+        if geometry is not None:
             try:
                 self.verts = self.faces = [] # Safeguard
                 self.geometry_importers[geometry.tag](self, geometry)
@@ -493,12 +493,12 @@ class X3DReader(MeshReader):
             # Columns are the unit vectors for the xz plane for the cross-section
             if orient:
                 mrot = orient[i] if len(orient) > 1 else orient[0]
-                if not mrot is None:
+                if mrot is not None:
                     m = m.dot(mrot)  # Tested against X3DOM, the result matches, still not sure :(
 
             if scale:
                 mscale = scale[i] if len(scale) > 1 else scale[0]
-                if not mscale is None:
+                if mscale is not None:
                     m = m.dot(mscale)
 
             # First the cross-section 2-vector is scaled,
@@ -703,7 +703,7 @@ class X3DReader(MeshReader):
         for c in node:
             if c.tag == "Coordinate":
                 c = self.resolveDefUse(c)
-                if not c is None:
+                if c is not None:
                     pt = c.attrib.get("point")
                     if pt:
                         # allow the list of float values in 'point' attribute to
@@ -866,13 +866,13 @@ def readIndex(node, attr):
     v = readIntArray(node, attr, [])
     chunks = []
     chunk = []
-    for i in range(len(v)):
-        if v[i] == -1:
+    for i in v:
+        if i == -1:
             if chunk:
                 chunks.append(chunk)
                 chunk = []
         else:
-            chunk.append(v[i])
+            chunk.append(i)
     if chunk:
         chunks.append(chunk)
     return chunks

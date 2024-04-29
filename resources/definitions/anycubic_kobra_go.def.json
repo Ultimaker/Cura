@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra Go",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Kolja Lampe",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "firmware_file": "MarlinChiron.hex",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains": { "0": "anycubic_kobra_go_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "pla",
+        "quality_definition": "anycubic_kobra_go"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 222 },
+        "machine_end_gcode": { "default_value": "M400 ; Wait for current moves to finish\nM220 S100 ; Reset Speed factor override percentage to default (100%)\nM221 S100 ; Reset Extrude factor override percentage to default (100%)\nG91 ; Set coordinates to relative\nG1 F2400 E-1 ; Retract filament 3mm at 40mm/s to prevent stringing\nG0 F5000 Z20 ; Move Z Axis up 20mm to allow filament ooze freely\nG90 ; Set coordinates to absolute\nG0 X0 Y220 F5000 ; Move Heat Bed to the front for easy print removal\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; Disable stepper motors\n; End of custom end GCode" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "Anycubic Kobra Go" },
+        "machine_start_gcode": { "default_value": "M140 S{material_bed_temperature_layer_0}; Heat bed\nM104 S{material_print_temperature_layer_0}; Heat extruder\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG28 ; Home all axes\nG92 E0 ; Reset Extruder\nM420 S1 ; Enable Bed Levelling Mesh\nM190 S{material_bed_temperature_layer_0}; Wait for bed to get up to temperature\nM109 S{material_print_temperature_layer_0}; Wait for extruder to get up to temperature\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X2 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X2 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X2.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X2.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 F2400 E-1\nG1 X5 Y20 Z0.3 F5000.0 ; Move over to prevent blob squish" },
+        "machine_width": { "default_value": 222 }
+    }
+}

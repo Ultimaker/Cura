@@ -37,54 +37,10 @@ Item
         }
     }
 
-    // Printer type selector.
-    Item
-    {
-        id: printerTypeSelectorRow
-        visible:
-        {
-            return Cura.MachineManager.printerOutputDevices.length >= 1 //If connected...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount != null //...and we have configuration information...
-                && Cura.MachineManager.printerOutputDevices[0].connectedPrintersTypeCount.length > 1; //...and there is more than one type of printer in the configuration list.
-        }
-        height: visible ? childrenRect.height : 0
-
-        anchors
-        {
-            left: parent.left
-            right: parent.right
-            top: header.bottom
-            topMargin: visible ? UM.Theme.getSize("default_margin").height : 0
-        }
-
-        UM.Label
-        {
-            text: catalog.i18nc("@label", "Printer")
-            width: Math.round(parent.width * 0.3) - UM.Theme.getSize("default_margin").width
-            height: contentHeight
-            anchors.verticalCenter: printerTypeSelector.verticalCenter
-            anchors.left: parent.left
-        }
-
-        Button
-        {
-            id: printerTypeSelector
-            text: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.name: ""
-
-            height: UM.Theme.getSize("print_setup_big_item").height
-            width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
-            anchors.right: parent.right
-            onClicked: menu.open()
-            //style: UM.Theme.styles.print_setup_header_button
-
-            Cura.PrinterTypeMenu { id: menu}
-        }
-    }
-
     UM.TabRow
     {
         id: tabBar
-        anchors.top: printerTypeSelectorRow.bottom
+        anchors.top: header.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 
@@ -355,10 +311,11 @@ Item
             {
                 id: warnings
                 height: visible ? childrenRect.height : 0
-                visible: buildplateCompatibilityError || buildplateCompatibilityWarning
+                visible: buildplateCompatibilityError || buildplateCompatibilityWarning || coreCompatibilityWarning
 
                 property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
                 property bool buildplateCompatibilityWarning: Cura.MachineManager.variantBuildplateUsable
+                property bool coreCompatibilityWarning: !Cura.MachineManager.variantCoreUsableForFactor4
 
                 // This is a space holder aligning the warning messages.
                 UM.Label
@@ -380,7 +337,7 @@ Item
                         width: UM.Theme.getSize("section_icon").width
                         height: UM.Theme.getSize("section_icon").height
                         color: UM.Theme.getColor("material_compatibility_warning")
-                        visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
+                        visible: !Cura.MachineManager.isCurrentSetupSupported || warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning || warnings.coreCompatibilityWarning
                     }
 
                     UM.Label
@@ -391,6 +348,17 @@ Item
                         width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
                         text: catalog.i18nc("@label", "Use glue for better adhesion with this material combination.")
                         visible: CuraSDKVersion == "dev" ? false : warnings.buildplateCompatibilityError || warnings.buildplateCompatibilityWarning
+                        wrapMode: Text.WordWrap
+                    }
+
+                    UM.Label
+                    {
+                        id: coreCompatibilityLabel
+                        anchors.left: warningImage.right
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        width: selectors.controlWidth - warningImage.width - UM.Theme.getSize("default_margin").width
+                        text: catalog.i18nc("@label", "Combination not recommended. Load BB core to slot 1 (left) for better reliability.")
+                        visible: warnings.coreCompatibilityWarning
                         wrapMode: Text.WordWrap
                     }
                 }

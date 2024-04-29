@@ -1,9 +1,8 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re  # For escaping characters in the settings.
 import json
-import copy
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
@@ -12,6 +11,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from cura.Machines.ContainerTree import ContainerTree
 
 from UM.i18n import i18nCatalog
+
 catalog = i18nCatalog("cura")
 
 
@@ -96,25 +96,6 @@ class GCodeWriter(MeshWriter):
         self.setInformation(catalog.i18nc("@warning:status", "Please prepare G-code before exporting."))
         return False
 
-    def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
-        """Create a new container with container 2 as base and container 1 written over it."""
-
-        flat_container = InstanceContainer(instance_container2.getName())
-
-        # The metadata includes id, name and definition
-        flat_container.setMetaData(copy.deepcopy(instance_container2.getMetaData()))
-
-        if instance_container1.getDefinition():
-            flat_container.setDefinition(instance_container1.getDefinition().getId())
-
-        for key in instance_container2.getAllKeys():
-            flat_container.setProperty(key, "value", instance_container2.getProperty(key, "value"))
-
-        for key in instance_container1.getAllKeys():
-            flat_container.setProperty(key, "value", instance_container1.getProperty(key, "value"))
-
-        return flat_container
-
     def _serialiseSettings(self, stack):
         """Serialises a container stack to prepare it for writing at the end of the g-code.
 
@@ -145,22 +126,22 @@ class GCodeWriter(MeshWriter):
             container_with_profile.setDefinition(machine_definition_id_for_quality)
             container_with_profile.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
-        flat_global_container = self._createFlattenedContainerInstance(stack.userChanges, container_with_profile)
+        merged_global_instance_container = InstanceContainer.createMergedInstanceContainer(stack.userChanges, container_with_profile)
         # If the quality changes is not set, we need to set type manually
-        if flat_global_container.getMetaDataEntry("type", None) is None:
-            flat_global_container.setMetaDataEntry("type", "quality_changes")
+        if merged_global_instance_container.getMetaDataEntry("type", None) is None:
+            merged_global_instance_container.setMetaDataEntry("type", "quality_changes")
 
         # Ensure that quality_type is set. (Can happen if we have empty quality changes).
-        if flat_global_container.getMetaDataEntry("quality_type", None) is None:
-            flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
+        if merged_global_instance_container.getMetaDataEntry("quality_type", None) is None:
+            merged_global_instance_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
-        flat_global_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
+        merged_global_instance_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
 
-        serialized = flat_global_container.serialize()
+        serialized = merged_global_instance_container.serialize()
         data = {"global_quality": serialized}
 
-        all_setting_keys = flat_global_container.getAllKeys()
+        all_setting_keys = merged_global_instance_container.getAllKeys()
         for extruder in stack.extruderList:
             extruder_quality = extruder.qualityChanges
             if extruder_quality.getId() == "empty_quality_changes":
@@ -174,7 +155,7 @@ class GCodeWriter(MeshWriter):
                 extruder_quality.setDefinition(machine_definition_id_for_quality)
                 extruder_quality.setMetaDataEntry("setting_version", stack.quality.getMetaDataEntry("setting_version"))
 
-            flat_extruder_quality = self._createFlattenedContainerInstance(extruder.userChanges, extruder_quality)
+            flat_extruder_quality = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder_quality)
             # If the quality changes is not set, we need to set type manually
             if flat_extruder_quality.getMetaDataEntry("type", None) is None:
                 flat_extruder_quality.setMetaDataEntry("type", "quality_changes")
