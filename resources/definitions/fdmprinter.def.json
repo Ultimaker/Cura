@@ -765,7 +765,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-               "minimal_segment_length":
+                "minimal_segment_length":
                 {
                     "label": "Minimum straight line length",
                     "description": "When approximating curves by straight lines (e.g. in the spiral z-hop) the discretization will be done based on this value.",
@@ -8541,12 +8541,12 @@
                     "default_value": true,
                     "settable_per_mesh": true
                 },
-                "z_hop_type": 
+                "z_hop_type":
                 {
                     "label": "Z Hop Type",
                     "description": "How to lift the nozzle, when changing from an extrusion to a travel. The spiral z hop will automatically disable combing. If desired it can be turned on again. Turning off combing will smooth motion of the printer but increase stringing.",
                     "type": "enum",
-                    "options": 
+                    "options":
                     {
                         "normal": "Vertical Hop",
                         "spiral": "Spiral Hop"
@@ -8556,9 +8556,9 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false,
-                    "children": 
+                    "children":
                     {
-                        "spiral_radius": 
+                        "spiral_radius":
                         {
                             "label": "Z Hop Radius",
                             "description": "Radius of the spiral z hop.",
@@ -8573,7 +8573,7 @@
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": false
                         },
-                        "retract_during_spiral": 
+                        "retract_during_spiral":
                         {
                             "label": "Retract While Spiral",
                             "description": "Do the retraction while simultaneously performing the spiral z hop (and not as a separate command before). Please note, that in case of a very fast or very small retraction, the retraction speed set in the UI, might then only serve as an upper limit.",
