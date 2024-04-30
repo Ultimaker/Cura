@@ -1,20 +1,17 @@
-name: conan-package
+name: conan-package-resources
 
 on:
   push:
     paths:
-      - 'plugins/**'
-      - 'cura/**'
-      - 'icons/**'
-      - 'tests/**'
-      - 'packaging/**'
-      - '.github/workflows/conan-package.yml'
-      - '.github/workflows/notify.yml'
-      - '.github/workflows/requirements-runner.txt'
-      - 'requirements*.txt'
-      - 'conanfile.py'
-      - 'conandata.yml'
-      - '*.jinja'
+      - '.github/workflows/conan-package-resources.yml'
+      - 'resources/definitions/**'
+      - 'resources/extruders/**'
+      - 'resources/intent/**'
+      - 'resources/meshes/**'
+      - 'resources/quality/**'
+      - 'resources/variants/**'
+      - 'resources/conanfile.py'
+      - 'resources/conandata.yml'
     branches:
       - 'main'
       - 'CURA-*'
@@ -31,7 +28,7 @@ jobs:
   conan-recipe-version:
     uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
     with:
-      project_name: cura
+      project_name: cura_resources
 
   conan-package-export:
     needs: [ conan-recipe-version ]
@@ -39,12 +36,4 @@ jobs:
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
-    secrets: inherit
-
-  conan-package-create:
-    needs: [ conan-recipe-version, conan-package-export ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      conan_extra_args: "-o cura:enable_i18n=True"
     secrets: inherit
