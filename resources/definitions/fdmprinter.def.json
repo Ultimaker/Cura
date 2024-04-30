@@ -1417,6 +1417,17 @@
                     "enabled": "z_seam_type == 'back'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "z_seam_approach_distance":
+                {
+                    "label": "Z Seam approach distance",
+                    "description": "When starting to print a wall, if it starts after a rectracted travel mode, do not travel directly to the start position. Instead, move to a transitory position tangent to the first printed segment, at a certain distance equal to Approach Distance.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 15,
+                    "minimum_value": "0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
