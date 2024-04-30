@@ -18,8 +18,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
     catalog = i18nCatalog("cura")
     settings_catalog = i18nCatalog("fdmprinter.def.json")
 
-    def __init__(self) -> None:
-        super().__init__(self.settings_catalog)
+    def __init__(self, catalog_i18n = settings_catalog) -> None:
+        super().__init__(catalog_i18n)
         self.__port: int = 0
         self._plugin_address: str = "127.0.0.1"
         self._plugin_command: Optional[List[str]] = None

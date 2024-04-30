@@ -21,7 +21,7 @@
 # M163 - Set Mix Factor 
 # M164 - Save Mix - saves to T2 as a unique mix
 
-import re #To perform the search and replace.
+import re # To perform the search and replace.
 from ..Script import Script
 
 class ColorMix(Script):

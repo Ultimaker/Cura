@@ -19,6 +19,10 @@ vertex41core =
 
     uniform highp mat4 u_normalMatrix;
 
+    uniform vec3 u_last_vertex;
+    uniform vec3 u_next_vertex;
+    uniform float u_last_line_ratio;
+
     in highp vec4 a_vertex;
     in lowp vec4 a_color;
     in lowp vec4 a_material_color;
@@ -134,6 +138,10 @@ vertex41core =
     void main()
     {
         vec4 v1_vertex = a_vertex;
+        if (v1_vertex.xyz == u_next_vertex)
+        {
+            v1_vertex.xyz = mix(u_last_vertex, u_next_vertex, u_last_line_ratio);
+        }
         v1_vertex.y -= a_line_dim.y / 2;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
@@ -426,6 +434,10 @@ u_max_feedrate = 1
 
 u_min_thickness = 0
 u_max_thickness = 1
+
+u_last_vertex = [0.0, 0.0, 0.0]
+u_next_vertex = [0.0, 0.0, 0.0]
+u_last_line_ratio = 1.0
 
 [bindings]
 u_modelMatrix = model_matrix
