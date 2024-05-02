@@ -30,10 +30,12 @@ jobs:
     with:
       project_name: cura_resources
 
+  # FIXME: Point to main, once merged
   conan-package-export:
     needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@NP-186_seperate_cura_resources
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+      conan_recipe_root: "./resources/"
     secrets: inherit
