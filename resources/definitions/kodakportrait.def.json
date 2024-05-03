@@ -16,8 +16,8 @@
     "platform_offset": [33, -7, 17],
     "machine_extruder_trains":
     {
-      "0": "kodak_portrait_1st",
-      "1": "kodak_portrait_2nd"
+      "0": "kodak_portrait_extruder_0",
+      "1": "kodak_portrait_extruder_1"
     },
     "supports_usb_connection": true
   },
