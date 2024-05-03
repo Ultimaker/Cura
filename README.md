@@ -26,7 +26,9 @@
 *With hundreds of settings & community-managed print profiles,* <br>
 *Ultimaker Cura is sure to lead your next project to a success.*
 
-<br>
+**Contribute Printer Profiles?** -- Please [look here](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura) first. <br>
+**Contribute Translations?** -- Please [look here](https://github.com/Ultimaker/Cura/wiki/Translating-Cura) first.
+
 <br>
 
 [![Button Building]][Building]   

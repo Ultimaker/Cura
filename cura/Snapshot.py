@@ -21,23 +21,31 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Qt.QtRenderer import QtRenderer
 
 class Snapshot:
+
+    DEFAULT_WIDTH_HEIGHT = 300
+    MAX_RENDER_DISTANCE = 10000
+    BOUND_BOX_FACTOR = 1.75
+    CAMERA_FOVY = 30
+    ATTEMPTS_FOR_SNAPSHOT = 10
+
     @staticmethod
-    def getImageBoundaries(image: QImage):
-        # Look at the resulting image to get a good crop.
-        # Get the pixels as byte array
+    def getNonZeroPixels(image: QImage):
         pixel_array = image.bits().asarray(image.sizeInBytes())
         width, height = image.width(), image.height()
-        # Convert to numpy array, assume it's 32 bit (it should always be)
         pixels = numpy.frombuffer(pixel_array, dtype=numpy.uint8).reshape([height, width, 4])
         # Find indices of non zero pixels
-        nonzero_pixels = numpy.nonzero(pixels)
+        return numpy.nonzero(pixels)
+
+    @staticmethod
+    def getImageBoundaries(image: QImage):
+        nonzero_pixels = Snapshot.getNonZeroPixels(image)
         min_y, min_x, min_a_ = numpy.amin(nonzero_pixels, axis=1)  # type: ignore
         max_y, max_x, max_a_ = numpy.amax(nonzero_pixels, axis=1)  # type: ignore
 
         return min_x, max_x, min_y, max_y
 
     @staticmethod
-    def isometricSnapshot(width: int = 300, height: int = 300, *, node: Optional[SceneNode] = None) -> Optional[QImage]:
+    def isometricSnapshot(width: int = DEFAULT_WIDTH_HEIGHT, height: int = DEFAULT_WIDTH_HEIGHT, *, node: Optional[SceneNode] = None) -> Optional[QImage]:
         """
         Create an isometric snapshot of the scene.
 
@@ -92,8 +100,8 @@ class Snapshot:
             camera_width / 2,
             -camera_height / 2,
             camera_height / 2,
-            -10000,
-            10000
+            -Snapshot.MAX_RENDER_DISTANCE,
+            Snapshot.MAX_RENDER_DISTANCE
         )
         camera.setPerspective(False)
         camera.setProjectionMatrix(ortho_matrix)
@@ -113,21 +121,24 @@ class Snapshot:
         return render_pass.getOutput()
 
     @staticmethod
+    def isNodeRenderable(node):
+        return not getattr(node, "_outside_buildarea", False) and node.callDecoration(
+            "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
+            "isNonThumbnailVisibleMesh")
+
+    @staticmethod
     def nodeBounds(root_node: SceneNode) -> Optional[AxisAlignedBox]:
         axis_aligned_box = None
         for node in DepthFirstIterator(root_node):
-            if not getattr(node, "_outside_buildarea", False):
-                if node.callDecoration(
-                        "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
-                        "isNonThumbnailVisibleMesh"):
-                    if axis_aligned_box is None:
-                        axis_aligned_box = node.getBoundingBox()
-                    else:
-                        axis_aligned_box = axis_aligned_box + node.getBoundingBox()
+            if Snapshot.isNodeRenderable(node):
+                if axis_aligned_box is None:
+                    axis_aligned_box = node.getBoundingBox()
+                else:
+                    axis_aligned_box = axis_aligned_box + node.getBoundingBox()
         return axis_aligned_box
 
     @staticmethod
-    def snapshot(width = 300, height = 300):
+    def snapshot(width = DEFAULT_WIDTH_HEIGHT, height = DEFAULT_WIDTH_HEIGHT, number_of_attempts = ATTEMPTS_FOR_SNAPSHOT):
         """Return a QImage of the scene
 
         Uses PreviewPass that leaves out some elements Aspect ratio assumes a square
@@ -163,13 +174,13 @@ class Snapshot:
         looking_from_offset = Vector(-1, 1, 2)
         if size > 0:
             # determine the watch distance depending on the size
-            looking_from_offset = looking_from_offset * size * 1.75
+            looking_from_offset = looking_from_offset * size * Snapshot.BOUND_BOX_FACTOR
         camera.setPosition(look_at + looking_from_offset)
         camera.lookAt(look_at)
 
         satisfied = False
         size = None
-        fovy = 30
+        fovy = Snapshot.CAMERA_FOVY
 
         while not satisfied:
             if size is not None:
@@ -184,9 +195,14 @@ class Snapshot:
             pixel_output = preview_pass.getOutput()
             try:
                 min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
-            except (ValueError, AttributeError):
-                Logger.logException("w", "Failed to crop the snapshot!")
-                return None
+            except (ValueError, AttributeError) as e:
+                if number_of_attempts == 0:
+                    Logger.warning( f"Failed to crop the snapshot even after {Snapshot.ATTEMPTS_FOR_SNAPSHOT} attempts!")
+                    return None
+                else:
+                    number_of_attempts = number_of_attempts - 1
+                    Logger.info("Trying to get the snapshot again.")
+                    return Snapshot.snapshot(width, height, number_of_attempts)
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
             if size > 0.5 or satisfied:
