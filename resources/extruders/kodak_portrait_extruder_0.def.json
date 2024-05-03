@@ -1,7 +1,6 @@
 {
-    "id": "kodak_portrait_1st",
     "version": 2,
-    "name": "Extruder 1",
+    "name": "Extruder 0",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "kodakportrait",
@@ -9,8 +8,10 @@
         "position": "0"
     },
 
-    "overrides": {
-        "extruder_nr": {
+    "overrides": 
+	{
+        "extruder_nr": 
+		{
             "default_value": 0,
             "maximum_value": "1"
         },
