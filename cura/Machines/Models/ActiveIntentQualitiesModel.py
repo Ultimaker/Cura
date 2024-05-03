@@ -54,10 +54,7 @@ class ActiveIntentQualitiesModel(ListModel):
             self._updateDelayed()
 
     def _update(self):
-        active_extruder_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStack
-        if active_extruder_stack:
-            self._intent_category = active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
-
+        self._intent_category = IntentManager.getInstance().currentIntentCategory
         new_items: List[Dict[str, Any]] = []
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
