@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "creality_base",
+        "machine": "creality_k1max",
         "position": "0"
     },
     "overrides":

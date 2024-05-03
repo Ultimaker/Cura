@@ -50,12 +50,6 @@
         "machine_start_gcode": { "default_value": "M140 S0\nM104 S0 \nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\n" },
         "machine_width": { "default_value": 300 },
         "retraction_amount": { "default_value": 0.5 },
-        "retraction_combing_max_distance": { "default_value": 15 },
-        "retraction_hop": { "default_value": 0.1 },
-        "retraction_min_travel": { "default_value": 2 },
-        "retraction_speed": { "default_value": 40 },
-        "speed_layer_0": { "default_value": 60 },
-        "speed_print": { "default_value": 300 },
-        "speed_travel": { "default_value": 500 }
+        "retraction_speed": { "default_value": 40 }
     }
 }
