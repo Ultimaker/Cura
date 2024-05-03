@@ -1,8 +1,9 @@
 {
     "version": 2,
-    "name": "Extruder 2",
+    "name": "Extruder 1",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata": 
+	{
         "machine": "kodakportrait",
 		"material_color": "#056d01",
         "position": "1"
