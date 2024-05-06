@@ -3,7 +3,7 @@
 
 from io import StringIO, BufferedIOBase
 import json
-from typing import cast, List, Optional, Dict
+from typing import cast, List, Optional, Dict, Tuple
 from zipfile import BadZipFile, ZipFile, ZIP_DEFLATED
 import pyDulcificum as du
 
@@ -35,6 +35,13 @@ class MakerbotWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name="application/x-makerbot",
+                comment="Makerbot Toolpath Package",
+                suffixes=["makerbot"]
+            )
+        )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-makerbotsketch",
                 comment="Makerbot Toolpath Package",
                 suffixes=["makerbot"]
             )
@@ -74,6 +81,7 @@ class MakerbotWriter(MeshWriter):
         return None
 
     def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
+        metadata, file_format  = self._getMeta(nodes)
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "MakerbotWriter does not support text mode.")
             self.setInformation(catalog.i18nc("@error:not supported", "MakerbotWriter does not support text mode."))
@@ -92,14 +100,16 @@ class MakerbotWriter(MeshWriter):
 
         gcode_text_io = StringIO()
         success = gcode_writer.write(gcode_text_io, None)
-
+        filename, filedata = "", ""
         # Writing the g-code failed. Then I can also not write the gzipped g-code.
         if not success:
             self.setInformation(gcode_writer.getInformation())
             return False
 
-        json_toolpaths = du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
-        metadata = self._getMeta(nodes)
+        if file_format == "application/x-makerbotsketch":
+            filename, filedata = "print.gcode", gcode_text_io.getvalue()
+        else:
+            filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
 
         png_files = []
         for png_format in self._PNG_FORMATS:
@@ -116,7 +126,7 @@ class MakerbotWriter(MeshWriter):
         try:
             with ZipFile(stream, "w", compression=ZIP_DEFLATED) as zip_stream:
                 zip_stream.writestr("meta.json", json.dumps(metadata, indent=4))
-                zip_stream.writestr("print.jsontoolpath", json_toolpaths)
+                zip_stream.writestr(filename, filedata)
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
@@ -127,7 +137,7 @@ class MakerbotWriter(MeshWriter):
 
         return True
 
-    def _getMeta(self, root_nodes: List[SceneNode]) -> Dict[str, any]:
+    def _getMeta(self, root_nodes: List[SceneNode]) -> Tuple[Dict[str, any], str]:
         application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
         global_stack = machine_manager.activeMachine
@@ -143,7 +153,7 @@ class MakerbotWriter(MeshWriter):
                         nodes.append(node)
 
         meta = dict()
-
+        file_format = global_stack.definition.getMetaDataEntry("file_formats")
         meta["bot_type"] = global_stack.definition.getMetaDataEntry("reference_machine_id")
 
         bounds: Optional[AxisAlignedBox] = None
@@ -245,7 +255,7 @@ class MakerbotWriter(MeshWriter):
         # platform_temperature
         # total_commands
 
-        return meta
+        return meta, file_format
 
 
 def meterToMillimeter(value: float) -> float:
