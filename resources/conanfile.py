@@ -1,6 +1,4 @@
 import os
-from pathlib import Path
-from jinja2 import Template
 
 from conan import ConanFile
 from conan.tools.files import copy, update_conandata
@@ -35,6 +33,8 @@ class CuraResource(ConanFile):
              dst=os.path.join(self.export_sources_folder, "definitions"))
         copy(self, pattern="*", src=os.path.join(self.recipe_folder, "extruders"),
              dst=os.path.join(self.export_sources_folder, "extruders"))
+        copy(self, pattern="*", src=os.path.join(self.recipe_folder, "images"),
+             dst=os.path.join(self.export_sources_folder, "images"))
         copy(self, pattern="*", src=os.path.join(self.recipe_folder, "intent"),
              dst=os.path.join(self.export_sources_folder, "intent"))
         copy(self, pattern="*", src=os.path.join(self.recipe_folder, "meshes"),
@@ -49,7 +49,7 @@ class CuraResource(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def layout(self):
-        self.cpp.source.resdirs = ["definitions", "extruders", "intent", "meshes", "quality", "variants"]
+        self.cpp.source.resdirs = ["definitions", "extruders", "images", "intent", "meshes", "quality", "variants"]
 
     def package(self):
         copy(self, "*", os.path.join(self.export_sources_folder),

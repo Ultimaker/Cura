@@ -1,5 +1,6 @@
 version: "5.8.0-alpha.0"
 requirements:
+  - "cura_resources/(latest)@ultimaker/np_186"
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
@@ -50,10 +51,30 @@ pyinstaller:
           package: "native_cad_plugin"
           src: "res/bundled_packages"
           dst: "share/cura/resources/bundled_packages"
-        cura_resources:
-            package: "cura"
-            src: "resources"
-            dst: "share/cura/resources"
+        cura_resources_definitions:
+            package: "cura_resources"
+            src: "definitions"
+            dst: "share/cura/resources/definitions"
+        cura_resources_extruders:
+            package: "cura_resources"
+            src: "extruders"
+            dst: "share/cura/resources/extruders"
+        cura_resources_intent:
+            package: "cura_resources"
+            src: "intent"
+            dst: "share/cura/resources/intent"
+        cura_resources_meshes:
+            package: "cura_resources"
+            src: "meshes"
+            dst: "share/cura/resources/meshes"
+        cura_resources_quality:
+          package: "cura_resources"
+          src: "quality"
+          dst: "share/cura/resources/quality"
+        cura_resources_variants:
+          package: "cura_resources"
+          src: "variants"
+          dst: "share/cura/resources/variants"
         cura_private_data:
             package: "cura_private_data"
             src: "res"

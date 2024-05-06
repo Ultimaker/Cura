@@ -6,12 +6,12 @@ on:
       - '.github/workflows/conan-package-resources.yml'
       - 'resources/definitions/**'
       - 'resources/extruders/**'
+      - 'resources/images/**'
       - 'resources/intent/**'
       - 'resources/meshes/**'
       - 'resources/quality/**'
       - 'resources/variants/**'
       - 'resources/conanfile.py'
-      - 'resources/conandata.yml'
     branches:
       - 'main'
       - 'CURA-*'

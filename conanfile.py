@@ -468,6 +468,12 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[0]), str(self._share_dir.joinpath("cura", "resources")), keep_path = True)
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.resdirs[1]), str(self._share_dir.joinpath("cura", "plugins")), keep_path = True)
 
+        # Copy the cura_resources resources from the package
+        rm(self, "conanfile.py", os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        cura_resources = self.dependencies["cura_resources"].cpp_info
+        for res_dir in cura_resources.resdirs:
+            copy(self, "*", res_dir, str(self._share_dir.joinpath("cura", "resources", res_dir)))
+
         # Copy resources of Uranium (keep folder structure)
         uranium = self.dependencies["uranium"].cpp_info
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
@@ -518,6 +524,12 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
+
+        # Remove the cura_resources resources from the package
+        rm(self, "conanfile.py", os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
+        cura_resources = self.dependencies["cura_resources"].cpp_info
+        for res_dir in cura_resources.resdirs:
+            rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], res_dir))
 
     def package_info(self):
         self.user_info.pip_requirements = "requirements.txt"
