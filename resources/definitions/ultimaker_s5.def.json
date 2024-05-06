@@ -1,5 +1,5 @@
 {
-    "version": 2,
+    "version": 3,
     "name": "UltiMaker S5",
     "inherits": "ultimaker",
     "metadata":
