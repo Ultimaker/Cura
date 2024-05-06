@@ -41,7 +41,7 @@ class MakerbotWriter(MeshWriter):
         )
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-makerbotsketch",
+                name="application/x-makerbot-sketch",
                 comment="Makerbot Toolpath Package",
                 suffixes=["makerbot"]
             )
@@ -106,7 +106,7 @@ class MakerbotWriter(MeshWriter):
             self.setInformation(gcode_writer.getInformation())
             return False
 
-        if file_format == "application/x-makerbotsketch":
+        if file_format == "application/x-makerbot-sketch":
             filename, filedata = "print.gcode", gcode_text_io.getvalue()
         else:
             filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
