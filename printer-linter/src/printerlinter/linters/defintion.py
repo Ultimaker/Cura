@@ -13,6 +13,7 @@ class Definition(Linter):
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
         self._definitions = {}
+        self._extruders = {}
         self._loadDefinitionFiles(file)
         self._content = self._file.read_text()
         self._loadBasePrinterSettings()
@@ -96,6 +97,64 @@ class Definition(Linter):
                         offset=found.span(0)[0],
                         replacements=replacements
                     )
+
+    def checkExtruderReference(self):
+        definition_name = list(self._definitions.keys())[0]
+        definition = self._definitions[definition_name]
+        if "metadata" in definition and "machine_extruder_trains" in definition["metadata"].keys():
+            extruder_trains = definition["metadata"]["machine_extruder_trains"]
+        elif "inherits" in definition.keys():
+            extruder_trains = self._findInheritance(definition, definition_name)
+        else:
+            print(f"{definition_name} is likely to be corrupted please investigate.")
+        self._findExtruder(extruder_trains, definition)
+        
+
+    def _findInheritance(self, definition_file, definition_name):
+        parent_file = definition_file.parent.joinpath(f"{self._definitions[definition_name]['inherits']}.def.json")
+        if parent_file == "fdmprinter.def.json":
+            return {'0': 'fdmextruder'}
+        
+        self._loadDefinitionFiles(parent_file)
+        definition = self._definitions[parent_file]
+
+        if "metadata" in definition.keys() and "machine_extruder_trains" in definition["metadata"].keys():
+            return definition["metadata"]["machine_extruder_trains"]
+        elif "inherits" in definition.keys():
+            return self._findInheritance(definition, parent_file)
+        else:
+            print(f"Could not find the either a parent or extruder train for {parent_file}")
+
+    def _findExtruder(self, extruder_trains, definition_file):
+        if len(extruder_trains) == 1:
+            if '0' in extruder_trains.keys():
+                value = f"{extruder_trains['0']}.def.json"
+            else:
+                value = f"{extruder_trains['1']}.def.json"
+            
+            extruder_file = definition_file.parent.parent.joinpath("extruders", f"{value}")
+            self._extruders[extruder_file] = json.loads(extruder_file.read_text())
+
+            if value in self._extruders or value == "fdmextruder.def.json":
+                pass
+            else:
+                print(f"No value found for {extruder_trains}")
+            
+        elif len(extruder_trains) > 1:
+            try:
+                for key, value in extruder_trains.items():
+                    value = f"{value}.def.json"
+                    extruder_file = definition_file.parent.parent.joinpath("extruders", f"{value}")
+                    self._extruders[extruder_file] = json.loads(extruder_file.read_text())
+                    if value in self._extruders:
+                        pass
+                    else:
+                        print(f"No value found for {definition_file} with {value}")
+            except:
+                raise Exception(f"{definition_file} with {extruder_trains.items()}")
+        else:
+            raise Exception(f"No extruder train found for {definition_file}")
+        
 
     def _loadDefinitionFiles(self, definition_file) -> None:
         """ Loads definition file contents into self._definitions. Also load parent definition if it exists. """
