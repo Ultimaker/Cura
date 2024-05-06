@@ -16,6 +16,7 @@ from UM.Mesh.MeshReader import MeshReader
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -41,7 +42,7 @@ class ThreeMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                name="application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 comment="3MF",
                 suffixes=["3mf"]
             )
@@ -177,6 +178,12 @@ class ThreeMFReader(MeshReader):
                     else:
                         Logger.log("w", "Unable to find extruder in position %s", setting_value)
                     continue
+                if key == "print_order":
+                    um_node.printOrder = int(setting_value)
+                    continue
+                if key =="drop_to_buildplate":
+                    um_node.setSetting(SceneNodeSettings.AutoDropDown, eval(setting_value))
+                    continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
                 else:
@@ -233,8 +240,7 @@ class ThreeMFReader(MeshReader):
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
                     if extents is not None:
-                        # We use a different coordinate space, so flip Z and Y
-                        center_vector = Vector(extents.center.x, extents.center.z, extents.center.y)
+                        center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
                         transform_matrix.setByTranslation(center_vector)
                 transform_matrix.multiply(um_node.getLocalTransformation())
                 um_node.setTransformation(transform_matrix)

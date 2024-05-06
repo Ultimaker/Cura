@@ -1,0 +1,365 @@
+{
+    "version": 2,
+    "name": "UltiMaker Factor 4",
+    "inherits": "ultimaker",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_factor4_platform.obj",
+        "bom_numbers": [
+            227380
+        ],
+        "firmware_update_info":
+        {
+            "check_urls": [ "http://software.ultimaker.com/releases/firmware/227380/stable/um-update.swu.version" ],
+            "id": 227380,
+            "update_url": "https://ultimaker.com/firmware"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_factor4_extruder_left",
+            "1": "ultimaker_factor4_extruder_right"
+        },
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "UltimakerFactor4Backplate.png",
+        "preferred_material": "ultimaker_tough_pla_black",
+        "preferred_quality_type": "draft",
+        "preferred_variant_name": "AA 0.4",
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_material_export": true,
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Print core",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "acceleration_enabled": { "value": "True" },
+        "acceleration_prime_tower": { "value": "acceleration_print" },
+        "acceleration_print": { "value": "2500" },
+        "acceleration_support": { "value": "acceleration_print" },
+        "acceleration_support_interface": { "value": "acceleration_topbottom" },
+        "acceleration_topbottom": { "value": "acceleration_print" },
+        "acceleration_wall": { "value": "acceleration_print" },
+        "acceleration_wall_0": { "value": "acceleration_wall" },
+        "acceleration_wall_x": { "value": "acceleration_wall" },
+        "adhesion_type": { "value": "'skirt'" },
+        "bridge_enable_more_layers": { "value": "True" },
+        "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
+        "bridge_settings_enabled": { "value": "True" },
+        "bridge_skin_density": { "value": "100" },
+        "bridge_skin_material_flow": { "maximum_value": "100" },
+        "bridge_skin_material_flow_2": { "maximum_value": "100" },
+        "bridge_skin_material_flow_3": { "maximum_value": "100" },
+        "bridge_wall_material_flow": { "maximum_value": "100" },
+        "bridge_wall_speed": { "value": "speed_wall" },
+        "brim_width": { "value": "5" },
+        "build_volume_temperature":
+        {
+            "maximum_value": "max(35, min((material_bed_temperature + 20) / 2, 70))",
+            "maximum_value_warning": "max(30, min((material_bed_temperature + 10) / 2, 70))",
+            "minimum_value": "max((material_bed_temperature - 30) / 2, 30)",
+            "minimum_value_warning": "max((material_bed_temperature - 20) / 2, 30)"
+        },
+        "cool_min_layer_time": { "value": 3 },
+        "cool_min_layer_time_fan_speed_max": { "value": "cool_min_layer_time + 12" },
+        "cool_min_speed": { "value": "round(speed_wall_0 * 1 / 2) if cool_lift_head else round(speed_wall_0 / 3)" },
+        "default_material_print_temperature": { "maximum_value": "340" },
+        "expand_skins_expand_distance": { "value": "skin_preshrink * 2" },
+        "extruder_prime_pos_abs": { "default_value": true },
+        "gantry_height": { "value": 35 },
+        "gradual_support_infill_steps": { "value": "3 if support_interface_enable and support_structure != 'tree' else 0" },
+        "group_outer_walls": { "value": "False" },
+        "infill_before_walls": { "value": "False if infill_sparse_density > 50 else True" },
+        "infill_enable_travel_optimization": { "value": "True" },
+        "infill_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "(1 + (skin_material_flow-infill_sparse_density) / 100 if infill_sparse_density > skin_material_flow else 1) * material_flow"
+        },
+        "infill_overlap": { "value": "0" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'triangles'" },
+        "infill_sparse_density": { "maximum_value": "100" },
+        "infill_wipe_dist": { "value": "0" },
+        "inset_direction": { "value": "'inside_out'" },
+        "jerk_enabled": { "value": "True" },
+        "jerk_travel":
+        {
+            "maximum_value": "5",
+            "value": "5"
+        },
+        "jerk_travel_enabled": { "value": "True" },
+        "layer_height": { "value": "min(min(extruderValues('machine_nozzle_size')) / 2, 0.2)" },
+        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
+        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
+        "machine_acceleration": { "default_value": 3000 },
+        "machine_depth": { "default_value": 240 },
+        "machine_end_gcode": { "default_value": "" },
+        "machine_extruder_count": { "default_value": 2 },
+        "machine_gcode_flavor": { "default_value": "Griffin" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-30, -80],
+                [-30, 20],
+                [50, 20],
+                [50, -80]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_heated_build_volume": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_max_acceleration_e": { "default_value": 2000 },
+        "machine_max_feedrate_x": { "default_value": 125 },
+        "machine_max_feedrate_y": { "default_value": 125 },
+        "machine_max_feedrate_z": { "default_value": 40 },
+        "machine_max_jerk_e": { "default_value": 2 },
+        "machine_min_cool_heat_time_window": { "value": "15" },
+        "machine_name": { "default_value": "Ultimaker Factor 4" },
+        "machine_nozzle_cool_down_speed": { "value": "0.3 + 0.0025 * material_print_temperature" },
+        "machine_nozzle_heat_up_speed": { "value": "2 - 0.0025 * material_print_temperature" },
+        "machine_start_gcode": { "default_value": "" },
+        "machine_width": { "default_value": 330 },
+        "material_bed_temperature": { "maximum_value": "120" },
+        "material_bed_temperature_layer_0": { "maximum_value": "120" },
+        "material_final_print_temperature":
+        {
+            "maximum_value": "340",
+            "value": "material_print_temperature"
+        },
+        "material_flow":
+        {
+            "maximum_value": "100",
+            "value": "100"
+        },
+        "material_flow_layer_0":
+        {
+            "maximum_value": "100",
+            "value": "95"
+        },
+        "material_initial_print_temperature":
+        {
+            "maximum_value": "340",
+            "value": "material_print_temperature"
+        },
+        "material_print_temperature":
+        {
+            "maximum_value": "340",
+            "value": "default_material_print_temperature"
+        },
+        "material_print_temperature_layer_0": { "maximum_value": "320" },
+        "material_shrinkage_percentage": { "enabled": true },
+        "multiple_mesh_overlap": { "value": "0" },
+        "optimize_wall_printing_order": { "value": "True" },
+        "prime_blob_enable":
+        {
+            "default_value": false,
+            "enabled": true
+        },
+        "prime_tower_base_curve_magnitude": { "value": 2 },
+        "prime_tower_base_height": { "value": 6 },
+        "prime_tower_base_size": { "value": 6 },
+        "prime_tower_brim_enable": { "value": "True" },
+        "prime_tower_enable": { "value": "True" },
+        "prime_tower_flow":
+        {
+            "maximum_value": "100",
+            "value": "material_flow"
+        },
+        "prime_tower_min_volume": { "value": "10" },
+        "prime_tower_position_x": { "value": "315" },
+        "prime_tower_position_y": { "value": "25" },
+        "prime_tower_wipe_enabled": { "value": "True" },
+        "retraction_amount": { "value": "1.5" },
+        "retraction_combing_max_distance": { "value": "speed_travel / 10" },
+        "retraction_count_max": { "value": "200" },
+        "retraction_hop": { "value": "0.2" },
+        "retraction_hop_enabled": { "value": "True" },
+        "retraction_hop_only_when_collides": { "value": "True" },
+        "retraction_min_travel": { "value": 1 },
+        "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": { "value": "25" },
+        "roofing_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "skin_material_flow"
+        },
+        "roofing_monotonic": { "value": "True" },
+        "skin_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "material_flow * 0.93"
+        },
+        "skin_material_flow_layer_0":
+        {
+            "maximum_value": "100",
+            "value": "material_flow_layer_0"
+        },
+        "skin_monotonic": { "value": "False" },
+        "skin_overlap": { "value": "0" },
+        "skirt_brim_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "material_flow"
+        },
+        "skirt_brim_minimal_length": { "value": "500" },
+        "small_skin_on_surface": { "value": "True" },
+        "small_skin_width": { "value": "1.5" },
+        "speed_infill":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_print"
+        },
+        "speed_layer_0":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "30"
+        },
+        "speed_prime_tower":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_topbottom"
+        },
+        "speed_print":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "50"
+        },
+        "speed_print_layer_0":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_layer_0"
+        },
+        "speed_roofing":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_wall_0"
+        },
+        "speed_support":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_print"
+        },
+        "speed_support_interface":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_topbottom"
+        },
+        "speed_topbottom":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_print"
+        },
+        "speed_travel":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "125"
+        },
+        "speed_travel_layer_0": { "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)" },
+        "speed_wall":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "30"
+        },
+        "speed_wall_0":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_wall"
+        },
+        "speed_wall_x":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_print"
+        },
+        "speed_wall_x_roofing":
+        {
+            "maximum_value": "min(machine_max_feedrate_x, machine_max_feedrate_y)",
+            "value": "speed_wall"
+        },
+        "support_angle": { "value": "60" },
+        "support_bottom_distance": { "value": "support_z_distance * 2" },
+        "support_bottom_height": { "value": "support_interface_height" },
+        "support_bottom_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "support_interface_material_flow"
+        },
+        "support_brim_enable": { "value": "True" },
+        "support_fan_enable": { "value": "True" },
+        "support_interface_enable": { "value": "True" },
+        "support_interface_height": { "value": "layer_height * 2" },
+        "support_interface_material_flow": { "maximum_value": "100" },
+        "support_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "material_flow"
+        },
+        "support_roof_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "support_interface_material_flow"
+        },
+        "support_supported_skin_fan_speed": { "value": "cool_fan_speed_max" },
+        "support_top_distance": { "value": "support_z_distance" },
+        "support_z_distance": { "value": "max(0.2, layer_height)" },
+        "switch_extruder_retraction_amount": { "value": "10" },
+        "switch_extruder_retraction_speeds": { "value": "retraction_speed" },
+        "top_bottom_pattern": { "value": "'zigzag'" },
+        "top_bottom_thickness": { "value": "wall_thickness" },
+        "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter * 2" },
+        "travel_avoid_supports": { "value": "True" },
+        "wall_0_inset": { "value": "0" },
+        "wall_0_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "wall_material_flow"
+        },
+        "wall_0_material_flow_layer_0":
+        {
+            "maximum_value": "100",
+            "value": "material_flow_layer_0"
+        },
+        "wall_0_material_flow_roofing":
+        {
+            "maximum_value": "100",
+            "value": "wall_material_flow"
+        },
+        "wall_0_wipe_dist": { "value": "0" },
+        "wall_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "material_flow"
+        },
+        "wall_x_material_flow":
+        {
+            "maximum_value": "100",
+            "value": "(wall_material_flow + skin_material_flow) / 2"
+        },
+        "wall_x_material_flow_layer_0":
+        {
+            "maximum_value": "100",
+            "value": "material_flow_layer_0"
+        },
+        "wall_x_material_flow_roofing":
+        {
+            "maximum_value": "100",
+            "value": "(wall_material_flow + roofing_material_flow) / 2"
+        },
+        "z_seam_position": { "value": "'backleft'" },
+        "z_seam_type": { "value": "'back'" },
+        "zig_zaggify_infill": { "value": "True" }
+    }
+}

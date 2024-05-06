@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-10-31 19:13+0000\n"
+"POT-Creation-Date: 2024-03-12 15:10+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -16,6 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.3.2\n"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "brim_inside_margin description"
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr ""
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -60,10 +68,6 @@ msgstr "Seznam polygonů s oblastmi, do kterých nesmí vstoupit tryska."
 msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "Seznam polygonů s oblastmi, do kterých tisková hlava nemá přístup."
-
-msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Část plně obklopená jinou částí může generovat vnější límec, který se dotýká vnitřku obklopující části. Toto nastavení odstraní límec v dané vzdálenosti od vnitřních otvorů."
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
@@ -156,6 +160,10 @@ msgstr "Vše najednou"
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
 msgstr "Všechna nastavení, která ovlivňují rozlišení tisku. Tato nastavení mají velký vliv na kvalitu (a dobu tisku)"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr ""
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -405,21 +413,21 @@ msgctxt "adhesion_type option brim"
 msgid "Brim"
 msgstr "Límec"
 
+msgctxt "brim_inside_margin label"
+msgid "Brim Avoid Margin"
+msgstr ""
+
 msgctxt "brim_gap label"
 msgid "Brim Distance"
 msgstr "Vzdálenost límce"
-
-msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "Vzdálenost od límce uvnitř"
 
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
 msgstr "Počet linek pro límec"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "Límec pouze venku"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr ""
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -460,6 +468,18 @@ msgstr "Teplota podložky při počáteční vrstvě"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "Teplota sestavení"
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr ""
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr ""
+
+msgctxt "prime_tower_brim_enable description"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr ""
 
 msgctxt "center_object label"
 msgid "Center Object"
@@ -869,6 +889,10 @@ msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
 msgstr "Povolit chlazení při tisku"
 
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr ""
+
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "Povolit retrakci"
@@ -901,6 +925,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Povolit vnější ochranu proti úniku. Tím se vytvoří model kolem modelu, který pravděpodobně otře druhou trysku, pokud je ve stejné výšce jako první tryska."
 
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr ""
+
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
 msgstr ""
@@ -932,6 +960,10 @@ msgstr "Rychlost proplachování na konci filamentu"
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "Vynutí vytištění límce kolem modelu, i když by tento prostor byl jinak obsazen podporou. To nahradí některé regiony první vrstvy podpory okrajovými regiony."
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr ""
 
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
@@ -1037,6 +1069,10 @@ msgctxt "speed_equalize_flow_width_factor label"
 msgid "Flow Equalization Ratio"
 msgstr "Míra vyrovnávání toku"
 
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr ""
+
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
 msgstr "Faktor kompenzace průtoku"
@@ -1048,6 +1084,10 @@ msgstr "Kompenzace průtoku maximální posunutí extruze"
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
 msgstr "Graf teploty toku"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr ""
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
@@ -1439,9 +1479,21 @@ msgctxt "wall_transition_filter_distance description"
 msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
 msgstr "Pokud by se mělo rychle za sebou přecházet tam a zpět mezi různými počty zdí, nebude se sbíhání provádět. Nastavení odstraní přechody mezi různými počty čar zdí, pokud by byly blíže než tato vzdálenost."
 
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
 msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "Pokud je raft povolen, jedná se o další oblast voru kolem modelu, která má také raft. Zvětšení tohoto okraje vytvoří silnější raft při použití více materiálu a ponechání menší plochy pro váš tisk."
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr ""
 
 msgctxt "meshfix_union_all description"
 msgid "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear."
@@ -1671,6 +1723,10 @@ msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "Inset aplikovaný na cestu vnější stěny. Pokud je vnější stěna menší než tryska a je vytištěna za vnitřními stěnami, použijte toto odsazení, aby se otvor v trysce překrýval s vnitřními stěnami místo vně modelu."
 
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr ""
+
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr "Zevnitř ven"
@@ -1682,6 +1738,10 @@ msgstr "Preferovat čáry rozhraní"
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
 msgstr "Preferovat rozhraní"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr ""
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1823,6 +1883,30 @@ msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr "Omezuje, jak daleko by měly větve cestovat od bodu, který podporují. Toto nastavení může učinit podporu pevnější, ale zvýší počet větví (a společně s tím také množství použitého materiálu a dobu tisku)"
 
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr ""
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr ""
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr ""
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr ""
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr ""
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr ""
+
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
 msgstr "Objem této sítě omezte na jiné sítě. Můžete to použít k vytvoření určitých oblastí tisku jednoho oka s různým nastavením as úplně jiným extruderem."
@@ -1920,8 +2004,10 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "Zajistěte, aby hlavní poloha extrudéru byla absolutní, nikoli relativní k poslednímu známému umístění hlavy."
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
+msgid ""
+"Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\n"
+"It may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr ""
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -1947,9 +2033,17 @@ msgctxt "material label"
 msgid "Material"
 msgstr "Materiál"
 
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr ""
+
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "GUID materiálu"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr ""
 
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
@@ -2227,6 +2321,10 @@ msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
 msgstr "Monotónní pořadí žehlení"
 
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr ""
+
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
 msgstr "Monotónní pořadí horního povrchu"
@@ -2266,6 +2364,10 @@ msgstr "Žádný"
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
 msgstr "Normální"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr ""
 
 msgctxt "support_structure option normal"
 msgid "Normal"
@@ -2399,10 +2501,6 @@ msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
 msgstr "Žehlení provádějte pouze na poslední vrstvě sítě. To šetří čas, pokud spodní vrstvy nepotřebují hladký povrch."
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "Límec tiskněte pouze na vnější stranu modelu. Tím se snižuje množství límce, který je třeba následně odstranit, zatímco to tolik nesnižuje přilnavost k podložce."
-
 msgctxt "ooze_shield_angle label"
 msgid "Ooze Shield Angle"
 msgstr "Úhel Ooze štítu"
@@ -2463,6 +2561,10 @@ msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
 msgstr "Venkovní stěny různých ostrovů ve stejné vrstvě jsou tisknuty postupně. Když je povoleno, množství změn proudu je omezeno, protože stěny jsou tisknuty po jednom typu najednou, když je zakázáno, počet cest mezi ostrovy se snižuje, protože stěny na stejných ostrovech jsou seskupeny."
 
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr ""
+
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
 msgstr "Zvenku dovnitř"
@@ -2519,16 +2621,16 @@ msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Base"
 msgstr ""
 
-msgctxt "prime_tower_base_curve_magnitude label"
-msgid "Prime Tower Base Curve Magnitude"
-msgstr ""
-
 msgctxt "prime_tower_base_height label"
 msgid "Prime Tower Base Height"
 msgstr ""
 
 msgctxt "prime_tower_base_size label"
 msgid "Prime Tower Base Size"
+msgstr ""
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
 msgstr ""
 
 msgctxt "prime_tower_flow label"
@@ -2542,6 +2644,10 @@ msgstr "Okamžitá rychlost při tisku hlavní věže"
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
 msgstr "Šířka čáry primární věže"
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr ""
 
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
@@ -2559,6 +2665,10 @@ msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
 msgstr "Rychlost tisku hlavní věže"
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr ""
+
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
 msgstr "Pozice X hlavní věže"
@@ -2567,10 +2677,6 @@ msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
 msgstr "Pozice Y hlavní věže"
 
-msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim or raft, even if the model doesn't."
-msgstr ""
-
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Akcelerace tisku"
@@ -2578,6 +2684,10 @@ msgstr "Akcelerace tisku"
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Trh při tisku"
+
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr ""
 
 msgctxt "print_sequence label"
 msgid "Print Sequence"
@@ -2590,6 +2700,10 @@ msgstr "Rychlost tisku"
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "Tisk tenkých stěn"
+
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr ""
 
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
@@ -2611,6 +2725,10 @@ msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "Tiskněte kousky modelu, které jsou vodorovně tenčí než velikost trysek."
 
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr ""
+
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
 msgstr "Rychlost tisku, která se použije při tisku druhé vrstvy povrchu mostu."
@@ -2618,6 +2736,14 @@ msgstr "Rychlost tisku, která se použije při tisku druhé vrstvy povrchu most
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
 msgstr "Rychlost tisku, která se použije při tisku třetí vrstvy povrchu mostu."
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr ""
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr ""
 
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
@@ -2663,6 +2789,10 @@ msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
 msgstr "Vzduchový mezera v raftu"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr ""
+
 msgctxt "raft_base_extruder_nr label"
 msgid "Raft Base Extruder"
 msgstr "Extruder základny raftu"
@@ -2691,6 +2821,10 @@ msgctxt "raft_base_speed label"
 msgid "Raft Base Print Speed"
 msgstr "Rychlost tisku spodku raftu"
 
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr ""
+
 msgctxt "raft_base_thickness label"
 msgid "Raft Base Thickness"
 msgstr "Tloušťka základny raftu"
@@ -2706,6 +2840,10 @@ msgstr "Místo navíc kolem raftu"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "Rychlost ventilátoru při tisku raftu"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr ""
 
 msgctxt "raft_interface_extruder_nr label"
 msgid "Raft Middle Extruder"
@@ -2735,6 +2873,10 @@ msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
 msgstr "Rychlost tisku prostředku raftu"
 
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr ""
+
 msgctxt "raft_interface_line_spacing label"
 msgid "Raft Middle Spacing"
 msgstr "Mezera ve středu raftu"
@@ -2742,6 +2884,10 @@ msgstr "Mezera ve středu raftu"
 msgctxt "raft_interface_thickness label"
 msgid "Raft Middle Thickness"
 msgstr "Tloušťka prostředku raftu"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr ""
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -2758,6 +2904,10 @@ msgstr "Rychlost tisku raftu"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Vyhlazování raftu"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr ""
 
 msgctxt "raft_surface_extruder_nr label"
 msgid "Raft Top Extruder"
@@ -2791,9 +2941,21 @@ msgctxt "raft_surface_speed label"
 msgid "Raft Top Print Speed"
 msgstr "Rychlost tisku vršku raftu"
 
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr ""
+
 msgctxt "raft_surface_line_spacing label"
 msgid "Raft Top Spacing"
 msgstr "Mezera ve horních vrstvách raftu"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr ""
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr ""
 
 msgctxt "z_seam_type option random"
 msgid "Random"
@@ -2847,9 +3009,21 @@ msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
 msgstr "Odstanit průnik sítí"
 
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr ""
+
 msgctxt "raft_remove_inside_corners label"
 msgid "Remove Raft Inside Corners"
 msgstr "Odstranit vnitřní rohy raftu"
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr ""
 
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
@@ -2858,6 +3032,18 @@ msgstr "Odstraňte oblasti, kde se více sítí vzájemně překrývají. To lze
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
 msgstr "Odstraňte prázdné vrstvy pod první potištěnou vrstvou, pokud jsou přítomny. Deaktivace tohoto nastavení může způsobit prázdné první vrstvy, pokud je nastavení Tolerance řezu nastaveno na Exkluzivní nebo Střední."
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr ""
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr ""
 
 msgctxt "raft_remove_inside_corners description"
 msgid "Remove inside corners from the raft, causing the raft to become convex."
@@ -2878,6 +3064,10 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "Nahrazuje nejvzdálenější část horního / spodního vzoru řadou soustředných čar. Použití jedné nebo dvou čar zlepšuje střechy, které začínají na výplňovém materiálu."
+
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr ""
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -2950,6 +3140,10 @@ msgstr "Scéna Má Podpůrné Masky"
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "Rohová preference švu"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Nastavit tiskovou sekvenci ručně"
 
 msgctxt "draft_shield_height_limitation description"
 msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height."
@@ -3351,10 +3545,6 @@ msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
 msgstr "Priorita rozhraní podpor"
 
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "Rozlišení rozhraní podpor"
-
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
 msgstr "Rychlost tisku rozhraní podpor"
@@ -3707,6 +3897,10 @@ msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
 msgstr "Průměrná vzdálenost mezi náhodnými body zavedenými v každém segmentu čáry. Všimněte si, že původní body mnohoúhelníku jsou zahozeny, takže vysoká hladkost vede ke snížení rozlišení. Tato hodnota musí být vyšší než polovina tloušťky rozmazaného povrchu."
 
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr ""
+
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "Výchozí zrychlení pohybu tiskové hlavy."
@@ -3988,7 +4182,7 @@ msgid "The height of the initial layer in mm. A thicker initial layer makes adhe
 msgstr "Výška počáteční vrstvy v mm. Silnější počáteční vrstva usnadňuje přilnavost k montážní desce."
 
 msgctxt "prime_tower_base_height description"
-msgid "The height of the prime tower base."
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
 msgstr ""
 
 msgctxt "support_bottom_stair_step_height description"
@@ -4064,7 +4258,7 @@ msgid "The length of material retracted during a retraction move."
 msgstr "Délka materiálu zasunutého během pohybu zasunutí."
 
 msgctxt "prime_tower_base_curve_magnitude description"
-msgid "The magnitude factor used for the curve of the prime tower foot."
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr ""
 
 msgctxt "machine_buildplate_type description"
@@ -4183,6 +4377,10 @@ msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
 msgstr "Maximální okamžitá změna rychlosti, se kterou se pohybují pohyby."
 
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr ""
+
 msgctxt "machine_max_feedrate_x description"
 msgid "The maximum speed for the motor of the X-direction."
 msgstr "Maximální rychlost pro motor ve směru X."
@@ -4294,6 +4492,18 @@ msgstr "Počet spodních vrstev. Při výpočtu podle tloušťky dna je tato hod
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
 msgstr "Kolik obrysových čar se má tisknout okolo lineárního vzoru v základně raftu."
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr ""
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr ""
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr ""
 
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
@@ -4683,6 +4893,10 @@ msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
 msgstr "Typ generovaného g-kódu."
 
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr ""
+
 msgctxt "coasting_volume description"
 msgid "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed."
 msgstr "Objem jinak vytekl. Tato hodnota by měla být obecně blízká průměru trysek."
@@ -4700,7 +4914,7 @@ msgid "The width of the interlocking structure beams."
 msgstr "Šířka paprsků vzájemného propletení."
 
 msgctxt "prime_tower_base_size description"
-msgid "The width of the prime tower base."
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr ""
 
 msgctxt "prime_tower_size description"
@@ -4731,9 +4945,21 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "Tím se řídí vzdálenost, kterou by extrudér měl dojet bezprostředně před začátkem zdi mostu. Pobyt před startem můstku může snížit tlak v trysce a může vést k ploššímu můstku."
 
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "Toto nastavení řídí, kolik vnitřních rohů v obrysu raftů je zaobleno. Vnitřní rohy jsou zaokrouhleny na půlkruh s poloměrem rovným zde uvedené hodnotě. Toto nastavení také odstraní otvory v obrysu raftu, které jsou menší než takový kruh."
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
 
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
@@ -5094,10 +5320,6 @@ msgstr "Stěny"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
 msgstr "Stěny, které přesahují více než tento úhel, budou vytištěny pomocí nastavení převislých stěn. Pokud je hodnota 90, nebudou se žádné stěny považovat za převislé. Převis, který je podporován podporou, nebude považován ani za převis."
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "Při kontrole, kde je model nad a pod podpěrou, proveďte kroky dané výšky. Nižší hodnoty se budou řezat pomaleji, zatímco vyšší hodnoty mohou způsobit tisk normální podpory na místech, kde mělo být rozhraní podpory."
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5491,129 +5713,21 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "cestování"
 
-#~ msgctxt "machine_head_with_fans_polygon description"
-#~ msgid "A 2D silhouette of the print head (fan caps included)."
-#~ msgstr "2D silueta tiskové hlavy (včetně krytů ventilátoru)."
+#~ msgctxt "brim_inside_margin description"
+#~ msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
+#~ msgstr "Část plně obklopená jinou částí může generovat vnější límec, který se dotýká vnitřku obklopující části. Toto nastavení odstraní límec v dané vzdálenosti od vnitřních otvorů."
 
-#~ msgctxt "spaghetti_infill_extra_volume description"
-#~ msgid "A correction term to adjust the total volume being extruded each time when filling spaghetti."
-#~ msgstr "Korekční termín pro úpravu celkového objemu, který se vytlačuje pokaždé, když se plní špagety."
+#~ msgctxt "user_defined_print_order_enabled description"
+#~ msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
+#~ msgstr "Umožňuje řadit seznam objektů pro ruční nastavení tiskové sekvence. První objekt ze seznamu bude vytisknut jako první."
 
-#~ msgctxt "wall_add_middle_threshold label"
-#~ msgid "Add Middle Line Threshold"
-#~ msgstr "Mez pro přidání prostřední čáry"
+#~ msgctxt "brim_inside_margin label"
+#~ msgid "Brim Inside Avoid Margin"
+#~ msgstr "Vzdálenost od límce uvnitř"
 
-#~ msgctxt "spaghetti_flow description"
-#~ msgid "Adjusts the density of the spaghetti infill. Note that the Infill Density only controls the line spacing of the filling pattern, not the amount of extrusion for spaghetti infill."
-#~ msgstr "Upravuje hustotu výplně špaget. Mějte na paměti, že hustota výplně řídí pouze rozteč linií výplňového vzoru, nikoli velikost výtluku pro výplň špaget."
-
-#~ msgctxt "hole_xy_offset description"
-#~ msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-#~ msgstr "Množství ofsetu aplikovaného na všechny díry v každé vrstvě. Pozitivní hodnoty zvětšují velikost děr, záporné hodnoty snižují velikost děr."
-
-#~ msgctxt "machine_use_extruder_offset_to_offset_coords description"
-#~ msgid "Apply the extruder offset to the coordinate system."
-#~ msgstr "Naneste odsazení extrudéru na souřadnicový systém."
-
-#~ msgctxt "material_flow_dependent_temperature label"
-#~ msgid "Auto Temperature"
-#~ msgstr "Automatická teplota"
-
-#~ msgctxt "material_flow_dependent_temperature description"
-#~ msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-#~ msgstr "Změňte teplotu pro každou vrstvu automaticky s průměrnou rychlostí průtoku této vrstvy."
-
-#~ msgctxt "wireframe_strategy option compensate"
-#~ msgid "Compensate"
-#~ msgstr "Kompenzovat"
-
-#~ msgctxt "travel_compensate_overlapping_walls_x_enabled label"
-#~ msgid "Compensate Inner Wall Overlaps"
-#~ msgstr "Kompenzujte překrytí vnitřní stěny"
-
-#~ msgctxt "travel_compensate_overlapping_walls_0_enabled label"
-#~ msgid "Compensate Outer Wall Overlaps"
-#~ msgstr "Kompenzujte překrytí vnější stěny"
-
-#~ msgctxt "travel_compensate_overlapping_walls_enabled label"
-#~ msgid "Compensate Wall Overlaps"
-#~ msgstr "Kompenzujte překrytí stěn"
-
-#~ msgctxt "travel_compensate_overlapping_walls_enabled description"
-#~ msgid "Compensate the flow for parts of a wall being printed where there is already a wall in place."
-#~ msgstr "Vykompenzujte tok částí tisku, které se tisknou tam, kde je již zeď na místě."
-
-#~ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
-#~ msgid "Compensate the flow for parts of an inner wall being printed where there is already a wall in place."
-#~ msgstr "Kompenzujte tok částí tisknuté vnitřní stěny, kde již je zeď na místě."
-
-#~ msgctxt "travel_compensate_overlapping_walls_0_enabled description"
-#~ msgid "Compensate the flow for parts of an outer wall being printed where there is already a wall in place."
-#~ msgstr "Vykompenzujte tok částí tisknuté vnější stěny, kde již je zeď na místě."
-
-#~ msgctxt "wireframe_top_jump description"
-#~ msgid "Creates a small knot at the top of an upward line, so that the consecutive horizontal layer has a better chance to connect to it. Only applies to Wire Printing."
-#~ msgstr "Vytvoří malý uzel v horní části vzestupné linie, takže po sobě jdoucí vodorovná vrstva má lepší šanci se k němu připojit. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_bottom_delay description"
-#~ msgid "Delay time after a downward move. Only applies to Wire Printing."
-#~ msgstr "Zpoždění po pohybu dolů. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_top_delay description"
-#~ msgid "Delay time after an upward move, so that the upward line can harden. Only applies to Wire Printing."
-#~ msgstr "Zpoždění po pohybu vzhůru, aby mohla stoupající čára ztvrdnout. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_flat_delay description"
-#~ msgid "Delay time between two horizontal segments. Introducing such a delay can cause better adhesion to previous layers at the connection points, while too long delays cause sagging. Only applies to Wire Printing."
-#~ msgstr "Doba zpoždění mezi dvěma vodorovnými segmenty. Zavedení takového zpoždění může způsobit lepší přilnavost k předchozím vrstvám ve spojovacích bodech, zatímco příliš dlouhé zpoždění může způsobit ochabnutí. Platí pouze pro drátový tisk."
-
-#~ msgctxt "inset_direction description"
-#~ msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed."
-#~ msgstr "Určuje pořadí, v jakém budou tištěny zdi. Tištění vnějších zdí jako prvních pomáhá s rozměrovou přesností, jelikož se vady z vnitřních stěn nemohou přenášet na vnějšek. Naproti tomu tištění vnějších zdí nakonec dovoluje jejich lepší vrstvení při tištění převisů."
-
-#~ msgctxt "infill_mesh_order description"
-#~ msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the lowest rank. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-#~ msgstr "Určuje prioritu této sítě, když se překrývá více sítí výplně. U oblastí, kde se překrývá více sítí výplně, se nastavení přebírá ze sítě s nejnižším pořadím. Síť výplně s vyšším pořadím bude modifikovat výplň sítě výplně s nižším pořadím a běžné sítě."
-
-#~ msgctxt "infill_mesh_order description"
-#~ msgid "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-#~ msgstr "Určuje prioritu této sítě při zvažování překrývajících se objemů. Oblasti, kde je umístěno více sítí, budou vyhrány sítí s nižším hodnocením. Výplňová síť s vyšším pořádkem upraví výplň síťových výplní s nižším řádem a běžnými oky."
-
-#~ msgctxt "infill_mesh_order description"
-#~ msgid "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes."
-#~ msgstr "Určuje, která výplň je uvnitř výplně jiné výplně. Výplňová síť s vyšším pořádkem upraví výplň síťových výplní s nižším řádem a normálními oky."
-
-#~ msgctxt "wireframe_nozzle_clearance description"
-#~ msgid "Distance between the nozzle and horizontally downward lines. Larger clearance results in diagonally downward lines with a less steep angle, which in turn results in less upward connections with the next layer. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost mezi tryskou a vodorovnými liniemi dolů. Větší vůle vede k diagonálně dolů směřujícím liniím s menším strmým úhlem, což zase vede k menšímu spojení nahoru s další vrstvou. Platí pouze pro drátový tisk."
-
-#~ msgctxt "support_bottom_distance description"
-#~ msgid "Distance from the print to the bottom of the support."
-#~ msgstr "Vzdálenost od tisku ke spodní části podpěry."
-
-#~ msgctxt "support_z_distance description"
-#~ msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-#~ msgstr "Vzdálenost od horní / dolní nosné struktury k tisku. Tato mezera poskytuje vůli pro odstranění podpěr po vytištění modelu. Tato hodnota je zaokrouhlena nahoru na násobek výšky vrstvy."
-
-#~ msgctxt "wireframe_up_half_speed description"
-#~ msgid ""
-#~ "Distance of an upward move which is extruded with half speed.\n"
-#~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-#~ msgstr ""
-#~ "Vzdálenost pohybu nahoru, který je vytlačován poloviční rychlostí.\n"
-#~ "To může způsobit lepší přilnavost k předchozím vrstvám, aniž by se materiál v těchto vrstvách příliš zahříval. Platí pouze pro drátový tisk."
-
-#~ msgctxt "support_xy_distance_overhang description"
-#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
-#~ msgstr "Vzdálenost podpor od převisu ve směru X / Y. "
-
-#~ msgctxt "wireframe_fall_down description"
-#~ msgid "Distance with which the material falls down after an upward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost, se kterou materiál padá po vytlačení směrem nahoru. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_drag_along description"
-#~ msgid "Distance with which the material of an upward extrusion is dragged along with the diagonally downward extrusion. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost, se kterou je materiál vytlačování směrem vzhůru tažen spolu s diagonálně směrem dolů vytlačováním. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
+#~ msgctxt "brim_outside_only label"
+#~ msgid "Brim Only on Outside"
+#~ msgstr "Límec pouze venku"
 
 #~ msgctxt "gradual_flow_discretisation_step_size description"
 #~ msgid "Duration of each step in the gradual flow change"
@@ -5623,71 +5737,14 @@ msgstr "cestování"
 #~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 #~ msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
 
-#~ msgctxt "material_end_of_filament_purge_length label"
-#~ msgid "End Of Filament Purge Length"
-#~ msgstr "Délka proplachování konce filamentu"
-
-#~ msgctxt "material_end_of_filament_purge_speed label"
-#~ msgid "End Of Filament Purge Speed"
-#~ msgstr "Rychlost proplachování konce filamentu"
-
-#~ msgctxt "speed_equalize_flow_enabled label"
-#~ msgid "Equalize Filament Flow"
-#~ msgstr "Vyrovnat tok vlákna"
-
-#~ msgctxt "fill_perimeter_gaps option everywhere"
-#~ msgid "Everywhere"
-#~ msgstr "Všude"
-
-#~ msgctxt "machine_filament_park_distance label"
-#~ msgid "Filament Park Distance"
-#~ msgstr "Vzdálenost filamentového parkingu"
-
-#~ msgctxt "fill_perimeter_gaps label"
-#~ msgid "Fill Gaps Between Walls"
-#~ msgstr "Vyplnit mezery mezi stěnami"
-
-#~ msgctxt "fill_perimeter_gaps description"
-#~ msgid "Fills the gaps between walls where no walls fit."
-#~ msgstr "Vyplní mezery mezi stěnami, kde se žádné stěny nehodí."
-
-#~ msgctxt "filter_out_tiny_gaps label"
-#~ msgid "Filter Out Tiny Gaps"
-#~ msgstr "Vyfiltrujte drobné mezery"
-
-#~ msgctxt "filter_out_tiny_gaps description"
-#~ msgid "Filter out tiny gaps to reduce blobs on outside of model."
-#~ msgstr "Filtrujte drobné mezery, abyste zmenšili kuličky na vnější straně modelu."
-
-#~ msgctxt "wireframe_flow_connection description"
-#~ msgid "Flow compensation when going up or down. Only applies to Wire Printing."
-#~ msgstr "Kompenzace toku při stoupání nebo klesání. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_flow_flat description"
-#~ msgid "Flow compensation when printing flat lines. Only applies to Wire Printing."
-#~ msgstr "Kompenzace toku při tisku rovných čar. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_flow description"
-#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value. Only applies to Wire Printing."
-#~ msgstr "Kompenzace toku: množství vytlačovaného materiálu se vynásobí touto hodnotou. Platí pouze pro drátový tisk."
-
 #~ msgctxt "reset_flow_duration description"
 #~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 #~ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
-
-#~ msgctxt "material_guid description"
-#~ msgid "GUID of the material. This is set automatically. "
-#~ msgstr "GUID materiálu. Toto je nastaveno automaticky. "
-
-#~ msgctxt "support_tree_enable description"
-#~ msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
-#~ msgstr "Vygenerujte stromovou podporu s větvemi, které podporují váš tisk. To může snížit spotřebu materiálu a dobu tisku, ale výrazně prodlužuje dobu slicování."
 
 #~ msgctxt "gradual_flow_discretisation_step_size label"
 #~ msgid "Gradual flow discretisation step size"
 #~ msgstr "Velikost kroku diskretizace postupné změny průtoku"
 
-# ## Settings added by bundled engine backend plugins. Add this manually for now. Should be removed whenever we handle it better.
 #~ msgctxt "gradual_flow_enabled label"
 #~ msgid "Gradual flow enabled"
 #~ msgstr "Postupné změny průtoku povoleny"
@@ -5696,450 +5753,34 @@ msgstr "cestování"
 #~ msgid "Gradual flow max acceleration"
 #~ msgstr "Maximální zrychlení postupných změn průtoku"
 
-#~ msgctxt "support_tree_branch_distance description"
-#~ msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
-#~ msgstr "Jak daleko od sebe musí být větve, když se dotýkají modelu. Zmenšení této vzdálenosti způsobí, že se stromová podpora dotkne modelu ve více bodech, což způsobí lepší přesah, ale těžší odstranění podpory."
-
-#~ msgctxt "machine_steps_per_mm_e description"
-#~ msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
-#~ msgstr "Kolik kroků krokových motorů vyústí v jeden milimetr vytlačování."
-
-#~ msgctxt "slicing_tolerance description"
-#~ msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-#~ msgstr "Jak krájet vrstvy s diagonálními povrchy. Oblasti vrstvy mohou být generovány na základě toho, kde střed vrstvy protíná povrch (Střední). Alternativně každá vrstva může mít oblasti, které padají uvnitř objemu po celé výšce vrstvy (Exkluzivní), nebo vrstva má oblasti, které padají dovnitř kdekoli v rámci vrstvy (Inkluzivní). Exkluzivní zachovává co nejvíce podrobností, Inkluzivní dělá to nejlepší a Střední trvá zpracování nejméně času."
-
-#~ msgctxt "wall_min_flow_retract description"
-#~ msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
-#~ msgstr "Je-li tato funkce povolena, je pro retrakční pohyby, které nahrazují stěny, jejichž průtok je pod prahem minimálního průtoku, používáno spíše zatahování."
-
-#~ msgctxt "infill_mesh_order label"
-#~ msgid "Infill Mesh Order"
-#~ msgstr "Pořadí sítě výplně"
-
 #~ msgctxt "layer_0_max_flow_acceleration label"
 #~ msgid "Initial layer max flow acceleration"
 #~ msgstr "Maximální zrychlení průtoku pro první vrstvu"
 
-#~ msgctxt "wireframe_strategy option knot"
-#~ msgid "Knot"
-#~ msgstr "Uzel"
-
-#~ msgctxt "limit_support_retractions label"
-#~ msgid "Limit Support Retractions"
-#~ msgstr "Omezení retrakce podpor"
-
-#~ msgctxt "material_end_of_filament_purge_length description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "material_end_of_filament_purge_speed description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "material_flush_purge_length description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "material_flush_purge_speed description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "material_maximum_park_duration description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "material_no_load_move_factor description"
-#~ msgid "Material Station internal value"
-#~ msgstr "Interní hodnota stanice materiálu"
-
-#~ msgctxt "machine_max_feedrate_e label"
-#~ msgid "Maximum Feedrate"
-#~ msgstr "Maximální feedrate"
-
-#~ msgctxt "speed_equalize_flow_max label"
-#~ msgid "Maximum Speed for Flow Equalization"
-#~ msgstr "Maximální rychlost pro vyrovnávání průtoku"
+#~ msgctxt "layer_0_z_overlap description"
+#~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
+#~ msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
 
 #~ msgctxt "max_flow_acceleration description"
 #~ msgid "Maximum acceleration for gradual flow changes"
 #~ msgstr "Maximální zrychlení pro postupné změny průtoku"
 
-#~ msgctxt "speed_equalize_flow_max description"
-#~ msgid "Maximum print speed when adjusting the print speed in order to equalize flow."
-#~ msgstr "Maximální rychlost tisku při úpravě rychlosti tisku za účelem vyrovnání toku."
-
-#~ msgctxt "wall_min_flow label"
-#~ msgid "Minimum Wall Flow"
-#~ msgstr "Minimální průtok zdi"
-
-#~ msgctxt "wall_min_flow description"
-#~ msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
-#~ msgstr "Minimální povolený procentuální průtok pro linii stěny. Kompenzace překrytí stěny snižuje průtok stěny, když leží blízko ke stávající zdi. Stěny, jejichž průtok je menší než tato hodnota, budou nahrazeny pohybem. Při použití tohoto nastavení musíte povolit kompenzaci překrytí stěny a vnější stěnu vytisknout před vnitřními stěnami."
-
 #~ msgctxt "layer_0_max_flow_acceleration description"
 #~ msgid "Minimum speed for gradual flow changes for the first layer"
 #~ msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
 
-#~ msgctxt "fill_perimeter_gaps option nowhere"
-#~ msgid "Nowhere"
-#~ msgstr "Nikde"
-
-#~ msgctxt "limit_support_retractions description"
-#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-#~ msgstr "Při přechodu od podpory k podpoře v přímé linii vynechejte stažení. Povolením tohoto nastavení se šetří čas tisku, ale může to vést k nadměrnému strunění uvnitř podpůrné struktury."
-
-#~ msgctxt "outer_inset_first label"
-#~ msgid "Outer Before Inner Walls"
-#~ msgstr "Vnější stěny před vnitřními"
-
-#~ msgctxt "wireframe_straight_before_down description"
-#~ msgid "Percentage of a diagonally downward line which is covered by a horizontal line piece. This can prevent sagging of the top most point of upward lines. Only applies to Wire Printing."
-#~ msgstr "Procento diagonálně sestupné linie, která je zakryta vodorovnou čárou. To může zabránit ochabnutí nejvyššího bodu vzhůru. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wall_min_flow_retract label"
-#~ msgid "Prefer Retract"
-#~ msgstr "Preferovat retrakci"
-
-#~ msgctxt "prime_tower_brim_enable label"
-#~ msgid "Prime Tower Brim"
-#~ msgstr "Límec hlavní věže"
-
-#~ msgctxt "prime_tower_brim_enable description"
-#~ msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-#~ msgstr "Hlavní věže mohou potřebovat zvláštní přilnavost, kterou poskytuje límec, i když to model neumožňuje. V současnosti nelze použít s adhezním typem „Raft“."
-
-#~ msgctxt "wireframe_enabled description"
-#~ msgid "Print only the outside surface with a sparse webbed structure, printing 'in thin air'. This is realized by horizontally printing the contours of the model at given Z intervals which are connected via upward and diagonally downward lines."
-#~ msgstr "Tiskněte pouze vnější povrch s řídkou strukturou struktury a tiskněte „na vzduchu“. To je realizováno horizontálním tiskem kontur modelu v daných intervalech Z, které jsou spojeny pomocí linií nahoru a diagonálně dolů."
-
-#~ msgctxt "spaghetti_infill_enabled description"
-#~ msgid "Print the infill every so often, so that the filament will curl up chaotically inside the object. This reduces print time, but the behaviour is rather unpredictable."
-#~ msgstr "Výplň tiskněte tak často, aby se vlákno chaoticky stočilo uvnitř objektu. To zkracuje dobu tisku, ale chování je spíše nepředvídatelné."
-
-#~ msgctxt "speed_equalize_flow_enabled description"
-#~ msgid "Print thinner than normal lines faster so that the amount of material extruded per second remains the same. Thin pieces in your model might require lines printed with smaller line width than provided in the settings. This setting controls the speed changes for such lines."
-#~ msgstr "Tiskněte tenčí než normální čáry rychleji, takže množství materiálu vytlačovaného za sekundu zůstává stejné. Tenké kousky ve vašem modelu mohou vyžadovat čáry vytištěné s menší šířkou čáry, než je uvedeno v nastavení. Toto nastavení řídí změny rychlosti těchto linek."
-
-#~ msgctxt "outer_inset_first description"
-#~ msgid "Prints walls in order of outside to inside when enabled. This can help improve dimensional accuracy in X and Y when using a high viscosity plastic like ABS; however it can decrease outer surface print quality, especially on overhangs."
-#~ msgstr "Když je povoleno, tiskne stěny v pořadí od vnějšku dovnitř. To může pomoci zlepšit rozměrovou přesnost v X a Y při použití plastu s vysokou viskozitou, jako je ABS; může však snížit kvalitu tisku vnějšího povrchu, zejména na převisy."
+#~ msgctxt "brim_outside_only description"
+#~ msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
+#~ msgstr "Límec tiskněte pouze na vnější stranu modelu. Tím se snižuje množství límce, který je třeba následně odstranit, zatímco to tolik nesnižuje přilnavost k podložce."
 
 #~ msgctxt "reset_flow_duration label"
 #~ msgid "Reset flow duration"
 #~ msgstr "Doba trvání resetování průtoku"
 
-#~ msgctxt "support_tree_collision_resolution description"
-#~ msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-#~ msgstr "Rozlišení pro výpočet kolizí, aby nedošlo k nárazu do modelu. Nastavením této nižší se vytvoří přesnější stromy, které selhávají méně často, ale dramaticky se zvyšuje doba slicování."
-
-#~ msgctxt "wireframe_strategy option retract"
-#~ msgid "Retract"
-#~ msgstr "Retrakce"
-
-#~ msgctxt "retraction_enable description"
-#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-#~ msgstr "Zasuňte vlákno, když se tryska pohybuje po netisknuté oblasti. "
-
-#~ msgctxt "shell label"
-#~ msgid "Shell"
-#~ msgstr "Shell"
-
-#~ msgctxt "material_shrinkage_percentage label"
-#~ msgid "Shrinkage Ratio"
-#~ msgstr "Poměr smrštění"
-
-#~ msgctxt "material_shrinkage_percentage description"
-#~ msgid "Shrinkage ratio in percentage."
-#~ msgstr "Poměr smrštění v procentech."
-
-#~ msgctxt "spaghetti_flow label"
-#~ msgid "Spaghetti Flow"
-#~ msgstr "Průtok při špagetové výplni"
-
-#~ msgctxt "spaghetti_infill_enabled label"
-#~ msgid "Spaghetti Infill"
-#~ msgstr "Špagetová výplň"
-
-#~ msgctxt "spaghetti_infill_extra_volume label"
-#~ msgid "Spaghetti Infill Extra Volume"
-#~ msgstr "Objem navíc při špagetové výplni"
-
-#~ msgctxt "spaghetti_max_height label"
-#~ msgid "Spaghetti Infill Maximum Height"
-#~ msgstr "Maximální výška špagetové výplně"
-
-#~ msgctxt "spaghetti_infill_stepped label"
-#~ msgid "Spaghetti Infill Stepping"
-#~ msgstr "Krokování při špagetové výplni"
-
-#~ msgctxt "spaghetti_inset label"
-#~ msgid "Spaghetti Inset"
-#~ msgstr "Špagetová výplň"
-
-#~ msgctxt "spaghetti_max_infill_angle label"
-#~ msgid "Spaghetti Maximum Infill Angle"
-#~ msgstr "Maximální úhel špagetové výplně"
-
-#~ msgctxt "wireframe_printspeed description"
-#~ msgid "Speed at which the nozzle moves when extruding material. Only applies to Wire Printing."
-#~ msgstr "Rychlost, jakou se tryska pohybuje při vytlačování materiálu. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_printspeed_down description"
-#~ msgid "Speed of printing a line diagonally downward. Only applies to Wire Printing."
-#~ msgstr "Rychlost tisku linie šikmo dolů. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_printspeed_up description"
-#~ msgid "Speed of printing a line upward 'in thin air'. Only applies to Wire Printing."
-#~ msgstr "Rychlost tisku řádku nahoru „na vzduchu“. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_printspeed_bottom description"
-#~ msgid "Speed of printing the first layer, which is the only layer touching the build platform. Only applies to Wire Printing."
-#~ msgstr "Rychlost tisku první vrstvy, která je jedinou vrstvou dotýkající se platformy sestavení. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_printspeed_flat description"
-#~ msgid "Speed of printing the horizontal contours of the model. Only applies to Wire Printing."
-#~ msgstr "Rychlost tisku vodorovných obrysů modelu. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wall_split_middle_threshold label"
-#~ msgid "Split Middle Line Threshold"
-#~ msgstr "Mez pro rozdělení prostřední čáry"
-
-#~ msgctxt "wireframe_strategy description"
-#~ msgid "Strategy for making sure two consecutive layers connect at each connection point. Retraction lets the upward lines harden in the right position, but may cause filament grinding. A knot can be made at the end of an upward line to heighten the chance of connecting to it and to let the line cool; however, it may require slow printing speeds. Another strategy is to compensate for the sagging of the top of an upward line; however, the lines won't always fall down as predicted."
-#~ msgstr "Strategie pro zajištění toho, aby se v každém místě připojení připojily dvě po sobě následující vrstvy. Zpětné zasunutí umožní, aby linie vzhůru ztvrdly ve správné poloze, ale mohou způsobit broušení vlákna. Uzel může být vytvořen na konci vzestupné linie, aby se zvýšila šance na připojení k ní a aby se linka ochladila; to však může vyžadovat nízké rychlosti tisku. Další strategií je kompenzovat prohnutý vrchol horní linie; čáry však nebudou vždy klesat, jak bylo předpovězeno."
-
-#~ msgctxt "support_tree_angle description"
-#~ msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
-#~ msgstr "Úhel větví. Použijte nižší úhel, aby byly více vertikální a stabilnější. K dosažení většího dosahu použijte vyšší úhel."
-
-#~ msgctxt "lightning_infill_prune_angle description"
-#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the pruning of the outer extremities of trees. Measured in the angle given the thickness."
-#~ msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami se větve bleskové výplně zkracují."
-
-#~ msgctxt "lightning_infill_straightening_angle description"
-#~ msgid "The difference a lightning infill layer can have with the one immediately above w.r.t the smoothing of trees. Measured in the angle given the thickness."
-#~ msgstr "Určuje, pod jakým úhlem mezi jednotlivými vrstvami může docházet k vyrovnávání větví bleskové výplně."
-
-#~ msgctxt "wireframe_roof_inset description"
-#~ msgid "The distance covered when making a connection from a roof outline inward. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost ujetá při vytváření spojení od obrysu střechy dovnitř. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_roof_drag_along description"
-#~ msgid "The distance of the end piece of an inward line which gets dragged along when going back to the outer outline of the roof. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost koncového kusu vnitřní linie, která se táhne, když se vrací zpět k vnějšímu obrysu střechy. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_roof_fall_down description"
-#~ msgid "The distance which horizontal roof lines printed 'in thin air' fall down when being printed. This distance is compensated for. Only applies to Wire Printing."
-#~ msgstr "Vzdálenost, kterou vodorovné linie střechy vytištěné „na vzduchu“ klesají při tisku. Tato vzdálenost je kompenzována. Platí pouze pro drátový tisk."
-
-#~ msgctxt "wireframe_height description"
-#~ msgid "The height of the upward and diagonally downward lines between two horizontal parts. This determines the overall density of the net structure. Only applies to Wire Printing."
-#~ msgstr "Výška nahoru a diagonálně dolů směřujících čar mezi dvěma vodorovnými částmi. To určuje celkovou hustotu struktury sítě. Platí pouze pro drátový tisk."
-
-#~ msgctxt "spaghetti_max_infill_angle description"
-#~ msgid "The maximum angle w.r.t. the Z axis of the inside of the print for areas which are to be filled with spaghetti infill afterwards. Lowering this value causes more angled parts in your model to be filled on each layer."
-#~ msgstr "Maximální úhel osy Z uvnitř tisku pro oblasti, které mají být poté vyplněny špagetovou výplní. Snížení této hodnoty způsobí, že se na každé vrstvě vyplní více šikmých částí modelu."
-
-#~ msgctxt "spaghetti_max_height description"
-#~ msgid "The maximum height of inside space which can be combined and filled from the top."
-#~ msgstr "Maximální výška vnitřního prostoru, kterou lze kombinovat a naplnit shora."
-
-#~ msgctxt "mold_width description"
-#~ msgid "The minimal distance between the ouside of the mold and the outside of the model."
-#~ msgstr "Minimální vzdálenost mezi vnější stranou formy a vnější stranou modelu."
-
-#~ msgctxt "min_odd_wall_line_width description"
-#~ msgid "The minimum line width for middle line gap filler polyline walls. This setting determines at which model thickness we switch from printing two wall lines, to printing two outer walls and a single central wall in the middle. A higher Minimum Odd Wall Line Width leads to a higher maximum even wall line width. The maximum odd wall line width is calculated as 2 * Minimum Even Wall Line Width,"
-#~ msgstr "Minimální šířka čáry použité jako výplň mezi párovými čárami zdi. Toto nastavení určuje tloušťku modelu, při které se přepíná z tisku dvou čar zdi na tisk dvou vnějších čar zdi a jedné centrální čáry zdi mezi nimi. Vyšší hodnota Minimální šířky nepárové čáry zdi vede k vyšší maximální šířce párové čáry zdi. Maximální šířka nepárové čáry zdi je vypočtena jako 2 * Minimální šířka párové čáry zdi,"
-
-#~ msgctxt "spaghetti_inset description"
-#~ msgid "The offset from the walls from where the spaghetti infill will be printed."
-#~ msgstr "Odsazení od stěn, odkud bude vytištěna výplň špaget."
-
-#~ msgctxt "infill_pattern description"
-#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-#~ msgstr "Vzor výplňového materiálu tisku. Směr a cik-cak vyplňují směr výměny na alternativních vrstvách, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychlový, oktet, čtvrtý krychlový, křížový a soustředný obrazec jsou plně vytištěny v každé vrstvě. Výplň Gyroid, krychlový, kvartální a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru."
-
-#~ msgctxt "infill_pattern description"
-#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the (internal) roofs of the object. As such, the infill percentage is only 'valid' one layer below whatever it needs to support of the model."
-#~ msgstr "Vzor výplňového materiálu tisku. Čáry a cik-cak s každou vrstvou obracejí směr výplně, čímž se snižují náklady na materiál. Mřížka, trojúhelník, tri-hexagon, krychle, oktet, čtvrtinově krychlový, křížový a soustředný vzor jsou plně vytištěny v každé vrstvě. Vzory gyroid, krychlový, čtvrtinově krychlový a oktet se mění s každou vrstvou, aby se zajistilo rovnoměrnější rozložení síly v každém směru. Bleskový vzor se snaží minimalizovat množství výplně tím, že podporuje pouze horní povrchy objektu. U bleskového vzoru má procento význam pouze v první vrstvě pod každým povrchem."
-
-#~ msgctxt "wall_add_middle_threshold description"
-#~ msgid "The smallest line width, as a factor of the normal line width, above which a middle line (if there wasn't one already) will be added. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
-#~ msgstr "Nejnižší šířka čáry, zadaná jako procento běžné šířky čáry, nad kterou bude přidána prostřední nepárová čára mezi dvě párové čáry (pokud mezi nimi ještě nebyla). Snižte toto nastavení, aby se používalo více tenkých čar. Zvyšte toto nastavení pro použití méně a širších čar. Je třeba si uvědomit, že toto nastavení se použije, jako kdyby byl celý tvar vyplněn zdmi. Takže termín prostřední zde znamená prostředek objektu mezi dvěma vnějšími hranami tvaru, a to i v případě, že se namísto zdi tiskne výplň nebo jiný povrch."
-
-#~ msgctxt "wall_split_middle_threshold description"
-#~ msgid "The smallest line width, as a factor of the normal line width, above which the middle line (if there is one) will be split into two. Reduce this setting to use more, thinner lines. Increase to use fewer, wider lines. Note that this applies -as if- the entire shape should be filled with wall, so the middle here refers to the middle of the object between two outer edges of the shape, even if there actually is fill or (other) skin in the print instead of wall."
-#~ msgstr "Nejnižší šířka čáry, zadaná jako procento běžné šířky čáry, nad kterou bude prostřední nepárová čára (pokud nějaká je) rozdělena na dvě párové čáry. Snižte toto nastavení, aby se používalo více tenkých čar. Zvyšte toto nastavení pro použití méně a širších čar. Je třeba si uvědomit, že toto nastavení se použije, jako kdyby byl celý tvar vyplněn zdmi. Takže termín prostřední zde znamená prostředek objektu mezi dvěma vnějšími hranami tvaru, a to i v případě, že se namísto zdi tiskne výplň nebo jiný povrch."
-
-#~ msgctxt "speed_layer_0 description"
-#~ msgid "The speed for the initial layer. A lower value is advised to improve adhesion to the build plate."
-#~ msgstr "Rychlost počáteční vrstvy. Doporučuje se nižší hodnota pro zlepšení přilnavosti k montážní desce."
-
-#~ msgctxt "material_print_temperature_layer_0 description"
-#~ msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-#~ msgstr "Teplota, která se používá pro tisk první vrstvy."
-
-#~ msgctxt "material_bed_temperature_layer_0 description"
-#~ msgid "The temperature used for the heated build plate at the first layer."
-#~ msgstr "Teplota použitá pro vyhřívanou podložku v první vrstvě."
-
-#~ msgctxt "material_bed_temperature description"
-#~ msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
-#~ msgstr "Teplota použitá pro vyhřívanou podložku. Pokud je to 0, teplota podložky nebude upravena."
-
-#~ msgctxt "wireframe_roof_outer_delay description"
-#~ msgid "Time spent at the outer perimeters of hole which is to become a roof. Longer times can ensure a better connection. Only applies to Wire Printing."
-#~ msgstr "Čas strávený na vnějším obvodu díry, která se má stát střechou. Delší časy mohou zajistit lepší spojení. Platí pouze pro drátový tisk."
-
-#~ msgctxt "max_skin_angle_for_expansion description"
-#~ msgid "Top and/or bottom surfaces of your object with an angle larger than this setting, won't have their top/bottom skin expanded. This avoids expanding the narrow skin areas that are created when the model surface has a near vertical slope. An angle of 0° is horizontal, while an angle of 90° is vertical."
-#~ msgstr "Horní a/nebo dolní povrch objektu s větším úhlem, než je toto nastavení, nebudou mít rozbalenou horní/dolní plochu. Tím se zabrání rozšíření úzkých oblastí vzhledu, které jsou vytvořeny, když má povrch modelu téměř svislý sklon. Úhel 0° je vodorovný, zatímco úhel 90° je svislý."
-
-#~ msgctxt "support_tree_enable label"
-#~ msgid "Tree Support"
-#~ msgstr "Stromová podpora"
-
-#~ msgctxt "support_tree_angle label"
-#~ msgid "Tree Support Branch Angle"
-#~ msgstr "Úhel větve stromové podpory"
-
-#~ msgctxt "support_tree_branch_diameter label"
-#~ msgid "Tree Support Branch Diameter"
-#~ msgstr "Průměr větve podpěry stromu"
-
-#~ msgctxt "support_tree_branch_diameter_angle label"
-#~ msgid "Tree Support Branch Diameter Angle"
-#~ msgstr "Průměr úhlu větve podpěry stromu"
-
-#~ msgctxt "support_tree_branch_distance label"
-#~ msgid "Tree Support Branch Distance"
-#~ msgstr "Vzdálenost větví stromu"
-
-#~ msgctxt "support_tree_collision_resolution label"
-#~ msgid "Tree Support Collision Resolution"
-#~ msgstr "Stromová podpora - rozlišení kolize"
-
-#~ msgctxt "support_tree_max_diameter label"
-#~ msgid "Tree Support Trunk Diameter"
-#~ msgstr "Průměr kmene stromové podpory"
-
-#~ msgctxt "wireframe_bottom_delay label"
-#~ msgid "WP Bottom Delay"
-#~ msgstr "Zpoždení pohybu dole při tisku DT"
-
-#~ msgctxt "wireframe_printspeed_bottom label"
-#~ msgid "WP Bottom Printing Speed"
-#~ msgstr "Rychlost tisku spodního DT"
-
-#~ msgctxt "wireframe_flow_connection label"
-#~ msgid "WP Connection Flow"
-#~ msgstr "Průtok při spojování DT"
-
-#~ msgctxt "wireframe_height label"
-#~ msgid "WP Connection Height"
-#~ msgstr "Výška připojení DT"
-
-#~ msgctxt "wireframe_printspeed_down label"
-#~ msgid "WP Downward Printing Speed"
-#~ msgstr "Rychlost tisku směrem dolů u DT"
-
-#~ msgctxt "wireframe_drag_along label"
-#~ msgid "WP Drag Along"
-#~ msgstr "Tah DT"
-
-#~ msgctxt "wireframe_up_half_speed label"
-#~ msgid "WP Ease Upward"
-#~ msgstr "Poloviční rychlost DT"
-
-#~ msgctxt "wireframe_fall_down label"
-#~ msgid "WP Fall Down"
-#~ msgstr "Pád materiálu DT"
-
-#~ msgctxt "wireframe_flat_delay label"
-#~ msgid "WP Flat Delay"
-#~ msgstr "Zpoždění při tisku plochých segmentů DT"
-
-#~ msgctxt "wireframe_flow_flat label"
-#~ msgid "WP Flat Flow"
-#~ msgstr "Průtok při plochém DT"
-
-#~ msgctxt "wireframe_flow label"
-#~ msgid "WP Flow"
-#~ msgstr "Průtok při DT"
-
-#~ msgctxt "wireframe_printspeed_flat label"
-#~ msgid "WP Horizontal Printing Speed"
-#~ msgstr "Rychlost horizontálního tisku DT"
-
-#~ msgctxt "wireframe_top_jump label"
-#~ msgid "WP Knot Size"
-#~ msgstr "Velikost uzlu DT"
-
-#~ msgctxt "wireframe_nozzle_clearance label"
-#~ msgid "WP Nozzle Clearance"
-#~ msgstr "Vyčištění trysky DT"
-
-#~ msgctxt "wireframe_roof_drag_along label"
-#~ msgid "WP Roof Drag Along"
-#~ msgstr "Tah střechy DT"
-
-#~ msgctxt "wireframe_roof_fall_down label"
-#~ msgid "WP Roof Fall Down"
-#~ msgstr "Pád materiálu střechy DT"
-
-#~ msgctxt "wireframe_roof_inset label"
-#~ msgid "WP Roof Inset Distance"
-#~ msgstr "Vzdálenost střechy DT"
-
-#~ msgctxt "wireframe_roof_outer_delay label"
-#~ msgid "WP Roof Outer Delay"
-#~ msgstr "Vnější zpoždění střechy DT"
-
-#~ msgctxt "wireframe_printspeed label"
-#~ msgid "WP Speed"
-#~ msgstr "Rychlost DT"
-
-#~ msgctxt "wireframe_straight_before_down label"
-#~ msgid "WP Straighten Downward Lines"
-#~ msgstr "Vyrovnat spodní linky DT"
-
-#~ msgctxt "wireframe_strategy label"
-#~ msgid "WP Strategy"
-#~ msgstr "Strategie DT"
-
-#~ msgctxt "wireframe_top_delay label"
-#~ msgid "WP Top Delay"
-#~ msgstr "Zpoždení pohybu nahoře při tisku DT"
-
-#~ msgctxt "wireframe_printspeed_up label"
-#~ msgid "WP Upward Printing Speed"
-#~ msgstr "Rychlost tisku nahoru u DT"
-
-#~ msgctxt "retraction_combing_max_distance description"
-#~ msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
-#~ msgstr "Pokud nenulové, pohyby combingového pohybu, které jsou delší než tato vzdálenost, použijí zatažení."
-
-#~ msgctxt "print_sequence description"
-#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-#~ msgstr "Zda se mají tisknout všechny modely po jedné vrstvě najednou, nebo počkat na dokončení jednoho modelu, než se přesunete na další. Jeden za časovým režimem je možný, pokud a) je povolen pouze jeden extruder ab) všechny modely jsou odděleny tak, že celá tisková hlava se může pohybovat mezi a všechny modely jsou menší než vzdálenost mezi tryskou a X / Osy Y. "
-
-#~ msgctxt "spaghetti_infill_stepped description"
-#~ msgid "Whether to print spaghetti infill in steps or extrude all the infill filament at the end of the print."
-#~ msgstr "Zda se má tisknout špagetová výplň po krocích, nebo se vytlačí veškeré výplňové vlákno na konci tisku."
-
-#~ msgctxt "wireframe_enabled label"
-#~ msgid "Wire Printing"
-#~ msgstr "Drátový tisk"
-
-#~ msgctxt "blackmagic description"
-#~ msgid "category_blackmagic"
-#~ msgstr "category_blackmagic"
-
-#~ msgctxt "meshfix description"
-#~ msgid "category_fixes"
-#~ msgstr "category_fixes"
-
-#~ msgctxt "experimental description"
-#~ msgid "experimental!"
-#~ msgstr "experimentální!"
+#~ msgctxt "support_interface_skip_height label"
+#~ msgid "Support Interface Resolution"
+#~ msgstr "Rozlišení rozhraní podpor"
+
+#~ msgctxt "support_interface_skip_height description"
+#~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
+#~ msgstr "Při kontrole, kde je model nad a pod podpěrou, proveďte kroky dané výšky. Nižší hodnoty se budou řezat pomaleji, zatímco vyšší hodnoty mohou způsobit tisk normální podpory na místech, kde mělo být rozhraní podpory."

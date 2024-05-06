@@ -48,6 +48,8 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
+    from PyQt6.QtCore import QVariantList
+
     from cura.CuraApplication import CuraApplication
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
@@ -581,6 +583,10 @@ class MachineManager(QObject):
     def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
 
+    @pyqtProperty("QVariantList", notify=activeVariantChanged)
+    def activeMachineExtruders(self) -> Optional["QVariantList"]:
+        return self._global_container_stack.extruderList if self._global_container_stack else None
+
     @pyqtProperty(str, notify = activeStackChanged)
     def activeStackId(self) -> str:
         if self._active_container_stack:
@@ -840,6 +846,24 @@ class MachineManager(QObject):
             result = result and (buildplate_compatible or buildplate_usable)
 
         return result
+
+    @pyqtProperty(bool, notify = currentConfigurationChanged)
+    def variantCoreUsableForFactor4(self) -> bool:
+        """The selected core is usable if it is in second extruder of Factor4
+        """
+        result = True
+        if not self._global_container_stack:
+            return result
+        if self.activeMachine.definition.id != "ultimaker_factor4":
+            return result
+
+        for extruder_container in self._global_container_stack.extruderList:
+            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right"):
+                if extruder_container.material == empty_material_container:
+                    return True
+                if extruder_container.variant.id.startswith("ultimaker_factor4_bb"):
+                    return False
+        return True
 
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> Optional[str]:
