@@ -50,6 +50,7 @@ class CuraResource(ConanFile):
 
     def layout(self):
         self.cpp.source.resdirs = ["definitions", "extruders", "images", "intent", "meshes", "quality", "variants"]
+        self.cpp.package.resdirs = ["res/definitions", "res/extruders", "res/images", "res/intent", "res/meshes", "res/quality", "res/variants"]
 
     def package(self):
         copy(self, "*", os.path.join(self.export_sources_folder),
