@@ -206,6 +206,7 @@ class PauseAtHeight(Script):
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
                         "Makerbot": "Makerbot",
+                        "Sketch": "Sketch",
                         "BFB": "Bits from Bytes",
                         "MACH3": "Mach3",
                         "Repetier": "Repetier"
