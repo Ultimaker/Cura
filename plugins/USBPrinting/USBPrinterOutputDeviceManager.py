@@ -84,8 +84,8 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             if container_stack.getMetaDataEntry("supports_usb_connection"):
                 machine_file_formats = [file_type.strip() for file_type in container_stack.getMetaDataEntry("file_formats").split(";")]
                 if "text/x-gcode" in machine_file_formats:
-                    # We only limit listing usb on windows is a fix for connecting tty/cu printers on MacOS and Linux
-                    port_list = self.getSerialPortList(only_list_usb=Platform.isWindows())
+                    # We only list usb, otherwise scanning all serial ports might take too long
+                    port_list = self.getSerialPortList(only_list_usb=True)
             self._addRemovePorts(port_list)
             time.sleep(5)
 
