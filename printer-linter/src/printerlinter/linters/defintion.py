@@ -98,7 +98,7 @@ class Definition(Linter):
                         replacements=replacements
                     )
 
-    def checkExtruderReference(self):
+    def checkExtruderReference(self)-> Iterator[Diagnostic]:
         definition_name = list(self._definitions.keys())[0]
         definition = self._definitions[definition_name]
         if "metadata" in definition and "machine_extruder_trains" in definition["metadata"].keys():
@@ -106,7 +106,12 @@ class Definition(Linter):
         elif "inherits" in definition.keys():
             extruder_trains = self._findInheritance(definition, definition_name)
         else:
-            print(f"{definition_name} is likely to be corrupted please investigate.")
+            yield Diagnostic(
+                file=self._file,
+                diagnostic_name="Machine extruder train undefined",
+                message=f"{definition_name} does not currentlly point to a valid extruder train",
+                level="Warning"
+            )
         self._findExtruder(extruder_trains, definition)
         
 
