@@ -1,7 +1,6 @@
 {
     "version": 3,
     "name": "UltiMaker S5",
-    "inherits": "ultimaker",
     "metadata":
     {
         "visible": true,
@@ -31,11 +30,6 @@
         "has_materials": true,
         "has_variant_buildplates": true,
         "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "ultimaker_s5_extruder_left",
-            "1": "ultimaker_s5_extruder_right"
-        },
         "nozzle_offsetting_for_disallowed_areas": false,
         "platform_offset": [
             0,
