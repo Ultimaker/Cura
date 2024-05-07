@@ -53,27 +53,27 @@ pyinstaller:
           dst: "share/cura/resources/bundled_packages"
         cura_resources_definitions:
             package: "cura_resources"
-            src: "definitions"
+            src: "res/definitions"
             dst: "share/cura/resources/definitions"
         cura_resources_extruders:
             package: "cura_resources"
-            src: "extruders"
+            src: "res/extruders"
             dst: "share/cura/resources/extruders"
         cura_resources_intent:
             package: "cura_resources"
-            src: "intent"
+            src: "res/intent"
             dst: "share/cura/resources/intent"
         cura_resources_meshes:
             package: "cura_resources"
-            src: "meshes"
+            src: "res/meshes"
             dst: "share/cura/resources/meshes"
         cura_resources_quality:
           package: "cura_resources"
-          src: "quality"
+          src: "res/quality"
           dst: "share/cura/resources/quality"
         cura_resources_variants:
           package: "cura_resources"
-          src: "variants"
+          src: "res/variants"
           dst: "share/cura/resources/variants"
         cura_private_data:
             package: "cura_private_data"
