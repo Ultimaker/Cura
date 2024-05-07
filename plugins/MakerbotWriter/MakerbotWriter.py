@@ -55,9 +55,9 @@ class MakerbotWriter(MeshWriter):
     ]
 
     _PNG_FORMAT_METHOD = [
-    {"prefix": "thumbnail", "width": 140, "height": 106},
-    {"prefix": "thumbnail", "width": 212, "height": 300},
-    {"prefix": "thumbnail", "width": 960, "height": 1460},
+        {"prefix": "thumbnail", "width": 140, "height": 106},
+        {"prefix": "thumbnail", "width": 212, "height": 300},
+        {"prefix": "thumbnail", "width": 960, "height": 1460},
     ]
 
     _META_VERSION = "3.0.0"
@@ -109,13 +109,15 @@ class MakerbotWriter(MeshWriter):
         if not success:
             self.setInformation(gcode_writer.getInformation())
             return False
-
-        if file_format == "application/x-makerbot-sketch":
-            filename, filedata = "print.gcode", gcode_text_io.getvalue()
-            self._PNG_FORMATS = self._PNG_FORMAT
-        else:
-            filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
-            self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
+        match file_format:
+            case "application/x-makerbot-sketch":
+                filename, filedata = "print.gcode", gcode_text_io.getvalue()
+                self._PNG_FORMATS = self._PNG_FORMAT
+            case "application/x-makerbot":
+                filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
+                self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
+            case _:
+                raise Exception("Unsupported Mime type")
 
         png_files = []
         for png_format in self._PNG_FORMATS:
@@ -221,12 +223,11 @@ class MakerbotWriter(MeshWriter):
         meta["version"] = MakerbotWriter._META_VERSION
 
         meta["preferences"] = dict()
-        for node in nodes:
-            bounds = node.getBoundingBox()
-            meta["preferences"][str(node.getName())] = {
-                "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
-                "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
-            }
+        bounds = application.getBuildVolume().getBoundingBox()
+        meta["preferences"]["instance0"] = {
+            "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
+            "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
+        }
 
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
