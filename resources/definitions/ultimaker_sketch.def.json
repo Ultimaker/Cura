@@ -188,11 +188,11 @@
         ],
         "platform_texture": "MakerbotSketch.png",
         "preferred_quality_type": "draft",
+        "preferred_variant_name": "0.4mm",
         "reference_machine_id": "sketch",
         "supports_network_connection": true,
-        "variant_definition": "ultimaker_sketch",
-        "preferred_variant_name": "0.4mm",
         "supports_usb_connection": false,
+        "variant_definition": "ultimaker_sketch",
         "variants_name": "Extruder",
         "weight": -1
     },
