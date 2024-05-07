@@ -2,7 +2,8 @@
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
-    "metadata": {
+    "metadata":
+    {
         "machine": "kodakportrait",
         "position": "1"
     },
