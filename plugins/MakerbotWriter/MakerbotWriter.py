@@ -47,15 +47,19 @@ class MakerbotWriter(MeshWriter):
             )
         )
 
-    _PNG_FORMATS = [
+    _PNG_FORMAT = [
         {"prefix": "isometric_thumbnail", "width": 120, "height": 120},
         {"prefix": "isometric_thumbnail", "width": 320, "height": 320},
         {"prefix": "isometric_thumbnail", "width": 640, "height": 640},
-        {"prefix": "thumbnail", "width": 140, "height": 106},
-        {"prefix": "thumbnail", "width": 212, "height": 300},
-        {"prefix": "thumbnail", "width": 960, "height": 1460},
         {"prefix": "thumbnail", "width": 90, "height": 90},
     ]
+
+    _PNG_FORMAT_METHOD = [
+    {"prefix": "thumbnail", "width": 140, "height": 106},
+    {"prefix": "thumbnail", "width": 212, "height": 300},
+    {"prefix": "thumbnail", "width": 960, "height": 1460},
+    ]
+
     _META_VERSION = "3.0.0"
 
     # must be called from the main thread because of OpenGL
@@ -108,8 +112,10 @@ class MakerbotWriter(MeshWriter):
 
         if file_format == "application/x-makerbot-sketch":
             filename, filedata = "print.gcode", gcode_text_io.getvalue()
+            self._PNG_FORMATS = self._PNG_FORMAT
         else:
             filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
+            self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
 
         png_files = []
         for png_format in self._PNG_FORMATS:
