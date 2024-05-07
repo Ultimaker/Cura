@@ -1,6 +1,7 @@
 import os
 import json
 # Global Counters
+
 CORRUPTION_COUNTER = []
 KEYERROR_COUNTER = []
 VALUEERROR_COUNTER = []
@@ -88,4 +89,3 @@ if __name__ == '__main__':
     assert_corruption_error()
     assert_value_error()
     assert_key_error()
-    
