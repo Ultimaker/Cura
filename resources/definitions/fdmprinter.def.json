@@ -6180,6 +6180,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
