@@ -1,6 +1,5 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from io import StringIO, BufferedIOBase
 import json
 from typing import cast, List, Optional, Dict, Tuple
@@ -173,7 +172,8 @@ class MakerbotWriter(MeshWriter):
                 bounds = node_bounds
             else:
                 bounds = bounds + node_bounds
-
+        if file_format == "application/x-makerbot-sketch":
+            bounds = None
         if bounds is not None:
             meta["bounding_box"] = {
                 "x_min": bounds.left,
@@ -214,7 +214,7 @@ class MakerbotWriter(MeshWriter):
         meta["extruder_temperature"] = materials_temps[0]
         meta["extruder_temperatures"] = materials_temps
 
-        meta["model_counts"] = [{"count": 1, "name": node.getName()} for node in nodes]
+        meta["model_counts"] = [{"count": len(nodes), "name": "instance0"}]
 
         tool_types = [extruder.variant.getMetaDataEntry("reference_extruder_id") for extruder in extruders]
         meta["tool_type"] = tool_types[0]
