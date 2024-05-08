@@ -221,7 +221,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_min_cool_heat_time_window": { "value": "15" },
-        "machine_name": { "default_value": "Makerbot Sketch" },
+        "machine_name": { "default_value": "UltiMaker Sketch" },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_start_gcode": { "default_value": "M140 S50 T0; Set Platform Temp\nM104 S220 T0; Set Extruder Temp\nG90; Use Absolute Positioning\nG28; Home\nM132 X Y Z A B; Set Current Position to Home\nG161 X Y F3300; Move to min axes positions\nM7 T0; Wait For Platform to Heat\nM6 T0; Wait For Extruders to Heat\nM651; Turn on back fan\nM907 X100 Y100 Z40 A80 B20; Set Stepper Currents\nM106; Enable Cooling Fan\n; Purge Line\nG92 E0; Reset Extruder Axis Position\nG1 X-26.18 Y-75.90 Z0.200 F420\nG1 X26.18 Y-75.90 E10\nG92 E0; Reset Extruder Axis Position\n; Start GCode\n" },
