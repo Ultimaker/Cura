@@ -14,6 +14,14 @@ requirements:
 requirements_internal:
   - "fdm_materials/(latest)@internal/testing"
   - "cura_private_data/(latest)@internal/testing"
+shared_resources:
+  - "definitions"
+  - "extruders"
+  - "images"
+  - "intent"
+  - "meshes"
+  - "quality"
+  - "variants"
 urls:
     default:
         cloud_api_root: "https://api.ultimaker.com"
@@ -51,30 +59,10 @@ pyinstaller:
           package: "native_cad_plugin"
           src: "res/bundled_packages"
           dst: "share/cura/resources/bundled_packages"
-        cura_resources_definitions:
+        cura_resources:
             package: "cura_resources"
-            src: "res/definitions"
-            dst: "share/cura/resources/definitions"
-        cura_resources_extruders:
-            package: "cura_resources"
-            src: "res/extruders"
-            dst: "share/cura/resources/extruders"
-        cura_resources_intent:
-            package: "cura_resources"
-            src: "res/intent"
-            dst: "share/cura/resources/intent"
-        cura_resources_meshes:
-            package: "cura_resources"
-            src: "res/meshes"
-            dst: "share/cura/resources/meshes"
-        cura_resources_quality:
-          package: "cura_resources"
-          src: "res/quality"
-          dst: "share/cura/resources/quality"
-        cura_resources_variants:
-          package: "cura_resources"
-          src: "res/variants"
-          dst: "share/cura/resources/variants"
+            src: "res"
+            dst: "share/cura/resources"
         cura_private_data:
             package: "cura_private_data"
             src: "res"
