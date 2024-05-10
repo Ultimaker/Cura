@@ -59,7 +59,11 @@ class CuraResource(ConanFile):
     def package_info(self):
         self.cpp_info.includedirs = []
         self.runenv_info.append_path("CURA_RESOURCES", os.path.join(self.package_folder, "res"))
+        self.runenv_info.append_path("CURA_ENGINE_SEARCH_PATH", os.path.join(self.package_folder, "res", "definitions"))
+        self.runenv_info.append_path("CURA_ENGINE_SEARCH_PATH", os.path.join(self.package_folder, "res", "extruders"))
         self.env_info.CURA_RESOURCES.append(os.path.join(self.package_folder, "res"))
+        self.env_info.CURA_ENGINE_SEARCH_PATH.append(os.path.join(self.package_folder, "res", "definitions"))
+        self.env_info.CURA_ENGINE_SEARCH_PATH.append(os.path.join(self.package_folder, "res", "definitions"))
 
     def package_id(self):
         self.info.clear()
