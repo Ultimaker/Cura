@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "CLIP 0124001",
-    "inherits": "fdmprinter",
+    "inherits": "CLIP_base",
     "metadata":
     {
         "visible": true,
@@ -19,10 +19,11 @@
     "overrides":
     {
         "machine_name": { "default_value": "CLIP 0124001" },
-        "machine_extruder_count": { "default_value": 3 },
         "machine_width": { "default_value": 200 },
         "machine_depth": { "default_value": 200 },
         "machine_height": { "default_value": 200 },
+        "speed_print": { "default_value": 45 },
+        "machine_extruder_count": { "default_value": 3 },
         "machine_center_is_zero": { "default_value": false },
         "adhesion_type": { "default_value": "skirt" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
@@ -48,38 +49,3 @@
         "speed_travel_layer_0": { "value": "100" }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
