@@ -1,6 +1,6 @@
 version: "5.8.0-alpha.0"
 requirements:
-  - "cura_resources/(latest)@ultimaker/np_186"
+  - "cura_resources/(latest)@ultimaker/latest"
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
