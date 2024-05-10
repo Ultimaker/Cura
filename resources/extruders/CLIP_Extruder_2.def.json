@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "CLIP_Extruder",
+        "machine": "fdmprinter",
         "position": "2"
     },
     "overrides":
