@@ -14,14 +14,6 @@ requirements:
 requirements_internal:
   - "fdm_materials/(latest)@internal/testing"
   - "cura_private_data/(latest)@internal/testing"
-shared_resources:
-  - "definitions"
-  - "extruders"
-  - "images"
-  - "intent"
-  - "meshes"
-  - "quality"
-  - "variants"
 urls:
     default:
         cloud_api_root: "https://api.ultimaker.com"

@@ -18,6 +18,11 @@ class CuraResource(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True
 
+
+    @property
+    def _shared_resources(self):
+        return ["definitions", "extruders", "images", "intent", "meshes", "quality", "variants"]
+
     def set_version(self):
         if not self.version:
             self.version = self.conan_data["version"]
@@ -30,7 +35,7 @@ class CuraResource(ConanFile):
         update_conandata(self, {"version": self.version})
 
     def export_sources(self):
-        for shared_resources in self.conan_data["shared_resources"]:
+        for shared_resources in self._shared_resources:
             copy(self, pattern="*", src=os.path.join(self.recipe_folder, shared_resources),
                  dst=os.path.join(self.export_sources_folder, shared_resources))
 
@@ -39,8 +44,8 @@ class CuraResource(ConanFile):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
 
     def layout(self):
-        self.cpp.source.resdirs = self.conan_data["shared_resources"]
-        self.cpp.package.resdirs = [f"res/{res}" for res in self.conan_data["shared_resources"]]
+        self.cpp.source.resdirs = self._shared_resources
+        self.cpp.package.resdirs = [f"res/{res}" for res in self._shared_resources]
 
     def package(self):
         copy(self, "*", os.path.join(self.export_sources_folder),
