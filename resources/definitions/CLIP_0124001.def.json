@@ -1,0 +1,49 @@
+{
+    "version": 2,
+    "name": "CLIP 0124001",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "CLIP",
+        "manufacturer": "CLIP",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "CLIP_Extruder_0",
+            "1": "CLIP_Extruder_1",
+            "2": "CLIP_Extruder_2"
+        }
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "CLIP 0124001" },
+        "machine_width": { "default_value": 200 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "speed_print": { "default_value": 45 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_extruder_count": { "default_value": 3 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_end_gcode": { "default_value": ";M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+1 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning" },
+        "machine_head_with_fans_polygon":
+        {
+            "value": [
+                [-43, 65],
+                [43, 65],
+                [43, -65],
+                [-43, -65]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_start_gcode": { "default_value": ";CLIP 0124001\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG92 E0 ;zero the extruded length\nG1 X2 Y10 Z10 F6000 ;move the platform down 10mm\nM140 S{material_bed_temperature_layer_0}\nM105\nM190 S{material_bed_temperature_layer_0}; Wait for Heat Bed temperature\nM104 S{material_print_temperature_layer_0}\nM105\nM109 S{material_print_temperature_layer_0}; Wait for Extruder temperature\nG1 Z0.2\nM165 A1 B1 C1\nG1 X2 Y160 Z0.2 E15 F2500\nG1 X2.5 Y160 Z0.2\nG1 X2.5 Y10 Z0.2 E15 F2500\nG1 X3.0 Y10 Z0.2 \nG1 X3.0 Y160 Z0.2 E15 F2500\nG1 X4 Y160 Z0.2\nG92 E0 ;zero the extruded length again\nG1 Z2.0 F500\nG1 Z0.2 F500\nG1 X4 Y10 F5000 ;quick erase\nM117 Printing..." },
+        "material_bed_temperature": { "value": "default_material_bed_temperature + 10" },
+        "retraction_amount": { "value": 12 },
+        "retraction_count_max": { "value": 80 },
+        "retraction_prime_speed": { "resolve": 25 },
+        "retraction_retract_speed": { "resolve": 25 },
+        "retraction_speed": { "resolve": 25 },
+        "speed_travel_layer_0": { "value": "100" }
+    }
+}
