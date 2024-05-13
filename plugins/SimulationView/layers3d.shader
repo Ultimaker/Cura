@@ -356,7 +356,10 @@ geometry41core =
             EndPrimitive();
         }
 
-        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
+        if ((u_show_starts == 1) && (
+            ((v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) ||
+            ((v_prev_line_type[0] != 4) && (v_line_type[0] == 4))
+            )) {
             float w = size_x;
             float h = size_y;
 
