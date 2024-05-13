@@ -1,6 +1,6 @@
 version: "5.8.0-alpha.0"
 requirements:
-  - "cura_resources/(latest)@ultimaker/latest"
+  - "cura_resources/(latest)@ultimaker/testing"
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
@@ -52,6 +52,10 @@ pyinstaller:
           src: "res/bundled_packages"
           dst: "share/cura/resources/bundled_packages"
         cura_resources:
+            package: "cura"
+            src: "resources"
+            dst: "share/cura/resources"
+        cura_shared_resources:
             package: "cura_resources"
             src: "res"
             dst: "share/cura/resources"
