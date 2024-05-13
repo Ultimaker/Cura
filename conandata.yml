@@ -52,6 +52,10 @@ pyinstaller:
           src: "res/bundled_packages"
           dst: "share/cura/resources/bundled_packages"
         cura_resources:
+            package: "cura"
+            src: "resources"
+            dst: "share/cura/resources"
+        cura_shared_resources:
             package: "cura_resources"
             src: "res"
             dst: "share/cura/resources"
