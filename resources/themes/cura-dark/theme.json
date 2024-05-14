@@ -179,6 +179,8 @@
 
         "material_compatibility_warning": [255, 255, 255, 255],
 
+        "core_compatibility_warning": [255, 255, 255, 255],
+
         "quality_slider_available": [255, 255, 255, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],

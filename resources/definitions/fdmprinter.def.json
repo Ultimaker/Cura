@@ -4775,6 +4775,34 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
+                "support_z_seam_away_from_model":
+                {
+                    "label": "Support Z Seam Away from Model",
+                    "description": "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "support_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "support_z_seam_min_distance":
+                        {
+                            "label": "Min Z Seam Distance from Model",
+                            "description": "The distance between the model and its support structure at the z-axis seam.",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "value": "line_width * 2",
+                            "default_value": 0.8,
+                            "maximum_value_warning": "line_width * 4",
+                            "type": "float",
+                            "enabled": "support_z_seam_away_from_model and support_enable",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
                 "support_type":
                 {
                     "label": "Support Placement",
@@ -8559,7 +8587,9 @@
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "flow_anomaly_limit":
                 {
@@ -8569,7 +8599,9 @@
                     "enabled": "ppr_enable",
                     "unit": "%",
                     "type": "float",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "print_temp_warn_limit":
                 {
@@ -8579,7 +8611,9 @@
                     "type": "float",
                     "default_value": 3.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "print_temp_anomaly_limit":
                 {
@@ -8589,7 +8623,9 @@
                     "type": "float",
                     "default_value": 7.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "bv_temp_warn_limit":
                 {
@@ -8599,7 +8635,9 @@
                     "type": "float",
                     "default_value": 7.5,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 },
                 "bv_temp_anomaly_limit":
                 {
@@ -8609,7 +8647,9 @@
                     "type": "float",
                     "default_value": 10.0,
                     "enabled": "ppr_enable",
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
