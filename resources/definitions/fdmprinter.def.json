@@ -6193,6 +6193,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_base_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -6204,6 +6205,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_interface_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -6215,6 +6217,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_surface_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
