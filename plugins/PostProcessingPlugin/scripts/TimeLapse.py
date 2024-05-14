@@ -4,6 +4,7 @@
 # Changes:
 #    Added insertion frequency
 #    Added support for Relative Extrusion mode
+#    Added support for Firmware Retraction
 #    Changed Retract to a boolean and when True use the regular Cura retract settings.
 #    Use the regular Cura settings for Travel Speed and Speed_Z instead of asking.
 #    Added code to prevent retracts when parking if the filament was already retracted.
@@ -111,7 +112,8 @@ class TimeLapse(Script):
         extruder = mycura.extruderList
         retract_speed = int(extruder[0].getProperty("retraction_speed", "value"))*60
         retract_dist = int(extruder[0].getProperty("retraction_amount", "value"))
-        retract_enabled = bool(extruder[0].getProperty("retraction_enable", "value"))
+        retract_enabled = bool(extruder[0].getProperty("retraction_enable", "value"))        
+        firmware_retraction = bool(mycura.getProperty("machine_firmware_retract", "value"))
         speed_z = int(extruder[0].getProperty("speed_z_hop", "value"))*60
         if relative_extrusion:
             rel_cmd = 83
@@ -185,6 +187,11 @@ class TimeLapse(Script):
                                 else:
                                     is_retracted = False
                                 prev_e = last_e
+                    if self.getValue(line, "G") in {10, 11}:
+                        if line.startswith("G10"):
+                            is_retracted = True
+                        if line.startswith("G11"):
+                            is_retracted = False
                 # Insert the code----------------------------------------------------
                 lines = layer.split("\n")
                 camera_code = ""
@@ -194,7 +201,10 @@ class TimeLapse(Script):
                         if retract and not is_retracted and retract_enabled:
                             camera_code += ";TYPE:CUSTOM-----------------TimeLapse Begin\n"
                             camera_code += "M83 ;Extrude Relative\n"
-                            camera_code += f"G1 F{retract_speed} E-{retract_dist} ;Retract filament\n"
+                            if not firmware_retraction:
+                                camera_code += f"G1 F{retract_speed} E-{retract_dist} ;Retract filament\n"
+                            else:
+                                camera_code += "G10 ;Retract filament\n"
                         else:
                             camera_code += ";TYPE:CUSTOM-----------------TimeLapse Begin\n"
                         if zhop != 0:
@@ -204,7 +214,10 @@ class TimeLapse(Script):
                         if zhop != 0:
                             camera_code += self.putValue(G=0, F=speed_z, Z=last_z) + "  ;Restore Z position \n"
                         if retract and not is_retracted and retract_enabled:
-                            camera_code += self.putValue(G=1, E=retract_dist, F=retract_speed) + "  ;Un-Retract filament\n"
+                            if not firmware_retraction:
+                                camera_code += self.putValue(G=1, E=retract_dist, F=retract_speed) + "  ;Un-Retract filament\n"
+                            else:
+                                camera_code += "G11  ;Un-Retract filament\n"
                             camera_code += self.putValue(M=rel_cmd) + "          ;Extrude Mode\n"
                         camera_code += f";{'-' * 28}TimeLapse End"
                         # Format the camera code to be inserted
