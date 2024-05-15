@@ -112,7 +112,6 @@ class ThreeMFWriter(MeshWriter):
         savitar_node = Savitar.SceneNode()
         savitar_node.setName(um_node.getName())
 
-        node_matrix = um_node.getLocalTransformation()
         mesh_data = um_node.getMeshData()
 
         if center_mesh:
