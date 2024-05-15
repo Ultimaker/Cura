@@ -160,6 +160,8 @@ class MakerbotWriter(MeshWriter):
                         nodes.append(node)
 
         meta = dict()
+        # This is a bit of a "hack", the mime type should be passed through with the export writer but
+        # since this is not the case we get the mime type from the global stack instead
         file_format = global_stack.definition.getMetaDataEntry("file_formats")
         meta["bot_type"] = global_stack.definition.getMetaDataEntry("reference_machine_id")
 
