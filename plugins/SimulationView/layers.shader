@@ -22,8 +22,8 @@ vertex =
         gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_vertex;
         // shade the color depending on the extruder index
         v_color = a_color;
-        // 8 and 9 are travel moves
-        if ((a_line_type != 8.0) && (a_line_type != 9.0)) {
+        // 8, 9 and 12 are travel moves
+        if ((a_line_type != 8.0) && (a_line_type != 9.0) && (a_line_type != 12.0) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(u_shade_factor * v_color.rgb, v_color.a);
         }
 
@@ -48,7 +48,11 @@ fragment =
 
     void main()
     {
-        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5)) {  // actually, 8 and 9
+        // travel moves: 8, 9 or 12
+        if ((u_show_travel_moves == 0) &&
+            (((v_line_type >= 7.5) && (v_line_type <= 9.5)) ||
+             ((v_line_type >= 11.5) && (v_line_type <= 12.5))))
+        {
             // discard movements
             discard;
         }
@@ -120,7 +124,11 @@ fragment41core =
 
     void main()
     {
-        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5)) {  // actually, 8 and 9
+        // travel moves: 8, 9 or 12
+        if ((u_show_travel_moves == 0) &&
+            (((v_line_type >= 7.5) && (v_line_type <= 9.5)) ||
+             ((v_line_type >= 11.5) && (v_line_type <= 12.5))))
+        {
             // discard movements
             discard;
         }

@@ -109,8 +109,8 @@ geometry41core =
         if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0] / 4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
             return;
         }
-        // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
-        if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
+        // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType, 12 is MoveUnretractionType
+        if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9) || (v_line_type[0] == 12))) {
             return;
         }
         if ((u_show_helpers == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 5) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
@@ -123,7 +123,7 @@ geometry41core =
             return;
         }
 
-        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)  || (v_line_type[0] == 12)) {
             // fixed size for movements
             size_x = 0.05;
         } else {
@@ -141,7 +141,7 @@ geometry41core =
         g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
         g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0);
 
-        if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+        if ((v_line_type[0] == 8) || (v_line_type[0] == 9) || (v_line_type[0] == 12)) {
             vec4 va_head = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert);
             vec4 va_up =  viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
             vec4 va_down = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert);
