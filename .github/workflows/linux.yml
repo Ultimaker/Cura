@@ -38,6 +38,7 @@ on:
         type: choice
         options:
           - ubuntu-22.04
+          - self-hosted-Linux-X64
 
 jobs:
   linux-installer:
