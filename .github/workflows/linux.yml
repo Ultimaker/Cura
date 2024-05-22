@@ -34,11 +34,11 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'self-hosted-Ubuntu24-X64'
+        default: 'self-hosted-Ubuntu22-X64'
         type: choice
         options:
           - ubuntu-22.04
-          - self-hosted-Ubuntu24-X64
+          - self-hosted-Ubuntu22-X64
 
 jobs:
   linux-installer:
