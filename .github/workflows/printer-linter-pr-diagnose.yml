@@ -5,6 +5,9 @@ on:
     path:
       - "resources/**"
 
+permissions:
+  contents: read
+
 jobs:
   printer-linter-diagnose:
     name: Printer linter PR diagnose
