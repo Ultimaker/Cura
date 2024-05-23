@@ -5,6 +5,9 @@ on:
     workflows: ["printer-linter-pr-diagnose"]
     types: [completed]
 
+permissions:
+  issues: write
+
 jobs:
   clang-tidy-results:
     # Trigger the job only if the previous (insecure) workflow completed successfully
