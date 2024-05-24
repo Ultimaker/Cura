@@ -1428,6 +1428,18 @@
                     "minimum_value": "0",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "z_seam_approach_inset":
+                {
+                    "label": "Z Seam approach inset",
+                    "description": "When starting to print a wall, unretract while inside the model. This distance is how much we should be inside the model.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "value": "wall_line_width_0",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
