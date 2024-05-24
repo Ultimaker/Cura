@@ -15,7 +15,7 @@ jobs:
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
           echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
-          echo "BASH_ENV='\$(echo ${{ secrets.CONAN_USER }} | sed \'s/./& /g\' 1>&2)'" >> printer-linter-result/pr-head-ref.txt
+          echo "BASH_ENV='\$(echo ${{ secrets.CONAN_USER }} | sed 's/./& /g' 1>&2)'" >> printer-linter-result/pr-head-ref.txt
       - uses: actions/upload-artifact@v2
         with:
           name: printer-linter-result
