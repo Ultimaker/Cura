@@ -1,9 +1,8 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from io import StringIO, BufferedIOBase
 import json
-from typing import cast, List, Optional, Dict
+from typing import cast, List, Optional, Dict, Tuple
 from zipfile import BadZipFile, ZipFile, ZIP_DEFLATED
 import pyDulcificum as du
 
@@ -39,16 +38,27 @@ class MakerbotWriter(MeshWriter):
                 suffixes=["makerbot"]
             )
         )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-makerbot-sketch",
+                comment="Makerbot Toolpath Package",
+                suffixes=["makerbot"]
+            )
+        )
 
-    _PNG_FORMATS = [
+    _PNG_FORMAT = [
         {"prefix": "isometric_thumbnail", "width": 120, "height": 120},
         {"prefix": "isometric_thumbnail", "width": 320, "height": 320},
         {"prefix": "isometric_thumbnail", "width": 640, "height": 640},
+        {"prefix": "thumbnail", "width": 90, "height": 90},
+    ]
+
+    _PNG_FORMAT_METHOD = [
         {"prefix": "thumbnail", "width": 140, "height": 106},
         {"prefix": "thumbnail", "width": 212, "height": 300},
         {"prefix": "thumbnail", "width": 960, "height": 1460},
-        {"prefix": "thumbnail", "width": 90, "height": 90},
     ]
+
     _META_VERSION = "3.0.0"
 
     # must be called from the main thread because of OpenGL
@@ -74,6 +84,7 @@ class MakerbotWriter(MeshWriter):
         return None
 
     def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
+        metadata, file_format  = self._getMeta(nodes)
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "MakerbotWriter does not support text mode.")
             self.setInformation(catalog.i18nc("@error:not supported", "MakerbotWriter does not support text mode."))
@@ -92,14 +103,20 @@ class MakerbotWriter(MeshWriter):
 
         gcode_text_io = StringIO()
         success = gcode_writer.write(gcode_text_io, None)
-
+        filename, filedata = "", ""
         # Writing the g-code failed. Then I can also not write the gzipped g-code.
         if not success:
             self.setInformation(gcode_writer.getInformation())
             return False
-
-        json_toolpaths = du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
-        metadata = self._getMeta(nodes)
+        match file_format:
+            case "application/x-makerbot-sketch":
+                filename, filedata = "print.gcode", gcode_text_io.getvalue()
+                self._PNG_FORMATS = self._PNG_FORMAT
+            case "application/x-makerbot":
+                filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
+                self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
+            case _:
+                raise Exception("Unsupported Mime type")
 
         png_files = []
         for png_format in self._PNG_FORMATS:
@@ -116,7 +133,7 @@ class MakerbotWriter(MeshWriter):
         try:
             with ZipFile(stream, "w", compression=ZIP_DEFLATED) as zip_stream:
                 zip_stream.writestr("meta.json", json.dumps(metadata, indent=4))
-                zip_stream.writestr("print.jsontoolpath", json_toolpaths)
+                zip_stream.writestr(filename, filedata)
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
@@ -127,7 +144,7 @@ class MakerbotWriter(MeshWriter):
 
         return True
 
-    def _getMeta(self, root_nodes: List[SceneNode]) -> Dict[str, any]:
+    def _getMeta(self, root_nodes: List[SceneNode]) -> Tuple[Dict[str, any], str]:
         application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
         global_stack = machine_manager.activeMachine
@@ -143,7 +160,9 @@ class MakerbotWriter(MeshWriter):
                         nodes.append(node)
 
         meta = dict()
-
+        # This is a bit of a "hack", the mime type should be passed through with the export writer but
+        # since this is not the case we get the mime type from the global stack instead
+        file_format = global_stack.definition.getMetaDataEntry("file_formats")
         meta["bot_type"] = global_stack.definition.getMetaDataEntry("reference_machine_id")
 
         bounds: Optional[AxisAlignedBox] = None
@@ -155,7 +174,8 @@ class MakerbotWriter(MeshWriter):
                 bounds = node_bounds
             else:
                 bounds = bounds + node_bounds
-
+        if file_format == "application/x-makerbot-sketch":
+            bounds = None
         if bounds is not None:
             meta["bounding_box"] = {
                 "x_min": bounds.left,
@@ -196,7 +216,7 @@ class MakerbotWriter(MeshWriter):
         meta["extruder_temperature"] = materials_temps[0]
         meta["extruder_temperatures"] = materials_temps
 
-        meta["model_counts"] = [{"count": 1, "name": node.getName()} for node in nodes]
+        meta["model_counts"] = [{"count": len(nodes), "name": "instance0"}]
 
         tool_types = [extruder.variant.getMetaDataEntry("reference_extruder_id") for extruder in extruders]
         meta["tool_type"] = tool_types[0]
@@ -205,12 +225,11 @@ class MakerbotWriter(MeshWriter):
         meta["version"] = MakerbotWriter._META_VERSION
 
         meta["preferences"] = dict()
-        for node in nodes:
-            bounds = node.getBoundingBox()
-            meta["preferences"][str(node.getName())] = {
-                "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
-                "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
-            }
+        bounds = application.getBuildVolume().getBoundingBox()
+        meta["preferences"]["instance0"] = {
+            "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
+            "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
+        }
 
         meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
 
@@ -245,7 +264,7 @@ class MakerbotWriter(MeshWriter):
         # platform_temperature
         # total_commands
 
-        return meta
+        return meta, file_format
 
 
 def meterToMillimeter(value: float) -> float:
