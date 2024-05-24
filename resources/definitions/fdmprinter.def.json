@@ -30,7 +30,7 @@
             {
                 "machine_name":
                 {
-                    "label": "Machine Type",
+                    "label": "Machine Name",
                     "description": "The name of your 3D printer model.",
                     "default_value": "Unknown",
                     "type": "str",
