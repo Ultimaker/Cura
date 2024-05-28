@@ -935,7 +935,7 @@
                             "type": "float",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
-                            "resolve": "resolveOrVaalue('line_width')"
+                            "resolve": "resolveeOrValue('line_width')"
                         },
                         "support_interface_line_width":
                         {
