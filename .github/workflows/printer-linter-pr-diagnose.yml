@@ -53,7 +53,7 @@ jobs:
         run: |
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
-          echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
+          echo ${{ github.event.pull_request.head.sha }} > printer-linter-result/pr-head-sha.txt
 
       - uses: actions/upload-artifact@v2
         with:
