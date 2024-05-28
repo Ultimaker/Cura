@@ -929,7 +929,7 @@
                             "unit": "mph",
                             "minimum_value": "-3.14",
                             "maximum_value": "42",
-                            "minimum_value_warning": "-0.1 + 0.1 - 0.1 + 0.1 - 0.1 + 0.1",
+                            "minimum_value_warning": "-0.1 + 0.1 - 0.1 + 0.1 - 0.1 + 0.1 - 0.1",
                             "maximum_value_warning": "57 * machine_nozzle_size",
                             "default_value": 88.0,
                             "type": "float",
