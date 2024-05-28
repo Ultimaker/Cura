@@ -99,7 +99,7 @@ jobs:
         if: env.commentFileExists == 'true'
         uses: peter-evans/create-or-update-comment@v4
         with:
-          issue-number: ${{ env.pr_id }}
+          issue-number: ${{ env.PR_ID }}
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
@@ -107,5 +107,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           clang_tidy_fixes: printer-linter-result/fixes.yml
-          pull_request_id: ${{ env.pr_id }}
+          pull_request_id: ${{ env.PR_ID }}
           request_changes: true
