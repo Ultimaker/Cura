@@ -135,6 +135,7 @@
         "xy_offset": { "value": "-layer_height * 0.1" },
         "xy_offset_layer_0": { "value": "-wall_line_width_0 / 5 + xy_offset" },
         "z_seam_corner": { "value": "'z_seam_corner_none'" },
-        "zig_zaggify_support": { "value": true }
+        "zig_zaggify_support": { "value": true },
+        "support_line_antimatter_polarity": { "value":  "resolveORValue('line_width')" }
     }
 }
