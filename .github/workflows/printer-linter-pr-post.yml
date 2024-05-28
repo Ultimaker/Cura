@@ -42,26 +42,26 @@ jobs:
       - name: Set PR details environment variables
         uses: actions/github-script@v7
         with:
-        script: |
-          const assert = require("node:assert").strict;
-          const fs = require("fs");
-          function exportVar(varName, fileName, regEx) {
-              const val = fs.readFileSync("${{ github.workspace }}/clang-tidy-result/" + fileName, {
-                  encoding: "ascii"
-              }).trimEnd();
-              assert.ok(regEx.test(val), "Invalid value format for " + varName);
-              core.exportVariable(varName, val);
-          }
-          exportVar("PR_ID", "pr-id.txt", /^[0-9]+$/);
-          exportVar("PR_HEAD_REPO", "pr-head-repo.txt", /^[-./0-9A-Z_a-z]+$/);
-          exportVar("PR_HEAD_SHA", "pr-head-sha.txt", /^[0-9A-Fa-f]+$/);
-          fs.access("${{ github.workspace }}/printer-linter-result/comment.md", fs.constants.F_OK, (err) => {
-              if (err) {
-                  core.exportVariable("commentFileExists", "false");
-              } else {
-                  core.exportVariable("commentFileExists", "true");
-              }
-          });
+          script: |
+            const assert = require("node:assert").strict;
+            const fs = require("fs");
+            function exportVar(varName, fileName, regEx) {
+                const val = fs.readFileSync("${{ github.workspace }}/clang-tidy-result/" + fileName, {
+                    encoding: "ascii"
+                }).trimEnd();
+                assert.ok(regEx.test(val), "Invalid value format for " + varName);
+                core.exportVariable(varName, val);
+            }
+            exportVar("PR_ID", "pr-id.txt", /^[0-9]+$/);
+            exportVar("PR_HEAD_REPO", "pr-head-repo.txt", /^[-./0-9A-Z_a-z]+$/);
+            exportVar("PR_HEAD_SHA", "pr-head-sha.txt", /^[0-9A-Fa-f]+$/);
+            fs.access("${{ github.workspace }}/printer-linter-result/comment.md", fs.constants.F_OK, (err) => {
+                if (err) {
+                    core.exportVariable("commentFileExists", "false");
+                } else {
+                    core.exportVariable("commentFileExists", "true");
+                }
+            });
 
       - uses: actions/checkout@v4
         with:
