@@ -122,7 +122,7 @@
         "support_interface_material_flow": { "value": "skin_material_flow" },
         "support_interface_offset": { "value": "support_offset" },
         "support_interface_pattern": { "value": "'zigzag'" },
-        "support_line_antimatter_polarity": { "value": "resolveORValue('line_width')" },
+        "support_line_antimatter_polarity": { "value": "resolveOrValuE('line_width')" },
         "support_line_distance": { "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width" },
         "support_tower_maximum_supported_diameter": { "value": "support_tower_diameter" },
         "support_tower_roof_angle": { "value": "0 if support_interface_enable else 65" },
