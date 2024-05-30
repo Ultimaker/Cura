@@ -3,56 +3,51 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"POT-Creation-Date: 2024-05-28 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"Жц
 "Language-Team: LANGUAGE\n"
+"Language: ua_UA\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-
-
-
-
-
 msgctxt "gradual_flow_enabled label"
 msgid "Gradual flow enabled"
-msgstr ""
+msgstr "Плавний контроль увімкнено"
 
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr ""
+msgstr "Увімкнути зміну плавного контролю. Коли увімкнено потік постійно збільшується/зменшується до цільового значення. Це корисно для принтерів з трубкою Боудена, де потік не міняється відразу при запуску/зупинці двигуна екструдера."
 
 msgctxt "max_flow_acceleration label"
 msgid "Gradual flow max acceleration"
-msgstr ""
+msgstr "Максимальне прискорення плавного потоку"
 
 msgctxt "max_flow_acceleration description"
 msgid "Maximum acceleration for gradual flow changes"
-msgstr ""
+msgstr "Максимальне прискорення для зміни плавного потоку"
 
 msgctxt "layer_0_max_flow_acceleration label"
 msgid "Initial layer max flow acceleration"
-msgstr ""
+msgstr "Максимальне прискорення на початковому шарі"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr ""
+msgstr "Мінімальна швидкість зміни плавного потоку для першого шару"
 
 msgctxt "gradual_flow_discretisation_step_size label"
 msgid "Gradual flow discretisation step size"
-msgstr ""
+msgstr "Розмір кроку дискретизації плавного потоку"
 
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
-msgstr ""
+msgstr "Тривалість кожного кроку в зміні плавного потоку"
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
-msgstr ""
+msgstr "Скинути плавний потік"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr ""
-
+msgstr "Для будь-якого переміщення довше ніж це значення, потік матеріалу скидається до шляху цілі потоку"
