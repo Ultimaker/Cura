@@ -65,7 +65,7 @@
             0
         ],
         "platform_texture": "MakerbotMethod.png",
-        "preferred_material": "generic_pla_175",
+        "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "fast",
         "preferred_variant_name": "1A",
         "supports_network_connection": true,
