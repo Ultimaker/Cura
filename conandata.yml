@@ -1,10 +1,10 @@
 version: "5.8.0-alpha.0"
 requirements:
-  - "cura_resources/(latest)@ultimaker/testing"
-  - "uranium/(latest)@ultimaker/testing"
-  - "curaengine/(latest)@ultimaker/testing"
-  - "cura_binary_data/(latest)@ultimaker/testing"
-  - "fdm_materials/(latest)@ultimaker/testing"
+  - "cura_resources/.."
+  - "uranium/.."
+  - "curaengine/.."
+  - "cura_binary_data/.."
+  - "fdm_materials/.."
   - "curaengine_plugin_gradual_flow/0.1.0-beta.3"
   - "dulcificum/latest@ultimaker/testing"
   - "pysavitar/5.3.0"
@@ -12,7 +12,7 @@ requirements:
   - "curaengine_grpc_definitions/0.2.0"
   - "native_cad_plugin/2.0.0"
 requirements_internal:
-  - "fdm_materials/(latest)@internal/testing"
+  - "fdm_materials/.."
   - "cura_private_data/(latest)@internal/testing"
 urls:
     default:
