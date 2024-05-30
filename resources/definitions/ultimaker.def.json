@@ -80,6 +80,7 @@
             "maximum_value_warning": "120",
             "minimum_value": "0"
         },
+        "material_print_temp_wait": {  "value": false },
         "material_print_temperature": { "minimum_value": "0" },
         "material_standby_temperature":
         {
