@@ -30,6 +30,29 @@ on:
         required: true
         type: boolean
 
+  workflow_call:
+    inputs:
+      cura_conan_version:
+        default: 'cura/latest@ultimaker/testing'
+        required: true
+        type: string
+      conan_args:
+        default: ''
+        required: false
+        type: string
+      enterprise:
+        default: false
+        required: true
+        type: boolean
+      staging:
+        default: false
+        required: true
+        type: boolean
+      nightly:
+        default: false
+        required: true
+        type: boolean
+
   schedule:
     # Daily at 4:15 CET (main-branch) and 5:15 CET (release-branch)
     - cron: '15 3 * * *'
