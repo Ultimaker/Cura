@@ -748,39 +748,39 @@ msgstr "Центрувати камеру на вибраному об'єкті"
 
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
-msgstr ""
+msgstr "Змінити активні скрипти пост-обробки"
 
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr ""
+msgstr "Змінити матеріал %1 з %2 на %3."
 
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr ""
+msgstr "Змінити екструдер %1 з %2 на %3."
 
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
-msgstr ""
+msgstr "Помічені зміни у Вашому обліковому записі UltiMaker"
 
 msgctxt "@title"
 msgid "Changes from your account"
-msgstr ""
+msgstr "Зміни в обліковому записі"
 
 msgctxt "@label:textbox"
 msgid "Check all"
-msgstr ""
+msgstr "Вибрати все"
 
 msgctxt "@button"
 msgid "Check for account updates"
-msgstr ""
+msgstr "Перевірити наявність оновлень облікового запису"
 
 msgctxt "@option:check"
 msgid "Check for updates on start"
-msgstr ""
+msgstr "Перевіряти оновлення при старті"
 
 msgctxt "@label"
 msgid "Checking..."
-msgstr ""
+msgstr "Перевірка..."
 
 msgctxt "@label"
 msgid ""
@@ -790,228 +790,233 @@ msgid ""
 "\n"
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
+"Виберіть одну з технік доступних для створення підтримки. \n"
+"\n"
+"\"Стандартна"\" підтримка створюється безпосередньо під деталями що виступають. \n"
+"\n"
+"\"Деревовидна"\" підтримка створює гілки, що тягнуться до виступаючих областей і модель опирається на кінці цих гілок, які охоплюють модель з різних сторін, таким чином максимально охоплювати модель по всій площі печатної пластини."
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
-msgstr ""
+msgstr "Очистити стіл"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
-msgstr ""
+msgstr "Очистити печатну пластину перед завантаженням моделі в єдиному екземплярі"
 
 msgctxt "@text"
 msgid "Click the export material archive button."
-msgstr ""
+msgstr "Натисніть кнопку для експорту архіву "
 
 msgctxt "@action:button"
 msgid "Close"
-msgstr ""
+msgstr "Закрити"
 
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
-msgstr ""
+msgstr "Закривання %1"
 
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
-msgstr ""
+msgstr "Згорнути всі категорії"
 
 msgctxt "@label"
 msgid "Color"
-msgstr ""
+msgstr "Колір"
 
 msgctxt "@action:label"
 msgid "Color Model"
-msgstr ""
+msgstr "Кольорова модель"
 
 msgctxt "@label"
 msgid "Color scheme"
-msgstr ""
+msgstr "Кольороа схема"
 
 msgctxt "@info"
 msgid "Compare and save."
-msgstr ""
+msgstr "Порівняти та зберегти"
 
 msgctxt "@label"
 msgid "Compatibility Mode"
-msgstr ""
+msgstr "Режим сумісності"
 
 msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
-msgstr ""
+msgstr "Сумісність між Python 2 та 3"
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
-msgstr ""
+msgstr "Сумісні Принтери"
 
 msgctxt "@label"
 msgid "Compatible material diameter"
-msgstr ""
+msgstr "Діаметр сумісного матеріалу"
 
 msgctxt "@header"
 msgid "Compatible printers"
-msgstr ""
+msgstr "Сумісні принтери"
 
 msgctxt "@header"
 msgid "Compatible support materials"
-msgstr ""
+msgstr "Сумісний матеріал підтримки"
 
 msgctxt "@header"
 msgid "Compatible with Material Station"
-msgstr ""
+msgstr "Сумісність з Material Station"
 
 msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
-msgstr ""
+msgstr "CСтиснена COLLADA Digital Asset Exchange"
 
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
-msgstr ""
+msgstr "Стиснений файл G-code"
 
 msgctxt "@title:window"
 msgid "Configuration Changes"
-msgstr ""
+msgstr "Зміни конфігурації"
 
 msgctxt "@error"
 msgid "Configuration not supported"
-msgstr ""
+msgstr "Конфігурація не підтримується"
 
 msgctxt "@header"
 msgid "Configurations"
-msgstr ""
+msgstr "Конфігурації"
 
 msgctxt "@label"
 msgid "Configurations"
-msgstr ""
+msgstr "Конфігурації"
 
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
-msgstr ""
+msgstr "Налаштувати Cura..."
 
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
-msgstr ""
+msgstr "Налаштування параметрів моделі"
 
 msgctxt "@action"
 msgid "Configure group"
-msgstr ""
+msgstr "Налаштувати групу"
 
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
-msgstr ""
+msgstr "Видимість налаштувань"
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
-msgstr ""
+msgstr "Підтвердити зміну діаметру"
 
 msgctxt "@title:window"
 msgid "Confirm Remove"
-msgstr ""
+msgstr "Підвердити видалення"
 
 msgctxt "@action:button"
 msgid "Connect"
-msgstr ""
+msgstr "Підключити"
 
 msgctxt "@button"
 msgid "Connect"
-msgstr ""
+msgstr "Підключити"
 
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
-msgstr ""
+msgstr "Підключення до мережевого принетру"
 
 msgctxt "@action"
 msgid "Connect via Network"
-msgstr ""
+msgstr "Підключення через мережу"
 
 msgctxt "@info:status"
 msgid "Connected over the network"
-msgstr ""
+msgstr "Підключений через мережу"
 
 msgctxt "@label"
 msgid "Connected printers"
-msgstr ""
+msgstr "Підключені принтери"
 
 msgctxt "@info:status"
 msgid "Connected via USB"
-msgstr ""
+msgstr "Підключений через USB"
 
 msgctxt "@info:status"
 msgid "Connected via cloud"
-msgstr ""
+msgstr "Підключений через хмару"
 
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
-msgstr ""
+msgstr "Порадьтесь з ком'юніті Ultimaker"
 
 msgctxt "@title:window"
 msgid "Convert Image"
-msgstr ""
+msgstr "Перетворення зображення"
 
 msgctxt "@label"
 msgid "Cooling Fan Number"
-msgstr ""
+msgstr "Номер вентилятора охолодження"
 
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
-msgstr ""
+msgstr "Копіювати всі змінені значення для всіх екструдерів"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Скопіювати в буфер обміну"
 
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
-msgstr ""
+msgstr "Скопіювати всі значення для всіх екструдерів"
 
 msgctxt "@label"
 msgid "Cost per Meter"
-msgstr ""
+msgstr "Ціна за метр"
 
 msgctxt "@info"
 msgid "Could not access update information."
-msgstr ""
+msgstr "Не вдалося отримати інформацію про оновлення."
 
 msgctxt "@label"
 msgid "Could not connect to device."
-msgstr ""
+msgstr "Не вдалося приєднатися до пристрою"
 
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
-msgstr ""
+msgstr "Не вдалося створити архів з каталогу з даними користувача: {}"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
-msgstr ""
+msgstr "Не вдалося знайти файл під час спроби запису на {device}"
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr ""
+msgstr "Не вдалося імпортувати матеріал <filename>%1</filename>: <message>%2</message>"
 
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
-msgstr ""
+msgstr "Не вдалося інтерпретувати відповідь сервера"
 
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
-msgstr ""
+msgstr "Не вдалося завантажити GCodeWriter плагін. Спробуйте реактивувати плагін."
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr ""
+msgstr "Не вдалося зв'язатися з Магазином"
 
 msgctxt "@message"
 msgid "Could not read response."
-msgstr ""
+msgstr "Не вдалося прочитати відповідь."
 
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
-msgstr ""
+msgstr "Не вдалося зберигти архів матеріалу в {};"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
-msgstr ""
+msgstr "Не вдалося записати в filename>{0}</filename>: <message>{1}</message>"
 
 #, python-brace-format
 msgctxt "@info:status"
