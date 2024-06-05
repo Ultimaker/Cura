@@ -110,6 +110,7 @@ jobs:
           token: ${{ secrets.CURA_AUTORELEASE_PAT }}
           fail-on-error: true
           wait-timeout: 60m
+          run-id: dummy-run-id
           payload: |
             {
               "repository": "${{ matrix.repository }}",
@@ -137,6 +138,7 @@ jobs:
           token: ${{ secrets.CURA_AUTORELEASE_PAT }}
           fail-on-error: true
           wait-timeout: 60m
+          run-id: dummy-run-id
           payload: |
             {
               "repository": "Cura",
