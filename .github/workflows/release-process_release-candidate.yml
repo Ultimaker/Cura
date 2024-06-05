@@ -142,9 +142,9 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4.1.7
-          with:
-            path: artifacts
-            merge-multiple: true
+        with:
+          path: artifacts
+          merge-multiple: true
 
       - name: Checkout Cura repo
         uses: actions/checkout@v4
