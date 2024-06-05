@@ -1,0 +1,64 @@
+name: Feature Freeze
+run-name: Feature freeze Cura ${{ inputs.cura_version }} by @${{ github.actor }}
+
+on:
+  workflow_call:
+    inputs:
+      cura_version:
+        description: 'Cura version major and minor, e.g. 5.7'
+        required: true
+        type: string
+
+jobs:
+  parse-version:
+    name: Parse input version string
+    runs-on: ubuntu-latest
+    outputs:
+      package_version: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}.0
+      branch_name: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}
+    steps:
+      - name: Parse version string
+        id: version_parser
+        uses: booxmedialtd/ws-action-parse-semver@v1.4.7
+        with:
+          input_string: ${{ inputs.cura_version }}
+
+  feature-freeze:
+    name: Process feature freeze
+    runs-on: ubuntu-latest
+    needs: [parse-version]
+    strategy:
+      matrix:
+        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
+        include:
+          - main_branch: main
+          - repository: Cura
+            main_branch: CURA-10769_automate_release_action
+          - repository: fdm_materials
+            main_branch: master
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/${{ matrix.repository }}
+          ref: ${{ matrix.main_branch }}
+          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+
+      - name: Update conan package version
+        run: |
+          PACKAGE_VERSION=${{ needs.parse-version.outputs.package_version }}
+          sed -i "s/version:.*/version: \"$PACKAGE_VERSION\"/g" conandata.yml
+
+      - name: Update resources conan package version
+        if: ${{ matrix.repository == Cura }}
+        run: |
+          PACKAGE_VERSION=${{ needs.parse-version.outputs.package_version }}
+          sed -i "s/version:.*/version: \"$PACKAGE_VERSION\"/g" resources/conandata.yml
+
+      - name: Create branch and commit
+        uses: stefanzweifel/git-auto-commit-action@v5.0.1
+        with:
+          commit_message: Set conan package version ${{ needs.parse-version.outputs.package_version }}
+          file_pattern: conandata.yml
+          branch: ${{ needs.parse-version.outputs.branch_name }}
+          create_branch: true

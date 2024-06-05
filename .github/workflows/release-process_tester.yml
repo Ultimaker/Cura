@@ -1,0 +1,19 @@
+name: Test release actions
+run-name: Test
+
+on:
+  push
+
+jobs:
+  test-feature-freeze:
+    uses: ultimaker/cura-workflows/.github/workflows/release-process_feature-freeze.yml@CURA-10769_automate_release_action
+    with:
+      cura_version: 255.124
+    secrets: inherit
+
+  test-release-candidate:
+    uses: ultimaker/cura-workflows/.github/workflows/release-process_release-candidate.yml@CURA-10769_automate_release_action
+    needs: [test-feature-freeze]
+    with:
+      cura_version: 255.124.0-beta.1
+    secrets: inherit
