@@ -88,10 +88,11 @@ jobs:
           git tag ${{ needs.prepare-cura-repo.outputs.tag_name }}
           git push origin tag ${{ needs.prepare-cura-repo.outputs.tag_name }}
 
-  #create-dependencies-packages:
-    #name: Create conan packages for dependencies
+  create-dependencies-packages:
+    name: Create conan packages for dependencies
     #uses: mathze/workflow-dispatch-action@v1.3.0
-    #needs: [parse-version, prepare-cura-repo]
+    needs: [parse-version, prepare-cura-repo]
+    run: echo coucou
     #strategy:
       #matrix:
         #repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
