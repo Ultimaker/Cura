@@ -94,7 +94,7 @@ jobs:
     needs: [parse-version, prepare-cura-repo]
     strategy:
       matrix:
-        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
+        repository: [Cura, Uranium, CuraEngine, Cura-binary-data, fdm_materials]
         include:
           - conan_recipe_root: "."
           - repository: Cura
