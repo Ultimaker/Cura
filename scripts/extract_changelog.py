@@ -8,6 +8,10 @@ if __name__ == "__main__":
     parser.add_argument('--version', type = str, help = 'Cura version to be extracted', required = True)
     args = parser.parse_args()
 
+    # In the changelog we usually omit the patch number for minor release (i.e. 5.7.0 => 5.7)
+    if args.version.endswith('.0'):
+        args.version = args.version[:-2]
+
     start_token = f"[{args.version}]"
     pattern_stop_log = "\[\d+(\.\d+){1,2}\]"
     log_line = False
