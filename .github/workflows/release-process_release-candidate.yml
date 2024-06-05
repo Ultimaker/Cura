@@ -126,7 +126,7 @@ jobs:
 
   create-installers:
     name: Create installers
-    uses: ./.github/workflows/installers.yml@CURA-10769_automate_release_action
+    uses: ./.github/workflows/installers.yml
     needs: [parse-version, create-cura-package]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}@/
