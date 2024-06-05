@@ -108,7 +108,8 @@ jobs:
       conan_internal: false
       conan_latest: true
       conan_recipe_root: ${{ matrix.conan_recipe_root }}
-    secrets: inherit
+    secrets:
+      token: ${{ secrets.CURA_AUTORELEASE_PAT }}
 
   create-cura-package:
     name: Create conan package for Cura
