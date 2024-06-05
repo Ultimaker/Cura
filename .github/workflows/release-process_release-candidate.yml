@@ -120,7 +120,7 @@ jobs:
 
   create-cura-package:
     name: Create conan package for Cura
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
+    uses: Ultimaker/Cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
     needs: [parse-version, create-dependencies-packages]
     with:
       repository: Cura
@@ -134,7 +134,7 @@ jobs:
 
   create-installers:
     name: Create installers
-    uses: UltiMaker/Cura/.github/workflows/installers.yml@CURA-10769_automate_release_action
+    uses: Ultimaker/Cura/.github/workflows/installers.yml@CURA-10769_automate_release_action
     needs: [parse-version, create-cura-package]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}@/
