@@ -50,7 +50,7 @@ jobs:
           sed -i "s/version:.*/version: \"$PACKAGE_VERSION\"/g" conandata.yml
 
       - name: Update resources conan package version
-        if: ${{ matrix.repository == Cura }}
+        if: ${{ matrix.repository == 'Cura' }}
         run: |
           PACKAGE_VERSION=${{ needs.parse-version.outputs.package_version }}
           sed -i "s/version:.*/version: \"$PACKAGE_VERSION\"/g" resources/conandata.yml
