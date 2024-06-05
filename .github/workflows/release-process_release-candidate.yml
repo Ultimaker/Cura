@@ -108,15 +108,14 @@ jobs:
       token: ${{ secrets.CURA_AUTORELEASE_PAT }}
       payload: |
         {
-          "repository": "${{ matrix.repository }}"
-          "ref_name": "${{ needs.parse-version.outputs.branch_name }}"
-          "version": "${{ inputs.cura_version }}"
-          "conan_release": true
-          "conan_user_channel": "ultimaker/stable"
-          "conan_internal": false
-          "conan_latest": true
+          "repository": "${{ matrix.repository }}",
+          "ref_name": "${{ needs.parse-version.outputs.branch_name }}",
+          "version": "${{ inputs.cura_version }}",
+          "conan_release": true,
+          "conan_user_channel": "ultimaker/stable",
+          "conan_internal": false,
+          "conan_latest": true,
           "conan_recipe_root": "${{ matrix.conan_recipe_root }}"
-
         }
 
   create-cura-package:
