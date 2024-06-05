@@ -106,9 +106,10 @@ jobs:
           owner: Ultimaker
           repo: Cura-workflows
           workflow-name: conan-package-release.yml
-          use-marker-step: true
           ref: CURA-10769_automate_release_action
           token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+          fail-on-error: true
+          wait-timeout: 60m
           payload: |
             {
               "repository": "${{ matrix.repository }}",
@@ -132,9 +133,10 @@ jobs:
           owner: Ultimaker
           repo: Cura-workflows
           workflow-name: conan-package-release.yml
-          use-marker-step: true
           ref: CURA-10769_automate_release_action
           token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+          fail-on-error: true
+          wait-timeout: 60m
           payload: |
             {
               "repository": "Cura",
