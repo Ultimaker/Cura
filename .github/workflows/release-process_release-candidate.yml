@@ -100,8 +100,7 @@ jobs:
           - repository: Cura
             conan_recipe_root: "resources"
     steps:
-      call-create-package:
-        name: Call external create package
+      - name: Call external create package
         uses: mathze/workflow-dispatch-action@v1.3.0
         with:
           owner: Ultimaker
