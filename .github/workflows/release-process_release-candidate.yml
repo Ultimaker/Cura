@@ -90,7 +90,7 @@ jobs:
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
+    uses: mathze/workflow-dispatch-action@v1.3.0
     needs: [parse-version, prepare-cura-repo]
     strategy:
       matrix:
@@ -100,15 +100,22 @@ jobs:
           - repository: Cura
             conan_recipe_root: "resources"
     with:
-      repository: ${{ matrix.repository }}
-      ref_name: ${{ needs.parse-version.outputs.branch_name }}
-      version: ${{ inputs.cura_version }}
-      conan_release: true
-      conan_user_channel: ultimaker/stable
-      conan_internal: false
-      conan_latest: true
-      conan_recipe_root: ${{ matrix.conan_recipe_root }}
-      token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+      owner: Ultimaker
+      repo: Cura-workflows
+      workflow-name: conan-package-release.yml
+      ref: CURA-10769_automate_release_action
+      payload: |
+        {
+          "repository": "${{ matrix.repository }}"
+          "ref_name": "${{ needs.parse-version.outputs.branch_name }}"
+          "version": "${{ inputs.cura_version }}"
+          "conan_release": true
+          "conan_user_channel": "ultimaker/stable"
+          "conan_internal": false
+          "conan_latest": true
+          "conan_recipe_root": "${{ matrix.conan_recipe_root }}"
+
+        }
 
   create-cura-package:
     name: Create conan package for Cura
