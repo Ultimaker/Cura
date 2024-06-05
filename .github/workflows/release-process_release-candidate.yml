@@ -134,7 +134,7 @@ jobs:
 
   create-installers:
     name: Create installers
-    uses: ./.github/workflows/installers.yml
+    uses: UltiMaker/Cura/.github/workflows/installers.yml@CURA-10769_automate_release_action
     needs: [parse-version, create-cura-package]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}@/
