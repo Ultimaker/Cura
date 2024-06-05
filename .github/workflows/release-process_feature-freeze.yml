@@ -21,7 +21,7 @@ jobs:
         id: version_parser
         uses: booxmedialtd/ws-action-parse-semver@v1.4.7
         with:
-          input_string: ${{ inputs.cura_version }}
+          input_string: ${{ inputs.cura_version }}.0
 
   feature-freeze:
     name: Process feature freeze
