@@ -29,3 +29,4 @@ jobs:
     with:
       cura_version: ${{ needs.parse-version.outputs.package_version }}
       create_feature_branch: true
+    secrets: inherit

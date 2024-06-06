@@ -32,6 +32,7 @@ jobs:
     with:
       cura_version: ${{ inputs.cura_version }}
       create_feature_branch: false
+    secrets: inherit
 
   find-rc-tag:
     name: Find RC tag name
