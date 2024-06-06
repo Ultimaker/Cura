@@ -59,6 +59,5 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5.0.1
         with:
           commit_message: Set conan package version ${{ needs.parse-version.outputs.package_version }}
-          file_pattern: conandata.yml
           branch: ${{ needs.parse-version.outputs.branch_name }}
           create_branch: true
