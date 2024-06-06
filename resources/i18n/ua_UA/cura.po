@@ -1021,18 +1021,19 @@ msgstr "Не вдалося записати в filename>{0}</filename>: <messag
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr ""
+msgstr "Не вдалося записати на зовнішній накопичувач {0}: {1}"
 
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
-msgstr ""
+msgstr "На вдалося завантажити дані на принтер"
 
 #, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "No permission to execute process."
-msgstr ""
+msgstr "Не вдалося запустити EnginePlugin: {self._plugin_id}\n"
+"Відсутні права для виконання процесу."
 
 #, python-brace-format
 msgctxt "@info:plugin_failed"
@@ -1046,481 +1047,483 @@ msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Resource is temporarily unavailable"
-msgstr ""
+msgstr "Не вдалося запустити EnginePlugin: {self._plugin_id}\n"
+"Блокування операціною системою (антивірусом)?"
 
 msgctxt "@title:window"
 msgid "Crash Report"
-msgstr ""
+msgstr "Звіт про збій"
 
 msgctxt "@title:window"
 msgid "Create Profile"
-msgstr ""
+msgstr "Створити профіль"
 
 msgctxt "@text"
 msgid "Create a free UltiMaker Account"
-msgstr ""
+msgstr "Створити безкоштовний обліковий запис UltiMaker"
 
 msgctxt "@button"
 msgid "Create a free UltiMaker account"
-msgstr ""
+msgstr "Створити безкоштовний обліковий запис UltiMaker"
 
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
-msgstr ""
+msgstr "Створити об'єму без друку елементів підтримки"
 
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr ""
+msgstr "Створити новий"
 
 msgctxt "@action:button"
 msgid "Create new"
-msgstr ""
+msgstr "Створити новий"
 
 msgctxt "@button"
 msgid "Create new"
-msgstr ""
+msgstr "Створити новий"
 
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
-msgstr ""
+msgstr "Створити новий профіль з поточних налаштувань/перевизначених"
 
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
-msgstr ""
+msgstr "Створюйте проекти друку в Digital Library."
 
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
-msgstr ""
+msgstr "Створення резервної копії ..."
 
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
-msgstr ""
+msgstr "Профілі Cura 15.04"
 
 msgctxt "@title:window"
 msgid "Cura Backups"
-msgstr ""
+msgstr "Cura резервні копії"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
-msgstr ""
+msgstr "Cura Профіль"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
-msgstr ""
+msgstr "3MF файл проекту Cura"
 
 msgctxt "@backuplist:label"
 msgid "Cura Version"
-msgstr ""
+msgstr "Версія Cura"
 
 msgctxt "@title:window"
 msgid "Cura can't start"
-msgstr ""
+msgstr "Не вдалося запустити Cura"
 
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
-msgstr ""
+msgstr "Cura вияила профілі матеріалів, що ще не встановлені на прінтер групи {0}."
 
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by UltiMaker in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
+msgstr "Cura розроблена компанією UltiMaker в кооперації з спільнотою. \n"
+"Cura використовує наступні проекти з відкритим вихідним кодом:"
 
 msgctxt "@label"
 msgid "Cura language"
-msgstr ""
+msgstr "Мова Cura"
 
 msgctxt "@label Cura version number"
 msgid "Cura version"
-msgstr ""
+msgstr "Версія Cura"
 
 msgctxt "@label"
 msgid "Currency:"
-msgstr ""
+msgstr "Валюта:"
 
 msgctxt "@title:column"
 msgid "Current"
-msgstr ""
+msgstr "Поточний"
 
 msgctxt "@title:column"
 msgid "Current changes"
-msgstr ""
+msgstr "Поточні зміни"
 
 msgctxt "@header"
 msgid "Custom"
-msgstr ""
+msgstr "Своє"
 
 msgctxt "@label"
 msgid "Custom"
-msgstr ""
+msgstr "Своя"
 
 msgctxt "@title:tab"
 msgid "Custom"
-msgstr ""
+msgstr "Своє"
 
 msgctxt "@label"
 msgid "Custom Material"
-msgstr ""
+msgstr "Свій матеріал"
 
 msgctxt "@label"
 msgid "Custom profile"
-msgstr ""
+msgstr "Свій профіль"
 
 msgctxt "@info"
 msgid "Custom profile name:"
-msgstr ""
+msgstr "Назва свого профілю:"
 
 msgctxt "@label"
 msgid "Custom profiles"
-msgstr ""
+msgstr "Свої профілі"
 
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr ""
+msgstr "Свої профілі"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Cut"
-msgstr ""
+msgstr "Обрізати"
 
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
-msgstr ""
+msgstr "Обмежуючий об'єкт"
 
 msgctxt "@item:inlistbox"
 msgid "Darker is higher"
-msgstr ""
+msgstr "Темні вище"
 
 msgctxt "@info:title"
 msgid "Data Sent"
-msgstr ""
+msgstr "Дані відправлено"
 
 msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
-msgstr ""
+msgstr "Формат обміну даними"
 
 msgctxt "@button"
 msgid "Decline"
-msgstr ""
+msgstr "Відхилити"
 
 msgctxt "@button"
 msgid "Decline and close"
-msgstr ""
+msgstr "Відхилити та закрити"
 
 msgctxt "@button"
 msgid "Decline and remove from account"
-msgstr ""
+msgstr "Відхилити та видалити з облікового запису"
 
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
+msgstr "Стандартні"
 
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
-msgstr ""
+msgstr "Стандартна поведінка при зміні на інший профіль: "
 
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
-msgstr ""
+msgstr "Стандартна поведінка при відкритті файлу проекту"
 
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
-msgstr ""
+msgstr "Стандартна поведінка при відкритті файлу проекту: "
 
 msgctxt "@action:button"
 msgid "Defaults"
-msgstr ""
+msgstr "Стандартні"
 
 msgctxt "@label"
 msgid "Defines the thickness of your part side walls, roof and floor."
-msgstr ""
+msgstr "Визначити товщину бокових стін, даху і підлоги вашої деталі."
 
 msgctxt "@label"
 msgid "Delete"
-msgstr ""
+msgstr "Видалити"
 
 msgctxt "@dialog:title"
 msgid "Delete Backup"
-msgstr ""
+msgstr "Видалити резервну копію"
 
 msgctxt "@action:inmenu"
 msgid "Delete Model"
-msgstr ""
+msgstr "Видалити модель"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
-msgstr ""
+msgstr "Видалити вибране"
 
 msgctxt "@window:title"
 msgid "Delete print job"
-msgstr ""
+msgstr "Видалити завдання друку"
 
 msgctxt "@label"
 msgid "Density"
-msgstr ""
+msgstr "Щільність"
 
 msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
-msgstr ""
+msgstr "Менеджер залежностей та пакетів"
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
-msgstr ""
+msgstr "Глубина (мм)"
 
 msgctxt "@action:label"
 msgid "Derivative from"
-msgstr ""
+msgstr "Похідна від"
 
 msgctxt "@header"
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 msgctxt "@label"
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 msgctxt "@action:button"
 msgid "Details"
-msgstr ""
+msgstr "Деталі"
 
 msgctxt "@label"
 msgid "Diameter"
-msgstr ""
+msgstr "Діаметр"
 
 msgctxt "@button"
 msgid "Disable"
-msgstr ""
+msgstr "Вимкнути"
 
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
-msgstr ""
+msgstr "Вимкнути екструдер"
 
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
-msgstr ""
+msgstr "Скинути і ніколи не питати знову"
 
 msgctxt "@action:button"
 msgid "Discard changes"
-msgstr ""
+msgstr "Відхилити зміни"
 
 msgctxt "@action:button"
 msgid "Discard current changes"
-msgstr ""
+msgstr "Відхилити поточні зміни"
 
 msgctxt "@title:window"
 msgid "Discard or Keep changes"
-msgstr ""
+msgstr "Відхилити або зберегти зміни"
 
 msgctxt "@button"
 msgid "Dismiss"
-msgstr ""
+msgstr "Відхилити"
 
 msgctxt "@label"
 msgid "Display Name"
-msgstr ""
+msgstr "Відображене ім'я"
 
 msgctxt "@option:check"
 msgid "Display model errors"
-msgstr ""
+msgstr "Показувати помилки моделі"
 
 msgctxt "@option:check"
 msgid "Display overhang"
-msgstr ""
+msgstr "Показати нависання"
 
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr ""
+msgstr "Не показувати це повідомлення знову"
 
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "Хочете синхронізувати матеріали і пакети з вашого облікового запису?"
 
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
-msgstr ""
+msgstr "Не показувати знову зведення проекту"
 
 msgctxt "@action:menu"
 msgid "Don't show this setting"
-msgstr ""
+msgstr "Не показувати це налаштування"
 
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr ""
+msgstr "Не підтримувати перекриття"
 
 msgctxt "@button"
 msgid "Done"
-msgstr ""
+msgstr "Готово"
 
 msgctxt "@button"
 msgid "Downgrade"
-msgstr ""
+msgstr "Перехід на попередню версію"
 
 msgctxt "@button"
 msgid "Downgrading..."
-msgstr ""
+msgstr "Перехід на попередню версію..."
 
 msgctxt "@label"
 msgid "Draft"
-msgstr ""
+msgstr "Чорновий"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
-msgstr ""
+msgstr "Перемістити всі моделі на робочий стіл"
 
 msgctxt "@action:button"
 msgid "Duplicate"
-msgstr ""
+msgstr "Дублювати"
 
 msgctxt "@title:window"
 msgid "Duplicate Profile"
-msgstr ""
+msgstr "Скопіювати профіль"
 
 msgctxt "@backup_limit_info"
 msgid "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
-msgstr ""
+msgstr "На етапі поперднього перегляду відображається тільки 5 резервних копій. Для перегляду попередніх резервних копій видаліть одну копію."
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr ""
+msgstr "Розширення"
 
 msgctxt "@action:button"
 msgid "Edit"
-msgstr ""
+msgstr "Правка"
 
 msgctxt "@action:button"
 msgid "Eject"
-msgstr ""
+msgstr "Витягти"
 
 #, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr ""
+msgstr "Витягніть знімний пристрій {0}"
 
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
-msgstr ""
+msgstr "Витягнуто {0}. Ви можете безпечно витяги диск."
 
 msgctxt "@label"
 msgid "Empty"
-msgstr ""
+msgstr "Пусто"
 
 msgctxt "@button"
 msgid "Enable"
-msgstr ""
+msgstr "Увімкнути"
 
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
-msgstr ""
+msgstr "Увімкнути екструдер"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
-msgstr ""
+msgstr "Увімкнути друк полів та краю. Це додасть пласку площу навколо або під вашим об'єктом, яку потім легко відрізати. Відключення цього параметру за замовчування призводить до спідниці навколо об'єкту."
 
 msgctxt "@label"
 msgid "Enabled"
-msgstr ""
+msgstr "Увімкнено"
 
 msgctxt "@title:label"
 msgid "End G-code"
-msgstr ""
+msgstr "Кінцевий G-code"
 
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
-msgstr ""
+msgstr "Повне рішення для 3д друку методом наплавки матеріалу."
 
 msgctxt "@info:title"
 msgid "EnginePlugin"
-msgstr ""
+msgstr "ЕnginePlugin"
 
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Проектування"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
-msgstr ""
+msgstr "Впевнитися, що моделі розміщені поряд"
 
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
-msgstr ""
+msgstr "Введіть ІР адресу принтеру в мережі"
 
 msgctxt "@text"
 msgid "Enter your printer's IP address."
-msgstr ""
+msgstr "Введіть ІР адресу свого принтеру."
 
 msgctxt "@info:title"
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
 msgctxt "@title:groupbox"
 msgid "Error traceback"
-msgstr ""
+msgstr "Трасування помилки"
 
 msgctxt "@label"
 msgid "Estimated time left"
-msgstr ""
+msgstr "Залишилось приблизно часу"
 
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Вийти з повноекранного режиму"
 
 msgctxt "@label"
 msgid "Experimental"
-msgstr ""
+msgstr "Експериментальне"
 
 msgctxt "@action:button"
 msgid "Export"
-msgstr ""
+msgstr "Експорт"
 
 msgctxt "@title:window"
 msgid "Export All Materials"
-msgstr ""
+msgstr "Експорт всіх матеріалів"
 
 msgctxt "@title:window"
 msgid "Export Material"
-msgstr ""
+msgstr "Експорт матеріалів"
 
 msgctxt "@title:window"
 msgid "Export Profile"
-msgstr ""
+msgstr "Експорт профілів"
 
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
-msgstr ""
+msgstr "Експорт вибраного..."
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
-msgstr ""
+msgstr "Експорт Universal Cura Project"
 
 msgctxt "@button"
 msgid "Export material archive"
-msgstr ""
+msgstr "Експорт архіву матеріалів"
 
 msgctxt "@info:title"
 msgid "Export succeeded"
-msgstr ""
+msgstr "Експорт успішно завершений"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
-msgstr ""
+msgstr "Експортування профілю в <filename>{0}</filename>"
 
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
-msgstr ""
+msgstr "Розширюйте можливості UltiMaker Cura плагінами та профілями матеріалів."
 
 msgctxt "@label"
 msgid "Extruder"
-msgstr ""
+msgstr "Екструдер"
 
 msgctxt "@action:label"
 msgid "Extruder %1"
-msgstr ""
+msgstr "Екструдер %1"
 
 msgctxt "@title:label"
 msgid "Extruder End G-code"
-msgstr ""
+msgstr "Завершувальний G-code екструдера"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
