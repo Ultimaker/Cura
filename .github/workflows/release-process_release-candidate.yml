@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       cura_version:
-        description: 'Cura version number, e.g. 5.7, 5.7.2 or 5.8.0-beta.2'
+        description: 'Cura version number, e.g. 5.7.0, 5.7.2 or 5.8.0-beta.2'
         required: true
         type: string
 
@@ -170,4 +170,12 @@ jobs:
           draft: true
           body-source: file
           body: formatted_changelog.txt
-          files: artifacts/UltiMaker-Cura-*
+          files:  |
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe
+            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi
