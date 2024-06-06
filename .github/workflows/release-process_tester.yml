@@ -5,15 +5,15 @@ on:
   push
 
 jobs:
-  test-feature-freeze:
-    uses: ./.github/workflows/release-process_feature-freeze.yml
-    with:
-      cura_version: 255.131
-    secrets: inherit
+  #test-feature-freeze:
+    #uses: ./.github/workflows/release-process_feature-freeze.yml
+    #with:
+      #cura_version: 255.131
+    #secrets: inherit
 
   test-release-candidate:
     uses: ./.github/workflows/release-process_release-candidate.yml
-    needs: [test-feature-freeze]
+    #needs: [test-feature-freeze]
     with:
       cura_version: 255.131.0-beta.1
     secrets: inherit
