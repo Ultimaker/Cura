@@ -196,3 +196,4 @@ jobs:
           draft: true
           body-source: file
           body: formatted_changelog.txt
+          files: artifacts/UltiMaker-Cura-*
