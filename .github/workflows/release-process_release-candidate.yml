@@ -140,6 +140,10 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Unzip artifacts
+        working-directory: artifacts
+        run: ls *.zip | xargs -n 1 unzip
+
       - name: Checkout Cura repo
         uses: actions/checkout@v4
         with:
