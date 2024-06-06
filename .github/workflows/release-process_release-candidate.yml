@@ -90,80 +90,39 @@ jobs:
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
-    runs-on: ubuntu-latest
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
     needs: [parse-version, prepare-cura-repo]
     strategy:
       matrix:
-        repository: [Cura, Uranium, CuraEngine, Cura-binary-data, fdm_materials]
+        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
         include:
           - conan_recipe_root: "."
           - repository: Cura
             conan_recipe_root: "resources"
-    steps:
-      - name: Call external create package
-        id: dispatch-create-action
-        uses: Codex-/return-dispatch@v1.14.0
-        with:
-          owner: Ultimaker
-          repo: Cura-workflows
-          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
-          workflow: conan-package-release.yml
-          ref: CURA-10769_automate_release_action
-          workflow_inputs: |
-            {
-              "repository": "${{ matrix.repository }}",
-              "ref_name": "${{ needs.parse-version.outputs.branch_name }}",
-              "version": "${{ inputs.cura_version }}",
-              "conan_release": "true",
-              "conan_user_channel": "ultimaker/stable",
-              "conan_internal": "false",
-              "conan_latest": "true",
-              "conan_recipe_root": "${{ matrix.conan_recipe_root }}"
-            }
-
-      - name: Wait for package creation completion
-        uses: Codex-/await-remote-run@v1.12.2
-        with:
-          owner: Ultimaker
-          repo: Cura-workflows
-          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
-          run_id: ${{ steps.dispatch-create-action.outputs.run_id }}
-          run_timeout_seconds: 1800
+    with:
+      repository: ${{ matrix.repository }}
+      ref_name: ${{ needs.parse-version.outputs.branch_name }}
+      version: ${{ inputs.cura_version }}
+      conan_release: true
+      conan_user_channel: ultimaker/stable
+      conan_internal: false
+      conan_latest: true
+      conan_recipe_root: ${{ matrix.conan_recipe_root }}
+      token: ${{ secrets.CURA_AUTORELEASE_PAT }}
 
   create-cura-package:
-    name: Create conan packages for Cura
-    runs-on: ubuntu-latest
+    name: Create conan package for Cura
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
     needs: [parse-version, create-dependencies-packages]
-    steps:
-      - name: Call external create package
-        id: dispatch-create-action
-        uses: Codex-/return-dispatch@v1.14.0
-        with:
-          owner: Ultimaker
-          repo: Cura-workflows
-          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
-          workflow: conan-package-release.yml
-          ref: CURA-10769_automate_release_action
-          workflow_inputs: |
-            {
-              "repository": "Cura",
-              "ref_name": "${{ needs.parse-version.outputs.branch_name }}",
-              "version": "${{ inputs.cura_version }}",
-              "conan_release": "true",
-              "conan_user_channel": "ultimaker/stable",
-              "conan_internal": "false",
-              "conan_latest": "true",
-              "conan_recipe_root": "${{ matrix.conan_recipe_root }}"
-            }
-
-      - name: Wait for package creation completion
-        uses: Codex-/await-remote-run@v1.12.2
-        with:
-          owner: Ultimaker
-          repo: Cura-workflows
-          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
-          run_id: ${{ steps.dispatch-create-action.outputs.run_id }}
-          run_timeout_seconds: 3600
+    with:
+      repository: Cura
+      ref_name: ${{ needs.parse-version.outputs.branch_name }}
+      version: ${{ inputs.cura_version }}
+      conan_release: true
+      conan_user_channel: ultimaker/stable
+      conan_internal: false
+      conan_latest: true
+    secrets: inherit
 
   create-installers:
     name: Create installers
