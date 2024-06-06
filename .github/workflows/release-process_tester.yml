@@ -8,12 +8,12 @@ jobs:
   test-feature-freeze:
     uses: ./.github/workflows/release-process_feature-freeze.yml
     with:
-      cura_version: 255.128
+      cura_version: 255.129
     secrets: inherit
 
   test-release-candidate:
     uses: ./.github/workflows/release-process_release-candidate.yml
     needs: [test-feature-freeze]
     with:
-      cura_version: 255.128.0-beta.1
+      cura_version: 255.129.0-beta.1
     secrets: inherit
