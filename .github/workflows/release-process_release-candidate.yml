@@ -25,10 +25,18 @@ jobs:
         with:
           input_string: ${{ inputs.cura_version }}
 
-  prepare-cura-repo:
-    name: Update dependencies and find RC tag name
-    runs-on: ubuntu-latest
+  freeze-packages-versions:
+    name: Freeze packges versions
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml
     needs: [parse-version]
+    with:
+      cura_version: ${{ inputs.cura_version }}
+      create_feature_branch: false
+
+  find-rc-tag:
+    name: Find RC tag name
+    runs-on: ubuntu-latest
+    needs: [freeze-packages-versions]
     outputs:
       tag_name: ${{ steps.find-available-tag-name.outputs.tag_name }}
     steps:
@@ -38,21 +46,6 @@ jobs:
           ref: ${{ needs.parse-version.outputs.branch_name }}
           fetch-tags: true
           fetch-depth: 0
-
-      - name: Update Cura dependencies
-        run: |
-          PACKAGE_VERSION=${{ inputs.cura_version }}
-          sed -i "s/\"uranium\/.*/\"uranium\/$PACKAGE_VERSION\"/g" conandata.yml
-          sed -i "s/\"cura_resources\/.*/\"cura_resources\/$PACKAGE_VERSION\"/g" conandata.yml
-          sed -i "s/\"curaengine\/.*/\"curaengine\/$PACKAGE_VERSION\"/g" conandata.yml
-          sed -i "s/\"cura_binary_data\/.*/\"cura_binary_data\/$PACKAGE_VERSION\"/g" conandata.yml
-          sed -i "s/\"fdm_materials\/.*/\"fdm_materials\/$PACKAGE_VERSION\"/g" conandata.yml
-
-      - name: Commit new dependencies versioning
-        uses: stefanzweifel/git-auto-commit-action@v5.0.1
-        with:
-          commit_message: Set dependencies version ${{ inputs.cura_version }}
-          file_pattern: conandata.yml
 
       - name: Find available tag name
         id: find-available-tag-name
@@ -71,7 +64,7 @@ jobs:
   create-tags:
     name: Create tags
     runs-on: ubuntu-latest
-    needs: [parse-version, prepare-cura-repo]
+    needs: [parse-version, find-rc-tag]
     strategy:
       matrix:
         repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
@@ -85,13 +78,13 @@ jobs:
 
       - name: Create tag
         run: |
-          git tag ${{ needs.prepare-cura-repo.outputs.tag_name }}
-          git push origin tag ${{ needs.prepare-cura-repo.outputs.tag_name }}
+          git tag ${{ needs.find-rc-tag.outputs.tag_name }}
+          git push origin tag ${{ needs.find-rc-tag.outputs.tag_name }}
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
     uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
-    needs: [parse-version, prepare-cura-repo]
+    needs: [parse-version, freeze-packages-versions]
     strategy:
       matrix:
         repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
