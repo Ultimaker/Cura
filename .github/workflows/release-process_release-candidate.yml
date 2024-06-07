@@ -140,6 +140,17 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Rename artifacts
+        working-directory: artifacts
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64-AppImage UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64-asc      UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64-dmg      UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64-pkg      UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64-dmg    UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64-pkg    UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64-msi      UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi
+          mv UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64-exe      UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe
+
       - name: Checkout Cura repo
         uses: actions/checkout@v4
         with:
@@ -164,16 +175,12 @@ jobs:
           draft: true
           body-source: file
           body: formatted_changelog.txt
-
-      - name: Upload artifacts
-        run: |
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe --clobber
-          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi --clobber
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage
+            UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc
+            UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg
+            UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg
+            UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg
+            UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg
+            UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi
+            UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe
