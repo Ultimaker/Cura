@@ -140,10 +140,6 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Unzip artifacts
-        working-directory: artifacts
-        run: ls *.zip | xargs -n 1 unzip
-
       - name: Checkout Cura repo
         uses: actions/checkout@v4
         with:
@@ -168,12 +164,4 @@ jobs:
           draft: true
           body-source: file
           body: formatted_changelog.txt
-          files:  |
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe
-            artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi
+          files:  artifacts/*
