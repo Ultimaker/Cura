@@ -164,4 +164,14 @@ jobs:
           draft: true
           body-source: file
           body: formatted_changelog.txt
-          files:  artifacts/*
+
+      - name: Upload artifacts
+        run: |
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe --clobber
+          gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi --clobber
