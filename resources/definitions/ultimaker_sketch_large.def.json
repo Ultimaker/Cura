@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Makerbot Sketch Large",
+    "name": "MakerBot Sketch Large",
     "inherits": "ultimaker_sketch",
     "metadata":
     {
@@ -18,7 +18,6 @@
             0,
             0
         ],
-        "platform_texture": "MakerbotSketchLarge.png",
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "0.4mm",

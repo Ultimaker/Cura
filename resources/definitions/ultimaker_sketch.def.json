@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Makerbot Sketch",
+    "name": "MakerBot Sketch",
     "inherits": "ultimaker",
     "metadata":
     {
