@@ -142,6 +142,7 @@ jobs:
 
       - name: Rename artifacts
         working-directory: artifacts
+        run: |
           mv UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64-AppImage UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage
           mv UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64-asc      UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc
           mv UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64-dmg      UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg
