@@ -132,7 +132,7 @@ jobs:
           fetch-depth: 1
 
       - name: Download the run info
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: linux-run-info
 
@@ -174,13 +174,13 @@ jobs:
               f.writelines(f"NIGHTLY_TIME={nightly_creation_time}\n")
 
       - name: Download linux installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.LINUX }}-AppImage
           path: installers
 
       - name: Download linux installer jobs asc artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.LINUX }}-asc
           path: installers
@@ -198,13 +198,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download win msi installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.WIN_MSI }}-msi
           path: installers
 
       - name: Download win exe installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.WIN_EXE }}-exe
           path: installers
@@ -222,13 +222,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download MacOS (X64) dmg installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.MAC_X64_DMG }}-dmg
           path: installers
 
       - name: Download MacOS (X64) pkg installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.MAC_X64_PKG }}-pkg
           path: installers
@@ -246,13 +246,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download MacOS (ARM-64) dmg installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.MAC_ARM_DMG }}-dmg
           path: installers
 
       - name: Download MacOS (ARM-64) pkg installer jobs artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ steps.filename.outputs.MAC_ARM_PKG }}-pkg
           path: installers
