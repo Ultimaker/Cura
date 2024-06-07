@@ -175,3 +175,5 @@ jobs:
           gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg --clobber
           gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe --clobber
           gh release upload ${{ inputs.cura_version }} artifacts/UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
