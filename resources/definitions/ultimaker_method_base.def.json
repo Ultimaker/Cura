@@ -55,12 +55,6 @@
             "1": "ultimaker_method_extruder_right"
         },
         "nozzle_offsetting_for_disallowed_areas": false,
-        "platform_offset": [
-            0,
-            0,
-            0
-        ],
-        "platform_texture": "MakerbotMethod.png",
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "fast",
         "preferred_variant_name": "1A",

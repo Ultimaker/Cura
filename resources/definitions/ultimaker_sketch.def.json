@@ -59,11 +59,6 @@
         "has_materials": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_sketch_extruder" },
-        "platform_offset": [
-            0,
-            0,
-            0
-        ],
         "preferred_quality_type": "draft",
         "preferred_variant_name": "0.4mm",
         "reference_machine_id": "sketch",
