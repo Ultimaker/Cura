@@ -1527,49 +1527,49 @@ msgstr "Завершувальний G-code екструдера"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
-msgstr ""
+msgstr "Тривалість завершувального G-code екструдера"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
-msgstr ""
+msgstr "Стартовий G-code екструдера"
 
 msgctxt "@label"
 msgid "Extruder Start G-code duration"
-msgstr ""
+msgstr "Тривалість стартового G-code"
 
 #, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
-msgstr ""
+msgstr "Екструдер {0}"
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
-msgstr ""
+msgstr "Екструдер(и) відключений(і)"
 
 msgctxt "@label:status"
 msgid "Failed"
-msgstr ""
+msgstr "Збій"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr ""
+msgstr "Підключення до Digital Factory для синхронізації матеріалів з деякими принтерами не встановлено."
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
-msgstr ""
+msgstr "Підключення до Digital Factory не встановлено"
 
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr ""
+msgstr "Архів з матеріалами для синхронізації з принтерами не створено"
 
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
-msgstr ""
+msgstr "Неможливо витягти {0}. Інша програма використовує диск."
 
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr ""
+msgstr "Не вийшло експортувати матеріал в <filename>%1</filename>: <message>%2</message>"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
