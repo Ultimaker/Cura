@@ -165,15 +165,6 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Display contents
-        run: |
-          ls -lh
-
-      - name: Display artifacts contents
-        working-directory: artifacts
-        run: |
-          ls -lh
-
       - name: Upload artifacts
         working-directory: artifacts
         run: |
