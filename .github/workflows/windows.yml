@@ -42,7 +42,7 @@ on:
 
 jobs:
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
