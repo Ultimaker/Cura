@@ -44,7 +44,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.parse-version.outputs.branch_name }}
           fetch-tags: true
           fetch-depth: 0
 
