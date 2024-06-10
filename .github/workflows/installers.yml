@@ -65,7 +65,7 @@ env:
 
 jobs:
   default_values:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-default-value.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       latest_release: '5.6'
@@ -73,7 +73,7 @@ jobs:
       latest_release_tag: 'nightly'
 
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -85,7 +85,7 @@ jobs:
     secrets: inherit
 
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -97,7 +97,7 @@ jobs:
     secrets: inherit
 
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
@@ -109,7 +109,7 @@ jobs:
     secrets: inherit
 
   macos-arm-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
