@@ -176,7 +176,7 @@ class CuraConan(ConanFile):
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
         with venv_vars.apply():
-            self.run(f"""python -c {outer}import pkg_resources;  print({inner};{inner}.join([(s.key+{inner},{inner}+ s.version) for s in pkg_resources.working_set])){outer}""",
+            self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+ package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
                           env = "conanrun",
                           output = buffer)
 
