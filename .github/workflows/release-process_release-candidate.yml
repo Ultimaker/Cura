@@ -2,7 +2,7 @@ name: Prepare Release Candidate
 run-name: Release Candidate for Cura ${{ inputs.cura_version }} by @${{ github.actor }}
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       cura_version:
         description: 'Cura version number, e.g. 5.7.0, 5.7.2 or 5.8.0-beta.2'
@@ -27,7 +27,7 @@ jobs:
 
   freeze-packages-versions:
     name: Freeze packges versions
-    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@CURA-10769_automate_release_action
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
     needs: [parse-version]
     with:
       cura_version: ${{ inputs.cura_version }}
@@ -84,7 +84,7 @@ jobs:
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
     needs: [parse-version, freeze-packages-versions]
     strategy:
       matrix:
@@ -106,7 +106,7 @@ jobs:
 
   create-cura-package:
     name: Create conan package for Cura
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-10769_automate_release_action
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
     needs: [parse-version, create-dependencies-packages]
     with:
       repository: Cura
