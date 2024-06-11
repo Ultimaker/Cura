@@ -28,7 +28,7 @@ class ExportFileJob(WriteFileJob):
 
         # Determine the filename.
         job_name = CuraApplication.getInstance().getPrintInformation().jobName
-        job_name = re.sub("[^\w\-. ()]", "-", job_name)
+        job_name = re.sub(r"[^\w\-. ()]", "-", job_name)
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
         self.setFileName("{}.{}".format(job_name, extension))
 
