@@ -419,7 +419,7 @@ msgstr "Інформація про прилипання"
 
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
-msgstr "Відругулюйте щільність заповнення друку"
+msgstr "Відрегулюйте щільність заповнення друку"
 
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
@@ -1574,445 +1574,445 @@ msgstr "Не вийшло експортувати матеріал в <filename
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
-msgstr ""
+msgstr "Не вдалося експортувати профіль до <filename>{0}</filename>: <message>{1}</message>"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
-msgstr ""
+msgstr "Не вдалося експортувати профіль до <filename>{0}</filename>: <message>{1}</message>. Плагін запису повідомив про помилку."
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Не вдалося імпортувати профіль з <filename>{0}</filename>:"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "Не вдалося імпортувати профіль з <filename>{0}</filename>:"
 
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
-msgstr ""
+msgstr "Не вдалося імпортувати профіль з <filename>{0}</filename>: {1}"
 
 msgctxt "@button"
 msgid "Failed to load packages:"
-msgstr ""
+msgstr "Не вдалося завантажити пакети: "
 
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr ""
+msgstr "Не вдалося завантажити архів матеріалів для синхронізації з принтерами."
 
 msgctxt "@message:title"
 msgid "Failed to save material archive"
-msgstr ""
+msgstr "Не вдалося зберегти архів матеріалу"
 
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
-msgstr ""
+msgstr "Не вдалося виконати запис на певний хмарний принтер: {0} не у віддалених кластерах."
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
-msgstr ""
+msgstr "Обране"
 
 msgctxt "@label"
 msgid "Filament Cost"
-msgstr ""
+msgstr "Ціна філаменту"
 
 msgctxt "@label"
 msgid "Filament length"
-msgstr ""
+msgstr "Довжина філаменту"
 
 msgctxt "@label"
 msgid "Filament weight"
-msgstr ""
+msgstr "Вага філаменту"
 
 msgctxt "@title:window"
 msgid "File Already Exists"
-msgstr ""
+msgstr "Файл вже існує"
 
 msgctxt "@info:title"
 msgid "File Saved"
-msgstr ""
+msgstr "Файл збережено"
 
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
-msgstr ""
+msgstr "Файл {0} не має підходяшого профілю"
 
 msgctxt "@label:textbox"
 msgid "Filter..."
-msgstr ""
+msgstr "Фільтр..."
 
 msgctxt "@info:title"
 msgid "Finding Location"
-msgstr ""
+msgstr "Пошук локації"
 
 msgctxt "@info:status"
 msgid "Finding new location for objects"
-msgstr ""
+msgstr "Пошук нової локації для об'єктів"
 
 msgctxt "@action:button"
 msgid "Finish"
-msgstr ""
+msgstr "Завершити"
 
 msgctxt "@label:status"
 msgid "Finished"
-msgstr ""
+msgstr "Завершено"
 
 msgctxt "@label:status"
 msgid "Finishes %1 at %2"
-msgstr ""
+msgstr "Завершення %1 в %2"
 
 msgctxt "@title:window"
 msgid "Firmware Update"
-msgstr ""
+msgstr "Оновлення прошивки"
 
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
-msgstr ""
+msgstr "Прошивку неможливо оновити тому, що з'єднання з принтером не підтримує оновлення прошивки."
 
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
-msgstr ""
+msgstr "Прошивку не оновлено через відсутність з'єднання з принтером."
 
 msgctxt "@label"
 msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
-msgstr ""
+msgstr "Прошивка є частиною ПЗ, яке працює на платі Вашого 3д принтеру. Ця прошивка контролює крокові двигуни, регулює температуру та забезпечує роботу принтеру."
 
 msgctxt "@label"
 msgid "Firmware update completed."
-msgstr ""
+msgstr "Прошивку успішно оновлено."
 
 msgctxt "@label"
 msgid "Firmware update failed due to an communication error."
-msgstr ""
+msgstr "Оновлення прошивки не вдалося через помилку зв'язку."
 
 msgctxt "@label"
 msgid "Firmware update failed due to an input/output error."
-msgstr ""
+msgstr "Оновлення прошивки не вдалося через помилку вводу/виводу."
 
 msgctxt "@label"
 msgid "Firmware update failed due to an unknown error."
-msgstr ""
+msgstr "Оновлення прошивки не вдалося через невідому помилку."
 
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
-msgstr ""
+msgstr "Оновлення прошивки не вдалося через її відсутність."
 
 msgctxt "@label"
 msgid "Firmware version"
-msgstr ""
+msgstr "Версія прошивки"
 
 msgctxt "@label"
 msgid "First available"
-msgstr ""
+msgstr "Перше доступне"
 
 msgctxt "@label:listbox"
 msgid "Flow"
-msgstr ""
+msgstr "Поток"
 
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
-msgstr ""
+msgstr "Для завантаження нових профілей матеріалів принтеру, зробіть наступні дії."
 
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr ""
+msgstr "Слідуйте процедурі для додавання нового принтеру"
 
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr ""
+msgstr "Виконуючи декілька простих кроків, Ви зможете синхронізувати всі профілі матеріалів з принтером."
 
 msgctxt "@label"
 msgid "Font"
-msgstr ""
+msgstr "Шрифт"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
-msgstr ""
+msgstr "Для кожної позиції; вставте шматок паперу під сопло та відрегулюйте висоту столу. Коли кінчик сопла трохи притискає папір, значить висоту столу виставлено правильно."
 
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
-msgstr ""
+msgstr "Для літофанії доступна проста логарифмічна модель світлопроходимість. Для мап висот значення пікселей лінієно відповідє висотам."
 
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
-msgstr ""
+msgstr "Для літофанії темні пікселі повинні відповідати більш товстим частинам, щоб сильніше затримувати світло. Для схем висот більш світлі пікселі показують більш високу ділянку. Тому більш світлі пікселі повинні відповідати більш товщим містам в 3д-медалі."
 
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
-msgstr ""
+msgstr "Переглядати шари в режимі сумісності (потребує перезапуску)"
 
 msgid "FreeCAD trackpad"
-msgstr ""
+msgstr "Трекпад FreeCAD"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
-msgstr ""
+msgstr "Вигляд спереду"
 
 msgctxt "@info:tooltip"
 msgid "Front View"
-msgstr ""
+msgstr "Вигляд спереду"
 
 msgctxt "@item:inlistbox"
 msgid "G File"
-msgstr ""
+msgstr "G файл"
 
 msgctxt "@info:title"
 msgid "G-code Details"
-msgstr ""
+msgstr "G-код деталі"
 
 msgctxt "@item:inlistbox"
 msgid "G-code File"
-msgstr ""
+msgstr "G-код файл"
 
 msgctxt "@label"
 msgid "G-code flavor"
-msgstr ""
+msgstr "Варіант G-коду"
 
 msgctxt "@label Description for application component"
 msgid "G-code generator"
-msgstr ""
+msgstr "G-код генератор"
 
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
-msgstr ""
+msgstr "GCodeGzWriter не підтримує текстовий режим"
 
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
-msgstr ""
+msgstr "GCodeWriter не підтримує нетекстовий режим."
 
 msgctxt "@item:inlistbox"
 msgid "GIF Image"
-msgstr ""
+msgstr "GIF зображення"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI фреймворк"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
-msgstr ""
+msgstr "GUI фреймворк, інтерфейс"
 
 msgctxt "@label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "Висота порталу"
 
 msgctxt "@title:tab"
 msgid "General"
-msgstr ""
+msgstr "Загальне"
 
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
+msgstr "Генерація структур підтримку нависаючих частин моделі. Без цих структур такі частини будуть складатися під час друку."
 
 msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
-msgstr ""
+msgstr "Генерація інсталерів Windows"
 
 msgctxt "@label:category menu label"
 msgid "Generic"
-msgstr ""
+msgstr "Універсальні"
 
 msgctxt "@option:check"
 msgid "Get notifications for plugin updates"
-msgstr ""
+msgstr "Отримувати повідомлення що до оновлення плагінів"
 
 msgctxt "@action"
 msgid "Get started"
-msgstr ""
+msgstr "Розпочати"
 
 msgctxt "@label"
 msgid "Global"
-msgstr ""
+msgstr "Глобальний"
 
 msgctxt "@title:tab"
 msgid "Global Settings"
-msgstr ""
+msgstr "Глобальні налаштування"
 
 msgctxt "@label Description for application component"
 msgid "Graphical user interface"
-msgstr ""
+msgstr "Графічний інтерфейс користувача"
 
 msgctxt "@label"
 msgid "Grid Placement"
-msgstr ""
+msgstr "Розміщення сітки"
 
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
-msgstr ""
+msgstr "Група #{group_nr}"
 
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
-msgstr ""
+msgstr "Нагрів столу перед друком. Ви можете продовжувати налаштовувати друк, поки стіл нагрівається і Вам не знадобиться чекати нагріву столу для початку друку."
 
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
-msgstr ""
+msgstr "Нагрів сопла перед друком. Ви можете продовжувати налаштовувати друк, поки стіл нагрівається і Вам не знадобиться чекати нагріву столу для початку друку."
 
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
-msgstr ""
+msgstr "Нагрівальний стіл (офіціальний чи саморобний)"
 
 msgctxt "@label"
 msgid "Heated bed"
-msgstr ""
+msgstr "Нагрівальний стіл"
 
 msgctxt "@label"
 msgid "Heated build volume"
-msgstr ""
+msgstr "Підігріваючий об'єм друку"
 
 msgctxt "@action:label"
 msgid "Height (mm)"
-msgstr ""
+msgstr "Висота (мм)"
 
 msgctxt "@label"
 msgid "Helpers"
-msgstr ""
+msgstr "Помічники"
 
 msgctxt "@label"
 msgid "Hide all connected printers"
-msgstr ""
+msgstr "Приховати всі приєднані принтери"
 
 msgctxt "@action:button"
 msgid "Hide settings"
-msgstr ""
+msgstr "Приховати налаштування"
 
 msgctxt "@action:menu"
 msgid "Hide this setting"
-msgstr ""
+msgstr "Приховати ці налаштування"
 
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
-msgstr ""
+msgstr "Відмітьте відсутні або зайві повехності моделі використовуючи попереджувальні знаки. В інструментах часто будуть відсутні деталі перебачуваної геометрії."
 
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
-msgstr ""
+msgstr "Підсвічувати червоним моделі, що потребують підтримки. Без бідримок ці області не будуть надруковані правильно."
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
-msgstr ""
+msgstr "Завантаження нові профілі матеріалів до принтеру"
 
 msgctxt "@action:button"
 msgid "How to update"
-msgstr ""
+msgstr "Порядок оновлення"
 
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
-msgstr ""
+msgstr "Я не хочу відправляти анонімні дані"
 
 msgctxt "@label:status"
 msgid "Idle"
-msgstr ""
+msgstr "Простій"
 
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
-msgstr ""
+msgstr "Якщо ви намагаєтеся додати новий UltiMaker принтер до Cura"
 
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
-msgstr ""
+msgstr "Якщо Ваш принтер відсутній у списку, зверніться до <a href='%1'>інструкція по вирішенню проблем</a>"
 
 msgctxt "@action:button"
 msgid "Import"
-msgstr ""
+msgstr "Імпорт"
 
 msgctxt "@title:window"
 msgid "Import Material"
-msgstr ""
+msgstr "Імпорт матеріалу"
 
 msgctxt "@title:window"
 msgid "Import Profile"
-msgstr ""
+msgstr "Імпорту профілю"
 
 msgctxt "@action:button"
 msgid "Import all as models"
-msgstr ""
+msgstr "Імпортувати все як моделі"
 
 msgctxt "@action:button"
 msgid "Import models"
-msgstr ""
+msgstr "Імпортувати моделі"
 
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
-msgstr ""
+msgstr "В режимі обслуговування. Будь-ласка перевірте принтер"
 
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr ""
+msgstr "Для відстеження друку з Cura, будь-ласка підключіть принтер."
 
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
-msgstr ""
+msgstr "Для відстеження друку з Cura, потрібно налаштувати принтер."
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
-msgstr ""
+msgstr "Для роботи з пакетом треба перезавантажити Cura"
 
 msgctxt "@option:radio"
 msgid "Include UltiMaker account name"
-msgstr ""
+msgstr "Включити ім'я облікового запису UltiMaker"
 
 msgctxt "@label"
 msgid "Infill"
-msgstr ""
+msgstr "Заповнення"
 
 msgctxt "@tooltip"
 msgid "Infill"
-msgstr ""
+msgstr "Заповнення"
 
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
-msgstr ""
+msgstr "Щільність заповнення"
 
 msgctxt "@action:label"
 msgid "Infill Pattern"
-msgstr ""
+msgstr "Шаблон заповнення"
 
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
-msgstr ""
+msgstr "Тільки сітка для заповнення"
 
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
-msgstr ""
+msgstr "Змінено заповнення перекриття з цією моделлю."
 
 msgctxt "@info:title"
 msgid "Information"
-msgstr ""
+msgstr "Інформація"
 
 msgctxt "@title"
 msgid "Information"
-msgstr ""
+msgstr "Інформація"
 
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
-msgstr ""
+msgstr "Ініціалізація активної машини..."
 
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
-msgstr ""
+msgstr "Ініціалізація об'ємку друку..."
 
 msgctxt "@info:progress"
 msgid "Initializing engine..."
-msgstr ""
+msgstr "Ініціалізація ядра..."
 
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
-msgstr ""
+msgstr "Ініціалізація диспетчера машин..."
 
 msgctxt "@label"
 msgid "Inner Wall"
-msgstr ""
+msgstr "Внутрішня стінка"
 
 msgctxt "@tooltip"
 msgid "Inner Walls"
-msgstr ""
+msgstr "Внутрішні стінки"
 
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
