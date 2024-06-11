@@ -8030,6 +8030,19 @@
                     "default_value": 90,
                     "settable_per_mesh": true
                 },
+                "seam_overhang_angle":
+                {
+                    "label": "Seam Overhanging Wall Angle",
+                    "description": "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "value": "wall_overhang_angle",
+                    "settable_per_mesh": true
+                },
                 "wall_overhang_speed_factor":
                 {
                     "label": "Overhanging Wall Speed",
