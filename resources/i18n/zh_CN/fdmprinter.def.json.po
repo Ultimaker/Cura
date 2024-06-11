@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "﻿机器"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "﻿机器详细设置"
 
 msgctxt "machine_name label"
 msgid "Machine Type"
@@ -34,7 +42,8 @@ msgstr "开始 G-code"
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
+msgstr "在开始时执行的 G-code 命令 - 以 "
+" 分行。"
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -42,7 +51,8 @@ msgstr "结束 G-code"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
+msgstr "在结束前执行的 G-code 命令 - 以 "
+" 分行。"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
@@ -51,6 +61,30 @@ msgstr "材料 GUID"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
 msgstr "材料 GUID，此项为自动设置。"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "材料种类"
+
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "所用的材料类型。"
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "材料品牌"
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "所用材料的品牌。"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
 
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
@@ -360,6 +394,22 @@ msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "喷嘴尖端与十字轴系统（X 轴和 Y 轴）之间的高度差。"
 
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "喷嘴 ID"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "喷嘴直径"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
+
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "挤出机偏移量"
@@ -367,6 +417,14 @@ msgstr "挤出机偏移量"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "将挤出器偏移量应用到坐标轴系统。影响所有挤出器。"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "挤出机初始 Z 轴位置"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -1558,7 +1616,8 @@ msgstr "额外填充壁计数"
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
+msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。"
+"在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
 
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
@@ -1696,6 +1755,14 @@ msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "为节省打印时间，填充线将被拉直。这是整条填充线上允许的最大悬垂角度。"
 
+msgctxt "material label"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "材料"
+
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "默认打印温度"
@@ -1725,8 +1792,8 @@ msgid "Printing Temperature Initial Layer"
 msgstr "打印温度起始层"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "用于打印第一层的温度。 设为 0 即禁用对起始层的特别处理。"
+msgid "The temperature used for printing the first layer."
+msgstr "打印第一层时使用的温度。"
 
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
@@ -1968,6 +2035,22 @@ msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
 msgstr "适用于所有壁走线（最外壁走线除外）的流量补偿。"
 
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "顶面外壁挤出量"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "在顶面最外墙线挤出量补偿。"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "顶面内壁挤出量"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "除最外层墙线之外,在所有墙线的顶面墙线挤出量补偿。"
+
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
 msgstr "顶部/底部流量"
@@ -2135,6 +2218,22 @@ msgstr "速度（内壁）"
 msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "打印所有内壁的速度。 以比外壁更快的速度打印内壁将减少打印时间。 将该值设为外壁速度和填充速度之间也可行。"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "顶面外壁速度"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "顶面最外壁打印完成后的速度"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "顶面内壁速度"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "顶面内壁打印完成后的速度"
 
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
@@ -2320,6 +2419,22 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "打印所有内壁的加速度。"
 
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "顶面外壁加速度"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "顶面最外壁打印完成后的加速度"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "顶面内壁加速度"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "顶面内壁打印完成后的加速度"
+
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr "顶部表面皮肤加速度"
@@ -2479,6 +2594,22 @@ msgstr "内壁抖动速度"
 msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "打印所有内壁时的最大瞬时速度变化。"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "顶面外壁冲击力"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "打印顶面最外壁时的最大瞬时速度变化。"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "顶面内壁冲击力"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "打印顶面内壁时的最大瞬时速度变化。"
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -3257,8 +3388,8 @@ msgid "Support Z Distance"
 msgstr "支撑 Z 距离"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "支撑结构顶部/底部到打印品之间的距离。 该间隙提供了在模型打印完成后移除支撑的空隙。 该值舍入为层高的倍数。"
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "支撑结构顶部/底部到打印物的距离。这个间隙提供了清除模型打印后支撑的空间。模型下方的最顶层支撑层可能是常规层的一小部分。"
 
 msgctxt "support_top_distance label"
 msgid "Support Top Distance"
@@ -3273,8 +3404,8 @@ msgid "Support Bottom Distance"
 msgstr "支撑底部距离"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "从打印品到支撑底部的距离。"
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "从打印物到支撑底部的距离。注意这个会上调到下一个层高。"
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -3427,14 +3558,6 @@ msgstr "支撑底板厚度"
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
 msgstr "支撑底板的厚度。 这会控制支撑所停放的模型顶部区域所打印的密集层数量。"
-
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "支撑接触面分辨率"
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "在检查支撑上方或下方是否有模型时，采用指定高度的步阶。 值越低切片速度越慢，而较高的值会导致在部分应有支撑接触面的位置打印一般的支撑。"
 
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
@@ -3724,6 +3847,14 @@ msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
 msgstr "场景中存在支撑网格。此设置受 Cura 控制。"
 
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "打印平台附着"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "附着"
+
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr "启用装填光点"
@@ -3731,6 +3862,22 @@ msgstr "启用装填光点"
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
 msgstr "打印前是否装填有光点的耗材。 开启此设置将确保打印前挤出机的喷嘴处已准备好材料。 打印 Brim 或 Skirt 也可作为装填用途，这种情况下关闭此设置可以节省时间。"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "挤出机 X 轴坐标"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 X 轴上初始位置。"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "挤出机 Y 轴起始位置"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
 
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
@@ -3818,7 +3965,8 @@ msgstr "Skirt 距离"
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "skirt 和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr "skirt 和打印第一层之间的水平距离。"
+"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
@@ -3860,21 +4008,33 @@ msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "强制围绕模型打印 Brim，即使该空间本该由支撑占据。此操作会将第一层的某些支撑区域替换为 Brim 区域。"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "仅在外部打印 Brim"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "裙边位置"
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "仅在模型外部打印 brim。 这会减少您之后需要移除的 brim 量，而不会过度影响热床附着。"
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "在模型的外侧,内侧或两侧同时打印裙边。根据模型的不同,这有助于减少随后需要去除的裙边量,同时保证所需的底座附着力。"
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "仅外侧"
+
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "仅内侧"
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "各处"
 
 msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "修剪内部对象避免留白"
+msgid "Brim Avoid Margin"
+msgstr "裙边邻避边距"
 
 msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "一个零件完全封闭在另一个零件内部会生成与另一个零件内部相接触的边沿。这可从内孔移除此距离内的所有边沿。"
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "模型周围的裙边可能会触及您不希望接触到的其他模型。此操作会将与其他无裙边的模型小于特定距离的裙边打印区域删除。"
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3892,6 +4052,62 @@ msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "如果启用了 raft，则这是指也被提供了 raft 的模型周围的额外 raft 区域。 增加此留白将创建强度更大的 raft，但会使用更多材料，为打印品留下的空间更少。"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "筏层基段额外边距"
+
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "如果设置了筏层基段扩展,这将会是模型周围扩展出的打印区域,并同时打印筏层。增加此边距会使筏层更为坚固,但也会使用更多材料并占用更多的打印空间。"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "筏层中段额外边距"
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "如果设置了筏层中段扩展,这将会是模型周围扩展出的打印区域,并同时打印筏层。增加此边距会使筏层更为坚固,但也会使用更多材料并占用更多的打印空间。"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "筏层顶段额外边距"
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "如果设置了筏层顶段扩展,这将会是模型周围扩展出的打印区域,并同时打印筏层。增加此边距会使筏层更为坚固,但也会使用更多材料并占用更多的打印空间。"
+
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "移除 Raft 内侧角"
+
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "从 Raft 上移除内侧角，这会使 Raft 变得凸出。"
+
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "移除筏层基段内角"
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "移除筏层基段的内角,会使筏层凸起"
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "移除中段内角"
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "移除筏层中段的内角,会使筏层凸起。"
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "移除筏层顶段内角"
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "移除筏层顶段的内角,会使筏层凸起。"
+
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Raft 平滑度"
@@ -3899,6 +4115,33 @@ msgstr "Raft 平滑度"
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "该设置控制 Raft 轮廓中的内角呈圆形的程度。内向角被设置为半圆形，半径等于此处的值。此设置还会移除 raft 轮廓中小于此半圆形的孔。"
+
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "平滑筏层基段"
+
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "此设置用于调整筏层基段轮廓线内角的倒圆角大小。"
+"内角被倒角为半圆,其半径等于此处给出的值。此设置还会移除筏层轮廓线中面积小于此半径值圆的孔。"
+
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "平滑筏层中段"
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "此设置用于调整筏层中段轮廓线内角的倒圆角大小。"
+"内角被倒角为半圆,其半径等于此处给出的值。此设置还会移除筏层轮廓线中面积小于此半径值圆的孔。"
+
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "平滑筏层顶段"
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "此设置用于调整筏层顶段轮廓线内角的倒圆角大小。"
+"内角被倒角为半圆,其半径等于此处给出的值。此设置还会移除筏层轮廓线中面积小于此半径值圆的孔。"
 
 msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
@@ -3913,40 +4156,32 @@ msgid "Initial Layer Z Overlap"
 msgstr "起始层 Z 重叠"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "使模型的第一层和第二层在 Z 方向上重叠以补偿在空隙中损失的耗材。 第一个模型层上方的所有模型将向下移动此重叠量。"
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "使模型打印的第一层和第二层在 Z 方向上重叠,以补偿气隙中损失的丝材。模型的第一层上方的所有部分都将向下移动此量。\n您可能会发现,进行此设置后,有时第二层会打印在初始层下方。这是正常的"
 
-msgctxt "raft_surface_layers label"
-msgid "Raft Top Layers"
-msgstr "Raft 顶层"
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr "Raft 基础厚度"
 
-msgctxt "raft_surface_layers description"
-msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "第 2 个 raft 层上方的顶层数量。 这些是模型所在的完全填充层。 第二层会产生比第一层更平滑的顶部表面。"
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
+msgstr "基础 Raft 层的层厚度。 该层应为与打印机打印平台牢固粘着的厚层。"
 
-msgctxt "raft_surface_thickness label"
-msgid "Raft Top Layer Thickness"
-msgstr "Raft 顶层厚度"
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
+msgstr "Raft 基础走线宽度"
 
-msgctxt "raft_surface_thickness description"
-msgid "Layer thickness of the top raft layers."
-msgstr "顶部 Raft 层的层厚度。"
+msgctxt "raft_base_line_width description"
+msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
+msgstr "基础 Raft 层的走线宽度。 这些走线应该是粗线，以便协助打印平台附着。"
 
-msgctxt "raft_surface_line_width label"
-msgid "Raft Top Line Width"
-msgstr "Raft 顶线宽度"
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Base Line Spacing"
+msgstr "Raft 基础走线间距"
 
-msgctxt "raft_surface_line_width description"
-msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
-msgstr "Raft 顶部表面的走线宽度。 这些走线可以是细线，以便实现平滑的 Raft 顶部。"
-
-msgctxt "raft_surface_line_spacing label"
-msgid "Raft Top Spacing"
-msgstr "Raft 顶部间距"
-
-msgctxt "raft_surface_line_spacing description"
-msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
-msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线宽度，以便打造坚固表面。"
+msgctxt "raft_base_line_spacing description"
+msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "基础 Raft 层的 Raft 走线之间的距离。 宽间距方便将 Raft 从打印平台移除。"
 
 msgctxt "raft_interface_layers label"
 msgid "Raft Middle Layers"
@@ -3980,29 +4215,77 @@ msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
 msgstr "中间 Raft 层的 Raft 走线之间的距离。 中间的间距应足够宽，同时也要足够密集，以便支撑顶部 Raft 层。"
 
-msgctxt "raft_base_thickness label"
-msgid "Raft Base Thickness"
-msgstr "Raft 基础厚度"
+msgctxt "raft_surface_layers label"
+msgid "Raft Top Layers"
+msgstr "Raft 顶层"
 
-msgctxt "raft_base_thickness description"
-msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
-msgstr "基础 Raft 层的层厚度。 该层应为与打印机打印平台牢固粘着的厚层。"
+msgctxt "raft_surface_layers description"
+msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
+msgstr "第 2 个 raft 层上方的顶层数量。 这些是模型所在的完全填充层。 第二层会产生比第一层更平滑的顶部表面。"
 
-msgctxt "raft_base_line_width label"
-msgid "Raft Base Line Width"
-msgstr "Raft 基础走线宽度"
+msgctxt "raft_surface_thickness label"
+msgid "Raft Top Layer Thickness"
+msgstr "Raft 顶层厚度"
 
-msgctxt "raft_base_line_width description"
-msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
-msgstr "基础 Raft 层的走线宽度。 这些走线应该是粗线，以便协助打印平台附着。"
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the top raft layers."
+msgstr "顶部 Raft 层的层厚度。"
 
-msgctxt "raft_base_line_spacing label"
-msgid "Raft Base Line Spacing"
-msgstr "Raft 基础走线间距"
+msgctxt "raft_surface_line_width label"
+msgid "Raft Top Line Width"
+msgstr "Raft 顶线宽度"
 
-msgctxt "raft_base_line_spacing description"
-msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "基础 Raft 层的 Raft 走线之间的距离。 宽间距方便将 Raft 从打印平台移除。"
+msgctxt "raft_surface_line_width description"
+msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+msgstr "Raft 顶部表面的走线宽度。 这些走线可以是细线，以便实现平滑的 Raft 顶部。"
+
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Top Spacing"
+msgstr "Raft 顶部间距"
+
+msgctxt "raft_surface_line_spacing description"
+msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgstr "顶部 Raft 层的 Raft 走线之间的距离。 间距应等于走线宽度，以便打造坚固表面。"
+
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "单调递增的筏顶面顺序"
+
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "按顺序打印筏层顶段表面线,使它们始终与单个方向上的相邻线重叠。这会花费稍微长一点的打印时间,但会使表面看起来更加一致,在模型底面上可以看出。"
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "筏层壁圈数"
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "围绕筏层的线性图案打印的轮廓圈数。"
+
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "Raft 底板壁数"
+
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "在 Raft 的底板层中，围绕线型图案打印轮廓的次数。"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "筏层中段壁圈数"
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "围绕筏层中段的线性图案打印的轮廓圈数。"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "筏层顶段壁圈数"
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "围绕筏层顶段的线性图案打印的轮廓圈数。"
 
 msgctxt "raft_speed label"
 msgid "Raft Print Speed"
@@ -4012,13 +4295,13 @@ msgctxt "raft_speed description"
 msgid "The speed at which the raft is printed."
 msgstr "打印 Raft 的速度。"
 
-msgctxt "raft_surface_speed label"
-msgid "Raft Top Print Speed"
-msgstr "Raft 顶部打印速度"
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr "Raft 基础打印速度"
 
-msgctxt "raft_surface_speed description"
-msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
-msgstr "打印顶部 Raft 层的速度。 这些层应以较慢的速度打印，以便喷嘴缓慢地整平临近的表面走线。"
+msgctxt "raft_base_speed description"
+msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+msgstr "打印基础 Raft 层的速度。 该层应以很慢的速度打印，因为喷嘴所出的材料量非常高。"
 
 msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
@@ -4028,13 +4311,13 @@ msgctxt "raft_interface_speed description"
 msgid "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "打印中间 Raft 层的速度。 该层应以很慢的速度打印，因为喷嘴所出的材料量非常高。"
 
-msgctxt "raft_base_speed label"
-msgid "Raft Base Print Speed"
-msgstr "Raft 基础打印速度"
+msgctxt "raft_surface_speed label"
+msgid "Raft Top Print Speed"
+msgstr "Raft 顶部打印速度"
 
-msgctxt "raft_base_speed description"
-msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
-msgstr "打印基础 Raft 层的速度。 该层应以很慢的速度打印，因为喷嘴所出的材料量非常高。"
+msgctxt "raft_surface_speed description"
+msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+msgstr "打印顶部 Raft 层的速度。 这些层应以较慢的速度打印，以便喷嘴缓慢地整平临近的表面走线。"
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -4044,13 +4327,13 @@ msgctxt "raft_acceleration description"
 msgid "The acceleration with which the raft is printed."
 msgstr "打印 Raft 的加速度。"
 
-msgctxt "raft_surface_acceleration label"
-msgid "Raft Top Print Acceleration"
-msgstr "Raft 顶部打印加速度"
+msgctxt "raft_base_acceleration label"
+msgid "Raft Base Print Acceleration"
+msgstr "Raft 基础打印加速度"
 
-msgctxt "raft_surface_acceleration description"
-msgid "The acceleration with which the top raft layers are printed."
-msgstr "打印顶部 Raft 层的加速度。"
+msgctxt "raft_base_acceleration description"
+msgid "The acceleration with which the base raft layer is printed."
+msgstr "打印基础 Raft 层的加速度。"
 
 msgctxt "raft_interface_acceleration label"
 msgid "Raft Middle Print Acceleration"
@@ -4060,13 +4343,13 @@ msgctxt "raft_interface_acceleration description"
 msgid "The acceleration with which the middle raft layer is printed."
 msgstr "打印中间 Raft 层的加速度。"
 
-msgctxt "raft_base_acceleration label"
-msgid "Raft Base Print Acceleration"
-msgstr "Raft 基础打印加速度"
+msgctxt "raft_surface_acceleration label"
+msgid "Raft Top Print Acceleration"
+msgstr "Raft 顶部打印加速度"
 
-msgctxt "raft_base_acceleration description"
-msgid "The acceleration with which the base raft layer is printed."
-msgstr "打印基础 Raft 层的加速度。"
+msgctxt "raft_surface_acceleration description"
+msgid "The acceleration with which the top raft layers are printed."
+msgstr "打印顶部 Raft 层的加速度。"
 
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
@@ -4076,13 +4359,13 @@ msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
 msgstr "打印 Raft 的抖动速度。"
 
-msgctxt "raft_surface_jerk label"
-msgid "Raft Top Print Jerk"
-msgstr "Raft 顶部打印抖动速度"
+msgctxt "raft_base_jerk label"
+msgid "Raft Base Print Jerk"
+msgstr "Raft 基础打印抖动速度"
 
-msgctxt "raft_surface_jerk description"
-msgid "The jerk with which the top raft layers are printed."
-msgstr "打印顶部 Raft 层的抖动速度。"
+msgctxt "raft_base_jerk description"
+msgid "The jerk with which the base raft layer is printed."
+msgstr "打印基础 Raft 层的抖动速度。"
 
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
@@ -4092,13 +4375,13 @@ msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
 msgstr "打印中间 Raft 层的抖动速度。"
 
-msgctxt "raft_base_jerk label"
-msgid "Raft Base Print Jerk"
-msgstr "Raft 基础打印抖动速度"
+msgctxt "raft_surface_jerk label"
+msgid "Raft Top Print Jerk"
+msgstr "Raft 顶部打印抖动速度"
 
-msgctxt "raft_base_jerk description"
-msgid "The jerk with which the base raft layer is printed."
-msgstr "打印基础 Raft 层的抖动速度。"
+msgctxt "raft_surface_jerk description"
+msgid "The jerk with which the top raft layers are printed."
+msgstr "打印顶部 Raft 层的抖动速度。"
 
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
@@ -4108,13 +4391,13 @@ msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
 msgstr "Raft 的风扇速度。"
 
-msgctxt "raft_surface_fan_speed label"
-msgid "Raft Top Fan Speed"
-msgstr "Raft 顶部风扇速度"
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
+msgstr "Raft 基础风扇速度"
 
-msgctxt "raft_surface_fan_speed description"
-msgid "The fan speed for the top raft layers."
-msgstr "顶部 Raft 层的风扇速度。"
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
+msgstr "基础 Raft 层的风扇速度。"
 
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
@@ -4124,13 +4407,13 @@ msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
 msgstr "中间 Raft 层的风扇速度。"
 
-msgctxt "raft_base_fan_speed label"
-msgid "Raft Base Fan Speed"
-msgstr "Raft 基础风扇速度"
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Top Fan Speed"
+msgstr "Raft 顶部风扇速度"
 
-msgctxt "raft_base_fan_speed description"
-msgid "The fan speed for the base raft layer."
-msgstr "基础 Raft 层的风扇速度。"
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the top raft layers."
+msgstr "顶部 Raft 层的风扇速度。"
 
 msgctxt "dual label"
 msgid "Dual Extrusion"
@@ -4148,6 +4431,22 @@ msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "在打印品相邻处打印一个塔，用于在每个喷嘴切换后装填材料。"
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "主塔类型"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>如何空心主塔:<ul><li><b>通常的:</b>创建一个桶状结构,在其中填充辅助材料</li><li><b>交错的:</b> 创建一个尽可能稀疏的主塔。这将节省时间和丝材,但只有当所用材料粘附在每个部件上时才有可能</li></ul></html>"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "通常的"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "交错的"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "装填塔尺寸"
@@ -4163,6 +4462,14 @@ msgstr "装填塔最小体积"
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "为了清除足够的材料，装填塔每层的最小体积。"
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "主塔最大桥接距离"
+
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "可以跨空打印分支的最大长度。"
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -4189,12 +4496,44 @@ msgid "After printing the prime tower with one nozzle, wipe the oozed material f
 msgstr "在用一个喷嘴打印装填塔后，从装填塔上的另一个喷嘴擦去渗出的材料。"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "装填塔 Brim"
+msgid "Prime Tower Base"
+msgstr "底漆塔座"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "启用此设置将为您的 prime tower 添加一个边缘，即使您的模型中原本没有。如果您希望高塔有更坚固的基座，可以增加底座高度。"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "底漆塔座尺寸"
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Prime tower 边缘/底座的宽度。更大的底座可以增强对打印板的粘附力，但也会减少有效打印区域。"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "底漆塔座高度"
+
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Prime tower 底座的高度。增加这个值将使 prime tower 更加坚固，因为底座会更宽。如果这个设置过低，prime tower 将没有坚固的底座。"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Prime Tower 底座斜度"
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "用于 prime tower 底座斜度的幅度因子。如果您增加这个值，底座会变得更细。如果减小它，底座会变得更厚。"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "底漆塔筏线间距"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "底漆塔独有的筏层之间筏线的距离。宽间距可以轻松地将筏从打印板上移除。"
 
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
@@ -4419,6 +4758,14 @@ msgstr "同时打印"
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "排队打印"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "手动设置打印顺序"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "允许您对对象列表进行排序以手动设置打印顺序。列表中的第一个对象将首先打印。"
 
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
@@ -5228,21 +5575,77 @@ msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
 msgstr "在每一层或嵌入上交替壁方向。这适用于会产生应力的材料，例如在金属打印中。"
 
-msgctxt "raft_remove_inside_corners label"
-msgid "Remove Raft Inside Corners"
-msgstr "移除 Raft 内侧角"
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "外墙编组"
 
-msgctxt "raft_remove_inside_corners description"
-msgid "Remove inside corners from the raft, causing the raft to become convex."
-msgstr "从 Raft 上移除内侧角，这会使 Raft 变得凸出。"
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "同一层不同组件的外墙依次进行打印。当启用此功能时,由于每次只打印一种类型的外壁,挤出量变化的数量受到限制；当禁用时,由于同一组件内的外壁被分组,组件之间的行进次数会减少。"
 
-msgctxt "raft_base_wall_count label"
-msgid "Raft Base Wall Count"
-msgstr "Raft 底板壁数"
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "打印过程报告"
 
-msgctxt "raft_base_wall_count description"
-msgid "The number of contours to print around the linear pattern in the base layer of the raft."
-msgstr "在 Raft 的底板层中，围绕线型图案打印轮廓的次数。"
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "报告超出设定阈值的事件"
+
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "启用打印过程报告"
+
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "启用打印过程报告以设置可能的故障检测的阈值。"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "挤出量警告"
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "检测的挤出量警告限制。"
+
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "挤出量限制"
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "检测的挤出量异常限制。"
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "打印温度警告"
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "检测的打印温度警告限制。"
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "打印温度限制"
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "检测的打印温度异常限制。"
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "打印体积温度警告"
+
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "检测的打印体积温度警告限制。"
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "打印体积温度限制"
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "检测的打印体积温度异常限制。"
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
@@ -5292,118 +5695,6 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "渐变流量已启用"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "启用渐变流量。当启用时，流量逐渐增加/降低到目标流量。这对于有鲍登管的打印机很有用，当挤出机电机启动/停止时，流量不会立即改变。"
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "渐变流量最大加速度"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "渐变流量的最大加速度"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "初始层最大流量加速度"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "第一层渐变流量的最小速度"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "渐变流量离散步长"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "渐变流量每一步的持续时间"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "重置流量持续时间"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "对于任何超过此值的行程移动，材料流量将重置为路径目标流量"
-
-msgctxt "extruder_prime_pos_z label"
-msgid "Extruder Prime Z Position"
-msgstr "挤出机初始 Z 轴位置"
-
-msgctxt "platform_adhesion description"
-msgid "Adhesion"
-msgstr "附着"
-
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "调整支撑结构的放置。 放置可以设置为支撑打印平台或全部支撑。 当设置为全部支撑时，支撑结构也将在模型上打印。"
-
-msgctxt "material description"
-msgid "Material"
-msgstr "材料"
-
-msgctxt "machine_nozzle_size label"
-msgid "Nozzle Diameter"
-msgstr "喷嘴直径"
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 X 轴上初始位置。"
-
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "直径"
-
-msgctxt "extruder_prime_pos_x label"
-msgid "Extruder Prime X Position"
-msgstr "挤出机 X 轴坐标"
-
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
-
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "﻿机器详细设置"
-
-msgctxt "extruder_prime_pos_y label"
-msgid "Extruder Prime Y Position"
-msgstr "挤出机 Y 轴起始位置"
-
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
-
-msgctxt "material label"
-msgid "Material"
-msgstr "材料"
-
-msgctxt "machine_nozzle_id label"
-msgid "Nozzle ID"
-msgstr "喷嘴 ID"
-
-msgctxt "platform_adhesion label"
-msgid "Build Plate Adhesion"
-msgstr "打印平台附着"
-
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "﻿机器"

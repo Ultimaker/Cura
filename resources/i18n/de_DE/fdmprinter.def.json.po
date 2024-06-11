@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Gerät"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Gerätespezifische Einstellungen"
 
 msgctxt "machine_name label"
 msgid "Machine Type"
@@ -34,7 +42,8 @@ msgstr "Start G-Code"
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n."
+msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch "
+"."
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -42,7 +51,8 @@ msgstr "Ende G-Code"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n."
+msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch "
+"."
 
 msgctxt "material_guid label"
 msgid "Material GUID"
@@ -51,6 +61,30 @@ msgstr "Material-GUID"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
 msgstr "GUID des Materials. Dies wird automatisch eingestellt."
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "Materialart"
+
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "Die Art des verwendeten Materials."
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "Material-Marke"
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "Die Marke des verwendeten Materials."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Durchmesser"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."
 
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
@@ -360,6 +394,22 @@ msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "Der Höhenunterschied zwischen der Düsenspitze und dem Brückensystem (X- und Y-Achsen)."
 
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Düsen-ID"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Der Düsen-ID für eine Extruder-Einheit, z. B. „AA 0,4“ und „BB 0,8“."
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Düsendurchmesser"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Sie eine Düse einer Nicht-Standardgröße verwenden."
+
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "Versatz mit Extruder"
@@ -367,6 +417,14 @@ msgstr "Versatz mit Extruder"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "Verwenden Sie den Extruder-Versatz für das Koordinatensystem. Betrifft alle Extruder."
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Z-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Z-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -1558,7 +1616,8 @@ msgstr "Zusätzliche Füllung Wandlinien"
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
+msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen."
+" Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
 
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
@@ -1696,6 +1755,14 @@ msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "Um Druckzeit zu sparen, werden die Füllungslinien begradigt. Dies ist der maximal zulässige Winkel des Überhangs über die Länge der Füllung."
 
+msgctxt "material label"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "Material"
+
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "Voreingestellte Drucktemperatur"
@@ -1725,8 +1792,8 @@ msgid "Printing Temperature Initial Layer"
 msgstr "Drucktemperatur erste Schicht"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "Die Temperatur, die für das Drucken der ersten Schicht verwendet wird. Wählen Sie hier 0, um eine spezielle Behandlung der ersten Schicht zu deaktivieren."
+msgid "The temperature used for printing the first layer."
+msgstr "Die Temperatur, die für den Druck der ersten Schicht verwendet wird."
 
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
@@ -1968,6 +2035,22 @@ msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
 msgstr "Durchflusskompensation an allen Wandlinien bis auf die äußere."
 
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Fluss der äußersten Oberflächenwand"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Flussausgleich an der äußersten Wandlinie der Oberfläche."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Fluss der inneren Oberflächenwand(en)"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Flussausgleich auf den Wandlinien der Oberfläche für alle Wandlinien außer der äußersten."
+
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
 msgstr "Fluss oben/unten"
@@ -2135,6 +2218,22 @@ msgstr "Geschwindigkeit Innenwand"
 msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "Die Geschwindigkeit, mit der alle Innenwände gedruckt werden. Wenn die Innenwand schneller als die Außenwand gedruckt wird, wird die Druckzeit reduziert. Es wird empfohlen, diese Geschwindigkeit zwischen der Geschwindigkeit für die Außenwand und der Füllgeschwindigkeit einzustellen."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Geschwindigkeit der äußeren Oberfläche der Wand"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Die Geschwindigkeit, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Geschwindigkeit der inneren Oberfläche der Wand"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Die Geschwindigkeit, mit der die inneren Wände der Oberfläche gedruckt werden."
 
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
@@ -2320,6 +2419,22 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "Die Beschleunigung, mit der die Innenwände gedruckt werden."
 
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Beschleunigung der äußeren Oberfläche der Wand"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Die Beschleunigung, mit der die äußersten Wände der Oberfläche gedruckt werden."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Beschleunigung der inneren Oberfläche der Wand"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Die Beschleunigung, mit der die inneren Wände der Oberfläche gedruckt werden."
+
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr "Beschleunigung Oberfläche Außenhaut"
@@ -2479,6 +2594,22 @@ msgstr "Ruckfunktion Innenwand"
 msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "Die maximale unmittelbare Geschwindigkeitsänderung, mit der alle Innenwände gedruckt werden."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Ruck der inneren Oberflächenwand"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die inneren Oberflächenwände gedruckt werden."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Ruck der äußersten Oberflächenwand"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die äußersten Oberflächenwände gedruckt werden."
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -3257,8 +3388,8 @@ msgid "Support Z Distance"
 msgstr "Z-Abstand der Stützstruktur"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Der Abstand der Ober-/Unterseite der Stützstruktur vom Druck. So wird ein Zwischenraum geschaffen, der die Entfernung der Stützstrukturen nach dem Drucken des Modells ermöglicht. Dieser Wert wird auf ein Vielfaches der Schichtdicke aufgerundet."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "Abstand von der Ober-/Unterseite der Stützstruktur zum Druck. Diese Lücke ermöglicht es, die Stützen nach dem Drucken des Modells zu entfernen. Die oberste Stützschicht unter dem Modell könnte ein Bruchteil der normalen Schichten sein."
 
 msgctxt "support_top_distance label"
 msgid "Support Top Distance"
@@ -3273,8 +3404,8 @@ msgid "Support Bottom Distance"
 msgstr "Unterer Abstand der Stützstruktur"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Der Abstand vom gedruckten Objekt bis zur Unterseite der Stützstruktur."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "Abstand vom Druck zum Boden der Stütze. Beachten Sie, dass dies auf die nächste Schichthöhe aufgerundet wird."
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -3427,14 +3558,6 @@ msgstr "Dicke der Bodenstruktur"
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
 msgstr "Die Dicke der Stützböden. Dies steuert die Anzahl der dichten Schichten, die oben an einem Modell gedruckt werden, auf dem die Stützstruktur aufsitzt."
-
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "Auflösung Stützstrukturschnittstelle"
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "Bei der Überprüfung, wo sich das Modell über und unter der Stützstruktur befindet, verwenden Sie Schritte der entsprechenden Höhe. Niedrigere Werte schneiden langsamer, während höhere Werte dazu führen können, dass die normale Stützstruktur an einigen Stellen gedruckt wird, wo sie als Stützstrukturschnittstelle gedruckt werden sollte."
 
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
@@ -3724,6 +3847,14 @@ msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
 msgstr "Die Szene verfügt über Stütznetze. Diese Einstellung wird von Cura gesteuert."
 
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Druckplattenhaftung"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Haftung"
+
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr "Einzugstropfen aktivieren"
@@ -3731,6 +3862,22 @@ msgstr "Einzugstropfen aktivieren"
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
 msgstr "Diese Funktion legt fest, ob das Filament vor dem Drucken mit einem Tropfen eingezogen wird. Wenn diese Funktion aktiviert ist, stellt der Extruder vor dem Drucken an der Düse Material bereit. Der Brim- oder Skirt-Druck kann ebenfalls als Einzug wirken; in diesem Fall kann das Ausschalten dieser Funktion Zeit einsparen."
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "X-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die X-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Y-Position Extruder-Einzug"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
 
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
@@ -3818,7 +3965,8 @@ msgstr "Skirt-Abstand"
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\nEs handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
+msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks."
+"Es handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
 
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
@@ -3860,21 +4008,33 @@ msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "Erzwingen Sie den Druck des Brims um das Modell herum, auch wenn dieser Raum sonst durch die Stützstruktur belegt würde. Dies ersetzt einige der ersten Schichten der Stützstruktur durch Brim-Bereiche."
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "Brim nur an Außenseite"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "Position des Randes"
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "Brim nur an der Außenseite des Modells drucken. Damit reduziert sich die Anzahl der Brims, die Sie später entfernen müssen, während die Druckbetthaftung nicht signifikant eingeschränkt wird."
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "Drucken Sie einen Rand an der Außenseite des Modells, an der Innenseite oder an beiden. Je nach Modell können Sie so die Menge des Randes, den Sie anschließend entfernen müssen, reduzieren und gleichzeitig eine gute Bettanhaftung sicherstellen."
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "Nur außen"
+
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "Nur innen"
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "Überall"
 
 msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "Abstand zur Vermeidung des inneren Brims"
+msgid "Brim Avoid Margin"
+msgstr "Randvermeidung"
 
 msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Ist ein Teil vollständig von einem anderen Teil eingeschlossen, wird bei diesem möglicherweise ein äußeres Brim-Element erzeugt, das die Innenseite des anderen Teils berührt. Hiermit wird der Teil des Brim-Elements entfernt, der sich innerhalb dieses Abstands zu inneren Löchern befindet."
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "Ein Rand um ein Modell kann ein anderes Modell an einer Stelle berühren, an der Sie sie nicht haben wollen. Dies entfernt alle Ränder innerhalb dieser Entfernung von Modellen ohne Rand."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3892,6 +4052,62 @@ msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "Wenn die Raft-Funktion aktiviert ist, gibt es einen zusätzlichen Raft-Bereich um das Modell herum, für das ein Raft erstellt wird. Bei einem größeren Abstand wird ein kräftigeres Raft-Element hergestellt, wobei jedoch mehr Material verbraucht wird und weniger Platz für das gedruckte Modell verbleibt."
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "Floßbasis Extra-Rand"
+
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Wenn die Floßbasis aktiviert ist, ist dies der zusätzliche Floßbereich um das Modell herum, das ebenfalls ein Floß erhält. Wenn Sie diesen Rand vergrößern, wird ein stärkeres Floß erzeugt, wobei mehr Material verwendet wird und weniger Fläche für den Druck übrig bleibt."
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "Floßmitte Extra-Rand"
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Wenn die Floßmitte aktiviert ist, ist dies der zusätzliche Floßbereich um das Modell, der ebenfalls ein Floß erhält. Wenn Sie diesen Rand erhöhen, wird ein stärkeres Floß erzeugt, wobei mehr Material verwendet wird und weniger Fläche für den Druck übrig bleibt."
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "Floß Oberseite Extra-Rand"
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Wenn die Oberseite des Floßes aktiviert ist, ist dies der zusätzliche Bereich um das Modell herum, der ebenfalls mit einem Floß versehen wird. Wenn Sie diesen Rand erhöhen, wird ein stärkeres Floß erzeugt, wobei mehr Material verwendet wird und weniger Fläche für den Druck übrig bleibt."
+
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "Innenecken des Rafts entfernen"
+
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "Entfernen der inneren Ecken des Floßes, so dass das Floß konvex wird."
+
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "Innenecken der Floßbasis entfernen"
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "Entfernen Sie die Innenecken der Floßbasis, so dass das Floß konvex wird."
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "Mittlere Innenecken des Floßes entfernen"
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "Entfernen Sie die Innenecken aus dem mittleren Teil des Floßes, so dass das Floß konvex wird."
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "Innenecken der Oberseite des Floßes entfernen"
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "Entfernen Sie die Innenecken aus der Oberseite des Floßes, damit das Floß konvex wird."
+
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Raft-Glättung"
@@ -3899,6 +4115,30 @@ msgstr "Raft-Glättung"
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "Diese Einstellung steuert, wie stark die Innenkanten des Raft-Umrisses gerundet werden. Die Innenkanten werden zu einem Halbkreis mit einem Radius entsprechend des hier definierten Werts gerundet. Diese Einstellung entfernt außerdem Löcher im Raft-Umriss, die kleiner als ein solcher Kreis sind."
+
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "Floßbasis glätten"
+
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Diese Einstellung steuert, wie stark die Innenecken in der Kontur des Floßbodens abgerundet werden. Die Innenecken werden zu einem Halbkreis mit einem Radius abgerundet, der dem hier angegebenen Wert entspricht. Mit dieser Einstellung werden auch Löcher im Umriss des Floßes entfernt, die kleiner als ein solcher Kreis sind."
+
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "Floßmitte glätten"
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Diese Einstellung steuert, wie stark die Innenecken in der Floßmitte abgerundet werden. Die Innenecken werden zu einem Halbkreis mit einem Radius abgerundet, der dem hier angegebenen Wert entspricht. Mit dieser Einstellung werden auch Löcher im Floßumriss entfernt, die kleiner als ein solcher Kreis sind."
+
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "Floßoberseite glätten"
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Mit dieser Einstellung legen Sie fest, wie stark die Innenecken des oberen Umrisses des Floßes abgerundet werden. Die Innenecken werden zu einem Halbkreis mit einem Radius abgerundet, der dem hier angegebenen Wert entspricht. Mit dieser Einstellung werden auch Löcher im Floßumriss entfernt, die kleiner als ein solcher Kreis sind."
 
 msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
@@ -3913,40 +4153,32 @@ msgid "Initial Layer Z Overlap"
 msgstr "Z Überlappung der ersten Schicht"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "Die erste und die zweite Schicht des Modells sollen sich in der Z-Richtung überlappen, um das verlorene Filament in dem Luftspalt zu kompensieren. Alle Modelle über der ersten Modellschicht verschieben sich um diesen Wert nach unten."
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "Lassen Sie die erste und zweite Ebene des Modells in Z-Richtung überlappen, um das im Luftspalt verlorene Filament auszugleichen. Alle Modelle oberhalb der ersten Modellebene werden um diesen Betrag nach unten verschoben.\nEs kann vorkommen, dass aufgrund dieser Einstellung die zweite Ebene unterhalb der ersten Ebene gedruckt wird. Dieses Verhalten ist beabsichtigt."
 
-msgctxt "raft_surface_layers label"
-msgid "Raft Top Layers"
-msgstr "Obere Raft-Schichten"
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr "Dicke der Raft-Basis"
 
-msgctxt "raft_surface_layers description"
-msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "Die Anzahl der Oberflächenschichten auf der zweiten Raft-Schicht. Dabei handelt es sich um komplett gefüllte Schichten, auf denen das Modell ruht. Bei der Verwendung von 2 Schichten entsteht eine glattere Oberfläche als bei einer Schicht."
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
+msgstr "Die Schichtdicke der Raft-Basisschicht. Dabei sollte es sich um eine dicke Schicht handeln, die fest an der Druckplatte haftet."
 
-msgctxt "raft_surface_thickness label"
-msgid "Raft Top Layer Thickness"
-msgstr "Dicke der oberen Raft-Schichten"
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
+msgstr "Linienbreite der Raft-Basis"
 
-msgctxt "raft_surface_thickness description"
-msgid "Layer thickness of the top raft layers."
-msgstr "Die Schichtdicke der oberen Raft-Schichten."
+msgctxt "raft_base_line_width description"
+msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
+msgstr "Die Breite der Linien in der Raft-Basisschicht. Dabei sollte es sich um dicke Linien handeln, da diese besser an der Druckplatte haften."
 
-msgctxt "raft_surface_line_width label"
-msgid "Raft Top Line Width"
-msgstr "Linienbreite der Raft-Oberfläche"
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Base Line Spacing"
+msgstr "Linienabstand der Raft-Basis"
 
-msgctxt "raft_surface_line_width description"
-msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
-msgstr "Die Breite der Linien in der Raft-Oberfläche. Dünne Linien sorgen dafür, dass die Raft-Oberfläche glatter wird."
-
-msgctxt "raft_surface_line_spacing label"
-msgid "Raft Top Spacing"
-msgstr "Linienabstand der Raft-Oberfläche"
-
-msgctxt "raft_surface_line_spacing description"
-msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
-msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der Abstand sollte der Linienbreite entsprechen, damit die Oberfläche stabil ist."
+msgctxt "raft_base_line_spacing description"
+msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Der Abstand zwischen den Raft-Linien der Raft-Basisschicht. Große Abstände erleichtern das Entfernen des Raft vom Druckbett."
 
 msgctxt "raft_interface_layers label"
 msgid "Raft Middle Layers"
@@ -3980,29 +4212,77 @@ msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
 msgstr "Der Abstand zwischen den Raft-Linien im Raft-Mittelbereich. Der Abstand im Mittelbereich sollte recht groß sein, dennoch muss dieser dicht genug sein, um die Raft-Oberflächenschichten stützen zu können."
 
-msgctxt "raft_base_thickness label"
-msgid "Raft Base Thickness"
-msgstr "Dicke der Raft-Basis"
+msgctxt "raft_surface_layers label"
+msgid "Raft Top Layers"
+msgstr "Obere Raft-Schichten"
 
-msgctxt "raft_base_thickness description"
-msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
-msgstr "Die Schichtdicke der Raft-Basisschicht. Dabei sollte es sich um eine dicke Schicht handeln, die fest an der Druckplatte haftet."
+msgctxt "raft_surface_layers description"
+msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
+msgstr "Die Anzahl der Oberflächenschichten auf der zweiten Raft-Schicht. Dabei handelt es sich um komplett gefüllte Schichten, auf denen das Modell ruht. Bei der Verwendung von 2 Schichten entsteht eine glattere Oberfläche als bei einer Schicht."
 
-msgctxt "raft_base_line_width label"
-msgid "Raft Base Line Width"
-msgstr "Linienbreite der Raft-Basis"
+msgctxt "raft_surface_thickness label"
+msgid "Raft Top Layer Thickness"
+msgstr "Dicke der oberen Raft-Schichten"
 
-msgctxt "raft_base_line_width description"
-msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
-msgstr "Die Breite der Linien in der Raft-Basisschicht. Dabei sollte es sich um dicke Linien handeln, da diese besser an der Druckplatte haften."
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the top raft layers."
+msgstr "Die Schichtdicke der oberen Raft-Schichten."
 
-msgctxt "raft_base_line_spacing label"
-msgid "Raft Base Line Spacing"
-msgstr "Linienabstand der Raft-Basis"
+msgctxt "raft_surface_line_width label"
+msgid "Raft Top Line Width"
+msgstr "Linienbreite der Raft-Oberfläche"
 
-msgctxt "raft_base_line_spacing description"
-msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "Der Abstand zwischen den Raft-Linien der Raft-Basisschicht. Große Abstände erleichtern das Entfernen des Raft vom Druckbett."
+msgctxt "raft_surface_line_width description"
+msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+msgstr "Die Breite der Linien in der Raft-Oberfläche. Dünne Linien sorgen dafür, dass die Raft-Oberfläche glatter wird."
+
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Top Spacing"
+msgstr "Linienabstand der Raft-Oberfläche"
+
+msgctxt "raft_surface_line_spacing description"
+msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgstr "Der Abstand zwischen den Raft-Linien der Raft-Oberflächenschichten. Der Abstand sollte der Linienbreite entsprechen, damit die Oberfläche stabil ist."
+
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "Monotone Floßoberflächenordnung"
+
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "Drucken Sie die Linien auf der Oberseite des Floßes in einer Reihenfolge, die bewirkt, dass sie sich immer mit den benachbarten Linien in einer Richtung überlappen. Der Druckvorgang dauert dadurch etwas länger, aber die Oberfläche sieht konsistenter aus, was auch auf der Unterseite des Modells sichtbar ist."
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "Anzahl der Floßwände"
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "Die Anzahl der Konturen, die um das lineare Muster des Floßes gedruckt werden."
+
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "Wandanzahl des Raft-Bodens"
+
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "Die Anzahl der Konturlinien, die um das Linienmodell in der untersten Schicht des Rafts gedruckt werden sollen."
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "Anzahl der mittleren Wände des Floßes"
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "Die Anzahl der Konturen, die um das lineare Muster in den mittleren Schichten des Floßes gedruckt werden."
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "Anzahl der oberen Wände des Floßes"
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "Die Anzahl der Konturen, die um das lineare Muster in den oberen Lagen des Floßes gedruckt werden sollen."
 
 msgctxt "raft_speed label"
 msgid "Raft Print Speed"
@@ -4012,13 +4292,13 @@ msgctxt "raft_speed description"
 msgid "The speed at which the raft is printed."
 msgstr "Die Geschwindigkeit, mit der das Raft gedruckt wird."
 
-msgctxt "raft_surface_speed label"
-msgid "Raft Top Print Speed"
-msgstr "Druckgeschwindigkeit Raft Oben"
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr "Druckgeschwindigkeit für Raft-Basis"
 
-msgctxt "raft_surface_speed description"
-msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
-msgstr "Die Geschwindigkeit, mit der die oberen Schichten des Raft gedruckt werden. Diese sollte etwas geringer sein, damit die Düse langsam angrenzende Oberflächenlinien glätten kann."
+msgctxt "raft_base_speed description"
+msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+msgstr "Die Geschwindigkeit, mit der die Raft-Basisschicht gedruckt wird. Diese sollte relativ niedrig sein, da zu diesem Zeitpunkt ein großes Materialvolumen aus der Düse kommt."
 
 msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
@@ -4028,13 +4308,13 @@ msgctxt "raft_interface_speed description"
 msgid "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "Die Geschwindigkeit, mit der die Raft-Mittelschicht gedruckt wird. Diese sollte relativ niedrig sein, da zu diesem Zeitpunkt ein großes Materialvolumen aus der Düse kommt."
 
-msgctxt "raft_base_speed label"
-msgid "Raft Base Print Speed"
-msgstr "Druckgeschwindigkeit für Raft-Basis"
+msgctxt "raft_surface_speed label"
+msgid "Raft Top Print Speed"
+msgstr "Druckgeschwindigkeit Raft Oben"
 
-msgctxt "raft_base_speed description"
-msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
-msgstr "Die Geschwindigkeit, mit der die Raft-Basisschicht gedruckt wird. Diese sollte relativ niedrig sein, da zu diesem Zeitpunkt ein großes Materialvolumen aus der Düse kommt."
+msgctxt "raft_surface_speed description"
+msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+msgstr "Die Geschwindigkeit, mit der die oberen Schichten des Raft gedruckt werden. Diese sollte etwas geringer sein, damit die Düse langsam angrenzende Oberflächenlinien glätten kann."
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -4044,13 +4324,13 @@ msgctxt "raft_acceleration description"
 msgid "The acceleration with which the raft is printed."
 msgstr "Die Beschleunigung, mit der das Raft gedruckt wird."
 
-msgctxt "raft_surface_acceleration label"
-msgid "Raft Top Print Acceleration"
-msgstr "Druckbeschleunigung Raft Oben"
+msgctxt "raft_base_acceleration label"
+msgid "Raft Base Print Acceleration"
+msgstr "Druckbeschleunigung Raft Unten"
 
-msgctxt "raft_surface_acceleration description"
-msgid "The acceleration with which the top raft layers are printed."
-msgstr "Die Beschleunigung, mit der die oberen Raft-Schichten gedruckt werden."
+msgctxt "raft_base_acceleration description"
+msgid "The acceleration with which the base raft layer is printed."
+msgstr "Die Beschleunigung, mit der die unteren Raft-Schichten gedruckt werden."
 
 msgctxt "raft_interface_acceleration label"
 msgid "Raft Middle Print Acceleration"
@@ -4060,13 +4340,13 @@ msgctxt "raft_interface_acceleration description"
 msgid "The acceleration with which the middle raft layer is printed."
 msgstr "Die Beschleunigung, mit der die mittleren Raft-Schichten gedruckt werden."
 
-msgctxt "raft_base_acceleration label"
-msgid "Raft Base Print Acceleration"
-msgstr "Druckbeschleunigung Raft Unten"
+msgctxt "raft_surface_acceleration label"
+msgid "Raft Top Print Acceleration"
+msgstr "Druckbeschleunigung Raft Oben"
 
-msgctxt "raft_base_acceleration description"
-msgid "The acceleration with which the base raft layer is printed."
-msgstr "Die Beschleunigung, mit der die unteren Raft-Schichten gedruckt werden."
+msgctxt "raft_surface_acceleration description"
+msgid "The acceleration with which the top raft layers are printed."
+msgstr "Die Beschleunigung, mit der die oberen Raft-Schichten gedruckt werden."
 
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
@@ -4076,13 +4356,13 @@ msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
 msgstr "Die Ruckfunktion, mit der das Raft gedruckt wird."
 
-msgctxt "raft_surface_jerk label"
-msgid "Raft Top Print Jerk"
-msgstr "Ruckfunktion Drucken Raft Oben"
+msgctxt "raft_base_jerk label"
+msgid "Raft Base Print Jerk"
+msgstr "Ruckfunktion Drucken Raft-Basis"
 
-msgctxt "raft_surface_jerk description"
-msgid "The jerk with which the top raft layers are printed."
-msgstr "Die Ruckfunktion, mit der die oberen Raft-Schichten gedruckt werden."
+msgctxt "raft_base_jerk description"
+msgid "The jerk with which the base raft layer is printed."
+msgstr "Die Ruckfunktion, mit der die unteren Raft-Schichten gedruckt werden."
 
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
@@ -4092,13 +4372,13 @@ msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
 msgstr "Die Ruckfunktion, mit der die mittleren Raft-Schichten gedruckt werden."
 
-msgctxt "raft_base_jerk label"
-msgid "Raft Base Print Jerk"
-msgstr "Ruckfunktion Drucken Raft-Basis"
+msgctxt "raft_surface_jerk label"
+msgid "Raft Top Print Jerk"
+msgstr "Ruckfunktion Drucken Raft Oben"
 
-msgctxt "raft_base_jerk description"
-msgid "The jerk with which the base raft layer is printed."
-msgstr "Die Ruckfunktion, mit der die unteren Raft-Schichten gedruckt werden."
+msgctxt "raft_surface_jerk description"
+msgid "The jerk with which the top raft layers are printed."
+msgstr "Die Ruckfunktion, mit der die oberen Raft-Schichten gedruckt werden."
 
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
@@ -4108,13 +4388,13 @@ msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
 msgstr "Die Drehzahl des Lüfters für das Raft."
 
-msgctxt "raft_surface_fan_speed label"
-msgid "Raft Top Fan Speed"
-msgstr "Lüfterdrehzahl Raft Oben"
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
+msgstr "Lüfterdrehzahl für Raft-Basis"
 
-msgctxt "raft_surface_fan_speed description"
-msgid "The fan speed for the top raft layers."
-msgstr "Die Drehzahl des Lüfters für die obere Raft-Schicht."
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
+msgstr "Die Drehzahl des Lüfters für die Raft-Basisschicht."
 
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
@@ -4124,13 +4404,13 @@ msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
 msgstr "Die Drehzahl des Lüfters für die mittlere Raft-Schicht."
 
-msgctxt "raft_base_fan_speed label"
-msgid "Raft Base Fan Speed"
-msgstr "Lüfterdrehzahl für Raft-Basis"
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Top Fan Speed"
+msgstr "Lüfterdrehzahl Raft Oben"
 
-msgctxt "raft_base_fan_speed description"
-msgid "The fan speed for the base raft layer."
-msgstr "Die Drehzahl des Lüfters für die Raft-Basisschicht."
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the top raft layers."
+msgstr "Die Drehzahl des Lüfters für die obere Raft-Schicht."
 
 msgctxt "dual label"
 msgid "Dual Extrusion"
@@ -4148,6 +4428,22 @@ msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Drucken Sie einen Turm neben dem Druck, der zum Einziehen des Materials nach jeder Düsenschaltung dient."
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "Prime Tower Typ"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>So erzeugen Sie den Prime Tower:<ul><li><b>Normal:</b> Erstellen Sie ein Bucket, in dem sekundäre Materialien grundiert werden</li> <li><b>Verschachtelt:</b> Erstellen Sie einen Prime Tower so spärlich wie möglich. Das spart Zeit und Filament, ist aber nur möglich, wenn die verwendeten Materialien aneinander haften</li> </ul> </html>"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "Normal"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "Verschachtelt"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Größe Einzugsturm"
@@ -4163,6 +4459,14 @@ msgstr "Mindestvolumen Einzugsturm"
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "Das Mindestvolumen für jede Schicht des Einzugsturms, um ausreichend Material zu spülen."
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "Prime Tower Maximaler Überbrückungsabstand"
+
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "Die maximale Länge der Zweige, die über die Luft gedruckt werden dürfen."
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -4189,12 +4493,44 @@ msgid "After printing the prime tower with one nozzle, wipe the oozed material f
 msgstr "Nach dem Drucken des Einzugsturms mit einer Düse wird das ausgetretene Material von der anderen Düse am Einzugsturm abgewischt."
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Brim Einzugsturm"
+msgid "Prime Tower Base"
+msgstr "Grundfläche des Prime-Turms"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Einzugstürme benötigen möglicherweise zusätzliche Haftung in Form eines Brims, auch wenn das Modell selbst dies nicht benötigt. Kann derzeit nicht mit dem „Raft“-Haftungstyp verwendet werden."
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Durch Aktivieren dieser Einstellung erhält Ihr Prime-Turm einen Rand, auch wenn das Modell keinen hat. Wenn Sie eine stabilere Basis für einen hohen Turm möchten, können Sie die Basis-Höhe erhöhen."
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "Größe der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Die Breite des Prime-Turm-Randes/Basis. Eine größere Basis verbessert die Haftung auf der Bauplatte, verringert jedoch auch den effektiven Druckbereich."
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "Höhe der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Die Höhe der Prime-Turm-Basis. Eine Erhöhung dieses Wertes führt zu einem stabileren Prime-Turm, da die Basis breiter wird. Ist dieser Wert zu niedrig, hat der Prime-Turm keine stabile Basis."
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Neigung der Prime-Turm-Basis"
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Der Größenfaktor, der für die Neigung der Prime-Turm-Basis verwendet wird. Wenn Sie diesen Wert erhöhen, wird die Basis schlanker. Wenn Sie ihn verringern, wird die Basis dicker."
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "Linienabstand des Prime-Turm-Floßes"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Der Abstand zwischen den Floßlinien für die einzigartige Prime-Turm-Floßschicht. Ein großer Abstand erleichtert das Entfernen des Floßes von der Bauplatte."
 
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
@@ -4419,6 +4755,14 @@ msgstr "Alle gleichzeitig"
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Nacheinander"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Druckreihenfolge manuell einstellen"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "Ermöglicht es Ihnen, die Objektliste zu ordnen, um die Druckreihenfolge manuell festzulegen. Das erste Objekt in der Liste wird zuerst gedruckt."
 
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
@@ -5228,21 +5572,77 @@ msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
 msgstr "Abwechselnde Wandrichtungen für jede weitere Schicht und jeden Einsatz. Nützlich für Materialien, die Spannungen aufbauen können, wie beim Metalldruck."
 
-msgctxt "raft_remove_inside_corners label"
-msgid "Remove Raft Inside Corners"
-msgstr "Innenecken des Rafts entfernen"
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Äußere Wände gruppieren"
 
-msgctxt "raft_remove_inside_corners description"
-msgid "Remove inside corners from the raft, causing the raft to become convex."
-msgstr "Entfernen der inneren Ecken des Floßes, so dass das Floß konvex wird."
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Die äußeren Wände verschiedener Inseln in derselben Schicht werden nacheinander gedruckt. Wenn aktiviert, wird die Menge der Flussänderungen begrenzt, da die Wände nacheinander gedruckt werden, wenn deaktiviert, wird die Anzahl der Fahrten zwischen den Inseln reduziert, da die Wände auf den gleichen Inseln gruppiert sind."
 
-msgctxt "raft_base_wall_count label"
-msgid "Raft Base Wall Count"
-msgstr "Wandanzahl des Raft-Bodens"
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "Druckprozess-Berichterstattung"
 
-msgctxt "raft_base_wall_count description"
-msgid "The number of contours to print around the linear pattern in the base layer of the raft."
-msgstr "Die Anzahl der Konturlinien, die um das Linienmodell in der untersten Schicht des Rafts gedruckt werden sollen."
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "Meldung von Ereignissen, die über die eingestellten Schwellenwerte hinausgehen"
+
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "Druckprozess-Berichterstattung aktivieren"
+
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "Aktivieren Sie die Druckprozess-Berichterstattung, um Schwellenwerte für eine mögliche Fehlererkennung festzulegen."
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "Fluss-Warnung"
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "Grenzwert für die Fluss-Warnung zur Erkennung."
+
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "Fluss-Grenzwert"
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "Grenzwert für die Flussanomalie zur Erkennung."
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "Drucktemperatur-Warnung"
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "Grenzwert für Drucktemperaturwarnung zur Erkennung."
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "Drucktemperatur-Grenzwert"
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "Grenzwert für die Erkennung von Drucktemperatur-Anomalien."
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "Build-Volumen-Temperatur Warnung"
+
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "Grenzwert für die Erkennung einer Warnung vor der Build-Volumen-Temperatur."
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "Build-Volumen-Temperatur Grenzwert"
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "Grenzwert für Anomalie der Build-Volumen-Temperatur für die Erkennung."
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
@@ -5292,186 +5692,6 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angewandt wird."
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "Stufenweiser Fluss aktiviert"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "Aktivieren Sie stufenweise Flussänderungen. Wenn diese Option aktiviert ist, wird der Fluss stufenweise auf den Sollwert des Flusses erhöht bzw. verringert. Dies ist bei Druckern mit Bowden-Röhren sinnvoll, bei denen der Fluss nicht sofort geändert wird, sobald der Extrudermotor startet/stoppt."
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "Maximale Beschleunigung bei stufenweisem Fluss"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "Maximale Beschleunigung für stufenweise Änderung des Flusses"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "Maximale Flussbeschleunigung bei erster Schicht"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "Mindestgeschwindigkeit für stufenweise Änderung des Flusses in der ersten Schicht"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "Schrittgröße der stufenweisen Fluss-Diskretisierung"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "Dauer der einzelnen Schritte bei der stufenweisen Änderung des Flusses"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "Flussdauer zurücksetzen"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "Bei jeder Fahrtbewegung, die diesen Wert überschreitet, wird der Materialfluss auf den Sollwert des Flusses für den Weg zurückgesetzt"
-
-msgctxt "extruder_prime_pos_z label"
-msgid "Extruder Prime Z Position"
-msgstr "Z-Position Extruder-Einzug"
-
-msgctxt "platform_adhesion description"
-msgid "Adhesion"
-msgstr "Haftung"
-
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "Es werden Stützstrukturen platziert. Die Platzierung kann auf „Druckbett berühren“ oder „Überall“ eingestellt werden. Wenn „Überall“ eingestellt wird, werden die Stützstrukturen auch auf dem Modell gedruckt."
-
-msgctxt "machine_nozzle_size label"
-msgid "Nozzle Diameter"
-msgstr "Düsendurchmesser"
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "Der Düsen-ID für eine Extruder-Einheit, z. B. „AA 0,4“ und „BB 0,8“."
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Die X-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
-
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "Durchmesser"
-
-msgctxt "extruder_prime_pos_x label"
-msgid "Extruder Prime X Position"
-msgstr "X-Position Extruder-Einzug"
-
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "Der Durchmesser des verwendeten Filaments wird angepasst. Stellen Sie hier den Durchmesser des verwendeten Filaments ein."
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Sie eine Düse einer Nicht-Standardgröße verwenden."
-
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "Gerätespezifische Einstellungen"
-
-msgctxt "extruder_prime_pos_y label"
-msgid "Extruder Prime Y Position"
-msgstr "Y-Position Extruder-Einzug"
-
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Die Z-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Die Y-Koordinate der Position, an der die Düse am Druckbeginn einzieht."
-
-msgctxt "material label"
-msgid "Material"
-msgstr "Material"
-
-msgctxt "machine_nozzle_id label"
-msgid "Nozzle ID"
-msgstr "Düsen-ID"
-
-msgctxt "platform_adhesion label"
-msgid "Build Plate Adhesion"
-msgstr "Druckplattenhaftung"
-
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "Gerät"
-
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "Äußere Wände gruppieren"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "Die äußeren Wände verschiedener Inseln in derselben Schicht werden nacheinander gedruckt. Wenn aktiviert, wird die Menge der Flussänderungen begrenzt, da die Wände nacheinander gedruckt werden, wenn deaktiviert, wird die Anzahl der Fahrten zwischen den Inseln reduziert, da die Wände auf den gleichen Inseln gruppiert sind."
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "Fluss der äußersten Oberflächenwand"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "Flussausgleich an der äußersten Wandlinie der Oberfläche."
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "Fluss der inneren Oberflächenwand(en)"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "Flussausgleich auf den Wandlinien der Oberfläche für alle Wandlinien außer der äußersten."
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "Geschwindigkeit der äußeren Oberfläche der Wand"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "Die Geschwindigkeit, mit der die äußersten Wände der Oberfläche gedruckt werden."
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "Geschwindigkeit der inneren Oberfläche der Wand"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "Die Geschwindigkeit, mit der die inneren Wände der Oberfläche gedruckt werden."
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "Beschleunigung der äußeren Oberfläche der Wand"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "Die Beschleunigung, mit der die äußersten Wände der Oberfläche gedruckt werden."
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "Beschleunigung der inneren Oberfläche der Wand"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "Die Beschleunigung, mit der die inneren Wände der Oberfläche gedruckt werden."
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "Top Surface Outer Wall Jerk"
-msgstr "Ruck der inneren Oberflächenwand"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die inneren Oberflächenwände gedruckt werden."
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "Ruck der äußersten Oberflächenwand"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "Die maximale instantane Geschwindigkeitsänderung, mit der die äußersten Oberflächenwände gedruckt werden."

@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S5",
+    "name": "UltiMaker S5",
     "inherits": "ultimaker",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
@@ -14,6 +14,11 @@
             214475,
             214476,
             214477
+        ],
+        "exclude_materials": [
+            "generic_hips",
+            "generic_flexible",
+            "structur3d_"
         ],
         "firmware_update_info":
         {
@@ -110,7 +115,6 @@
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
         "retraction_hop_only_when_collides": { "value": "True" },
-        "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "45" },
         "speed_prime_tower": { "value": "speed_topbottom" },

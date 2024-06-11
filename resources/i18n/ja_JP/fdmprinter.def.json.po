@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "プリンター"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "プリンター詳細設定"
 
 msgctxt "machine_name label"
 msgid "Machine Type"
@@ -34,7 +42,8 @@ msgstr "G-Codeの開始"
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "最初に実行するG-codeコマンドは、\nで区切ります。"
+msgstr "最初に実行するG-codeコマンドは、"
+"で区切ります。"
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -42,7 +51,8 @@ msgstr "G-codeの終了"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "最後に実行するG-codeコマンドは、\nで区切ります。"
+msgstr "最後に実行するG-codeコマンドは、"
+"で区切ります。"
 
 msgctxt "material_guid label"
 msgid "Material GUID"
@@ -51,6 +61,30 @@ msgstr "マテリアルGUID"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
 msgstr "マテリアルのGUID。これは自動的に設定されます。"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "材料の種類"
+
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "使用される材料の種類。"
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "材料のブランド"
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "使用されている材料のブランドです。"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "使用するフィラメントの太さの調整　この値を使用するフィラメントの太さと一致させてください。"
 
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
@@ -360,6 +394,22 @@ msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "ノズルの先端とガントリーシステムの高さの差（X軸とY軸）。"
 
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "ノズルID"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "\"AA 0.4\"や\"BB 0.8\"などのノズルID。"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "ノズル内径"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "ノズルの内径。標準以外のノズルを使用する場合は、この設定を変更してください。"
+
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "エクストルーダーのオフセット"
@@ -367,6 +417,14 @@ msgstr "エクストルーダーのオフセット"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "エクストルーダーのオフセットを座標システムに適用します。すべてのエクストルーダーが影響を受けます。"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "エクストルーダーのZ座標"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "印刷開始時にノズルがポジションを確認するZ座標。"
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -966,7 +1024,8 @@ msgstr "ZシームX"
 
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr "レイヤー内の各印刷を開始するX座\n標の位置。"
+msgstr "レイヤー内の各印刷を開始するX座"
+"標の位置。"
 
 msgctxt "z_seam_y label"
 msgid "Z Seam Y"
@@ -1558,7 +1617,8 @@ msgstr "外側インフィル壁の数"
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。\nこの機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
+msgstr "インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。"
+"この機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
 
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
@@ -1622,7 +1682,8 @@ msgstr "インフィル優先"
 
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\nはじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます。"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します"
+"はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます。"
 
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
@@ -1696,6 +1757,14 @@ msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "インフィルラインは矯正され、プリント時間が節約されます。これは、インフィルラインの全長にわたって許可されるオーバーハングの最大角度です。"
 
+msgctxt "material label"
+msgid "Material"
+msgstr "マテリアル"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "マテリアル"
+
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "デフォルト印刷温度"
@@ -1725,8 +1794,8 @@ msgid "Printing Temperature Initial Layer"
 msgstr "初期レイヤー印刷温度"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "最初のレイヤーを印刷する温度。初期レイヤーのみ特別設定が必要ない場合は 0 に設定します。"
+msgid "The temperature used for printing the first layer."
+msgstr "最初の層を印刷するために使用される温度です。"
 
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
@@ -1968,6 +2037,22 @@ msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
 msgstr "最外壁以外の壁のフロー補正。"
 
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "上面最外壁の流れ"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "最外の壁ラインにおける流量補正。"
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "上面内壁の流れ"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "最外のラインを除く、全ての壁ラインにおけるトップサーフェス壁ラインのフロー補正"
+
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
 msgstr "上面/下面フロー"
@@ -2135,6 +2220,22 @@ msgstr "内壁速度"
 msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "内側のウォールをプリントする速度　外壁より内壁を高速でプリントすると、印刷時間の短縮になります。外壁のプリント速度とインフィルのプリント速度の中間に設定するのが適切です。"
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "上面の最外壁速度"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "上面の最外壁が印刷される速度"
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "上面内壁速度"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される速度"
 
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
@@ -2320,6 +2421,22 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "内側のウォールがが出力される際のスピード。"
 
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "上面外壁加速度"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "上面の最外壁が印刷される際の加速度"
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "上面内壁加速度"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "上面内壁が印刷される際の加速度"
+
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr "最上面加速度"
@@ -2479,6 +2596,22 @@ msgstr "内壁ジャーク"
 msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "内側のウォールがプリントされれう際の最大瞬間速度の変更。"
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "上面内壁の最大瞬間速度変化"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "上面内壁が印刷される際の最大瞬間速度変化。"
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "上面最外壁の最大瞬間速度変化"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "上面最外壁が印刷される際の最大瞬間速度変化。"
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -3257,8 +3390,8 @@ msgid "Support Z Distance"
 msgstr "サポートZ距離"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "サポート材のトップ/ボトム部分と印刷物との距離。この幅がプリント後のサポート材を除去する隙間を作ります。値は積層ピッチの倍数にて計算されます。"
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "サポート構造の上部/下部からプリントまでの距離です。このギャップは、モデル印刷後にサポートを取り除くためのクリアランスを提供します。モデルの下にある最上層のサポート層は、通常のレイヤーの一部分かもしれません。"
 
 msgctxt "support_top_distance label"
 msgid "Support Top Distance"
@@ -3273,8 +3406,8 @@ msgid "Support Bottom Distance"
 msgstr "サポート底部距離"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "印刷物とサポート材底部までの距離。"
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "プリントからサポートの底までの距離。これは次のレイヤーの高さに切り上げられることに注意してください。"
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -3427,14 +3560,6 @@ msgstr "サポートフロア厚さ"
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
 msgstr "サポート材の底部の厚さ。これは、サポートが置かれるモデル上の積層密度を制御します。"
-
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "サポートインタフェース解像度"
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "サポートの上下にモデルがあるかどうか確認するには、特定のサポートの高さを見ます。低い値はスライスに時間がかかり、高い値にするとサポートのインターフェイスがある場所に通常のサポートを印刷する可能性があります。"
 
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
@@ -3724,6 +3849,14 @@ msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
 msgstr "シーンにはサポートメッシュがあります。この設定はCuraで制御されます。"
 
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "ビルドプレート密着性"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "密着性"
+
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr "プライムボルブを有効にする"
@@ -3731,6 +3864,22 @@ msgstr "プライムボルブを有効にする"
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
 msgstr "印刷する前にフィラメントの小さな塊を作るかどうか。この設定をオンにすると、エクストルーダーがノズルにおいて印刷予定のマテリアルの下準備をします。印刷後ブリムまたはスカートも、上記と同じような意味を持ちます。この設定をオフにすると時間の節約にはなります。"
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "エクストルーダープライムX位置"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "プリント開始時のノズルの位置を表すX座標。"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "エクストルーダープライムY位置"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "プリント開始時にノズル位置を表すY座標。"
 
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
@@ -3818,7 +3967,8 @@ msgstr "スカート距離"
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "スカートと印刷の最初の層の間の水平距離。\nこれは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
+msgstr "スカートと印刷の最初の層の間の水平距離。"
+"これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
@@ -3860,21 +4010,33 @@ msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "スペースがサポートで埋まっている場合でも、モデルの周辺にブリムを印刷します。これにより、サポートの最初の層の一部のエリアがブリムになります。"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "外側にブリムのみ印刷"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "ブリムの位置"
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "モデルの外側のみにブリムを印刷します。これにより、後で取り除くブリムの量が減少します。またプレートへの接着力はそれほど低下しません。"
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "モデルの外側,内側,またはその両方にブリムを印刷します。モデルによっては,これによりベッドの適切な接着を確保しながら,後で取り外す必要があるブリムの量を減らすことができます。"
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "外側のみ"
+
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "内側のみ"
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "どこにでも"
 
 msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "内側縁がマージンに接触しないようにする"
+msgid "Brim Avoid Margin"
+msgstr "ブリムを避けるためのマージン"
 
 msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "別の部品内に完全に囲まれた部品は、別の部品の内側に接触する外側縁ができることがあります。この設定によって、内部の穴からこの間隔内のすべての縁が除去されます。"
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "モデルの周囲のブリムが,他のモデルの望ましくない場所に接触する可能性があります。これにより,この距離内のすべてのブリムがブリムのないモデルから削除されます。"
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3892,6 +4054,62 @@ msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "ラフトが有効になっている場合、モデルの周りに余分なラフト領域ができます。値を大きくするとより強力なラフトができますが、多くの材料を使用し、造形範囲は少なくなります。"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "ラフトベースの追加マージン"
+
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトベースが有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "ラフトの中央の追加マージン"
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトの中央が有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "ラフト上部の追加マージン"
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトの上部が有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
+
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "ラフト内側コーナーの削除"
+
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "ラフトから内側コーナーを削除し、ラフトが凸になるようにします。"
+
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "ラフトベースの内側の角を削除"
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "ラフトベースから内側の角を取り除き,ラフトを凸状にします。"
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "ラフト中央の内側の角を削除"
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "ラフトの中央から内側の角を取り除き,ラフトを凸状にします。"
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "ラフト上部の内側の角を削除"
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "ラフトの上部から内側の角を取り除き,ラフトを凸状にします。"
+
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "ラフト補整"
@@ -3899,6 +4117,30 @@ msgstr "ラフト補整"
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "この設定は、ラフトの輪郭の内側の角がどの程度丸められるかを制御します。内側の角は、ここで指定した値と等しい半径の半円に丸められます。この設定は、そのような円よりも小さいラフトの輪郭の穴を削除します。"
+
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "ラフトベースのスムージング"
+
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフトベースのアウトラインの内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
+
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "ラフト中央のスムージング"
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフトの中央のアウトラインの内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
+
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "ラフト上部のスムージング"
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフト上部の輪郭の内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
 
 msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
@@ -3913,40 +4155,32 @@ msgid "Initial Layer Z Overlap"
 msgstr "初期レイヤーZのオーバーラップ"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "エアギャップ内で失われたフィラメントを補うために、モデルの第1層と第2層をZ方向にオーバーラップさせます。この値によって、最初のモデルレイヤーがシフトダウンされます。"
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "エアギャップで失われたフィラメントを補うために,モデルの1つ目と2つ目の層をZ方向にオーバーラップさせます。最初のモデルレイヤーより上のすべてのモデルは,この量だけ下にシフトされます。\nこの設定により,2つ目のレイヤーが最初のレイヤーの下に印刷される場合があることに注意してください。これは意図された動作です。"
 
-msgctxt "raft_surface_layers label"
-msgid "Raft Top Layers"
-msgstr "ラフト最上層"
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr "ラフトベース厚さ"
 
-msgctxt "raft_surface_layers description"
-msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "第2ラフト層の上の最上層の数。これらは、モデルが置かれる完全に塗りつぶされた積層です。 2つの層は、1よりも滑らかな上面をもたらす。"
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
+msgstr "ベースラフト層の層厚さ。プリンタのビルドプレートにしっかりと固着する厚い層でなければなりません。"
 
-msgctxt "raft_surface_thickness label"
-msgid "Raft Top Layer Thickness"
-msgstr "ラフト最上層厚さ"
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
+msgstr "ラフトベースライン幅"
 
-msgctxt "raft_surface_thickness description"
-msgid "Layer thickness of the top raft layers."
-msgstr "トップラフト層の層厚。"
+msgctxt "raft_base_line_width description"
+msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
+msgstr "ベースラフト層の線幅。ビルドプレートの接着のため太い線でなければなりません。"
 
-msgctxt "raft_surface_line_width label"
-msgid "Raft Top Line Width"
-msgstr "ラフト最上ライン幅"
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Base Line Spacing"
+msgstr "ラフトベースラインスペース"
 
-msgctxt "raft_surface_line_width description"
-msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
-msgstr "ラフトの上面の線の幅。これらは細い線で、ラフトの頂部が滑らかになります。"
-
-msgctxt "raft_surface_line_spacing label"
-msgid "Raft Top Spacing"
-msgstr "ラフト最上面スペース"
-
-msgctxt "raft_surface_line_spacing description"
-msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
-msgstr "上のラフト層とラフト線の間の距離。間隔は線の幅と同じにして、サーフェスがソリッドになるようにします。"
+msgctxt "raft_base_line_spacing description"
+msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "ベースラフト層のラフトライン間の距離。広い間隔は、ブルドプレートからのラフトの除去を容易にする。"
 
 msgctxt "raft_interface_layers label"
 msgid "Raft Middle Layers"
@@ -3980,29 +4214,77 @@ msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
 msgstr "中間ラフト層とラフト線の間の距離。中央の間隔はかなり広くなければならず、トップラフト層を支えるために十分な密度でなければならない。"
 
-msgctxt "raft_base_thickness label"
-msgid "Raft Base Thickness"
-msgstr "ラフトベース厚さ"
+msgctxt "raft_surface_layers label"
+msgid "Raft Top Layers"
+msgstr "ラフト最上層"
 
-msgctxt "raft_base_thickness description"
-msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
-msgstr "ベースラフト層の層厚さ。プリンタのビルドプレートにしっかりと固着する厚い層でなければなりません。"
+msgctxt "raft_surface_layers description"
+msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
+msgstr "第2ラフト層の上の最上層の数。これらは、モデルが置かれる完全に塗りつぶされた積層です。 2つの層は、1よりも滑らかな上面をもたらす。"
 
-msgctxt "raft_base_line_width label"
-msgid "Raft Base Line Width"
-msgstr "ラフトベースライン幅"
+msgctxt "raft_surface_thickness label"
+msgid "Raft Top Layer Thickness"
+msgstr "ラフト最上層厚さ"
 
-msgctxt "raft_base_line_width description"
-msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
-msgstr "ベースラフト層の線幅。ビルドプレートの接着のため太い線でなければなりません。"
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the top raft layers."
+msgstr "トップラフト層の層厚。"
 
-msgctxt "raft_base_line_spacing label"
-msgid "Raft Base Line Spacing"
-msgstr "ラフトベースラインスペース"
+msgctxt "raft_surface_line_width label"
+msgid "Raft Top Line Width"
+msgstr "ラフト最上ライン幅"
 
-msgctxt "raft_base_line_spacing description"
-msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "ベースラフト層のラフトライン間の距離。広い間隔は、ブルドプレートからのラフトの除去を容易にする。"
+msgctxt "raft_surface_line_width description"
+msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+msgstr "ラフトの上面の線の幅。これらは細い線で、ラフトの頂部が滑らかになります。"
+
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Top Spacing"
+msgstr "ラフト最上面スペース"
+
+msgctxt "raft_surface_line_spacing description"
+msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgstr "上のラフト層とラフト線の間の距離。間隔は線の幅と同じにして、サーフェスがソリッドになるようにします。"
+
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "単一のラフト上面の表面の順序"
+
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "ラフト上面のラインを,常に単一方向の隣接するラインと重なる順序で印刷します。これにより,印刷に少し時間がかかりますが,表面の見た目がより均一になり,これはモデルの底面にも表示されます。"
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "ラフトの壁の数"
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "ラフトの線形パターンの周囲に印刷する輪郭の数。"
+
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "ラフトベースウォール数"
+
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "ラフトのベースレイヤーにある線状パターンの周囲にプリントする輪郭の数。"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "ラフト中央の壁の数"
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "ラフトの中間層の線形パターンの周囲に印刷する輪郭の数。"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "ラフト上部の壁の数"
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "ラフトの最上層の線形パターンの周囲に印刷する輪郭の数。"
 
 msgctxt "raft_speed label"
 msgid "Raft Print Speed"
@@ -4012,13 +4294,13 @@ msgctxt "raft_speed description"
 msgid "The speed at which the raft is printed."
 msgstr "ラフトが印刷される速度。"
 
-msgctxt "raft_surface_speed label"
-msgid "Raft Top Print Speed"
-msgstr "ラフト上層印刷速度"
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr "ラフトベース印刷速度"
 
-msgctxt "raft_surface_speed description"
-msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
-msgstr "トップラフト層が印刷される速度。この値はノズルが隣接するサーフェスラインをゆっくりと滑らかにするために、少し遅く印刷する必要があります。"
+msgctxt "raft_base_speed description"
+msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+msgstr "ベースラフト層が印刷される速度。これは、ノズルから出てくるマテリアルの量がかなり多いので、ゆっくりと印刷されるべきである。"
 
 msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
@@ -4028,13 +4310,13 @@ msgctxt "raft_interface_speed description"
 msgid "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "ミドルラフト層が印刷される速度。ノズルから出てくるマテリアルの量がかなり多いので、ゆっくりと印刷されるべきである。"
 
-msgctxt "raft_base_speed label"
-msgid "Raft Base Print Speed"
-msgstr "ラフトベース印刷速度"
+msgctxt "raft_surface_speed label"
+msgid "Raft Top Print Speed"
+msgstr "ラフト上層印刷速度"
 
-msgctxt "raft_base_speed description"
-msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
-msgstr "ベースラフト層が印刷される速度。これは、ノズルから出てくるマテリアルの量がかなり多いので、ゆっくりと印刷されるべきである。"
+msgctxt "raft_surface_speed description"
+msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+msgstr "トップラフト層が印刷される速度。この値はノズルが隣接するサーフェスラインをゆっくりと滑らかにするために、少し遅く印刷する必要があります。"
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -4044,13 +4326,13 @@ msgctxt "raft_acceleration description"
 msgid "The acceleration with which the raft is printed."
 msgstr "ラフト印刷時の加速度。"
 
-msgctxt "raft_surface_acceleration label"
-msgid "Raft Top Print Acceleration"
-msgstr "ラフト上層層印刷加速度"
+msgctxt "raft_base_acceleration label"
+msgid "Raft Base Print Acceleration"
+msgstr "ラフトベース印刷加速度"
 
-msgctxt "raft_surface_acceleration description"
-msgid "The acceleration with which the top raft layers are printed."
-msgstr "ラフトのトップ印刷時の加速度。"
+msgctxt "raft_base_acceleration description"
+msgid "The acceleration with which the base raft layer is printed."
+msgstr "ラフトの底面印刷時の加速度。"
 
 msgctxt "raft_interface_acceleration label"
 msgid "Raft Middle Print Acceleration"
@@ -4060,13 +4342,13 @@ msgctxt "raft_interface_acceleration description"
 msgid "The acceleration with which the middle raft layer is printed."
 msgstr "ラフトの中間層印刷時の加速度。"
 
-msgctxt "raft_base_acceleration label"
-msgid "Raft Base Print Acceleration"
-msgstr "ラフトベース印刷加速度"
+msgctxt "raft_surface_acceleration label"
+msgid "Raft Top Print Acceleration"
+msgstr "ラフト上層層印刷加速度"
 
-msgctxt "raft_base_acceleration description"
-msgid "The acceleration with which the base raft layer is printed."
-msgstr "ラフトの底面印刷時の加速度。"
+msgctxt "raft_surface_acceleration description"
+msgid "The acceleration with which the top raft layers are printed."
+msgstr "ラフトのトップ印刷時の加速度。"
 
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
@@ -4076,13 +4358,13 @@ msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
 msgstr "ラフトが印刷時のジャーク。"
 
-msgctxt "raft_surface_jerk label"
-msgid "Raft Top Print Jerk"
-msgstr "ラフト上層印刷ジャーク"
+msgctxt "raft_base_jerk label"
+msgid "Raft Base Print Jerk"
+msgstr "ラフトベース印刷ジャーク"
 
-msgctxt "raft_surface_jerk description"
-msgid "The jerk with which the top raft layers are printed."
-msgstr "トップラフト層印刷時のジャーク。"
+msgctxt "raft_base_jerk description"
+msgid "The jerk with which the base raft layer is printed."
+msgstr "ベースラフト層印刷時のジャーク。"
 
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
@@ -4092,13 +4374,13 @@ msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
 msgstr "ミドルラフト層印刷時のジャーク。"
 
-msgctxt "raft_base_jerk label"
-msgid "Raft Base Print Jerk"
-msgstr "ラフトベース印刷ジャーク"
+msgctxt "raft_surface_jerk label"
+msgid "Raft Top Print Jerk"
+msgstr "ラフト上層印刷ジャーク"
 
-msgctxt "raft_base_jerk description"
-msgid "The jerk with which the base raft layer is printed."
-msgstr "ベースラフト層印刷時のジャーク。"
+msgctxt "raft_surface_jerk description"
+msgid "The jerk with which the top raft layers are printed."
+msgstr "トップラフト層印刷時のジャーク。"
 
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
@@ -4108,13 +4390,13 @@ msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
 msgstr "ラフト印刷時のファンの速度。"
 
-msgctxt "raft_surface_fan_speed label"
-msgid "Raft Top Fan Speed"
-msgstr "ラフト上層ファン速度"
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
+msgstr "ラフトベースファン速度"
 
-msgctxt "raft_surface_fan_speed description"
-msgid "The fan speed for the top raft layers."
-msgstr "トップラフト印刷時のファンの速度。"
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
+msgstr "ベースラフト層印刷時のファン速度。"
 
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
@@ -4124,13 +4406,13 @@ msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
 msgstr "ミドルラフト印刷時のファンの速度。"
 
-msgctxt "raft_base_fan_speed label"
-msgid "Raft Base Fan Speed"
-msgstr "ラフトベースファン速度"
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Top Fan Speed"
+msgstr "ラフト上層ファン速度"
 
-msgctxt "raft_base_fan_speed description"
-msgid "The fan speed for the base raft layer."
-msgstr "ベースラフト層印刷時のファン速度。"
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the top raft layers."
+msgstr "トップラフト印刷時のファンの速度。"
 
 msgctxt "dual label"
 msgid "Dual Extrusion"
@@ -4148,6 +4430,22 @@ msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "印刷物の横にタワーを造形して、ノズル交換後にフィラメントの調整をします。"
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "プライムタワーのタイプ"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>プライムタワーの生成方法:<ul><li><b>通常:</b>二次材料が,プライミングされるバケットを作成します</li><li><b>インターリーブド:</b>プライムタワーをできるだけまばらに作成します。これにより時間とフィラメントが節約されますが,使用できる材料が互いに接着している場合にのみ可能です。</li></ul></html>"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "通常"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "インターリーブド"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "プライムタワーのサイズ"
@@ -4163,6 +4461,14 @@ msgstr "プライムタワー最小容積"
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "プライムタワーの各層の最小容積。"
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "プライムタワーの最大ブリッジ距離"
+
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "空中で印刷できるブランチの最大長。"
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -4189,12 +4495,44 @@ msgid "After printing the prime tower with one nozzle, wipe the oozed material f
 msgstr "1本のノズルでプライムタワーを印刷した後、もう片方のノズルから滲み出した材料をプライムタワーが拭き取ります。"
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "プライムタワーブリム"
+msgid "Prime Tower Base"
+msgstr "プライムタワーベース"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "モデルがない場合でも、プライムタワーには、ブリムによって与えられる追加の付着が必要なことがあります。現在は「ラフト」密着型では使用できません。"
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "この設定を有効にすると、モデルにはない場合でもプライムタワーにブリムが付きます。高いタワーのためにより頑丈なベースが必要な場合は、ベースの高さを増やすことができます。"
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "プライムタワーベースのサイズ"
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "プライムタワーブリム/ベースの幅。ベースを大きくするとビルドプレートへの接着が強化されますが、有効な印刷エリアも減少します。"
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "プライムタワーベースの高さ"
+
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "プライムタワーベースの高さです。この値を増やすと、ベースが広くなるためプライムタワーがより頑丈になります。この設定が低すぎると、プライムタワーは頑丈なベースを持たなくなります。"
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "プライムタワーベースの傾斜"
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "プライムタワーベースの傾斜に使用される倍率係数です。この値を増やすと、ベースが細くなります。減らすと、ベースが厚くなります。"
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "プライムタワーラフトライン間隔"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "プライムタワーラフト層の独自のラフトライン間の距離です。間隔が広いと、ラフトをビルドプレートから簡単に取り除くことができます。"
 
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
@@ -4419,6 +4757,14 @@ msgstr "一度にすべて"
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "1つずつ"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "手動で印刷順序を設定する"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "オブジェクトリストを並べ替えて,印刷順序を手動で設定できます。リストの最初のオブジェクトが最初に印刷されます。"
 
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
@@ -5228,21 +5574,77 @@ msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
 msgstr "レイヤーやインセットについて1つおきに適用されるウォールの代替の向き。金属プリンティングの場合など、応力が蓄積される可能性がある材料に有用です。"
 
-msgctxt "raft_remove_inside_corners label"
-msgid "Remove Raft Inside Corners"
-msgstr "ラフト内側コーナーの削除"
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "外壁をグループ化"
 
-msgctxt "raft_remove_inside_corners description"
-msgid "Remove inside corners from the raft, causing the raft to become convex."
-msgstr "ラフトから内側コーナーを削除し、ラフトが凸になるようにします。"
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "同じレイヤー内の異なる島の外壁は順次印刷されます。有効にすると、壁は1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島の壁がグループ化されるため、島間の移動回数が減少します。"
 
-msgctxt "raft_base_wall_count label"
-msgid "Raft Base Wall Count"
-msgstr "ラフトベースウォール数"
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "印刷プロセスレポート"
 
-msgctxt "raft_base_wall_count description"
-msgid "The number of contours to print around the linear pattern in the base layer of the raft."
-msgstr "ラフトのベースレイヤーにある線状パターンの周囲にプリントする輪郭の数。"
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "設定されたしきい値を超えたイベントのレポート"
+
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "印刷プロセスレポートを有効にする"
+
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "印刷プロセスのレポートを有効にして,問題の検出の可能性があるしきい値を設定します。"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "フロー警告"
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "検出するフロー警告の制限。"
+
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "フロー制限"
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "検出するフロー異常の制限。"
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "印刷温度警告"
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "検出するプリント温度警告の制限。"
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "印刷温度制限"
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "検出する印刷温度異常の制限。"
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "ビルドボリューム温度警告"
+
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "検出するビルドボリューム温度の制限警告。"
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "ビルドボリューム温度制限"
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "検出するビルドボリューム温度の異常の制限。"
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
@@ -5292,190 +5694,6 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "段階的なフローが有効"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "段階的なフローの変化を有効にできます。有効にすると、フローは目標フローまで段階的に増減します。これは、押し出しモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "段階的なフローの最大加速度"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "フローを段階的に変化させるための最大加速度"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "初期層の最大フロー加速度"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "第1層のフローを段階的に変化させるための最低速度"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "段階的なフローの離散化ステップのサイズ"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "段階的なフローの変化におけるステップごとの時間"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "フロー期間をリセット"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "この値より長い移動の場合、素材フローは目標フローにリセットされます。"
-
-msgctxt "extruder_prime_pos_z label"
-msgid "Extruder Prime Z Position"
-msgstr "エクストルーダーのZ座標"
-
-msgctxt "platform_adhesion description"
-msgid "Adhesion"
-msgstr "密着性"
-
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定することができます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
-
-msgctxt "material description"
-msgid "Material"
-msgstr "マテリアル"
-
-msgctxt "machine_nozzle_size label"
-msgid "Nozzle Diameter"
-msgstr "ノズル内径"
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "\"AA 0.4\"や\"BB 0.8\"などのノズルID。"
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "プリント開始時のノズルの位置を表すX座標。"
-
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "直径"
-
-msgctxt "extruder_prime_pos_x label"
-msgid "Extruder Prime X Position"
-msgstr "エクストルーダープライムX位置"
-
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "使用するフィラメントの太さの調整　この値を使用するフィラメントの太さと一致させてください。"
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "ノズルの内径。標準以外のノズルを使用する場合は、この設定を変更してください。"
-
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "プリンター詳細設定"
-
-msgctxt "extruder_prime_pos_y label"
-msgid "Extruder Prime Y Position"
-msgstr "エクストルーダープライムY位置"
-
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "印刷開始時にノズルがポジションを確認するZ座標。"
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "プリント開始時にノズル位置を表すY座標。"
-
-msgctxt "material label"
-msgid "Material"
-msgstr "マテリアル"
-
-msgctxt "machine_nozzle_id label"
-msgid "Nozzle ID"
-msgstr "ノズルID"
-
-msgctxt "platform_adhesion label"
-msgid "Build Plate Adhesion"
-msgstr "ビルドプレート密着性"
-
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "プリンター"
-
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "外壁をグループ化"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "同じレイヤー内の異なる島の外壁は順次印刷されます。有効にすると、壁は1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島の壁がグループ化されるため、島間の移動回数が減少します。"
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "上面最外壁の流れ"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "最外の壁ラインにおける流量補正。"
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "上面内壁の流れ"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "最外のラインを除く、全ての壁ラインにおけるトップサーフェス壁ラインのフロー補正"
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "上面の最外壁速度"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "上面の最外壁が印刷される速度"
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "上面内壁速度"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "上面内壁が印刷される速度"
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "上面外壁加速度"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "上面の最外壁が印刷される際の加速度"
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "上面内壁加速度"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "上面内壁が印刷される際の加速度"
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "Top Surface Outer Wall Jerk"
-msgstr "上面内壁の最大瞬間速度変化"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "上面内壁が印刷される際の最大瞬間速度変化。"
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "上面最外壁の最大瞬間速度変化"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "上面最外壁が印刷される際の最大瞬間速度変化。"

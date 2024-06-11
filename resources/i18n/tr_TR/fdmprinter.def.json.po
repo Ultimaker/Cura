@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Makine"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Makine özel ayarları"
 
 msgctxt "machine_name label"
 msgid "Machine Type"
@@ -34,7 +42,8 @@ msgstr "G-code’u Başlat"
 
 msgctxt "machine_start_gcode description"
 msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları\n."
+msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları"
+"."
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -42,7 +51,8 @@ msgstr "G-code’u Sonlandır"
 
 msgctxt "machine_end_gcode description"
 msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "En son çalıştırılacak G-code komutları (\n ile ayrılır)."
+msgstr "En son çalıştırılacak G-code komutları ("
+" ile ayrılır)."
 
 msgctxt "material_guid label"
 msgid "Material GUID"
@@ -51,6 +61,30 @@ msgstr "GUID malzeme"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
 msgstr "Malzemedeki GUID Otomatik olarak ayarlanır."
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "Malzeme Türü"
+
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "Kullanılan malzemenin türü."
+
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "Malzeme Markası"
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "Kullanılan malzemenin markası."
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Çap"
+
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Kullanılan filamanın çapını ayarlar. Bu değeri kullanılan filaman çapı ile eşitleyin."
 
 msgctxt "material_bed_temp_wait label"
 msgid "Wait for Build Plate Heatup"
@@ -360,6 +394,22 @@ msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "Nozül ucu ve portal sistemi (X ve Y aksları) arasındaki yükseklik farkı."
 
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "Nozül Kimliği"
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "Ekstruder dişli çarkı için nozül kimliği, “AA 0.4” ve “BB 0.8” gibi."
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "Nozül Çapı"
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "Nozül iç çapı. Standart olmayan nozül boyutu kullanırken bu ayarı değiştirin."
+
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
 msgstr "Ekstruder Ofseti"
@@ -367,6 +417,14 @@ msgstr "Ekstruder Ofseti"
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
 msgstr "Ekstrüder ofsetini koordinat sistemine uygulayın. Tüm ekstrüderleri etkiler."
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "Ekstruder İlk Z konumu"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Z koordinatı."
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -1558,7 +1616,8 @@ msgstr "Ekstra Dolgu Duvar Sayısı"
 
 msgctxt "infill_wall_line_count description"
 msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Dolgu alanının etrafına ekstra duvar ekle. Bu duvarlar üst/alt yüzey hatlarının daha az aşağı düşmesini sağlar. Yani biraz fazla materyal kullanarak, daha az üst/alt yüzey katmanı ile aynı kaliteyi yakalayabilirsiniz.\nBu özellik, doğru konfigüre edildiğinde, harekete veya geri çekmeye gerek kalmadan Dolgu Poligonlarını Bağlama ile birlikte tüm dolguyu tek bir ekstrüzyon yoluna bağlayabilir."
+msgstr "Dolgu alanının etrafına ekstra duvar ekle. Bu duvarlar üst/alt yüzey hatlarının daha az aşağı düşmesini sağlar. Yani biraz fazla materyal kullanarak, daha az üst/alt yüzey katmanı ile aynı kaliteyi yakalayabilirsiniz."
+"Bu özellik, doğru konfigüre edildiğinde, harekete veya geri çekmeye gerek kalmadan Dolgu Poligonlarını Bağlama ile birlikte tüm dolguyu tek bir ekstrüzyon yoluna bağlayabilir."
 
 msgctxt "sub_div_rad_add label"
 msgid "Cubic Subdivision Shell"
@@ -1696,6 +1755,14 @@ msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "Dolgu hatları, baskı süresinden tasarruf etmek için düzleştirilir. Bu, dolgu hattının uzunluğu boyunca izin verilen maksimum çıkıntı açısıdır."
 
+msgctxt "material label"
+msgid "Material"
+msgstr "Malzeme"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "Malzeme"
+
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "Varsayılan Yazdırma Sıcaklığı"
@@ -1725,8 +1792,8 @@ msgid "Printing Temperature Initial Layer"
 msgstr "İlk Katman Yazdırma Sıcaklığı"
 
 msgctxt "material_print_temperature_layer_0 description"
-msgid "The temperature used for printing the first layer. Set at 0 to disable special handling of the initial layer."
-msgstr "İlk katmanı yazdırmak için kullanılan sıcaklık. İlk katmanın özel kullanımını devre dışı bırakmak için 0’a ayarlayın."
+msgid "The temperature used for printing the first layer."
+msgstr "İlk katmanın basımında kullanılan sıcaklık."
 
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
@@ -1968,6 +2035,22 @@ msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
 msgstr "En dıştaki duvar hattı hariç diğer duvar hatlarının akış telafisidir."
 
+msgctxt "wall_0_material_flow_roofing label"
+msgid "Top Surface Outer Wall Flow"
+msgstr "Üst Yüzeyin En Dış Duvar Akışı"
+
+msgctxt "wall_0_material_flow_roofing description"
+msgid "Flow compensation on the top surface outermost wall line."
+msgstr "Üst Yüzeyin En Dış Duvar Hattında Akış Telafisi."
+
+msgctxt "wall_x_material_flow_roofing label"
+msgid "Top Surface Inner Wall(s) Flow"
+msgstr "Üst Yüzey İç Duvar Akışı"
+
+msgctxt "wall_x_material_flow_roofing description"
+msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
+msgstr "Tüm duvar hatları için dıştaki hariç üst yüzey duvar hatlarında akış telafi."
+
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
 msgstr "Üst/Alt Akış"
@@ -2135,6 +2218,22 @@ msgstr "İç Duvar Hızı"
 msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "Tüm iç duvarların yazdırıldığı hız. İç duvarları dış duvarlardan daha hızlı yazdırmak yazdırma süresini azaltacaktır. Bu ayarı dış duvar hızı ve dolgu hızı arasında yapmak faydalı olacaktır."
+
+msgctxt "speed_wall_0_roofing label"
+msgid "Top Surface Outer Wall Speed"
+msgstr "Üst Yüzeyin En Dış Duvar Hızı"
+
+msgctxt "speed_wall_0_roofing description"
+msgid "The speed at which the top surface outermost wall is printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
+msgctxt "speed_wall_x_roofing label"
+msgid "Top Surface Inner Wall Speed"
+msgstr "Üst Yüzey İç Duvar Hızı"
+
+msgctxt "speed_wall_x_roofing description"
+msgid "The speed at which the top surface inner walls are printed."
+msgstr "Üst Yüzey İç Duvarların Hangi Hızda Basıldığı."
 
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
@@ -2320,6 +2419,22 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "İç duvarların yazdırıldığı ivme."
 
+msgctxt "acceleration_wall_0_roofing label"
+msgid "Top Surface Outer Wall Acceleration"
+msgstr "Üst Yüzey Dış Duvar Hızlanması"
+
+msgctxt "acceleration_wall_0_roofing description"
+msgid "The acceleration with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
+
+msgctxt "acceleration_wall_x_roofing label"
+msgid "Top Surface Inner Wall Acceleration"
+msgstr "Üst Yüzey İç Duvar Hızlanması"
+
+msgctxt "acceleration_wall_x_roofing description"
+msgid "The acceleration with which the top surface inner walls are printed."
+msgstr "Üst yüzey iç duvarlarının hangi hızla basıldığı."
+
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr "Üst Yüzey İvmesi"
@@ -2479,6 +2594,22 @@ msgstr "İç Duvar Salınımı"
 msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "Tüm iç duvarların yazdırıldığı maksimum anlık hız değişimi."
+
+msgctxt "jerk_wall_0_roofing label"
+msgid "Top Surface Outer Wall Jerk"
+msgstr "Üst Yüzeyin İç Duvar Darbesi"
+
+msgctxt "jerk_wall_0_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
+msgstr "Üst Yüzeyin İç Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
+
+msgctxt "jerk_wall_x_roofing label"
+msgid "Top Surface Inner Wall Jerk"
+msgstr "Üst Yüzeyin En Dış Duvar Darbesi"
+
+msgctxt "jerk_wall_x_roofing description"
+msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
+msgstr "Üst Yüzeyin En Dış Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
 
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
@@ -3257,8 +3388,8 @@ msgid "Support Z Distance"
 msgstr "Destek Z Mesafesi"
 
 msgctxt "support_z_distance description"
-msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. This value is rounded up to a multiple of the layer height."
-msgstr "Destek yapısının üst/alt kısmından baskıya olan mesafe. Bu boşluk, model yazdırıldıktan sonra desteklerin sökülmesi için açıklık sağlar. Bu değer, katman yüksekliğinin iki katına kadar yuvarlanır."
+msgid "Distance from the top/bottom of the support structure to the print. This gap provides clearance to remove the supports after the model is printed. The topmost support layer below the model might be a fraction of regular layers."
+msgstr "Desteğin üstü/altı ile baskı arasındaki mesafe. Bu boşluk, model basıldıktan sonra desteklerin kolayca çıkarılabilmesini sağlar. Modelin altındaki en üst destek katmanı, düzenli katmanların bir kısmı olabilir."
 
 msgctxt "support_top_distance label"
 msgid "Support Top Distance"
@@ -3273,8 +3404,8 @@ msgid "Support Bottom Distance"
 msgstr "Destek Alt Mesafesi"
 
 msgctxt "support_bottom_distance description"
-msgid "Distance from the print to the bottom of the support."
-msgstr "Baskıdan desteğin altına olan mesafe."
+msgid "Distance from the print to the bottom of the support. Note that this is rounded up to the next layer height."
+msgstr "Baskıdan desteğin altına kadar olan mesafe. Bunun bir sonraki katman yüksekliğine yuvarlandığını unutmayın."
 
 msgctxt "support_xy_distance label"
 msgid "Support X/Y Distance"
@@ -3427,14 +3558,6 @@ msgstr "Destek Zemini Kalınlığı"
 msgctxt "support_bottom_height description"
 msgid "The thickness of the support floors. This controls the number of dense layers that are printed on top of places of a model on which support rests."
 msgstr "Destek zeminlerinin kalınlığı. Desteğin üzerinde durduğu modelin üst kısımlarına yazdırılan yoğun katmanların sayısını kontrol eder."
-
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "Destek Arayüz Çözünürlüğü"
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "Desteğin üstünde ve altında model bulunduğunda, kontrol sırasında verilen yükseklikte adımlar uygulayın. Daha yüksek değerler, destek arayüzü olması gereken yerlerde yazdırılacak normal destek oluştururken daha düşük değerler daha yavaş dilimler."
 
 msgctxt "support_interface_density label"
 msgid "Support Interface Density"
@@ -3724,6 +3847,14 @@ msgctxt "support_meshes_present description"
 msgid "There are support meshes present in the scene. This setting is controlled by Cura."
 msgstr "Bunlar sahnedeki mevcut destek örgüleridir. Bu ayar Cura tarafından kontrol edilir."
 
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "Yapı Levhası Yapıştırması"
+
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "Yapıştırma"
+
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
 msgstr "İlk Damlayı Etkinleştir"
@@ -3731,6 +3862,22 @@ msgstr "İlk Damlayı Etkinleştir"
 msgctxt "prime_blob_enable description"
 msgid "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time."
 msgstr "Yazdırma öncesinde bir damla ile filamanın astarlanıp astarlanmayacağı. Bu ayar açık olarak ayarlandığında, yazdırma öncesinde ekstrüder nozülünde malzeme hazır olacaktır. Kenar veya Etek Yazdırma da astarlama etkisi yapabilir; bu durumda bu ayarın kapatılmasıyla biraz zaman kazanılabilir."
+
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "Extruder İlk X konumu"
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun X koordinatı."
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "Extruder İlk Y konumu"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Y koordinatı."
 
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
@@ -3818,7 +3965,8 @@ msgstr "Etek Mesafesi"
 
 msgctxt "skirt_gap description"
 msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.\nMinimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
+msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe."
+"Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
 
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
@@ -3860,21 +4008,33 @@ msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "İlgili alan üzerinde destek olsa bile kenarı modelin çevresine yazdırmaya zorlayın. Desteğin ilk katmanının bazı alanlarını kenar alanları ile değiştirir."
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "Sadece Dış Kısımdaki Kenar"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "Brim Konumu"
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "Sadece modelin dış kısmındaki kenarı yazdırır. Yatak yapışmasını büyük oranda azaltmasa da daha sonra kaldırmanız gereken kenar sayısını azaltır."
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "Modelin dışına, içine veya her ikisine de bir brim yazdırın. Modele bağlı olarak bu, daha sonra çıkarmanız gereken brim miktarının azaltılmasına yardımcı olurken yatağın düzgünce yapışmasını sağlar."
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "Yalnızca Dışarıda"
+
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "Yalnızca İçeride"
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "Her Yerde"
 
 msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "Kenar İçi Kaçınma Payı"
+msgid "Brim Avoid Margin"
+msgstr "Brim Engelleme Toleransı"
 
 msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "Bir başka parçanın içine tamamen kapatılmış bir parça, diğer parçanın içine temas eden bir dış kenar oluşturabilir. Bu, iç deliklerden bu mesafe içindeki tüm kenarları kaldırır."
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "Bir modelin etrafındaki brim, istemediğiniz yerden başka bir modele değebilir. Bu, brim olmayan modellerde bu mesafedeki tüm brimleri ortadan kaldırır."
 
 msgctxt "brim_smart_ordering label"
 msgid "Smart Brim"
@@ -3892,6 +4052,62 @@ msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "Radye etkinleştirildiğinde, ayrıca radye verilen model etrafındaki ek radye alanıdır. Bu boşluğu artırmak, daha fazla malzeme kullanırken ve yazdırma için daha az alan bırakırken daha sağlam bir radye oluşturacaktır."
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "Raft Tabanı Ekstra Tolerans"
+
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Raft tabanı etkinleştirilirse bu, ayrıca bir raft verilen modelin etrafındaki ekstra raft alanıdır. Bu toleransın arttırılması daha güçlü bir raft oluşturacak, daha fazla malzeme kullanacak ve baskınız için daha az alan bırakacaktır."
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "Raft Ortası Ekstra Tolerans"
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Raft ortası etkinleştirilirse bu, ayrıca bir raft verilen modelin etrafındaki ekstra raft alanıdır. Bu toleransın arttırılması daha güçlü bir raft oluşturacak, daha fazla malzeme kullanacak ve baskınız için daha az alan bırakacaktır."
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "Raft Üstü Ekstra Tolerans"
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "Raft üstü etkinleştirilmişse bu, ayrıca bir raft verilen modelin etrafındaki ekstra raft alanıdır. Bu toleransın arttırılması daha güçlü bir raft oluşturacak, daha fazla malzeme kullanacak ve baskınız için daha az alan bırakacaktır."
+
+msgctxt "raft_remove_inside_corners label"
+msgid "Remove Raft Inside Corners"
+msgstr "Radye İç Köşelerini Kaldır"
+
+msgctxt "raft_remove_inside_corners description"
+msgid "Remove inside corners from the raft, causing the raft to become convex."
+msgstr "Radyenin iç köşelerini kaldırır ve radyenin dışbükey olmasına yol açar."
+
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "Raft Tabanını İç Köşelerini Kaldır"
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "Raftın dışbükey olmasına neden olan raftın tabanındaki iç köşeleri çıkarır."
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "Raft Ortası İç Köşelerini Kaldır"
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "Raftın dışbükey olmasına neden olan raftın orta kısmındaki iç köşeleri çıkarır."
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "Raft Üstü İç Köşelerini Çıkar"
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "Raftın dışbükey olmasına neden olan raftın üst kısmındaki iç köşeleri çıkarır."
+
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Radye Düzeltme"
@@ -3899,6 +4115,30 @@ msgstr "Radye Düzeltme"
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "Bu ayar, radye ana hattında yer alan iç köşelerin ne kadar yuvarlanacağını kontrol eder. İç köşeler, burada belirtilen değere eşit yarıçapa sahip yarım daire şeklinde yuvarlanır. Ayrıca bu ayar, söz konusu daireden daha küçük olan radye ana hattındaki delikleri ortadan kaldırır."
+
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "Raft Tabanı Düzeltme"
+
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Bu ayar, raft tabanı taslağındaki iç köşelerin ne kadarının yuvarlak olacağını kontrol eder. İç köşeler, yarıçapı burada verilen değere eşit olacak şekilde yarım daire şeklinde yuvarlanır. Bu ayar aynı zamanda raft dış hattındaki böyle bir daireden daha küçük olan delikleri de kaldırır."
+
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "Raft Orta Düzeltme"
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Bu ayar, raft orta kısmı taslağındaki iç köşelerin ne kadarının yuvarlak olacağını kontrol eder. İç köşeler, yarıçapı burada verilen değere eşit olacak şekilde yarım daire şeklinde yuvarlanır. Bu ayar aynı zamanda raft dış hattındaki böyle bir daireden daha küçük olan delikleri de kaldırır."
+
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "Raft Üst Düzeltme"
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "Bu ayar, raft üstü taslağındaki iç köşelerin ne kadarının yuvarlak olacağını kontrol eder. İç köşeler, yarıçapı burada verilen değere eşit olacak şekilde yarım daire şeklinde yuvarlanır. Bu ayar aynı zamanda raft dış hattındaki böyle bir daireden daha küçük olan delikleri de kaldırır."
 
 msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
@@ -3913,40 +4153,32 @@ msgid "Initial Layer Z Overlap"
 msgstr "İlk Katman Z Çakışması"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "Hava boşluğundaki filaman kaybını telafi etmek için Z yönünde modelin ilk ve ikinci katmanını çakıştırın. İlk model katmanının üstündeki tüm modeller bu miktara indirilecektir."
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "Hava boşluğundaki filament kaybını telafi etmek için modelin birinci ve ikinci katmanını Z yönünde üst üste getirir. İlk model katmanının üzerindeki tüm modeller bu miktarda aşağı kaydırılacaktır.\nBu ayar nedeniyle bazen ikinci katmanın ilk katmanın altına yazdırıldığı belirtilebilir. Bu istenilen davranıştır"
 
-msgctxt "raft_surface_layers label"
-msgid "Raft Top Layers"
-msgstr "Radyenin Üst Katmanları"
+msgctxt "raft_base_thickness label"
+msgid "Raft Base Thickness"
+msgstr "Radye Taban Kalınlığı"
 
-msgctxt "raft_surface_layers description"
-msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
-msgstr "İkinci radye katmanındaki üst katmanların sayısı. Bunlar modelin üstünde durduğu tamamı dolgulu katmanlardır. İki katman bir katmandan daha pürüzsüz bir üst yüzey oluşturur."
+msgctxt "raft_base_thickness description"
+msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
+msgstr "Radyenin taban katmanının katman kalınlığı. Bu, yazıcı yapı levhasına sıkıca yapışan kalın bir katman olmalıdır."
 
-msgctxt "raft_surface_thickness label"
-msgid "Raft Top Layer Thickness"
-msgstr "Radyenin Üst Katman Kalınlığı"
+msgctxt "raft_base_line_width label"
+msgid "Raft Base Line Width"
+msgstr "Radyenin Taban Hat Genişliği"
 
-msgctxt "raft_surface_thickness description"
-msgid "Layer thickness of the top raft layers."
-msgstr "Üst radye katmanlarının katman kalınlığı."
+msgctxt "raft_base_line_width description"
+msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
+msgstr "Radyenin taban katmanındaki hatların genişliği. Bunlar, yapı levhasına yapışma işlemine yardımcı olan kalın hatlar olmalıdır."
 
-msgctxt "raft_surface_line_width label"
-msgid "Raft Top Line Width"
-msgstr "Radyenin Üst Hat Genişliği"
+msgctxt "raft_base_line_spacing label"
+msgid "Raft Base Line Spacing"
+msgstr "Radye Taban Hat Genişliği"
 
-msgctxt "raft_surface_line_width description"
-msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
-msgstr "Radyenin üst yüzeyindeki hatların genişliği. Radyenin üstünün pürüzsüz olması için bunlar ince hat olabilir."
-
-msgctxt "raft_surface_line_spacing label"
-msgid "Raft Top Spacing"
-msgstr "Radyenin Üst Boşluğu"
-
-msgctxt "raft_surface_line_spacing description"
-msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
-msgstr "Üst radye katmanları için radye hatları arasındaki mesafe. Yüzeyin katı olabilmesi için aralık hat genişliğine eşit olmalıdır."
+msgctxt "raft_base_line_spacing description"
+msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Radyenin taban katmanı için radye hatları arasındaki mesafe. Geniş aralık bırakılması radyenin yapı levhasından kolayca kaldırılmasını sağlar."
 
 msgctxt "raft_interface_layers label"
 msgid "Raft Middle Layers"
@@ -3980,29 +4212,77 @@ msgctxt "raft_interface_line_spacing description"
 msgid "The distance between the raft lines for the middle raft layer. The spacing of the middle should be quite wide, while being dense enough to support the top raft layers."
 msgstr "Radyenin orta katmanı için radye hatları arasındaki mesafe. Ortadaki aralığın oldukça geniş olması gerekirken, üst radye katmanlarını desteklemek için de yeteri kadar yoğun olması gerekir."
 
-msgctxt "raft_base_thickness label"
-msgid "Raft Base Thickness"
-msgstr "Radye Taban Kalınlığı"
+msgctxt "raft_surface_layers label"
+msgid "Raft Top Layers"
+msgstr "Radyenin Üst Katmanları"
 
-msgctxt "raft_base_thickness description"
-msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
-msgstr "Radyenin taban katmanının katman kalınlığı. Bu, yazıcı yapı levhasına sıkıca yapışan kalın bir katman olmalıdır."
+msgctxt "raft_surface_layers description"
+msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
+msgstr "İkinci radye katmanındaki üst katmanların sayısı. Bunlar modelin üstünde durduğu tamamı dolgulu katmanlardır. İki katman bir katmandan daha pürüzsüz bir üst yüzey oluşturur."
 
-msgctxt "raft_base_line_width label"
-msgid "Raft Base Line Width"
-msgstr "Radyenin Taban Hat Genişliği"
+msgctxt "raft_surface_thickness label"
+msgid "Raft Top Layer Thickness"
+msgstr "Radyenin Üst Katman Kalınlığı"
 
-msgctxt "raft_base_line_width description"
-msgid "Width of the lines in the base raft layer. These should be thick lines to assist in build plate adhesion."
-msgstr "Radyenin taban katmanındaki hatların genişliği. Bunlar, yapı levhasına yapışma işlemine yardımcı olan kalın hatlar olmalıdır."
+msgctxt "raft_surface_thickness description"
+msgid "Layer thickness of the top raft layers."
+msgstr "Üst radye katmanlarının katman kalınlığı."
 
-msgctxt "raft_base_line_spacing label"
-msgid "Raft Base Line Spacing"
-msgstr "Radye Taban Hat Genişliği"
+msgctxt "raft_surface_line_width label"
+msgid "Raft Top Line Width"
+msgstr "Radyenin Üst Hat Genişliği"
 
-msgctxt "raft_base_line_spacing description"
-msgid "The distance between the raft lines for the base raft layer. Wide spacing makes for easy removal of the raft from the build plate."
-msgstr "Radyenin taban katmanı için radye hatları arasındaki mesafe. Geniş aralık bırakılması radyenin yapı levhasından kolayca kaldırılmasını sağlar."
+msgctxt "raft_surface_line_width description"
+msgid "Width of the lines in the top surface of the raft. These can be thin lines so that the top of the raft becomes smooth."
+msgstr "Radyenin üst yüzeyindeki hatların genişliği. Radyenin üstünün pürüzsüz olması için bunlar ince hat olabilir."
+
+msgctxt "raft_surface_line_spacing label"
+msgid "Raft Top Spacing"
+msgstr "Radyenin Üst Boşluğu"
+
+msgctxt "raft_surface_line_spacing description"
+msgid "The distance between the raft lines for the top raft layers. The spacing should be equal to the line width, so that the surface is solid."
+msgstr "Üst radye katmanları için radye hatları arasındaki mesafe. Yüzeyin katı olabilmesi için aralık hat genişliğine eşit olmalıdır."
+
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "Monotonik Raft Üst Yüzey Düzeni"
+
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "Raftın üst yüzey çizgilerini, her zaman bitişik çizgilerle tek bir yönde üst üste binmelerine neden olacak bir sırayla yazdırır. Bu, yazdırmanın biraz daha fazla zaman almasını sağlar ama yüzeyin daha tutarlı görünmesini sağlar, bu da modelin alt yüzeyinde de görülebilir."
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "Raft Duvar Sayısı"
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "Raft doğrusal modelinin etrafına yazdırılacak konturların sayısı."
+
+msgctxt "raft_base_wall_count label"
+msgid "Raft Base Wall Count"
+msgstr "Radye Tabanı Duvar Sayısı"
+
+msgctxt "raft_base_wall_count description"
+msgid "The number of contours to print around the linear pattern in the base layer of the raft."
+msgstr "Radyenin taban katmanındaki doğrusal desen etrafına basılacak kontur sayısıdır."
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "Raft Orta Duvar Sayısı"
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "Raftın orta katmanlarındaki doğrusal desenin etrafına yazdırılacak kontur sayısı."
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "Raft Üstü Duvar Sayısı"
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "Raftın üst katmanlarındaki doğrusal desenin etrafına yazdırılacak kontur sayısı."
 
 msgctxt "raft_speed label"
 msgid "Raft Print Speed"
@@ -4012,13 +4292,13 @@ msgctxt "raft_speed description"
 msgid "The speed at which the raft is printed."
 msgstr "Radyenin yazdırıldığı hız."
 
-msgctxt "raft_surface_speed label"
-msgid "Raft Top Print Speed"
-msgstr "Radye Üst Yazdırma Hızı"
+msgctxt "raft_base_speed label"
+msgid "Raft Base Print Speed"
+msgstr "Radyenin Taban Yazdırma Hızı"
 
-msgctxt "raft_surface_speed description"
-msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
-msgstr "Radye katmanlarının yazdırıldığı hız. Nozülün bitişik yüzey hatlarını yavaşça düzeltebilmesi için, bu kısımlar biraz daha yavaş yazdırılmalıdır."
+msgctxt "raft_base_speed description"
+msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
+msgstr "Radyenin taban katmanının yazdırıldığı hız. Nozülden gelen malzemenin hacmi çok büyük olduğu için bu kısım yavaş yazdırılmalıdır."
 
 msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
@@ -4028,13 +4308,13 @@ msgctxt "raft_interface_speed description"
 msgid "The speed at which the middle raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "Orta radye katmanının yazdırıldığı hız. Nozülden gelen malzemenin hacmi çok büyük olduğu için bu kısım yavaş yazdırılmalıdır."
 
-msgctxt "raft_base_speed label"
-msgid "Raft Base Print Speed"
-msgstr "Radyenin Taban Yazdırma Hızı"
+msgctxt "raft_surface_speed label"
+msgid "Raft Top Print Speed"
+msgstr "Radye Üst Yazdırma Hızı"
 
-msgctxt "raft_base_speed description"
-msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
-msgstr "Radyenin taban katmanının yazdırıldığı hız. Nozülden gelen malzemenin hacmi çok büyük olduğu için bu kısım yavaş yazdırılmalıdır."
+msgctxt "raft_surface_speed description"
+msgid "The speed at which the top raft layers are printed. These should be printed a bit slower, so that the nozzle can slowly smooth out adjacent surface lines."
+msgstr "Radye katmanlarının yazdırıldığı hız. Nozülün bitişik yüzey hatlarını yavaşça düzeltebilmesi için, bu kısımlar biraz daha yavaş yazdırılmalıdır."
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -4044,13 +4324,13 @@ msgctxt "raft_acceleration description"
 msgid "The acceleration with which the raft is printed."
 msgstr "Radyenin yazdırıldığı ivme."
 
-msgctxt "raft_surface_acceleration label"
-msgid "Raft Top Print Acceleration"
-msgstr "Radye Üst Yazdırma İvmesi"
+msgctxt "raft_base_acceleration label"
+msgid "Raft Base Print Acceleration"
+msgstr "Radyenin Taban Yazdırma İvmesi"
 
-msgctxt "raft_surface_acceleration description"
-msgid "The acceleration with which the top raft layers are printed."
-msgstr "Üst radye katmanların yazdırıldığı ivme."
+msgctxt "raft_base_acceleration description"
+msgid "The acceleration with which the base raft layer is printed."
+msgstr "Taban radye katmanının yazdırıldığı ivme."
 
 msgctxt "raft_interface_acceleration label"
 msgid "Raft Middle Print Acceleration"
@@ -4060,13 +4340,13 @@ msgctxt "raft_interface_acceleration description"
 msgid "The acceleration with which the middle raft layer is printed."
 msgstr "Orta radye katmanının yazdırıldığı ivme."
 
-msgctxt "raft_base_acceleration label"
-msgid "Raft Base Print Acceleration"
-msgstr "Radyenin Taban Yazdırma İvmesi"
+msgctxt "raft_surface_acceleration label"
+msgid "Raft Top Print Acceleration"
+msgstr "Radye Üst Yazdırma İvmesi"
 
-msgctxt "raft_base_acceleration description"
-msgid "The acceleration with which the base raft layer is printed."
-msgstr "Taban radye katmanının yazdırıldığı ivme."
+msgctxt "raft_surface_acceleration description"
+msgid "The acceleration with which the top raft layers are printed."
+msgstr "Üst radye katmanların yazdırıldığı ivme."
 
 msgctxt "raft_jerk label"
 msgid "Raft Print Jerk"
@@ -4076,13 +4356,13 @@ msgctxt "raft_jerk description"
 msgid "The jerk with which the raft is printed."
 msgstr "Radyenin yazdırıldığı salınım."
 
-msgctxt "raft_surface_jerk label"
-msgid "Raft Top Print Jerk"
-msgstr "Radye Üst Yazdırma Salınımı"
+msgctxt "raft_base_jerk label"
+msgid "Raft Base Print Jerk"
+msgstr "Radyenin Taban Yazdırma Salınımı"
 
-msgctxt "raft_surface_jerk description"
-msgid "The jerk with which the top raft layers are printed."
-msgstr "Üst radye katmanların yazdırıldığı salınım."
+msgctxt "raft_base_jerk description"
+msgid "The jerk with which the base raft layer is printed."
+msgstr "Taban radye katmanının yazdırıldığı ivmesi değişimi."
 
 msgctxt "raft_interface_jerk label"
 msgid "Raft Middle Print Jerk"
@@ -4092,13 +4372,13 @@ msgctxt "raft_interface_jerk description"
 msgid "The jerk with which the middle raft layer is printed."
 msgstr "Orta radye katmanının yazdırıldığı salınım."
 
-msgctxt "raft_base_jerk label"
-msgid "Raft Base Print Jerk"
-msgstr "Radyenin Taban Yazdırma Salınımı"
+msgctxt "raft_surface_jerk label"
+msgid "Raft Top Print Jerk"
+msgstr "Radye Üst Yazdırma Salınımı"
 
-msgctxt "raft_base_jerk description"
-msgid "The jerk with which the base raft layer is printed."
-msgstr "Taban radye katmanının yazdırıldığı ivmesi değişimi."
+msgctxt "raft_surface_jerk description"
+msgid "The jerk with which the top raft layers are printed."
+msgstr "Üst radye katmanların yazdırıldığı salınım."
 
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
@@ -4108,13 +4388,13 @@ msgctxt "raft_fan_speed description"
 msgid "The fan speed for the raft."
 msgstr "Radye için fan hızı."
 
-msgctxt "raft_surface_fan_speed label"
-msgid "Raft Top Fan Speed"
-msgstr "Radye Üst Fan Hızı"
+msgctxt "raft_base_fan_speed label"
+msgid "Raft Base Fan Speed"
+msgstr "Radyenin Taban Fan Hızı"
 
-msgctxt "raft_surface_fan_speed description"
-msgid "The fan speed for the top raft layers."
-msgstr "Üst radye katmanları için fan hızı."
+msgctxt "raft_base_fan_speed description"
+msgid "The fan speed for the base raft layer."
+msgstr "Radyenin taban katmanı için fan hızı."
 
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
@@ -4124,13 +4404,13 @@ msgctxt "raft_interface_fan_speed description"
 msgid "The fan speed for the middle raft layer."
 msgstr "Radyenin orta katmanı için fan hızı."
 
-msgctxt "raft_base_fan_speed label"
-msgid "Raft Base Fan Speed"
-msgstr "Radyenin Taban Fan Hızı"
+msgctxt "raft_surface_fan_speed label"
+msgid "Raft Top Fan Speed"
+msgstr "Radye Üst Fan Hızı"
 
-msgctxt "raft_base_fan_speed description"
-msgid "The fan speed for the base raft layer."
-msgstr "Radyenin taban katmanı için fan hızı."
+msgctxt "raft_surface_fan_speed description"
+msgid "The fan speed for the top raft layers."
+msgstr "Üst radye katmanları için fan hızı."
 
 msgctxt "dual label"
 msgid "Dual Extrusion"
@@ -4148,6 +4428,22 @@ msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Malzemenin hazırlanmasına yardımcı olan yazıcının yanındaki direği her nozül değişiminden sonra yazdırın."
 
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "Asal Kule Türü"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>Asal kule nasıl oluşturulur:<ul><li><b>Normal:</b> İkincil malzemelerin astarlandığı bir kova oluşturur.</li><li><b>Aralıklı:</b> Olabildiğince seyrek bir asal kule oluşturur. Bu, zamandan ve filamentten tasarruf sağlayacaktır ama bu yalnızca kullanılan malzemelerin birbirine yapışması durumunda mümkündür.</li></ul></html>"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "Normal"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "Aralıklı"
+
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "İlk Direk Boyutu"
@@ -4163,6 +4459,14 @@ msgstr "İlk Direğin Minimum Hacmi"
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "Yeterince malzeme temizlemek için ilk direğin her bir katmanı için minimum hacim."
+
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "Asal Kule Maksimum Köprüleme Mesafesi"
+
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "Havadan basılabilecek dalların maksimum uzunluğu."
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -4189,12 +4493,44 @@ msgid "After printing the prime tower with one nozzle, wipe the oozed material f
 msgstr "Bir nozül ile ilk direği yazdırdıktan sonra, diğer nozülden ilk direğe sızdırılan malzemeyi silin."
 
 msgctxt "prime_tower_brim_enable label"
-msgid "Prime Tower Brim"
-msgstr "Astarlama Direği Kenarı"
+msgid "Prime Tower Base"
+msgstr "Başlangıç Kulesi Tabanı"
 
 msgctxt "prime_tower_brim_enable description"
-msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Model ihtiyaç duymasa da astarlama direkleri bir kenarın sağladığı ekstra yapışkanlığa ihtiyaç duyabilir. Şu anda \"radye\" yapışma tipi ile birlikte kullanılamamaktadır."
+msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
+msgstr "Bu ayarı etkinleştirmeniz, modelinizde olmasa bile prime tower'ınıza bir brim kazandırır. Eğer yüksek bir kule için daha sağlam bir taban istiyorsanız, taban yüksekliğini artırabilirsiniz."
+
+msgctxt "prime_tower_base_size label"
+msgid "Prime Tower Base Size"
+msgstr "Başlangıç Kulesi Taban Boyutu"
+
+msgctxt "prime_tower_base_size description"
+msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
+msgstr "Prime tower brim/tabanının genişliği. Daha büyük bir taban yapışmayı artırır, ancak etkili baskı alanını da azaltır."
+
+msgctxt "prime_tower_base_height label"
+msgid "Prime Tower Base Height"
+msgstr "Başlangıç Kulesi Taban Yüksekliği"
+
+msgctxt "prime_tower_base_height description"
+msgid "The height of the prime tower base. Increasing this value will result in a more sturdy prime tower because the base will be wider. If this setting is too low, the prime tower will not have a sturdy base."
+msgstr "Prime tower tabanının yüksekliği. Bu değeri artırmak, taban daha geniş olacağı için daha sağlam bir prime tower oluşturur. Eğer bu ayar çok düşükse, prime tower sağlam bir tabana sahip olmayacaktır."
+
+msgctxt "prime_tower_base_curve_magnitude label"
+msgid "Prime Tower Base Slope"
+msgstr "Prime Tower Taban Eğimi"
+
+msgctxt "prime_tower_base_curve_magnitude description"
+msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
+msgstr "Prime tower tabanının eğiminde kullanılan büyüklük faktörü. Bu değeri artırırsanız, taban daha ince hale gelir. Azaltırsanız, taban daha kalın olur."
+
+msgctxt "prime_tower_raft_base_line_spacing label"
+msgid "Prime Tower Raft Line Spacing"
+msgstr "Başlangıç Kulesi Salı İzi Aralığı"
+
+msgctxt "prime_tower_raft_base_line_spacing description"
+msgid "The distance between the raft lines for the unique prime tower raft layer. Wide spacing makes for easy removal of the raft from the build plate."
+msgstr "Tek başlangıç kulesi sal katmanı için sal izleri arasındaki mesafe. Geniş aralıklar, salın yapıştırma tablasından kolay çıkarılmasını sağlar."
 
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
@@ -4419,6 +4755,14 @@ msgstr "Tümünü birden"
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Birer Birer"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "Baskı Sırasını Manuel Olarak Ayarla"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "Yazdırma sırasını manuel olarak ayarlamak için nesne listesini sıralamanızı sağlar. Listedeki ilk nesne ilk olarak yazdırılacaktır."
 
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
@@ -5228,21 +5572,77 @@ msgctxt "material_alternate_walls description"
 msgid "Alternate wall directions every other layer and inset. Useful for materials that can build up stress, like for metal printing."
 msgstr "Duvar yönlerini her katmanda ve iç dolguda değiştirin. Metal baskıdaki gibi stres oluşturabilen malzemeler için kullanışlıdır."
 
-msgctxt "raft_remove_inside_corners label"
-msgid "Remove Raft Inside Corners"
-msgstr "Radye İç Köşelerini Kaldır"
+msgctxt "group_outer_walls label"
+msgid "Group Outer Walls"
+msgstr "Dış Duvarları Grupla"
 
-msgctxt "raft_remove_inside_corners description"
-msgid "Remove inside corners from the raft, causing the raft to become convex."
-msgstr "Radyenin iç köşelerini kaldırır ve radyenin dışbükey olmasına yol açar."
+msgctxt "group_outer_walls description"
+msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr "Aynı katman içindeki farklı adalardaki dış duvarlar sırayla basılır. Etkinleştirildiğinde, akış değişiklik miktarı duvarlar tür türüne basıldığı için sınırlıdır, devre dışı bırakıldığında ise aynı adalardaki duvarlar gruplandığı için adalar arasındaki seyahat sayısı azalır."
 
-msgctxt "raft_base_wall_count label"
-msgid "Raft Base Wall Count"
-msgstr "Radye Tabanı Duvar Sayısı"
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "Yazdırma Süreci Raporlaması"
 
-msgctxt "raft_base_wall_count description"
-msgid "The number of contours to print around the linear pattern in the base layer of the raft."
-msgstr "Radyenin taban katmanındaki doğrusal desen etrafına basılacak kontur sayısıdır."
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "Belirlenen eşiklerin dışına çıkan etkinliklerin raporlanması"
+
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "Yazdırma İşlemi Raporlamasını Etkinleştir"
+
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "Olası hata tespitine yönelik eşik değerlerini ayarlamak için yazdırma işlemi raporlamasını etkinleştirin."
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "Akış Uyarısı"
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "Tespit için akış uyarısı sınırı."
+
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "Akış Sınırı"
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "Tespit için akış anormalliği sınırı."
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "Yazdırma sıcaklığı Uyarısı"
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "Tespit için Yazdırma sıcaklığı uyarısı sınır."
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "Yazdırma sıcaklığı Sınırı"
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "Tespit için Yazdırma Sıcaklığı anormalliği sınırı."
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "Yapı Hacmi sıcaklığı Uyarısı"
+
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "Tespit için Yapı Hacmi Sıcaklığı Sınırı uyarısı."
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "Yapı Hacmi Sıcaklık Sınırı"
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "Tespit için Yapı Hacmi Sıcaklığı Anormallik Sınırı."
 
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
@@ -5292,190 +5692,6 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Modeli dosyadan indirirken modele uygulanacak olan dönüşüm matrisi."
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "Kademeli akış etkin"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "Kademeli akış değişikliklerini etkinleştir. Bu ayar etkinleştirildiğinde, akış, hedef akışa doğru kademeli olarak artırılır/azaltılır. Bu, ekstruder motoru çalıştırıldığında/durdurulduğunda akışın hemen değişmediği, bowden tüplü yazıcılar için kullanışlı bir özelliktir."
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "Kademeli akış maksimum ivme"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "Kademeli akış değişiklikleri için maksimum ivme"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "İlk katman maksimum akış ivmesi"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "İlk katmandaki kademeli akış değişiklikleri için minimum hız"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "Kademeli akış ayrıştırma adım boyutu"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "Kademeli akış değişimindeki her adımın süresi"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "Akış süresini sıfırla"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "Bu değerden daha uzun herhangi bir hareket için, malzeme akışı hedef akışına sıfırlanır"
-
-msgctxt "extruder_prime_pos_z label"
-msgid "Extruder Prime Z Position"
-msgstr "Ekstruder İlk Z konumu"
-
-msgctxt "platform_adhesion description"
-msgid "Adhesion"
-msgstr "Yapıştırma"
-
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "Destek yapılarının yerleştirilmesini ayarlar. Yerleştirme, temas eden yapı levhasına veya her bölüme ayarlanabilir. Her bölüme ayarlandığında, destek yapıları da modelde yazdırılacaktır."
-
-msgctxt "material description"
-msgid "Material"
-msgstr "Malzeme"
-
-msgctxt "machine_nozzle_size label"
-msgid "Nozzle Diameter"
-msgstr "Nozül Çapı"
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "Ekstruder dişli çarkı için nozül kimliği, “AA 0.4” ve “BB 0.8” gibi."
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun X koordinatı."
-
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "Çap"
-
-msgctxt "extruder_prime_pos_x label"
-msgid "Extruder Prime X Position"
-msgstr "Extruder İlk X konumu"
-
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "Kullanılan filamanın çapını ayarlar. Bu değeri kullanılan filaman çapı ile eşitleyin."
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "Nozül iç çapı. Standart olmayan nozül boyutu kullanırken bu ayarı değiştirin."
-
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "Makine özel ayarları"
-
-msgctxt "extruder_prime_pos_y label"
-msgid "Extruder Prime Y Position"
-msgstr "Extruder İlk Y konumu"
-
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Z koordinatı."
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Y koordinatı."
-
-msgctxt "material label"
-msgid "Material"
-msgstr "Malzeme"
-
-msgctxt "machine_nozzle_id label"
-msgid "Nozzle ID"
-msgstr "Nozül Kimliği"
-
-msgctxt "platform_adhesion label"
-msgid "Build Plate Adhesion"
-msgstr "Yapı Levhası Yapıştırması"
-
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "Makine"
-
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "Dış Duvarları Grupla"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "Aynı katman içindeki farklı adalardaki dış duvarlar sırayla basılır. Etkinleştirildiğinde, akış değişiklik miktarı duvarlar tür türüne basıldığı için sınırlıdır, devre dışı bırakıldığında ise aynı adalardaki duvarlar gruplandığı için adalar arasındaki seyahat sayısı azalır."
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "Üst Yüzeyin En Dış Duvar Akışı"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "Üst Yüzeyin En Dış Duvar Hattında Akış Telafisi."
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "Üst Yüzey İç Duvar Akışı"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "Tüm duvar hatları için dıştaki hariç üst yüzey duvar hatlarında akış telafi."
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "Üst Yüzeyin En Dış Duvar Hızı"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "Üst Yüzey İç Duvar Hızı"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "Üst Yüzey İç Duvarların Hangi Hızda Basıldığı."
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "Üst Yüzey Dış Duvar Hızlanması"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "Üst Yüzeyin En Dış Duvarlarının Hangi Hızda Basıldığı."
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "Üst Yüzey İç Duvar Hızlanması"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "Üst yüzey iç duvarlarının hangi hızla basıldığı."
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "Top Surface Outer Wall Jerk"
-msgstr "Üst Yüzeyin İç Duvar Darbesi"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "Üst Yüzeyin İç Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "Üst Yüzeyin En Dış Duvar Darbesi"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "Üst Yüzeyin En Dış Duvarlarının Basıldığı Anki Maksimum Hız Değişikliği."

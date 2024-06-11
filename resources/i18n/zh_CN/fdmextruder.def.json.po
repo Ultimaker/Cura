@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 15:53+0200\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,13 +13,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "﻿机器"
+msgctxt "platform_adhesion description"
+msgid "Adhesion"
+msgstr "附着"
 
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "﻿机器详细设置"
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
+
+msgctxt "platform_adhesion label"
+msgid "Build Plate Adhesion"
+msgstr "打印平台附着"
+
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
 
 msgctxt "extruder_nr label"
 msgid "Extruder"
@@ -28,13 +37,13 @@ msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "用于打印的挤出机，在多挤出机情况下适用。"
 
-msgctxt "extruder_prime_pos_z label"
-msgid "Extruder Prime Z Position"
-msgstr "挤出机初始 Z 轴位置"
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
 
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
 
 msgctxt "machine_extruder_cooling_fan_number label"
 msgid "Extruder Print Cooling Fan"
@@ -51,6 +60,14 @@ msgstr "挤出机的结束 G-code"
 msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
 msgstr "在切离此挤出机时执行的结束 G-code。"
+
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr "推料器结束 G 代码持续时间"
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr "当切走该推料器时,执行最后的 G 代码所需的时间。"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -72,6 +89,18 @@ msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "挤出机终点位置 Y 坐标"
 
+msgctxt "extruder_prime_pos_x label"
+msgid "Extruder Prime X Position"
+msgstr "挤出机 X 轴坐标"
+
+msgctxt "extruder_prime_pos_y label"
+msgid "Extruder Prime Y Position"
+msgstr "挤出机 Y 轴起始位置"
+
+msgctxt "extruder_prime_pos_z label"
+msgid "Extruder Prime Z Position"
+msgstr "挤出机初始 Z 轴位置"
+
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
 msgstr "关闭挤出机时的终止位置的 Y 坐标。"
@@ -84,6 +113,26 @@ msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
 msgstr "在切换到此挤出机时执行的开始 G-code。"
 
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 X 轴上初始位置。"
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr "推料器开始 G 代码持续时间"
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr "当切换到该推料器时,执行起始 G 代码所需的时间。"
+
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
 msgstr "挤出机起点绝对位置"
@@ -91,6 +140,22 @@ msgstr "挤出机起点绝对位置"
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
 msgstr "令挤出机起始位置为绝对位置，而不根据打印头的最后位置来改变。"
+
+msgctxt "material description"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "material label"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "machine_nozzle_size label"
+msgid "Nozzle Diameter"
+msgstr "喷嘴直径"
+
+msgctxt "machine_nozzle_id label"
+msgid "Nozzle ID"
+msgstr "喷嘴 ID"
 
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
@@ -104,17 +169,17 @@ msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
 msgstr "挤出机起始位置 Y 坐标"
 
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "﻿机器"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "﻿机器详细设置"
+
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "打开挤压机时的起始位置 Y 坐标。"
-
-msgctxt "machine_nozzle_id label"
-msgid "Nozzle ID"
-msgstr "喷嘴 ID"
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
 
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
@@ -131,123 +196,3 @@ msgstr "喷嘴 Y 轴偏移量"
 msgctxt "machine_nozzle_offset_y description"
 msgid "The y-coordinate of the offset of the nozzle."
 msgstr "喷嘴 Y 轴坐标偏移。"
-
-msgctxt "machine_nozzle_size label"
-msgid "Nozzle Diameter"
-msgstr "喷嘴直径"
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
-
-msgctxt "material label"
-msgid "Material"
-msgstr "材料"
-
-msgctxt "material description"
-msgid "Material"
-msgstr "材料"
-
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "直径"
-
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
-
-msgctxt "platform_adhesion label"
-msgid "Build Plate Adhesion"
-msgstr "打印平台附着"
-
-msgctxt "platform_adhesion description"
-msgid "Adhesion"
-msgstr "附着"
-
-msgctxt "extruder_prime_pos_x label"
-msgid "Extruder Prime X Position"
-msgstr "挤出机 X 轴坐标"
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 X 轴上初始位置。"
-
-msgctxt "extruder_prime_pos_y label"
-msgid "Extruder Prime Y Position"
-msgstr "挤出机 Y 轴起始位置"
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
-
-msgctxt "group_outer_walls label"
-msgid "Group Outer Walls"
-msgstr "群組外牆"
-
-msgctxt "group_outer_walls description"
-msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-msgstr "在相同層中，不同島嶼的外牆按順序印製。啟用時，減少流量變化的量，因為牆壁一次印刷一種類型；停用時，減少島嶼之間的行程數，因為相同島嶼的牆壁被分組。"
-
-msgctxt "wall_0_material_flow_roofing label"
-msgid "Top Surface Outer Wall Flow"
-msgstr "頂部最外牆流"
-
-msgctxt "wall_0_material_flow_roofing description"
-msgid "Flow compensation on the top surface outermost wall line."
-msgstr "頂部最外牆流量補償"
-
-msgctxt "wall_x_material_flow_roofing label"
-msgid "Top Surface Inner Wall(s) Flow"
-msgstr "頂部內壁流"
-
-msgctxt "wall_x_material_flow_roofing description"
-msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-msgstr "所有牆線，除了最外面的牆線，頂部牆線的流動補償"
-
-msgctxt "speed_wall_0_roofing label"
-msgid "Top Surface Outer Wall Speed"
-msgstr "頂部外牆速度"
-
-msgctxt "speed_wall_0_roofing description"
-msgid "The speed at which the top surface outermost wall is printed."
-msgstr "頂部最外牆印製時的速度"
-
-msgctxt "speed_wall_x_roofing label"
-msgid "Top Surface Inner Wall Speed"
-msgstr "頂部內壁速度"
-
-msgctxt "speed_wall_x_roofing description"
-msgid "The speed at which the top surface inner walls are printed."
-msgstr "頂部內壁印製時的速度"
-
-msgctxt "acceleration_wall_0_roofing label"
-msgid "Top Surface Outer Wall Acceleration"
-msgstr "頂部外牆加速度"
-
-msgctxt "acceleration_wall_0_roofing description"
-msgid "The acceleration with which the top surface outermost walls are printed."
-msgstr "頂部最外牆的印刷加速度"
-
-msgctxt "acceleration_wall_x_roofing label"
-msgid "Top Surface Inner Wall Acceleration"
-msgstr "頂部內壁加速度"
-
-msgctxt "acceleration_wall_x_roofing description"
-msgid "The acceleration with which the top surface inner walls are printed."
-msgstr "頂部內壁印製時的加速度"
-
-msgctxt "jerk_wall_0_roofing label"
-msgid "頂部內壁突變"
-msgstr "Saccade de la paroi externe de la surface supérieure"
-
-msgctxt "jerk_wall_0_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-msgstr "印刷頂部內壁的最大瞬時速度變化。"
-
-msgctxt "jerk_wall_x_roofing label"
-msgid "Top Surface Inner Wall Jerk"
-msgstr "頂部最外牆突變"
-
-msgctxt "jerk_wall_x_roofing description"
-msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-msgstr "印刷頂部最外牆的最大瞬時速度變化。"

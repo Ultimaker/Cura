@@ -9,6 +9,7 @@
 # When setting an accel limit on multi-extruder printers ALL extruders are effected.
 # This post does not distinguish between Print Accel and Travel Accel.  The limit is the limit for all regardless.  Example: Skin Accel = 1000 and Outer Wall accel = 500.  If the limit is set to 300 then both Skin and Outer Wall will be Accel = 300.
 # 9/15/2023 added support for RepRap M566 command for Jerk in mm/min
+# 2/4/2024 Added a block so the script doesn't run unless Accel Control is enabled in Cura.  This should keep users from increasing the Accel Limits.
 
 from ..Script import Script
 from cura.CuraApplication import CuraApplication
@@ -45,6 +46,10 @@ class LimitXYAccelJerk(Script):
         # Warn the user if the printer is multi-extruder------------------
         if ext_count > 1:
             Message(text = "<NOTICE> 'Limit the X-Y Accel/Jerk': The post processor treats all extruders the same.  If you have multiple extruders they will all be subject to the same Accel and Jerk limits imposed.  If you have different Travel and Print Accel they will also be subject to the same limits.  If that is not acceptable then you should not use this Post Processor.").show()
+            
+        # Warn the user if Accel Control is not enabled in Cura.  This keeps the script from being able to increase the Accel limits-----------
+        if not bool(extruder[0].getProperty("acceleration_enabled", "value")):
+            Message(title = "[Limit the X-Y Accel/Jerk]", text = "You must have 'Enable Acceleration Control' checked in Cura or the script will exit.").show()
 
     def getSettingDataString(self):
             return """{
@@ -169,6 +174,13 @@ class LimitXYAccelJerk(Script):
         extruder = mycura.extruderList
         machine_name = str(mycura.getProperty("machine_name", "value"))
         print_sequence = str(mycura.getProperty("print_sequence", "value"))
+        acceleration_enabled = bool(extruder[0].getProperty("acceleration_enabled", "value"))
+        
+        # Exit if acceleration control is not enabled----------------
+        if not acceleration_enabled:
+            Message(title = "[Limit the X-Y Accel/Jerk]", text = "DID NOT RUN.  You must have 'Enable Acceleration Control' checked in Cura.").show()
+            data[0] += ";  [LimitXYAccelJerk] DID NOT RUN because 'Enable Acceleration Control' is not checked in Cura.\n"
+            return data
 
         # Exit if 'one_at_a_time' is enabled-------------------------
         if print_sequence == "one_at_a_time":
@@ -183,12 +195,8 @@ class LimitXYAccelJerk(Script):
             return data
 
         type_of_change = str(self.getSettingValueByKey("type_of_change"))
-        accel_print_enabled = bool(extruder[0].getProperty("acceleration_enabled", "value"))
-        accel_travel_enabled = bool(extruder[0].getProperty("acceleration_travel_enabled", "value"))
         accel_print = extruder[0].getProperty("acceleration_print", "value")
         accel_travel = extruder[0].getProperty("acceleration_travel", "value")
-        jerk_print_enabled = str(extruder[0].getProperty("jerk_enabled", "value"))
-        jerk_travel_enabled = str(extruder[0].getProperty("jerk_travel_enabled", "value"))
         jerk_print_old = extruder[0].getProperty("jerk_print", "value")
         jerk_travel_old = extruder[0].getProperty("jerk_travel", "value")
         if int(accel_print) >= int(accel_travel):
@@ -218,13 +226,13 @@ class LimitXYAccelJerk(Script):
         m201_limit_new = f"M201 X{x_accel} Y{y_accel}"
         m201_limit_old = f"M201 X{round(accel_old)} Y{round(accel_old)}"
         if x_jerk == 0:
-            m205_jerk_pattern = "Y(\d*)"
+            m205_jerk_pattern = r"Y(\d*)"
             m205_jerk_new = f"Y{y_jerk}"
         if y_jerk == 0:
-            m205_jerk_pattern = "X(\d*)"
+            m205_jerk_pattern = r"X(\d*)"
             m205_jerk_new = f"X{x_jerk}"
         if x_jerk != 0 and y_jerk != 0:
-            m205_jerk_pattern = jerk_cmd + " X(\d*) Y(\d*)"
+            m205_jerk_pattern = jerk_cmd + r" X(\d*) Y(\d*)"
             m205_jerk_new = jerk_cmd + f" X{x_jerk} Y{y_jerk}"
         m205_jerk_old = jerk_cmd + f" X{jerk_old} Y{jerk_old}"
         type_of_change = self.getSettingValueByKey("type_of_change")

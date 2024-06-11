@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-20 14:03+0000\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -120,6 +120,10 @@ msgstr "取消復原（&R）"
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "儲存專案...（&S）"
+
+msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
+msgid "&Save Universal Cura Project..."
+msgstr ""
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
@@ -263,6 +267,10 @@ msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "印表機無法使用雲端連接"
+
+msgctxt "@text"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -498,9 +506,17 @@ msgctxt "@label"
 msgid "Anonymous"
 msgstr "匿名"
 
+msgctxt "@option:radio"
+msgid "Anonymous crash reports"
+msgstr ""
+
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "應用框架"
+
+msgctxt "@title:column"
+msgid "Applies on"
+msgstr ""
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -559,6 +575,10 @@ msgstr "排列所有模型"
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr ""
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange Selection"
+msgstr "排列所選模型"
 
 msgctxt "@label:button"
 msgid "Ask a question"
@@ -624,6 +644,10 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "備份"
 
+msgctxt "@label"
+msgid "Balanced"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "底板 (mm)"
@@ -679,6 +703,10 @@ msgstr "COLLADA Digital Asset Exchange"
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "已計算"
+
+msgctxt "@window:text"
+msgid "Camera navigation:"
+msgstr ""
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -1008,6 +1036,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr ""
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr ""
@@ -1252,10 +1284,6 @@ msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "預設值"
 
-msgctxt "@label"
-msgid "Default"
-msgstr "預設值"
-
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "當切換到另一組列印參數時，對於被修改過的設定的預設行為： "
@@ -1404,6 +1432,10 @@ msgctxt "@label"
 msgid "Draft"
 msgstr "草稿"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Drop All Models to buildplate"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "複製"
@@ -1530,6 +1562,10 @@ msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "匯出選擇..."
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Export Universal Cura Project"
+msgstr ""
+
 msgctxt "@button"
 msgid "Export material archive"
 msgstr "輸出線材設定存檔"
@@ -1563,9 +1599,22 @@ msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "擠出機結束 G-code"
 
+msgctxt "@label"
+msgid "Extruder End G-code duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "擠出機起始 G-code"
+
+msgctxt "@label"
+msgid "Extruder Start G-code duration"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@label"
+msgid "Extruder {0}"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1632,6 +1681,11 @@ msgstr "無法載入與印表機同步的材料檔案."
 msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "線材資料儲存失敗"
+
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
+msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
@@ -1774,6 +1828,9 @@ msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "強制分層檢視相容模式（需要重新啟動）"
 
+msgid "FreeCAD trackpad"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "前視圖"
@@ -1862,6 +1919,10 @@ msgctxt "@action"
 msgid "Get started"
 msgstr "開始"
 
+msgctxt "@label"
+msgid "Global"
+msgstr ""
+
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "全局設定"
@@ -1909,6 +1970,10 @@ msgstr "輔助結構"
 
 msgctxt "@label"
 msgid "Hide all connected printers"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Hide settings"
 msgstr ""
 
 msgctxt "@action:menu"
@@ -1985,6 +2050,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
+msgstr ""
+
+msgctxt "@option:radio"
+msgid "Include UltiMaker account name"
 msgstr ""
 
 msgctxt "@label"
@@ -2344,6 +2413,22 @@ msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "發送檔案之前，請確保 G-code 適用於目前印表機和印表機設定。目前 G-code 檔案可能不準確。"
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
+
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "管理線材..."
@@ -2674,6 +2759,10 @@ msgid "No results found with current filter"
 msgstr ""
 
 msgctxt "@label"
+msgid "No specific value has been set"
+msgstr ""
+
+msgctxt "@label"
 msgid "No time estimation available"
 msgstr "沒有時間估計"
 
@@ -2774,6 +2863,10 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一次只能載入一個 G-code 檔案。{0} 已跳過匯入"
 
+msgctxt "@message"
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Open"
 msgstr "開啟"
@@ -2802,8 +2895,20 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "開啟專案檔案"
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP) file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Open With"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Open as UCP"
 msgstr ""
 
 msgctxt "@action:button"
@@ -3021,6 +3126,10 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "請登入以取得 UltiMaker Cura Enterprise 驗証的外掛及線材"
 
+msgctxt "@info:tooltip"
+msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "再列印前請先同步線材資料."
@@ -3116,6 +3225,14 @@ msgstr "裝填塔"
 msgctxt "@action:button"
 msgid "Print"
 msgstr "列印"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "列印後"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "列印前"
 
 msgctxt "@label"
 msgid "Print Selected Model With:"
@@ -3421,8 +3538,12 @@ msgid "Provides support for reading model files."
 msgstr "提供讀取模型檔案的支援。"
 
 msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "提供寫入 3MF 檔案的支援。"
+msgid "Provides support for writing 3MF and UCP files."
+msgstr ""
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3662,7 +3783,11 @@ msgid "Save Cura project"
 msgstr ""
 
 msgctxt "@option"
-msgid "Save Cura project and print file"
+msgid "Save Cura project and .makerbot print file"
+msgstr ""
+
+msgctxt "@option"
+msgid "Save Cura project and .ufp print file"
 msgstr ""
 
 msgctxt "@title:window"
@@ -3687,6 +3812,10 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Save new profile"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Save project"
 msgstr ""
 
 msgctxt "@text"
@@ -3792,6 +3921,18 @@ msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "傳送錯誤報告給 UltiMaker"
 
+msgctxt "@info:tooltip"
+msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Send engine crash reports"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "送出報告"
@@ -3843,6 +3984,10 @@ msgstr "設定"
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "設定"
+
+msgctxt "@action:label"
+msgid "Settings Loaded from UCP file"
+msgstr ""
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -3913,6 +4058,10 @@ msgid "Should opening files from the desktop or external applications open in th
 msgstr "從桌面或外部程式開啟檔案時，使用同一 Cura 視窗嗎？"
 
 msgctxt "@info:tooltip"
+msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "需要再載入新模型前清空視窗內之列印平台嗎?"
 
@@ -3967,6 +4116,10 @@ msgstr "顯示設定資料夾"
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "顯示詳細的錯誤報告"
+
+msgctxt "@action:button"
+msgid "Show settings"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
@@ -4044,10 +4197,6 @@ msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "切片失敗"
 
-msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr "未知問題使切片失敗. 請考慮在我們的問題追蹤器內回報問題."
-
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "正在切片..."
@@ -4055,6 +4204,10 @@ msgstr "正在切片..."
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "平滑"
+
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
 
 msgctxt "name"
 msgid "Solid View"
@@ -4181,9 +4334,25 @@ msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "已成功匯入列印參數 {0}。"
 
+msgctxt "@action:label"
+msgid "Suggested Material settings"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Suggested Profile settings"
+msgstr ""
+
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "摘要 - Cura 專案"
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Universal Cura Project"
+msgstr ""
 
 msgctxt "@label"
 msgid "Support"
@@ -4305,6 +4474,10 @@ msgstr[0] "分配的印表機 %1 需要下列的設定更動："
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "備份超過了最大檔案大小。"
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -4552,6 +4725,10 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "由於無法識別 %1，因此無法使用此設定。 請連上 %2 下載正確的線材參數設定。"
 
 msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr ""
+
+msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "這是一個 Cura 專案檔案。你想將其作為一個專案開啟還是從中匯入模型？"
 
@@ -4637,6 +4814,14 @@ msgstr "此設定未被使用，因為受它影響的設定都被覆寫了。"
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "此設定是透過解決擠出機設定值衝突獲得："
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
+msgstr ""
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
@@ -4867,6 +5052,11 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "無法開始新的登入程序。檢查是否有其他登入仍在進行中。"
 
+#, python-brace-format
+msgctxt "@info:error"
+msgid "Unable to write to file: {0}"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "無法使用"
@@ -4885,6 +5075,14 @@ msgstr ""
 
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:description Don't translate 'Universal Cura Project'"
+msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
 msgctxt "@label Description for development tool"
@@ -5076,6 +5274,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上傳自訂韌體"
@@ -5106,6 +5308,10 @@ msgstr ""
 
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
+msgstr ""
+
+msgctxt "@title:column"
+msgid "Value"
 msgstr ""
 
 msgctxt "name"
@@ -5212,6 +5418,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
 
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr ""
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr ""
@@ -5287,6 +5497,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "What printer would you like to setup?"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "What type of camera navigation should be used?"
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -5498,6 +5712,10 @@ msgstr "最小值"
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
+
+msgctxt "@label"
+msgid "s"
+msgstr ""
 
 msgctxt "@info:status"
 msgid "today"
@@ -5893,10 +6111,6 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@action:inmenu menubar:edit"
 #~ msgid "Arrange All Models To All Build Plates"
 #~ msgstr "將所有模型排列到所有列印平台上"
-
-#~ msgctxt "@action:inmenu menubar:edit"
-#~ msgid "Arrange Selection"
-#~ msgstr "排列所選模型"
 
 #~ msgctxt "@action:button"
 #~ msgid "Arrange current build plate"
@@ -6349,6 +6563,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@action:button"
 #~ msgid "Decline"
 #~ msgstr "拒絕"
+
+#~ msgctxt "@label"
+#~ msgid "Default"
+#~ msgstr "預設值"
 
 #~ msgctxt "@title:column"
 #~ msgid "Default"
@@ -7589,6 +7807,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgstr "提供 UltiMaker 印表機專屬功能(如平台調平精靈、選擇升級等)"
 
 #~ msgctxt "description"
+#~ msgid "Provides support for writing 3MF files."
+#~ msgstr "提供寫入 3MF 檔案的支援。"
+
+#~ msgctxt "description"
 #~ msgid "Provides support for writing X3G files"
 #~ msgstr "提供寫入 X3G 檔案的支援"
 
@@ -7873,6 +8095,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@info:tooltip"
 #~ msgid "Slice current printjob"
 #~ msgstr "對目前列印工作進行切片"
+
+#~ msgctxt "@message"
+#~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+#~ msgstr "未知問題使切片失敗. 請考慮在我們的問題追蹤器內回報問題."
 
 #~ msgctxt "@label:PrintjobStatus"
 #~ msgid "Slicing unavailable"

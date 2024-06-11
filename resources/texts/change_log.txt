@@ -1,3 +1,131 @@
+[5.7.1]
+
+* Introducing the UltiMaker Factor 4
+- Included support for the new UltiMaker Factor 4, the new 0.6 UltiMaker HT print core, and the new Ultimaker PPS CF material. 
+For an overview of the new features in the UltiMaker Factor 4, please watch <a href="https://youtu.be/ltG5wV8TAy8">our video</a>.
+
+* Bug fixes:
+- Fixed a bug where support lines were printed multiple times
+
+* Printer definitions, profiles and materials:
+- Updated ASA, SR30, and Nylon12-CF profiles for MethodX and Method XL Printers
+
+[5.7]
+
+* New features and improvements:
+- Introduced a way that you can open models from Thingiverse from your browser
+- Introduced Universal Cura Project files. They contain models and settings and can be shared with people who have different printers.
+- Introduced settings that define the raft offset for top, middle and bottom raft layers
+- Introduced an analyzing tool in the cura engine to better track slicing crashes, and started fixing the biggest reports coming in.
+- New Primetower option; Sparse, next to the current Bucket, contributed by @wawanbreton
+- Brim only on the inside setting
+- Allowing to define print sequence manually when printing One at a time, contributed by @alexandr-vladimirov
+- Introduced a setting to apply Monotonic ordering to the Raft Top Surface
+- Introduced a Raft Wall Line Count for the Bottom, Middle and Top of the raft
+- The play speed of the nozzle in the preview is now closer to the movement of the printhead
+- Introduced an option to choose Drop Model to Buildplate every time a project file is loaded
+- Introduced DisplayInfoOnLCD Post Processing Script which combines DisplayFilenameAndLayerOnLCD with DisplayProgress, contributed by @GregValiant
+- Introduced alternative camera navigation similar to FreeCAD Trackpad, contributed by @quarnster
+
+* MethodX specific improvements
+- Enabled Print over Cloud for UltiMaker MethodX and Method XL printers
+- Introduced ASA, SR30, and Nylon12-CF profiles for MethodX and Method XL Printers
+- Improved the predicted printing time so it's closer to the actual printing time on the MethodX and MethodXL
+- Improved the idle nozzle temperature for dual extrusion printing on MethodX and MethodXL
+- Resolved a crash for the Method printer when navigating to the Monitor tab
+- Improved the way that the fanspeeds were listed and controlled for MethodX and MethodXL printers
+- Updated Raft settings for UltiMaker MethodX and MethodXL
+- Enabled Monotonic Raft Surface to improve adhesion
+- Increased the Minimum Retract Distance to improve infill pattern wall overlaps
+
+* Bug fixes:
+- Fixed significantly slower slicing for models with a lot of holes
+- Fixed a significant amount of crashes that are caused by self intersecting polygons
+- Fixed a bug where Align to Buildplate did not work for grouped meshes, resolves https://github.com/Ultimaker/Cura/issues/14237
+- Fixed a bug where the models in a 3mf file would not load in their saved position, note that this also changes the behavior of the "import models" feature of a 3mf file, for this feature the saved model location will be ignored
+- Reduced the amount of floating support in area's near the support overhang angle threshold
+- Fixed a bug with the Initial Extruder Number in the start gcode, resolves https://github.com/Ultimaker/Cura/issues/17501
+- Fixed a bug where Z could be negative if Remove Empty Layers was enabled, resolves https://github.com/Ultimaker/Cura/issues/15975
+- Fixed tree support-related crashes if there are no overhangs, contributed by @thomasrahm
+- Pressing the Esc key now doesn't exiting full screen mode, contributed by @Sophist-UK, resolves https://github.com/Ultimaker/Cura/issues/7499
+- Improved the OAuth protocol to improve signing in with plug-ins, contributed by @wawanbreton
+- Fixed some slicing crashes with tree support, contributed by @ThomasRahm
+- Fixed available height when adding modifier mesh in One at a Time printing, contributed by @fieldofView resolves https://github.com/Ultimaker/Cura/issues/16566
+- Improved behavior for loading 3mfs by giving the models original names, contributed by @pietchaki, resolves https://github.com/Ultimaker/Cura/issues/12089
+- Added an error so LimitXYAccelJerk doesn't run unless Accel Control is enabled in Cura, contributed by @Gregvaliant
+- Some helpful code cleanup contributed by @dmitrygribenchuk
+
+* Bugs resolved since the Beta Release
+- Resolved some crashes when opening project files
+- Resolved the biggest crashes coming in via the analyzing tool in the cura engine
+- Added links to support pages for Method materials to help find the best material compatibility
+- Introduced several visual improvements for the loading Universal Cura Projects window
+- Universal Cura Projects will now be opened in the center of the buildplate
+- The prime tower no longer primes extruders that are not being used
+- Fixed file association for stl, obj, 3mf, gcode, and ufp for MacOS
+- MacOS users can use the open menu multiple times in a row again
+- The support type is now updated in recommended when it’s changed in custom
+- The skirt height is now generated on the innermost skirt instead of the outermost skirt again
+- Fixed the skirt distance for dual extrusion printers
+- The Brim Only Inside setting will not generate a brim on support when it’s not defined
+- Fixed a bug where the project name would accidentally revert after saving, resolves https://github.com/Ultimaker/Cura/issues/11276
+- Improved handling of a fractional layer with tree support, contributed by @ThomasRahm
+
+* Printer definitions, profiles and materials:
+- Introduced high-speed profiles for the layer heights smaller than 0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
+- Updated Initial Layer Speed settings for UltiMaker S3, and UltiMaker S5
+- Updated the Shrinkage Factor for PET CF to improve dimensional accuracy
+- Renamed UltiMaker PP Transparent to UltiMaker PP Natural
+- Increased part strengths of high speed modes by compensating for slip in high flow rates
+- Improved self-support settings for UltiMaker Materials
+- Improved adhesion settings for UltiMaker ABS
+- Introduced Elegoo Neptune 4 Plus and Max, and updated Elegoo Neptune 4 and Pro, contributed by @mastercaution, @BremerButjer, @gsthnz, @ArthurREGNARD, @NovaScotianNorse, @ToaterUwU, @CharlKlein, @si0ls, @AlbeDarned @fuji97 and @Ev1dentFir3
+- Introduced Anycubic Kobra 2 Printer Definition contributed by @ThatGuyZim
+- Introduced Flying Bear Ghost 6, contributed by @Barrnet
+- Introduced Creality Ender 3 V2 Neo, contributed by @Hougaard22
+- Introduced Dagoma Sigma Pro 500z, and Dagoma Sigma Pro 500z Dual, contributed by @0r31
+- Introduced RRatRig V-Core 3, 200mm, 300mm, 400mm, 500mm and RatRig V-Minion, contributed by @Nu-hin
+- Introduced Flashforge Adventurer 3 (AD3 / AD3C / AD3 Lite / AD3 Pro) & Adventurer AD4, and AD4 Lite , contributed by @jeremie-C
+- Updated the dimensions for Ender 3 V3 S, contributed by @mcuprojects
+- Updated start Gcode for creality_ender3v3se & Anycubic Kobra Go/Kobra 2, contributed by @zanghao912
+- Updated print and retraction settings for Sovol 3D printers, contributed by @asterchades
+- Updated Creality Ender 5 Plus Bed Leveling Command, contributed by @dsnsgithub
+- Updated Voron definition to support Voron/Klipper, contributed by @NerdyGriffin
+
+[5.6]
+
+* New features and improvements:
+- Introduced the MethodX and MethodXL printers with their materials and the option to write to .makerbot
+- Prime tower base settings increase the stability of large prime towers; You can tune the Size, Height, and Slope to increase your prime tower's sturdiness
+- Introduced the setting for Raft Line Spacing, but for the prime tower
+- The Start and End gcodes now accept variables, and math including those variables
+- Updated the Support Z Distance to allow for more different values, no longer only multiple layerheights
+
+* Bug fixes:
+- Fixed a crash for some linux users when trying to open the file menu
+
+* Bugs resolved since the Beta Release
+- Introduced Balanced and Solid profiles for 1C cores to UltiMaker Method X and Method XL
+- Improved self-support for UltiMaker MethodX and MethodXL printers so the support extruder will not be used
+- The prime tower is now always enabled when the second extruder is used for the MethodX and MethodXL printers
+- Updated the default prime tower position so it doesn't prevent slicing for some printers
+- Fixed an issue where raft layers were partially printed
+- Slice information template variables were not available through start-end code formulas
+- Resolved an issue with 100% support roof for tree support, contributed by @ThomasRahm 
+
+* Printer definitions, profiles and materials:
+- Updated bridge flows for UltiMaker PLA, TPLA and ABS to address pillowing in AA 0.8 for UltiMaker printers
+- Introduced Ender 3 V3 SE, contributed by @dim1triy
+
+* Community translations:
+- Updated Spanish translation for Lightning infill, contributed by @Pelochus
+- Updated German translation for Laying object flat on buildplate, contributed by @gluetolf
+- Updated Brazilian translations, contributed by @Patola
+
+* Known Issues
+- The predicted printing time for dual extrusion printjobs on the Method X and Method XL are deviating from the actual printing time
+- It’s not possible yet, to use Method series printers with Digital Factory. We hope to resolve this for the next release.
+
 [5.5]
 
 * Engine Plugins
