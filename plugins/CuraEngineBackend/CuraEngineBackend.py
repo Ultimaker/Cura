@@ -544,7 +544,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
             self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
+                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getAssociatedDisabledExtruders(),
                                           title = catalog.i18nc("@info:title", "Unable to slice"),
                                           message_type = Message.MessageType.WARNING)
             self._error_message.show()

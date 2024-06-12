@@ -146,12 +146,16 @@ class StartSliceJob(Job):
         self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled: bool = False
         self._build_plate_number: Optional[int] = None
+        self._associated_disabled_extruders: Optional[str] = None
 
         # cache for all setting values from all stacks (global & extruder) for the current machine
         self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
     def getSliceMessage(self) -> Arcus.PythonMessage:
         return self._slice_message
+
+    def getAssociatedDisabledExtruders(self) -> Optional[str]:
+        return self._associated_disabled_extruders
 
     def setBuildPlate(self, build_plate_number: int) -> None:
         self._build_plate_number = build_plate_number
@@ -334,7 +338,7 @@ class StartSliceJob(Job):
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
             associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
-            self.setMessage(", ".join(map(str, sorted(associated_disabled_extruders))))
+            self._associated_disabled_extruders = ", ".join(map(str, sorted(associated_disabled_extruders)))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
