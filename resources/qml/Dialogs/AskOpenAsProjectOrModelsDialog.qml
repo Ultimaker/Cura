@@ -85,7 +85,7 @@ UM.Dialog
             id: questionText
             width: parent.width
             text: base.is_ucp
-                ? catalog.i18nc("@text:window", "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?")
+                ? catalog.i18nc("@text:window", "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?")
                 : catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             wrapMode: Text.WordWrap
         }

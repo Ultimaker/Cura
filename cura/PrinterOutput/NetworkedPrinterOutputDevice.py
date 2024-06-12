@@ -422,7 +422,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         _PRINTER_TYPE_NAME = {
             "fire_e": "ultimaker_method",
             "lava_f": "ultimaker_methodx",
-            "magma_10": "ultimaker_methodxl"
+            "magma_10": "ultimaker_methodxl",
+            "sketch": "ultimaker_sketch"
         }
         if printer_type in _PRINTER_TYPE_NAME:
             return _PRINTER_TYPE_NAME[printer_type]

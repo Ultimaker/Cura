@@ -110,6 +110,12 @@
             "italic": true,
             "family": "Noto Sans"
         },
+        "medium_italic": {
+            "size": 1.16,
+            "weight": 400,
+            "italic": true,
+            "family": "Noto Sans"
+        },
         "default_italic_ja_JP": {
             "size": 1.0,
             "weight": 400,
