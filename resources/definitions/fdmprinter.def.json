@@ -6459,6 +6459,22 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_interface_extruder_nr"
                 },
+                "raft_interface_z_offset":
+                {
+                    "label": "Raft Interface Z Offset",
+                    "description": "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value_warning": "-raft_interface_thickness / 2",
+                    "minimum_value": "-raft_interface_thickness",
+                    "maximum_value_warning": "raft_interface_thickness / 2",
+                    "maximum_value": "raft_interface_thickness",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_interface_extruder_nr"
+                },
                 "raft_surface_layers":
                 {
                     "label": "Raft Top Layers",
@@ -6516,6 +6532,22 @@
                     "maximum_value_warning": "raft_surface_line_width * 3",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "value": "raft_surface_line_width",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "raft_surface_extruder_nr"
+                },
+                "raft_surface_z_offset":
+                {
+                    "label": "Raft Surface Z Offset",
+                    "description": "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value_warning": "-raft_surface_thickness / 2",
+                    "minimum_value": "-raft_surface_thickness",
+                    "maximum_value_warning": "raft_surface_thickness / 2",
+                    "maximum_value": "raft_surface_thickness",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_surface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "raft_surface_extruder_nr"
