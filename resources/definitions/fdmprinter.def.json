@@ -6822,6 +6822,63 @@
                             "limit_to_extruder": "raft_surface_extruder_nr"
                         }
                     }
+                },
+                "raft_flow":
+                {
+                    "label": "Raft Flow",
+                    "description": "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength.",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 100.0,
+                    "minimum_value": "10",
+                    "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "raft_base_flow":
+                        {
+                            "label": "Raft Base Flow",
+                            "description": "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 100.0,
+                            "value": "raft_flow",
+                            "minimum_value": "10",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "limit_to_extruder": "raft_base_extruder_nr"
+                        },
+                        "raft_interface_flow":
+                        {
+                            "label": "Raft Interface Flow",
+                            "description": "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 100.0,
+                            "value": "raft_flow",
+                            "minimum_value": "10",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "limit_to_extruder": "raft_interface_extruder_nr"
+                        },
+                        "raft_surface_flow":
+                        {
+                            "label": "Raft Surface Flow",
+                            "description": "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength.",
+                            "type": "float",
+                            "unit": "%",
+                            "default_value": 100.0,
+                            "value": "raft_flow",
+                            "minimum_value": "10",
+                            "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "limit_to_extruder": "raft_surface_extruder_nr"
+                        }
+                    }
                 }
             }
         },
