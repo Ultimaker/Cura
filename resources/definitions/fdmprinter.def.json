@@ -5118,6 +5118,18 @@
                         }
                     }
                 },
+                "support_infill_density_multiplier_layer_0":
+                {
+                    "label": "Support Infill Density Multiplier First Layer",
+                    "description": "Multiplier for the infill on the first layers of the support. Increasing this may help for bed adhesion.",
+                    "type": "int",
+                    "minimum_value": "1",
+                    "default_value": 1,
+                    "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_extruder_nr_layer_0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_infill_angles":
                 {
                     "label": "Support Infill Line Directions",
