@@ -1,3 +1,13 @@
+[5.7.2]
+
+* Bugfixes
+- Fixed a bug where modifier meshes and support meshes were not loaded in the correct position, should resolve https://github.com/Ultimaker/Cura/issues/18761 (and https://github.com/5axes/SpoonAntiWarping/issues/8)
+- Primeblobs were not printed for a second extruder
+- Interleaved prime tower can now be printed with a raft
+- Improved behaviors for start temperature for multiple extruders
+- Improved preheating logic when using a raft with multiple extruders
+- Enabled Raft Remove Inside Corners and Prime Tower Mode to be shipped with a material profile
+
 [5.7.1]
 
 * Introducing the UltiMaker Factor 4
