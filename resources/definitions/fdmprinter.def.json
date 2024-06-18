@@ -6208,6 +6208,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                    "resolve": "any(extruderValues('raft_remove_inside_corners'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "children":
@@ -6220,6 +6221,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_base_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -6231,6 +6233,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_interface_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         },
@@ -6242,6 +6245,7 @@
                             "value": "raft_remove_inside_corners",
                             "default_value": false,
                             "enabled": "resolveOrValue('adhesion_type') == 'raft'",
+                            "resolve": "any(extruderValues('raft_surface_remove_inside_corners'))",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false
                         }
@@ -6845,7 +6849,7 @@
                     "label": "Prime Tower Type",
                     "description": "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>",
                     "type": "enum",
-                    "resolve": "'interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal'",
+                    "resolve": "'interleaved' if all(mode == 'interleaved' for mode in extruderValues('prime_tower_mode')) else 'interleaved' if (all(material_type_var == extruderValues('material_type')[0] for material_type_var in extruderValues('material_type')) and all(material_brand_var == extruderValues('material_brand')[0] for material_brand_var in extruderValues('material_brand'))) else 'normal'",
                     "options":
                     {
                         "normal": "Normal",
@@ -8019,6 +8023,19 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 90,
+                    "settable_per_mesh": true
+                },
+                "seam_overhang_angle":
+                {
+                    "label": "Seam Overhanging Wall Angle",
+                    "description": "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "value": "wall_overhang_angle",
                     "settable_per_mesh": true
                 },
                 "wall_overhang_speed_factor":
