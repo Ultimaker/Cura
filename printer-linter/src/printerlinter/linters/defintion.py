@@ -14,6 +14,7 @@ class Definition(Linter):
         super().__init__(file, settings)
         self._definitions = {}
         self._definition_name = None
+        self._experimental_settings = []
         self._loadDefinitionFiles(file)
         self._content = self._file.read_text()
         self._loadExperimentalSettings()
@@ -176,7 +177,10 @@ class Definition(Linter):
         return False, None, None, None, None
 
     def _loadExperimentalSettings(self):
-        self._experimental_settings = self._definitions[self.base_def]["settings"]["experimental"]["children"].keys()
+        try:
+            self._experimental_settings = self._definitions[self.base_def]["settings"]["experimental"]["children"].keys()
+        except:
+            pass
 
     def _loadBasePrinterSettings(self):
         settings = {}
