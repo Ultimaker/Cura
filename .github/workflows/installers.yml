@@ -93,7 +93,7 @@ jobs:
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
       architecture: X64
-      operating_system: ubuntu-22.04
+      operating_system: self-hosted-Ubuntu22-X64
     secrets: inherit
 
   macos-installer:
