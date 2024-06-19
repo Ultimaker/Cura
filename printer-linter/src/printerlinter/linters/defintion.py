@@ -109,7 +109,6 @@ class Definition(Linter):
                 if setting in self._experimental_settings:
                     redefined = re.compile(setting)
                     found = redefined.search(self._content)
-                    print(f"using exp setting {setting}")
                     yield Diagnostic(
                         file=self._file,
                         diagnostic_name="diagnostic-definition-experimental-setting",
