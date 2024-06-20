@@ -1,0 +1,179 @@
+name: Prepare Release Candidate
+run-name: Release Candidate for Cura ${{ inputs.cura_version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_version:
+        description: 'Cura version number, e.g. 5.7.0, 5.7.2 or 5.8.0-beta.2'
+        required: true
+        type: string
+
+jobs:
+  parse-version:
+    name: Parse input version string
+    runs-on: ubuntu-latest
+    outputs:
+      version_major: ${{ steps.version_parser.outputs.major }}
+      version_minor: ${{ steps.version_parser.outputs.minor }}
+      version_patch: ${{ steps.version_parser.outputs.patch }}
+      branch_name: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}
+    steps:
+      - name: Parse version string
+        id: version_parser
+        uses: booxmedialtd/ws-action-parse-semver@v1.4.7
+        with:
+          input_string: ${{ inputs.cura_version }}
+
+  freeze-packages-versions:
+    name: Freeze packges versions
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
+    needs: [parse-version]
+    with:
+      cura_version: ${{ inputs.cura_version }}
+      create_feature_branch: false
+    secrets: inherit
+
+  find-rc-tag:
+    name: Find RC tag name
+    runs-on: ubuntu-latest
+    needs: [freeze-packages-versions]
+    outputs:
+      tag_name: ${{ steps.find-available-tag-name.outputs.tag_name }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Find available tag name
+        id: find-available-tag-name
+        run: |
+          VERSION=${{ inputs.cura_version }}
+
+          RC_INDEX=0
+          while
+            RC_INDEX=$((RC_INDEX+1))
+            TAG_NAME="$VERSION-RC$RC_INDEX"
+            [[ $(git tag -l "$TAG_NAME") ]]
+          do true; done
+
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+
+  create-tags:
+    name: Create tags
+    runs-on: ubuntu-latest
+    needs: [parse-version, find-rc-tag]
+    strategy:
+      matrix:
+        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          repository: Ultimaker/${{ matrix.repository }}
+          ref: ${{ needs.parse-version.outputs.branch_name }}
+          token: ${{ secrets.CURA_AUTORELEASE_PAT }}
+
+      - name: Create tag
+        run: |
+          git tag ${{ needs.find-rc-tag.outputs.tag_name }}
+          git push origin tag ${{ needs.find-rc-tag.outputs.tag_name }}
+
+  create-dependencies-packages:
+    name: Create conan packages for dependencies
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
+    needs: [parse-version, freeze-packages-versions]
+    strategy:
+      matrix:
+        repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
+        include:
+          - conan_recipe_root: "."
+          - repository: Cura
+            conan_recipe_root: "resources"
+    with:
+      repository: ${{ matrix.repository }}
+      ref_name: ${{ needs.parse-version.outputs.branch_name }}
+      version: ${{ inputs.cura_version }}
+      conan_release: true
+      conan_user_channel: ultimaker/stable
+      conan_internal: false
+      conan_latest: true
+      conan_recipe_root: ${{ matrix.conan_recipe_root }}
+    secrets: inherit
+
+  create-cura-package:
+    name: Create conan package for Cura
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
+    needs: [parse-version, create-dependencies-packages]
+    with:
+      repository: Cura
+      ref_name: ${{ needs.parse-version.outputs.branch_name }}
+      version: ${{ inputs.cura_version }}
+      conan_release: true
+      conan_user_channel: ultimaker/stable
+      conan_internal: false
+      conan_latest: true
+    secrets: inherit
+
+  create-installers:
+    name: Create installers
+    uses: ./.github/workflows/installers.yml
+    needs: [parse-version, create-cura-package]
+    with:
+      cura_conan_version: cura/${{ inputs.cura_version }}@/
+      enterprise: false
+      staging: false
+      nightly: false
+    secrets: inherit
+
+  create-release-draft:
+    name: Create the release draft
+    runs-on: ubuntu-latest
+    needs: [create-installers, parse-version]
+    steps:
+      - name: Checkout Cura repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.parse-version.outputs.branch_name }}
+
+      - name: Extract changelog
+        run: python ./scripts/extract_changelog.py --version ${{ needs.parse-version.outputs.version_major }}.${{ needs.parse-version.outputs.version_minor }}.${{ needs.parse-version.outputs.version_patch }} --changelog ./resources/texts/change_log.txt > formatted_changelog.txt
+
+      - name: Get commit id for release
+        id: get-commit-id
+        uses: iawia002/get-tag-or-commit-id@v1.0.1
+        with:
+          length: 40
+
+      - name: Create release
+        uses: notpeelz/action-gh-create-release@v5.0.1
+        with:
+          target: ${{ steps.get-commit-id.outputs.id }}
+          tag: ${{ inputs.cura_version }}
+          strategy: replace
+          title: UltiMaker Cura ${{ inputs.cura_version }}
+          draft: true
+          body-source: file
+          body: formatted_changelog.txt
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4.1.7
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Upload artifacts
+        working-directory: artifacts
+        run: |
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-linux-X64.AppImage.asc --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.dmg --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-macos-ARM64.pkg --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.dmg --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-macos-X64.pkg --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.exe --clobber
+          gh release upload ${{ inputs.cura_version }} UltiMaker-Cura-${{ inputs.cura_version }}-win64-X64.msi --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
