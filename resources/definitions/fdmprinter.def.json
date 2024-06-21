@@ -1342,6 +1342,15 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "z_seam_on_vertex":
+                {
+                    "label": "Z Seam On Vertex",
+                    "description": "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": true,
+                    "enabled": "z_seam_type == 'back' or z_seam_type == 'shortest'"
+                },
                 "z_seam_position":
                 {
                     "label": "Z Seam Position",
@@ -8220,6 +8229,19 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 90,
+                    "settable_per_mesh": true
+                },
+                "seam_overhang_angle":
+                {
+                    "label": "Seam Overhanging Wall Angle",
+                    "description": "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "90",
+                    "default_value": 90,
+                    "value": "wall_overhang_angle",
                     "settable_per_mesh": true
                 },
                 "wall_overhang_speed_factor":
