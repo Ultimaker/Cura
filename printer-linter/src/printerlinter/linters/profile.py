@@ -37,6 +37,6 @@ class Profile(Linter):
         config = ConfigParser()
         config.read([self._file])
         name_of_profile = config.get("general", "name")
-        redefined = re.compile(name_of_profile)
+        redefined = re.compile(re.escape(name_of_profile))
         found = redefined.search(self._content)
         return name_of_profile, found
