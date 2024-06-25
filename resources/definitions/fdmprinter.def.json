@@ -5129,8 +5129,8 @@
                 },
                 "support_infill_density_multiplier_layer_0":
                 {
-                    "label": "Support Infill Density Multiplier First Layer",
-                    "description": "Multiplier for the infill on the first layers of the support. Increasing this may help for bed adhesion.",
+                    "label": "Support Infill Density Multiplier Initial Layer",
+                    "description": "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion.",
                     "type": "int",
                     "minimum_value": "1",
                     "default_value": 1,
