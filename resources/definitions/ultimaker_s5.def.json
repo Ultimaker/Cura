@@ -74,7 +74,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
-
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 240 },
         "machine_end_gcode": { "default_value": "" },
