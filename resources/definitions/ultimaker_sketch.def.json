@@ -208,8 +208,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_sparse_density": { "value": 15 },
         "jerk_enabled": { "value": false },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 150 },
         "machine_end_gcode": { "default_value": "M107; Disable Fan; \n; End of print; \n; End GCode\nM104 S0 T0; Set Toolhead Temp to 0\nM140 S0 T0; Set Platform Temp to 0\nG162 Z F1800; Move to max axes position\nG28 X Y; Home\nM652; Turn off back fan\nM132 X Y Z A B; Set Home Position\nG91; Use Relative Positioning\nM18; Disable Axes\n\n" },
