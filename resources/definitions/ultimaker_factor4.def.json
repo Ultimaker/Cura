@@ -64,6 +64,7 @@
         "bridge_skin_material_flow": { "maximum_value": "100" },
         "bridge_skin_material_flow_2": { "maximum_value": "100" },
         "bridge_skin_material_flow_3": { "maximum_value": "100" },
+        "bridge_sparse_infill_max_density": { "value": "50" },
         "bridge_wall_material_flow": { "maximum_value": "100" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": "5" },
