@@ -4612,6 +4612,21 @@
                     "maximum_value": "365",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "cool_during_extruder_switch":
+                {
+                    "label": "Cooling during extruder switch",
+                    "description": "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off. This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have multiple fans that stay close to each other.</li></ul></html>",
+                    "type": "enum",
+                    "options":
+                    {
+                        "unchanged": "Unchanged",
+                        "only_last_extruder": "Only last extruder",
+                        "all_fans": "All fans"
+                    },
+                    "default_value": "unchanged",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
