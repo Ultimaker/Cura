@@ -404,7 +404,7 @@
         "support_conical_min_width": { "value": 10 },
         "support_enable": { "value": true },
         "support_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material'))" },
-        "support_fan_enable": { "value": "true if extruder_nr == support_extruder_nr else false" },
+        "support_fan_enable": { "value": "extruder_nr == support_extruder_nr" },
         "support_infill_rate": { "value": 20.0 },
         "support_infill_sparse_thickness": { "value": "layer_height" },
         "support_interface_enable": { "value": true },
