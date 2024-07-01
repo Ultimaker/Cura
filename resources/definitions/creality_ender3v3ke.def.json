@@ -49,7 +49,7 @@
         "material_print_temp_wait": { "default_value": false },
         "retraction_amount": { "default_value": 0.8 },
         "retraction_combing": { "value": "no_outer_surfaces" },
-        "retraction_combing_max_distance": { "default_value": 5.0 },
+        "retraction_combing_max_distance": { "value": 5.0 },
         "retraction_extrusion_window": { "value": "retraction_amount" },
         "retraction_min_travel": { "value": 2.0 },
         "retraction_speed": { "default_value": 40 },
