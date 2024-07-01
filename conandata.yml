@@ -9,7 +9,6 @@ requirements:
   - "dulcificum/latest@ultimaker/testing"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
-  - "curaengine_grpc_definitions/0.2.0"
   - "native_cad_plugin/2.0.0"
 requirements_internal:
   - "fdm_materials/(latest)@internal/testing"
