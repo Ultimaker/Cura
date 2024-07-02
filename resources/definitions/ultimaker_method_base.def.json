@@ -304,8 +304,6 @@
             "enabled": false,
             "value": "jerk_print"
         },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_center_is_zero": { "value": true },
         "machine_end_gcode": { "default_value": "" },
