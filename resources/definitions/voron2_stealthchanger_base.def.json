@@ -21,9 +21,9 @@
     },
     "overrides":
     {
-        "machine_name": { "default_value": "VORON2 StealthChanger" },
         "machine_end_gcode": { "default_value": "PRINT_END" },
         "machine_extruder_count": { "default_value": 1 },
+        "machine_name": { "default_value": "VORON2 StealthChanger" },
         "machine_start_gcode": { "default_value": "PRINT_START TOOL_TEMP={material_print_temperature_layer_0} T{initial_extruder_nr}_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0} TOOL={initial_extruder_nr}" }
     }
 }
