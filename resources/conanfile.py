@@ -28,8 +28,6 @@ class CuraResource(ConanFile):
             self.version = self.conan_data["version"]
 
     def export(self):
-        copy(self, pattern="conandata.yml", src=os.path.join(self.recipe_folder, ".."), dst=self.export_folder,
-             keep_path=False)
         copy(self, pattern="LICENSE*", src=os.path.join(self.recipe_folder, ".."), dst=self.export_folder,
              keep_path=False)
         update_conandata(self, {"version": self.version})
