@@ -103,8 +103,6 @@
         },
         "jerk_travel_enabled": { "value": "True" },
         "layer_height": { "value": "min(min(extruderValues('machine_nozzle_size')) / 2, 0.2)" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 240 },
         "machine_end_gcode": { "default_value": "" },

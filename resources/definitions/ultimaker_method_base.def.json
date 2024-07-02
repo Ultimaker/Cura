@@ -23,8 +23,12 @@
             "fabtotum_",
             "fdplast_",
             "filo3d_",
-            "generic_",
+            "generic_bvoh_175",
+            "generic_cpe_175",
+            "generic_hips_175",
+            "generic_pc_175",
             "ultimaker_rapidrinse_175",
+            "generic_tpu_175",
             "goofoo_",
             "ideagen3D_",
             "imade3d_",
@@ -55,7 +59,13 @@
             "1": "ultimaker_method_extruder_right"
         },
         "nozzle_offsetting_for_disallowed_areas": false,
-        "preferred_material": "ultimaker_pla_175",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "MakerbotMethod.png",
+        "preferred_material": "generic_pla_175",
         "preferred_quality_type": "fast",
         "preferred_variant_name": "1A",
         "supports_network_connection": true,
@@ -305,8 +315,6 @@
             "enabled": false,
             "value": "jerk_print"
         },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_center_is_zero": { "value": true },
         "machine_end_gcode": { "default_value": "" },

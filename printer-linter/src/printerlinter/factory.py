@@ -14,10 +14,10 @@ def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
     if not file.exists():
         return [Directory(file, settings)]
 
-    if ".inst" in file.suffixes and ".cfg" in file.suffixes:
+    if ".inst" in file.suffixes and file.suffixes[-1] == ".cfg":
         return [Directory(file, settings), Profile(file, settings), Formulas(file, settings)]
 
-    if ".def" in file.suffixes and ".json" in file.suffixes:
+    if ".def" in file.suffixes and file.suffixes[-1] == ".json":
         if file.stem in ("fdmprinter.def", "fdmextruder.def"):
             return  [Formulas(file, settings)]
         return [Directory(file, settings), Definition(file, settings), Formulas(file, settings)]
