@@ -7110,6 +7110,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "prime_tower_min_shell_thickness":
+                {
+                    "label": "Prime Tower Minimum Shell Thickness",
+                    "description": "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.4,
+                    "minimum_value": "max(extruderValues('prime_tower_line_width'))",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "prime_tower_enable and resolveOrValue('prime_tower_mode') == 'interleaved'",
+                    "resolve": "max(extruderValues('prime_tower_line_width'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "prime_tower_position_x":
                 {
                     "label": "Prime Tower X Position",
