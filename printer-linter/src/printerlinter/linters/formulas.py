@@ -51,9 +51,17 @@ class Formulas(Linter):
         self._definition = {}
 
     def getCuraSettingList(self) -> list:
+        settings_list = []
+
         with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "resources", "definitions", "fdmprinter.def.json")) as data:
             json_data = json.load(data)
-        return self.extractKeys(json_data)
+        settings_list += self.extractKeys(json_data)
+
+        with open(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "resources", "definitions", "fdmextruder.def.json")) as data:
+            json_data = json.load(data)
+        settings_list += self.extractKeys(json_data)
+
+        return settings_list
 
     def extractKeys(self, json_obj, parent_key=''):
         keys_with_value = []
