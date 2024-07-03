@@ -1218,6 +1218,8 @@ class CuraApplication(QtApplication):
             # Once we're at this point, everything should have been flushed already (past OnExitCallbackManager).
             # It's more difficult to call sys.exit(0): That requires that it happens as the result of a pyqtSignal-emit.
             # (See https://doc.qt.io/qt-6/qcoreapplication.html#quit)
+            # WARNING: With this in place you CAN NOT use cProfile. You will need to replace the next line with pass
+            # for it to work!
             os._exit(0)
 
         return super().event(event)
