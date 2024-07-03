@@ -39,7 +39,8 @@ class MaterialOutputModel(QObject):
                             "bvoh"      :{"name" :"BVOH"          ,"guid": "923e604c-8432-4b09-96aa-9bbbd42207f4"},
                             "cpe"       :{"name" :"CPE"           ,"guid": "da1872c1-b991-4795-80ad-bdac0f131726"},
                             "hips"      :{"name" :"HIPS"          ,"guid": "a468d86a-220c-47eb-99a5-bbb47e514eb0"},
-                            "tpu"       :{"name" :"TPU 95A"       ,"guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"}
+                            "tpu"       :{"name" :"TPU 95A"       ,"guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"},
+                            "im-pla"    :{"name": "Tough"         ,"guid": "de031137-a8ca-4a72-bd1b-17bb964033ad"}
                         }
 
 
