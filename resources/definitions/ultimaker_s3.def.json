@@ -70,8 +70,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 190 },
         "machine_end_gcode": { "default_value": "" },
