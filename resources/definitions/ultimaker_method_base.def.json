@@ -194,7 +194,6 @@
         "extruder_prime_pos_abs": { "default_value": true },
         "gradual_support_infill_steps": { "value": 0 },
         "infill_before_walls": { "value": false },
-        "infill_enable_travel_optimization": { "value": true },
         "infill_material_flow": { "value": "material_flow" },
         "infill_overlap": { "value": 0 },
         "infill_pattern": { "value": "'grid' if infill_sparse_density < 80 else 'lines'" },
@@ -305,8 +304,6 @@
             "enabled": false,
             "value": "jerk_print"
         },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_center_is_zero": { "value": true },
         "machine_end_gcode": { "default_value": "" },
@@ -321,11 +318,8 @@
         "machine_scale_fan_speed_zero_to_one": { "value": true },
         "machine_start_gcode": { "default_value": "" },
         "material_bed_temperature": { "enabled": "machine_heated_bed" },
-        "material_bed_temperature_layer_0": { "enabled": "machine_heated_bed" },
-        "material_final_print_temperature": { "value": "material_print_temperature-10" },
         "material_flow": { "value": 100 },
         "material_initial_print_temperature": { "value": "material_print_temperature-10" },
-        "material_print_temperature": { "value": "default_material_print_temperature" },
         "material_shrinkage_percentage": { "enabled": true },
         "min_bead_width": { "value": "0.75*line_width" },
         "min_wall_line_width": { "value": 0.4 },
@@ -435,8 +429,8 @@
         "wall_x_material_flow_layer_0": { "value": "material_flow" },
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": "xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
         "z_seam_position": { "value": "'backright'" },
+        "z_seam_relative": { "value": true },
         "z_seam_type": { "value": "'sharpest_corner'" },
         "zig_zaggify_infill": { "value": true }
     }
