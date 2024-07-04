@@ -8130,6 +8130,32 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "magic_fuzzy_skin_outside_convex_ratio":
+                {
+                    "label": "Fuzzy Skin Outside Only Max Convexity Ratio",
+                    "description": "The maximum ratio of the size of the openings versus the circumference of the convex subsections of a layer. Fuzz the parts that have a smaller ratio than this (so, larger ratios will encourage more fuzzed skin). -- Helps determine what is considered 'outside' when 'Fuzzy Skin Outside Only' is enabled. (If there is no opening the ratio is 0.)",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 35.0,
+                    "minimum_value": "0.0",
+                    "minimum_value_warning": "0.05",
+                    "maximum_value": "50.0",
+                    "enabled": "magic_fuzzy_skin_enabled and magic_fuzzy_skin_outside_only and not interlocking_enable",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "magic_fuzzy_skin_outside_min_area":
+                {
+                    "label": "Fuzzy Skin Outside Only Min Non-Enclosed Area",
+                    "description": "The minimum area that a convex subsection of a layer can be to be considered 'inside'. Larger area will exclude more from being inside and enable more areas to be fuzzed.- Helps determine what is considered 'outside' when 'Fuzzy Skin Outside Only' is enabled; for any not fully enclosed area that could be considered inside (convex regions of the layer-polygon).",
+                    "type": "float",
+                    "unit": "mm²",
+                    "default_value": 9.0,
+                    "minimum_value": "0.0",
+                    "enabled": "magic_fuzzy_skin_enabled and magic_fuzzy_skin_outside_only and not interlocking_enable",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "magic_fuzzy_skin_thickness":
                 {
                     "label": "Fuzzy Skin Thickness",
