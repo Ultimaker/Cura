@@ -8149,7 +8149,7 @@
                     "label": "Fuzzy Skin Outside Only Min Non-Enclosed Area",
                     "description": "The minimum area that a convex subsection of a layer can be to be considered 'inside'. Larger area will exclude more from being inside and enable more areas to be fuzzed.- Helps determine what is considered 'outside' when 'Fuzzy Skin Outside Only' is enabled; for any not fully enclosed area that could be considered inside (convex regions of the layer-polygon).",
                     "type": "float",
-                    "unit": "mm²",
+                    "unit": "mm\u00b2",
                     "default_value": 9.0,
                     "minimum_value": "0.0",
                     "enabled": "magic_fuzzy_skin_enabled and magic_fuzzy_skin_outside_only and not interlocking_enable",
