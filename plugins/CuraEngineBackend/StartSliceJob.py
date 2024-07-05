@@ -518,6 +518,7 @@ class StartSliceJob(Job):
 
         # Replace the setting tokens in start and end g-code.
         extruder_nr = stack.getProperty("extruder_nr", "value")
+        settings["machine_extruder_prestart_code"] = self._expandGcodeTokens(settings["machine_extruder_prestart_code"], extruder_nr)
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 

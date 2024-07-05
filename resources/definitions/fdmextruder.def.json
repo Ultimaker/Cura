@@ -109,6 +109,17 @@
                     "type": "float",
                     "unit": "mm"
                 },
+                "machine_extruder_prestart_code":
+                {
+                    "default_value": "",
+                    "description": "Prestart g-code to execute before switching to this extruder.",
+                    "label": "Extruder Prestart G-Code",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "str"
+                },
                 "machine_extruder_start_code":
                 {
                     "default_value": "",
@@ -119,6 +130,18 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "str"
+                },
+                "machine_extruder_change_duration":
+                {
+                    "default_value": 0,
+                    "description": "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur.",
+                    "label": "Extruder Change duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
                 },
                 "machine_extruder_start_code_duration":
                 {

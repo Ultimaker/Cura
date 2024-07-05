@@ -511,6 +511,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_start_gcode_first":
+                {
+                    "label": "Start GCode must be first",
+                    "description": "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "extruder_prime_pos_z":
                 {
                     "label": "Extruder Prime Z Position",

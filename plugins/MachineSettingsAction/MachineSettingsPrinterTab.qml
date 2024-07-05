@@ -344,6 +344,21 @@ Item
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
+
+            /* 
+               - Allows user to toggle if Start Gcode is the absolute first gcode.
+            */
+            Cura.SimpleCheckBox  // "Make sure Start Code is before all gcodes"
+            {
+                id: applyStartGcodeFirstCheckbox
+                containerStackId: machineStackId
+                settingKey: "machine_start_gcode_first"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Start GCode must be first")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
 			
 			
             /* The "Shared Heater" feature is temporarily disabled because its
