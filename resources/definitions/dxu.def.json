@@ -52,12 +52,12 @@
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "layer_start_x":
         {
-            "default_value": 180.0,
+            "value": 180.0,
             "enabled": false
         },
         "layer_start_y":
         {
-            "default_value": 160.0,
+            "value": 160.0,
             "enabled": false
         },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
