@@ -42,7 +42,7 @@ PyQt6-NetworkAuth-Qt6==6.6.0 \
     --hash=sha256:5006deabf55304d4a3e0b3c954f93e5835546b11e789d14653a2493d12d3a063 \
     --hash=sha256:bcd56bfc892fec961c51eba3c0bf32ba8317a762d9e254d3830569611ed569d6
 
-certifi==2023.5.7; \
+certifi==2024.7.4; \
     --hash=sha256:c6c2e98f5c7869efca1f8916fed228dd91539f9f1b444c314c06eef02980c716
 cryptography==41.0.1 \
     --hash=sha256:059e348f9a3c1950937e1b5d7ba1f8e968508ab181e75fc32b879452f08356db \
