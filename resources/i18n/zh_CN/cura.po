@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"POT-Creation-Date: 2024-07-08 09:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,6 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -139,10 +140,11 @@ msgid "*You will need to restart the application for these changes to have effec
 msgstr "*需重新启动该应用程序，这些更改才能生效。"
 
 msgctxt "@text"
-msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- 从 Marketplace 添加材料配置文件和插件"
-"- 备份和同步材料配置文件和插件"
-"- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
+msgid ""
+"- Add material profiles and plug-ins from the Marketplace\n"
+"- Back-up and sync your material profiles and plug-ins\n"
+"- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgstr "- 从 Marketplace 添加材料配置文件和插件- 备份和同步材料配置文件和插件- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -168,6 +170,14 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 文件"
 
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF 读取器"
+
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF 写入器"
+
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MF 编写器插件已损坏。"
@@ -188,38 +198,49 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>只有用户更改的设置才会保存在自定义配置文件中。</b><br/>对于支持材料，新的自定义配置文件将从 <b>%1</b> 继承属性。"
 
+#, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL 渲染器： {renderer}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL 供应商： {vendor}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 版本： {version}</li>"
 
 msgctxt "@label crash message"
-msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
+msgid ""
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
+"        "
 msgstr ""
 "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
 "            <p>请使用“发送报告”按钮将错误报告自动发送到我们的服务器</p>\n"
 "        "
 
 msgctxt "@label crash message"
-msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>"
-"                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>"
-"                    <p>您可在配置文件夹中找到备份。</p>"
-"                    <p>请向我们发送此错误报告，以便解决问题。</p>"
+msgid ""
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
+msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>                    <p>您可在配置文件夹中找到备份。</p>                    <p>请向我们发送此错误报告，以便解决问题。</p>                "
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>"
-"<p>{model_names}</p>"
-"<p>找到确保最好的打印质量与可靠性的方法.</p>\n"
+msgid ""
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr ""
+"<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p><p>{model_names}</p><p>找到确保最好的打印质量与可靠性的方法.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 msgctxt "@label"
@@ -242,6 +263,10 @@ msgstr "正在进行打印在上一次打印完成之前，Cura 无法通过 USB
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 文件"
+
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF 读取器"
 
 msgctxt "@label"
 msgid "Abort"
@@ -278,6 +303,10 @@ msgstr "关于..."
 msgctxt "@button"
 msgid "Accept"
 msgstr "接受"
+
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "接受 G-Code 并将其发送到一台打印机。 插件也可以更新固件。"
 
 msgctxt "@label"
 msgid "Account synced"
@@ -371,6 +400,7 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "手动添加打印机"
 
+#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "正在从您的帐户添加打印机 {name} ({model})"
@@ -411,6 +441,7 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "所有文件 (*)"
 
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "所有支持的文件类型 ({0})"
@@ -418,6 +449,10 @@ msgstr "所有支持的文件类型 ({0})"
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "允许发送匿名数据"
+
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "允许加载和显示 G-code 文件。"
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -499,6 +534,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "您确定要将 %1 移至队列顶部吗？"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "是否确实要暂时删除 {printer_name}？"
@@ -511,6 +547,7 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "您确认要删除 %1？该操作无法恢复！"
 
+#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "是否确实要删除 {0}？此操作无法撤消！"
@@ -574,6 +611,10 @@ msgstr "立即备份"
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "备份并重置配置"
+
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "备份和还原配置。"
 
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
@@ -671,10 +712,12 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "无法连接到 UltiMaker 打印机？"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "无法在添加打印机前从 <filename>{0}</filename> 导入配置文件。"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "如果加载 G-code，则无法打开其他任何文件。{0} 已跳过导入"
@@ -747,8 +790,21 @@ msgctxt "@label"
 msgid "Checking..."
 msgstr "正在检查..."
 
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "检查以进行固件更新。"
+
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建议。"
+
 msgctxt "@label"
-msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid ""
+"Chooses between the techniques available to generate support. \n"
+"\n"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
+"\n"
+"\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "在可用于产生支撑的方法之间进行选择。“普通”支撑在悬垂部分正下方形成一个支撑结构，并直接垂下这些区域。“树形”支撑形成一些分支，它们朝向在这些分支的尖端上支撑模型的悬垂区域，并使这些分支可缠绕在模型周围以尽可能多地从构建板上支撑它。"
 
 msgctxt "@action:inmenu menubar:edit"
@@ -786,6 +842,10 @@ msgstr "颜色模型"
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "颜色方案"
+
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr ""
 
 msgctxt "@info"
 msgid "Compare and save."
@@ -826,6 +886,14 @@ msgstr "压缩 COLLADA 数据资源交换"
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "压缩 G-code 文件"
+
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "压缩 G-code 读取器"
+
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "压缩 G-code 写入器"
 
 msgctxt "@title:window"
 msgid "Configuration Changes"
@@ -899,6 +967,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "通过云连接"
 
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
+
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
 msgstr "咨询 UltiMaker 社区。"
@@ -939,6 +1011,7 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "不能从用户数据目录创建存档: {}"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "尝试写入到 {device} 时找不到文件名。"
@@ -967,10 +1040,12 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "未能将材料存档保存到 {}："
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "无法保存到 <filename>{0}</filename>：<message>{1}</message>"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "无法保存到可移动磁盘 {0}：{1}"
@@ -979,20 +1054,26 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "无法将数据上传到打印机。"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"没有执行进程的权限。"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr "无法启用 EnginePlugin：{self._plugin_id}没有执行进程的权限。"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"操作系统正在阻止它（杀毒软件？）"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr "无法启用 EnginePlugin：{self._plugin_id}操作系统正在阻止它（杀毒软件？）"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"资源暂时不可用"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr "无法启用 EnginePlugin：{self._plugin_id}资源暂时不可用"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1034,6 +1115,10 @@ msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "在 Digital Library 中创建打印项目。"
 
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "创建橡皮擦网格，以便阻止在某些位置打印支撑"
+
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "正在创建您的备份..."
@@ -1046,9 +1131,21 @@ msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Cura 备份"
 
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura 备份"
+
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 配置文件"
+
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura 配置文件读取器"
+
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura 配置文件写入器"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
@@ -1062,14 +1159,16 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura 无法启动"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura 已检测到材料配置文件尚未安装到组 {0} 中的主机打印机上。"
 
 msgctxt "@info:credit"
-msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。"
-"Cura 使用以下开源项目："
+msgid ""
+"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura proudly uses the following open source projects:"
+msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。Cura 使用以下开源项目："
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1078,6 +1177,18 @@ msgstr "Cura 语言"
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Cura 版本"
+
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine 后端"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1335,10 +1446,12 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "弹出"
 
+#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "弹出可移动设备 {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "已弹出 {0}。现在，您可以安全地拔出磁盘。"
@@ -1362,6 +1475,10 @@ msgstr "启用打印边缘或浮边。这将在物体周围或下面添加一个
 msgctxt "@label"
 msgid "Enabled"
 msgstr "已启用"
+
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "支持从 2D 图像文件生成可打印几何模型的能力。"
 
 msgctxt "@title:label"
 msgid "End G-code"
@@ -1443,6 +1560,7 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "导出成功"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "配置文件已导出至：<filename> {0} </filename>"
@@ -1450,6 +1568,10 @@ msgstr "配置文件已导出至：<filename> {0} </filename>"
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "用插件和材料配置文件扩展 UltiMaker Cura。"
+
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "扩展程序（允许用户创建脚本进行后期处理）"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1475,6 +1597,7 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr "推料器开始 G 代码持续时间"
 
+#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr "推料器{0}"
@@ -1499,6 +1622,7 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "无法创建材料存档以与打印机同步。"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "无法弹出 {0}，另一个程序可能正在使用磁盘。"
@@ -1507,22 +1631,27 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "无法导出材料至 <filename>%1</filename>： <message>%2</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "无法将配置文件导出至<filename> {0} </filename>： <message>{1}</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "无法将配置文件导出至<filename> {0} </filename>： 写入器插件报告故障。"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件：{1}"
@@ -1539,6 +1668,7 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "未能保存材料存档"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr "无法写入特定云打印机:{0} 不在远程集群中。"
@@ -1567,6 +1697,7 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "文件已保存"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "文件 {0} 不包含任何有效的配置文件。"
@@ -1598,6 +1729,14 @@ msgstr "完成 %1 于 %2"
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "固件升级"
+
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "固件更新检查程序"
+
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "固件更新程序"
 
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
@@ -1698,6 +1837,18 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "GCode 文件"
 
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-code 配置文件读取器"
+
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-code 读取器"
+
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-code 写入器"
+
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-code 风格"
@@ -1770,6 +1921,7 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr "网格放置"
 
+#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "组 ＃{group_nr}"
@@ -1845,6 +1997,10 @@ msgstr "如果您想向 Cura 添加一台新的 UltiMaker 打印机"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "如果您的打印机未列出，请阅读<a href='%1'>网络打印故障排除指南</a>"
+
+msgctxt "name"
+msgid "Image Reader"
+msgstr "图像读取器"
 
 msgctxt "@action:button"
 msgid "Import"
@@ -2130,6 +2286,10 @@ msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "左视图"
 
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "旧版 Cura 配置文件读取器"
+
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "向开发人员报错。"
@@ -2210,6 +2370,10 @@ msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "日志"
 
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "记录某些事件，以使其可供崩溃报告器使用"
+
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "与打印机的连接中断"
@@ -2217,6 +2381,10 @@ msgstr "与打印机的连接中断"
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "打印机设置"
+
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "打印机设置操作"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
@@ -2233,6 +2401,14 @@ msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印�
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Makerbot 打印文件"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Makerbot 打印文件编写器"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr ""
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -2290,6 +2466,14 @@ msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "在此处管理您的 UltiMaker Cura 插件和材料配置文件。请确保将插件保持为最新，并定期备份设置。"
 
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "管理应用程序扩展，允许从  UltiMaker 网站浏览扩展。"
+
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "管理与 UltiMaker 网络打印机的网络连接。"
+
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "制造商"
@@ -2299,6 +2483,10 @@ msgid "Marketplace"
 msgstr "市场"
 
 msgctxt "@label"
+msgid "Marketplace"
+msgstr "市场"
+
+msgctxt "name"
 msgid "Marketplace"
 msgstr "市场"
 
@@ -2317,6 +2505,10 @@ msgstr "材料"
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "材料颜色"
+
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "材料配置文件"
 
 msgctxt "@label"
 msgid "Material Type"
@@ -2362,6 +2554,10 @@ msgctxt "@action:label"
 msgid "Mode"
 msgstr "模式"
 
+msgctxt "name"
+msgid "Model Checker"
+msgstr "模型检查器"
+
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "模型错误"
@@ -2377,6 +2573,10 @@ msgstr "修改重叠设置"
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "监控"
+
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "监视阶段"
 
 msgctxt "@action:button"
 msgid "Monitor print"
@@ -2451,6 +2651,7 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "网络错误"
 
+#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "新 %s 稳定版固件可用"
@@ -2463,6 +2664,7 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "新的 UltiMaker 打印机可连接到 Digital Factory，用户可对其进行远程监控。"
 
+#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "您的 {machine_name} 可能有新功能或错误修复可用！如果打印机上的固件还不是最新版本，建议将其更新为 {latest_version} 版。"
@@ -2508,6 +2710,7 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "无可用成本估计"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "没有可导入文件 <filename>{0}</filename> 的自定义配置文件"
@@ -2644,6 +2847,7 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "只显示顶层"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一次只能加载一个 G-code 文件。{0} 已跳过导入"
@@ -2816,6 +3020,10 @@ msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "单一模型设置"
 
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "单一模型设置工具"
+
 msgid "Perspective"
 msgstr "透视"
 
@@ -2852,11 +3060,12 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "在授权此应用程序时，须提供所需权限。"
 
 msgctxt "@info"
-msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "请确保您的打印机已连接："
-"- 检查打印机是否已启动。"
-"- 检查打印机是否连接至网络。"
-"- 检查您是否已登录查找云连接的打印机。"
+msgid ""
+"Please make sure your printer has a connection:\n"
+"- Check if the printer is turned on.\n"
+"- Check if the printer is connected to the network.\n"
+"- Check if you are signed in to discover cloud-connected printers."
+msgstr "请确保您的打印机已连接：- 检查打印机是否已启动。- 检查打印机是否连接至网络。- 检查您是否已登录查找云连接的打印机。"
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -2883,11 +3092,12 @@ msgid "Please remove the print"
 msgstr "请取出打印件"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
-msgstr "请检查设置并检查您的模型是否："
-"- 适合构建体积"
-"- 分配给了已启用的挤出器"
-"- 尚未全部设置为修改器网格"
+msgid ""
+"Please review settings and check if your models:\n"
+"- Fit within the build volume\n"
+"- Are assigned to an enabled extruder\n"
+"- Are not all set as modifier meshes"
+msgstr "请检查设置并检查您的模型是否：- 适合构建体积- 分配给了已启用的挤出器- 尚未全部设置为修改器网格"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -2941,6 +3151,10 @@ msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "后期处理"
 
+msgctxt "name"
+msgid "Post Processing"
+msgstr "后期处理"
+
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "后期处理插件"
@@ -2956,6 +3170,10 @@ msgstr "预热"
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "准备"
+
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "准备阶段"
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -2976,6 +3194,10 @@ msgstr "预览"
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "预览"
+
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "预览阶段"
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
@@ -3175,6 +3397,7 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "配置文件设置"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "配置 {0} 文件类型未知或已损坏。"
@@ -3199,18 +3422,22 @@ msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "编程语言"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "项目文件 <filename>{0}</filename> 包含未知机器类型 <message>{1}</message>。无法导入机器。将改为导入模型。"
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "项目文件 <filename>{0}</filename> 损坏: <message>{1}</message>。"
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "项目文件 <filename>{0}</filename> 是用此 UltiMaker Cura 版本未识别的配置文件制作的。"
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "突然无法访问项目文件 <filename>{0}</filename>：<message>{1}</message>。"
@@ -3218,6 +3445,106 @@ msgstr "突然无法访问项目文件 <filename>{0}</filename>：<message>{1}</
 msgctxt "@label"
 msgid "Properties"
 msgstr "属性"
+
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "为固件更新提供操作选项。"
+
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "在 Cura 中提供监视阶段。"
+
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "提供一个基本的实体网格视图。"
+
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "在 Cura 中提供准备阶段。"
+
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "在 Cura 中提供预览阶段。"
+
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "提供一种改变机器设置的方法（如构建体积、喷嘴大小等）。"
+
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
+
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "为 Ultimaker 车床提供机器操作（例如车床调平向导、选择升级等）。"
+
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "提供可移动磁盘热插拔和写入文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "提供了对导出 Cura 配置文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "提供了对导入 Cura 配置文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "提供了从 GCode 文件中导入配置文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "支持从 Cura 旧版本导入配置文件。"
+
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "提供对读取 3MF 格式文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "提供对读取 AMF 文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "为读取 Ultimaker 格式包提供支持。"
+
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "支持读取 X3D 文件。"
+
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "提供对读取模型文件的支持。"
+
+msgctxt "description"
+msgid "Provides support for writing 3MF and UCP files."
+msgstr "支持写为 3MF 和 UCP 文件。"
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "提供对写入 MakerBot 格式包的支持。"
+
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "为写入 Ultimaker 格式包提供支持。"
+
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "提供对每个模型的单独设置。"
+
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "提供透视视图。"
+
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "提供 CuraEngine 切片后端的路径。"
+
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "提供切片层数据的预览。"
 
 msgctxt "@label"
 msgid "PyQt version"
@@ -3239,6 +3566,7 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt 版本"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "质量类型“{0}”与当前有效的机器定义“{1}”不兼容。"
@@ -3254,6 +3582,10 @@ msgstr "已排队"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "退出 %1"
+
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "从压缩存档文件读取 G-code。"
 
 msgctxt "@button"
 msgid "Recommended"
@@ -3306,6 +3638,10 @@ msgstr "记住我的选择"
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "可移动磁盘"
+
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "可移动磁盘输出设备插件"
 
 msgctxt "@action:button"
 msgid "Remove"
@@ -3471,10 +3807,12 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "保存至可移动磁盘"
 
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "保存到可移动磁盘 {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "保存到可移动磁盘 {0} ：{1}"
@@ -3483,6 +3821,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "正在保存"
 
+#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "保存到可移动磁盘 <filename> {0} </filename>"
@@ -3498,6 +3837,10 @@ msgstr "缩小过大模型"
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "搜索"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr ""
 
 msgctxt "@info"
 msgid "Search in the browser"
@@ -3586,6 +3929,10 @@ msgstr "发送打印作业"
 msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "正在将材料发送到打印机"
+
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Sentry 日志记录"
 
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
@@ -3795,6 +4142,10 @@ msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "登录 UltiMaker 平台"
 
+msgctxt "name"
+msgid "Simulation View"
+msgstr "仿真视图"
+
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "表层"
@@ -3823,6 +4174,10 @@ msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "当设置被更改时自动进行切片。"
 
+msgctxt "name"
+msgid "Slice info"
+msgstr "切片信息"
+
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "切片失败"
@@ -3839,14 +4194,20 @@ msgctxt "@label"
 msgid "Solid"
 msgstr "固体"
 
+msgctxt "name"
+msgid "Solid View"
+msgstr "实体视图"
+
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "实体视图"
 
 msgctxt "@label"
-msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "一些隐藏设置正在使用有别于一般设置的计算值。"
-"单击以使这些设置可见。"
+msgid ""
+"Some hidden settings use values different from their normal calculated value.\n"
+"\n"
+"Click to make these settings visible."
+msgstr "一些隐藏设置正在使用有别于一般设置的计算值。单击以使这些设置可见。"
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -3861,9 +4222,11 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "在 <b>%1</b> 中定义的一些设置值已被覆盖。"
 
 msgctxt "@tooltip"
-msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "某些设置/重写值与存储在配置文件中的值不同。"
-"点击打开配置文件管理器。"
+msgid ""
+"Some setting/override values are different from the values stored in the profile.\n"
+"\n"
+"Click to open the profile manager."
+msgstr "某些设置/重写值与存储在配置文件中的值不同。点击打开配置文件管理器。"
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -3933,6 +4296,10 @@ msgctxt "@label"
 msgid "Strength"
 msgstr "强度"
 
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "提交匿名切片信息。 可以通过偏好设置禁用。"
+
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "成功导出材料至： <filename>%1</filename>"
@@ -3941,6 +4308,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "成功导入材料 <filename>%1</filename>"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "已成功导入配置文件 {0}。"
@@ -3976,6 +4344,10 @@ msgstr "支撑"
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "支撑拦截器"
+
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "支持橡皮擦"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -4142,6 +4514,7 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "用于打印支撑的挤出机组。 用于多重挤出。"
 
+#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "文件 <filename>{0}</filename> 已存在。您确定要覆盖它吗？"
@@ -4204,11 +4577,15 @@ msgid "The nozzle inserted in this extruder."
 msgstr "该挤出机所使用的喷嘴。"
 
 msgctxt "@label"
-msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "打印的填充材料的图案："
-"对于非功能模型快速打印，请选择线条、锯齿状或闪电型填充。 "
-"对于承压不太大的功能性零件，我们建议使用网格、三角形或三角形与六边形组合图案。"
-"对于在多个方向上需要高强度承受力的功能性 3D 打印，请使用立方体、立方体细分、四分之一立方体、八面体和螺旋形。"
+msgid ""
+"The pattern of the infill material of the print:\n"
+"\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
+"\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
+"\n"
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "打印的填充材料的图案：对于非功能模型快速打印，请选择线条、锯齿状或闪电型填充。 对于承压不太大的功能性零件，我们建议使用网格、三角形或三角形与六边形组合图案。对于在多个方向上需要高强度承受力的功能性 3D 打印，请使用立方体、立方体细分、四分之一立方体、八面体和螺旋形。"
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
@@ -4327,8 +4704,8 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "此配置不可用，因为 %1 未被识别。请访问 %2 以下载正确的材料配置文件。"
 
 msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr "这是 Cura Universal 项目文件。您想将其作为 Cura 项目或 Cura Universal Project 打开还是从中导入模型？"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr ""
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4363,6 +4740,7 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "这台打印机是一组共 %1 台打印机的主机。"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "此配置文件 <filename>{0}</filename> 包含错误数据，无法导入。"
@@ -4376,9 +4754,11 @@ msgid "This project contains materials or plugins that are currently not install
 msgstr "此项目包含 Cura 目前未安装的材料或插件。<br/>请安装缺失程序包，然后重新打开项目。"
 
 msgctxt "@label"
-msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "此设置的值与配置文件不同。"
-"单击以恢复配置文件的值。"
+msgid ""
+"This setting has a value that is different from the profile.\n"
+"\n"
+"Click to restore the value of the profile."
+msgstr "此设置的值与配置文件不同。单击以恢复配置文件的值。"
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4394,9 +4774,11 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "此设置始终在所有挤出机之间共享。在此处更改它将改变所有挤出机的值。"
 
 msgctxt "@label"
-msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "此设置通常可被自动计算，但其当前已被绝对定义。"
-"单击以恢复自动计算的值。"
+msgid ""
+"This setting is normally calculated, but it currently has an absolute value set.\n"
+"\n"
+"Click to restore the calculated value."
+msgstr "此设置通常可被自动计算，但其当前已被绝对定义。单击以恢复自动计算的值。"
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4430,6 +4812,7 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打印机同步，您需要登录 Cura。"
 
+#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "要建立连接，请访问 {website_link}"
@@ -4442,6 +4825,7 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "欲通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接至网络。若不能连接 Cura 与打印机，亦可通过使用 USB 设备将 G-code 文件传输到打印机。"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "要永久删除 {printer_name}，请访问 {digital_factory_link}"
@@ -4490,6 +4874,10 @@ msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "尝试在没有适当数据或元数据的情况下恢复Cura备份。"
 
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh 阅读器"
+
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "故障排除"
@@ -4510,7 +4898,19 @@ msgctxt "@label"
 msgid "Type"
 msgstr "类型"
 
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP 读取器"
+
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFP 写入器"
+
 msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USB 联机打印"
+
+msgctxt "name"
 msgid "USB printing"
 msgstr "USB 联机打印"
 
@@ -4530,6 +4930,10 @@ msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker 格式包"
 
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker 网络连接"
+
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "UltiMaker 验证包"
@@ -4537,6 +4941,10 @@ msgstr "UltiMaker 验证包"
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "UltiMaker 验证插件"
+
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker 车床操作"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4550,6 +4958,10 @@ msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
 
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
+
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "无法添加配置文件。"
@@ -4558,14 +4970,17 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "无法在成形空间体积内放下全部模型"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "无法为以下对象找到本地 EnginePlugin 服务器可执行文件：{self._plugin_id}"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "无法关闭正在运行的 EnginePlugin：{self._plugin_id}"
-"访问被拒。"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr "无法关闭正在运行的 EnginePlugin：{self._plugin_id}访问被拒。"
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -4587,10 +5002,12 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "无法切片（原因：主塔或主位置无效）。"
 
+#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "无法切片，因为存在与已禁用挤出机 %s 相关联的对象。"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "因部分特定模型设置而无法切片。 以下设置在一个或多个模型上存在错误： {error_labels}"
@@ -4599,6 +5016,7 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "无法使用当前材料进行切片，因为该材料与所选机器或配置不兼容。"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "无法使用当前设置进行切片。以下设置存在错误：{0}"
@@ -4607,6 +5025,7 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "无法开始新的登录过程。请检查是否仍在尝试进行另一登录。"
 
+#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr "无法写入文件:{0}"
@@ -4659,6 +5078,7 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "未知包"
 
+#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "上传打印作业时出现未知错误代码：{0}"
@@ -4723,6 +5143,114 @@ msgctxt "@button"
 msgid "Updating..."
 msgstr "正在更新..."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "将配置从 Cura 2.1 版本升级至 2.2 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "将配置从 Cura 2.2 版本升级至 2.4 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "将配置从 Cura 2.5 版本升级至 2.6 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "将配置从 Cura 2.6 版本升级至 2.7 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "将配置从 Cura 2.7 版本升级至 3.0 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "将配置从 Cura 3.0 版本升级至 3.1 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "将配置从 Cura 3.2 版本升级至 3.3 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "从Cura 3.3升级到Cura 3.4。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "将配置从 Cura 3.4 版本升级至 3.5 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "将配置从 Cura 3.5 版本升级至 4.0 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "将配置从 Cura 4.0 版本升级至 4.1 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "请将配置从 Cura 4.1 升级至 Cura 4.2。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "将配置从 Cura 4.11 升级到 Cura 4.12。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "将配置从 Cura 4.13 升级至 Cura 5.0。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "请将配置从 Cura 4.2 升级至 Cura 4.3。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "将配置从 Cura 4.3 升级至 Cura 4.4。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "将配置从 Cura 4.4 升级至 Cura 4.5。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "将配置从 Cura 4.5 升级至 Cura 4.6。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "将配置从 Cura 4.6.0 升级到 Cura 4.6.2。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "将配置从 Cura 4.6.2 升级到 Cura 4.7。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "将配置从 Cura 4.7 升级到 Cura 4.8。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "将配置从 Cura 4.8 升级到 Cura 4.9。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "将配置从 Cura 4.9 升级到 Cura 4.10。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "将配置从 Cura 5.2 版本升级至 5.3 版本。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "将配置从 Cura 5.3 升级到 Cura 5.4。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "将配置从 Cura 5.4 升级到 Cura 5.5。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr "将配置从 Cura 5.6 升级到 Cura 5.7。"
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上传自定义固件"
@@ -4758,6 +5286,114 @@ msgstr "实用程序库，包括 Voronoi 图生成"
 msgctxt "@title:column"
 msgid "Value"
 msgstr "值"
+
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "版本自 2.1 升级到 2.2"
+
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "版本自 2.2 升级到 2.4"
+
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "版本自 2.5 升级到 2.6"
+
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "版本自 2.6 升级到 2.7"
+
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "版本自 2.7 升级到 3.0"
+
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "版本自 3.0 升级到 3.1"
+
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "版本自 3.2 升级到 3.3"
+
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "版本升级3.3到3.4"
+
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "版本自 3.4 升级到 3.5"
+
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "版本自 3.5 升级到 4.0"
+
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "版本自 4.0 升级到 4.1"
+
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "版本自 4.1 升级到 4.2"
+
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "版本从 4.11 升级到 4.12"
+
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "版本从 4.13 升级到 5.0"
+
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "版本自 4.2 升级至 4.3"
+
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "版本自 4.3 升级至 4.4"
+
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "版本从 4.4 升级至 4.5"
+
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "版本从 4.5 升级至 4.6"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "版本从 4.6.0 升级到 4.6.2"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "版本从 4.6.2 升级到 4.7"
+
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "将版本从 4.7 升级到 4.8"
+
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "版本从 4.8 升级到 4.9"
+
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "版本从 4.9 升级到 4.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "版本自 5.2 升级到 5.3"
+
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr "版本 5.3 升级到 5.4"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "版本 5.4 升级到 5.5"
+
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr "升级版本 5.6 至 5.7"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -4811,6 +5447,7 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "警告：配置文件不可见，因为其质量类型“{0}”对当前配置不可用。请切换到可使用此质量类型的材料/喷嘴组合。"
@@ -4875,6 +5512,14 @@ msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "宽度 (mm)"
 
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "将 G-code 写入至压缩存档文件。"
+
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "将 G-code 写入至文件。"
+
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (宽度)"
@@ -4887,6 +5532,10 @@ msgctxt "@label"
 msgid "X min"
 msgstr "X 最小值"
 
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "透视视图"
+
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透视视图"
@@ -4898,6 +5547,10 @@ msgstr "X/Y"
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D 文件"
+
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D 读取器"
 
 msgctxt "@label"
 msgid "Y (Depth)"
@@ -4916,19 +5569,28 @@ msgid "Yes"
 msgstr "是"
 
 msgctxt "@label"
-msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。"
-"是否确定继续？"
+msgid ""
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。是否确定继续？"
 
+#, python-brace-format
 msgctxt "@label"
-msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr[0] "您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n是否确实要继续？"
+msgid ""
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
+"您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n"
+"是否确实要继续？"
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "您正在尝试连接未运行 UltiMaker Connect 的打印机。请将打印机升级到最新固件。"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "您正在尝试连接到 {0}，但它不是组中的主机。您可以访问网页，将其配置为组主机。"
@@ -4939,9 +5601,7 @@ msgstr "您目前没有任何备份。使用“立即备份”按钮创建一个
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr "您已经自定义了若干配置文件设置。"
-"是否要在切换配置文件后保留这些更改的设置？"
-"或者，也可舍弃更改以从“%1”加载默认值。"
+msgstr "您已经自定义了若干配置文件设置。是否要在切换配置文件后保留这些更改的设置？或者，也可舍弃更改以从“%1”加载默认值。"
 
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
@@ -4971,10 +5631,12 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "新打印机将自动出现在 Cura 中"
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。"
-"只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
+msgid ""
+"Your printer <b>{printer_name}</b> could be connected via cloud.\n"
+" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
 
 msgctxt "@label"
 msgid "Z"
@@ -5036,6 +5698,7 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "版本： %1"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "将删除 {printer_name}，直到下次帐户同步为止。"
@@ -5044,554 +5707,6 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} 个插件下载失败"
 
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "管理与 UltiMaker 网络打印机的网络连接。"
-
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "UltiMaker 网络连接"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "提供了从 GCode 文件中导入配置文件的支持。"
-
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-code 配置文件读取器"
-
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "提供一个基本的实体网格视图。"
-
-msgctxt "name"
-msgid "Solid View"
-msgstr "实体视图"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
-
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "提供对读取 3MF 格式文件的支持。"
-
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF 读取器"
-
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "接受 G-Code 并将其发送到一台打印机。 插件也可以更新固件。"
-
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB 联机打印"
-
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "检查以进行固件更新。"
-
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "固件更新检查程序"
-
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "管理应用程序扩展，允许从  UltiMaker 网站浏览扩展。"
-
-msgctxt "name"
-msgid "Marketplace"
-msgstr "市场"
-
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "备份和还原配置。"
-
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura 备份"
-
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "提供一种改变机器设置的方法（如构建体积、喷嘴大小等）。"
-
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "打印机设置操作"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "将配置从 Cura 2.5 版本升级至 2.6 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "版本自 2.5 升级到 2.6"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "将配置从 Cura 4.7 升级到 Cura 4.8。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "将版本从 4.7 升级到 4.8"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "将配置从 Cura 4.4 升级至 Cura 4.5。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "版本从 4.4 升级至 4.5"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "将配置从 Cura 3.0 版本升级至 3.1 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "版本自 3.0 升级到 3.1"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "将配置从 Cura 4.11 升级到 Cura 4.12。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "版本从 4.11 升级到 4.12"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "请将配置从 Cura 4.1 升级至 Cura 4.2。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "版本自 4.1 升级到 4.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "将配置从 Cura 2.6 版本升级至 2.7 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "版本自 2.6 升级到 2.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "将配置从 Cura 4.6.0 升级到 Cura 4.6.2。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "版本从 4.6.0 升级到 4.6.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "从Cura 3.3升级到Cura 3.4。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "版本升级3.3到3.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "将配置从 Cura 4.8 升级到 Cura 4.9。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "版本从 4.8 升级到 4.9"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "将配置从 Cura 4.5 升级至 Cura 4.6。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "版本从 4.5 升级至 4.6"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "请将配置从 Cura 4.2 升级至 Cura 4.3。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "版本自 4.2 升级至 4.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "将配置从 Cura 3.2 版本升级至 3.3 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "版本自 3.2 升级到 3.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "将配置从 Cura 4.3 升级至 Cura 4.4。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "版本自 4.3 升级至 4.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
-msgstr "将配置从 Cura 5.6 升级到 Cura 5.7。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.6 to 5.7"
-msgstr "升级版本 5.6 至 5.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "将配置从 Cura 2.1 版本升级至 2.2 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "版本自 2.1 升级到 2.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "将配置从 Cura 5.3 升级到 Cura 5.4。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr "版本 5.3 升级到 5.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "将配置从 Cura 4.9 升级到 Cura 4.10。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "版本从 4.9 升级到 4.10"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "将配置从 Cura 2.7 版本升级至 3.0 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "版本自 2.7 升级到 3.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "将配置从 Cura 3.5 版本升级至 4.0 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "版本自 3.5 升级到 4.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "将配置从 Cura 5.2 版本升级至 5.3 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "版本自 5.2 升级到 5.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "将配置从 Cura 4.0 版本升级至 4.1 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "版本自 4.0 升级到 4.1"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "将配置从 Cura 4.13 升级至 Cura 5.0。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "版本从 4.13 升级到 5.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "将配置从 Cura 3.4 版本升级至 3.5 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "版本自 3.4 升级到 3.5"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "将配置从 Cura 2.2 版本升级至 2.4 版本。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "版本自 2.2 升级到 2.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "将配置从 Cura 4.6.2 升级到 Cura 4.7。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "版本从 4.6.2 升级到 4.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr "将配置从 Cura 5.4 升级到 Cura 5.5。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.4 to 5.5"
-msgstr "版本 5.4 升级到 5.5"
-
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "允许加载和显示 G-code 文件。"
-
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-code 读取器"
-
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "提交匿名切片信息。 可以通过偏好设置禁用。"
-
-msgctxt "name"
-msgid "Slice info"
-msgstr "切片信息"
-
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "提供可移动磁盘热插拔和写入文件的支持。"
-
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "可移动磁盘输出设备插件"
-
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "创建橡皮擦网格，以便阻止在某些位置打印支撑"
-
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "支持橡皮擦"
-
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建议。"
-
-msgctxt "name"
-msgid "Model Checker"
-msgstr "模型检查器"
-
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "在 Cura 中提供准备阶段。"
-
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "准备阶段"
-
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "提供切片层数据的预览。"
-
-msgctxt "name"
-msgid "Simulation View"
-msgstr "仿真视图"
-
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "提供对读取 AMF 文件的支持。"
-
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF 读取器"
-
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "提供透视视图。"
-
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "透视视图"
-
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "为固件更新提供操作选项。"
-
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "固件更新程序"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "支持从 Cura 旧版本导入配置文件。"
-
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "旧版 Cura 配置文件读取器"
-
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "扩展程序（允许用户创建脚本进行后期处理）"
-
-msgctxt "name"
-msgid "Post Processing"
-msgstr "后期处理"
-
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "记录某些事件，以使其可供崩溃报告器使用"
-
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Sentry 日志记录"
-
-msgctxt "description"
-msgid "Provides support for writing MakerBot Format Packages."
-msgstr "提供对写入 MakerBot 格式包的支持。"
-
-msgctxt "name"
-msgid "Makerbot Printfile Writer"
-msgstr "Makerbot 打印文件编写器"
-
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "提供了对导入 Cura 配置文件的支持。"
-
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura 配置文件读取器"
-
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "为读取 Ultimaker 格式包提供支持。"
-
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP 读取器"
-
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "支持从 2D 图像文件生成可打印几何模型的能力。"
-
-msgctxt "name"
-msgid "Image Reader"
-msgstr "图像读取器"
-
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "提供 CuraEngine 切片后端的路径。"
-
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine 后端"
-
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "将 G-code 写入至压缩存档文件。"
-
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "压缩 G-code 写入器"
-
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "为 Ultimaker 车床提供机器操作（例如车床调平向导、选择升级等）。"
-
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "UltiMaker 车床操作"
-
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "从压缩存档文件读取 G-code。"
-
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "压缩 G-code 读取器"
-
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "在 Cura 中提供预览阶段。"
-
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "预览阶段"
-
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
-
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "提供了对导出 Cura 配置文件的支持。"
-
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura 配置文件写入器"
-
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "支持读取 X3D 文件。"
-
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D 读取器"
-
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "提供对读取模型文件的支持。"
-
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh 阅读器"
-
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "在 Cura 中提供监视阶段。"
-
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "监视阶段"
-
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "提供对每个模型的单独设置。"
-
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "单一模型设置工具"
-
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
-
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "材料配置文件"
-
-msgctxt "description"
-msgid "Provides support for writing 3MF and UCP files."
-msgstr "支持写为 3MF 和 UCP 文件。"
-
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF 写入器"
-
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "为写入 Ultimaker 格式包提供支持。"
-
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFP 写入器"
-
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "将 G-code 写入至文件。"
-
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-code 写入器"
+#~ msgctxt "@text:window"
+#~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+#~ msgstr "这是 Cura Universal 项目文件。您想将其作为 Cura 项目或 Cura Universal Project 打开还是从中导入模型？"
