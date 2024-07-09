@@ -67,13 +67,13 @@
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "layer_start_x":
         {
-            "default_value": 105.0,
-            "enabled": false
+            "enabled": false,
+            "value": 105.0
         },
         "layer_start_y":
         {
-            "default_value": 27.0,
-            "enabled": false
+            "enabled": false,
+            "value": 27.0
         },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
         "machine_acceleration": { "default_value": 3000 },
