@@ -27,7 +27,9 @@
     },
     "overrides":
     {
-        "build_volume_temperature": { "maximum_value_warning": "100" },
+        "build_volume_temperature": {
+            "maximum_value_warning": "100"
+        },
         "machine_depth": { "default_value": 320 },
         "machine_disallowed_areas":
         {
