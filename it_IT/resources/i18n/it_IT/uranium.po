@@ -1,0 +1,846 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#, fuzzy
+msgctxt "@info:version-upgrade"
+msgid "A configuration from an older version of {0} was imported."
+msgstr "È stata importata una configurazione da una versione precedente {0}."
+
+#, fuzzy
+msgctxt "@error:Required plugins not found"
+msgid "A number of plugins are required, but could not be loaded: {plugins}"
+msgstr "Occorrono alcuni plugin ma non è possibile caricarli: {plugins}"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Abort"
+msgstr "Interrompi"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "All Files (*)"
+msgstr "Tutti i file (*)"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "All Supported Types ({0})"
+msgstr "Tutti i tipi supportati ({0})"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Apply"
+msgstr "Applica"
+
+#, fuzzy
+msgctxt "@label (%1 is object name)"
+msgid "Are you sure you wish to remove %1? This cannot be undone!"
+msgstr "Sei sicuro di voler rimuovere %1? Questa operazione non può essere annullata!"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "Auto scaled model to {0}% of original size"
+msgstr "Ridimensionamento automatico del modello a {0}% della dimensione originale"
+
+#, fuzzy
+msgctxt "name"
+msgid "Camera Tool"
+msgstr "Strumento fotocamera"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Annulla"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Cancel"
+msgstr "Annulla"
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "Cannot open files of the type of <filename>{0}</filename>"
+msgstr "Impossibile aprire i file tipo <filename>{0}</filename>"
+
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Check for Updates"
+msgstr "Controlla aggiornamenti"
+
+#, fuzzy
+msgctxt "description"
+msgid "Checks for updates of the software."
+msgstr "Verifica la disponibilità di aggiornamenti del software."
+
+#, fuzzy
+msgctxt "@option"
+msgid "Close"
+msgstr "Chiudi"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Configuration errors"
+msgstr "Errori di configurazione"
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "Confirm Remove"
+msgstr "Conferma rimozione"
+
+#, fuzzy
+msgctxt "name"
+msgid "Console Logger"
+msgstr "Logger di console"
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
+msgstr "Impossibile salvare <filename>{0}</filename>: <message>{1}</message>"
+
+#, fuzzy
+msgctxt "Critical OpenGL Extensions Missing"
+msgid "Critical OpenGL extensions are missing. This program requires support for Framebuffer Objects. Please check your video card drivers."
+msgstr "Estensioni OpenGL fondamentali assenti. Questo programma richiede supporto per Framebuffer Objects. Si prega di controllare i driver della scheda video."
+
+#, fuzzy
+msgctxt "@option"
+msgid "Discard"
+msgstr "Elimina"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Dismiss"
+msgstr "Rimuovi"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Download"
+msgstr "Download"
+
+#, fuzzy
+msgctxt "@option:check"
+msgid "Drop Down Model"
+msgstr "Rilascia il modello"
+
+#, fuzzy
+msgctxt "description"
+msgid "Enables saving to local files."
+msgstr "Consente il salvataggio su file locali."
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Error"
+msgstr "Errore"
+
+#, fuzzy
+msgctxt "@message"
+msgid "Failed to Initialize OpenGL"
+msgstr "Inizializzazione OpenGL non riuscita"
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "Failed to load <filename>{0}</filename>. The file could be corrupt or inaccessible."
+msgstr "Impossibile caricare <filename>{0}</filename> Il file può essere danneggiato o non accessibile."
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "Failed to load <filename>{0}</filename>. The file could be corrupt, inaccessible or it did not contain any models."
+msgstr "Impossibile caricare <filename>{0}</filename>. Il file può essere danneggiato, non accessibile oppure non contenere alcun modello."
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "File Already Exists"
+msgstr "Il file esiste già"
+
+#, fuzzy
+msgctxt "name"
+msgid "File Logger"
+msgstr "Logger di file"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "File Saved"
+msgstr "File salvato"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "File has been modified"
+msgstr "Il file è stato modificato"
+
+#, fuzzy
+msgctxt "@menu"
+msgid "From Disk"
+msgstr "Dal disco"
+
+#, fuzzy
+msgctxt "@title:tab"
+msgid "General"
+msgstr "Generale"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Help"
+msgstr "Help"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Ignore"
+msgstr "Ignora"
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Initializing package manager..."
+msgstr "Inizializzazione gestione pacchetti..."
+
+#, fuzzy
+msgctxt "@info:progress Don't translate {package_id}"
+msgid "Installing plugin {package_id}..."
+msgstr "Installazione del plug-in {package_id}..."
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Invalid File"
+msgstr "File non valido"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Lay flat"
+msgstr "Posiziona in piano"
+
+#, fuzzy
+msgctxt "@label"
+msgid "Laying object flat on buildplate..."
+msgstr "Disporre l’oggetto piatto sul piano di stampa..."
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Learn more"
+msgstr "Ulteriori informazioni"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Loading"
+msgstr "Caricamento in corso"
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Loading UI..."
+msgstr "Caricamento UI in corso..."
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Loading plugin {plugin_id}..."
+msgstr "Caricamento del plug-in {plugin_id}..."
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Loading plugins..."
+msgstr "Caricamento plugin in corso..."
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Loading preferences..."
+msgstr "Caricamento preferenze in corso..."
+
+#, fuzzy
+msgctxt "name"
+msgid "Local Container Provider"
+msgstr "Fornitore container locale"
+
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Local File"
+msgstr "File locale"
+
+#, fuzzy
+msgctxt "name"
+msgid "Local File Output Device"
+msgstr "Periferica di output file locale"
+
+#, fuzzy
+msgctxt "@option:check"
+msgid "Lock Model"
+msgstr "Blocca modello"
+
+#, fuzzy
+msgctxt "description"
+msgid "Makes it possible to read Wavefront OBJ files."
+msgstr "Rende possibile leggere file Wavefront OBJ."
+
+#, fuzzy
+msgctxt "description"
+msgid "Makes it possible to write Wavefront OBJ files."
+msgstr "Rende possibile scrivere file Wavefront OBJ."
+
+#, fuzzy
+msgctxt "@label"
+msgid "Mirror"
+msgstr "Immagine speculare"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Mirror Model"
+msgstr "Modello Immagine speculare"
+
+#, fuzzy
+msgctxt "name"
+msgid "Mirror Tool"
+msgstr "Strumento immagine speculare"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Move"
+msgstr "Spostamento"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Move Model"
+msgstr "Modello Spostamento"
+
+#, fuzzy
+msgctxt "name"
+msgid "Move Tool"
+msgstr "Strumento Spostamento"
+
+#, fuzzy
+msgctxt "@option"
+msgid "No"
+msgstr "No"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "No Models in File"
+msgstr "Nessun modello in file"
+
+#, fuzzy
+msgctxt "@info"
+msgid "No new version was found."
+msgstr "Non è stata trovata nessuna nuova versione."
+
+#, fuzzy
+msgctxt "@option"
+msgid "No to All"
+msgstr "No a tutti"
+
+#, fuzzy
+msgctxt "@error:not supported"
+msgid "OBJWriter does not support non-text mode."
+msgstr "OBJWriter non supporta la modalità non di testo."
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "OK"
+msgstr "OK"
+
+#, fuzzy
+msgctxt "@option"
+msgid "OK"
+msgstr "OK"
+
+#, fuzzy
+msgctxt "@title"
+msgid "Object Rotation"
+msgstr "Rotazione oggetto"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Open"
+msgstr "Apri"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Open Folder"
+msgstr "Apri cartella"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Open the folder containing the file"
+msgstr "Apri la cartella contenente il file"
+
+#, fuzzy
+msgctxt "description"
+msgid "Outputs log information to a file in your settings folder."
+msgstr "Raccoglie le informazioni del registro in un file nella cartella delle impostazioni."
+
+#, fuzzy
+msgctxt "description"
+msgid "Outputs log information to the console."
+msgstr "Invia informazioni registro alla console."
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tags <filename>!"
+msgid "Permission denied when trying to save <filename>{0}</filename>"
+msgstr "Autorizzazione negata quando si tenta di salvare <filename>{0}</filename>"
+
+#, fuzzy
+msgctxt "@info"
+msgid "Please provide a new name."
+msgstr "Indicare un nuovo nome."
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "Plugin no longer scheduled to be installed."
+msgstr "L'installazione del plugin non è più programmata."
+
+#, fuzzy
+msgctxt "@error:untrusted"
+msgid "Plugin {} was not loaded because it could not be verified."
+msgstr "Il plugin {} non è stato caricato in quanto non è stato possibile verificarlo."
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "Preferenze"
+
+#, fuzzy
+msgctxt "@title:tab"
+msgid "Printers"
+msgstr "Stampanti"
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides a simple solid mesh view."
+msgstr "Fornisce una semplice visualizzazione a griglia continua."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides built-in setting containers that come with the installation of the application."
+msgstr "Fornisce i contenitori di impostazione integrati, in dotazione con l’installazione dell’applicazione."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides support for reading STL files."
+msgstr "Fornisce il supporto per la lettura di file STL."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides support for writing STL files."
+msgstr "Fornisce il supporto per la scrittura di file STL."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the Mirror tool."
+msgstr "Fornisce lo strumento immagine speculare."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the Move tool."
+msgstr "Fornisce lo Strumento Spostamento."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the Rotate tool."
+msgstr "Fornisce lo strumento di rotazione."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the Scale tool."
+msgstr "Fornisce lo strumento scala."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the Selection tool."
+msgstr "Fornisce lo strumento di selezione."
+
+#, fuzzy
+msgctxt "description"
+msgid "Provides the tool to manipulate the camera."
+msgstr "Fornisce lo strumento per manipolare la fotocamera."
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Reload"
+msgstr "Ricarica"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Remove plugin"
+msgstr "Rimuovi plugin"
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "Rename"
+msgstr "Rinomina"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Reset"
+msgstr "Reset"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Reset"
+msgstr "Reset"
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "Reset to factory"
+msgstr "Ripristino delle impostazioni di fabbrica"
+
+#, fuzzy
+msgctxt "@label"
+msgid "Reset will remove all your current printers and profiles! Are you sure you want to reset?"
+msgstr "Il ripristino rimuove tutte le stampanti e i profili correnti. Sei sicuro di voler effettuare il ripristino?"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Restore Defaults"
+msgstr "Ripristina valori predefiniti"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Retry"
+msgstr "Riprova"
+
+#, fuzzy
+msgctxt "@label"
+msgid "Rotate"
+msgstr "Rotazione"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Rotate Model"
+msgstr "Modello Rotazione"
+
+#, fuzzy
+msgctxt "name"
+msgid "Rotate Tool"
+msgstr "Strumento di rotazione"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "STL File"
+msgstr "File STL"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "STL File (ASCII)"
+msgstr "File STL (ASCII)"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "STL File (Binary)"
+msgstr "File STL (Binario)"
+
+#, fuzzy
+msgctxt "name"
+msgid "STL Reader"
+msgstr "Lettore STL"
+
+#, fuzzy
+msgctxt "name"
+msgid "STL Writer"
+msgstr "Writer STL"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Save"
+msgstr "Salva"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Save All"
+msgstr "Salva tutto"
+
+#, fuzzy
+msgctxt "@action:button Preceded by 'Ready to'."
+msgid "Save to Disk"
+msgstr "Salva su disco"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Save to Disk"
+msgstr "Salva su disco"
+
+#, fuzzy
+msgctxt "@title:window"
+msgid "Save to Disk"
+msgstr "Salva su disco"
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tags <filename>!"
+msgid "Saved to <filename>{0}</filename>"
+msgstr "Salvato su <filename>{0}</filename>"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Saving"
+msgstr "Salvataggio in corso"
+
+#, fuzzy
+msgctxt "@info:progress Don't translate the XML tags <filename>!"
+msgid "Saving to <filename>{0}</filename>"
+msgstr "Salvataggio su <filename>{0}</filename>"
+
+#, fuzzy
+msgctxt "@label"
+msgid "Scale"
+msgstr "Scala"
+
+#, fuzzy
+msgctxt "@info:tooltip"
+msgid "Scale Model"
+msgstr "Modello Scala"
+
+#, fuzzy
+msgctxt "name"
+msgid "Scale Tool"
+msgstr "Strumento scala"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Scaling Object"
+msgstr "Ridimensionamento Oggetto"
+
+#, fuzzy
+msgctxt "@action:button"
+msgid "Select face to align to the build plate"
+msgstr "Selezionare la superficie da allineare al piano di stampa"
+
+#, fuzzy
+msgctxt "name"
+msgid "Selection Tool"
+msgstr "Strumento selezione"
+
+#, fuzzy
+msgctxt "@title:tab"
+msgid "Settings"
+msgstr "Impostazioni"
+
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Simple"
+msgstr "Semplice"
+
+#, fuzzy
+msgctxt "name"
+msgid "Simple View"
+msgstr "Visualizzazione semplice"
+
+#, fuzzy
+msgctxt "@action:checkbox"
+msgid "Snap Rotation"
+msgstr "Rotazione di aggancio (Snap)"
+
+#, fuzzy
+msgctxt "@option:check"
+msgid "Snap Scaling"
+msgstr "Ridimensionamento aggancio (Snap)"
+
+#, fuzzy
+msgctxt "@label Don't translate the XML tag <filename>!"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "Il file <filename>{0}</filename> esiste già. Sei sicuro di volerlo sovrascrivere?"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "The plugin has been installed.\nPlease re-start the application to activate the plugin."
+msgstr "Il plugin è stato installato."
+"Riavviare l'applicazione per attivare il plugin."
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "The plugin has been removed.\nPlease restart {0} to finish uninstall."
+msgstr "Il plugin è stato rimosso."
+"Si prega di riavviare {0} per completare la disinstallazione."
+
+#, fuzzy
+msgctxt "@error"
+msgid "The plugin {} could not be loaded. Re-installing the plugin might solve the issue."
+msgstr "Impossibile caricare il plugin {}. Per risolvere il problema, provare a reinstallare il plugin."
+
+#, fuzzy
+msgctxt "@info"
+msgid "The version you are using does not support checking for updates."
+msgstr "La versione che stai utilizzando non supporta la verifica della disponibilità di aggiornamenti."
+
+#, fuzzy
+msgctxt "@info:warning"
+msgid "There are no file types available to write with!"
+msgstr "Non ci sono tipi di file disponibili per la scrittura!"
+
+#, fuzzy
+msgctxt "@error:no mesh"
+msgid "There is no mesh to write."
+msgstr "Nessuna maglia da scrivere."
+
+#, fuzzy
+msgctxt "@error:update"
+msgid "There was an error uninstalling the package {package} before installing new version:\n{error}.\nPlease try to upgrade again later."
+msgstr "Si è verificato un errore durante la disinstallazione del pacchetto {package} prima di installare la nuova versione:"
+"{error}."
+"Riprovare ad effettuare l’aggiornamento più tardi."
+
+#, fuzzy
+msgctxt "@error:uninstall"
+msgid "There were some errors uninstalling the following packages: {packages}"
+msgstr "Si sono verificati alcuni errori durante la disinstallazione dei seguenti pacchetti:"
+"{packages}"
+
+#, fuzzy
+msgctxt "@info:status Don't translate the XML tag <filename>!"
+msgid "There where no models in <filename>{0}</filename>."
+msgstr "Nessun modello in <filename>{0}</filename>."
+
+#, fuzzy
+msgctxt "@action:description"
+msgid "This will trigger the modified files to reload from disk."
+msgstr "Attiva i file modificati per la ricarica dal disco."
+
+#, fuzzy
+msgctxt "@item:inmenu About saving files to the hard drive"
+msgid "To Disk"
+msgstr "Su disco"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "Try out the latest BETA version and help us improve {application_name}."
+msgstr "Prova la versione BETA più recente e aiutaci a migliorare {application_name}."
+
+#, fuzzy
+msgctxt "@label"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Unable to Open File"
+msgstr "Impossibile aprire il file"
+
+#, fuzzy
+msgctxt "@option:check"
+msgid "Uniform Scaling"
+msgstr "Ridimensionamento uniforme"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Uninstalling errors"
+msgstr "Errori di disinstallazione"
+
+#, fuzzy
+msgctxt "@error:not supported"
+msgid "Unsupported output mode writing STL to stream."
+msgstr "Modalità di uscita non supportata durante la scrittura di STL su stream."
+
+#, fuzzy
+msgctxt "@item:inmenu"
+msgid "Update Checker"
+msgstr "Controllo aggiornamenti"
+
+#, fuzzy
+msgctxt "name"
+msgid "Update Checker"
+msgstr "Controllo aggiornamenti"
+
+#, fuzzy
+msgctxt "@info:progress"
+msgid "Updating configuration..."
+msgstr "Aggiornamento configurazione in corso..."
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Updating error"
+msgstr "Errore di aggiornamento"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Version Upgrade"
+msgstr "Aggiornamento versione"
+
+#, fuzzy
+msgctxt "@info:title"
+msgid "Warning"
+msgstr "Avvertenza"
+
+#, fuzzy
+msgctxt "@item:inlistbox"
+msgid "Wavefront OBJ File"
+msgstr "File Wavefront OBJ"
+
+#, fuzzy
+msgctxt "name"
+msgid "Wavefront OBJ Reader"
+msgstr "Lettore Wavefront OBJ"
+
+#, fuzzy
+msgctxt "name"
+msgid "Wavefront OBJ Writer"
+msgstr "Writer Wavefront OBJ"
+
+#, fuzzy
+msgctxt "@info"
+msgid "Would you like to reload {filename}?"
+msgstr "Si desidera ricaricare {filename}?"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Yes"
+msgstr "Sì"
+
+#, fuzzy
+msgctxt "@option"
+msgid "Yes to All"
+msgstr "Sì a tutti"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "Your configuration seems to be corrupt."
+msgstr "La configurazione sembra essere danneggiata."
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "Your configuration seems to be corrupt. Something seems to be wrong with the following profiles:\n- {profiles}\n Would you like to reset to factory defaults? Reset will remove all your current printers and profiles."
+msgstr "La configurazione sembra essere danneggiata. Qualcosa sembra non funzionare con i seguenti profili:"
+"- {profiles}"
+" Ripristinare i valori predefiniti in fabbrica? Il ripristino rimuove tutte le stampanti e i profili correnti."
+
+#, fuzzy
+msgctxt "@label Short days-hours-minutes format. {0} is days, {1} is hours, {2} is minutes"
+msgid "{0:0>2}d {1:0>2}h {2:0>2}min"
+msgstr "{0:0>2}g {1:0>2}h {2:0>2}min"
+
+#, fuzzy
+msgctxt "@label Short hours-minutes format. {0} is hours, {1} is minutes"
+msgid "{0:0>2}h {1:0>2}min"
+msgstr "{0:0>2}h {1:0>2}min"
+
+#, fuzzy
+msgctxt "@label Long duration format. {0} is days"
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} giorno"
+msgstr[1] "{0} giorni"
+
+#, fuzzy
+msgctxt "@label Long duration format. {0} is hours"
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} ora"
+msgstr[1] "{0} ore"
+
+#, fuzzy
+msgctxt "@label Long duration format. {0} is minutes"
+msgid "{0} minute"
+msgid_plural "{0} minutes"
+msgstr[0] "{0} minuto"
+msgstr[1] "{0} minuti"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "{application_name} {version_number} is available!"
+msgstr "{application_name} {version_number} è disponibile!"
+
+#, fuzzy
+msgctxt "@info:status"
+msgid "{application_name} {version_number} provides a better and more reliable printing experience."
+msgstr "{application_name} {version_number} fornisce un’esperienza di stampa migliore e più affidabile."
