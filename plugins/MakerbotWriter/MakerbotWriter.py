@@ -137,6 +137,9 @@ class MakerbotWriter(MeshWriter):
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
+                api = CuraApplication.getInstance().getCuraAPI()
+                slice_metadata = json.dumps(api.interface.settings.getSliceMetadata(), separators=(", ", ": "), indent=4)
+                zip_stream.writestr("slicemetadata.json", slice_metadata)
         except (IOError, OSError, BadZipFile) as ex:
             Logger.log("e", f"Could not write to (.makerbot) file because: '{ex}'.")
             self.setInformation(catalog.i18nc("@error", "MakerbotWriter could not save to the designated path."))
