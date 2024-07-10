@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,15 +83,15 @@ msgstr "Durata del G-code di inizio dell'estrusore"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
-msgstr "Assoluto posizione avvio estrusore"
+msgstr "Posizione assoluta avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
-msgstr "X posizione avvio estrusore"
+msgstr "Posizione X avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
-msgstr "Y posizione avvio estrusore"
+msgstr "Posizione Y avvio estrusore"
 
 msgctxt "machine_settings label"
 msgid "Machine"
@@ -98,7 +99,7 @@ msgstr "Macchina"
 
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "Impostazioni macchina specifiche"
+msgstr "Impostazioni specifiche della macchina"
 
 msgctxt "machine_extruder_end_pos_abs description"
 msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
