@@ -1914,6 +1914,25 @@
             }
         }
     },
+    "UltimakerPPSCF": {
+        "package_info": {
+            "package_id": "UltimakerPPSCF",
+            "package_type": "material",
+            "display_name": "Ultimaker PPS-CF",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "1.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/factor-series-pps-carbon-fiber/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://support.ultimaker.com/s/article/How-to-print-with-UltiMaker-PPS-CF"
+            }
+        }
+    },
     "ULTIMAKERBASCFMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERBASCFMETHOD",

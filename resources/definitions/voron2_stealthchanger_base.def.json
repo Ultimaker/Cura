@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Voron2 StealthChanger Base",
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": false,
+        "author": "Thessien",
+        "manufacturer": "DraftShift Design",
+        "machine_extruder_trains":
+        {
+            "0": "voron2_stealthchanger_extruder_0",
+            "1": "voron2_stealthchanger_extruder_1",
+            "2": "voron2_stealthchanger_extruder_2",
+            "3": "voron2_stealthchanger_extruder_3",
+            "4": "voron2_stealthchanger_extruder_4",
+            "5": "voron2_stealthchanger_extruder_5",
+            "6": "voron2_stealthchanger_extruder_6",
+            "7": "voron2_stealthchanger_extruder_7"
+        }
+    },
+    "overrides":
+    {
+        "machine_end_gcode": { "default_value": "PRINT_END" },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_name": { "default_value": "VORON2 StealthChanger" },
+        "machine_start_gcode": { "default_value": "PRINT_START TOOL_TEMP={material_print_temperature_layer_0} T{initial_extruder_nr}_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0} TOOL={initial_extruder_nr}" }
+    }
+}
