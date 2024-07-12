@@ -18,7 +18,7 @@ Try it for yourself <a href="https://www.thingiverse.com/thing:6692375?utm_sourc
 * Bug fixes:
 - Fixed a bug that caused spiked objects to have missing layers, thanks to @thomasrahm
 - Updated the text in the Open Universal Cura Project (UCP) file to be more correct
--  Fixed the interpolated values for fan speeds and improved the check for minimum layer time
+- Fixed the interpolated values for fan speeds and improved the check for minimum layer time
 - Fix a bug where material_print_temp_prepend not being disabled
 - Reduced the chance that oozing in the first travel move will cause a scar on the bottom of the model by updating the Layer Start X and Y
 - Fixed a bug where a slice would fail if the overhang angle was set to 90 degrees
