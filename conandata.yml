@@ -5,7 +5,7 @@ requirements:
   - "curaengine/5.8.0-beta.1"
   - "cura_binary_data/5.8.0-beta.1"
   - "fdm_materials/5.8.0-beta.1"
-  - "curaengine_plugin_gradual_flow/0.1.1-beta.3"
+  - "curaengine_plugin_gradual_flow/0.1.0-beta.4"
   - "dulcificum/0.2.1"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
