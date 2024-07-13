@@ -1,7 +1,7 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
@@ -23,7 +23,7 @@ Item
     readonly property string infillMeshType: "infill_mesh"
     readonly property string antiOverhangMeshType: "anti_overhang_mesh"
 
-    property var currentMeshType: UM.ActiveTool.properties.getValue("MeshType")
+    property var currentMeshType: UM.Controller.properties.getValue("MeshType")
 
     // Update the view every time the currentMeshType changes
     onCurrentMeshTypeChanged:
@@ -56,7 +56,7 @@ Item
 
     function setMeshType(type)
     {
-        UM.ActiveTool.setProperty("MeshType", type)
+        UM.Controller.setProperty("MeshType", type)
         updateMeshTypeCheckedState(type)
     }
 
@@ -224,7 +224,7 @@ Item
                     visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                     {
                         id: visibility_handler
-                        selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
+                        selectedObjectId: UM.Controller.properties.getValue("SelectedObjectId")
                     }
 
                     // For some reason the model object is updated after removing him from the memory and
@@ -234,10 +234,11 @@ Item
                         setDestroyed(true)
                     }
                 }
-
+                property int indexWithFocus: -1
                 delegate: Row
                 {
                     spacing: UM.Theme.getSize("default_margin").width
+                    property var settingLoaderItem: settingLoader.item
                     Loader
                     {
                         id: settingLoader
@@ -319,7 +320,7 @@ Item
                     {
                         id: provider
 
-                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                        containerStackId: UM.Controller.properties.getValue("ContainerID")
                         key: model.key
                         watchedProperties: [ "value", "enabled", "validationState" ]
                         storeIndex: 0
@@ -329,7 +330,7 @@ Item
                     UM.SettingPropertyProvider
                     {
                         id: inheritStackProvider
-                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
+                        containerStackId: UM.Controller.properties.getValue("ContainerID")
                         key: model.key
                         watchedProperties: [ "limit_to_extruder" ]
                     }
@@ -342,22 +343,60 @@ Item
 
                     Connections
                     {
-                        target: UM.ActiveTool
+                        target: settingLoader.item
+                        function onFocusReceived()
+                        {
+
+                            contents.indexWithFocus = index
+                            contents.positionViewAtIndex(index, ListView.Contain)
+                        }
+                        function onSetActiveFocusToNextSetting(forward)
+                        {
+                            if (forward == undefined || forward)
+                            {
+                                contents.currentIndex = contents.indexWithFocus + 1
+                                while(contents.currentItem && contents.currentItem.height <= 0)
+                                {
+                                    contents.currentIndex++
+                                }
+                                if (contents.currentItem)
+                                {
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
+                                }
+                            }
+                            else
+                            {
+                                contents.currentIndex = contents.indexWithFocus - 1
+                                while(contents.currentItem && contents.currentItem.height <= 0)
+                                {
+                                    contents.currentIndex--
+                                }
+                                if (contents.currentItem)
+                                {
+                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
+                                }
+                            }
+                        }
+                    }
+
+                    Connections
+                    {
+                        target: UM.Controller
                         function onPropertiesChanged()
                         {
-                            // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
+                            // the values cannot be bound with UM.Controller.properties.getValue() calls,
                             // so here we connect to the signal and update the those values.
-                            if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
+                            if (typeof UM.Controller.properties.getValue("SelectedObjectId") !== "undefined")
                             {
-                                const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
+                                const selectedObjectId = UM.Controller.properties.getValue("SelectedObjectId")
                                 if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
                                 {
                                     addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
                                 }
                             }
-                            if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
+                            if (typeof UM.Controller.properties.getValue("ContainerID") !== "undefined")
                             {
-                                const containerId = UM.ActiveTool.properties.getValue("ContainerID")
+                                const containerId = UM.Controller.properties.getValue("ContainerID")
                                 if (provider.containerStackId !== containerId)
                                 {
                                     provider.containerStackId = containerId

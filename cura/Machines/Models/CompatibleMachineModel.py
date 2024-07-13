@@ -51,6 +51,9 @@ class CompatibleMachineModel(ListModel):
         for output_device in machine_manager.printerOutputDevices:
             for printer in output_device.printers:
                 extruder_configs = dict()
+                # If the printer name already exist in the queue skip it
+                if printer.name in [item["name"] for item in self.items]:
+                    continue
 
                 # initialize & add current active material:
                 for extruder in printer.extruders:

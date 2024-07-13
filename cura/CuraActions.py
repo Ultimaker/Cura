@@ -1,12 +1,12 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from typing import List, cast
 
-from PyQt6.QtCore import QObject, QUrl, QMimeData
+from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QApplication
 
+from UM.Application import Application
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
@@ -22,18 +22,24 @@ from cura.Operations.SetParentOperation import SetParentOperation
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Arranging.Nest2DArrange import createGroupOperationForArrange
+
+from cura.Arranging.GridArrange import GridArrange
+from cura.Arranging.Nest2DArrange import Nest2DArrange
+
 
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 
-
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
+        self._operation_stack = Application.getInstance().getOperationStack()
+        self._operation_stack.changed.connect(self._onUndoStackChanged)
+
+    undoStackChanged = pyqtSignal()
     @pyqtSlot()
     def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
@@ -41,6 +47,25 @@ class CuraActions(QObject):
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
         event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software?utm_source=cura&utm_medium=software&utm_campaign=dropdown-documentation")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canUndo(self):
+        return self._operation_stack.canUndo()
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canRedo(self):
+        return self._operation_stack.canRedo()
+
+    @pyqtSlot()
+    def undo(self):
+        self._operation_stack.undo()
+
+    @pyqtSlot()
+    def redo(self):
+        self._operation_stack.redo()
+
+    def _onUndoStackChanged(self):
+        self.undoStackChanged.emit()
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
@@ -82,16 +107,25 @@ class CuraActions(QObject):
             center_operation = TranslateOperation(current_node, Vector(0, center_y, 0), set_position = True)
             operation.addOperation(center_operation)
         operation.push()
-
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
+        """Multiply all objects in the selection
+        :param count: The number of times to multiply the selection.
+        """
+        min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job.start()
+
+    @pyqtSlot(int)
+    def multiplySelectionToGrid(self, count: int) -> None:
         """Multiply all objects in the selection
 
         :param count: The number of times to multiply the selection.
         """
 
         min_offset = cura.CuraApplication.CuraApplication.getInstance().getBuildVolume().getEdgeDisallowedSize() + 2  # Allow for some rounding errors
-        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset = max(min_offset, 8))
+        job = MultiplyObjectsJob(Selection.getAllSelectedObjects(), count, min_offset=max(min_offset, 8),
+                                 grid_arrange=True)
         job.start()
 
     @pyqtSlot()
@@ -229,15 +263,19 @@ class CuraActions(QObject):
             if node.callDecoration("isSliceable"):
                 fixed_nodes.append(node)
         # Add the new nodes to the scene, and arrange them
-        group_operation, not_fit_count = createGroupOperationForArrange(nodes, application.getBuildVolume(),
-                                                                        fixed_nodes, factor=10000,
-                                                                        add_new_nodes_in_scene=True)
+
+        arranger = GridArrange(nodes, application.getBuildVolume(), fixed_nodes)
+        group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene = True)
         group_operation.push()
 
         # deselect currently selected nodes, and select the new nodes
         for node in Selection.getAllSelectedObjects():
             Selection.remove(node)
+
+        numberOfFixedNodes = len(fixed_nodes)
         for node in nodes:
+            numberOfFixedNodes += 1
+            node.printOrder = numberOfFixedNodes
             Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:

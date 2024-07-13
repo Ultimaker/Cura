@@ -1,5 +1,5 @@
 # Copyright (c) 2023 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
@@ -7,7 +7,7 @@
 from typing import List
 from ..Script import Script
 
-from UM.Application import Application #To get the current printer's settings.
+from UM.Application import Application # To get the current printer's settings.
 
 class FilamentChange(Script):
 

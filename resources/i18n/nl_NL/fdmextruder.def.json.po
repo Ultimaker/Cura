@@ -1,16 +1,17 @@
-#, fuzzy
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Uranium json setting files\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE\n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -28,25 +29,61 @@ msgctxt "material_diameter label"
 msgid "Diameter"
 msgstr "Diameter"
 
-msgctxt "machine_extruder_end_code description"
-msgid "End g-code to execute when switching away from this extruder."
-msgstr "Eind-g-code die wordt uitgevoerd wanneer naar een andere extruder wordt gewisseld."
-
 msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Extruder"
+
+msgctxt "extruder_nr description"
+msgid "The extruder train used for printing. This is used in multi-extrusion."
+msgstr "De extruder train die voor het printen wordt gebruikt. Deze wordt gebruikt in meervoudige doorvoer."
+
+msgctxt "machine_nozzle_size description"
+msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
+msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een nozzle gebruikt die geen standaard formaat heeft."
+
+msgctxt "machine_nozzle_id description"
+msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
+msgstr "De nozzle-ID voor een extruder train, bijvoorbeeld \"AA 0.4\" en \"BB 0.8\"."
+
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr "Printkoelventilator van extruder"
+
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr "Het nummer van de bij deze extruder behorende printkoelventilator. Verander de standaardwaarde 0 alleen als u voor elke extruder een andere printkoelventilator hebt."
 
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Eind-G-code van Extruder"
 
+msgctxt "machine_extruder_end_code description"
+msgid "End g-code to execute when switching away from this extruder."
+msgstr "Eind-g-code die wordt uitgevoerd wanneer naar een andere extruder wordt gewisseld."
+
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr "Duur einde G-Code extruder"
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr "De tijd die nodig is om de g-code aan het einde uit te voeren, wanneer er overgeschakeld wordt van deze extruder."
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "Absolute Eindpositie Extruder"
 
+msgctxt "machine_extruder_end_pos_abs description"
+msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
+msgstr "Maak van de eindpositie van de extruder de absolute eindpositie, in plaats van de relatieve eindpositie ten opzichte van de laatst bekende locatie van de printkop."
+
 msgctxt "machine_extruder_end_pos_x label"
 msgid "Extruder End Position X"
 msgstr "X-eindpositie Extruder"
+
+msgctxt "machine_extruder_end_pos_x description"
+msgid "The x-coordinate of the ending position when turning the extruder off."
+msgstr "De X-coördinaat van de eindpositie wanneer de extruder wordt uitgeschakeld."
 
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
@@ -64,37 +101,41 @@ msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "Z-positie voor Primen Extruder"
 
-msgctxt "machine_extruder_cooling_fan_number label"
-msgid "Extruder Print Cooling Fan"
-msgstr "Printkoelventilator van extruder"
+msgctxt "machine_extruder_end_pos_y description"
+msgid "The y-coordinate of the ending position when turning the extruder off."
+msgstr "De Y-coördinaat van de eindpositie wanneer de extruder wordt uitgeschakeld."
 
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "Start-G-code van Extruder"
 
+msgctxt "machine_extruder_start_code description"
+msgid "Start g-code to execute when switching to this extruder."
+msgstr "Start-g-code die wordt uitgevoerd wanneer naar deze extruder wordt gewisseld."
+
+msgctxt "extruder_prime_pos_x description"
+msgid "The X coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+
+msgctxt "extruder_prime_pos_y description"
+msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
+
+msgctxt "extruder_prime_pos_z description"
+msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
+msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr "Duur start G-Code extruder"
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr "De tijd die nodig is om de start g-code uit te voeren, wanneer er wordt overgeschakeld naar deze extruder."
+
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
 msgstr "Absolute Startpositie Extruder"
-
-msgctxt "machine_extruder_start_pos_x label"
-msgid "Extruder Start Position X"
-msgstr "X-startpositie Extruder"
-
-msgctxt "machine_extruder_start_pos_y label"
-msgid "Extruder Start Position Y"
-msgstr "Y-startpositie Extruder"
-
-msgctxt "machine_settings label"
-msgid "Machine"
-msgstr "Machine"
-
-msgctxt "machine_settings description"
-msgid "Machine specific settings"
-msgstr "Instellingen van de machine"
-
-msgctxt "machine_extruder_end_pos_abs description"
-msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
-msgstr "Maak van de eindpositie van de extruder de absolute eindpositie, in plaats van de relatieve eindpositie ten opzichte van de laatst bekende locatie van de printkop."
 
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
@@ -116,66 +157,42 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Nozzle-ID"
 
-msgctxt "machine_nozzle_offset_x label"
-msgid "Nozzle X Offset"
-msgstr "X-Offset Nozzle"
-
-msgctxt "machine_nozzle_offset_y label"
-msgid "Nozzle Y Offset"
-msgstr "Y-Offset Nozzle"
-
-msgctxt "machine_extruder_start_code description"
-msgid "Start g-code to execute when switching to this extruder."
-msgstr "Start-g-code die wordt uitgevoerd wanneer naar deze extruder wordt gewisseld."
-
-msgctxt "extruder_prime_pos_x description"
-msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "De X-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
-
-msgctxt "extruder_prime_pos_y description"
-msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "De Y-coördinaat van de positie waar filament in de nozzle wordt geprimed aan het begin van het printen."
-
-msgctxt "extruder_prime_pos_z description"
-msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "De Z-coördinaat van de positie waar filament in de nozzle wordt teruggeduwd aan het begin van het printen."
-
-msgctxt "extruder_nr description"
-msgid "The extruder train used for printing. This is used in multi-extrusion."
-msgstr "De extruder train die voor het printen wordt gebruikt. Deze wordt gebruikt in meervoudige doorvoer."
-
-msgctxt "machine_nozzle_size description"
-msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
-msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een nozzle gebruikt die geen standaard formaat heeft."
-
-msgctxt "machine_nozzle_id description"
-msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "De nozzle-ID voor een extruder train, bijvoorbeeld \"AA 0.4\" en \"BB 0.8\"."
-
-msgctxt "machine_extruder_cooling_fan_number description"
-msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr "Het nummer van de bij deze extruder behorende printkoelventilator. Verander de standaardwaarde 0 alleen als u voor elke extruder een andere printkoelventilator hebt."
-
-msgctxt "machine_extruder_end_pos_x description"
-msgid "The x-coordinate of the ending position when turning the extruder off."
-msgstr "De X-coördinaat van de eindpositie wanneer de extruder wordt uitgeschakeld."
-
-msgctxt "machine_nozzle_offset_x description"
-msgid "The x-coordinate of the offset of the nozzle."
-msgstr "De X-coördinaat van de offset van de nozzle."
+msgctxt "machine_extruder_start_pos_x label"
+msgid "Extruder Start Position X"
+msgstr "X-startpositie Extruder"
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
 msgstr "De X-coördinaat van de startpositie wanneer de extruder wordt ingeschakeld."
 
-msgctxt "machine_extruder_end_pos_y description"
-msgid "The y-coordinate of the ending position when turning the extruder off."
-msgstr "De Y-coördinaat van de eindpositie wanneer de extruder wordt uitgeschakeld."
+msgctxt "machine_extruder_start_pos_y label"
+msgid "Extruder Start Position Y"
+msgstr "Y-startpositie Extruder"
 
-msgctxt "machine_nozzle_offset_y description"
-msgid "The y-coordinate of the offset of the nozzle."
-msgstr "De Y-coördinaat van de offset van de nozzle."
+msgctxt "machine_settings label"
+msgid "Machine"
+msgstr "Machine"
+
+msgctxt "machine_settings description"
+msgid "Machine specific settings"
+msgstr "Instellingen van de machine"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "De Y-coördinaat van de startpositie wanneer de extruder wordt ingeschakeld."
+
+msgctxt "machine_nozzle_offset_x label"
+msgid "Nozzle X Offset"
+msgstr "X-Offset Nozzle"
+
+msgctxt "machine_nozzle_offset_x description"
+msgid "The x-coordinate of the offset of the nozzle."
+msgstr "De X-coördinaat van de offset van de nozzle."
+
+msgctxt "machine_nozzle_offset_y label"
+msgid "Nozzle Y Offset"
+msgstr "Y-Offset Nozzle"
+
+msgctxt "machine_nozzle_offset_y description"
+msgid "The y-coordinate of the offset of the nozzle."
+msgstr "De Y-coördinaat van de offset van de nozzle."

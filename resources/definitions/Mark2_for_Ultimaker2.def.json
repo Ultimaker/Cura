@@ -67,13 +67,13 @@
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "layer_start_x":
         {
-            "default_value": 105.0,
-            "enabled": false
+            "enabled": false,
+            "value": 105.0
         },
         "layer_start_y":
         {
-            "default_value": 27.0,
-            "enabled": false
+            "enabled": false,
+            "value": 27.0
         },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
         "machine_acceleration": { "default_value": 3000 },
@@ -137,12 +137,9 @@
         "machine_start_gcode": { "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T0 ;reset filament diameter\\nM200 D0 T1\\nG28 Z0; home all\\nG28 X0 Y0\\nG0 Z20 F2400 ;move the platform to 20mm\\nG92 E0\\nM190 S{material_bed_temperature_layer_0}\\nM109 T0 S{material_standby_temperature, 0}\\nM109 T1 S{material_print_temperature_layer_0, 1}\\nM104 T0 S{material_print_temperature_layer_0, 0}\\nT1 ; move to the 2th head\\nG0 Z20 F2400\\nG92 E-7.0 ;prime distance\\nG1 E0 F45 ;purge nozzle\\nG1 E-5.1 F1500 ; retract\\nG1 X90 Z0.01 F5000 ; move away from the prime poop\\nG1 X50 F9000\\nG0 Z20 F2400\\nT0 ; move to the first head\\nM104 T1 S{material_standby_temperature, 1}\\nG0 Z20 F2400\\nM104 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nG92 E-7.0\\nG1 E0 F45 ;purge nozzle\\nG1 X60 Z0.01 F5000 ; move away from the prime poop\\nG1 X20 F9000\\nM400 ;finish all moves\\nG92 E0\\n;end of startup sequence\\n\"" },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": false },
         "machine_width": { "default_value": 223 },
-        "prime_tower_position_x": { "value": "185" },
-        "prime_tower_position_y": { "value": "160" },
+        "prime_tower_position_y": { "value": "170" },
         "retraction_amount": { "default_value": 5.1 },
         "retraction_speed": { "default_value": 25 },
-        "speed_support": { "value": "speed_wall_0" },
-        "speed_wall_x": { "value": "speed_wall" },
         "switch_extruder_prime_speed":
         {
             "enabled": false,

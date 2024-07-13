@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S7",
+    "name": "UltiMaker S7",
     "inherits": "ultimaker_s5",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s7_platform.obj",
@@ -32,6 +32,7 @@
             0
         ],
         "platform_texture": "UltimakerS7backplate.png",
+        "preferred_material": "ultimaker_pla_blue",
         "preferred_variant_name": "AA 0.4",
         "quality_definition": "ultimaker_s5",
         "supported_actions": [ "DiscoverUM3Action" ],
@@ -43,6 +44,8 @@
     },
     "overrides":
     {
-        "machine_name": { "default_value": "Ultimaker S7" }
+        "default_material_print_temperature": { "maximum_value_warning": "320" },
+        "machine_name": { "default_value": "Ultimaker S7" },
+        "material_print_temperature_layer_0": { "maximum_value_warning": "320" }
     }
 }

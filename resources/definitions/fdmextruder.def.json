@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "position": "0",
-        "setting_version": 22,
+        "setting_version": 23,
         "type": "extruder"
     },
     "settings":
@@ -62,6 +62,18 @@
                     "settable_per_meshgroup": false,
                     "type": "str"
                 },
+                "machine_extruder_end_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it takes to execute the end g-code, when switching away from this extruder.",
+                    "label": "Extruder End G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
+                },
                 "machine_extruder_end_pos_abs":
                 {
                     "default_value": false,
@@ -107,6 +119,18 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "str"
+                },
+                "machine_extruder_start_code_duration":
+                {
+                    "default_value": 0,
+                    "description": "The time it'll take to execute the start g-code, when switching to this extruder.",
+                    "label": "Extruder Start G-Code Duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
                 },
                 "machine_extruder_start_pos_abs":
                 {

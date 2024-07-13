@@ -22,7 +22,7 @@ UM.Dialog
     minimumHeight: height
     minimumWidth: width
 
-    modality: Qt.WindowModal
+    modality: Qt.ApplicationModal
 
     property var fileUrls: []
     property var addToRecent: true
@@ -40,7 +40,7 @@ UM.Dialog
         }
     }
 
-    onAccepted: loadModelFiles(base.selectedFiles)
+    onAccepted: loadModelFiles(base.fileUrls)
 
     UM.Label
     {

@@ -33,12 +33,6 @@ default_qualities_per_nozzle_and_material = {
 
 
 class VersionUpgrade460to462(VersionUpgrade):
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """

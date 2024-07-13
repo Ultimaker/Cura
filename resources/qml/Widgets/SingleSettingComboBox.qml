@@ -15,6 +15,7 @@ import Cura 1.7 as Cura
 Cura.ComboBox {
     textRole: "text"
     property alias settingName: propertyProvider.key
+    property alias propertyRemoveUnusedValue: propertyProvider.removeUnusedValue
 
     // If true, all extruders will have "settingName" property updated.
     // The displayed value will be read from the extruder with index "defaultExtruderIndex" instead of the machine.
@@ -27,7 +28,7 @@ Cura.ComboBox {
         id: comboboxModel
 
         // The propertyProvider has not loaded the setting when this components onComplete triggers. Populating the model
-        // is defered until propertyProvider signals "onIsValueUsedChanged". The defered upate is triggered with this function.
+        // is deferred until propertyProvider signals "onIsValueUsedChanged". The deferred update is triggered with this function.
         function updateModel()
         {
             clear()
@@ -67,7 +68,8 @@ Cura.ComboBox {
     {
         id: propertyProvider
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
-        watchedProperties: ["value" , "options"]
+        removeUnusedValue: false
+        watchedProperties: ["value", "validationState",  "resolve", "options"]
     }
 
     Connections
@@ -86,6 +88,10 @@ Cura.ComboBox {
             updateSetting(comboboxModel.get(currentIndex).code)
         }
 
+    }
+    function forceUpdateSettings()
+    {
+        comboboxModel.updateModel();
     }
 
     function updateSetting(value)

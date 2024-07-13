@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-06 14:20+0000\n"
-"PO-Revision-Date: 2023-02-16 20:28+0100\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"PO-Revision-Date: 2023-09-03 18:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
 "Language: cs_CZ\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -125,6 +125,10 @@ msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "&Uložit projekt..."
 
+msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
+msgid "&Save Universal Cura Project..."
+msgstr ""
+
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "Nasta&vení"
@@ -158,14 +162,6 @@ msgstr ""
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr "-- nekompletní --"
-
-#, python-brace-format
-msgctxt "info:{0} gets replaced by a number of printers"
-msgid "... and {0} other"
-msgid_plural "... and {0} others"
-msgstr[0] "... a {0} další"
-msgstr[1] "... a {0} další"
-msgstr[2] "... a {0} dalších"
 
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
@@ -277,6 +273,10 @@ msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "Pro tuto tiskárnu není připojení přes cloud dostupné"
 msgstr[1] "Pro tyto tiskárny není připojení přes cloud dostupné"
 msgstr[2] "Pro tyto tiskárny není připojení přes cloud dostupné"
+
+msgctxt "@text"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -506,15 +506,23 @@ msgstr "Model se může jevit velmi malý, pokud je jeho jednotka například v 
 
 msgctxt "@label"
 msgid "Annealing"
-msgstr ""
+msgstr "Žíhání"
 
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "Anonymní"
 
+msgctxt "@option:radio"
+msgid "Anonymous crash reports"
+msgstr ""
+
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "Aplikační framework"
+
+msgctxt "@title:column"
+msgid "Applies on"
+msgstr ""
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
@@ -555,7 +563,7 @@ msgstr "Opravdu chcete tiskárnu {printer_name} dočasně odebrat?"
 
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
-msgstr ""
+msgstr "Opravdu chcete začít nový projekt? Tímto vyčistíte podložku a zrušíte neuložená nastavení."
 
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
@@ -569,6 +577,10 @@ msgstr "Doopravdy chcete odstranit {0}? Toto nelze vrátit zpět!"
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Uspořádat všechny modely"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Arrange All Models in a grid"
+msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
@@ -638,13 +650,13 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "Zálohy"
 
+msgctxt "@label"
+msgid "Balanced"
+msgstr "Vyvážený"
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Základna (mm)"
-
-msgctxt "@tooltip:button"
-msgid "Become a 3D printing expert with UltiMaker e-learning."
-msgstr "Staňte se expertem na 3D tisk díky UltiMaker e-learningu."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
@@ -697,6 +709,10 @@ msgstr "COLLADA Digital Asset Exchange"
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Vypočítáno"
+
+msgctxt "@window:text"
+msgid "Camera navigation:"
+msgstr ""
 
 msgctxt "@window:text"
 msgid "Camera rendering:"
@@ -994,6 +1010,10 @@ msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Kopírovat všechny změněné hodnoty na všechny extrudery"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Copy to clipboard"
+msgstr ""
+
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Kopírovat hodnotu na všechny extrudery"
@@ -1027,6 +1047,10 @@ msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "Nelze přečíst odpověď serveru."
 
+msgctxt "@error:load"
+msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
+msgstr ""
+
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "Nelze se připojit k Obchodu."
@@ -1052,6 +1076,27 @@ msgstr "Nelze uložit na vyměnitelnou jednotku {0}: {1}"
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Nemohu nahrát data do tiskárny."
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1160,6 +1205,14 @@ msgstr "Verze Cura"
 
 msgctxt "name"
 msgid "CuraEngine Backend"
+msgstr "CuraEngine Backend"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr ""
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
 msgstr ""
 
 msgctxt "@label"
@@ -1206,6 +1259,10 @@ msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "Vlastní profily"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Cut"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
 msgstr "Síť řezu"
@@ -1235,10 +1292,6 @@ msgid "Decline and remove from account"
 msgstr "Odmítnout a odstranit z účtu"
 
 msgctxt "@info:No intent profile selected"
-msgid "Default"
-msgstr "Výchozí"
-
-msgctxt "@label"
 msgid "Default"
 msgstr "Výchozí"
 
@@ -1390,6 +1443,10 @@ msgctxt "@label"
 msgid "Draft"
 msgstr "Návrh"
 
+msgctxt "@action:inmenu menubar:edit"
+msgid "Drop All Models to buildplate"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Duplikovat"
@@ -1437,8 +1494,8 @@ msgid "Enable Extruder"
 msgstr "Povolit extuder"
 
 msgctxt "@label"
-msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
-msgstr "Umožňuje tisk okraje nebo voru. Tímto způsobem se kolem nebo pod objekt přidá plochá oblast, kterou lze snadno odříznout."
+msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
+msgstr ""
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1455,6 +1512,10 @@ msgstr "Ukončující G kód"
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Komplexní řešení pro 3D tisk z taveného filamentu."
+
+msgctxt "@info:title"
+msgid "EnginePlugin"
+msgstr ""
 
 msgctxt "@label"
 msgid "Engineering"
@@ -1479,10 +1540,6 @@ msgstr "Chyba"
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "Stopování chyby"
-
-msgctxt "@error:zip"
-msgid "Error writing 3mf file."
-msgstr "Chyba při zápisu 3mf file."
 
 msgctxt "@label"
 msgid "Estimated time left"
@@ -1515,6 +1572,10 @@ msgstr "Exportovat profil"
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Výběr exportu..."
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Export Universal Cura Project"
+msgstr ""
 
 msgctxt "@button"
 msgid "Export material archive"
@@ -1549,9 +1610,22 @@ msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Ukončující G-kód extuderu"
 
+msgctxt "@label"
+msgid "Extruder End G-code duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "Počáteční G-kód extuderu"
+
+msgctxt "@label"
+msgid "Extruder Start G-code duration"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@label"
+msgid "Extruder {0}"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
@@ -1619,6 +1693,11 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Nepodařilo se uložit archiv s materiálem"
 
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
+msgstr ""
+
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Oblíbené"
@@ -1682,7 +1761,7 @@ msgstr "Kontroler aktualizace firmwaru"
 
 msgctxt "name"
 msgid "Firmware Updater"
-msgstr ""
+msgstr "Aktualizace Firmware"
 
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
@@ -1760,6 +1839,9 @@ msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Vynutit režim kompatibility zobrazení vrstev (vyžaduje restart)"
 
+msgid "FreeCAD trackpad"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Přední pohled"
@@ -1814,7 +1896,7 @@ msgstr "Obrázek GIF"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
-msgstr ""
+msgstr "GUI framework"
 
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
@@ -1848,6 +1930,10 @@ msgctxt "@action"
 msgid "Get started"
 msgstr "Začínáme"
 
+msgctxt "@label"
+msgid "Global"
+msgstr ""
+
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Globální nastavení"
@@ -1855,6 +1941,10 @@ msgstr "Globální nastavení"
 msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "Grafické uživatelské prostředí"
+
+msgctxt "@label"
+msgid "Grid Placement"
+msgstr ""
 
 #, python-brace-format
 msgctxt "@label"
@@ -1890,12 +1980,12 @@ msgid "Helpers"
 msgstr "Pomocníci"
 
 msgctxt "@label"
-msgid "Hex"
-msgstr "Hexadecimální"
-
-msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "Skrýt všechny připojené tiskárny"
+
+msgctxt "@action:button"
+msgid "Hide settings"
+msgstr ""
 
 msgctxt "@action:menu"
 msgid "Hide this setting"
@@ -1973,6 +2063,10 @@ msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
 msgstr "Abyste mohli balíček použít, musíte restartovat Curu"
 
+msgctxt "@option:radio"
+msgid "Include UltiMaker account name"
+msgstr ""
+
 msgctxt "@label"
 msgid "Infill"
 msgstr "Výplň"
@@ -2037,10 +2131,6 @@ msgctxt "@button"
 msgid "Install"
 msgstr "Instalovat"
 
-msgctxt "@action:button"
-msgid "Install Materials"
-msgstr "Instalovat materiály"
-
 msgctxt "@header"
 msgid "Install Materials"
 msgstr "Instalovat materiály"
@@ -2049,17 +2139,29 @@ msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Nainstalovat balíček"
 
+msgctxt "@action:button"
+msgid "Install Packages"
+msgstr ""
+
+msgctxt "@header"
+msgid "Install Packages"
+msgstr ""
+
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr "Nainstalovat moduly"
 
-msgctxt "@title"
-msgid "Install missing Materials"
-msgstr "Nainstalovat chybějící materiály"
-
 msgctxt "@action:button"
-msgid "Install missing material"
-msgstr "Nainstalovat chybějící materiál"
+msgid "Install missing packages"
+msgstr ""
+
+msgctxt "@title"
+msgid "Install missing packages"
+msgstr ""
+
+msgctxt "@label"
+msgid "Install missing packages from project file."
+msgstr ""
 
 msgctxt "@button"
 msgid "Install pending updates"
@@ -2119,7 +2221,7 @@ msgstr "Obrázek JPG"
 
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON parser"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2197,6 +2299,10 @@ msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
 msgstr "Zjistit více o přidávání tiskáren do Cury"
 
+msgctxt "@label"
+msgid "Learn more about project packages."
+msgstr ""
+
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Pohled z pravé strany"
@@ -2235,7 +2341,7 @@ msgstr "Lineární"
 
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
-msgstr ""
+msgstr "Sestavování Linux aplikací nezávislých na distribuci"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2316,6 +2422,22 @@ msgstr "Ujistěte se, že jsou všechny vaše tiskárny zapnuté a připojené k
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Před odesláním souboru se ujistěte, že je g-kód vhodný pro vaši tiskárnu a konfiguraci tiskárny. Reprezentace g-kódu nemusí být přesná."
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@error"
+msgid "MakerbotWriter could not save to the designated path."
+msgstr ""
+
+msgctxt "@error:not supported"
+msgid "MakerbotWriter does not support text mode."
+msgstr ""
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
@@ -2421,10 +2543,6 @@ msgctxt "@label"
 msgid "Material estimation"
 msgstr "Odhad materiálu"
 
-msgctxt "@info:title"
-msgid "Material profiles not installed"
-msgstr "Materiálové profily nejsou nainstalovány"
-
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "Materiálové profily byly úspěšně synchronizovány s následujícími tiskárnami:"
@@ -2528,6 +2646,10 @@ msgstr[0] "Násobit vybraný model"
 msgstr[1] "Násobit vybrané modele"
 msgstr[2] "Násobit vybrané modele"
 
+msgctxt "@info"
+msgid "Multiply selected item and place them in a grid of build plate."
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Násobím a rozmisťuji objekty"
@@ -2593,6 +2715,10 @@ msgctxt "@button"
 msgid "Next"
 msgstr "Další"
 
+msgctxt "@info:title"
+msgid "Nightly build"
+msgstr ""
+
 msgctxt "@info"
 msgid "No"
 msgstr "Ne"
@@ -2645,6 +2771,10 @@ msgstr "Pro vybranou konfiguraci materiál/%1 není dostupný žádný profil. P
 msgctxt "@message"
 msgid "No results found with current filter"
 msgstr "S aktuálním filtrem nebyly nalezeny žádné výsledky"
+
+msgctxt "@label"
+msgid "No specific value has been set"
+msgstr ""
 
 msgctxt "@label"
 msgid "No time estimation available"
@@ -2747,6 +2877,10 @@ msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Současně lze načíst pouze jeden soubor G-kódu. Přeskočen import {0}"
 
+msgctxt "@message"
+msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Otevřít"
@@ -2775,9 +2909,21 @@ msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Otevřít soubor s projektem"
 
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@title:window Don't translate 'Universal Cura Project'"
+msgid "Open Universal Cura Project (UCP) file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "Otevřít s"
+
+msgctxt "@action:button"
+msgid "Open as UCP"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Open as project"
@@ -2840,7 +2986,7 @@ msgstr "Přesahy na tomto modelu nejsou podporovány."
 
 msgctxt "@action:button"
 msgid "Override"
-msgstr ""
+msgstr "Přepsat"
 
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
@@ -2872,6 +3018,10 @@ msgstr "Vytváření balíčků Python aplikací"
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Zpracovávám G kód"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Paste from clipboard"
+msgstr ""
 
 msgctxt "@label"
 msgid "Pause"
@@ -2992,6 +3142,10 @@ msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "Přihlaste se, abyste získali ověřené pluginy a materiály pro UltiMaker Cura Enterprise"
 
+msgctxt "@info:tooltip"
+msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "Prosím synchronizujte před začátkem tisku materiálové profily s vašimi tiskárnami."
@@ -3030,7 +3184,7 @@ msgstr "Knihovna pro plošnou optimalizaci vyvinutá Prusa Research"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
-msgstr ""
+msgstr "Post Processing"
 
 msgctxt "name"
 msgid "Post Processing"
@@ -3087,6 +3241,14 @@ msgstr "Hlavní věž"
 msgctxt "@action:button"
 msgid "Print"
 msgstr "Tisk"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print After"
+msgstr "Tisknout po"
+
+msgctxt "@action:inmenu menubar:edit"
+msgid "Print Before"
+msgstr "Tisknout před"
 
 msgctxt "@label"
 msgid "Print Selected Model With:"
@@ -3396,8 +3558,12 @@ msgid "Provides support for reading model files."
 msgstr "Poskytuje podporu pro čtení souborů modelu."
 
 msgctxt "description"
-msgid "Provides support for writing 3MF files."
-msgstr "Poskytuje podporu pro psaní souborů 3MF."
+msgid "Provides support for writing 3MF and UCP files."
+msgstr ""
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr ""
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
@@ -3491,6 +3657,10 @@ msgstr "Obnovit"
 msgctxt "@button"
 msgid "Refresh List"
 msgstr "Obnovit seznam"
+
+msgctxt "@button"
+msgid "Refreshing..."
+msgstr ""
 
 msgctxt "@label"
 msgid "Release Notes"
@@ -3633,8 +3803,12 @@ msgid "Save Cura project"
 msgstr "Uložit projekt Cura"
 
 msgctxt "@option"
-msgid "Save Cura project and print file"
-msgstr "Uložit projekt Cura a tiskový soubor UFP"
+msgid "Save Cura project and .makerbot print file"
+msgstr ""
+
+msgctxt "@option"
+msgid "Save Cura project and .ufp print file"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3659,6 +3833,10 @@ msgstr "Uložit změny"
 msgctxt "@button"
 msgid "Save new profile"
 msgstr "Uložit nový profil"
+
+msgctxt "@action:button"
+msgid "Save project"
+msgstr ""
 
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
@@ -3763,6 +3941,18 @@ msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "Poslat záznam o pádu do UltiMaker"
 
+msgctxt "@info:tooltip"
+msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
+msgstr ""
+
+msgctxt "@option:check"
+msgid "Send engine crash reports"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "Odeslat záznam"
@@ -3814,6 +4004,10 @@ msgstr "Nastavení"
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Nastavení"
+
+msgctxt "@action:label"
+msgid "Settings Loaded from UCP file"
+msgstr ""
 
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
@@ -3884,6 +4078,10 @@ msgid "Should opening files from the desktop or external applications open in th
 msgstr "Měli by se soubory z plochy, nebo externích aplikací otevírat ve stejné instanci Cury?"
 
 msgctxt "@info:tooltip"
+msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "Má být podložka vyčištěna před načtením nového modelu v jediné instanci Cury?"
 
@@ -3939,9 +4137,17 @@ msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "Zobrazit podrobný záznam pádu"
 
+msgctxt "@action:button"
+msgid "Show settings"
+msgstr ""
+
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Zobrazit souhrnný dialog při ukládání projektu"
+
+msgctxt "@tooltip:button"
+msgid "Show your support for Cura with a donation."
+msgstr ""
 
 msgctxt "@button"
 msgid "Sign Out"
@@ -3961,7 +4167,7 @@ msgstr "Přihlásit se"
 
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
-msgstr ""
+msgstr "Přihlaste se do UltiMaker Digital Factory"
 
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
@@ -3977,7 +4183,7 @@ msgstr "Pohled simulace"
 
 msgctxt "@tooltip"
 msgid "Skin"
-msgstr ""
+msgstr "Povrch"
 
 msgctxt "@action:button"
 msgid "Skip"
@@ -4011,10 +4217,6 @@ msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "Slicování selhalo"
 
-msgctxt "@message"
-msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
-msgstr "Slicování selhalo na neočekávané chybě. Zvažte, prosím, nahlášení chyby v našem issue trackeru."
-
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Slicuji..."
@@ -4022,6 +4224,10 @@ msgstr "Slicuji..."
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Vyhlazování"
+
+msgctxt "@label"
+msgid "Solid"
+msgstr ""
 
 msgctxt "name"
 msgid "Solid View"
@@ -4040,6 +4246,14 @@ msgstr ""
 "Některá skrytá nastavení používají hodnoty odlišné od jejich normální vypočtené hodnoty.\n"
 "\n"
 "Klepnutím toto nastavení zviditelníte."
+
+msgctxt "@info:status"
+msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
+msgstr ""
+
+msgctxt "@info:title"
+msgid "Some required packages are not installed"
+msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
@@ -4074,6 +4288,14 @@ msgstr "Nastala chyba..."
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "Rychlost"
+
+msgctxt "@action:inmenu"
+msgid "Sponsor Cura"
+msgstr ""
+
+msgctxt "@label:button"
+msgid "Sponsor Cura"
+msgstr ""
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4132,9 +4354,25 @@ msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Úspěšně importován profil {0}."
 
+msgctxt "@action:label"
+msgid "Suggested Material settings"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Suggested Profile settings"
+msgstr ""
+
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "Souhrn - Projekt Cura"
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Open Universal Cura Project (UCP)"
+msgstr ""
+
+msgctxt "@action:title Don't translate 'Universal Cura Project'"
+msgid "Summary - Universal Cura Project"
+msgstr ""
 
 msgctxt "@label"
 msgid "Support"
@@ -4246,7 +4484,7 @@ msgstr "Množství vyhlazení, které se použije na obrázek."
 
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
+msgstr "Profil žíhání vyžaduje post-processing v troubě poté, co je tisk dokončen. Tento profil zachovává rozměrovou přesnost výtisku po žíhání a vylepšuje pevnost, tuhost a tepelnou odolnost."
 
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
@@ -4258,6 +4496,10 @@ msgstr[2] "Přiřazená tiskárna %1 vyžaduje následující změnu konfigurace
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "Záloha překračuje maximální povolenou velikost soubor."
+
+msgctxt "@text"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "Vyvážený profil je navržen tak, aby dosáhl rovnováhy mezi produktivitou, kvalitou povrchu, mechanickými vlastnostmi a rozměrnou přesností."
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -4367,14 +4609,6 @@ msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr "Balíček materiálů spojený s tímto Cura projektem nebyl nalezen v Ultimaker Marketplace. Částečnou definici materiálového profilu uloženou v Cura projektu používejte na vlastní nebezpečí."
 
-msgctxt "@label"
-msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
-msgstr "Materiál použitý v tomto projektu není aktuálně nainstalován v Cuře.<br/>Nainstalujte materiálový profil a znovu otevřete projekt."
-
-msgctxt "@info:status"
-msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
-msgstr "Materiál použitý v tomto projektu závisí na jiných definicích materiálů, které nejsou dostupné v Cuře. To může způsobit nečekané problémy při tisku. Důrazně doporučujeme nainstalovat kompletní balíček materiálů z Obchodu."
-
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "Maximální vzdálenost každého pixelu od „základny“."
@@ -4386,10 +4620,6 @@ msgstr "Nový průměr vlákna je nastaven na %1 mm, což není kompatibilní s 
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Vložená trysky v tomto extruderu."
-
-msgctxt "@error:zip"
-msgid "The operating system does not allow saving a project file to this location or with this file name."
-msgstr "Operační systém nepovoluje uložit soubor s projektem do tohoto umístění nebo pod tímto názvem."
 
 msgctxt "@label"
 msgid ""
@@ -4412,6 +4642,10 @@ msgstr ""
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "Procento světla pronikajícího do tisku o tloušťce 1 milimetr. Snížení této hodnoty zvyšuje kontrast v tmavých oblastech a snižuje kontrast ve světlých oblastech obrazu."
+
+msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
+msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
+msgstr ""
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4522,6 +4756,10 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "Tato konfigurace není k dispozici, protože %1 nebyl rozpoznán. Navštivte prosím %2 a stáhněte si správný materiálový profil."
 
 msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr ""
+
+msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "Toto je soubor projektu Cura. Chcete jej otevřít jako projekt nebo importovat z něj modely?"
 
@@ -4566,6 +4804,10 @@ msgid "This profile uses the defaults specified by the printer, so it has no set
 msgstr "Tento profil používá výchozí nastavení zadaná tiskárnou, takže nemá žádná nastavení / přepíše v níže uvedeném seznamu."
 
 msgctxt "@label"
+msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
+msgstr ""
+
+msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
@@ -4607,6 +4849,18 @@ msgstr "Toto nastavení se nepoužívá, protože všechna nastavení, která ov
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "Toto nastavení je vyřešeno z konfliktních hodnot specifického extruder:"
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@tooltip Don't translate 'Universal Cura Project'"
+msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
+msgstr ""
+
+msgctxt "@info:warning"
+msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
+msgstr ""
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4724,7 +4978,7 @@ msgstr "USB tisk"
 
 msgctxt "@button"
 msgid "UltiMaker Account"
-msgstr ""
+msgstr "Účet UltiMaker"
 
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
@@ -4778,6 +5032,18 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Nemohu najít lokaci na podložce pro všechny objekty"
 
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
+msgstr ""
+
+#, python-brace-format
+msgctxt "@info:plugin_failed"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr ""
+
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
 msgstr "Nelze se dostat na server účtu UltiMaker."
@@ -4821,6 +5087,11 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Nepodařilo se mi spustit nový proces přihlášení. Zkontrolujte, zda nějaký jiný již neběží."
 
+#, python-brace-format
+msgctxt "@info:error"
+msgid "Unable to write to file: {0}"
+msgstr ""
+
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Nedostupný"
@@ -4840,6 +5111,14 @@ msgstr "Odinstalovat"
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
 msgstr "Jednotka"
+
+msgctxt "@item:inlistbox"
+msgid "Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:description Don't translate 'Universal Cura Project'"
+msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
+msgstr ""
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
@@ -5024,6 +5303,14 @@ msgstr "Aktualizuje konfigurace z Cura 5.2 na Cura 5.3."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "Aktualizuje konfigurace z Cura 5.3 na Cura 5.4."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr ""
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr ""
 
 msgctxt "@action:button"
@@ -5057,6 +5344,10 @@ msgstr "Pomocné funkce zahrnující načítání obrázků"
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "Pomocná knihovna zahrnující Voronoi generátor"
+
+msgctxt "@title:column"
+msgid "Value"
+msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
@@ -5156,6 +5447,14 @@ msgstr "Aktualizace verze 5.2 na 5.3"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
+msgstr "Aktualizace verze 5.3 na 5.4"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
 msgstr ""
 
 msgctxt "@button"
@@ -5234,6 +5533,10 @@ msgstr "Webová stránka"
 msgctxt "@label"
 msgid "What printer would you like to setup?"
 msgstr "Jakou tiskárnu si přejete nakonfigurovat?"
+
+msgctxt "@info:tooltip"
+msgid "What type of camera navigation should be used?"
+msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
@@ -5451,6 +5754,10 @@ msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
+msgctxt "@label"
+msgid "s"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "today"
 msgstr "dnes"
@@ -5472,10 +5779,78 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 
+#, python-brace-format
+#~ msgctxt "info:{0} gets replaced by a number of printers"
+#~ msgid "... and {0} other"
+#~ msgid_plural "... and {0} others"
+#~ msgstr[0] "... a {0} další"
+#~ msgstr[1] "... a {0} další"
+#~ msgstr[2] "... a {0} dalších"
+
+#~ msgctxt "@tooltip:button"
+#~ msgid "Become a 3D printing expert with UltiMaker e-learning."
+#~ msgstr "Staňte se expertem na 3D tisk díky UltiMaker e-learningu."
+
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "Když je aktivován síťový tisk, Cura přesně nezobrazuje vrstvy."
 
+#~ msgctxt "@label"
+#~ msgid "Default"
+#~ msgstr "Výchozí"
+
+#~ msgctxt "@label"
+#~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
+#~ msgstr "Umožňuje tisk okraje nebo voru. Tímto způsobem se kolem nebo pod objekt přidá plochá oblast, kterou lze snadno odříznout."
+
+#~ msgctxt "@error:zip"
+#~ msgid "Error writing 3mf file."
+#~ msgstr "Chyba při zápisu 3mf file."
+
+#~ msgctxt "@label"
+#~ msgid "Hex"
+#~ msgstr "Hexadecimální"
+
+#~ msgctxt "@action:button"
+#~ msgid "Install Materials"
+#~ msgstr "Instalovat materiály"
+
+#~ msgctxt "@title"
+#~ msgid "Install missing Materials"
+#~ msgstr "Nainstalovat chybějící materiály"
+
+#~ msgctxt "@action:button"
+#~ msgid "Install missing material"
+#~ msgstr "Nainstalovat chybějící materiál"
+
+#~ msgctxt "@info:title"
+#~ msgid "Material profiles not installed"
+#~ msgstr "Materiálové profily nejsou nainstalovány"
+
+#~ msgctxt "description"
+#~ msgid "Provides support for writing 3MF files."
+#~ msgstr "Poskytuje podporu pro psaní souborů 3MF."
+
+#~ msgctxt "@option"
+#~ msgid "Save Cura project and print file"
+#~ msgstr "Uložit projekt Cura a tiskový soubor UFP"
+
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"
 #~ msgstr "Pohled simulace"
+
+#~ msgctxt "@message"
+#~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
+#~ msgstr "Slicování selhalo na neočekávané chybě. Zvažte, prosím, nahlášení chyby v našem issue trackeru."
+
+#~ msgctxt "@label"
+#~ msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
+#~ msgstr "Materiál použitý v tomto projektu není aktuálně nainstalován v Cuře.<br/>Nainstalujte materiálový profil a znovu otevřete projekt."
+
+#~ msgctxt "@info:status"
+#~ msgid "The material used in this project relies on some material definitions not available in Cura, this might produce undesirable print results. We highly recommend installing the full material package from the Marketplace."
+#~ msgstr "Materiál použitý v tomto projektu závisí na jiných definicích materiálů, které nejsou dostupné v Cuře. To může způsobit nečekané problémy při tisku. Důrazně doporučujeme nainstalovat kompletní balíček materiálů z Obchodu."
+
+#~ msgctxt "@error:zip"
+#~ msgid "The operating system does not allow saving a project file to this location or with this file name."
+#~ msgstr "Operační systém nepovoluje uložit soubor s projektem do tohoto umístění nebo pod tímto názvem."

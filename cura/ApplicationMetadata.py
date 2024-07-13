@@ -1,4 +1,4 @@
-#  Copyright (c) 2022 UltiMaker
+#  Copyright (c) 2023 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 # ---------
@@ -14,7 +14,7 @@ DEFAULT_CURA_LATEST_URL = "https://software.ultimaker.com/latest.json"
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
 # CuraVersion.py.in template.
-CuraSDKVersion = "8.4.0"
+CuraSDKVersion = "8.7.0"
 
 try:
     from cura.CuraVersion import CuraLatestURL
@@ -69,13 +69,25 @@ try:
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
 
-DEPENDENCY_INFO = {}
+
 try:
-    from pathlib import Path
-    conan_install_info = Path(__file__).parent.parent.joinpath("conan_install_info.json")
-    if conan_install_info.exists():
-        import json
-        with open(conan_install_info, "r") as f:
-            DEPENDENCY_INFO = json.loads(f.read())
-except:
-    pass
+    from cura.CuraVersion import ConanInstalls
+
+    if type(ConanInstalls) == dict:
+        CONAN_INSTALLS = ConanInstalls
+    else:
+        CONAN_INSTALLS = {}
+
+except ImportError:
+    CONAN_INSTALLS = {}
+
+try:
+    from cura.CuraVersion import PythonInstalls
+
+    if type(PythonInstalls) == dict:
+        PYTHON_INSTALLS = PythonInstalls
+    else:
+        PYTHON_INSTALLS = {}
+
+except ImportError:
+    PYTHON_INSTALLS = {}
