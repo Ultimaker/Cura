@@ -50,7 +50,8 @@ class ExtruderConfigurationModel(QObject):
             "mk14_hot_s":"2XA",
             "mk14_c":"1C",
             "mk14":"1A",
-            "mk14_s":"2A"
+            "mk14_s":"2A",
+            "mk14_e": "LABS"
         }
         if hotendId in _EXTRUDER_NAME_MAP:
             return _EXTRUDER_NAME_MAP[hotendId]
