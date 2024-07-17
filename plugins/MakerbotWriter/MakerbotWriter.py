@@ -70,8 +70,6 @@ class MakerbotWriter(MeshWriter):
             return
         try:
             snapshot = Snapshot.isometricSnapshot(width, height)
-            snapshot.save(
-                "/Users/c.lamboo/Library/Application Support/cura/5.7/plugins/ElegooNeptune3Thumbnails/ElegooNeptune3Thumbnails/img/b.png")
 
             thumbnail_buffer = QBuffer()
             thumbnail_buffer.open(QBuffer.OpenModeFlag.WriteOnly)
