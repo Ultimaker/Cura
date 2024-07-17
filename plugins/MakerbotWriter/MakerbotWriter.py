@@ -70,6 +70,8 @@ class MakerbotWriter(MeshWriter):
             return
         try:
             snapshot = Snapshot.isometricSnapshot(width, height)
+            snapshot.save(
+                "/Users/c.lamboo/Library/Application Support/cura/5.7/plugins/ElegooNeptune3Thumbnails/ElegooNeptune3Thumbnails/img/b.png")
 
             thumbnail_buffer = QBuffer()
             thumbnail_buffer.open(QBuffer.OpenModeFlag.WriteOnly)
@@ -231,7 +233,7 @@ class MakerbotWriter(MeshWriter):
             "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
         }
 
-        meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
+        meta["miracle_config"] = {"gaggles": {"instance0": {}}}
 
         version_info = dict()
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
