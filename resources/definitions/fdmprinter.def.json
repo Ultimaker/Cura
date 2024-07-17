@@ -1246,36 +1246,39 @@
                     "type": "bool",
                     "default_value": true,
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "min_feature_size":
-                {
-                    "label": "Minimum Feature Size",
-                    "description": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width.",
-                    "unit": "mm",
-                    "default_value": 0.1,
-                    "value": "wall_line_width_0 / 4",
-                    "minimum_value": "0",
-                    "maximum_value": "wall_line_width_0",
-                    "type": "float",
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "enabled": "fill_outline_gaps",
-                    "settable_per_mesh": true
-                },
-                "min_bead_width":
-                {
-                    "label": "Minimum Thin Wall Line Width",
-                    "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
-                    "unit": "mm",
-                    "value": "min_wall_line_width",
-                    "default_value": 0.2,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "min_feature_size",
-                    "maximum_value_warning": "wall_line_width_0",
-                    "type": "float",
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "enabled": "fill_outline_gaps",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "min_feature_size":
+                        {
+                            "label": "Minimum Feature Size",
+                            "description": "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width.",
+                            "unit": "mm",
+                            "default_value": 0.1,
+                            "value": "wall_line_width_0 / 4",
+                            "minimum_value": "0",
+                            "maximum_value": "wall_line_width_0",
+                            "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "enabled": "fill_outline_gaps",
+                            "settable_per_mesh": true
+                        },
+                        "min_bead_width":
+                        {
+                            "label": "Minimum Thin Wall Line Width",
+                            "description": "Width of the wall that will replace thin features (according to the Minimum Feature Size) of the model. If the Minimum Wall Line Width is thinner than the thickness of the feature, the wall will become as thick as the feature itself.",
+                            "unit": "mm",
+                            "value": "min_wall_line_width",
+                            "default_value": 0.2,
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "min_feature_size",
+                            "maximum_value_warning": "wall_line_width_0",
+                            "type": "float",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "enabled": "fill_outline_gaps",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "xy_offset":
                 {
