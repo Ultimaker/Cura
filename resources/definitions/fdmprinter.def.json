@@ -4465,102 +4465,108 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_speed":
-                {
-                    "label": "Fan Speed",
-                    "description": "The speed at which the print cooling fans spin.",
-                    "unit": "%",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 100,
-                    "value": "100.0 if cool_fan_enabled else 0.0",
-                    "enabled": "cool_fan_enabled",
-                    "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
                     {
-                        "cool_fan_speed_min":
+                        "cool_fan_speed":
                         {
-                            "label": "Regular Fan Speed",
-                            "description": "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed.",
+                            "label": "Fan Speed",
+                            "description": "The speed at which the print cooling fans spin.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
                             "maximum_value": "100",
-                            "value": "cool_fan_speed",
                             "default_value": 100,
+                            "value": "100.0 if cool_fan_enabled else 0.0",
+                            "enabled": "cool_fan_enabled",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "cool_fan_speed_min":
+                                {
+                                    "label": "Regular Fan Speed",
+                                    "description": "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value": "100",
+                                    "value": "cool_fan_speed",
+                                    "default_value": 100,
+                                    "enabled": "cool_fan_enabled",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "cool_fan_speed_max":
+                                {
+                                    "label": "Maximum Fan Speed",
+                                    "description": "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value": "100",
+                                    "default_value": 100,
+                                    "enabled": "cool_fan_enabled",
+                                    "value": "cool_fan_speed",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        },
+                        "cool_min_layer_time_fan_speed_max":
+                        {
+                            "label": "Regular/Maximum Fan Speed Threshold",
+                            "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
+                            "unit": "s",
+                            "type": "float",
+                            "default_value": 10,
+                            "maximum_value_warning": "600",
                             "enabled": "cool_fan_enabled",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "cool_fan_speed_max":
+                        "cool_fan_speed_0":
                         {
-                            "label": "Maximum Fan Speed",
-                            "description": "The speed at which the fans spin on the minimum layer time. The fan speed gradually increases between the regular fan speed and maximum fan speed when the threshold is hit.",
+                            "label": "Initial Fan Speed",
+                            "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
                             "unit": "%",
                             "type": "float",
                             "minimum_value": "0",
                             "maximum_value": "100",
-                            "default_value": 100,
+                            "default_value": 0,
                             "enabled": "cool_fan_enabled",
-                            "value": "cool_fan_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
-                        }
-                    }
-                },
-                "cool_min_layer_time_fan_speed_max":
-                {
-                    "label": "Regular/Maximum Fan Speed Threshold",
-                    "description": "The layer time which sets the threshold between regular fan speed and maximum fan speed. Layers that print slower than this time use regular fan speed. For faster layers the fan speed gradually increases towards the maximum fan speed.",
-                    "unit": "s",
-                    "type": "float",
-                    "default_value": 10,
-                    "maximum_value_warning": "600",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_speed_0":
-                {
-                    "label": "Initial Fan Speed",
-                    "description": "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height.",
-                    "unit": "%",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "default_value": 0,
-                    "enabled": "cool_fan_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_fan_full_at_height":
-                {
-                    "label": "Regular Fan Speed at Height",
-                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 0.5,
-                    "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10.0",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "cool_fan_full_layer":
+                        },
+                        "cool_fan_full_at_height":
                         {
-                            "label": "Regular Fan Speed at Layer",
-                            "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
-                            "type": "int",
-                            "default_value": 2,
-                            "minimum_value": "1",
-                            "maximum_value_warning": "10 / resolveOrValue('layer_height')",
-                            "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "label": "Regular Fan Speed at Height",
+                            "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.5,
+                            "value": "0 if resolveOrValue('adhesion_type') == 'raft' else resolveOrValue('layer_height_0')",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10.0",
+                            "enabled": "cool_fan_enabled",
                             "settable_per_mesh": false,
-                            "settable_per_extruder": true
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "cool_fan_full_layer":
+                                {
+                                    "label": "Regular Fan Speed at Layer",
+                                    "description": "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number.",
+                                    "type": "int",
+                                    "default_value": 2,
+                                    "minimum_value": "1",
+                                    "maximum_value_warning": "10 / resolveOrValue('layer_height')",
+                                    "value": "max(1, int(math.floor((cool_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                                    "enabled": "cool_fan_enabled",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
                         }
                     }
                 },
