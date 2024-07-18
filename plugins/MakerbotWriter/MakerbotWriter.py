@@ -231,7 +231,7 @@ class MakerbotWriter(MeshWriter):
             "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
         }
 
-        meta["miracle_config"] = {"gaggles": {str(node.getName()): {} for node in nodes}}
+        meta["miracle_config"] = {"gaggles": {"instance0": {}}}
 
         version_info = dict()
         cura_engine_info = ConanInstalls.get("curaengine", {"version": "unknown", "revision": "unknown"})
