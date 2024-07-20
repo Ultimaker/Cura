@@ -5,8 +5,8 @@
     "metadata":
     {
         "visible": true,
-		"machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform": "mingda_rock3_base.stl",
+        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform_offset": [
             -179,
             -108,
