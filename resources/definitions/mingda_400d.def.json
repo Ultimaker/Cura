@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "name": "Mingda 400D",
+    "inherits": "mingda_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "mingda_base",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "plarform": "mingda_400d_base.stl",
+        "machine_extruder_trains":
+        {
+          "0": "mingda_base_400D_extruder_0",
+          "1": "mingda_base_400D_extruder_1"
+        }
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 25 },
+        "machine_depth": { "default_value": 400 },
+        "machine_end_gcode": { "default_value": "G91; relative positioning\n G1 Z1.0 F3000 ; move z up little to prevent scratching of print\n G90; absolute positioning\n G28 X F1000 ; prepare for part removal\n M104 S0; turn off extruder\n M140 S0 ; turn off bed\n M84 ; disable motors\n M106 S0 ; turn off fan\nM605 S1;" },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Mingda 400D" },
+        "machine_start_gcode": { "default_value": "G28 ; home all axes\nM605 S0; \nM420 S1;\n M117 ; Purge extruder\n G92 E0 ; reset extruder\n G1 Z1.0 F1200 ; move z up little to prevent scratching of surface\nG1 E2 F200;\nG92 E0 \nG1 X54 Y20 Z0.3 F3000\n G1 X4 Y20 Z0.3 F500.0 E5 \n G1 X4 Y70.0 Z0.3 F500.0 E10 \n G1 X4 Y70.0 Z0.4 F3000.0 \n G1 X4 Y20 Z0.4 F500.0 E15 \n G1 X54 Y20 Z0.4 F500.0 E20\n G92 E0\n G1 Z5 E15 F200\n G92 E0\n G1 Z10 F1500 \n G4 S2\n G1 Z15 F1500" },
+        "machine_width": { "default_value": 400 },
+        "machine_extruder_count": {"default_value": 2}
+    }
+}
