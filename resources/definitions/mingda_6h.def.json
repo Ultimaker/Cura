@@ -1,11 +1,10 @@
 {
-    "version": 3,
+    "version": 2,
     "name": "Mingda 6H",
     "inherits": "mingda_base",
     "metadata":
     {
         "visible": true,
-        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "quality_definition": "mingda_base"
     },
     "overrides":
