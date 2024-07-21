@@ -6,7 +6,6 @@
     {
         "visible": true,
         "platform": "mingda_magician_x2_base.stl",
-        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "quality_definition": "mingda_base"
     },
     "overrides":

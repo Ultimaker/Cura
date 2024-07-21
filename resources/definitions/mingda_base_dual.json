@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "name": "Mingda Base Printer",
+    "name": "Mingda Base Dual Printer",
     "inherits": "fdmprinter",
     "metadata":
     {
@@ -18,7 +18,11 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
+        "machine_extruder_trains":
+        {
+            "0": "mingda_base_extruder_0",
+            "1": "mingda_base_extruder_1"
+        },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm Nozzle",
@@ -63,7 +67,7 @@
         "machine_max_jerk_e": { "value": 5 },
         "machine_max_jerk_xy": { "value": 10 },
         "machine_max_jerk_z": { "value": 0.4 },
-        "machine_name": { "default_value": "MINGDA Base Printer" },
+        "machine_name": { "default_value": "MINGDA Base Dual Printer" },
         "machine_start_gcode": { "default_value": " G28 ; home all axes\n M117 ; Purge extruder\n G92 E0 ; reset extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface\n G1 X2 Y20 Z0.3 F5000.0 ; move to start-line position\n G1 X2 Y200.0 Z0.3 F1500.0 E15 ; draw 1st line\n G1 X2 Y200.0 Z0.4 F5000.0 ; move to side a little\n G1 X2 Y20 Z0.4 F1500.0 E30 ; draw 2nd line\n G92 E0 ; reset extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface" },
         "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature": { "value": "material_print_temperature" },

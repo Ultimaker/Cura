@@ -6,7 +6,6 @@
     {
         "visible": true,
         "platform": "mingda_d2_base.stl",
-        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform_offset": [
             -205,
             -77,
