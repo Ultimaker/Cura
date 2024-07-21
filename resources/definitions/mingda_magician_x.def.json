@@ -6,6 +6,7 @@
     {
         "visible": true,
         "platform": "mingda_magician_x_base.stl",
+        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform_offset": [
             0,
             0,
