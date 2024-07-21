@@ -6,21 +6,13 @@
     {
         "visible": true,
         "platform": "mingda_rock3_base.stl",
-        "first_start_actions": [ "MachineSettingsAction" ],
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": true,
         "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform_offset": [
             -179,
             -108,
             150
         ],
-        "preferred_material": "generic_pla",
-        "preferred_quality_type": "standard",
-        "preferred_variant_name": "0.4mm Nozzle",
-        "quality_definition": "mingda_base",
-        "variants_name": "Nozzle Size"
+        "quality_definition": "mingda_base"
     },
     "overrides":
     {
