@@ -7,6 +7,12 @@
         "visible": false,
         "author": "Mingda",
         "manufacturer": "Mingda",
+        "exclude_materials": [
+            "dsm_arnitel2045",
+            "dsm_novamid1070",
+            "innofill_innoflex60",
+            "verbatim_bvoh"
+        ],
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
@@ -20,13 +26,7 @@
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm Nozzle",
         "quality_definition": "mingda_base",
-        "variants_name": "Nozzle Size",
-        "exclude_materials": [
-            "dsm_arnitel2045",
-            "dsm_novamid1070",
-            "innofill_innoflex60",
-            "verbatim_bvoh"
-        ]
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {
