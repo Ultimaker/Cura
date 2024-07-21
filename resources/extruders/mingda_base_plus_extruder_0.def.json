@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "mingda_base",
+        "machine": "mingda_base_plus",
         "position": "0"
     },
     "overrides":

@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "Mingda 1000Pro+",
-    "inherits": "mingda_base",
+    "inherits": "mingda_base_plus",
     "metadata":
     {
         "visible": true,
