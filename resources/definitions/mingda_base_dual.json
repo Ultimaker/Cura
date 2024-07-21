@@ -20,8 +20,8 @@
         "has_variants": true,
         "machine_extruder_trains":
         {
-            "0": "mingda_base_extruder_0",
-            "1": "mingda_base_extruder_1"
+            "0": "mingda_base_plus_extruder_0",
+            "1": "mingda_base_plus_extruder_1"
         },
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
