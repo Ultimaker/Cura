@@ -5,7 +5,6 @@
     "metadata":
     {
         "visible": true,
-        "quality_definition": "mingda_base",
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
@@ -14,6 +13,7 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "mingda_base",
         "variants_name": "Nozzle Size"
     },
     "overrides":

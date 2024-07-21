@@ -6,21 +6,21 @@
     {
         "visible": true,
         "platform": "mingda_d2_base.stl",
-        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "preferred_material": "generic_pla",
-        "preferred_quality_type": "standard",
-        "preferred_variant_name": "0.4mm Nozzle",
-        "variants_name": "Nozzle Size",
+        "machine_extruder_trains": { "0": "mingda_base_extruder_0" },
         "platform_offset": [
             -205,
             -77,
             65
         ],
-        "quality_definition": "mingda_base"
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "mingda_base",
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {

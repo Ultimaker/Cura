@@ -13,8 +13,8 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm Nozzle",
-        "variants_name": "Nozzle Size",
-        "quality_definition": "mingda_base"
+        "quality_definition": "mingda_base",
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {
