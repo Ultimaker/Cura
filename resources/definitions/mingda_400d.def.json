@@ -10,7 +10,14 @@
             "0": "mingda_base_400D_extruder_0",
             "1": "mingda_base_400D_extruder_1"
         },
-        "plarform": "mingda_400d_base.stl",
+        "platform": "mingda_400d_base.stl",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "variants_name": "Nozzle Size",
         "preferred_variant_name": "0.4mm Nozzle",
         "quality_definition": "mingda_base"
     },

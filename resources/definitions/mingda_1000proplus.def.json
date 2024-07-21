@@ -11,6 +11,14 @@
             "1": "mingda_base_plus_extruder_1"
         },
         "preferred_variant_name": "0.4mm Nozzle",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "platform": "mingda_1000proplus_base.stl",
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "variants_name": "Nozzle Size",
         "quality_definition": "mingda_base"
     },
     "overrides":
