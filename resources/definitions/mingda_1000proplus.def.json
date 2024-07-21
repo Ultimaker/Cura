@@ -1,5 +1,5 @@
 {
-    "version": 3,
+    "version": 2,
     "name": "Mingda 1000Pro+",
     "inherits": "mingda_base",
     "metadata":
