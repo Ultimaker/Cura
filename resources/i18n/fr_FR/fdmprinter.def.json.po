@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-07-08 09:05+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,10 +15,6 @@ msgstr ""
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>Comment générer la tour d'amorçage :<ul><li><b>Normale :</b> créer un pot dans lequel les matériaux secondaires sont amorcés</li><li><b>Entrelacée :</b> créez une tour d'amorçage aussi peu dense que possible. Vous économiserez ainsi du temps et du filament, mais cette opération n'est possible que si les matériaux utilisés adhèrent les uns aux autres</li></ul></html>"
-
-msgctxt "cool_during_extruder_switch description"
-msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
-msgstr ""
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -93,10 +89,9 @@ msgid "Adaptive layers computes the layer heights depending on the shape of the 
 msgstr "Cette option calcule la hauteur des couches en fonction de la forme du modèle."
 
 msgctxt "infill_wall_line_count description"
-msgid ""
-"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
-"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Ajoutez des parois supplémentaires autour de la zone de remplissage. De telles parois peuvent réduire l'affaissement des lignes de couche extérieure supérieure / inférieure, réduisant le nombre de couches extérieures supérieures / inférieures nécessaires pour obtenir la même qualité, au prix d'un peu de matériau supplémentaire.Configurée correctement, cette fonctionnalité peut être combinée avec « Relier les polygones de remplissage » pour relier tous les remplissages en un seul mouvement d'extrusion sans avoir besoin de déplacements ou de rétractions."
+msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr "Ajoutez des parois supplémentaires autour de la zone de remplissage. De telles parois peuvent réduire l'affaissement des lignes de couche extérieure supérieure / inférieure, réduisant le nombre de couches extérieures supérieures / inférieures nécessaires pour obtenir la même qualité, au prix d'un peu de matériau supplémentaire."
+"Configurée correctement, cette fonctionnalité peut être combinée avec « Relier les polygones de remplissage » pour relier tous les remplissages en un seul mouvement d'extrusion sans avoir besoin de déplacements ou de rétractions."
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -153,10 +148,6 @@ msgstr "Tout"
 msgctxt "print_sequence option all_at_once"
 msgid "All at Once"
 msgstr "Tout en même temps"
-
-msgctxt "cool_during_extruder_switch option all_fans"
-msgid "All fans"
-msgstr ""
 
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
@@ -622,10 +613,6 @@ msgctxt "cooling label"
 msgid "Cooling"
 msgstr "Refroidissement"
 
-msgctxt "cool_during_extruder_switch label"
-msgid "Cooling during extruder switch"
-msgstr ""
-
 msgctxt "infill_pattern option cross"
 msgid "Cross"
 msgstr "Entrecroisé"
@@ -1020,7 +1007,7 @@ msgstr "Extrudeuse Position d'amorçage Z"
 
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
-msgstr "Les extrudeuses partagent le chauffage"
+msgstr "Les extrudeurs partagent le chauffage"
 
 msgctxt "machine_extruders_share_nozzle label"
 msgid "Extruders Share Nozzle"
@@ -1235,16 +1222,14 @@ msgid "G-code Flavor"
 msgstr "Parfum G-Code"
 
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
+msgid "G-code commands to be executed at the very end - separated by \n."
+msgstr "Commandes G-Code à exécuter tout à la fin, séparées par "
 "."
-msgstr "Commandes G-Code à exécuter tout à la fin, séparées par ."
 
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
+msgid "G-code commands to be executed at the very start - separated by \n."
+msgstr "Commandes G-Code à exécuter au tout début, séparées par "
 "."
-msgstr "Commandes G-Code à exécuter au tout début, séparées par ."
 
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
@@ -2007,11 +1992,8 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "Rendre la position d'amorçage de l'extrudeuse absolue plutôt que relative à la dernière position connue de la tête."
 
 msgctxt "layer_0_z_overlap description"
-msgid ""
-"Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\n"
-"It may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr ""
-"Faites en sorte que la première et la deuxième couche du modèle se chevauchent dans la direction Z pour compenser la perte de filament dans l'entrefer. Tous les modèles situés au-dessus de la première couche du modèle seront décalés vers le bas de cette valeur.\n"
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "Faites en sorte que la première et la deuxième couche du modèle se chevauchent dans la direction Z pour compenser la perte de filament dans l'entrefer. Tous les modèles situés au-dessus de la première couche du modèle seront décalés vers le bas de cette valeur."
 "On peut noter que la deuxième couche est parfois imprimée en dessous de la couche initiale à cause de ce paramètre. Il s'agit d'un comportement voulu."
 
 msgctxt "meshfix description"
@@ -2021,10 +2003,6 @@ msgstr "Rendez les mailles plus adaptées à l'impression 3D."
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
 msgstr "Makerbot"
-
-msgctxt "support_z_seam_away_from_model description"
-msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
-msgstr ""
 
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
@@ -2202,10 +2180,6 @@ msgctxt "slicing_tolerance option middle"
 msgid "Middle"
 msgstr "Milieu"
 
-msgctxt "support_z_seam_min_distance label"
-msgid "Min Z Seam Distance from Model"
-msgstr ""
-
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
 msgstr "Largeur minimale de moule"
@@ -2349,10 +2323,6 @@ msgstr "Ordre monotone dessus / dessous"
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "Une jupe à plusieurs lignes vous aide à mieux préparer votre extrusion pour les petits modèles. Définissez celle valeur sur 0 pour désactiver la jupe."
-
-msgctxt "support_infill_density_multiplier_initial_layer description"
-msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
-msgstr ""
 
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
@@ -2510,10 +2480,6 @@ msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Un à la fois"
 
-msgctxt "cool_during_extruder_switch option only_last_extruder"
-msgid "Only last extruder"
-msgstr ""
-
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
 msgstr "Appliquer un décalage en Z uniquement lors du mouvement au-dessus de pièces imprimées qui ne peuvent être évitées par le mouvement horizontal, via Éviter les pièces imprimées lors du déplacement."
@@ -2622,10 +2588,6 @@ msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Vitesse du ventilateur en pourcentage à utiliser pour l'impression de la troisième couche extérieure du pont."
 
-msgctxt "z_seam_on_vertex description"
-msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
-msgstr ""
-
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Les polygones en couches tranchées dont la circonférence est inférieure à cette valeur seront filtrés. Des valeurs élevées permettent d'obtenir un maillage de meilleure résolution mais augmentent le temps de découpe. Cette option est principalement destinée aux imprimantes SLA haute résolution et aux modèles 3D de très petite taille avec beaucoup de détails."
@@ -2673,10 +2635,6 @@ msgstr "Largeur de ligne de la tour d'amorçage"
 msgctxt "prime_tower_max_bridging_distance label"
 msgid "Prime Tower Maximum Bridging Distance"
 msgstr "Distance maximale de porte-à-faux de la tour d'amorçage"
-
-msgctxt "prime_tower_min_shell_thickness label"
-msgid "Prime Tower Minimum Shell Thickness"
-msgstr ""
 
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
@@ -2824,23 +2782,11 @@ msgstr "Marge supplémentaire de la base du radeau"
 
 msgctxt "raft_base_extruder_nr label"
 msgid "Raft Base Extruder"
-msgstr "Extrudeuse de la base du raft"
+msgstr "Extrudeur de la base du raft"
 
 msgctxt "raft_base_fan_speed label"
 msgid "Raft Base Fan Speed"
 msgstr "Vitesse du ventilateur pour la base du radeau"
-
-msgctxt "raft_base_flow label"
-msgid "Raft Base Flow"
-msgstr ""
-
-msgctxt "raft_base_infill_overlap_mm label"
-msgid "Raft Base Infill Overlap"
-msgstr ""
-
-msgctxt "raft_base_infill_overlap label"
-msgid "Raft Base Infill Overlap Percentage"
-msgstr ""
 
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
@@ -2882,33 +2828,13 @@ msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "Vitesse du ventilateur pendant le radeau"
 
-msgctxt "raft_flow label"
-msgid "Raft Flow"
-msgstr ""
-
-msgctxt "raft_interface_flow label"
-msgid "Raft Interface Flow"
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap_mm label"
-msgid "Raft Interface Infill Overlap"
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap label"
-msgid "Raft Interface Infill Overlap Percentage"
-msgstr ""
-
-msgctxt "raft_interface_z_offset label"
-msgid "Raft Interface Z Offset"
-msgstr ""
-
 msgctxt "raft_interface_margin label"
 msgid "Raft Middle Extra Margin"
 msgstr "Marge supplémentaire du milieu du radeau"
 
 msgctxt "raft_interface_extruder_nr label"
 msgid "Raft Middle Extruder"
-msgstr "Extrudeuse du milieu du radeau"
+msgstr "Extrudeur du milieu du radeau"
 
 msgctxt "raft_interface_fan_speed label"
 msgid "Raft Middle Fan Speed"
@@ -2966,29 +2892,13 @@ msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Lissage de radeau"
 
-msgctxt "raft_surface_flow label"
-msgid "Raft Surface Flow"
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap_mm label"
-msgid "Raft Surface Infill Overlap"
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap label"
-msgid "Raft Surface Infill Overlap Percentage"
-msgstr ""
-
-msgctxt "raft_surface_z_offset label"
-msgid "Raft Surface Z Offset"
-msgstr ""
-
 msgctxt "raft_surface_margin label"
 msgid "Raft Top Extra Margin"
 msgstr "Marge supplémentaire de la partie supérieure du radeau"
 
 msgctxt "raft_surface_extruder_nr label"
 msgid "Raft Top Extruder"
-msgstr "Extrudeuse du haut du radeau"
+msgstr "Extrudeur du haut du radeau"
 
 msgctxt "raft_surface_fan_speed label"
 msgid "Raft Top Fan Speed"
@@ -3218,10 +3128,6 @@ msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "Préférence de jointure d'angle"
 
-msgctxt "seam_overhang_angle label"
-msgid "Seam Overhanging Wall Angle"
-msgstr ""
-
 msgctxt "user_defined_print_order_enabled label"
 msgid "Set Print Sequence Manually"
 msgstr "Définir la séquence d'impression manuellement"
@@ -3316,7 +3222,7 @@ msgstr "Accélération de la jupe/bordure"
 
 msgctxt "skirt_brim_extruder_nr label"
 msgid "Skirt/Brim Extruder"
-msgstr "Extrudeuse de la jupe/bordure"
+msgstr "Extrudeur de la jupe/bordure"
 
 msgctxt "skirt_brim_material_flow label"
 msgid "Skirt/Brim Flow"
@@ -3566,10 +3472,6 @@ msgctxt "acceleration_support_infill label"
 msgid "Support Infill Acceleration"
 msgstr "Accélération de remplissage du support"
 
-msgctxt "support_infill_density_multiplier_initial_layer label"
-msgid "Support Infill Density Multiplier Initial Layer"
-msgstr ""
-
 msgctxt "support_infill_extruder_nr label"
 msgid "Support Infill Extruder"
 msgstr "Extrudeuse de remplissage du support"
@@ -3762,10 +3664,6 @@ msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Distance Z des supports"
 
-msgctxt "support_z_seam_away_from_model label"
-msgid "Support Z Seam Away from Model"
-msgstr ""
-
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
 msgstr "Priorité aux lignes de support"
@@ -3942,22 +3840,6 @@ msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
 msgstr "L'accélération selon laquelle les déplacements s'effectuent."
 
-msgctxt "raft_base_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_interface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_surface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
 msgstr "La quantité de matériau, relative à une ligne de couche extérieure normale, à extruder pendant l'étirage. Le fait de garder la buse pleine aide à remplir certaines des crevasses de la surface supérieure ; mais si la quantité est trop importante, cela entraînera une surextrusion et l'apparition de coupures sur le côté de la surface."
@@ -3965,30 +3847,6 @@ msgstr "La quantité de matériau, relative à une ligne de couche extérieure n
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
 msgstr "Le degré de chevauchement entre le remplissage et les parois exprimé en pourcentage de la largeur de ligne de remplissage. Un chevauchement faible permet aux parois de se connecter fermement au remplissage."
-
-msgctxt "raft_base_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_base_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
 
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -4094,10 +3952,6 @@ msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "La distance entre les lignes d'étirage."
 
-msgctxt "support_z_seam_min_distance description"
-msgid "The distance between the model and its support structure at the z-axis seam."
-msgstr ""
-
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
 msgstr "La distance entre la buse et les pièces déjà imprimées lors du contournement pendant les déplacements."
@@ -4164,7 +4018,7 @@ msgstr "Le train d'extrudeuse à utiliser pour l'impression de la première couc
 
 msgctxt "raft_base_extruder_nr description"
 msgid "The extruder train to use for printing the first layer of the raft. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse à utiliser pour l'impression de la première couche du radeau. Cela est utilisé en multi-extrusion."
+msgstr "Le train d'extrudeur à utiliser pour l'impression de la première couche du radeau. Cela est utilisé en multi-extrusion."
 
 msgctxt "support_bottom_extruder_nr description"
 msgid "The extruder train to use for printing the floors of the support. This is used in multi-extrusion."
@@ -4176,7 +4030,7 @@ msgstr "Le train d'extrudeuse à utiliser pour l'impression du remplissage du su
 
 msgctxt "raft_interface_extruder_nr description"
 msgid "The extruder train to use for printing the middle layer of the raft. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse à utiliser pour imprimer la couche intermédiaire du radeau. Cela est utilisé en multi-extrusion."
+msgstr "Le train d'extrudeur à utiliser pour imprimer la couche intermédiaire du radeau. Cela est utilisé en multi-extrusion."
 
 msgctxt "support_interface_extruder_nr description"
 msgid "The extruder train to use for printing the roofs and floors of the support. This is used in multi-extrusion."
@@ -4188,7 +4042,7 @@ msgstr "Le train d'extrudeuse à utiliser pour l'impression des plafonds du supp
 
 msgctxt "skirt_brim_extruder_nr description"
 msgid "The extruder train to use for printing the skirt or brim. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse à utiliser pour l'impression de la jupe ou de la bordure. Cela est utilisé en multi-extrusion."
+msgstr "Le train d'extrudeur à utiliser pour l'impression de la jupe ou de la bordure. Cela est utilisé en multi-extrusion."
 
 msgctxt "adhesion_extruder_nr description"
 msgid "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion."
@@ -4200,7 +4054,7 @@ msgstr "Le train d'extrudeuse à utiliser pour l'impression du support. Cela est
 
 msgctxt "raft_surface_extruder_nr description"
 msgid "The extruder train to use for printing the top layer(s) of the raft. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse à utiliser pour imprimer la ou les couches du haut du radeau. Cela est utilisé en multi-extrusion."
+msgstr "Le train d'extrudeur à utiliser pour imprimer la ou les couches du haut du radeau. Cela est utilisé en multi-extrusion."
 
 msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
@@ -4327,10 +4181,9 @@ msgid "The horizontal distance between the first brim line and the outline of th
 msgstr "La distance horizontale entre la première ligne de bordure et le contour de la première couche de l'impression. Un petit trou peut faciliter l'enlèvement de la bordure tout en offrant des avantages thermiques."
 
 msgctxt "skirt_gap description"
-msgid ""
-"The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "La distance horizontale entre la jupe et la première couche de l’impression.Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
+msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr "La distance horizontale entre la jupe et la première couche de l’impression."
+"Il s’agit de la distance minimale séparant la jupe de l’objet. Si la jupe a d’autres lignes, celles-ci s’étendront vers l’extérieur."
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
@@ -4570,7 +4423,7 @@ msgstr "Largeur de ligne minimale pour les parois de polyligne de remplissage de
 
 msgctxt "min_even_wall_line_width description"
 msgid "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width."
-msgstr "Largeur de ligne minimale pour les parois polygonales normales. Ce paramètre détermine à quelle épaisseur de modèle nous passons de l'impression d'une seule ligne de paroi fine à l'impression de deux lignes de paroi. Une largeur minimale de ligne de paroi paire plus élevée entraîne une largeur maximale de ligne de paroi impaire plus élevée. La largeur maximale de la ligne de paroi paire est calculée comme suit : largeur de la ligne de paroi extérieure + 0,5 * largeur minimale de la ligne de paroi impaire."
+msgstr "Largeur de ligne minimale pour les murs polygonaux normaux. Ce paramètre détermine à quelle épaisseur de modèle nous passons de l'impression d'une seule ligne de paroi fine à l'impression de deux lignes de paroi. Une largeur minimale de ligne de paroi paire plus élevée entraîne une largeur maximale de ligne de paroi impaire plus élevée. La largeur maximale de la ligne de paroi paire est calculée comme suit : largeur de la ligne de paroi extérieure + 0,5 * largeur minimale de la ligne de paroi impaire."
 
 msgctxt "cool_min_speed description"
 msgid "The minimum print speed, despite slowing down due to the minimum layer time. When the printer would slow down too much, the pressure in the nozzle would be too low and result in bad print quality."
@@ -4587,10 +4440,6 @@ msgstr "Taille minimale d'un segment de ligne de déplacement après la découpe
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
 msgstr "La pente minimum de la zone pour un effet de marche de support. Des valeurs basses devraient faciliter l'enlèvement du support sur les pentes peu superficielles ; des valeurs très basses peuvent donner des résultats vraiment contre-intuitifs sur d'autres pièces du modèle."
-
-msgctxt "prime_tower_min_shell_thickness description"
-msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
-msgstr ""
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
@@ -4758,7 +4607,7 @@ msgstr "La forme du plateau sans prendre les zones non imprimables en compte."
 
 msgctxt "machine_head_with_fans_polygon description"
 msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
-msgstr "La forme de la tête d'impression. Ce sont des coordonnées par rapport à la position de la tête d'impression, qui est généralement la position de sa premiere extrudeuse. Les dimensions à gauche et devant la tête d'impression doivent être des coordonnées négatives."
+msgstr "La forme de la tête d'impression. Ce sont des coordonnées par rapport à la position de la tête d'impression, qui est généralement la position de son premier extrudeur. Les dimensions à gauche et devant la tête d'impression doivent être des coordonnées négatives."
 
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
@@ -5324,17 +5173,9 @@ msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
 msgstr "Diamètre du tronc"
 
-msgctxt "seam_overhang_angle description"
-msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
-
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
-
-msgctxt "cool_during_extruder_switch option unchanged"
-msgid "Unchanged"
-msgstr ""
 
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
@@ -5500,14 +5341,6 @@ msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
 msgstr "Lors de l'impression des parois de pont, la quantité de matériau extrudé est multipliée par cette valeur."
 
-msgctxt "raft_interface_z_offset description"
-msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
-msgstr ""
-
-msgctxt "raft_surface_z_offset description"
-msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
-msgstr ""
-
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "Lors de l'impression de la deuxième couche extérieure du pont, la quantité de matériau extrudé est multipliée par cette valeur."
@@ -5562,7 +5395,7 @@ msgstr "Détermine si la butée de l'axe Z est en sens positif (haute coordonn�
 
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr "Si les extrudeuses partagent un seul chauffage au lieu que chaque extrudeuse ait son propre chauffage."
+msgstr "Si les extrudeurs partagent un seul chauffage au lieu que chaque extrudeur ait son propre chauffage."
 
 msgctxt "machine_extruders_share_nozzle description"
 msgid "Whether the extruders share a single nozzle rather than each extruder having its own nozzle. When set to true, it is expected that the printer-start gcode script properly sets up all extruders in an initial retraction state that is known and mutually compatible (either zero or one filament not retracted); in that case the initial retraction status is described, per extruder, by the 'machine_extruders_shared_nozzle_initial_retraction' parameter."
@@ -5606,7 +5439,7 @@ msgstr "Préparer les filaments avec une goutte avant l'impression. Ce paramètr
 
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est disponible seulement si a) une seule extrudeuse est activée et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y."
+msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est disponible seulement si a) un seul extrudeur est activé et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y."
 
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
@@ -5804,10 +5637,6 @@ msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Alignement de la jointure en Z"
 
-msgctxt "z_seam_on_vertex label"
-msgid "Z Seam On Vertex"
-msgstr ""
-
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
 msgstr "Position de la jointure en Z"
@@ -5867,3 +5696,167 @@ msgstr "Zig Zag"
 msgctxt "travel description"
 msgid "travel"
 msgstr "déplacement"
+
+msgctxt "cool_during_extruder_switch description"
+msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr "<html>Permet d'activer ou non les ventilateurs de refroidissement lors d'un changement de buse. Cette option peut aider à réduire le suintement en refroidissant la buse plus rapidement :<ul><li><b>Inchangé :</b> garder les ventilateurs tels qu'ils étaient auparavant</li><li><b>Seulement dernier extrudeur :</b> allumer le ventilateur du dernier extrudeur utilisé, mais éteindre les autres (s'il y en a). Cette option est utile si tu as des extrudeuses complètement séparées.</li><li><b>Tous les ventilateurs :</b> cette option est utile si vous avez un seul ventilateur de refroidissement, ou plusieurs ventilateurs qui restent proches les uns des autres.</li></ul></html>"
+
+msgctxt "cool_during_extruder_switch option all_fans"
+msgid "All fans"
+msgstr "Tous les ventilateurs"
+
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "Refroidissement lors de la commutation de l'extrudeuse"
+
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "Gérez la relation spatiale entre le joint en Z de la structure de support et le modèle 3D réel. Ce contrôle est essentiel, car il permet aux utilisateurs d'assurer le retrait transparent des structures de support après l'impression, sans endommager le modèle imprimé ni y laisser de marques."
+
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "Distance min. du joint Z par rapport au modèle"
+
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "Multiplicateur pour le remplissage des couches initiales du support. L'augmentation de ce facteur peut contribuer à l'adhérence du lit."
+
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "Seulement pour la dernière extrudeuse"
+
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "Placz la couture en Z sur un sommet du polygone. Si vous désactivez cette option, vous pouvez également placer la couture entre les sommets. (Gardez à l'esprit que cela n'annule pas les restrictions imposées au placement de la couture sur un surplomb non supporté.)"
+
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "Épaisseur minimale de l'enveloppe de la tour d'amorçage"
+
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "Débit de base du radeau"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "Recouvrement du remplissage de la base du radier"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "Pourcentage de chevauchement du remplissage de la base du radier"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "Débit du radier"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "Débit de l'interface du radier"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "Recouvrement de l'interface du radier"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "Pourcentage de chevauchement de l'interface du radier"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "Décalage Z de l'interface du radeau"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "Écoulement de la surface du radier"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "Chevauchement du remplissage de la surface du radier"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "Pourcentage du remplissage de la surface du radier"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "Décalage Z de la surface du radier"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "Angle du mur en surplomb du joint"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "Couche initiale du multiplicateur de densité du support de remplissage"
+
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "Joint Z du support à l'opposé du modèle"
+
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de la base du radeau. L'augmentation du débit peut améliorer l'adhérence et la solidité structurelle de l'empilement."
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de l'interface du radeau. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du radeau."
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder lors de l'impression du chevron. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du chevron."
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de la surface du radeau. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du chevron."
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les parois de la base du radeau, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux parois de se raccorder fermement au remplissage."
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Le degré de chevauchement entre le remplissage et les parois de la base du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de l'interface du radier, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de l'interface du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les parois de la surface du radier, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de la surface du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "La distance entre le modèle et sa structure de support au niveau de la couture de l'axe z."
+
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "L'épaisseur minimale de la coque de l'échafaudage principal. Vous pouvez l'augmenter pour rendre l'échafaudage plus solide."
+
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "Essayez d'éviter les coutures sur les murs qui dépassent cet angle. Lorsque la valeur est de 90, aucun mur ne sera traité comme étant en surplomb."
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "Inchangé"
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "Lors de l'impression de la première couche de l'interface du radeau, ce décalage permet de personnaliser l'adhérence entre la base et l'interface. Un décalage négatif devrait améliorer l'adhérence."
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "Lors de l'impression de la première couche de la surface du radeau, il faut tenir compte de ce décalage pour personnaliser l'adhérence entre l'interface et la surface. Un décalage négatif devrait améliorer l'adhérence."
+
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "Joint en Z sur le sommet"
