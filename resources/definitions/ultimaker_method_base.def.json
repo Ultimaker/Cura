@@ -413,7 +413,6 @@
         "support_roof_height": { "value": "4*layer_height" },
         "support_roof_material_flow": { "value": "material_flow" },
         "support_supported_skin_fan_speed": { "value": "cool_fan_speed_max" },
-        "support_use_towers": { "value": "False" },
         "support_wall_count": { "value": "2 if support_conical_enabled or support_structure == 'tree' else 0" },
         "support_xy_distance": { "value": 0.2 },
         "support_xy_distance_overhang": { "value": "support_xy_distance" },
