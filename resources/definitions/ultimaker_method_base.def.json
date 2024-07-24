@@ -405,6 +405,7 @@
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "4*support_infill_sparse_thickness" },
         "support_interface_material_flow": { "value": "material_flow" },
+        "support_interface_offset": { "value": "1" },
         "support_interface_pattern": { "value": "'lines'" },
         "support_interface_wall_count": { "value": "1" },
         "support_material_flow": { "value": "material_flow" },
