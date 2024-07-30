@@ -356,6 +356,7 @@
         },
         "raft_interface_line_width":
         {
+            "value": 0.7,
             "force_depends_on_settings": [ "raft_base_thickness" ]
         },
         "raft_interface_speed": { "value": 90 },
