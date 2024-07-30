@@ -414,6 +414,9 @@ class CuraApplication(QtApplication):
         SettingDefinition.addSupportedProperty("settable_globally", DefinitionPropertyType.Any, default=True,
                                                read_only=True)
 
+        SettingDefinition.addSupportedProperty("force_depends_on_settings", DefinitionPropertyType.Any, default=[],
+                                               read_only=True)
+
         # From which stack the setting would inherit if not defined per object (handled in the engine)
         # AND for settings which are not settable_per_mesh:
         # which extruder is the only extruder this setting is obtained from

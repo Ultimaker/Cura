@@ -6499,7 +6499,8 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "raft_interface_extruder_nr"
+                    "limit_to_extruder": "raft_interface_extruder_nr",
+                    "force_depends_on_settings": [ "raft_base_thickness" ]
                 },
                 "raft_interface_line_spacing":
                 {
@@ -6515,7 +6516,8 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "raft_interface_extruder_nr"
+                    "limit_to_extruder": "raft_interface_extruder_nr",
+                    "force_depends_on_settings": [ "raft_base_thickness" ]
                 },
                 "raft_interface_z_offset":
                 {
@@ -6531,7 +6533,8 @@
                     "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "limit_to_extruder": "raft_interface_extruder_nr"
+                    "limit_to_extruder": "raft_interface_extruder_nr",
+                    "force_depends_on_settings": [ "raft_base_thickness" ]
                 },
                 "raft_interface_infill_overlap":
                 {
@@ -6784,7 +6787,8 @@
                             "enabled": "resolveOrValue('adhesion_type') == 'raft' and raft_interface_layers > 0",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
-                            "limit_to_extruder": "raft_interface_extruder_nr"
+                            "limit_to_extruder": "raft_interface_extruder_nr",
+                            "force_depends_on_settings": [ "raft_base_thickness" ]
                         },
                         "raft_surface_speed":
                         {
