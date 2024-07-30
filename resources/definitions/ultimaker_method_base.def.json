@@ -435,6 +435,22 @@
         "z_seam_position": { "value": "'backright'" },
         "z_seam_relative": { "value": true },
         "z_seam_type": { "value": "'sharpest_corner'" },
-        "zig_zaggify_infill": { "value": true }
+        "zig_zaggify_infill": { "value": true },
+        "raft_interface_infill_overlap":
+        {
+            "force_depends_on_settings": [ "raft_base_thickness" ]
+        },
+        "raft_interface_line_spacing":
+        {
+            "force_depends_on_settings": [ "raft_base_thickness" ]
+        },
+        "raft_interface_line_width":
+        {
+            "force_depends_on_settings": [ "raft_base_thickness" ]
+        },
+        "raft_interface_z_offset":
+        {
+            "force_depends_on_settings": [ "raft_base_thickness" ]
+        }
     }
 }
