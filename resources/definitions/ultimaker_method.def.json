@@ -128,6 +128,10 @@
                 ]
             ]
         },
+        "raft_interface_line_width": {"force_depends_on_settings": [ "raft_base_thickness" ] },
+        "raft_interface_line_spacing": {"force_depends_on_settings": [ "raft_base_thickness" ] },
+        "raft_interface_z_offset": {"force_depends_on_settings": [ "raft_base_thickness" ] },
+        "raft_interface_infill_overlap": {"force_depends_on_settings": [ "raft_base_thickness" ] },
         "machine_height": { "default_value": 196 },
         "machine_name": { "default_value": "UltiMaker Method" },
         "machine_width": { "default_value": 283.3 },
