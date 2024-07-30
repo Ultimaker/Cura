@@ -349,7 +349,7 @@
         "raft_base_line_spacing": { "value": "2*raft_base_line_width" },
         "raft_base_line_width":
         {
-            "force_depends_on_settings": ["raft_interface_extruder_nr"],
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
             "value": 1.4
         },
         "raft_base_speed": { "value": 10 },
