@@ -345,24 +345,8 @@
         "raft_base_wall_count": { "value": "raft_wall_count" },
         "raft_interface_extruder_nr": { "value": "raft_surface_extruder_nr" },
         "raft_interface_fan_speed": { "value": 0 },
-        "raft_interface_infill_overlap":
-        {
-            "force_depends_on_settings": [ "raft_base_thickness" ]
-        },
-        "raft_interface_line_spacing":
-        {
-            "force_depends_on_settings": [ "raft_base_thickness" ]
-        },
-        "raft_interface_line_width":
-        {
-            "value": 0.7,
-            "force_depends_on_settings": [ "raft_base_thickness" ]
-        },
-        "raft_interface_z_offset":
-        {
-            "force_depends_on_settings": [ "raft_base_thickness" ]
-        },
         "raft_interface_layers": { "value": 2 },
+        "raft_interface_line_width": { "value": 0.7 },
         "raft_interface_speed": { "value": 90 },
         "raft_interface_thickness": { "value": 0.3 },
         "raft_interface_wall_count": { "value": "raft_wall_count" },
@@ -421,6 +405,7 @@
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "4*support_infill_sparse_thickness" },
         "support_interface_material_flow": { "value": "material_flow" },
+        "support_interface_offset": { "value": "1" },
         "support_interface_pattern": { "value": "'lines'" },
         "support_interface_wall_count": { "value": "1" },
         "support_material_flow": { "value": "material_flow" },
@@ -429,6 +414,7 @@
         "support_roof_height": { "value": "4*layer_height" },
         "support_roof_material_flow": { "value": "material_flow" },
         "support_supported_skin_fan_speed": { "value": "cool_fan_speed_max" },
+        "support_use_towers": { "value": "False" },
         "support_wall_count": { "value": "2 if support_conical_enabled or support_structure == 'tree' else 0" },
         "support_xy_distance": { "value": 0.2 },
         "support_xy_distance_overhang": { "value": "support_xy_distance" },
