@@ -383,7 +383,7 @@
         "raft_interface_layers": { "value": 2 },
         "raft_interface_line_spacing":
         {
-            "force_depends_on_settings": [ 
+            "force_depends_on_settings": [
                 "raft_base_thickness",
                 "raft_interface_extruder_nr"
             ]
