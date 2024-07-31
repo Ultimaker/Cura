@@ -383,11 +383,17 @@
         "raft_interface_layers": { "value": 2 },
         "raft_interface_line_spacing":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+            "force_depends_on_settings": [ 
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
         },
         "raft_interface_line_width":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ],
             "value": 0.7
         },
         "raft_interface_speed": { "value": 90 },
@@ -395,7 +401,10 @@
         "raft_interface_wall_count": { "value": "raft_wall_count" },
         "raft_interface_z_offset":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
         },
         "raft_margin": { "value": 1.2 },
         "raft_smoothing": { "value": 9.5 },
