@@ -191,6 +191,10 @@
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": 5 },
+        "cool_fan_enabled":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "default_material_bed_temperature": { "resolve": "min(extruderValues('default_material_bed_temperature'))" },
         "extruder_prime_pos_abs": { "default_value": true },
         "gradual_support_infill_steps": { "value": 0 },
@@ -321,6 +325,10 @@
         "material_bed_temperature": { "enabled": "machine_heated_bed" },
         "material_flow": { "value": 100 },
         "material_initial_print_temperature": { "value": "material_print_temperature-10" },
+        "material_print_temperature":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "material_shrinkage_percentage": { "enabled": true },
         "min_bead_width": { "value": "0.75*line_width" },
         "min_wall_line_width": { "value": 0.4 },
@@ -337,24 +345,88 @@
         "prime_tower_raft_base_line_spacing": { "value": "raft_base_line_width" },
         "prime_tower_wipe_enabled": { "value": true },
         "print_sequence": { "enabled": false },
+        "raft_airgap":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "raft_base_fan_speed": { "value": 0 },
-        "raft_base_line_spacing": { "value": "2*raft_base_line_width" },
-        "raft_base_line_width": { "value": 1.4 },
+        "raft_base_line_spacing":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "value": "2*raft_base_line_width"
+        },
+        "raft_base_line_width":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "value": 1.4
+        },
         "raft_base_speed": { "value": 10 },
-        "raft_base_thickness": { "value": 0.8 },
-        "raft_base_wall_count": { "value": "raft_wall_count" },
+        "raft_base_thickness":
+        {
+            "force_depends_on_settings": [
+                "raft_interface_extruder_nr",
+                "support_extruder_nr"
+            ],
+            "value": 0.8
+        },
+        "raft_base_wall_count":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ],
+            "value": "raft_wall_count"
+        },
         "raft_interface_extruder_nr": { "value": "raft_surface_extruder_nr" },
         "raft_interface_fan_speed": { "value": 0 },
+        "raft_interface_infill_overlap":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+        },
         "raft_interface_layers": { "value": 2 },
-        "raft_interface_line_width": { "value": 0.7 },
+        "raft_interface_line_spacing":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
+        },
+        "raft_interface_line_width":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ],
+            "value": 0.7
+        },
         "raft_interface_speed": { "value": 90 },
         "raft_interface_thickness": { "value": 0.3 },
         "raft_interface_wall_count": { "value": "raft_wall_count" },
+        "raft_interface_z_offset":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
+        },
         "raft_margin": { "value": 1.2 },
         "raft_smoothing": { "value": 9.5 },
         "raft_surface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable and extruderValue(support_extruder_nr,'material_is_support_material') else raft_base_extruder_nr" },
         "raft_surface_fan_speed": { "value": 0 },
+        "raft_surface_flow":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_surface_speed":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_surface_thickness":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "raft_surface_wall_count": { "value": "raft_wall_count" },
+        "raft_surface_z_offset":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "raft_wall_count": { "value": 2 },
         "retract_at_layer_change": { "value": true },
         "retraction_amount": { "value": 0.75 },
