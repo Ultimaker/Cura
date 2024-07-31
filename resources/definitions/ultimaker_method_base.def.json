@@ -191,6 +191,10 @@
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": 5 },
+        "cool_fan_enabled":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "default_material_bed_temperature": { "resolve": "min(extruderValues('default_material_bed_temperature'))" },
         "extruder_prime_pos_abs": { "default_value": true },
         "gradual_support_infill_steps": { "value": 0 },
@@ -346,7 +350,11 @@
             "force_depends_on_settings": [ "support_extruder_nr" ]
         },
         "raft_base_fan_speed": { "value": 0 },
-        "raft_base_line_spacing": { "value": "2*raft_base_line_width" },
+        "raft_base_line_spacing":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+            "value": "2*raft_base_line_width"
+        },
         "raft_base_line_width":
         {
             "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
@@ -355,7 +363,7 @@
         "raft_base_speed": { "value": 10 },
         "raft_base_thickness":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "force_depends_on_settings": [ "raft_interface_extruder_nr", "support_extruder_nr" ],
             "value": 0.8
         },
         "raft_base_wall_count":
