@@ -363,7 +363,10 @@
         "raft_base_speed": { "value": 10 },
         "raft_base_thickness":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr", "support_extruder_nr" ],
+            "force_depends_on_settings": [
+                "raft_interface_extruder_nr",
+                "support_extruder_nr"
+            ],
             "value": 0.8
         },
         "raft_base_wall_count":
