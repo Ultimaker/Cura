@@ -1,17 +1,17 @@
-version: "5.8.0-alpha.0"
+version: "5.8.0-beta.1"
 requirements:
-  - "cura_resources/(latest)@ultimaker/testing"
-  - "uranium/(latest)@ultimaker/testing"
-  - "curaengine/(latest)@ultimaker/testing"
-  - "cura_binary_data/(latest)@ultimaker/testing"
-  - "fdm_materials/(latest)@ultimaker/testing"
-  - "curaengine_plugin_gradual_flow/0.1.1-beta.3"
-  - "dulcificum/latest@ultimaker/testing"
+  - "cura_resources/5.8.0-beta.1"
+  - "uranium/5.8.0-beta.1"
+  - "curaengine/5.8.0-beta.1"
+  - "cura_binary_data/5.8.0-beta.1"
+  - "fdm_materials/5.8.0-beta.1"
+  - "curaengine_plugin_gradual_flow/0.1.0-beta.4"
+  - "dulcificum/0.2.1"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
   - "native_cad_plugin/2.0.0"
 requirements_internal:
-  - "fdm_materials/(latest)@internal/testing"
+  - "fdm_materials/5.8.0-beta.1"
   - "cura_private_data/(latest)@internal/testing"
 urls:
     default:

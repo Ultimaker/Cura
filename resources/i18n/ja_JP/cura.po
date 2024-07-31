@@ -168,6 +168,14 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF ファイル"
 
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MFリーダー"
+
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MFリーダー"
+
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MFリーダーのプラグインが破損しています。"
@@ -242,6 +250,10 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF ファイル"
 
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMFリーダー"
+
 msgctxt "@label"
 msgid "Abort"
 msgstr "中止"
@@ -277,6 +289,10 @@ msgstr "アバウト..."
 msgctxt "@button"
 msgid "Accept"
 msgstr "承認する"
+
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-codeを承認し、プリンターに送信する。またプラグインはファームウェアをアップデートできます。"
 
 msgctxt "@label"
 msgid "Account synced"
@@ -417,6 +433,10 @@ msgstr "すべてのサポートのタイプ ({0})"
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "匿名データの送信を許可する"
+
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "G-codeファイルの読み込み、表示を許可する。"
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -573,6 +593,10 @@ msgstr "今すぐバックアップする"
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "バックアップとリセットの設定"
+
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "構成をバックアップしてリストアします。"
 
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
@@ -746,6 +770,14 @@ msgctxt "@label"
 msgid "Checking..."
 msgstr "確認しています..."
 
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "ファームウェアアップデートをチェックする。"
+
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "プリント問題の可能性のあるモデルをプリント構成を確認し、解決案を提示してください。"
+
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "サポートを生成するために利用できる技術を選択します。「標準」のサポート構造はオーバーハング部品のすぐ下に作成し、そのエリアを真下に生成します。「ツリー」サポートはオーバーハングエリアに向かって枝を作成し、モデルを枝の先端で支えます。枝をモデルのまわりにはわせて、できる限りビルドプレートから支えます。"
@@ -826,6 +858,14 @@ msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "圧縮G-codeファイル"
 
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "圧縮G-codeリーダー"
+
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "圧縮G-codeライター"
+
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "構成の変更"
@@ -897,6 +937,10 @@ msgstr "USBにて接続する"
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "クラウド経由で接続"
+
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Digital Libraryに接続し、CuraでDigital Libraryからファイルを開いたりDigital Libraryにファイルを保存したりできるようにします。"
 
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
@@ -1033,6 +1077,10 @@ msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "Digital Libraryでプリントプロジェクトを作成します。"
 
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "特定箇所のサポートを印刷するブロックを消去するメッシュを作成する"
+
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "バックアップを作成しています..."
@@ -1045,9 +1093,21 @@ msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Cura バックアップ"
 
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura バックアップ"
+
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Curaプロファイル"
+
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Curaプロファイルリーダー"
+
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Curaプロファイルライター"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
@@ -1077,6 +1137,18 @@ msgstr "Cura言語"
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Curaバージョン"
+
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "Curaエンジンバックエンド"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "フローを段階的に滑らかにして高フローのジャンプを制限するためのCuraEngineプラグイン"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1362,6 +1434,10 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "有効"
 
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2Dの画像ファイルからプリント可能なジオメトリーを生成を可能にする。"
+
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-codeの終了"
@@ -1449,6 +1525,10 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出しました"
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "UltiMaker Curaをプラグインと材料プロファイルで拡張します。"
+
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1598,6 +1678,14 @@ msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "ファームウェアアップデート"
 
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "ファームウェアアップデートチェッカー"
+
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "ファームウェアアップデーター"
+
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
 msgstr "プリンターとの接続はファームウェアのアップデートをサポートしていないため、ファームウェアをアップデートできません。"
@@ -1696,6 +1784,18 @@ msgstr "G-codeの詳細"
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-codeファイル"
+
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "G-codeプロファイルリーダー"
+
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-codeリーダー"
+
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "G-codeライター"
 
 msgctxt "@label"
 msgid "G-code flavor"
@@ -1844,6 +1944,10 @@ msgstr "新しいUltiMakerプリンターをCuraに追加する場合"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "お持ちのプリンターがリストにない場合、<a href='%1'>ネットワーク・プリンティング・トラブルシューティング・ガイド</a>を読んでください"
+
+msgctxt "name"
+msgid "Image Reader"
+msgstr "画像リーダー"
 
 msgctxt "@action:button"
 msgid "Import"
@@ -2129,6 +2233,10 @@ msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "左ビュー"
 
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "レガシーCuraプロファイルリーダー"
+
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "問題が発生していることを開発者にお知らせください。"
@@ -2209,6 +2317,10 @@ msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "ログ"
 
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "クラッシュレポーターで使用できるように、特定のイベントをログに記録します"
+
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "プリンターへの接続が切断されました"
@@ -2216,6 +2328,10 @@ msgstr "プリンターへの接続が切断されました"
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "プリンターの設定"
+
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "プリンターの設定アクション"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
@@ -2232,6 +2348,10 @@ msgstr "データファイルを送信する前に、プリンターとプリン
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Makerbotプリントファイル"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Makerbotプリントファイルライター"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -2289,6 +2409,14 @@ msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "UltiMaker Curaのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
 
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "アプリケーションの拡張機能を管理し、UltiMakerウェブサイトから拡張機能を参照できるようにします。"
+
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Ultimakerのネットワーク接属できるプリンターのネットワーク接続を管理します。"
+
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造元"
@@ -2298,6 +2426,10 @@ msgid "Marketplace"
 msgstr "マーケットプレース"
 
 msgctxt "@label"
+msgid "Marketplace"
+msgstr "マーケットプレース"
+
+msgctxt "name"
 msgid "Marketplace"
 msgstr "マーケットプレース"
 
@@ -2316,6 +2448,10 @@ msgstr "材料"
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "フィラメントの色"
+
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "フィラメントプロファイル"
 
 msgctxt "@label"
 msgid "Material Type"
@@ -2361,6 +2497,10 @@ msgctxt "@action:label"
 msgid "Mode"
 msgstr "モード"
 
+msgctxt "name"
+msgid "Model Checker"
+msgstr "モデルチェッカー"
+
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "モデルエラー"
@@ -2376,6 +2516,10 @@ msgstr "オーバーラップの設定を変更"
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "モニター"
+
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "モニターステージ"
 
 msgctxt "@action:button"
 msgid "Monitor print"
@@ -2815,6 +2959,10 @@ msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "各モデル設定"
 
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "各モデル設定ツール"
+
 msgid "Perspective"
 msgstr "パースペクティブ表示"
 
@@ -2939,6 +3087,10 @@ msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "後処理"
 
+msgctxt "name"
+msgid "Post Processing"
+msgstr "後処理"
+
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "プラグイン処理後"
@@ -2954,6 +3106,10 @@ msgstr "プレヒート"
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "準備する"
+
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "ステージの準備"
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -2974,6 +3130,10 @@ msgstr "プレビュー"
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "プレビュー"
+
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "プレビューステージ"
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
@@ -3217,6 +3377,106 @@ msgctxt "@label"
 msgid "Properties"
 msgstr "プロパティ"
 
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "ファームウェアアップデートのためのマシン操作を提供します。"
+
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Curaでモニターステージを提供します。"
+
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "ノーマルなソリットメッシュビューを供給する。"
+
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Curaで準備ステージを提供します。"
+
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Curaでプレビューステージを提供します。"
+
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
+
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
+
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "UltiMakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
+
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "取り外し可能なドライブホットプラギング及びサポートの書き出しの供給。"
+
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Curaプロファイルを取り込むためのサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "g-codeファイルからプロファイルを読み込むサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "レガシーCura Versionsからプロファイルを取り込むためのサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "３MFファイルを読むこむためのサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "AMFファイルの読込みをサポートしています。"
+
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Ultimakerフォーマットパッケージの読み込みをサポートします。"
+
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3Dファイルを読むこむためのサポートを供給する。"
+
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "モデルファイルを読み込むためのサポートを供給します。"
+
+msgctxt "description"
+msgid "Provides support for writing 3MF and UCP files."
+msgstr "3MFおよびUCPファイルの書き込みのサポートを提供します。"
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "MakerBotフォーマットパッケージを書き込むためのサポートを提供します。"
+
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Ultimakerフォーマットパッケージへの書き込みをサポートします。"
+
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "各モデル設定を与える。"
+
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "透視ビューイング。"
+
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "CuraEngineスライシングバックエンドにリンクを供給する。"
+
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "スライスされたレイヤーデータのプレビューを提供します。"
+
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQtバージョン"
@@ -3252,6 +3512,10 @@ msgstr "順番を待つ"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "%1を終了する"
+
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "圧縮ファイルからG-codeを読み取ります。"
 
 msgctxt "@button"
 msgid "Recommended"
@@ -3304,6 +3568,10 @@ msgstr "選択を記憶させる"
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "リムーバブルドライブ"
+
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "取り外し可能なドライブアウトプットデバイスプラグイン"
 
 msgctxt "@action:button"
 msgid "Remove"
@@ -3585,6 +3853,10 @@ msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "プリンターに材料を送信しています"
 
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "監視ロガー"
+
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "シリアルコミュニケーションライブラリー"
@@ -3793,6 +4065,10 @@ msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "UltiMakerのプラットフォームにサインイン"
 
+msgctxt "name"
+msgid "Simulation View"
+msgstr "シミュレーションビュー"
+
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "スキン"
@@ -3821,6 +4097,10 @@ msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "セッティングを変更すると自動にスライスします。"
 
+msgctxt "name"
+msgid "Slice info"
+msgstr "スライスインフォメーション"
+
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "スライスに失敗しました"
@@ -3836,6 +4116,10 @@ msgstr "スムージング"
 msgctxt "@label"
 msgid "Solid"
 msgstr "固体"
+
+msgctxt "name"
+msgid "Solid View"
+msgstr "ソリッドビュー"
 
 msgctxt "@item:inmenu"
 msgid "Solid view"
@@ -3931,6 +4215,10 @@ msgctxt "@label"
 msgid "Strength"
 msgstr "強度"
 
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "不特定なスライス情報を提出。プレファレンスの中で無効になる可能性もある。"
+
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "フィラメントの<filename>%1</filename>への書き出しが完了ました"
@@ -3974,6 +4262,10 @@ msgstr "サポート"
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "サポートブロッカー"
+
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "サポート消去機能"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -4488,6 +4780,10 @@ msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "適切なデータまたはメタデータがないのにCuraバックアップをリストアしようとしました。"
 
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimeshリーダー"
+
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "トラブルシューティング"
@@ -4508,7 +4804,19 @@ msgctxt "@label"
 msgid "Type"
 msgstr "タイプ"
 
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP リーダー"
+
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFPライター"
+
 msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USBプリンティング"
+
+msgctxt "name"
 msgid "USB printing"
 msgstr "USBプリンティング"
 
@@ -4528,6 +4836,10 @@ msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMakerフォーマットパッケージ"
 
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "Ultimakerネットワーク接続"
+
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "UltiMaker検証済みパッケージ"
@@ -4535,6 +4847,10 @@ msgstr "UltiMaker検証済みパッケージ"
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "UltiMaker検証済みプラグイン"
+
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "UltiMakerプリンターのアクション"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4547,6 +4863,10 @@ msgstr "UltiMakerのサポート"
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
+
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 msgctxt "@info:status"
 msgid "Unable to add the profile."
@@ -4721,6 +5041,114 @@ msgctxt "@button"
 msgid "Updating..."
 msgstr "更新中..."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Cura 4.13からCura 5.0に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Cura 4.4からCura 4.5に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Cura 4.8からCura 4.9に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレート。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "構成をCura 5.3からCura 5.4にアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "構成をCura 5.4からCura 5.5にアップグレードします。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr "構成をCura 5.6からCura 5.7にアップグレードします。"
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "カスタムファームウェアをアップロードする"
@@ -4756,6 +5184,114 @@ msgstr "ボロノイ図生成を含むユーティリティライブラリ"
 msgctxt "@title:column"
 msgid "Value"
 msgstr "値"
+
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1 から2.2にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2 から2.4にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5から2.6にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6から2.7にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7から3.0にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0から3.1にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2から3.3にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "3.3から3.4にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4 から 3.5 にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "3.5 から 4.0 にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "4.0 から 4.1 にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "バージョン4.11から4.12へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "バージョン4.13から5.0へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2から4.3にバージョンをアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3から4.4にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4から4.5にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "バージョン4.5から4.6へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0から4.6.2へのバージョン更新"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2から4.7へのバージョン更新"
+
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "バージョン4.7から4.8へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "バージョン4.8から4.9へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "バージョン4.9から4.10へのアップグレード"
+
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "5.2から5.3にバージョンアップグレート"
+
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr "5.3から5.4へのバージョンアップ"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "5.4から5.5へのバージョンアップ"
+
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr "5.6から5.7へのバージョンアップ"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -4873,6 +5409,14 @@ msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "幅（mm）"
 
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "圧縮ファイルにG-codeを書き込みます。"
+
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "ファイルにG-codeを書き込みます。"
+
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X（幅）"
@@ -4885,6 +5429,10 @@ msgctxt "@label"
 msgid "X min"
 msgstr "X分"
 
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "透視ビュー"
+
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透視ビューイング"
@@ -4896,6 +5444,10 @@ msgstr "X/Y"
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3Dファイル"
+
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3Dリーダー"
 
 msgctxt "@label"
 msgid "Y (Depth)"
@@ -5042,554 +5594,18 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{}プラグインのダウンロードに失敗しました"
 
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "UltiMakerネットワークプリンタへのネットワーク接続を管理します。"
-
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "Ultimakerネットワーク接続"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "g-codeファイルからプロファイルを読み込むサポートを供給する。"
-
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "G-codeプロファイルリーダー"
-
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "ノーマルなソリットメッシュビューを供給する。"
-
-msgctxt "name"
-msgid "Solid View"
-msgstr "ソリッドビュー"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "フローを段階的に滑らかにして高フローのジャンプを制限するためのCuraEngineプラグイン"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
-
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "３MFファイルを読むこむためのサポートを供給する。"
-
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MFリーダー"
-
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-codeを承認し、プリンターに送信する。またプラグインはファームウェアをアップデートできます。"
-
-msgctxt "name"
-msgid "USB printing"
-msgstr "USBプリンティング"
-
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "ファームウェアアップデートをチェックする。"
-
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "ファームウェアアップデートチェッカー"
-
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "アプリケーションの拡張機能を管理し、UltiMakerウェブサイトから拡張機能を参照できるようにします。"
-
-msgctxt "name"
-msgid "Marketplace"
-msgstr "マーケットプレース"
-
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "構成をバックアップしてリストアします。"
-
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura バックアップ"
-
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
-
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "プリンターの設定アクション"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5から2.6にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "バージョン4.7から4.8へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Cura 4.4からCura 4.5に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4から4.5にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0から3.1にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Cura 4.11からCura 4.12に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "バージョン4.11から4.12へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6から2.7にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "構成をCura 4.6.0からCura 4.6.2に更新します。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "4.6.0から4.6.2へのバージョン更新"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3から3.4にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Cura 4.8からCura 4.9に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "バージョン4.8から4.9へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "バージョン4.5から4.6へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2から4.3にバージョンをアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から3.3にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3から4.4にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
-msgstr "構成をCura 5.6からCura 5.7にアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.6 to 5.7"
-msgstr "5.6から5.7へのバージョンアップ"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1 から2.2にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "構成をCura 5.3からCura 5.4にアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr "5.3から5.4へのバージョンアップ"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "バージョン4.9から4.10へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7から3.0にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "3.5 から 4.0 にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "5.2から5.3にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Cura 4.13からCura 5.0に設定をアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "バージョン4.13から5.0へのアップグレード"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4 から 3.5 にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
-
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2 から2.4にバージョンアップグレート"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "4.6.2から4.7へのバージョン更新"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr "構成をCura 5.4からCura 5.5にアップグレードします。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.4 to 5.5"
-msgstr "5.4から5.5へのバージョンアップ"
-
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "G-codeファイルの読み込み、表示を許可する。"
-
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-codeリーダー"
-
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "不特定なスライス情報を提出。プレファレンスの中で無効になる可能性もある。"
-
-msgctxt "name"
-msgid "Slice info"
-msgstr "スライスインフォメーション"
-
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "取り外し可能なドライブホットプラギング及びサポートの書き出しの供給。"
-
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "取り外し可能なドライブアウトプットデバイスプラグイン"
-
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "特定箇所のサポートを印刷するブロックを消去するメッシュを作成する"
-
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "サポート消去機能"
-
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "プリント問題の可能性のあるモデルをプリント構成を確認し、解決案を提示してください。"
-
-msgctxt "name"
-msgid "Model Checker"
-msgstr "モデルチェッカー"
-
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Curaで準備ステージを提供します。"
-
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "ステージの準備"
-
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "スライスされたレイヤーデータのプレビューを提供します。"
-
-msgctxt "name"
-msgid "Simulation View"
-msgstr "シミュレーションビュー"
-
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "AMFファイルの読込みをサポートしています。"
-
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMFリーダー"
-
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "透視ビューイング。"
-
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "透視ビュー"
-
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "ファームウェアアップデートのためのマシン操作を提供します。"
-
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "ファームウェアアップデーター"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "レガシーCura Versionsからプロファイルを取り込むためのサポートを供給する。"
-
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "レガシーCuraプロファイルリーダー"
-
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
-
-msgctxt "name"
-msgid "Post Processing"
-msgstr "後処理"
-
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "クラッシュレポーターで使用できるように、特定のイベントをログに記録します"
-
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "監視ロガー"
-
-msgctxt "description"
-msgid "Provides support for writing MakerBot Format Packages."
-msgstr "MakerBotフォーマットパッケージを書き込むためのサポートを提供します。"
-
-msgctxt "name"
-msgid "Makerbot Printfile Writer"
-msgstr "Makerbotプリントファイルライター"
-
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Curaプロファイルを取り込むためのサポートを供給する。"
-
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Curaプロファイルリーダー"
-
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Ultimakerフォーマットパッケージの読み込みをサポートします。"
-
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP リーダー"
-
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2Dの画像ファイルからプリント可能なジオメトリーを生成を可能にする。"
-
-msgctxt "name"
-msgid "Image Reader"
-msgstr "画像リーダー"
-
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngineスライシングバックエンドにリンクを供給する。"
-
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "Curaエンジンバックエンド"
-
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "圧縮ファイルにG-codeを書き込みます。"
-
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "圧縮G-codeライター"
-
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "UltiMakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
-
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "UltiMakerプリンターのアクション"
-
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "圧縮ファイルからG-codeを読み取ります。"
-
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "圧縮G-codeリーダー"
-
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Curaでプレビューステージを提供します。"
-
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "プレビューステージ"
-
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Digital Libraryに接続し、CuraでDigital Libraryからファイルを開いたりDigital Libraryにファイルを保存したりできるようにします。"
-
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
-
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Curaプロファイルライター"
-
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "X3Dファイルを読むこむためのサポートを供給する。"
-
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3Dリーダー"
-
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "モデルファイルを読み込むためのサポートを供給します。"
-
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimeshリーダー"
-
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Curaでモニターステージを提供します。"
-
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "モニターステージ"
-
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "各モデル設定を与える。"
-
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "各モデル設定ツール"
-
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
-
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "フィラメントプロファイル"
-
-msgctxt "description"
-msgid "Provides support for writing 3MF and UCP files."
-msgstr "3MFおよびUCPファイルの書き込みのサポートを提供します。"
-
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MFリーダー"
-
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Ultimakerフォーマットパッケージへの書き込みをサポートします。"
-
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFPライター"
-
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "ファイルにG-codeを書き込みます。"
-
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "G-codeライター"
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "組み合わせは推奨されません。信頼性を高めるため,BBコアをスロット1（左）に装填してください。"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "メーカーボット スケッチ プリントファイル"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "プリンターを検索"
+
+msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "これはCura Universalプロジェクトファイルです。Cura Universalプロジェクトとして開きますか？それとも,そこからモデルをインポートしますか？"
