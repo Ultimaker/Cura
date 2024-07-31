@@ -5,6 +5,9 @@ on:
     path:
       - "resources/**"
 
+permissions:
+  contents: read
+
 jobs:
   printer-linter-diagnose:
     name: Printer linter PR diagnose
@@ -18,6 +21,7 @@ jobs:
 
       - uses: technote-space/get-diff-action@v6
         with:
+          DIFF_FILTER: AMRCD
           PATTERNS: |
             resources/+(extruders|definitions)/*.def.json
             resources/+(intent|quality|variants)/**/*.inst.cfg
@@ -41,11 +45,15 @@ jobs:
         if: env.GIT_DIFF && !env.MATCHED_FILES
         run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
 
+      - name: Check Deleted Files(s)
+        if: env.GIT_DIFF
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ env.GIT_DIFF_FILTERED }}
+
       - name: Save PR metadata
         run: |
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
-          echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
+          echo ${{ github.event.pull_request.head.sha }} > printer-linter-result/pr-head-sha.txt
 
       - uses: actions/upload-artifact@v2
         with:

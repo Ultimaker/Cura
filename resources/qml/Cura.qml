@@ -628,7 +628,7 @@ UM.MainWindow
         //: File open dialog title
         title: catalog.i18nc("@title:window","Open file(s)")
         modality: Qt.WindowModal
-        fileMode: FileDialog.FileMode.ExistingFile
+        fileMode: FileDialog.FileMode.OpenFiles
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
         currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
         onAccepted:
@@ -701,8 +701,7 @@ UM.MainWindow
 
             if (hasProjectFile)
             {
-                var projectFile = projectFileUrlList[0];
-
+                var projectFile = projectFileUrlList[0]
                 // check preference
                 var choice = UM.Preferences.getValue("cura/choice_on_open_project");
                 if (choice == "open_as_project")
@@ -716,6 +715,7 @@ UM.MainWindow
                 else    // always ask
                 {
                     // ask whether to open as project or as models
+                    askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(projectFile);
                     askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
                     askOpenAsProjectOrModelsDialog.addToRecent = true;
                     askOpenAsProjectOrModelsDialog.show();
@@ -774,6 +774,7 @@ UM.MainWindow
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
+            askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(project_file);
             askOpenAsProjectOrModelsDialog.fileUrl = project_file;
             askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
             askOpenAsProjectOrModelsDialog.show();
@@ -822,12 +823,27 @@ UM.MainWindow
         }
     }
 
-    Cura.WizardDialog
+    property var wizardDialog
+    Component
     {
-        id: addMachineDialog
-        title: catalog.i18nc("@title:window", "Add Printer")
-        model: CuraApplication.getAddPrinterPagesModel()
-        progressBarVisible: false
+        id: addMachineDialogLoader
+
+        Cura.WizardDialog
+        {
+            title: catalog.i18nc("@title:window", "Add Printer")
+            maximumWidth: Screen.width * 2
+            maximumHeight: Screen.height * 2
+            model: CuraApplication.getAddPrinterPagesModel()
+            progressBarVisible: false
+            onVisibleChanged:
+            {
+                if(!visible)
+                {
+                    wizardDialog = null
+                    Cura.API.account.startSyncing()
+                }
+            }
+        }
     }
 
     Cura.WizardDialog
@@ -852,9 +868,9 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
-            // Make sure to show from the first page when the dialog shows up.
-            addMachineDialog.resetModelState()
-            addMachineDialog.show()
+            Cura.API.account.stopSyncing()
+            wizardDialog = addMachineDialogLoader.createObject()
+            wizardDialog.show()
         }
     }
 

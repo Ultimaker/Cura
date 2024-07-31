@@ -39,7 +39,9 @@ class IntentCategoryModel(ListModel):
         """
         if len(cls._translations) == 0:
             cls._translations["default"] = {
-                "name": catalog.i18nc("@label", "Default")
+                "name": catalog.i18nc("@label", "Balanced"),
+                "description": catalog.i18nc("@text",
+                                             "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy.")
             }
             cls._translations["visual"] = {
                 "name": catalog.i18nc("@label", "Visual"),
@@ -52,6 +54,17 @@ class IntentCategoryModel(ListModel):
             cls._translations["quick"] = {
                 "name": catalog.i18nc("@label", "Draft"),
                 "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
+            }
+            cls._translations["annealing"] = {
+                "name": catalog.i18nc("@label", "Annealing"),
+                "description": catalog.i18nc("@text",
+                                             "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance.")
+
+            }
+            cls._translations["solid"] = {
+                "name": catalog.i18nc("@label", "Solid"),
+                "description": catalog.i18nc("@text",
+                                             "A highly dense and strong part but at a slower print time. Great for functional parts.")
             }
         return cls._translations
 

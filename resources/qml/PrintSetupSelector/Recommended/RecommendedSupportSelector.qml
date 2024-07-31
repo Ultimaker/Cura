@@ -34,6 +34,15 @@ RecommendedSettingSection
         storeIndex: 0
     }
 
+    UM.SettingPropertyProvider
+    {
+        id: supportExtruderProvider
+        key: "support_extruder_nr"
+        containerStack: Cura.MachineManager.activeMachine
+        watchedProperties: [ "value" ]
+        storeIndex: 0
+    }
+
     contents: [
         RecommendedSettingItem
         {
@@ -43,8 +52,12 @@ RecommendedSettingSection
 
             settingControl: Cura.SingleSettingComboBox
             {
+                id:support
                 width: parent.width
                 settingName: "support_structure"
+                propertyRemoveUnusedValue: false
+                updateAllExtruders: false
+                defaultExtruderIndex: supportExtruderProvider.properties.value
             }
         },
         RecommendedSettingItem
@@ -60,6 +73,12 @@ RecommendedSettingSection
             settingControl: Cura.SingleSettingExtruderSelectorBar
             {
                 extruderSettingName: "support_extruder_nr"
+                onSelectedIndexChanged:
+                {
+                    support.updateAllExtruders = true
+                    support.forceUpdateSettings()
+                    support.updateAllExtruders = false
+                }
             }
         },
         RecommendedSettingItem
@@ -72,6 +91,8 @@ RecommendedSettingSection
             {
                 width: parent.width
                 settingName: "support_type"
+                updateAllExtruders: true
+                defaultExtruderIndex: supportExtruderProvider.properties.value
             }
         }
     ]

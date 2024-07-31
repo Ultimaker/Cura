@@ -1,0 +1,40 @@
+name: conan-package-resources
+
+on:
+  push:
+    paths:
+      - '.github/workflows/conan-package-resources.yml'
+      - 'resources/definitions/**'
+      - 'resources/extruders/**'
+      - 'resources/images/**'
+      - 'resources/intent/**'
+      - 'resources/meshes/**'
+      - 'resources/quality/**'
+      - 'resources/variants/**'
+      - 'resources/conanfile.py'
+    branches:
+      - 'main'
+      - 'CURA-*'
+      - 'PP-*'
+      - 'NP-*'
+      - '[0-9].[0-9]*'
+      - '[0-9].[0-9][0-9]*'
+
+env:
+  CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
+  CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
+
+jobs:
+  conan-recipe-version:
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
+    with:
+      project_name: cura_resources
+
+  conan-package-export:
+    needs: [ conan-recipe-version ]
+    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
+    with:
+      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+      recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+      conan_recipe_root: "./resources/"
+    secrets: inherit

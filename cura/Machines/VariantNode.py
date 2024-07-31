@@ -60,7 +60,7 @@ class VariantNode(ContainerNode):
             materials = list(materials_per_base_file.values())
 
         # Filter materials based on the exclude_materials property.
-        filtered_materials = [material for material in materials if material["id"] not in self.machine.exclude_materials]
+        filtered_materials = [material for material in materials if not self.machine.isExcludedMaterial(material)]
 
         for material in filtered_materials:
             base_file = material["base_file"]
@@ -148,7 +148,7 @@ class VariantNode(ContainerNode):
 
         if "empty_material" in self.materials:
             del self.materials["empty_material"]
-        self.materials[base_file] = MaterialNode(container.getId(), variant = self)
+        self.materials[base_file] = MaterialNode(container.getId(), variant = self, container = container)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
 
