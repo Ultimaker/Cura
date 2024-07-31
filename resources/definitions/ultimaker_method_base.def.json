@@ -352,7 +352,7 @@
         "raft_base_fan_speed": { "value": 0 },
         "raft_base_line_spacing":
         {
-            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
             "value": "2*raft_base_line_width"
         },
         "raft_base_line_width":
