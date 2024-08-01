@@ -1,6 +1,11 @@
 # Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Resources import Resources
+
+import json
+from typing import Dict, List, Optional
+
 class FormatMaps:
 
     PRINTER_TYPE_NAME = {
@@ -38,3 +43,25 @@ class FormatMaps:
          "tpu": {"name": "TPU 95A", "guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"},
          "im-pla": {"name": "Tough", "guid": "de031137-a8ca-4a72-bd1b-17bb964033ad"}
     }
+
+    __product_to_id_map: Optional[Dict[str, List[str]]] = None
+
+    @classmethod
+    def getProductIdMap(cls) -> Dict[str, List[str]]:
+        """Gets a mapping from product names in the XML files to their definition IDs.
+
+        This loads the mapping from a file.
+        """
+        if cls.__product_to_id_map is not None:
+            return cls.__product_to_id_map
+
+        product_to_id_file = Resources.getPath(Resources.Texts, "product_to_id.json")
+        with open(product_to_id_file, encoding = "utf-8") as f:
+            contents = ""
+            for line in f:
+                contents += line if "#" not in line else "".join([line.replace("#", str(n)) for n in range(1, 12)])
+            cls.__product_to_id_map = json.loads(contents)
+        cls.__product_to_id_map = {key: [value] for key, value in cls.__product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
+        return cls.__product_to_id_map
