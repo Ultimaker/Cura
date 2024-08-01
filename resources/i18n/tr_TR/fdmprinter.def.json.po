@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-07-08 09:05+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,10 +15,6 @@ msgstr ""
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>Asal kule nasıl oluşturulur:<ul><li><b>Normal:</b> İkincil malzemelerin astarlandığı bir kova oluşturur.</li><li><b>Aralıklı:</b> Olabildiğince seyrek bir asal kule oluşturur. Bu, zamandan ve filamentten tasarruf sağlayacaktır ama bu yalnızca kullanılan malzemelerin birbirine yapışması durumunda mümkündür.</li></ul></html>"
-
-msgctxt "cool_during_extruder_switch description"
-msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
-msgstr ""
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -93,10 +89,9 @@ msgid "Adaptive layers computes the layer heights depending on the shape of the 
 msgstr "Uyarlanabilir katmanlar modelin şekline bağlı olarak katman yüksekliğini hesaplar."
 
 msgctxt "infill_wall_line_count description"
-msgid ""
-"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
-"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "Dolgu alanının etrafına ekstra duvar ekle. Bu duvarlar üst/alt yüzey hatlarının daha az aşağı düşmesini sağlar. Yani biraz fazla materyal kullanarak, daha az üst/alt yüzey katmanı ile aynı kaliteyi yakalayabilirsiniz.Bu özellik, doğru konfigüre edildiğinde, harekete veya geri çekmeye gerek kalmadan Dolgu Poligonlarını Bağlama ile birlikte tüm dolguyu tek bir ekstrüzyon yoluna bağlayabilir."
+msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr "Dolgu alanının etrafına ekstra duvar ekle. Bu duvarlar üst/alt yüzey hatlarının daha az aşağı düşmesini sağlar. Yani biraz fazla materyal kullanarak, daha az üst/alt yüzey katmanı ile aynı kaliteyi yakalayabilirsiniz."
+"Bu özellik, doğru konfigüre edildiğinde, harekete veya geri çekmeye gerek kalmadan Dolgu Poligonlarını Bağlama ile birlikte tüm dolguyu tek bir ekstrüzyon yoluna bağlayabilir."
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -153,10 +148,6 @@ msgstr "Tümü"
 msgctxt "print_sequence option all_at_once"
 msgid "All at Once"
 msgstr "Tümünü birden"
-
-msgctxt "cool_during_extruder_switch option all_fans"
-msgid "All fans"
-msgstr ""
 
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
@@ -621,10 +612,6 @@ msgstr "Soğuma"
 msgctxt "cooling label"
 msgid "Cooling"
 msgstr "Soğuma"
-
-msgctxt "cool_during_extruder_switch label"
-msgid "Cooling during extruder switch"
-msgstr ""
 
 msgctxt "infill_pattern option cross"
 msgid "Cross"
@@ -1235,16 +1222,14 @@ msgid "G-code Flavor"
 msgstr "G-code türü"
 
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr "En son çalıştırılacak G-code komutları ( ile ayrılır)."
+msgid "G-code commands to be executed at the very end - separated by \n."
+msgstr "En son çalıştırılacak G-code komutları ("
+" ile ayrılır)."
 
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
+msgid "G-code commands to be executed at the very start - separated by \n."
+msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları"
 "."
-msgstr "ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
@@ -2007,11 +1992,8 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "Ekstruder ilk konumunu, yazıcı başlığının son konumuna göre ayarlamak yerine mutlak olarak ayarlayın."
 
 msgctxt "layer_0_z_overlap description"
-msgid ""
-"Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\n"
-"It may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr ""
-"Hava boşluğundaki filament kaybını telafi etmek için modelin birinci ve ikinci katmanını Z yönünde üst üste getirir. İlk model katmanının üzerindeki tüm modeller bu miktarda aşağı kaydırılacaktır.\n"
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "Hava boşluğundaki filament kaybını telafi etmek için modelin birinci ve ikinci katmanını Z yönünde üst üste getirir. İlk model katmanının üzerindeki tüm modeller bu miktarda aşağı kaydırılacaktır."
 "Bu ayar nedeniyle bazen ikinci katmanın ilk katmanın altına yazdırıldığı belirtilebilir. Bu istenilen davranıştır"
 
 msgctxt "meshfix description"
@@ -2021,10 +2003,6 @@ msgstr "Kafesleri 3D baskı için daha uygun hale getirir."
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
 msgstr "Makerbot"
-
-msgctxt "support_z_seam_away_from_model description"
-msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
-msgstr ""
 
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
@@ -2202,10 +2180,6 @@ msgctxt "slicing_tolerance option middle"
 msgid "Middle"
 msgstr "Ortalayıcı"
 
-msgctxt "support_z_seam_min_distance label"
-msgid "Min Z Seam Distance from Model"
-msgstr ""
-
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
 msgstr "Minimum Kalıp Genişliği"
@@ -2349,10 +2323,6 @@ msgstr "Monotonik Üst/Alt Düzeni"
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "Çoklu etek hatları küçük modeller için daha iyi ekstrüzyon işlemi hazırlanmasına yardımcı olur. Bu değeri 0’a ayarlamak eteği devre dışı bırakacaktır."
-
-msgctxt "support_infill_density_multiplier_initial_layer description"
-msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
-msgstr ""
 
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
@@ -2510,10 +2480,6 @@ msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "Birer Birer"
 
-msgctxt "cool_during_extruder_switch option only_last_extruder"
-msgid "Only last extruder"
-msgstr ""
-
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
 msgstr "Sadece Hareket Sırasında Yazdırılan Bölümleri Atlama yoluyla yatay hareket sayesinde atlanamayan yazdırılmış parçalar üzerinde hareket ederken Z Sıçramasını gerçekleştirin."
@@ -2622,10 +2588,6 @@ msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "Üçüncü köprü yüzey alanı katmanı yazdırılırken kullanılacak yüzde fan hızı."
 
-msgctxt "z_seam_on_vertex description"
-msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
-msgstr ""
-
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "Bu miktardan daha kısa çevre uzunluğuna sahip dilimlenmiş katmanlardaki poligonlar filtre ile elenecektir. Daha düşük değerler dilimleme süresini uzatacak ancak daha yüksek çözünürlükte bir ağ oluşturacaktır. Genellikle yüksek çözünürlüklü SLA yazıcılarına yöneliktir ve çok fazla detay içeren çok küçük 3D modellerinde kullanılır."
@@ -2673,10 +2635,6 @@ msgstr "İlk Direk Hattı Genişliği"
 msgctxt "prime_tower_max_bridging_distance label"
 msgid "Prime Tower Maximum Bridging Distance"
 msgstr "Asal Kule Maksimum Köprüleme Mesafesi"
-
-msgctxt "prime_tower_min_shell_thickness label"
-msgid "Prime Tower Minimum Shell Thickness"
-msgstr ""
 
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
@@ -2830,18 +2788,6 @@ msgctxt "raft_base_fan_speed label"
 msgid "Raft Base Fan Speed"
 msgstr "Radyenin Taban Fan Hızı"
 
-msgctxt "raft_base_flow label"
-msgid "Raft Base Flow"
-msgstr ""
-
-msgctxt "raft_base_infill_overlap_mm label"
-msgid "Raft Base Infill Overlap"
-msgstr ""
-
-msgctxt "raft_base_infill_overlap label"
-msgid "Raft Base Infill Overlap Percentage"
-msgstr ""
-
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
 msgstr "Radye Taban Hat Genişliği"
@@ -2881,26 +2827,6 @@ msgstr "Ek Radye Boşluğu"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "Radye Fan Hızı"
-
-msgctxt "raft_flow label"
-msgid "Raft Flow"
-msgstr ""
-
-msgctxt "raft_interface_flow label"
-msgid "Raft Interface Flow"
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap_mm label"
-msgid "Raft Interface Infill Overlap"
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap label"
-msgid "Raft Interface Infill Overlap Percentage"
-msgstr ""
-
-msgctxt "raft_interface_z_offset label"
-msgid "Raft Interface Z Offset"
-msgstr ""
 
 msgctxt "raft_interface_margin label"
 msgid "Raft Middle Extra Margin"
@@ -2965,22 +2891,6 @@ msgstr "Radye Yazdırma Hızı"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Radye Düzeltme"
-
-msgctxt "raft_surface_flow label"
-msgid "Raft Surface Flow"
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap_mm label"
-msgid "Raft Surface Infill Overlap"
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap label"
-msgid "Raft Surface Infill Overlap Percentage"
-msgstr ""
-
-msgctxt "raft_surface_z_offset label"
-msgid "Raft Surface Z Offset"
-msgstr ""
 
 msgctxt "raft_surface_margin label"
 msgid "Raft Top Extra Margin"
@@ -3217,10 +3127,6 @@ msgstr "Sahnede Destek Örgüsü Var"
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "Dikiş Köşesi Tercihi"
-
-msgctxt "seam_overhang_angle label"
-msgid "Seam Overhanging Wall Angle"
-msgstr ""
 
 msgctxt "user_defined_print_order_enabled label"
 msgid "Set Print Sequence Manually"
@@ -3566,10 +3472,6 @@ msgctxt "acceleration_support_infill label"
 msgid "Support Infill Acceleration"
 msgstr "Destek Dolgusu İvmesi"
 
-msgctxt "support_infill_density_multiplier_initial_layer label"
-msgid "Support Infill Density Multiplier Initial Layer"
-msgstr ""
-
 msgctxt "support_infill_extruder_nr label"
 msgid "Support Infill Extruder"
 msgstr "Destek Dolgu Ekstruderi"
@@ -3762,10 +3664,6 @@ msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Destek Z Mesafesi"
 
-msgctxt "support_z_seam_away_from_model label"
-msgid "Support Z Seam Away from Model"
-msgstr ""
-
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
 msgstr "Tercih edilen destek hatları"
@@ -3942,22 +3840,6 @@ msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
 msgstr "Hareket hamlelerinin ivmesi."
 
-msgctxt "raft_base_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_interface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
-msgctxt "raft_surface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
-
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
 msgstr "Ütüleme sırasında normal yüzey hattına göre ekstrude edilecek malzeme miktarı. Nozülü dolu tutmak üst yüzeyde oluşan çatlakların bir kısmının doldurulmasını sağlar fakat nozülün fazla dolu olması aşırı ekstrüzyona ve yüzey yanlarında noktalar oluşmasına neden olur."
@@ -3965,30 +3847,6 @@ msgstr "Ütüleme sırasında normal yüzey hattına göre ekstrude edilecek mal
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
 msgstr "Dolgu hattı genişliğinin yüzdesi olarak dolgu ve duvarların arasındaki çakışma miktarı. Ufak bir çakışma duvarların dolguya sıkıca bağlanmasını sağlar."
-
-msgctxt "raft_base_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_base_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_interface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
-
-msgctxt "raft_surface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
 
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -4093,10 +3951,6 @@ msgstr "Bir önceki ve bir sonraki katman yüksekliği arasındaki yükseklik fa
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "Ütüleme hatları arasında bulunan mesafe."
-
-msgctxt "support_z_seam_min_distance description"
-msgid "The distance between the model and its support structure at the z-axis seam."
-msgstr ""
 
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
@@ -4327,10 +4181,9 @@ msgid "The horizontal distance between the first brim line and the outline of th
 msgstr "Baskının ilk katmanının uçtaki ilk hattı ile ana hattı arasındaki yatay mesafe. Küçük bir boşluk baskının uç kısmının kolayca çıkarılmasını sağlamasının yanı sıra ısı bakımından da avantajlıdır."
 
 msgctxt "skirt_gap description"
-msgid ""
-"The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe.Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
+msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr "Baskının eteği ve ilk katmanı arasındaki yatay mesafe."
+"Minimum mesafedir. Bu mesafeden çok sayıda etek hattı dışarı doğru uzanır."
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
@@ -4587,10 +4440,6 @@ msgstr "Bir hareket çizgisinin dilimlemeden sonraki minimum boyutu. Bunu artır
 msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
 msgstr "Basamaklı alanın etkili olması için gereken minimum eğimdir. Düşük değerler, derinliği daha düşük olan eğimlerde desteğin kaldırılmasını kolaylaştırırken, gerçekten düşük değerler ise modelin diğer parçalarında tersine sonuçlar doğurabilir."
-
-msgctxt "prime_tower_min_shell_thickness description"
-msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
-msgstr ""
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
@@ -5324,17 +5173,9 @@ msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
 msgstr "Gövde Çapı"
 
-msgctxt "seam_overhang_angle description"
-msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
-
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
-
-msgctxt "cool_during_extruder_switch option unchanged"
-msgid "Unchanged"
-msgstr ""
 
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
@@ -5499,14 +5340,6 @@ msgstr "Köprü yüzey alanı bölgeleri yazdırılırken, ekstrude edilen malze
 msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
 msgstr "Köprü duvarları yazdırılırken, ekstrude edilen malzeme miktarı bu değerle çarpılır."
-
-msgctxt "raft_interface_z_offset description"
-msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
-msgstr ""
-
-msgctxt "raft_surface_z_offset description"
-msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
-msgstr ""
 
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
@@ -5804,10 +5637,6 @@ msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Z Dikiş Hizalama"
 
-msgctxt "z_seam_on_vertex label"
-msgid "Z Seam On Vertex"
-msgstr ""
-
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
 msgstr "Z Dikişi Konumu"
@@ -5867,3 +5696,167 @@ msgstr "Zikzak"
 msgctxt "travel description"
 msgid "travel"
 msgstr "hareket"
+
+msgctxt "cool_during_extruder_switch description"
+msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr "<html>Bir nozül değişimi sırasında soğutma fanlarının etkinleştirilip etkinleştirilmeyeceği. Bu, nozülü daha hızlı soğutarak sızıntıyı azaltmaya yardımcı olabilir:<ul><li><b>Değişmemiş:</b> Fanları daha önce olduğu gibi tutun</li><li><b>Sadece son ekstrüder:</b> Son kullanılan ekstrüderin fanını açın ama diğerlerini (varsa) kapatın. Bu, tamamen ayrı ekstrüderleriniz varsa kullanışlıdır.</li><li><b>Tüm fanlar:</b> Nozül değişimi sırasında tüm fanları açın. Bu, tek bir soğutma fanınız veya birbirine yakın duran birden fazla fanınız varsa kullanışlıdır.</li></ul></html>"
+
+msgctxt "cool_during_extruder_switch option all_fans"
+msgid "All fans"
+msgstr "Tüm fanlar"
+
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "Ekstruder değişimi sırasında soğutma"
+
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "Destek yapısının z dikiş izi ile gerçek 3D model arasındaki uzamsal ilişkiyi yönetin. Bu kontrol, kullanıcıların baskı sonrası destek yapılarının, basılan modelde hasara yol açmadan veya iz bırakmadan hatasız bir şekilde çıkarılmasını sağlaması nedeniyle çok önemlidir."
+
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "Modelden Min Z Dikiş İzi Mesafesi"
+
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "Desteğin ilk katmanlarındaki dolgu çarpanı. Bunu artırmak, yatak yapışmasına yardımcı olabilir."
+
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "Sadece son ekstrüder"
+
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "Z dikiş izini bir çokgen tepe noktasına yerleştirin. Bunu kapatmak, dikiş izini köşeler arasına da yerleştirebilir. (Bunun, dikiş izinin desteklenmeyen bir çıkıntıya yerleştirilmesiyle ilgili kısıtlamaları geçersiz kılmayacağını unutmayın.)"
+
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "Ana Kule Minimum Kabuk Kalınlığı"
+
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "Raft Tabanı Akış"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "Raft Tabanı Dolgu Örtüşmesi"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "Raft Tabanı Dolgu Örtüşmesi Yüzdesi"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "Raft Akış"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "Raft Arayüzü Akış"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "Raft Arayüzü Dolgu Örtüşmesi"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "Raft Arayüzü Dolgu Örtüşme Yüzdesi"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "Raft Arayüzü Z Ofseti"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "Raft Yüzey Akışı"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "Raft Yüzey Dolgusu Örtüşmesi"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "Raft Yüzey Dolgusu Örtüşme Yüzdesi"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "Raft Yüzeyi Z Ofseti"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "Dikiş İzi Çıkıntılı Duvar Açısı"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "Destek Dolgu Yoğunluğu Çarpanı İlk Katman"
+
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "Destek Z Dikiş İzi Modelden Mesafe"
+
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "Raft tabanı baskısı sırasında normal bir ekstrüzyon hattına göre ekstrüzyona tabi tutulacak malzeme miktarı. Artan bir akışa sahip olmak yapışmayı ve raft yapısal mukavemetini artırabilir."
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "Raft arayüzü baskısı sırasında normal bir ekstrüzyon hattına göre ekstrüzyona tabi tutulacak malzeme miktarı. Artan bir akışa sahip olmak yapışmayı ve raft yapısal mukavemetini artırabilir."
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "Raft baskısı sırasında normal bir ekstrüzyon hattına göre ekstrüzyona tabi tutulacak malzeme miktarı. Artan bir akışa sahip olmak yapışmayı ve raft yapısal mukavemetini artırabilir."
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "Raft yüzey baskısı sırasında normal bir ekstrüzyon hattına göre ekstrüzyona tabi tutulacak malzeme miktarı. Artan bir akışa sahip olmak yapışmayı ve raft yapısal mukavemetini artırabilir."
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu hattı genişliğinin yüzdesi olarak dolgu ile raft tabanının duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu ile raft tabanının duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu hattı genişliğinin yüzdesi olarak dolgu ile raft arayüzünün duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu ile raft arayüzünün duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu hattı genişliğinin yüzdesi olarak dolgu ile raft yüzeyinin duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Dolgu ile raft yüzeyinin duvarları arasındaki örtüşme miktarı. Hafif bir örtüşme, duvarların dolguya sıkıca bağlanmasını sağlar."
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "Model ile z ekseni dikiş izindeki destek yapısı arasındaki mesafe."
+
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "Ana kule kabuğunun minimum kalınlığı. Ana kuleyi güçlendirmek için artırabilirsiniz."
+
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "Bu açıdan daha fazla çıkıntı yapan duvarlardaki dikiş izlerini önlemeye çalışın. Değer 90 olduğunda hiçbir duvar çıkıntı olarak kabul edilmeyecektir."
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "Değişmemiş"
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "Raft arayüzünün ilk katmanını yazdırırken taban ile arayüz arasındaki yapışmayı özelleştirmek için bu ofset ile öteleyin. Negatif bir ofset yapışmayı iyileştirmelidir."
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "Raft yüzeyinin ilk katmanını yazdırırken arayüz ve yüzey arasındaki yapışmayı özelleştirmek için bu ofset ile öteleyin. Negatif bir ofset yapışmayı iyileştirmelidir."
+
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "Tepe Noktasında Z Dikiş İzi"
