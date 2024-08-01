@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-08 09:05+0200\n"
-"PO-Revision-Date: 2024-04-02 02:31+0200\n"
+"PO-Revision-Date: 2024-07-23 03:24+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -869,7 +869,7 @@ msgstr "Esquema de Cores"
 
 msgctxt "@label"
 msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
-msgstr ""
+msgstr "Combinação não recomendada. Carregue o núcleo BB no slot 1 (esquerda) para melhor confiabilidade."
 
 msgctxt "@info"
 msgid "Compare and save."
@@ -2440,7 +2440,7 @@ msgstr "Gerador de Makerbot Printfile"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Sketch Printfile"
-msgstr ""
+msgstr "Arquivo de Rascunho de Impressão Makerbot"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -3885,7 +3885,7 @@ msgstr "Buscar"
 
 msgctxt "@label:textbox"
 msgid "Search Printer"
-msgstr ""
+msgstr "Procurar Impressora"
 
 msgctxt "@info"
 msgid "Search in the browser"
@@ -4765,7 +4765,7 @@ msgstr "Esta configuração não está disponível porque %1 não foi reconhecid
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
-msgstr ""
+msgstr "Este é um arquivo de projeto Cura Universal. Você gostaria de abrir como um Projeto Cura Universal ou importar os modelos dele?"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"

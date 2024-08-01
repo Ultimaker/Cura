@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.7\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2024-07-08 09:05+0000\n"
-"PO-Revision-Date: 2024-04-02 02:04+0200\n"
+"PO-Revision-Date: 2024-07-24 04:19+0200\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -23,7 +23,7 @@ msgstr "<html>Como gerar a torre de purga:<ul><li><b>Normal:</b> cria-se um bald
 
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
-msgstr ""
+msgstr "<html>Decide se se deve ativar as ventoinhas de refrigeração durante uma troca de bico. Isto pode ajudar a reduzir escorrimento por esfriar o bico mais rápido:<ul><li><b>Não alterado:</b> mantém as ventoinhas como estavam previamente</li><li><b>Somente o último extrusor:</b> liga a ventoinha do último extrusor usado, mas desliga as outras (se houver). Isto é útil se você tem extrusores completamente separados.</li><li><b>Todas as ventoinhas:</b> liga todas as ventoinhas durante a troca de bico. Isto é útil se você tiver uma única ventoinha para refrigeração ou múltiplas ventoinhas perto umas das outras.</li></ul></html>"
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -163,7 +163,7 @@ msgstr "Todos de Uma Vez"
 
 msgctxt "cool_during_extruder_switch option all_fans"
 msgid "All fans"
-msgstr ""
+msgstr "Todas as ventoinhas"
 
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
@@ -631,7 +631,7 @@ msgstr "Refrigeração"
 
 msgctxt "cool_during_extruder_switch label"
 msgid "Cooling during extruder switch"
-msgstr ""
+msgstr "Refrigerando durante a troca de extrusor"
 
 msgctxt "infill_pattern option cross"
 msgid "Cross"
@@ -2035,7 +2035,7 @@ msgstr "Makerbot"
 
 msgctxt "support_z_seam_away_from_model description"
 msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
-msgstr ""
+msgstr "Gerencia a relação espacial entre a costura Z da estrutura de suporte e o modelo 3D. Este controle é crucial já que permite a usuários assegurar a remoção limpa das estruturas de suporte pós-impressão sem infligir dano ou marcas no modelo impresso."
 
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
@@ -2215,7 +2215,7 @@ msgstr "Meio"
 
 msgctxt "support_z_seam_min_distance label"
 msgid "Min Z Seam Distance from Model"
-msgstr ""
+msgstr "Distância Z Mínima da Costura ao Modelo"
 
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
@@ -2363,7 +2363,7 @@ msgstr "Múltiplas linhas de skirt te ajudam a fazer purga de sua extrusão melh
 
 msgctxt "support_infill_density_multiplier_initial_layer description"
 msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
-msgstr ""
+msgstr "Multiplicador para o preenchimento nas camadas iniciais do suporte. Aumentar este valor pode ajudar com aderência à mesa."
 
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
@@ -2523,7 +2523,7 @@ msgstr "Um de Cada Vez"
 
 msgctxt "cool_during_extruder_switch option only_last_extruder"
 msgid "Only last extruder"
-msgstr ""
+msgstr "Somente o último extrusor"
 
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
@@ -2635,7 +2635,7 @@ msgstr "Porcentagem da velocidade da ventoinha a usar quando se imprimir a terce
 
 msgctxt "z_seam_on_vertex description"
 msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
-msgstr ""
+msgstr "Coloca a costura-z em um vértice de polígono. Desligar este ajuste permite colocar a costura entre vértices também. (Tenha em mente que isto não vai sobrepôr as restrições em colocar a costura em uma seção pendente não suportada.)"
 
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
@@ -2687,7 +2687,7 @@ msgstr "Distância Máxima de Ponte das Torres de Purga"
 
 msgctxt "prime_tower_min_shell_thickness label"
 msgid "Prime Tower Minimum Shell Thickness"
-msgstr ""
+msgstr "Espessura Mínima do Casco da Torre de Purga"
 
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
@@ -2841,17 +2841,18 @@ msgctxt "raft_base_fan_speed label"
 msgid "Raft Base Fan Speed"
 msgstr "Velocidade de Ventoinha da Base do Raft"
 
+#, fuzzy
 msgctxt "raft_base_flow label"
 msgid "Raft Base Flow"
-msgstr ""
+msgstr "Fluxo da Base do Raft"
 
 msgctxt "raft_base_infill_overlap_mm label"
 msgid "Raft Base Infill Overlap"
-msgstr ""
+msgstr "Sobreposição do Preenchimento da Base do Raft"
 
 msgctxt "raft_base_infill_overlap label"
 msgid "Raft Base Infill Overlap Percentage"
-msgstr ""
+msgstr "Porcentagem de Sobreposição do Preenchimento da Base do Raft"
 
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
@@ -2895,23 +2896,23 @@ msgstr "Velocidade de Ventoinha no Raft"
 
 msgctxt "raft_flow label"
 msgid "Raft Flow"
-msgstr ""
+msgstr "Fluxo do Raft"
 
 msgctxt "raft_interface_flow label"
 msgid "Raft Interface Flow"
-msgstr ""
+msgstr "Fluxo da Interface do Raft"
 
 msgctxt "raft_interface_infill_overlap_mm label"
 msgid "Raft Interface Infill Overlap"
-msgstr ""
+msgstr "Sobreposição do Preenchimento da Interface do Raft"
 
 msgctxt "raft_interface_infill_overlap label"
 msgid "Raft Interface Infill Overlap Percentage"
-msgstr ""
+msgstr "Porcentagem de Sobreposição do Preenchimento da Interface do Raft"
 
 msgctxt "raft_interface_z_offset label"
 msgid "Raft Interface Z Offset"
-msgstr ""
+msgstr "Deslocamento Z da Interface do Raft"
 
 msgctxt "raft_interface_margin label"
 msgid "Raft Middle Extra Margin"
@@ -2979,19 +2980,19 @@ msgstr "Amaciamento do Raft"
 
 msgctxt "raft_surface_flow label"
 msgid "Raft Surface Flow"
-msgstr ""
+msgstr "Fluxo da Superfície do Raft"
 
 msgctxt "raft_surface_infill_overlap_mm label"
 msgid "Raft Surface Infill Overlap"
-msgstr ""
+msgstr "Sobreposição do Preenchimento da Superfície do Raft"
 
 msgctxt "raft_surface_infill_overlap label"
 msgid "Raft Surface Infill Overlap Percentage"
-msgstr ""
+msgstr "Porcentagem de Sobreposição do Preenchimento da Superfície do Raft"
 
 msgctxt "raft_surface_z_offset label"
 msgid "Raft Surface Z Offset"
-msgstr ""
+msgstr "Deslocamento Z da Superfície do Raft"
 
 msgctxt "raft_surface_margin label"
 msgid "Raft Top Extra Margin"
@@ -3231,7 +3232,7 @@ msgstr "Preferência do Canto da Costura"
 
 msgctxt "seam_overhang_angle label"
 msgid "Seam Overhanging Wall Angle"
-msgstr ""
+msgstr "Ângulo da Parede Pendente para Costura"
 
 msgctxt "user_defined_print_order_enabled label"
 msgid "Set Print Sequence Manually"
@@ -3369,6 +3370,7 @@ msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
 msgstr "Tamanho Máximo de Furos Pequenos"
 
+#, fuzzy
 msgctxt "cool_min_temperature label"
 msgid "Small Layer Printing Temperature"
 msgstr "Temperatura de Impressão Final"
@@ -3485,6 +3487,7 @@ msgctxt "support_bottom_distance label"
 msgid "Support Bottom Distance"
 msgstr "Distância Inferior do Suporte"
 
+#, fuzzy
 msgctxt "support_bottom_wall_count label"
 msgid "Support Bottom Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3579,7 +3582,7 @@ msgstr "Aceleração do Preenchimento do Suporte"
 
 msgctxt "support_infill_density_multiplier_initial_layer label"
 msgid "Support Infill Density Multiplier Initial Layer"
-msgstr ""
+msgstr "Camada Inicial do Multiplicador de Densidade de Preenchimento de Suporte"
 
 msgctxt "support_infill_extruder_nr label"
 msgid "Support Infill Extruder"
@@ -3649,6 +3652,7 @@ msgctxt "support_interface_height label"
 msgid "Support Interface Thickness"
 msgstr "Espessura da Interface de Suporte"
 
+#, fuzzy
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3733,6 +3737,7 @@ msgctxt "support_roof_height label"
 msgid "Support Roof Thickness"
 msgstr "Espessura do Topo do Suporte"
 
+#, fuzzy
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
 msgstr "Contagem de Linhas de Parede de Suporte"
@@ -3775,7 +3780,7 @@ msgstr "Distância em Z do Suporte"
 
 msgctxt "support_z_seam_away_from_model label"
 msgid "Support Z Seam Away from Model"
-msgstr ""
+msgstr "Suportar a Costura Z longe do Modelo"
 
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
@@ -3955,19 +3960,19 @@ msgstr "Aceleração com que se realizam os percursos."
 
 msgctxt "raft_base_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
+msgstr "A quantidade de material relativa a um filamento normal de extrusão a extrudar durante a impressão da base do raft. Ter um fluxo mais alto pode melhorar a aderência e a força estrutural do raft."
 
 msgctxt "raft_interface_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
+msgstr "A quantidade de material relativa a um filamento normal de extrusão a extrudar durante a impressão da interface de raft. Ter um fluxo mais alto pode melhorar a aderência e a força estrutural do raft."
 
 msgctxt "raft_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
+msgstr "A quantidade de material relativa a um filamento normal de extrusão a extrudar durante a impressão do raft. Ter um fluxo mais alto pode melhorar a aderência e a força estrutural do raft."
 
 msgctxt "raft_surface_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr ""
+msgstr "A quantidade de material relativa a um filamento normal de extrusão a extrudar durante a impressão da superfície do raft. Ter um fluxo mais alto pode melhorar a aderência e a força estrutural do raft."
 
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
@@ -3979,27 +3984,27 @@ msgstr "A quantidade de sobreposição entre o preenchimento e as paredes como u
 
 msgctxt "raft_base_infill_overlap description"
 msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da base do raft, como uma porcentagem da largura do filete de preenchimento. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "raft_base_infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da base do raft. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "raft_interface_infill_overlap description"
 msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da interface do raft, como uma porcentagem da largura do filete de preenchimento. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "raft_interface_infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da interface do raft. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "raft_surface_infill_overlap description"
 msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da superfície do raft, como uma porcentagem da largura do filete de preenchimento. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "raft_surface_infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr ""
+msgstr "A quantidade de sobreposição entre o preenchimento e as paredes da superfície do raft. Uma sobreposição leve permite às paredes conectarem-se firmemente ao preenchimento."
 
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -4107,7 +4112,7 @@ msgstr "A distância entre as trajetórias de passagem a ferro."
 
 msgctxt "support_z_seam_min_distance description"
 msgid "The distance between the model and its support structure at the z-axis seam."
-msgstr ""
+msgstr "A distância entre o modelo e sua estrutura de suporta na costura do eixo Z."
 
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
@@ -4137,6 +4142,7 @@ msgctxt "brim_width description"
 msgid "The distance from the model to the outermost brim line. A larger brim enhances adhesion to the build plate, but also reduces the effective print area."
 msgstr "A distância do modelo à linha mais externa do brim. Um brim mais largo aumenta a aderência à mesa, mas também reduz a área efetiva de impressão."
 
+#, fuzzy
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
 msgstr "Distância da ponta do bico onde 'estacionar' o filamento quando seu extrusor não estiver sendo usado."
@@ -4603,7 +4609,7 @@ msgstr "A mínima inclinação da área para que o suporte em escada tenha efeit
 
 msgctxt "prime_tower_min_shell_thickness description"
 msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
-msgstr ""
+msgstr "A espessura mínima do casco da torre de purga. Você pode aumentar este valor para tornar a torre de purga mais forte."
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
@@ -4689,14 +4695,17 @@ msgctxt "support_wall_count description"
 msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
+#, fuzzy
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
+#, fuzzy
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
 
+#, fuzzy
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
 msgstr "O número de paredes com as quais contornar o preenchimento de suporte. Adicionar uma parede pode tornar a impressão de suporte mais confiável e apoiar seções pendentes melhor, mas aumenta tempo de impressão e material usado."
@@ -5059,7 +5068,7 @@ msgstr "A largura do brim a ser impresso sob o suporte. Um brim mais largo melho
 
 msgctxt "interlocking_beam_width description"
 msgid "The width of the interlocking structure beams."
-msgstr "A largura da torre de purga."
+msgstr "A largura das faixas cruzadas de estrutura."
 
 msgctxt "prime_tower_base_size description"
 msgid "The width of the prime tower brim/base. A larger base enhances adhesion to the build plate, but also reduces the effective print area."
@@ -5339,7 +5348,7 @@ msgstr "Diâmetro do Tronco"
 
 msgctxt "seam_overhang_angle description"
 msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
-msgstr ""
+msgstr "Tentar prevenir costuras nas paredes que tenham seção pendente com ângulo maior que esse. Quando o valor for 90, nenhuma parede será tratada como seção pendente."
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -5347,7 +5356,7 @@ msgstr "Ultimaker 2"
 
 msgctxt "cool_during_extruder_switch option unchanged"
 msgid "Unchanged"
-msgstr ""
+msgstr "Não alterado"
 
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
@@ -5515,11 +5524,11 @@ msgstr "Ao se imprimir paredes de ponte, a quantidade de material extrudado é m
 
 msgctxt "raft_interface_z_offset description"
 msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
-msgstr ""
+msgstr "Quando a primeira camada da interface de raft for impressa, traduza pelo valor deste deslocamento para personalizar a aderência entre a base e a interface. Um deslocamento negative deve melhorar a aderência."
 
 msgctxt "raft_surface_z_offset description"
 msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
-msgstr ""
+msgstr "Quando a primeira camada da superfície de raft for impressora, traduza pelo valor deste deslocamento para personalizar a aderência entre a base e a superfície. Um deslocamento negative deve melhorar a aderência."
 
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
@@ -5819,7 +5828,7 @@ msgstr "Alinhamento da Costura em Z"
 
 msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
-msgstr ""
+msgstr "Costura Z No Vértice"
 
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
