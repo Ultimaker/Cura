@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 
 class FormatMaps:
 
+    # A map from the printer-type in their native file-formats to the internal name we use.
     PRINTER_TYPE_NAME = {
         "fire_e": "ultimaker_method",
         "lava_f": "ultimaker_methodx",
@@ -15,6 +16,7 @@ class FormatMaps:
         "sketch": "ultimaker_sketch"
     }
 
+    # A map from the extruder-name in their native file-formats to the internal name we use.
     EXTRUDER_NAME_MAP = {
         "mk14_hot": "1XA",
         "mk14_hot_s": "2XA",
@@ -24,6 +26,7 @@ class FormatMaps:
         "mk14_e": "LABS"
     }
 
+    # A map from the material-name in their native file-formats to some info, including the internal name we use.
     MATERIAL_MAP = {
         "abs": {"name": "ABS", "guid": "2780b345-577b-4a24-a2c5-12e6aad3e690"},
          "abs-cf10": {"name": "ABS-CF", "guid": "495a0ce5-9daf-4a16-b7b2-06856d82394d"},
@@ -44,11 +47,47 @@ class FormatMaps:
          "im-pla": {"name": "Tough", "guid": "de031137-a8ca-4a72-bd1b-17bb964033ad"}
     }
 
+    __inverse_printer_name: Optional[Dict[str, str]] = None
+    __inverse_extruder_type: Optional[Dict[str, str]] = None
+    __inverse_material_map: Optional[Dict[str, str]] = None
     __product_to_id_map: Optional[Dict[str, List[str]]] = None
 
     @classmethod
+    def getInversePrinterNameMap(cls) -> Dict[str, str]:
+        """Returns the inverse of the printer name map, that is, from the internal name to the name used in output."""
+        if cls.__inverse_printer_name is not None:
+            return cls.__inverse_printer_name
+        cls.__inverse_printer_name = {}
+        for key, value in cls.PRINTER_TYPE_NAME.items():
+            cls.__inverse_printer_name[value] = key
+        return cls.__inverse_printer_name
+
+    @classmethod
+    def getInverseExtruderTypeMap(cls) -> Dict[str, str]:
+        """Returns the inverse of the extruder type map, that is, from the internal name to the name used in output."""
+        if cls.__inverse_extruder_type is not None:
+            return cls.__inverse_extruder_type
+        cls.__inverse_extruder_type = {}
+        for key, value in cls.EXTRUDER_NAME_MAP.items():
+            cls.__inverse_extruder_type[value] = key
+        return cls.__inverse_extruder_type
+
+    @classmethod
+    def getInverseMaterialMap(cls) -> Dict[str, str]:
+        """Returns the inverse of the material map, that is, from the internal name to the name used in output.
+
+        Note that this drops the extra info saved in the non-inverse material map, use that if you need it.
+        """
+        if cls.__inverse_material_map is not None:
+            return cls.__inverse_material_map
+        cls.__inverse_material_map = {}
+        for key, value in cls.MATERIAL_MAP.items():
+            cls.__inverse_material_map[value["name"]] = key
+        return cls.__inverse_material_map
+
+    @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
-        """Gets a mapping from product names in the XML files to their definition IDs.
+        """Gets a mapping from product names (for example, in the XML files) to their definition IDs.
 
         This loads the mapping from a file.
         """
