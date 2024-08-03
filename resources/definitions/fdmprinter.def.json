@@ -1347,7 +1347,7 @@
                     "label": "Z Seam On Vertex",
                     "description": "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "settable_per_mesh": true,
                     "enabled": "z_seam_type == 'back' or z_seam_type == 'shortest'"
                 },
@@ -8275,7 +8275,7 @@
                     "minimum_value_warning": "2",
                     "maximum_value": "90",
                     "default_value": 90,
-                    "value": "wall_overhang_angle",
+                    "value": "support_angle",
                     "settable_per_mesh": true
                 },
                 "wall_overhang_speed_factor":
