@@ -1083,10 +1083,9 @@ class XmlMaterialProfile(InstanceContainer):
             # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
-        if instance.value is True:
-            data = "yes"
-        elif instance.value is False:
-            data = "no"
+        truth_map = { True: "yes", False: "no" }
+        if tag_name != "cura:setting" and instance.value in truth_map:
+            data = truth_map[instance.value]
         else:
             data = str(instance.value)
 

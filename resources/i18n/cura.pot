@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"POT-Creation-Date: 2024-07-08 09:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -813,6 +813,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Color scheme"
+msgstr ""
+
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
 msgstr ""
 
 msgctxt "@info"
@@ -2286,6 +2290,10 @@ msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr ""
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr ""
+
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
 msgstr ""
@@ -3571,6 +3579,10 @@ msgctxt "@placeholder"
 msgid "Search"
 msgstr ""
 
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr ""
+
 msgctxt "@info"
 msgid "Search in the browser"
 msgstr ""
@@ -4411,7 +4423,7 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr ""
 
 msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr ""
 
 msgctxt "@text:window"
@@ -5706,4 +5718,3 @@ msgstr ""
 msgctxt "name"
 msgid "G-code Writer"
 msgstr ""
-
