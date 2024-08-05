@@ -4479,7 +4479,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-
                 "build_fan_full_at_height":
                 {
                     "label": "Build Fan Speed at Height",
