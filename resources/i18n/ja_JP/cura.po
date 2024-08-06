@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-13 09:02+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2024-08-04 04:18+0000\n"
+"Last-Translator: h1data <h1data@users.noreply.github.com>\n"
+"Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,7 +18,7 @@ msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
 msgctxt "@action:label"
 msgid "%1 & material"
-msgstr "%1とフィラメント"
+msgstr "%1と材料"
 
 msgctxt "@action:label"
 msgid "%1 out of %2"
@@ -44,105 +44,106 @@ msgstr "%1m"
 
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "＆プリンターを追加する..."
+msgstr "プリンターを追加(&A)..."
 
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
-msgstr "カメラ位置 (&C)"
+msgstr "カメラ位置(&C)"
 
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&今の設定/無効からプロファイルを作成する..."
+msgstr "現在の設定からプロファイルを作成/上書き(&C)..."
 
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
-msgstr "&変更を破棄する"
+msgstr "変更を破棄(&D)"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&編集"
+msgstr "編集(&E)"
 
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
-msgstr "エクスポート... (&E)"
+msgstr "エクスポート(&E)..."
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
-msgstr "&ファイル"
+msgstr "ファイル(&F)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
-msgstr "&モデルグループ"
+msgstr "モデルをグループ化(&G)"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
-msgstr "ヘルプ"
+msgstr "ヘルプ(&H)"
 
 msgctxt "@title:menu"
 msgid "&Material"
-msgstr "&フィラメント"
+msgstr "材料(&M)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "モ&デルの合体"
+msgstr "モデルを合体(&M)"
 
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "&モデルを増倍する..."
+msgstr "モデルを複製(&M)..."
 
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
-msgstr "&新しいプロジェクト..."
+msgstr "新しいプロジェクト(&N)..."
 
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
-msgstr "&ファイルを開く(s)..."
+msgstr "ファイルを開く(&O)..."
 
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
-msgstr "&プリンター"
+msgstr "プリンター(&P)"
 
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
-msgstr "&やめる"
+msgstr "終了(&Q)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
-msgstr "&やりなおす"
+msgstr "やり直し(&R)"
 
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
-msgstr "プロジェクトを保存... (&S)"
+msgstr "プロジェクトを保存(&S)..."
 
 msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
 msgid "&Save Universal Cura Project..."
-msgstr "Universal Cura Projectを保存..."
+msgstr "Universal Cura Projectを保存(&S)..."
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
-msgstr "&設定"
+msgstr "設定(&S)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
-msgstr "&取り消す"
+msgstr "元に戻す(&U)"
 
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
-msgstr "&現在の設定/無効にプロファイルをアップデートする"
+msgstr "現在の設定でプロファイルを更新/上書きする(&U)"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
-msgstr "&ビュー"
+msgstr "表示(&V)"
 
 msgctxt "@label"
 msgid "*You will need to restart the application for these changes to have effect."
-msgstr "*これらの変更を有効にするには、アプリケーションを再始動する必要があります。"
+msgstr "*これらの変更を有効にするには、アプリケーションを再起動する必要があります。"
 
 msgctxt "@text"
 msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- マーケットプレースから材料プロファイルとプラグインを追加"
-"- 材料プロファイルとプラグインのバックアップと同期"
-"- UltiMakerコミュニティで48,000人以上のユーザーとアイデアを共有してアドバイスをもらう"
+msgstr ""
+"- マーケットプレイスから材料プロファイルとプラグインを追加\n"
+"- 材料プロファイルとプラグインのバックアップと同期\n"
+"- UltiMakerコミュニティで48,000人以上のユーザーとアイデアを共有したりアドバイスをもらったりしましょう"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -150,7 +151,7 @@ msgstr "-- 未完了 --"
 
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
-msgstr "1mm透過率（%）"
+msgstr "1mm透過率 (%)"
 
 msgctxt "@info:title"
 msgid "3D Model Assistant"
@@ -166,7 +167,7 @@ msgstr "3Dビュー"
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
-msgstr "3MF ファイル"
+msgstr "3MFファイル"
 
 msgctxt "name"
 msgid "3MF Reader"
@@ -209,24 +210,27 @@ msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGLバージョン: {version}</li>"
 
 msgctxt "@label crash message"
-msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>"
-"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>"
+msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</b></p>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
+msgstr ""
+"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</b></p>\n"
+"            <p>「レポート送信」ボタンを使用すると、バグレポートが自動的に当社サーバーに送信されます/p>\n"
 "        "
 
 msgctxt "@label crash message"
-msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>申し訳ありません。UltiMaker Cura で何らかの不具合が生じています。</p></b>"
-"                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>"
-"                    <p>バックアップは、設定フォルダに保存されます。</p>"
-"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>"
+msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</b></p>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
+msgstr ""
+"<p><b>申し訳ありません。UltiMaker Cura で何らかの不具合が生じています。</b></p>\n"
+"                    <p>開始時に回復不能のエラーが発生しました。不適切な設定ファイルが原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
+"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
+"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
 "                "
 
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>"
-"<p>{model_names}</p>"
-"<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>"
+msgstr ""
+"<p>モデルのサイズおよび材料の構成により、いくつかの3Dモデルの印刷は最適化されません。:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>可能な限り最高の品質と確実な印刷を実現する方法をご覧ください。</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 msgctxt "@label"
@@ -240,7 +244,7 @@ msgstr[0] "一部のプリンターではクラウド接続は利用できませ
 
 msgctxt "@text"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
-msgstr "密度の高い強力な部品ですが,印刷時間は遅くなります。機能部品に最適です。"
+msgstr "密度の高い強力な部品ですが、印刷時間が遅くなります。機能部品に最適です。"
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -248,7 +252,7 @@ msgstr "現在印刷中です。Curaは、前の印刷が完了するまでUSB�
 
 msgctxt "@item:inlistbox"
 msgid "AMF File"
-msgstr "AMF ファイル"
+msgstr "AMFファイル"
 
 msgctxt "name"
 msgid "AMF Reader"
@@ -284,7 +288,7 @@ msgstr "%1について"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
-msgstr "アバウト..."
+msgstr "Curaについて..."
 
 msgctxt "@button"
 msgid "Accept"
@@ -292,7 +296,7 @@ msgstr "承認する"
 
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-codeを承認し、プリンターに送信する。またプラグインはファームウェアをアップデートできます。"
+msgstr "G-codeを承認し、プリンターに送信します。またプラグインはファームウェアをアップデートできます。"
 
 msgctxt "@label"
 msgid "Account synced"
@@ -324,11 +328,11 @@ msgstr "新規追加"
 
 msgctxt "@title:window"
 msgid "Add Printer"
-msgstr "プリンターを追加する"
+msgstr "プリンターの追加"
 
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
-msgstr "Digital FactoryでUltiMakerプリンターを追加する"
+msgstr "Digital FactoryでUltiMakerプリンターを追加"
 
 msgctxt "@label"
 msgid "Add a Cloud printer"
@@ -336,15 +340,15 @@ msgstr "クラウドプリンターを追加"
 
 msgctxt "@label"
 msgid "Add a networked printer"
-msgstr "ネットワークプリンターの追加"
+msgstr "ネットワークプリンターを追加"
 
 msgctxt "@label"
 msgid "Add a non-networked printer"
-msgstr "非ネットワークプリンターの追加"
+msgstr "非ネットワークプリンターを追加"
 
 msgctxt "@action"
 msgid "Add a script"
-msgstr "スクリプトを加える"
+msgstr "スクリプトを追加"
 
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
@@ -352,11 +356,11 @@ msgstr "システムトレイにアイコンを追加 *"
 
 msgctxt "@button"
 msgid "Add local printer"
-msgstr "ローカルプリンターの追加"
+msgstr "ローカルプリンターを追加"
 
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
-msgstr "プリンターの敬称をジョブネームに加える"
+msgstr "プリンターの接頭辞をジョブ名に付与"
 
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
@@ -364,11 +368,11 @@ msgstr "マーケットプレイスから材料設定とプラグインを追加
 
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
-msgstr "Add more materials from Marketplace"
+msgstr "マーケットプレイスから更に材料を追加"
 
 msgctxt "@button"
 msgid "Add printer"
-msgstr "プリンターの追加"
+msgstr "プリンターを追加"
 
 msgctxt "@label"
 msgid "Add printer"
@@ -376,15 +380,15 @@ msgstr "プリンターの追加"
 
 msgctxt "@label"
 msgid "Add printer by IP"
-msgstr "IP でプリンターを追加"
+msgstr "IPでプリンターを追加"
 
 msgctxt "@label"
 msgid "Add printer by IP address"
-msgstr "IP アドレスでプリンターを追加"
+msgstr "IPアドレスでプリンターを追加"
 
 msgctxt "@button"
 msgid "Add printer manually"
-msgstr "プリンタを手動で追加する"
+msgstr "手動でプリンタを追加"
 
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
@@ -408,7 +412,7 @@ msgstr "プリントのインフィルの密度を調整します。"
 
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
-msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定することができます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
+msgstr "サポート材の配置を調整します。配置はTouching BuildplateまたはEveryWhereに設定できます。EveryWhereに設定した場合、サポート材がモデルの上にもプリントされます。"
 
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
@@ -424,11 +428,11 @@ msgstr "同意する"
 
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
-msgstr "全てのファイル"
+msgstr "全てのファイル (*)"
 
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
-msgstr "すべてのサポートのタイプ ({0})"
+msgstr "サポートされたすべてのタイプ ({0})"
 
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
@@ -464,7 +468,7 @@ msgstr "常に変更した設定を新しいプロファイルに送信する"
 
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
-msgstr "ユニット値がミリメートルではなくメートルの場合、モデルが極端に小さく現れる場合があります。モデルはスケールアップされるべきですか？"
+msgstr "単位がミリメートルではなくメートルの場合、モデルが極端に小さくなる場合があります。この場合にモデルを拡大するかどうかを選択します。"
 
 msgctxt "@label"
 msgid "Annealing"
@@ -488,7 +492,7 @@ msgstr "適用:"
 
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
-msgstr "エクストルーダーのオフセットをGCodeに適用します"
+msgstr "エクストルーダーのオフセットをGCodeに適用"
 
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
@@ -508,7 +512,7 @@ msgstr "%1 を削除しますか？"
 
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
-msgstr "このバックアップを削除しますか？これは取り消しできません。"
+msgstr "このバックアップを削除しますか？この操作は取り消しできません。"
 
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
@@ -524,11 +528,11 @@ msgstr "{printer_name}を一時的に削除してもよろしいですか？"
 
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
-msgstr "新しいプロジェクトを開始しますか？この作業では保存していない設定やビルドプレートをクリアします。"
+msgstr "新しいプロジェクトを開始しますか？この操作により保存していない設定やビルドプレートがクリアされます。"
 
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
-msgstr "%1を取り外しますか？この作業はやり直しが効きません！"
+msgstr "%1を取り外しますか？この操作は取り消しできません。"
 
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
@@ -536,11 +540,11 @@ msgstr "{0}を取り除いてもよろしいですか？この操作は元に戻
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
-msgstr "すべてのモデルをアレンジする"
+msgstr "全モデルを再配置"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
-msgstr "すべてのモデルをグリッドに配置"
+msgstr "全モデルを格子状に配置"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
@@ -556,15 +560,15 @@ msgstr "自動バックアップ"
 
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
-msgstr "Cura を起動した日は常にバックアップを自動生成します。"
+msgstr "Curaを起動した際、日毎にバックアップを自動生成します。"
 
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
-msgstr "自動的にモデルをビルドプレートに落とす"
+msgstr "自動でモデルをビルドプレート上に配置"
 
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
-msgstr "自動でファームウェアをアップグレード"
+msgstr "自動でファームウェアを更新"
 
 msgctxt "@label"
 msgid "Available networked printers"
@@ -592,7 +596,7 @@ msgstr "今すぐバックアップする"
 
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
-msgstr "バックアップとリセットの設定"
+msgstr "設定構成のバックアップとリセット"
 
 msgctxt "description"
 msgid "Backup and restore your configuration."
@@ -616,11 +620,11 @@ msgstr "バランス"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
-msgstr "ベース（mm）"
+msgstr "ベース (mm)"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
-msgstr "底面図"
+msgstr "ボトムビュー"
 
 msgctxt "@label"
 msgid "Brand"
@@ -640,7 +644,7 @@ msgstr "ビルドプレート"
 
 msgctxt "@label"
 msgid "Build plate shape"
-msgstr "ビルドプレート形"
+msgstr "ビルドプレートの形状"
 
 msgctxt "@label"
 msgid "Bundled Materials"
@@ -660,7 +664,7 @@ msgstr "作成者"
 
 msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
-msgstr "C/C++ バインディングライブラリー"
+msgstr "C/C++バインディングライブラリー"
 
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
@@ -680,7 +684,7 @@ msgstr "カメラレンダリング:"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
-msgstr "カメラビュー"
+msgstr "カメラ表示"
 
 msgctxt "@info:title"
 msgid "Can't Find Location"
@@ -696,7 +700,7 @@ msgstr "UltiMakerプリンターに接続できませんか？"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
-msgstr "プリンタを追加する前に、<filename>{0}</filename>からプロファイルの取り込はできません。"
+msgstr "プリンタを追加する前に、<filename>{0}</filename>からプロファイルのインポートはできません。"
 
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
@@ -724,7 +728,7 @@ msgstr "G-codeリーダーに注意メッセージ"
 
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
-msgstr "プラットホームの中心にモデルを配置"
+msgstr "プラットフォームの中心にモデルを配置(&N)"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
@@ -732,11 +736,11 @@ msgstr "選択内容を中央に移動"
 
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
-msgstr "アイテムを選択するとカメラが中心にきます"
+msgstr "アイテム選択時カメラを中心に移動"
 
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
-msgstr "処理したアクティブなスクリプトを変更します。"
+msgstr "有効なポストプロセッシングスクリプトを変更します。"
 
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
@@ -756,7 +760,7 @@ msgstr "アカウントにおける変更"
 
 msgctxt "@label:textbox"
 msgid "Check all"
-msgstr "全てを調べる"
+msgstr "全て選択"
 
 msgctxt "@button"
 msgid "Check for account updates"
@@ -764,7 +768,7 @@ msgstr "アカウントの更新を確認"
 
 msgctxt "@option:check"
 msgid "Check for updates on start"
-msgstr "スタート時にアップデートあるかどうかのチェック"
+msgstr "起動時にアップデートをチェック"
 
 msgctxt "@label"
 msgid "Checking..."
@@ -780,11 +784,16 @@ msgstr "プリント問題の可能性のあるモデルをプリント構成を
 
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
-msgstr "サポートを生成するために利用できる技術を選択します。「標準」のサポート構造はオーバーハング部品のすぐ下に作成し、そのエリアを真下に生成します。「ツリー」サポートはオーバーハングエリアに向かって枝を作成し、モデルを枝の先端で支えます。枝をモデルのまわりにはわせて、できる限りビルドプレートから支えます。"
+msgstr ""
+"サポート生成に利用する方式を選択します。\n"
+"\n"
+"「標準」サポートはサポート構造をオーバーハング部品のすぐ下に作成し、そのエリアを真下に生成します。\n"
+"\n"
+"「ツリー」サポートはオーバーハングエリアに向かって枝を作成し、モデルを枝の先端で支えます。枝をモデルのまわりにはわせて、できる限りビルドプレートから支えます。"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
-msgstr "ビルドプレート上のクリア"
+msgstr "ビルドプレートをクリア"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -796,7 +805,7 @@ msgstr "材料アーカイブのエクスポートボタンをクリックしま
 
 msgctxt "@action:button"
 msgid "Close"
-msgstr "閉める"
+msgstr "閉じる"
 
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
@@ -820,11 +829,11 @@ msgstr "カラースキーム"
 
 msgctxt "@info"
 msgid "Compare and save."
-msgstr "比較して保存してください。"
+msgstr "変更を比較して保存します。"
 
 msgctxt "@label"
 msgid "Compatibility Mode"
-msgstr "コンパティビリティモード"
+msgstr "互換モード"
 
 msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
@@ -836,7 +845,7 @@ msgstr "互換性のあるプリンター"
 
 msgctxt "@label"
 msgid "Compatible material diameter"
-msgstr "適合する材料直径"
+msgstr "適合する材料の直径"
 
 msgctxt "@header"
 msgid "Compatible printers"
@@ -884,11 +893,11 @@ msgstr "構成"
 
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
-msgstr "Curaを構成する..."
+msgstr "Curaの構成..."
 
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
-msgstr "各モデル構成設定"
+msgstr "モデル別設定を構成"
 
 msgctxt "@action"
 msgid "Configure group"
@@ -896,7 +905,7 @@ msgstr "グループの設定"
 
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
-msgstr "視野のセッティングを構成する..."
+msgstr "表示項目設定..."
 
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
@@ -932,7 +941,7 @@ msgstr "キャンセルしたプリンター"
 
 msgctxt "@info:status"
 msgid "Connected via USB"
-msgstr "USBにて接続する"
+msgstr "USB接続"
 
 msgctxt "@info:status"
 msgid "Connected via cloud"
@@ -964,11 +973,11 @@ msgstr "クリップボードにコピー"
 
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
-msgstr "すべてのエクストルーダーの値をコピーする"
+msgstr "すべてのエクストルーダーに値をコピー"
 
 msgctxt "@label"
 msgid "Cost per Meter"
-msgstr "毎メーターコスト"
+msgstr "メートルあたりのコスト"
 
 msgctxt "@info"
 msgid "Could not access update information."
@@ -988,7 +997,7 @@ msgstr "デバイス{device}に書き出すためのファイル名が見つか�
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
-msgstr "<filename>%1</filename>フィラメントを取り込むことができない: <message>%2</message>"
+msgstr "材料<filename>%1</filename>のインポートに失敗しました： <message>%2</message>"
 
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
@@ -1000,7 +1009,7 @@ msgstr "GCodeWriterプラグインを読み込めませんでした。プラグ�
 
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
-msgstr "マーケットプレースにアクセスできませんでした。"
+msgstr "マーケットプレイスにアクセスできませんでした。"
 
 msgctxt "@message"
 msgid "Could not read response."
@@ -1024,17 +1033,20 @@ msgstr "データをプリンタにアップロードできませんでした。
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "EnginePluginを開始できませんでした：{self._plugin_id}"
+msgstr ""
+"EnginePluginを開始できませんでした：{self._plugin_id}\n"
 "処理を実行する権限がありません。"
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "EnginePluginを開始できませんでした：{self._plugin_id}"
+msgstr ""
+"EnginePluginを開始できませんでした：{self._plugin_id}\n"
 "OSによりブロックされています（ウイルス対策？）"
 
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "EnginePluginを開始できませんでした：{self._plugin_id}"
+msgstr ""
+"EnginePluginを開始できませんでした：{self._plugin_id}\n"
 "リソースは一時的に利用できません"
 
 msgctxt "@title:window"
@@ -1043,7 +1055,7 @@ msgstr "クラッシュ報告"
 
 msgctxt "@title:window"
 msgid "Create Profile"
-msgstr "プロファイルを作る"
+msgstr "プロファイルを作成"
 
 msgctxt "@text"
 msgid "Create a free UltiMaker Account"
@@ -1059,19 +1071,19 @@ msgstr "サポートが印刷されないボリュームを作成します。"
 
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "新しいものを作成する"
+msgstr "新規作成"
 
 msgctxt "@action:button"
 msgid "Create new"
-msgstr "新しいものを作成する"
+msgstr "新規作成"
 
 msgctxt "@button"
 msgid "Create new"
-msgstr "新しいものを作成する"
+msgstr "新規作成"
 
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
-msgstr "現在の設定/上書きから新しいプロファイルを作成します"
+msgstr "現在の設定/上書き値から新しいプロファイルを作成します"
 
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
@@ -1091,11 +1103,11 @@ msgstr "Cura 15.04 プロファイル"
 
 msgctxt "@title:window"
 msgid "Cura Backups"
-msgstr "Cura バックアップ"
+msgstr "Curaバックアップ"
 
 msgctxt "name"
 msgid "Cura Backups"
-msgstr "Cura バックアップ"
+msgstr "Curaバックアップ"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
@@ -1111,7 +1123,7 @@ msgstr "Curaプロファイルライター"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
-msgstr "Curaが3MF fileを算出します"
+msgstr "Curaプロジェクト3MFファイル"
 
 msgctxt "@backuplist:label"
 msgid "Cura Version"
@@ -1127,8 +1139,9 @@ msgstr "Curaはグループ{0}のホストプリンターにまだインスト�
 
 msgctxt "@info:credit"
 msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "CuraはUltiMakerのコミュニティの協力によって開発され、"
-"Curaはオープンソースで使えることを誇りに思います:"
+msgstr ""
+"CuraはUltiMakerおよびコミュニティの協力によって開発されています。\n"
+"Curaは以下の素晴らしいオープンソースプロジェクトを使用しています:"
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1176,7 +1189,7 @@ msgstr "カスタム"
 
 msgctxt "@label"
 msgid "Custom Material"
-msgstr "カスタムフィラメント"
+msgstr "カスタム材料"
 
 msgctxt "@label"
 msgid "Custom profile"
@@ -1200,7 +1213,7 @@ msgstr "カット"
 
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
-msgstr "メッシュ切断"
+msgstr "切断メッシュ"
 
 msgctxt "@item:inlistbox"
 msgid "Darker is higher"
@@ -1212,7 +1225,7 @@ msgstr "データを送信しました"
 
 msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
-msgstr "データインターフェイスフォーマット"
+msgstr "データ交換フォーマット"
 
 msgctxt "@button"
 msgid "Decline"
@@ -1240,7 +1253,7 @@ msgstr "プロジェクトファイルを開く際のデフォルト機能"
 
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
-msgstr "プロジェクトファイル開く際のデフォルト機能: "
+msgstr "プロジェクトファイル読み込み時のデフォルト動作: "
 
 msgctxt "@action:button"
 msgid "Defaults"
@@ -1280,7 +1293,7 @@ msgstr "パッケージ管理システム"
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
-msgstr "深さ（mm)"
+msgstr "深さ (mm)"
 
 msgctxt "@action:label"
 msgid "Derivative from"
@@ -1312,7 +1325,7 @@ msgstr "エクストルーダーを無効にする"
 
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
-msgstr "取り消し、再度確認しない"
+msgstr "取り消して二度と確認しない"
 
 msgctxt "@action:button"
 msgid "Discard changes"
@@ -1336,11 +1349,11 @@ msgstr "ディスプレイ名"
 
 msgctxt "@option:check"
 msgid "Display model errors"
-msgstr "モデルエラーを表示"
+msgstr "モデルのエラーを表示"
 
 msgctxt "@option:check"
 msgid "Display overhang"
-msgstr "ディスプレイオーバーハング"
+msgstr "オーバーハングを表示"
 
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
@@ -1352,7 +1365,7 @@ msgstr "材料パッケージとソフトウェアパッケージをアカウン
 
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
-msgstr "保存中のプロジェクトサマリーを非表示にする"
+msgstr "保存時にプロジェクトの概要を表示しない"
 
 msgctxt "@action:menu"
 msgid "Don't show this setting"
@@ -1380,7 +1393,7 @@ msgstr "ドラフト"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
-msgstr "すべてのモデルをビルドプレートにドロップ"
+msgstr "全モデルをビルドプレートに下ろす"
 
 msgctxt "@action:button"
 msgid "Duplicate"
@@ -1396,7 +1409,7 @@ msgstr "プレビューではバックアップは5つまでに制限されて�
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
-msgstr "拡張子"
+msgstr "拡張(&E)"
 
 msgctxt "@action:button"
 msgid "Edit"
@@ -1440,7 +1453,7 @@ msgstr "2Dの画像ファイルからプリント可能なジオメトリーを�
 
 msgctxt "@title:label"
 msgid "End G-code"
-msgstr "G-codeの終了"
+msgstr "終了G-code"
 
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
@@ -1456,7 +1469,7 @@ msgstr "エンジニアリング"
 
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
-msgstr "モデルの距離が離れているように確認する"
+msgstr "モデル同士を離す"
 
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
@@ -1484,7 +1497,7 @@ msgstr "全画面表示を終了する"
 
 msgctxt "@label"
 msgid "Experimental"
-msgstr "実験"
+msgstr "実験的"
 
 msgctxt "@action:button"
 msgid "Export"
@@ -1496,7 +1509,7 @@ msgstr "すべての材料を書き出す"
 
 msgctxt "@title:window"
 msgid "Export Material"
-msgstr "フィラメントを書き出す"
+msgstr "材料をエクスポート"
 
 msgctxt "@title:window"
 msgid "Export Profile"
@@ -1504,7 +1517,7 @@ msgstr "プロファイルを書き出す"
 
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
-msgstr "選択エクスポート..."
+msgstr "選択内容をエクスポート..."
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
@@ -1528,7 +1541,7 @@ msgstr "UltiMaker Curaをプラグインと材料プロファイルで拡張し�
 
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr "後処理のためにユーザーが作成したスクリプト用拡張子"
+msgstr "ユーザー作成スクリプトによるポストプロセッシングを可能にする拡張"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1540,7 +1553,7 @@ msgstr "エクストルーダー%1"
 
 msgctxt "@title:label"
 msgid "Extruder End G-code"
-msgstr "エクストルーダーがG-Codeを終了する"
+msgstr "エクストルーダー終了G-Code"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
@@ -1548,7 +1561,7 @@ msgstr "エクストルーダー終了Gコードの時間"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
-msgstr "エクストルーダーがG-Codeを開始する"
+msgstr "エクストルーダー開始G-Code"
 
 msgctxt "@label"
 msgid "Extruder Start G-code duration"
@@ -1568,15 +1581,15 @@ msgstr "失敗"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
-msgstr "Digital Factoryに接続して一部のプリンターと材料を同期するのに失敗しました。"
+msgstr "一部のプリンターと材料を同期する際、Digital Factoryとの接続に失敗しました。"
 
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
-msgstr "Digital Factoryに接続するのに失敗しました。"
+msgstr "Digital Factoryへの接続に失敗しました。"
 
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
-msgstr "材料のアーカイブを作成してプリンターと同期するのに失敗しました。"
+msgstr "プリンターと同期する際、材料アーカイブの作成に失敗しました。"
 
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
@@ -1584,7 +1597,7 @@ msgstr "{0}取り出し失敗。他のプログラムがデバイスを使用し
 
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
-msgstr "フィラメントの書き出しに失敗しました <filename>%1</filename>: <message>%2</message>"
+msgstr "材料のエクスポートに失敗しました <filename>%1</filename>: <message>%2</message>"
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
@@ -1596,15 +1609,15 @@ msgstr "<filename>{0}</filename>にプロファイルを書き出すことに失
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルの取り込みに失敗しました:"
+msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました:"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました:"
+msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました:"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
-msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました:{1}"
+msgstr "<filename>{0}</filename>からプロファイルのインポートに失敗しました:{1}"
 
 msgctxt "@button"
 msgid "Failed to load packages:"
@@ -1612,7 +1625,7 @@ msgstr "パッケージの読み込みに失敗しました。"
 
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
-msgstr "材料のアーカイブを読み込んでプリンターと同期するのに失敗しました。"
+msgstr "プリンターと同期する際、材料アーカイブの読み込みに失敗しました。"
 
 msgctxt "@message:title"
 msgid "Failed to save material archive"
@@ -1644,7 +1657,7 @@ msgstr "すでに存在するファイルです"
 
 msgctxt "@info:title"
 msgid "File Saved"
-msgstr "ファイル保存"
+msgstr "ファイル保存完了"
 
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
@@ -1704,15 +1717,15 @@ msgstr "ファームウェアアップデート完了。"
 
 msgctxt "@label"
 msgid "Firmware update failed due to an communication error."
-msgstr "コミュニケーションエラーによりファームウェアアップデート失敗しました。"
+msgstr "通信エラーによりファームウェアアップデートが失敗しました。"
 
 msgctxt "@label"
 msgid "Firmware update failed due to an input/output error."
-msgstr "インプット/アウトプットエラーによりファームウェアアップデート失敗しました。"
+msgstr "入出力エラーによりファームウェアアップデートが失敗しました。"
 
 msgctxt "@label"
 msgid "Firmware update failed due to an unknown error."
-msgstr "不特定なエラーの発生によりファームウェアアップデート失敗しました。"
+msgstr "不明なエラーの発生によりファームウェアアップデートが失敗しました。"
 
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
@@ -1736,7 +1749,7 @@ msgstr "以下の手順に従って、新しい材料プロファイルをプリ
 
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
-msgstr "新規にプリンターを追加する場合は、以下の手順で行います"
+msgstr "新規にプリンターを追加するには、以下の手順で行います"
 
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
@@ -1760,7 +1773,7 @@ msgstr "リトフェインの場合、暗いピクセルは、より多くの光
 
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
-msgstr "レイヤービューコンパティビリティモードを強制する。（再起動が必要）"
+msgstr "レイヤービュー互換モードを強制。（再起動が必要）"
 
 msgid "FreeCAD trackpad"
 msgstr "FreeCADトラックパッド"
@@ -1803,15 +1816,15 @@ msgstr "G-codeフレーバー"
 
 msgctxt "@label Description for application component"
 msgid "G-code generator"
-msgstr "G-codeの生成"
+msgstr "G-codeジェネレーター"
 
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
-msgstr "GCodeGzWriter はテキストモードをサポートしていません。"
+msgstr "GCodeGzWriterはテキストモードをサポートしていません。"
 
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
-msgstr "GCodeWriter は非テキストモードはサポートしていません。"
+msgstr "GCodeWriterは非テキストモードはサポートしていません。"
 
 msgctxt "@item:inlistbox"
 msgid "GIF Image"
@@ -1867,7 +1880,7 @@ msgstr "グラフィックユーザーインターフェイス"
 
 msgctxt "@label"
 msgid "Grid Placement"
-msgstr "グリッドの配置"
+msgstr "格子状に配置"
 
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1895,11 +1908,11 @@ msgstr "加熱式ビルドボリューム"
 
 msgctxt "@action:label"
 msgid "Height (mm)"
-msgstr "高さ（mm）"
+msgstr "高さ (mm)"
 
 msgctxt "@label"
 msgid "Helpers"
-msgstr "ヘルプ"
+msgstr "補助"
 
 msgctxt "@label"
 msgid "Hide all connected printers"
@@ -1919,7 +1932,7 @@ msgstr "モデルの欠けている部分または不要な表面部分を、警
 
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
-msgstr "赤でサポートができないエリアをハイライトしてください。サポートがない場合、正確にプリントができない場合があります。"
+msgstr "サポートされないエリアが赤でハイライトされます。この状態でサポートがない場合、正常にプリントされません。"
 
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
@@ -1951,15 +1964,15 @@ msgstr "画像リーダー"
 
 msgctxt "@action:button"
 msgid "Import"
-msgstr "取り込む"
+msgstr "インポート"
 
 msgctxt "@title:window"
 msgid "Import Material"
-msgstr "フィラメントを取り込む"
+msgstr "材料のインポート"
 
 msgctxt "@title:window"
 msgid "Import Profile"
-msgstr "プロファイルを取り込む"
+msgstr "プロファイルをインポート"
 
 msgctxt "@action:button"
 msgid "Import all as models"
@@ -1975,7 +1988,7 @@ msgstr "メンテナンス。プリンターをチェックしてください"
 
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr "Cura から印刷を監視するには、プリンタを接続してください。"
+msgstr "Curaから印刷を監視するには、プリンタを接続してください。"
 
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
@@ -1983,7 +1996,7 @@ msgstr "Curaの使用を開始するには、プリンターを設定する必�
 
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
-msgstr "このパッケージを使用するには、Curaを再始動する必要があります"
+msgstr "このパッケージを使用するには、Curaを再起動する必要があります"
 
 msgctxt "@option:radio"
 msgid "Include UltiMaker account name"
@@ -2123,7 +2136,7 @@ msgstr "無効なファイルのURL:"
 
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
-msgstr "カメラのズーム方向を反転する。"
+msgstr "カメラのズーム方向を反転"
 
 msgctxt "@label"
 msgid "Is printed as support."
@@ -2131,7 +2144,7 @@ msgstr "サポートとしてプリントされます。"
 
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr "互換性のあるプリンターがDigital Factoryに接続されていないようです。プリンターが接続されていて、最新のファームウェアが実行されていることを確認してください。"
+msgstr "互換性のあるプリンターがDigital Factoryに接続されていないようです。プリンターが接続されていること、最新のファームウェアが実行されていることを確認してください。"
 
 msgctxt "@item:inlistbox"
 msgid "JPEG Image"
@@ -2143,7 +2156,7 @@ msgstr "JPG画像"
 
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr "JSON解析プログラム"
+msgstr "JSON解析"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2219,7 +2232,7 @@ msgstr "Curaのプリントプロファイルについて詳しくはこちら"
 
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
-msgstr "Curaへのプリンターの追加方法はこちら"
+msgstr "Curaへのプリンター追加方法はこちら"
 
 msgctxt "@label"
 msgid "Learn more about project packages."
@@ -2247,7 +2260,7 @@ msgstr "ビルドプレートを調整する"
 
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
-msgstr "薄いほうを高く"
+msgstr "明るいほうを高く"
 
 msgctxt "@label:listbox"
 msgid "Line Type"
@@ -2263,7 +2276,7 @@ msgstr "線形"
 
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
-msgstr "Linux 分散アプリケーションの開発"
+msgstr "Linuxディストリビューション間へのアプリケーション配布"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2279,7 +2292,7 @@ msgstr "読み込み中"
 
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
-msgstr "プロジェクトを読み込むとビルドプレート上のすべてのモデルがクリアされます。"
+msgstr "プロジェクトを読み込むとビルドプレートにあるすべてのモデルがクリアされます。"
 
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
@@ -2363,19 +2376,19 @@ msgstr "MakerbotWriterはテキストモードをサポートしていません�
 
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
-msgstr "フィラメントを管理する..."
+msgstr "材料の管理..."
 
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
-msgstr "プリンターを管理する..."
+msgstr "プリンターの管理(&I)..."
 
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
-msgstr "プロファイルを管理する..."
+msgstr "プロファイルの管理..."
 
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
-msgstr "視野のセッティングを管理する..."
+msgstr "表示項目設定..."
 
 msgctxt "@item:inmenu"
 msgid "Manage backups"
@@ -2423,15 +2436,15 @@ msgstr "製造元"
 
 msgctxt "@action:button"
 msgid "Marketplace"
-msgstr "マーケットプレース"
+msgstr "マーケットプレイス"
 
 msgctxt "@label"
 msgid "Marketplace"
-msgstr "マーケットプレース"
+msgstr "マーケットプレイス"
 
 msgctxt "name"
 msgid "Marketplace"
-msgstr "マーケットプレース"
+msgstr "マーケットプレイス"
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2439,7 +2452,7 @@ msgstr "材料"
 
 msgctxt "@label"
 msgid "Material"
-msgstr "フィラメント"
+msgstr "材料"
 
 msgctxt "@label:category menu label"
 msgid "Material"
@@ -2447,15 +2460,15 @@ msgstr "材料"
 
 msgctxt "@label:listbox"
 msgid "Material Color"
-msgstr "フィラメントの色"
+msgstr "材料の色"
 
 msgctxt "name"
 msgid "Material Profiles"
-msgstr "フィラメントプロファイル"
+msgstr "材料プロファイル"
 
 msgctxt "@label"
 msgid "Material Type"
-msgstr "フィラメントタイプ"
+msgstr "材料の種類"
 
 msgctxt "@title"
 msgid "Material color picker"
@@ -2467,11 +2480,11 @@ msgstr "材料予測"
 
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
-msgstr "素材プロファイルが以下のプリンターと正常に同期されました："
+msgstr "材料プロファイルが以下のプリンターと正常に同期されました："
 
 msgctxt "@action:label"
 msgid "Material settings"
-msgstr "フィラメント設定"
+msgstr "材料設定"
 
 msgctxt "@backuplist:label"
 msgid "Materials"
@@ -2483,11 +2496,11 @@ msgstr "材料"
 
 msgctxt "@title:tab"
 msgid "Materials"
-msgstr "マテリアル"
+msgstr "材料"
 
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
-msgstr "アクティブなプリンターと互換性のある材料："
+msgstr "有効なプリンターと互換性のある材料："
 
 msgctxt "@label"
 msgid "Mesh Type"
@@ -2511,7 +2524,7 @@ msgstr "G-codeを修正"
 
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "オーバーラップの設定を変更"
+msgstr "オーバーラップ設定を変更"
 
 msgctxt "@item:inmenu"
 msgid "Monitor"
@@ -2559,16 +2572,16 @@ msgstr "モデルの選択時にモデルがカメラの中心に見えるよう
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
-msgstr "選択内容を増倍"
+msgstr "選択内容を複製"
 
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
-msgstr[0] "選択した複数のモデル"
+msgstr[0] "選択したモデルの複製"
 
 msgctxt "@info"
 msgid "Multiply selected item and place them in a grid of build plate."
-msgstr "選択したアイテムを乗算し、ビルドプレートのグリッドに配置します。"
+msgstr "選択したアイテムを複製し、ビルドプレートに対し格子状に配置します。"
 
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
@@ -2576,7 +2589,7 @@ msgstr "造形データを増やす、配置する"
 
 msgctxt "@title"
 msgid "My Backups"
-msgstr "マイ バックアップ"
+msgstr "マイバックアップ"
 
 msgctxt "@label:button"
 msgid "My printers"
@@ -2757,7 +2770,7 @@ msgstr "ノズルサイズ"
 
 msgctxt "@label"
 msgid "Number of Copies"
-msgstr "コピーの数"
+msgstr "コピー数"
 
 msgctxt "@label"
 msgid "Number of Extruders"
@@ -2789,11 +2802,11 @@ msgstr "トップのレイヤーを表示する"
 
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
-msgstr "一度に一つのG-codeしか読み取れません。{0}の取り込みをスキップしました。"
+msgstr "G-codeは一度に1つしか読み込めません。{0}の取り込みをスキップしました。"
 
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
-msgstr "おっと！スライス処理中に予期しないエラーが発生しました。設定でデータ共有を無効にしていない場合は,分析用にクラッシュログを自動的に受信しますのでご安心ください。さらに支援を行うために,問題トラッカーでプロジェクトの詳細を共有することを検討してください。"
+msgstr "申し訳ありません。スライス処理中に予期せぬエラーが発生しました。設定でデータ共有を無効にしていない場合は、クラッシュログを自動的に受信し分析を行います。また、Issue trackerでプロジェクトの詳細を共有いただけると助かります。"
 
 msgctxt "@action:button"
 msgid "Open"
@@ -2801,7 +2814,7 @@ msgstr "開く"
 
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
-msgstr "最近開いたファイルを開く"
+msgstr "最近開いたファイルを開く(&R)"
 
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
@@ -2825,11 +2838,11 @@ msgstr "プロジェクトファイルを開く"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP)"
-msgstr "Universal Cura Project（UCP）を開く"
+msgstr "Universal Cura Project (UCP) を開く"
 
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP) file"
-msgstr "Universal Cura Project（UCP）ファイルを開く"
+msgstr "Universal Cura Project (UCP) ファイルを開く"
 
 msgctxt "@action:label"
 msgid "Open With"
@@ -2861,7 +2874,7 @@ msgstr "OpenGL"
 
 msgctxt "@label"
 msgid "Opening and saving files"
-msgstr "ファイルを開くまた保存"
+msgstr "ファイルの読み込みと保存"
 
 msgctxt "@header"
 msgid "Optimized for Air Manager"
@@ -2913,7 +2926,7 @@ msgstr[0] "%1個の設定を上書きします。"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
-msgstr "プレファレンス"
+msgstr "プレファレンス(&R)"
 
 msgctxt "@item:inlistbox"
 msgid "PNG Image"
@@ -2957,18 +2970,18 @@ msgstr "一時停止しています..."
 
 msgctxt "@label"
 msgid "Per Model Settings"
-msgstr "各モデル設定"
+msgstr "モデル別設定"
 
 msgctxt "name"
 msgid "Per Model Settings Tool"
-msgstr "各モデル設定ツール"
+msgstr "モデル別設定ツール"
 
 msgid "Perspective"
-msgstr "パースペクティブ表示"
+msgstr "透視投影表示"
 
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr "パースペクティブ表示"
+msgstr "透視投影表示"
 
 msgctxt "@action:label"
 msgid "Placement"
@@ -3000,9 +3013,11 @@ msgstr "このアプリケーションの許可において必要な権限を与
 
 msgctxt "@info"
 msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "プリンタが接続されているか確認し、以下を行います。"
-"- プリンタの電源が入っているか確認します。"
-"- プリンタがネットワークに接続されているかどうかを確認します。- クラウドに接続されたプリンタを検出するためにサインインしているかどうかを確認します。"
+msgstr ""
+"プリンタが接続されているか、以下を確認してください:\n"
+"- プリンタの電源が入っていること。\n"
+"- プリンタがネットワークに接続されていること。\n"
+"- クラウドに接続されたプリンタを検出するためにサインインしていること。"
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -3030,10 +3045,11 @@ msgstr "造形物を取り出してください"
 
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
-msgstr "設定を見直し、モデルが次の状態かどうかを確認してください。"
-"- 造形サイズに合っている"
-"- 有効なエクストルーダーに割り当てられている"
-"- すべてが修飾子メッシュとして設定されているわけではない"
+msgstr ""
+"設定を見直し、モデルが次の状態かどうかを確認してください。\n"
+"- 造形サイズに合っている\n"
+"- 有効なエクストルーダーに割り当てられている\n"
+"- すべてのセットが修飾子メッシュとして設定されていない"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -3041,11 +3057,11 @@ msgstr "このUltiMaker Originalに施されたアップグレートを選択す
 
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
-msgstr "検証済みのUltiMaker Cura Enterprise用プラグインおよび材料を入手するにはサインインしてください。"
+msgstr "UltiMaker Cura Enterprise用の検証済みプラグインおよび材料を入手するにはサインインしてください。"
 
 msgctxt "@info:tooltip"
 msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
-msgstr "匿名でないデータの送信を許可するには,UltiMakerアカウントにサインインしてください。"
+msgstr "非匿名データの送信を許可するには、UltiMakerアカウントにサインインしてください。"
 
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
@@ -3085,19 +3101,19 @@ msgstr "Prusa Research開発のポリゴンパッキングライブラリー"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
-msgstr "後処理"
+msgstr "ポストプロセッシング"
 
 msgctxt "name"
 msgid "Post Processing"
-msgstr "後処理"
+msgstr "ポストプロセッシング"
 
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
-msgstr "プラグイン処理後"
+msgstr "ポストプロセッシングプラグイン"
 
 msgctxt "@label"
 msgid "Post Processing Scripts"
-msgstr "スクリプトの処理後"
+msgstr "ポストプロセッシングスクリプト"
 
 msgctxt "@button"
 msgid "Pre-heat"
@@ -3105,7 +3121,7 @@ msgstr "プレヒート"
 
 msgctxt "@item:inmenu"
 msgid "Prepare"
-msgstr "準備する"
+msgstr "準備"
 
 msgctxt "name"
 msgid "Prepare Stage"
@@ -3207,7 +3223,7 @@ msgstr "プリント設定"
 
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
-msgstr "印刷設定は無効にされました。G-code ファイルは変更できません。"
+msgstr "印刷設定は無効にされました。G-codeファイルは変更できません。"
 
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
@@ -3335,7 +3351,7 @@ msgstr "プロファイル設定"
 
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
-msgstr "プロファイル{0}は不特定なファイルまたは破損があります。"
+msgstr "プロファイル{0}に不明な種別または破損したファイルがあります。"
 
 msgctxt "@backuplist:label"
 msgid "Profiles"
@@ -3351,11 +3367,11 @@ msgstr "プロファイル"
 
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
-msgstr "アクティブなプリンターと互換性のあるプロファイル："
+msgstr "有効なプリンターと互換性のあるプロファイル："
 
 msgctxt "@label Description for application dependency"
 msgid "Programming language"
-msgstr "プログラミング用語"
+msgstr "プログラミング言語"
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3383,95 +3399,95 @@ msgstr "ファームウェアアップデートのためのマシン操作を提
 
 msgctxt "description"
 msgid "Provides a monitor stage in Cura."
-msgstr "Curaでモニターステージを提供します。"
+msgstr "Cura内にモニターステージを提供します。"
 
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
-msgstr "ノーマルなソリットメッシュビューを供給する。"
+msgstr "ノーマルなソリットメッシュビューを提供します。"
 
 msgctxt "description"
 msgid "Provides a prepare stage in Cura."
-msgstr "Curaで準備ステージを提供します。"
+msgstr "Cura内に準備ステージを提供します。"
 
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
-msgstr "Curaでプレビューステージを提供します。"
+msgstr "Cura内にプレビューステージを提供します。"
 
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサイズ、その他）"
+msgstr "プリンター設定を変更する方法を提供します。（印刷ボリューム、ノズルサイズなど）"
 
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XMLベースフィラメントのプロファイルを読み書きするための機能を供給する。"
+msgstr "XMLの材料プロファイルを読み書きするための機能を提供します。"
 
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "UltiMakerのプリンターのアクションを供給する（ベッドレベリングウィザード、アップグレードの選択、他）"
+msgstr "UltiMakerのプリンターのアクションを提供します。（ベッドレベリングウィザード、アップグレードの選択など）"
 
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
-msgstr "取り外し可能なドライブホットプラギング及びサポートの書き出しの供給。"
+msgstr "取り外し可能なドライブホットプラギングおよび書き出しのサポートを提供。"
 
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
-msgstr "Curaプロファイルを書き出すためのサポートを供給する。"
+msgstr "Curaプロファイルのエクスポート機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
-msgstr "Curaプロファイルを取り込むためのサポートを供給する。"
+msgstr "Curaプロファイルのインポート機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
-msgstr "g-codeファイルからプロファイルを読み込むサポートを供給する。"
+msgstr "G-codeファイルからのプロファイルインポート機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "レガシーCura Versionsからプロファイルを取り込むためのサポートを供給する。"
+msgstr "レガシーCura Versionsからプロファイルのインポート機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
-msgstr "３MFファイルを読むこむためのサポートを供給する。"
+msgstr "3MFファイルの読み込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr "AMFファイルの読込みをサポートしています。"
+msgstr "AMFファイルの読み込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Ultimakerフォーマットパッケージの読み込みをサポートします。"
+msgstr "Ultimakerフォーマットパッケージの読み込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for reading X3D files."
-msgstr "X3Dファイルを読むこむためのサポートを供給する。"
+msgstr "X3Dファイルの読み込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for reading model files."
-msgstr "モデルファイルを読み込むためのサポートを供給します。"
+msgstr "モデルファイルの読み込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for writing 3MF and UCP files."
-msgstr "3MFおよびUCPファイルの書き込みのサポートを提供します。"
+msgstr "3MFおよびUCPファイルの書き込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
-msgstr "MakerBotフォーマットパッケージを書き込むためのサポートを提供します。"
+msgstr "MakerBotフォーマットパッケージの書き込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Ultimakerフォーマットパッケージへの書き込みをサポートします。"
+msgstr "Ultimakerフォーマットパッケージへの書き込み機能を提供します。"
 
 msgctxt "description"
 msgid "Provides the Per Model Settings."
-msgstr "各モデル設定を与える。"
+msgstr "モデル別設定を提供します。"
 
 msgctxt "description"
 msgid "Provides the X-Ray view."
-msgstr "透視ビューイング。"
+msgstr "透視ビューを提供します。"
 
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngineスライシングバックエンドにリンクを供給する。"
+msgstr "CuraEngineスライシングバックエンドとのリンクを提供します。"
 
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
@@ -3507,7 +3523,7 @@ msgstr "キューがいっぱい"
 
 msgctxt "@label"
 msgid "Queued"
-msgstr "順番を待つ"
+msgstr "キュー挿入済み"
 
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
@@ -3559,7 +3575,7 @@ msgstr "リリースノート"
 
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
-msgstr "すべてのモデルを読み込む"
+msgstr "全モデルを再読み込み"
 
 msgctxt "@text:window"
 msgid "Remember my choice"
@@ -3575,11 +3591,11 @@ msgstr "取り外し可能なドライブアウトプットデバイスプラグ
 
 msgctxt "@action:button"
 msgid "Remove"
-msgstr "取り除く"
+msgstr "削除"
 
 msgctxt "@action:button"
 msgid "Remove printers"
-msgstr "プリンターを取り除く"
+msgstr "プリンターを削除"
 
 msgctxt "@title:window"
 msgid "Remove printers?"
@@ -3587,19 +3603,19 @@ msgstr "プリンターを削除しますか？"
 
 msgctxt "@action:button"
 msgid "Rename"
-msgstr "名を変える"
+msgstr "名称変更"
 
 msgctxt "@title:window"
 msgid "Rename"
-msgstr "名前変更"
+msgstr "名称変更"
 
 msgctxt "@title:window"
 msgid "Rename Profile"
-msgstr "プロファイル名を変える"
+msgstr "プロファイル名を変更"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
-msgstr "報告＆バグ"
+msgstr "バグを報告(&B)"
 
 msgctxt "@label:button"
 msgid "Report a bug"
@@ -3619,11 +3635,11 @@ msgstr "構成の変更が必要です"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
-msgstr "すべてのモデルのポジションをリセットする"
+msgstr "全モデルの座標をリセット"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
-msgstr "すべてのモデル＆変更点をリセットする"
+msgstr "全モデルの変更をリセット"
 
 msgctxt "@info"
 msgid "Reset to defaults."
@@ -3699,7 +3715,7 @@ msgstr "Cura Projectと.makerbot印刷ファイルを保存する"
 
 msgctxt "@option"
 msgid "Save Cura project and .ufp print file"
-msgstr " Cura Projectと.ufp印刷ファイルを保存する"
+msgstr "Cura Projectと.ufp印刷ファイルを保存する"
 
 msgctxt "@title:window"
 msgid "Save Custom Profile"
@@ -3755,11 +3771,11 @@ msgstr "リムーバブルドライブ<filename>{0}</filename>に保存中"
 
 msgctxt "@option:check"
 msgid "Scale extremely small models"
-msgstr "極端に小さなモデルをスケールアップする"
+msgstr "極端に小さいモデルを拡大"
 
 msgctxt "@option:check"
 msgid "Scale large models"
-msgstr "大きなモデルをスケールする"
+msgstr "大きなモデルを縮小"
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3767,7 +3783,7 @@ msgstr "検索"
 
 msgctxt "@info"
 msgid "Search in the browser"
-msgstr "ブラウザでの検索"
+msgstr "ブラウザで検索"
 
 msgctxt "@label:textbox"
 msgid "Search settings"
@@ -3775,7 +3791,7 @@ msgstr "検索設定"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
-msgstr "すべてのモデル選択"
+msgstr "全モデルを選択"
 
 msgctxt "@title:window"
 msgid "Select Printer"
@@ -3815,7 +3831,7 @@ msgstr "以下のリストからプリンタを選択します:"
 
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
-msgstr "(不特定な) プリントインフォメーションを送信"
+msgstr "匿名のプリント情報を送信"
 
 msgctxt "@label"
 msgid "Send G-code"
@@ -3831,11 +3847,12 @@ msgstr "クラッシュ報告をUltiMakerに送信する"
 
 msgctxt "@info:tooltip"
 msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
-msgstr "登録したUltiMakerアカウント名とプロジェクト名を含むクラッシュレポートを,UltiMaker Sentryに送信します。実際のモデルデータは送信されません。"
+msgstr ""
+"登録したUltiMakerアカウント名とプロジェクト名を含むクラッシュレポートをUltiMaker Sentryに送信します。実際のモデルデータは送信されません。"
 
 msgctxt "@info:tooltip"
 msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
-msgstr "個人を特定できる情報やモデルデータを含まないクラッシュレポートを,UltiMakerに送信します。"
+msgstr "個人を特定できる情報やモデルデータを含まないクラッシュレポートをUltiMakerに送信します。"
 
 msgctxt "@option:check"
 msgid "Send engine crash reports"
@@ -3859,11 +3876,11 @@ msgstr "監視ロガー"
 
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
-msgstr "シリアルコミュニケーションライブラリー"
+msgstr "シリアル通信ンライブラリー"
 
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
-msgstr "アクティブエクストルーダーとしてセットする"
+msgstr "アクティブエクストルーダーにセット"
 
 msgctxt "@title:column"
 msgid "Setting"
@@ -3871,7 +3888,7 @@ msgstr "設定"
 
 msgctxt "@title:tab"
 msgid "Setting Visibility"
-msgstr "視野設定"
+msgstr "表示項目設定"
 
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
@@ -3883,7 +3900,7 @@ msgstr "シーンをセットアップ中..."
 
 msgctxt "@action:label"
 msgid "Setting visibility"
-msgstr "視野設定"
+msgstr "表示項目設定"
 
 msgctxt "@label"
 msgid "Settings"
@@ -3919,67 +3936,68 @@ msgstr "シェルの厚さ"
 
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
-msgstr "Curaのプログラム開始時にアップデートがあるかチェックしますか？"
+msgstr "Curaのプログラム開始時にアップデートをチェックするかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should Cura open at the location it was closed?"
-msgstr "Curaを終了した場所で開くようにしますか？"
+msgstr "Curaを終了した場所で開くかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
-msgstr "プリンター名の敬称はプリントジョブの名前に自動的に加えられるべきか？"
+msgstr "自動的にプリンター名を元にした接頭辞をプリントジョブ名に加えるかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
-msgstr "プロジェクトファイルを保存時にサマリーを表示するべきか？"
+msgstr "プロジェクトファイル保存時に概要を表示するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
-msgstr "Curaを起動するたびに、新しいプラグインの自動チェックを実行する必要がありますか？これは無効にしないことを強くお勧めします！"
+msgstr "Curaを起動するたびに、新しいプラグインの自動チェックを実行するかどうか。この設定は無効にしないことを強くお勧めします！"
 
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
-msgstr "プリンターの不明なデータをUltiMakerにおくりますか？メモ、モデル、IPアドレス、個人的な情報は送信されたり保存されたりはしません。"
+msgstr "プリントの匿名データをUltiMakerに送信するかどうか。メモ、モデル、IPアドレス、および個人的情報は送信・保存されません。"
 
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
-msgstr "レイヤーはコンパティビリティモードに強制されるべきか？"
+msgstr "レイヤーを強制的に互換モードにするかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
-msgstr "モデルがビルドボリュームに対して大きすぎる場合はスケールされるべきか？"
+msgstr "モデルがビルドボリュームに対して大きすぎる場合にサイズを調整するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
-msgstr "モデルはロード後に選択しますか？"
+msgstr "モデルをロード後に選択するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
-msgstr "プラットホーム上のモデルはブルドプレートに触れるように下げるべきか？"
+msgstr "プラットフォーム上のモデルをブルドプレートに触れるまで下げるかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
-msgstr "交差を避けるためにプラットホーム上のモデルを移動するべきですか？"
+msgstr "プラットフォーム上のモデル同士が重ならないよう移動するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
-msgstr "デスクトップまたは外部アプリケーションから開いたファイルをCuraの同じインスタンスで開く必要がありますか？"
+msgstr "デスクトップまたは外部アプリケーションから開いたファイルをCuraの同じインスタンスで開くかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
-msgstr "スライスのクラッシュは自動的にUltimakerに報告されますか？明示的な許可がない限り,モデル,IPアドレス,その他の個人を特定できる情報が送信または保存されることはありません。"
+msgstr ""
+"スライスのクラッシュを自動的にUltimakerに報告するかどうか。明示的な許可がない限り、モデル、IPアドレス、およびその他の個人を特定できる情報が送信または保存されることはありません。"
 
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
-msgstr "Curaの単一インスタンスに新しいモデルをロードする前に、ビルドプレートをクリアする必要はありますか？"
+msgstr "単一のCuraインスタンスに新しいモデルをロードする前に、ビルドプレートをクリアするかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
-msgstr "Curaのデフォルトのズーム機能は変更できるべきか？"
+msgstr "Curaのデフォルトズームの動作を反転するかどうか"
 
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
-msgstr "ズームはマウスの方向に動くべきか？"
+msgstr "マウスの方向にズームするかどうか"
 
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
@@ -3987,15 +4005,15 @@ msgstr "トップの5レイヤーの詳細を表示する"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
-msgstr "コンフィグレーションのフォルダーを表示する"
+msgstr "コンフィグレーションのフォルダーを表示"
 
 msgctxt "@button"
 msgid "Show Custom"
-msgstr "カスタムを表示"
+msgstr "カスタム表示"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
-msgstr "オンラインドキュメントを表示する"
+msgstr "オンラインドキュメントを表示(&D)"
 
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
@@ -4019,7 +4037,7 @@ msgstr "G-codeリーダーに注意メッセージを表示します。"
 
 msgctxt "@action:button"
 msgid "Show configuration folder"
-msgstr "コンフィグレーションのフォルダーを表示する"
+msgstr "コンフィグレーションのフォルダーを表示"
 
 msgctxt "@action:button"
 msgid "Show detailed crash report"
@@ -4031,7 +4049,7 @@ msgstr "設定を表示"
 
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
-msgstr "プロジェクトを保存時にダイアログサマリーを表示する"
+msgstr "プロジェクト保存時に概要ダイアログを表示"
 
 msgctxt "@tooltip:button"
 msgid "Show your support for Cura with a donation."
@@ -4091,11 +4109,11 @@ msgstr "スライス"
 
 msgctxt "@option:check"
 msgid "Slice automatically"
-msgstr "自動的にスライスする"
+msgstr "自動的にスライス"
 
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
-msgstr "セッティングを変更すると自動にスライスします。"
+msgstr "セッティングを変更すると自動でスライスします。"
 
 msgctxt "name"
 msgid "Slice info"
@@ -4127,8 +4145,10 @@ msgstr "ソリッドビュー"
 
 msgctxt "@label"
 msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。"
-"表示されるようにクリックしてください。"
+msgstr ""
+"いくつかの非表示設定が通常の計算結果と異なる値となっています。\n"
+"\n"
+"クリックすると表示されます。"
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -4144,8 +4164,10 @@ msgstr "<b>%1</b>で定義された一部の設定値が上書きされました
 
 msgctxt "@tooltip"
 msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。"
-"プロファイルマネージャーをクリックして開いてください。"
+msgstr ""
+"いくつかの設定/上書きされた値はプロファイルに保存された値と異なります。\n"
+"\n"
+"クリックするとプロファイルマネージャーを開きます。"
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -4169,11 +4191,11 @@ msgstr "スピード"
 
 msgctxt "@action:inmenu"
 msgid "Sponsor Cura"
-msgstr "スポンサーCura"
+msgstr "スポンサーになる"
 
 msgctxt "@label:button"
 msgid "Sponsor Cura"
-msgstr "スポンサーCura"
+msgstr "スポンサーになる"
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4197,7 +4219,7 @@ msgstr "ビルドプレートのレベリングを開始する"
 
 msgctxt "@title:label"
 msgid "Start G-code"
-msgstr "G-Codeの開始"
+msgstr "開始G-Code"
 
 msgctxt "@label"
 msgid "Start the slicing process"
@@ -4217,15 +4239,15 @@ msgstr "強度"
 
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "不特定なスライス情報を提出。プレファレンスの中で無効になる可能性もある。"
+msgstr "匿名のスライス情報を登録します。設定により無効になる可能性があります。"
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
-msgstr "フィラメントの<filename>%1</filename>への書き出しが完了ました"
+msgstr "材料を<filename>%1</filename>にエクスポートしました。"
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
-msgstr "フィラメント<filename>%1</filename>の取り込みに成功しました"
+msgstr "材料を<filename>%1</filename>からインポートしました"
 
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
@@ -4237,15 +4259,15 @@ msgstr "推奨される材料の設定"
 
 msgctxt "@action:label"
 msgid "Suggested Profile settings"
-msgstr "推奨されるプロフィールの設定"
+msgstr "推奨プロファイル設定"
 
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
-msgstr "サマリーCuraプロジェクト"
+msgstr "概要 - Curaプロジェクト"
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Open Universal Cura Project (UCP)"
-msgstr "概要 - Universal Cura Project（UCP）を開く"
+msgstr "概要 - Universal Cura Project (UCP) を開く"
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
@@ -4281,31 +4303,31 @@ msgstr "サポートタイプ"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
-msgstr "ファターマスを操作するためのライブラリーサポート"
+msgstr "高速演算用サポートライブラリー"
 
 msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
-msgstr "ファイルメタデータとストリーミングのためのライブラリーサポート"
+msgstr "ファイルメタデータとストリーミングのサポートライブラリー"
 
 msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
-msgstr "3MFファイルを操作するためのライブラリーサポート"
+msgstr "3MFファイル操作用サポートライブラリー"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
-msgstr "STLファイルを操作するためのライブラリーサポート"
+msgstr "STLファイル操作用サポートライブラリー"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
-msgstr "参画メッシュを操作するためのライブラリーサポート"
+msgstr "三角メッシュ処理用サポートライブラリー"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
-msgstr "サイエンスコンピューティングを操作するためのライブラリーサポート"
+msgstr "科学技術計算サポートライブラリー"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
-msgstr "システムキーリングアクセスを操作するためのライブラリーサポート"
+msgstr "システムキーリングアクセス用サポートライブラリー"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4378,7 +4400,7 @@ msgstr "バランスのとれたプロファイルは、生産性、表面品質
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
-msgstr "ミリメートルでビルドプレートからベースの高さ。"
+msgstr "ビルドプレートからベースまでの高さをミリメートルで指定します。"
 
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
@@ -4398,7 +4420,7 @@ msgstr "クラウドプリンターがオフラインです。プリンターの
 
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
-msgstr "エクストルーダーのマテリアルの色。"
+msgstr "このエクストルーダーの材料の色。"
 
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
@@ -4418,7 +4440,7 @@ msgstr "このホットエンドの現在の温度です。"
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "ビルドプレート上の奥行きミリメートル"
+msgstr "ビルドプレート上の奥行き（ミリメートル）"
 
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
@@ -4458,7 +4480,7 @@ msgstr "アカウントにある以下のプリンターがCuraに追加され�
 
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
-msgstr "以下のプリンターに新しい素材プロファイルが配布されます："
+msgstr "以下のプリンターに新しい材料プロファイルが配布されます："
 
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
@@ -4475,11 +4497,11 @@ msgstr "ハイライトされたエリアは、欠けている表面または無
 
 msgctxt "@tooltip"
 msgid "The material in this extruder."
-msgstr "エクストルーダー入ったフィラメント。"
+msgstr "このエクストルーダーにある材料。"
 
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
-msgstr "Curaプロジェクトに関連付けられている材料パッケージがUltimaker Marketplaceで見つかりませんでした。Curaプロジェクトファイルに保存されている材料パッケージ定義を部分的に使用する場合は自己責任で行ってください。"
+msgstr "Curaプロジェクトに関連付けられている材料パッケージがUltimakerマーケットプレイスで見つかりませんでした。Curaプロジェクトファイルに保存されている材料プロファイルの定義を部分的に使用する場合は自己責任で行ってください。"
 
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
@@ -4487,7 +4509,7 @@ msgstr "“ベース”から各ピクセルへの最大距離。"
 
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
-msgstr "新しいフィラメントの直径は %1 mm に設定されています。これは現在のエクストルーダーに適応していません。続行しますか？"
+msgstr "新しいフィラメントの直径は%1mmに設定されています。これは現在のエクストルーダーに適応していません。続行しますか？"
 
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
@@ -4495,9 +4517,13 @@ msgstr "ノズルが入ったエクストルーダー。"
 
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "プリントのインフィル材料のパターン："
-"非機能モデルをクイックプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。 "
-"応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。"
+msgstr ""
+"プリントのインフィル材料のパターン：\n"
+"\n"
+"非機能モデルを手早くプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。\n"
+"\n"
+"応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。\n"
+"\n"
 "複数の方向に高い強度を必要とする機能的な3Dプリントの場合は、キュービック、キュービックサブディビジョン、クォーターキュービック、オクテット、ジャイロイドを使用します。"
 
 msgctxt "@info:tooltip"
@@ -4506,7 +4532,7 @@ msgstr "厚さ1ミリメートルのプリントを貫通する光の割合。�
 
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
-msgstr "Curaプロジェクトに関連付けられたプラグインが Ultimakerマーケットプレイスで見つかりませんでした。プロジェクトをスライスするためにプラグインが必要な場合があるため、ファイルを正しくスライスできない可能性があります。"
+msgstr "Curaプロジェクトに関連付けられたプラグインがUltimakerマーケットプレイスで見つかりませんでした。プロジェクトをスライスするためにプラグインが必要な場合があるため、ファイルを正しくスライスできない可能性があります。"
 
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
@@ -4618,7 +4644,7 @@ msgstr "%1 が認識されていないためこの構成は利用できません
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr "これはCura Universalのプロジェクトファイルです。Cura Project,またはCura Universal Projectとして開きますか？それともそこからモデルをインポートしますか？"
+msgstr "これはCura Universal Projectファイルです。Cura ProjectまたはCura Universal Projectとして開きますか？それともそこからモデルをインポートしますか？"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4626,7 +4652,7 @@ msgstr "これはCuraのプロジェクトファイルです。プロジェク�
 
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
-msgstr "このフィラメントは %1にリンクすプロパティーを共有する。"
+msgstr "この材料は%1の構成とリンクされています。"
 
 msgctxt "@label"
 msgid "This package will be installed after restarting."
@@ -4663,12 +4689,14 @@ msgstr "このプロファイルはプリンターによりデフォルトを使
 
 msgctxt "@label"
 msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
-msgstr "このプロジェクトには、現在Curaにインストールされていない素材またはプラグインが含まれています。<br/>不足しているパッケージをインストールすると、プロジェクトが再度開きます。"
+msgstr "このプロジェクトには、現在Curaにインストールされていない材料またはプラグインが含まれています。<br/>不足しているパッケージをインストールすると、プロジェクトが再度開きます。"
 
 msgctxt "@label"
 msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "この設定にプロファイルと異なった値があります。"
-"プロファイルの値を戻すためにクリックしてください。"
+msgstr ""
+"設定された値がプロファイルと異なります。\n"
+"\n"
+"クリックするとプロファイルの値に戻します。"
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4677,7 +4705,7 @@ msgstr "この設定がアクティブなプリンターにより非表示にな
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
-msgstr[0] "この設定は %1 の値で非表示になっています。その設定値を変更すると設定の非表示が解除されます。"
+msgstr[0] "この設定は%1の値により表示されていません。%1の値を変更すると表示されるようになります。"
 
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
@@ -4685,8 +4713,10 @@ msgstr "この設定は常に全てのエクストルーダーに共有されて
 
 msgctxt "@label"
 msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。"
-"計算された値に変更するためにクリックを押してください。"
+msgstr ""
+"この設定は通常の場合計算されますが、現状は絶対値に固定されています。\n"
+"\n"
+"クリックすると計算された値に戻します。"
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4698,15 +4728,15 @@ msgstr "この設定はエクストルーダー固有の競合する値から取
 
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
-msgstr "この設定は,Universal Cura Projectへのエクスポート中に適切に機能しない可能性があります。ユーザーは自己責任で追加するように求められます。"
+msgstr "この設定は、Universal Cura Projectへのエクスポート中に適切に機能しない可能性があります。自己責任で追加するかどうか確認されます。"
 
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
-msgstr "この設定は,Universal Cura Projectへのエクスポート中に適切に機能しない可能性があります。ユーザーは自己責任で追加するように求められます。"
+msgstr "この設定はUniversal Cura Projectへのエクスポート中に適切に機能しない可能性があります。自己責任で追加するか確認されます。"
 
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
-msgstr "このバージョンは、運用環境での使用を目的としたｍのではありません。問題が発生した場合は、GitHubページでフルバージョン{self.getVersion()}を記載して報告してください。"
+msgstr "このバージョンは、製品開発での使用を目的としたものではありません。問題が発生した場合は、GitHubページでフルバージョン {self.getVersion()} を記載して報告してください。"
 
 msgctxt "@label"
 msgid "Time estimation"
@@ -4726,11 +4756,11 @@ msgstr "接続を確立するには、{website_link}にアクセスしてくだ�
 
 msgctxt "@label"
 msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
-msgstr "プリントの成功率を上げるために、ビルドプレートを今調整できます。’次のポジションに移動’をクリックすると。"
+msgstr "プリントの成功率を上げるために、ビルドプレートを調整可能になりました。「次のポジションに移動」をクリックすると、ノズルの移動先を調整できます。"
 
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "印刷ジョブをネットワークを介してプリンターに直接送信するには、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターを WIFI ネットワークに接続します。Cura をプリンタに接続していない場合でも、USB ドライブを使用して g コードファイルをプリンターに転送することはできます。"
+msgstr "印刷ジョブをネットワーク上のプリンターに直接送信するため、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターをWiFiネットワークに接続されていることを確認してください。Curaをプリンタに接続していない場合でも、USBドライブを使用してg-codeファイルをプリンターに転送することができます。"
 
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
@@ -4738,7 +4768,7 @@ msgstr "{printer_name}を完全に削除するには、{digital_factory_link}に
 
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
-msgstr "留め金 フルスクリーン"
+msgstr "全画面表示切替"
 
 msgctxt "@label"
 msgid "Top / Bottom"
@@ -4774,7 +4804,7 @@ msgstr "移動"
 
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr "現行バージョンより上の Cura バックアップをリストアしようとしました。"
+msgstr "現行バージョンより上のCuraバックアップをリストアしようとしました。"
 
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
@@ -4806,7 +4836,7 @@ msgstr "タイプ"
 
 msgctxt "name"
 msgid "UFP Reader"
-msgstr "UFP リーダー"
+msgstr "UFPリーダー"
 
 msgctxt "name"
 msgid "UFP Writer"
@@ -4830,7 +4860,7 @@ msgstr "UltiMaker認定材料"
 
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr "UltiMaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために匿名データを収集します。以下は、共有されるすべてのデータの例です："
+msgstr "UltiMaker Curaは、印刷品質とユーザーエクスペリエンスを向上させるために匿名データを収集します。以下は、共有されるすべてのデータの例です："
 
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
@@ -4882,12 +4912,13 @@ msgstr "以下のローカルEnginePluginサーバーの実行可能ファイル
 
 msgctxt "@info:plugin_failed"
 msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "実行中のEnginePluginを強制終了できません：{self._plugin_id}"
+msgstr ""
+"実行中のEnginePluginを強制終了できません: {self._plugin_id}\n"
 "アクセスが拒否されました。"
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
-msgstr "UltiMaker アカウントサーバーに到達できません。"
+msgstr "UltiMakerアカウントサーバーに到達できません。"
 
 msgctxt "@text"
 msgid "Unable to read example data file."
@@ -4907,7 +4938,7 @@ msgstr "プライムタワーまたはプライム位置が無効なためスラ
 
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr "無効な Extruder %s に関連付けられている造形物があるため、スライスできません。"
+msgstr "無効なエクストルーダー %s に関連付けられている造形物があるため、スライスできません。"
 
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -4939,7 +4970,7 @@ msgstr "利用できないプリンター"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
-msgstr "モデルを非グループ化"
+msgstr "モデルグループ解除"
 
 msgctxt "@button"
 msgid "Uninstall"
@@ -4955,11 +4986,11 @@ msgstr "Universal Cura Project"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr "Universal Cura Projectファイルは,位置データと選択した設定を保持したまま,さまざまな3Dプリンタで印刷することができます。エクスポートすると,ビルドプレート上に存在するすべてのモデルが,現在の位置,方向,スケールとともに含まれます。適切な印刷を保証するために,エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択することもできます。"
+msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンタで印刷することができます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択することもできます。"
 
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
-msgstr "ユニバーサルビルドシステム設定"
+msgstr "ユニバーサルビルドシステム構成"
 
 msgctxt "@label"
 msgid "Unknown"
@@ -4987,7 +5018,7 @@ msgstr "不明なエラー。"
 
 msgctxt "@label"
 msgid "Unlink Material"
-msgstr "フィラメントをリンクを外す"
+msgstr "材料をリンクから外す"
 
 msgctxt "@label:status"
 msgid "Unreachable"
@@ -5019,11 +5050,11 @@ msgstr "既存を更新する"
 
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
-msgstr "プロファイルを現在のセッティング"
+msgstr "プロファイルを現在の設定で更新/上書きする"
 
 msgctxt "@action:button"
 msgid "Update profile."
-msgstr "プロフィールを更新します。"
+msgstr "プロファイルを更新します。"
 
 msgctxt "@info:title"
 msgid "Update your printer"
@@ -5043,23 +5074,23 @@ msgstr "更新中..."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Cura 2.1 からCura 2.2のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 2.1 からCura 2.2へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Cura 2.2 からCura 2.4のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 2.2からCura 2.4へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Cura 2.5 からCura 2.6のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 2.5 からCura 2.6へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Cura 2.6 からCura 2.7のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 2.6からCura 2.7へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Cura 2.7からCura 3.0のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションCura 2.7からCura 3.0へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
@@ -5067,27 +5098,27 @@ msgstr "Cura 3.0からCura 3.1のコンフィグレーションアップグレ�
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.2からCura 3.3のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 3.2からCura 3.3へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Cura 3.3からCura 3.4のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 3.3からCura 3.4へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Cura 3.4 から Cura 3.5 のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 3.4からCura 3.5へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 3.5からCura 4.0へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 4.0からCura 4.1へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
+msgstr "コンフィギュレーションをCura 4.1からCura 4.2へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
@@ -5103,7 +5134,7 @@ msgstr "Cura 4.2からCura 4.3の設定をアップグレードします。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Cura 4.3からCura 4.4へのコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 4.3からCura 4.4へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
@@ -5123,7 +5154,7 @@ msgstr "構成をCura 4.6.2からCura 4.7に更新します。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Cura 4.7からCura 4.8に設定をアップグレードします。"
+msgstr "設定をCura 4.7からCura 4.8へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
@@ -5135,11 +5166,11 @@ msgstr "Cura 4.9からCura 4.10に設定をアップグレードします。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Cura 5.2からCura 5.3のコンフィグレーションアップグレート。"
+msgstr "コンフィグレーションをCura 5.2からCura 5.3へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "構成をCura 5.3からCura 5.4にアップグレードします。"
+msgstr "コンフィグレーションをCura 3.4からCura 3.5へアップグレード。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
@@ -5163,7 +5194,7 @@ msgstr "バックアップをアップロードしています..."
 
 msgctxt "@option:check"
 msgid "Use a single instance of Cura"
-msgstr "Curaの単一インスタンスを使用"
+msgstr "単一のCuraインスタンスを使用"
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5175,11 +5206,11 @@ msgstr "ユーザー用使用許諾契約"
 
 msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
-msgstr "画像ローダーなどを含むユーティリティ機能"
+msgstr "画像ローダーなどのユーティリティ機能"
 
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
-msgstr "ボロノイ図生成を含むユーティリティライブラリ"
+msgstr "ボロノイ図生成などのユーティリティライブラリー"
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5187,51 +5218,51 @@ msgstr "値"
 
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1 から2.2にバージョンアップグレート"
+msgstr "バージョンを2.1 から2.2へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2 から2.4にバージョンアップグレート"
+msgstr "バージョンを2.2 から2.4へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5から2.6にバージョンアップグレート"
+msgstr "バージョンを2.5から2.6へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6から2.7にバージョンアップグレート"
+msgstr "バージョンを2.6から2.7へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7から3.0にバージョンアップグレート"
+msgstr "バージョンを2.7から3.0へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0から3.1にバージョンアップグレート"
+msgstr "バージョンを3.0から3.1へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2から3.3にバージョンアップグレート"
+msgstr "バージョンを3.2から3.3へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
-msgstr "3.3から3.4にバージョンアップグレート"
+msgstr "バージョンを3.3から3.4へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4 から 3.5 にバージョンアップグレート"
+msgstr "バージョンを3.4から3.5へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 3.5 to 4.0"
-msgstr "3.5 から 4.0 にバージョンアップグレート"
+msgstr "バージョンを3.5から4.0へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.0 to 4.1"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
+msgstr "バージョンを4.0から4.1へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
-msgstr "4.0 から 4.1 にバージョンアップグレート"
+msgstr "バージョンを4.0から4.1へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
@@ -5243,15 +5274,15 @@ msgstr "バージョン4.13から5.0へのアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2から4.3にバージョンをアップグレート"
+msgstr "バージョンを4.2から4.3へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3から4.4にバージョンアップグレート"
+msgstr "バージョンを4.3から4.4へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4から4.5にバージョンアップグレート"
+msgstr "バージョンを4.4から4.5へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
@@ -5279,11 +5310,11 @@ msgstr "バージョン4.9から4.10へのアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
-msgstr "5.2から5.3にバージョンアップグレート"
+msgstr "バージョンを5.2から5.3へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
-msgstr "5.3から5.4へのバージョンアップ"
+msgstr "バージョンを3.4から3.5へアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
@@ -5299,7 +5330,7 @@ msgstr "Digital Factoryでプリンターを表示する"
 
 msgctxt "@label"
 msgid "View type"
-msgstr "タイプ表示"
+msgstr "表示タイプ"
 
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
@@ -5307,7 +5338,7 @@ msgstr "ユーザーマニュアルをオンラインで見る"
 
 msgctxt "@label"
 msgid "Viewport behavior"
-msgstr "ビューポイント機能"
+msgstr "表示動作"
 
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
@@ -5355,11 +5386,11 @@ msgstr "選択したファイルの中に複数のG-codeが存在します。1�
 
 msgctxt "@text:window"
 msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
-msgstr "選択したファイルの中に複数のプロジェクトが存在します。1ファイルのみ一度に開けます。ファイルからモデルを先に取り込むことをお勧めします。続けますか？"
+msgstr "選択したファイルの中に複数のプロジェクトが存在します。一度に1つのプロジェクトファイルのみを開けます。ファイルからモデルを先に取り込むことをお勧めします。続行してもよろしいですか？"
 
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
-msgstr "クラウドプリンターのウェブカムフィードをUltiMaker Curaから見ることができません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカムを見ます。"
+msgstr "クラウドプリンターのウェブカメラフィードをUltiMaker Curaで表示できません。「プリンター管理」をクリックして、Ultimaker Digital Factoryにアクセスし、このウェブカメラを表示します。"
 
 msgctxt "@button"
 msgid "Website"
@@ -5371,23 +5402,23 @@ msgstr "どのプリンターをセットアップしますか？"
 
 msgctxt "@info:tooltip"
 msgid "What type of camera navigation should be used?"
-msgstr "どのタイプのカメラナビゲーションを使用する必要がありますか？"
+msgstr "使用するカメラナビゲーションの種類"
 
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
-msgstr "どのような種類のカメラレンダリングを使用する必要がありますか?"
+msgstr "使用するカメラレンダリングの種類"
 
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
-msgstr "新情報"
+msgstr "新着情報"
 
 msgctxt "@label"
 msgid "What's New"
-msgstr "新情報"
+msgstr "新着情報"
 
 msgctxt "@title:window"
 msgid "What's New"
-msgstr "新情報"
+msgstr "新着情報"
 
 msgctxt "@info:tooltip"
 msgid "When checking for updates, check for both stable and for beta releases."
@@ -5399,7 +5430,7 @@ msgstr "アップデートを確認する際に、安定版リリースのみを
 
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
-msgstr "プロファイル内を変更し異なるプロファイルにしました、どこの変更点を保持、破棄したいのダイアログが表示されます、また何度もダイアログが表示されないようにデフォルト機能を選ぶことができます。"
+msgstr "別のプロファイルに切り替える際、変更を保持するかどうかを選択するダイアログを表示するか、もしくはデフォルトの動作を選択してダイアログを表示しないかを選択します。"
 
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
@@ -5407,7 +5438,7 @@ msgstr "材料プロファイルを同期する必要があるのはなぜです
 
 msgctxt "@action:label"
 msgid "Width (mm)"
-msgstr "幅（mm）"
+msgstr "幅 (mm)"
 
 msgctxt "description"
 msgid "Writes g-code to a compressed archive."
@@ -5423,11 +5454,11 @@ msgstr "X（幅）"
 
 msgctxt "@label"
 msgid "X max"
-msgstr "最大X"
+msgstr "X座標最大値"
 
 msgctxt "@label"
 msgid "X min"
-msgstr "X分"
+msgstr "X座標最小値"
 
 msgctxt "name"
 msgid "X-Ray View"
@@ -5435,7 +5466,7 @@ msgstr "透視ビュー"
 
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
-msgstr "透視ビューイング"
+msgstr "透視ビュー"
 
 msgctxt "@label"
 msgid "X/Y"
@@ -5451,15 +5482,15 @@ msgstr "X3Dリーダー"
 
 msgctxt "@label"
 msgid "Y (Depth)"
-msgstr "Y (奥行き)"
+msgstr "Y（奥行き）"
 
 msgctxt "@label"
 msgid "Y max"
-msgstr "最大Y"
+msgstr "Y座標最大値"
 
 msgctxt "@label"
 msgid "Y min"
-msgstr "Y分"
+msgstr "Y座標最小値"
 
 msgctxt "@info"
 msgid "Yes"
@@ -5467,7 +5498,8 @@ msgstr "はい"
 
 msgctxt "@label"
 msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr "Curaからすべてのプリンターを削除しようとしています。この操作は元に戻せません。"
+msgstr ""
+"Curaからすべてのプリンターを削除しようとしています。この操作は元に戻せません。\n"
 "続行してもよろしいですか？"
 
 msgctxt "@label"
@@ -5499,11 +5531,11 @@ msgstr "パッケージをインストールするにはライセンスに同意
 
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
-msgstr "変更を有効にするために{}を終了して再始動する必要があります。"
+msgstr "変更を有効にするために{}を終了して再起動する必要があります。"
 
 msgctxt "@dialog:info"
 msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
-msgstr "バックアップをリストアする前に Cura を再起動する必要があります。今すぐ Cura を閉じますか？"
+msgstr "バックアップをリストアする前に Curaを再起動する必要があります。今すぐCuraを閉じますか？"
 
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
@@ -5523,8 +5555,9 @@ msgstr "新しいプリンターがUltiMaker Curaに自動的に表示されま�
 
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "Your printer <b>{printer_name}</b> could be connected via cloud."
-" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr ""
+"プリンター<b>{printer_name}</b>はクラウドを通じて接続可能です。\n"
+"プリンターをDigital Factoryに接続して、どこからでも印刷のキュー管理や監視を行えます。"
 
 msgctxt "@label"
 msgid "Z"
@@ -5532,15 +5565,15 @@ msgstr "Z"
 
 msgctxt "@label"
 msgid "Z (Height)"
-msgstr "Z (高さ)"
+msgstr "Z（高さ）"
 
 msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
-msgstr "ZeroConfディスカバリーライブラリー"
+msgstr "ZeroConf名前解決ライブラリー"
 
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
-msgstr "マウスの方向にズームする"
+msgstr "マウスの方向にズーム"
 
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
@@ -5596,11 +5629,11 @@ msgstr "{}プラグインのダウンロードに失敗しました"
 
 msgctxt "@label"
 msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
-msgstr "組み合わせは推奨されません。信頼性を高めるため,BBコアをスロット1（左）に装填してください。"
+msgstr "組み合わせは推奨されません。信頼性を高めるため、BBコアをスロット1（左）に装填してください。"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Sketch Printfile"
-msgstr "メーカーボット スケッチ プリントファイル"
+msgstr "Makerbotスケッチ プリントファイル"
 
 msgctxt "@label:textbox"
 msgid "Search Printer"
@@ -5608,4 +5641,4 @@ msgstr "プリンターを検索"
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
-msgstr "これはCura Universalプロジェクトファイルです。Cura Universalプロジェクトとして開きますか？それとも,そこからモデルをインポートしますか？"
+msgstr "これはCura Universal Projectファイルです。Cura Universal Projectとして開きますか？それともそこからモデルをインポートしますか？"
