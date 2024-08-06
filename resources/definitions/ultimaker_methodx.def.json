@@ -36,7 +36,6 @@
             "polywood_pla",
             "redd_",
             "tizyx_",
-            "ultimaker_tough_pla_175",
             "verbatim_",
             "Vertex_",
             "volumic_",
@@ -71,7 +70,9 @@
     },
     "overrides":
     {
-        "build_volume_temperature": { "maximum_value": "107" },
+        "build_volume_temperature": {
+            "maximum_value": "107"
+        },
         "machine_depth": { "default_value": 236.48 },
         "machine_disallowed_areas":
         {
