@@ -6,7 +6,7 @@ requirements:
   - "cura_binary_data/(latest)@ultimaker/testing"
   - "fdm_materials/(latest)@ultimaker/testing"
   - "curaengine_plugin_gradual_flow/0.1.0-beta.4"
-  - "dulcificum/(latest)@ultimaker/testing"
+  - "dulcificum/0.2.1"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
   - "native_cad_plugin/2.0.0"
