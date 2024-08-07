@@ -42,7 +42,7 @@ class CloudApiClient:
     CLUSTER_API_ROOT = f"{ROOT_PATH}/connect/v1"
     CURA_API_ROOT = f"{ROOT_PATH}/cura/v1"
 
-    DEFAULT_REQUEST_TIMEOUT = 10  # seconds
+    DEFAULT_REQUEST_TIMEOUT = 30  # seconds
 
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
