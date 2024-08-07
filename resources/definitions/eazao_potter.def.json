@@ -11,12 +11,10 @@
         "has_machine_quality": false,
         "has_materials": false,
         "machine_extruder_trains": { "0": "eazao_potter_extruder_0" },
-        "preferred_material": "generic_pla",
         "preferred_quality_type": "normal"
     },
     "overrides":
     {
-        
         "acceleration_print": { "value": 300 },
         "acceleration_travel": { "value": 300 },
         "adhesion_type": { "default_value": "'none'" },
@@ -51,6 +49,7 @@
         "machine_name": { "default_value": "Eazao Potter" },
         "machine_start_gcode": { "default_value": "G21 ;set units to millimeters\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG28 ;Home\nG1 Z25.0 F1500 ;move the platform down 25mm\nG92 E0 ;extruder reset\nG1 F1500 E2\nG92 E0 ;The extruder is forced to zero again\nM302\nM163 S0 P0.85; Set Mix Factor\nM163 S1 P0.15; Set Mix Factor\nM164 S0" },
         "machine_width": { "default_value": 167 },
+        "magic_spiralize": { "value": true },
         "material_final_print_temperature": { "value": "0" },
         "material_initial_print_temperature": { "value": "0" },
         "material_print_temperature": { "value": "0" },
@@ -62,13 +61,14 @@
         "retraction_enable": { "value": false },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
+        "smooth_spiralized_contours": {"value": true},
         "speed_print": { "value": 25.0 },
         "speed_travel": { "value": 25.0 },
         "speed_wall": { "value": 25.0 },
         "speed_wall_0": { "value": 25.0 },
         "speed_wall_x": { "value": 25.0 },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
-        "top_bottom_thickness": { "value": 0 },
+        "top_bottom_thickness": { "value": 3 },
         "wall_thickness": { "value": 3.0 }
     }
 }

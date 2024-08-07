@@ -11,7 +11,6 @@
         "has_machine_quality": false,
         "has_materials": false,
         "machine_extruder_trains": { "0": "eazao_zero_extruder_0" },
-        "preferred_material": "generic_pla",
         "preferred_quality_type": "normal"
     },
     "overrides":
@@ -51,6 +50,7 @@
         "machine_name": { "default_value": "Eazao Zero" },
         "machine_start_gcode": { "default_value": "G21 \nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG28 ;Home \nG1 Z15.0 F1500 ;move the platform down 15mm\nG92 E0 \nG1 F1500 E2\nG92 E0\nM302\nM163 S0 P0.8; Set Mix Factor\nM163 S1 P0.2; Set Mix Factor\nM164 S0\n" },
         "machine_width": { "default_value": 150 },
+        "magic_spiralize": { "value": true },
         "material_final_print_temperature": { "value": "0" },
         "material_initial_print_temperature": { "value": "0" },
         "material_print_temperature": { "value": "0" },
@@ -63,9 +63,10 @@
         "retraction_enable": { "value": false },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
+        "smooth_spiralized_contours": {"value": true},
         "speed_print": { "value": 25.0 },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
-        "top_bottom_thickness": { "value": 0 },
+        "top_bottom_thickness": { "value": 3 },
         "wall_thickness": { "value": 3.0 }
     }
 }
