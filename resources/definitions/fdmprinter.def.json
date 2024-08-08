@@ -2367,7 +2367,7 @@
                     },
                     "default_value": "walls_and_lines",
                     "value": "'none' if infill_sparse_density > 50 else 'walls' if skin_edge_support_thickness > 0 else 'walls_and_lines'",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d')"
+                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d') and wall_line_count > 0 and top_layers > 0"
                 },
                 "lightning_infill_support_angle":
                 {
