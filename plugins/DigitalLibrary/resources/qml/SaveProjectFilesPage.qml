@@ -208,7 +208,7 @@ Item
         anchors.rightMargin: UM.Theme.getSize("thin_margin").height
 
         enabled: UM.Backend.state == UM.Backend.Done
-        currentIndex: UM.Backend.state == UM.Backend.Done ? dfFilenameTextfield.text.startsWith("MM")? 1 : 0 : 2
+        currentIndex: UM.Backend.state == UM.Backend.Done ? (Cura.MachineManager.activeMachine.getOutputFileFormats.includes("application/x-makerbot") ? 1 : 0) : 2
 
         textRole: "text"
         valueRole: "value"

@@ -83,6 +83,15 @@ class GlobalStack(CuraContainerStack):
         """
         return self.getMetaDataEntry("supports_material_export", False)
 
+    @pyqtProperty("QVariantList", constant = True)
+    def getOutputFileFormats(self) -> List[str]:
+        """
+        Which output formats the printer supports.
+        :return: A list of strings with MIME-types.
+        """
+        all_formats_str = self.getMetaDataEntry("file_formats", "")
+        return all_formats_str.split(";")
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
