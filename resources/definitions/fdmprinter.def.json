@@ -2356,7 +2356,7 @@
                 "extra_infill_lines_to_support_skins":
                 {
                     "label": "Extra Infill Lines To Support Skins",
-                    "description": "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.",
+                    "description": "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin.",
                     "type": "enum",
                     "options":
                     {
@@ -2366,7 +2366,7 @@
                     },
                     "default_value": "walls_and_lines",
                     "value": "'none' if infill_sparse_density > 50 else 'walls' if skin_edge_support_thickness > 0 else 'walls_and_lines'",
-                    "enabled": "infill_sparse_density > 0"
+                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d')"
                 },
                 "lightning_infill_support_angle":
                 {
