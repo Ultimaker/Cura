@@ -28,6 +28,18 @@
             "icon": "Printer",
             "children":
             {
+                "build_volume_fan_nr":
+                {
+                    "label": "Build volume fan number",
+                    "description": "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_name":
                 {
                     "label": "Machine Type",
@@ -288,17 +300,6 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
                     "settable_globally": false
-                },
-                "machine_nozzle_head_distance":
-                {
-                    "label": "Nozzle Length",
-                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
-                    "unit": "mm",
-                    "default_value": 3,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
                 },
                 "machine_nozzle_expansion_angle":
                 {
@@ -4466,6 +4467,37 @@
                     "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "build_fan_full_at_height":
+                {
+                    "label": "Build Fan Speed at Height",
+                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "build_volume_fan_nr != 0",
+                    "maximum_value_warning": "10.0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "build_fan_full_layer":
+                        {
+                            "label": "Build Fan Speed at Layer",
+                            "description": "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number.",
+                            "type": "int",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "build_volume_fan_nr != 0",
+                            "maximum_value_warning": "10 / resolveOrValue('layer_height')",
+                            "value": "max(1, int(math.floor((build_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        }
+                    }
                 },
                 "cool_fan_speed":
                 {
