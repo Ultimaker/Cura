@@ -39,6 +39,18 @@
                     "type": "float",
                     "unit": "mm"
                 },
+                "machine_extruder_change_duration":
+                {
+                    "default_value": 0,
+                    "description": "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur.",
+                    "label": "Extruder Change duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
+                },
                 "machine_extruder_cooling_fan_number":
                 {
                     "default_value": 0,
@@ -130,18 +142,6 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "str"
-                },
-                "machine_extruder_change_duration":
-                {
-                    "default_value": 0,
-                    "description": "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur.",
-                    "label": "Extruder Change duration",
-                    "minimum_value": "0",
-                    "settable_globally": false,
-                    "settable_per_extruder": true,
-                    "settable_per_mesh": false,
-                    "settable_per_meshgroup": false,
-                    "type": "float"
                 },
                 "machine_extruder_start_code_duration":
                 {
