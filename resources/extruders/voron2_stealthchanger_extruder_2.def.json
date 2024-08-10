@@ -1,5 +1,5 @@
 {
-    "version": 3,
+    "version": 2,
     "name": "Toolhead 2",
     "inherits": "fdmextruder",
     "metadata":
