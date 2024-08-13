@@ -76,10 +76,15 @@ jobs:
           ref: ${{ needs.parse-version.outputs.branch_name }}
           token: ${{ secrets.CURA_AUTORELEASE_PAT }}
 
-      - name: Create tag
+      - name: Create RC tag
         run: |
           git tag ${{ needs.find-rc-tag.outputs.tag_name }}
           git push origin tag ${{ needs.find-rc-tag.outputs.tag_name }}
+
+      - name: Create release tag
+        run: |
+          git tag -f ${{ inputs.cura_version }}
+          git push -f origin tag ${{ inputs.cura_version }}
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
