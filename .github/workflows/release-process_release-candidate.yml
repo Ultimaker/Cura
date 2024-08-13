@@ -146,16 +146,9 @@ jobs:
       - name: Extract changelog
         run: python ./scripts/extract_changelog.py --version ${{ needs.parse-version.outputs.version_major }}.${{ needs.parse-version.outputs.version_minor }}.${{ needs.parse-version.outputs.version_patch }} --changelog ./resources/texts/change_log.txt > formatted_changelog.txt
 
-      - name: Get commit id for release
-        id: get-commit-id
-        uses: iawia002/get-tag-or-commit-id@v1.0.1
-        with:
-          length: 40
-
       - name: Create release
         uses: notpeelz/action-gh-create-release@v5.0.1
         with:
-          target: ${{ steps.get-commit-id.outputs.id }}
           tag: ${{ inputs.cura_version }}
           strategy: replace
           title: UltiMaker Cura ${{ inputs.cura_version }}
