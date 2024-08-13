@@ -122,6 +122,7 @@
         "machine_name": { "default_value": "dxu" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.5 },
         "machine_nozzle_expansion_angle": { "default_value": 45 },
+        "machine_nozzle_head_distance": { "default_value": 5 },
         "machine_nozzle_heat_up_speed": { "default_value": 3.5 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_show_variants": { "default_value": true },

@@ -44,6 +44,7 @@
         "machine_max_acceleration_y": { "default_value": 6000 },
         "machine_max_acceleration_z": { "default_value": 12000 },
         "machine_name": { "default_value": "TypeAMachines" },
+        "machine_nozzle_head_distance": { "default_value": 3 },
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_start_gcode": { "default_value": ";-- START GCODE --\n;Sliced for Type A Machines Series 1\n;Sliced at: {day} {date} {time}\n;Basic settings:\n;Layer height: {layer_height}\n;Walls: {wall_thickness}\n;Fill: {fill_distance}\n;Print Speed: {print_speed}\n;Support: {support}\n;Retraction Speed: {retraction_speed}\n;Retraction Distance: {retraction_amount}\n;Print time: {print_time}\n;Filament used: {filament_amount}m {filament_weight}g\n;Settings based on: {material_profile}\nG21 ;metric values\nG90 ;absolute positioning\nG28 ;move to endstops\nG29 ;allows for auto-levelling\nG1 Z15.0 F12000 ;move the platform down 15mm\nG1 X150 Y5 F9000 ;center\nM140 S{material_bed_temperature} ;Prep Heat Bed\nM109 S{default_material_print_temperature} ;Heat To temp\nM190 S{material_bed_temperature} ;Heat Bed to temp\nG1 X150 Y5 Z0.3 ;move the platform to purge extrusion\nG92 E0 ;zero the extruded length\nG1 F200 X250 E30 ;extrude 30mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 X150 Y150  Z25 F12000 ;recenter and begin\nG1 F9000" },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },

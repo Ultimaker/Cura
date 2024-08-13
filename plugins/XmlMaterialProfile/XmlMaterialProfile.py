@@ -17,7 +17,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.FormatMaps import FormatMaps
 from cura.Machines.VariantType import VariantType
 
 try:
@@ -250,7 +249,7 @@ class XmlMaterialProfile(InstanceContainer):
             machine_variant_map[definition_id][variant_name] = variant_dict
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = self.getProductIdMap()
 
         for definition_id, container in machine_container_map.items():
             definition_id = container.getMetaDataEntry("definition")
@@ -648,7 +647,7 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = self.getProductIdMap()
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -924,7 +923,7 @@ class XmlMaterialProfile(InstanceContainer):
         result_metadata.append(base_metadata)
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = cls.getProductIdMap()
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
@@ -1128,6 +1127,29 @@ class XmlMaterialProfile(InstanceContainer):
                    }
         id_list = list(id_list)
         return id_list
+
+    __product_to_id_map: Optional[Dict[str, List[str]]] = None
+
+    @classmethod
+    def getProductIdMap(cls) -> Dict[str, List[str]]:
+        """Gets a mapping from product names in the XML files to their definition IDs.
+
+        This loads the mapping from a file.
+        """
+        if cls.__product_to_id_map is not None:
+            return cls.__product_to_id_map
+
+        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
+        product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
+        with open(product_to_id_file, encoding = "utf-8") as f:
+            contents = ""
+            for line in f:
+                contents += line if "#" not in line else "".join([line.replace("#", str(n)) for n in range(1, 12)])
+            cls.__product_to_id_map = json.loads(contents)
+        cls.__product_to_id_map = {key: [value] for key, value in cls.__product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
+        return cls.__product_to_id_map
 
     @staticmethod
     def _parseCompatibleValue(value: str):
