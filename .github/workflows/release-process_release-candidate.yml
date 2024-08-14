@@ -65,6 +65,8 @@ jobs:
     name: Create tags
     runs-on: ubuntu-latest
     needs: [parse-version, find-rc-tag]
+    outputs:
+      main_commit: ${{ steps.export-main-commit.main_commit }}
     strategy:
       matrix:
         repository: [Cura, Uranium, CuraEngine, cura-binary-data, fdm_materials]
@@ -81,10 +83,17 @@ jobs:
           git tag ${{ needs.find-rc-tag.outputs.tag_name }}
           git push origin tag ${{ needs.find-rc-tag.outputs.tag_name }}
 
-      - name: Create release tag
+      - name: Create or update release tag
         run: |
           git tag -f ${{ inputs.cura_version }}
           git push -f origin tag ${{ inputs.cura_version }}
+
+      - name: Export Cura tagged commit
+        id: export-main-commit
+        if: ${{ matrix.repository == "Cura" }}
+        run: |
+          echo "main_commit=`git rev-parse HEAD`" >> "$GITHUB_OUTPUT"
+
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
@@ -136,7 +145,7 @@ jobs:
   create-release-draft:
     name: Create the release draft
     runs-on: ubuntu-latest
-    needs: [create-installers, parse-version]
+    needs: [create-installers, parse-version, create-tags]
     steps:
       - name: Checkout Cura repo
         uses: actions/checkout@v4
@@ -149,6 +158,7 @@ jobs:
       - name: Create release
         uses: notpeelz/action-gh-create-release@v5.0.1
         with:
+          target: ${{ needs.create-tags.outputs.main_commit }}
           tag: ${{ inputs.cura_version }}
           strategy: replace
           title: UltiMaker Cura ${{ inputs.cura_version }}
