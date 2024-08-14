@@ -90,7 +90,7 @@ jobs:
 
       - name: Export Cura tagged commit
         id: export-main-commit
-        if: ${{ matrix.repository == "Cura" }}
+        if: ${{ matrix.repository == 'Cura' }}
         run: |
           echo "main_commit=`git rev-parse HEAD`" >> "$GITHUB_OUTPUT"
 
