@@ -5653,7 +5653,7 @@ msgstr ""
 
 msgctxt "name"
 msgid "Ultimaker Digital Library"
-msgstr ""
+msgstr "Ultimaker Цифрова Бібліотека"
 
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
