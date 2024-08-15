@@ -60,7 +60,7 @@ class VariantNode(ContainerNode):
             materials = list(materials_per_base_file.values())
 
         # Filter materials based on the exclude_materials property.
-        filtered_materials = [material for material in materials if not self.machine.isExcludedMaterial(material)]
+        filtered_materials = [material for material in materials if not self.machine.isExcludedMaterial(material["id"])]
 
         for material in filtered_materials:
             base_file = material["base_file"]
@@ -127,7 +127,7 @@ class VariantNode(ContainerNode):
         material_definition = container.getMetaDataEntry("definition")
 
         base_file = container.getMetaDataEntry("base_file")
-        if base_file in self.machine.exclude_materials:
+        if self.machine.isExcludedMaterial(base_file):
             return  # Material is forbidden for this printer.
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.machine.container_id:
