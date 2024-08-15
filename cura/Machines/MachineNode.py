@@ -1,8 +1,9 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, List
 
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Util import parseBool
@@ -175,6 +176,7 @@ class MachineNode(ContainerNode):
                 return True
         return False
 
+    @deprecated("Use isExcludedMaterialBaseFile instead.", since = "5.9.0")
     def isExcludedMaterial(self, material: MaterialNode) -> bool:
         """Returns whether the material should be excluded from the list of materials."""
         return self.isExcludedMaterialBaseFile(material.base_file)
