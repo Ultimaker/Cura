@@ -168,6 +168,14 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 파일"
 
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "3MF 리더"
+
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "3MF 기록기"
+
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MF 기록기 플러그인이 손상되었습니다."
@@ -242,6 +250,10 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 파일"
 
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF 리더"
+
 msgctxt "@label"
 msgid "Abort"
 msgstr "중단"
@@ -277,6 +289,10 @@ msgstr "소개..."
 msgctxt "@button"
 msgid "Accept"
 msgstr "동의"
+
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "G-코드를 수신하고 프린터로 보냅니다. 플러그인은 또한 펌웨어를 업데이트 할 수 있습니다."
 
 msgctxt "@label"
 msgid "Account synced"
@@ -417,6 +433,10 @@ msgstr "지원되는 모든 유형 ({0})"
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "익명 데이터 전송 허용"
+
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "G-코드 파일을 로드하고 표시 할 수 있습니다."
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -573,6 +593,10 @@ msgstr "지금 백업"
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "백업 및 리셋 설정"
+
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "구성을 백업하고 복원합니다."
 
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
@@ -746,6 +770,14 @@ msgctxt "@label"
 msgid "Checking..."
 msgstr "확인 중..."
 
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "펌웨어 업데이트를 확인합니다."
+
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인하고 제안합니다."
+
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "서포트를 생성하는 데 사용할 수 있는 기술 중 하나를 선택합니다. '표준' 서포트는 오버행(경사면) 파트 바로 아래에 서포트 구조물을 생성하고 해당 영역을 바로 아래로 떨어뜨립니다. '트리' 서포트는 모델을 지지하는 브랜치 끝에서 오버행(경사면) 영역을 향해 브랜치를 만들고 빌드 플레이트에서 모델을 지지할 수 있도록 모델을 브랜치로 최대한 감쌉니다."
@@ -826,6 +858,14 @@ msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "압축된 G-code 파일"
 
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "압축 된 G 코드 리더기"
+
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "압축 된 G 코드 작성기"
+
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "구성 변경"
@@ -897,6 +937,10 @@ msgstr "USB를 통해 연결"
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Cloud를 통해 연결됨"
+
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "디지털 라이브러리와 연결하여 Cura에서 디지털 라이브러리를 통해 파일을 열고 저장할 수 있도록 합니다."
 
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
@@ -1033,6 +1077,10 @@ msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "Digital Library에서 프린트 프로젝트를 생성하십시오."
 
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메쉬(eraser mesh)를 만듭니다"
+
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "백업 생성 중..."
@@ -1045,9 +1093,21 @@ msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Cura 백업"
 
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Cura 백업"
+
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 프로파일"
+
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Cura 프로파일 리더"
+
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Cura 프로파일 작성자"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
@@ -1077,6 +1137,18 @@ msgstr "Cura 언어"
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Cura 버전"
+
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "CuraEngine 백엔드"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "점진적으로 흐름을 평활화하여 높은 흐름 점프를 제한하는 CuraEngine 플러그인"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1362,6 +1434,10 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "실행됨"
 
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "2D 이미지 파일에서 프린팅 가능한 지오메트리를 생성 할 수 있습니다."
+
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "End GCode"
@@ -1449,6 +1525,10 @@ msgstr "프로파일을 <filename>{0}</filename> 에 내보냅니다"
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "플러그인 및 재료 프로파일을 사용하여 UltiMaker Cura를 확장하십시오."
+
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "후처리를 위해 사용자가 만든 스크립트를 허용하는 확장 프로그램"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1598,6 +1678,14 @@ msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "펌웨어 업데이트"
 
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "펌웨어 업데이트 검사기"
+
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "펌웨어 업데이터"
+
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
 msgstr "프린터와 연결이 펌웨어 업그레이드를 지원하지 않아 펌웨어를 업데이트할 수 없습니다."
@@ -1696,6 +1784,18 @@ msgstr "G-코드 세부 정보"
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "G-code 파일"
+
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "GCode 프로파일 리더기"
+
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "G-코드 리더"
+
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "GCode 작성자"
 
 msgctxt "@label"
 msgid "G-code flavor"
@@ -1844,6 +1944,10 @@ msgstr "Cura에 새 UltiMaker 프린터를 추가하려는 경우"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "프린터가 목록에 없으면 네트워크 프린팅 문제 해결 가이드를 읽어보십시오"
+
+msgctxt "name"
+msgid "Image Reader"
+msgstr "이미지 리더"
 
 msgctxt "@action:button"
 msgid "Import"
@@ -2129,6 +2233,10 @@ msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "왼쪽 보기"
 
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "레거시 Cura 프로파일 리더"
+
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "개발자에게 문제를 알려주십시오."
@@ -2209,6 +2317,10 @@ msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "로그"
 
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "충돌을 보고하는 리포터가 사용할 수 있도록 특정 이벤트를 기록합니다"
+
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "프린터와의 연결이 끊어졌습니다"
@@ -2216,6 +2328,10 @@ msgstr "프린터와의 연결이 끊어졌습니다"
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "기기 설정"
+
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "컴퓨터 설정 작업"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
@@ -2232,6 +2348,10 @@ msgstr "파일을 보내기 전에 g-코드가 프린터 및 프린터 구성에
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Makerbot 프린트파일"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Makerbot 프린트파일 작성기"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -2289,6 +2409,14 @@ msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "여기서 UltiMaker Cura 플러그인 및 재료 프로파일을 관리하십시오. 플러그인을 최신 상태로 유지하고 설정을 정기적으로 백업하십시오."
 
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
+
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "UltiMaker 네트워크 연결 프린터에 대한 네트워크 연결을 관리합니다."
+
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "제조업체"
@@ -2300,6 +2428,10 @@ msgstr "시장"
 msgctxt "@label"
 msgid "Marketplace"
 msgstr "시장"
+
+msgctxt "name"
+msgid "Marketplace"
+msgstr "마켓플레이스"
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2316,6 +2448,10 @@ msgstr "재료"
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "재료 색상"
+
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "재료 프로파일"
 
 msgctxt "@label"
 msgid "Material Type"
@@ -2361,6 +2497,10 @@ msgctxt "@action:label"
 msgid "Mode"
 msgstr "종류"
 
+msgctxt "name"
+msgid "Model Checker"
+msgstr "모델 검사기"
+
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "모델 에러"
@@ -2376,6 +2516,10 @@ msgstr "오버랩 설정 수정"
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "모니터"
+
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "모니터 단계"
 
 msgctxt "@action:button"
 msgid "Monitor print"
@@ -2815,6 +2959,10 @@ msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "모델 별 설정"
 
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "모델 별 설정 도구"
+
 msgid "Perspective"
 msgstr "원근"
 
@@ -2938,6 +3086,10 @@ msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "후 처리"
 
+msgctxt "name"
+msgid "Post Processing"
+msgstr "후처리"
+
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "후처리 플러그인"
@@ -2953,6 +3105,10 @@ msgstr "예열"
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "준비"
+
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "준비 단계"
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -2973,6 +3129,10 @@ msgstr "미리 보기"
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "미리 보기"
+
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "미리 보기 단계"
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
@@ -3216,6 +3376,106 @@ msgctxt "@label"
 msgid "Properties"
 msgstr "속성"
 
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "펌웨어 업데이트를 위한 기계 동작을 제공합니다."
+
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Cura에서 모니터 단계 제공."
+
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "일반 솔리드 메쉬보기를 제공합니다."
+
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Cura에서 준비 단계 제공."
+
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Cura에서 미리 보기 단계를 제공합니다."
+
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "기계 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 방법을 제공합니다."
+
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "XML 기반 재료 프로파일을 읽고 쓸 수있는 기능을 제공합니다."
+
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Ultimaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
+
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "이동식 드라이브를 제공합니다."
+
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Cura 프로파일 내보내기 지원을 제공합니다."
+
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Cura 프로파일 가져 오기 지원을 제공합니다."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "G-코드 파일에서 프로파일 가져 오기를 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "레거시 Cura 버전에서 프로파일 가져 오기를 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "3MF 파일 읽기 지원."
+
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "AMF 파일 읽기가 지원됩니다."
+
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Ultimaker 포맷 패키지 읽기를 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "X3D 파일을 읽을 수 있도록 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "모델 파일 읽기 기능을 제공합니다."
+
+msgctxt "description"
+msgid "Provides support for writing 3MF and UCP files."
+msgstr "3MF 및 UCP 파일 쓰기를 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "MakerBot 포맷 패키지 작성을 지원합니다."
+
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Ultimaker 포맷 패키지 작성을 지원합니다."
+
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "모델 별 설정을 제공합니다."
+
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "엑스레이 뷰를 제공합니다."
+
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "CuraEngine 슬라이스 백엔드 링크를 제공합니다."
+
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "슬라이스된 레이어 데이터의 미리보기를 제공합니다."
+
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt 버전"
@@ -3251,6 +3511,10 @@ msgstr "대기 중"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "%1 종료"
+
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "압축 된 아카이브로 부터 g-code를 읽습니다."
 
 msgctxt "@button"
 msgid "Recommended"
@@ -3303,6 +3567,10 @@ msgstr "선택 기억하기"
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "이동식 드라이브"
+
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "이동식 드라이브 출력 장치 플러그인"
 
 msgctxt "@action:button"
 msgid "Remove"
@@ -3584,6 +3852,10 @@ msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "재료를 프린터로 전송 중"
 
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "보초 로거"
+
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "직렬 통신 라이브러리"
@@ -3792,6 +4064,10 @@ msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "UltiMaker 플랫폼에 로그인"
 
+msgctxt "name"
+msgid "Simulation View"
+msgstr "시뮬레이션 뷰"
+
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "스킨"
@@ -3820,6 +4096,10 @@ msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "설정이 변경되면 자동으로 슬라이싱 합니다."
 
+msgctxt "name"
+msgid "Slice info"
+msgstr "슬라이스 정보"
+
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "슬라이싱 실패"
@@ -3835,6 +4115,10 @@ msgstr "스무딩(smoothing)"
 msgctxt "@label"
 msgid "Solid"
 msgstr "솔리드"
+
+msgctxt "name"
+msgid "Solid View"
+msgstr "솔리드 뷰"
 
 msgctxt "@item:inmenu"
 msgid "Solid view"
@@ -3930,6 +4214,10 @@ msgctxt "@label"
 msgid "Strength"
 msgstr "강도"
 
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "익명의 슬라이스 정보를 제출하십시오. 환경 설정을 통해 비활성화 할 수 있습니다."
+
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "재료를 성공적으로 내보냈습니다"
@@ -3973,6 +4261,10 @@ msgstr "서포트"
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "서포트 차단기"
+
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "서포트 지우개"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -4487,6 +4779,10 @@ msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "적절한 데이터 또는 메타 데이터 없이 Cura 백업을 복원하려고 시도했습니다."
 
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Trimesh 리더"
+
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "문제 해결"
@@ -4507,7 +4803,19 @@ msgctxt "@label"
 msgid "Type"
 msgstr "유형"
 
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "UFP 리더기"
+
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "UFP 작성자"
+
 msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "USB 프린팅"
+
+msgctxt "name"
 msgid "USB printing"
 msgstr "USB 프린팅"
 
@@ -4527,6 +4835,10 @@ msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker 포맷 패키지"
 
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "UltiMaker 네트워크 연결"
+
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "UltiMaker 검증된 패키지"
@@ -4534,6 +4846,10 @@ msgstr "UltiMaker 검증된 패키지"
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "UltiMaker 검증된 플러그인"
+
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "UltiMaker 기기 동작"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4546,6 +4862,10 @@ msgstr "UltiMaker 지원"
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
+
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "UltiMaker 디지털 라이브러리"
 
 msgctxt "@info:status"
 msgid "Unable to add the profile."
@@ -4720,6 +5040,114 @@ msgctxt "@button"
 msgid "Updating..."
 msgstr "업데이트 중"
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Cura 2.1에서 Cura 2.2로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Cura 2.2에서 Cura 2.4로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Cura 2.5에서 Cura 2.6으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Cura 2.6에서 Cura 2.7로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Cura 2.7에서 Cura 3.0으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Cura 3.0에서 Cura 3.1로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Cura 3.2에서 Cura 3.3으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Cura 3.3에서 Cura 3.4로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Cura 3.4에서 Cura 3.5로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Cura 3.5에서 Cura 4.0으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Cura 4.0에서 Cura 4.1로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Cura 4.1에서 Cura 4.2로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Cura 4.11에서 Cura 4.12로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Cura 4.13에서 Cura 5.0으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Cura 4.2에서 Cura 4.3으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Cura 4.3에서 Cura 4.4로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Cura 4.4에서 Cura 4.5로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Cura 4.5에서 Cura 4.6으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Cura 4.6.0에서 Cura 4.6.2로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Cura 4.6.2에서 Cura 4.7로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Cura 4.7에서 Cura 4.8로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Cura 4.8에서 Cura 4.9로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Cura 4.9에서 Cura 4.10으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "Cura 5.3에서 Cura 5.4로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "Cura 5.4에서 Cura 5.5로 구성을 업그레이드합니다."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr "Cura 5.6에서 Cura 5.7로 구성을 업그레이드합니다."
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "사용자 정의 펌웨어 업로드"
@@ -4755,6 +5183,114 @@ msgstr "Voronoi 세대를 포함한 유틸리티 라이브러리"
 msgctxt "@title:column"
 msgid "Value"
 msgstr "값"
+
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "2.1에서 2.2로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "2.2에서 2.4로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "2.5에서 2.6으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "2.6에서 2.7으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "2.7에서 3.0으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "3.0에서 3.1로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "3.2에서 3.3으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "버전 업그레이드 3.3에서 3.4"
+
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "3.4에서 3.5로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "버전 업그레이드 3.5에서 4.0"
+
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "버전 업그레이드 4.0에서 4.1"
+
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "4.1에서 4.2로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "4.11에서 4.12로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "4.13에서 5.0으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "4.2에서 4.3로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "4.3에서 4.4로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "4.4에서 4.5로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "4.5에서 4.6으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "4.6.0에서 4.6.2로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "4.6.2에서 4.7로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "4.7에서 4.8로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "4.8에서 4.9로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "4.9에서 4.10으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "5.2에서 5.3으로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr "5.3에서 5.4로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "5.4에서 5.5로 버전 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr "5.6에서 5.7로 버전 업그레이드"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -4872,6 +5408,14 @@ msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "너비 (mm)"
 
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "압축 된 아카이브에 g-code를 씁니다."
+
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "G Code를 파일에 씁니다."
+
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (너비)"
@@ -4884,6 +5428,10 @@ msgctxt "@label"
 msgid "X min"
 msgstr "X 최소값"
 
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "엑스레이 뷰"
+
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "엑스레이 뷰"
@@ -4895,6 +5443,10 @@ msgstr "X/Y"
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D 파일"
+
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "X3D 리더"
 
 msgctxt "@label"
 msgid "Y (Depth)"
@@ -5041,554 +5593,18 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
 
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "UltiMaker 네트워크 프린터에 대한 네트워크 연결을 관리합니다."
-
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "UltiMaker 네트워크 연결"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "G-코드 파일에서 프로파일 가져 오기를 지원합니다."
-
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "GCode 프로파일 리더기"
-
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "일반 솔리드 메쉬보기를 제공합니다."
-
-msgctxt "name"
-msgid "Solid View"
-msgstr "솔리드 뷰"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "점진적으로 흐름을 평활화하여 높은 흐름 점프를 제한하는 CuraEngine 플러그인"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
-
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "3MF 파일 읽기 지원."
-
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "3MF 리더"
-
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "G-코드를 수신하고 프린터로 보냅니다. 플러그인은 또한 펌웨어를 업데이트 할 수 있습니다."
-
-msgctxt "name"
-msgid "USB printing"
-msgstr "USB 프린팅"
-
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "펌웨어 업데이트를 확인합니다."
-
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "펌웨어 업데이트 검사기"
-
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "응용 프로그램의 확장을 관리하고 UltiMaker 웹 사이트에서 확장을 검색할 수 있습니다."
-
-msgctxt "name"
-msgid "Marketplace"
-msgstr "마켓플레이스"
-
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "구성을 백업하고 복원합니다."
-
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Cura 백업"
-
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "기계 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 방법을 제공합니다."
-
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "컴퓨터 설정 작업"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Cura 2.5에서 Cura 2.6으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "2.5에서 2.6으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Cura 4.7에서 Cura 4.8로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "4.7에서 4.8로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Cura 4.4에서 Cura 4.5로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "4.4에서 4.5로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Cura 3.0에서 Cura 3.1로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "3.0에서 3.1로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Cura 4.11에서 Cura 4.12로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "4.11에서 4.12로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Cura 4.1에서 Cura 4.2로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "4.1에서 4.2로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Cura 2.6에서 Cura 2.7로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "2.6에서 2.7으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Cura 4.6.0에서 Cura 4.6.2로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "4.6.0에서 4.6.2로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Cura 3.3에서 Cura 3.4로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "버전 업그레이드 3.3에서 3.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Cura 4.8에서 Cura 4.9로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "4.8에서 4.9로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Cura 4.5에서 Cura 4.6으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "4.5에서 4.6으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Cura 4.2에서 Cura 4.3으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "4.2에서 4.3로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Cura 3.2에서 Cura 3.3으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "3.2에서 3.3으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Cura 4.3에서 Cura 4.4로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "4.3에서 4.4로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
-msgstr "Cura 5.6에서 Cura 5.7로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 5.6 to 5.7"
-msgstr "5.6에서 5.7로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Cura 2.1에서 Cura 2.2로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "2.1에서 2.2로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "Cura 5.3에서 Cura 5.4로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr "5.3에서 5.4로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Cura 4.9에서 Cura 4.10으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "4.9에서 4.10으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Cura 2.7에서 Cura 3.0으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "2.7에서 3.0으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Cura 3.5에서 Cura 4.0으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "버전 업그레이드 3.5에서 4.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "5.2에서 5.3으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Cura 4.0에서 Cura 4.1로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "버전 업그레이드 4.0에서 4.1"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Cura 4.13에서 Cura 5.0으로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "4.13에서 5.0으로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Cura 3.4에서 Cura 3.5로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "3.4에서 3.5로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Cura 2.2에서 Cura 2.4로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "2.2에서 2.4로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Cura 4.6.2에서 Cura 4.7로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "4.6.2에서 4.7로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr "Cura 5.4에서 Cura 5.5로 구성을 업그레이드합니다."
-
-msgctxt "name"
-msgid "Version Upgrade 5.4 to 5.5"
-msgstr "5.4에서 5.5로 버전 업그레이드"
-
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "G-코드 파일을 로드하고 표시 할 수 있습니다."
-
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "G-코드 리더"
-
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "익명의 슬라이스 정보를 제출하십시오. 환경 설정을 통해 비활성화 할 수 있습니다."
-
-msgctxt "name"
-msgid "Slice info"
-msgstr "슬라이스 정보"
-
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "이동식 드라이브를 제공합니다."
-
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "이동식 드라이브 출력 장치 플러그인"
-
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "특정 장소에서 서포트 프린팅을 막는 지우개 메쉬(eraser mesh)를 만듭니다"
-
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "서포트 지우개"
-
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "가능한 프린팅 문제를 위해 모델 및 인쇄 구성을 확인하고 제안합니다."
-
-msgctxt "name"
-msgid "Model Checker"
-msgstr "모델 검사기"
-
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Cura에서 준비 단계 제공."
-
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "준비 단계"
-
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "슬라이스된 레이어 데이터의 미리보기를 제공합니다."
-
-msgctxt "name"
-msgid "Simulation View"
-msgstr "시뮬레이션 뷰"
-
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "AMF 파일 읽기가 지원됩니다."
-
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "AMF 리더"
-
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "엑스레이 뷰를 제공합니다."
-
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "엑스레이 뷰"
-
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "펌웨어 업데이트를 위한 기계 동작을 제공합니다."
-
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "펌웨어 업데이터"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "레거시 Cura 버전에서 프로파일 가져 오기를 지원합니다."
-
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "레거시 Cura 프로파일 리더"
-
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "후처리를 위해 사용자가 만든 스크립트를 허용하는 확장 프로그램"
-
-msgctxt "name"
-msgid "Post Processing"
-msgstr "후처리"
-
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "충돌을 보고하는 리포터가 사용할 수 있도록 특정 이벤트를 기록합니다"
-
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "보초 로거"
-
-msgctxt "description"
-msgid "Provides support for writing MakerBot Format Packages."
-msgstr "MakerBot 포맷 패키지 작성을 지원합니다."
-
-msgctxt "name"
-msgid "Makerbot Printfile Writer"
-msgstr "Makerbot 프린트파일 작성기"
-
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Cura 프로파일 가져 오기 지원을 제공합니다."
-
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Cura 프로파일 리더"
-
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Ultimaker 포맷 패키지 읽기를 지원합니다."
-
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "UFP 리더기"
-
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "2D 이미지 파일에서 프린팅 가능한 지오메트리를 생성 할 수 있습니다."
-
-msgctxt "name"
-msgid "Image Reader"
-msgstr "이미지 리더"
-
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "CuraEngine 슬라이스 백엔드 링크를 제공합니다."
-
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "CuraEngine 백엔드"
-
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "압축 된 아카이브에 g-code를 씁니다."
-
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "압축 된 G 코드 작성기"
-
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Ultimaker 기계에 대한 기계 작동 제공(예 : 침대 수평 조정 마법사, 업그레이드 선택 등)"
-
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "UltiMaker 기기 동작"
-
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "압축 된 아카이브로 부터 g-code를 읽습니다."
-
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "압축 된 G 코드 리더기"
-
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Cura에서 미리 보기 단계를 제공합니다."
-
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "미리 보기 단계"
-
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "디지털 라이브러리와 연결하여 Cura에서 디지털 라이브러리를 통해 파일을 열고 저장할 수 있도록 합니다."
-
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "UltiMaker 디지털 라이브러리"
-
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Cura 프로파일 내보내기 지원을 제공합니다."
-
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Cura 프로파일 작성자"
-
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "X3D 파일을 읽을 수 있도록 지원합니다."
-
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "X3D 리더"
-
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "모델 파일 읽기 기능을 제공합니다."
-
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Trimesh 리더"
-
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Cura에서 모니터 단계 제공."
-
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "모니터 단계"
-
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "모델 별 설정을 제공합니다."
-
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "모델 별 설정 도구"
-
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "XML 기반 재료 프로파일을 읽고 쓸 수있는 기능을 제공합니다."
-
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "재료 프로파일"
-
-msgctxt "description"
-msgid "Provides support for writing 3MF and UCP files."
-msgstr "3MF 및 UCP 파일 쓰기를 지원합니다."
-
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "3MF 기록기"
-
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Ultimaker 포맷 패키지 작성을 지원합니다."
-
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "UFP 작성자"
-
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "G Code를 파일에 씁니다."
-
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "GCode 작성자"
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "권장하지 않는 조합입니다. 안정성을 높이려면 BB 코어를 1번 슬롯(왼쪽)에 탑재하세요."
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "Makerbot Sketch Printfile"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "프린터 검색"
+
+msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "이 항목은 Cura Universal 프로젝트 파일입니다. 해당 파일을 Cura Universal 프로젝트로 열거나, 파일에서 모델을 불러올까요?"

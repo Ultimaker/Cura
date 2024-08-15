@@ -1,3 +1,51 @@
+[5.8]
+
+* New Z Seam Settings:
+New settings have been added that let you tweak how and where the Z seam is placed
+- "Z Seam On Vertex" allows you to choose if the Z seam is placed on the vertices closest to a selected Z seam position or if it instead follows the selected position exactly
+- "Seam overhang angle" enables you to select the angle at which Z seams will not be printed on overhangs
+- "Support Z Seam Away from Model" and "Min Z Seam Distance from Model" define where the Z seam is placed on supports
+Try it for yourself <a href="https://www.thingiverse.com/thing:6692375?utm_source=changelog&utm_medium=cura&utm_campaign=58">with this toast post-it holder</a>.
+
+* New features and improvements:
+- A search bar has been added to the “Add an offline printer” list
+- Introduced “Support Infill Density Multiplier Initial Layer”, “Raft Infill Overlap Percentage”, Raft Surface Z Offset, and Raft Flow settings to improve dual extrusion rafts
+- Introduced “Cooling during extruder switch" to define the cooling fan behavior during an extruder switch by defining Unchanged, Only last extruder, All fans
+- Updated the retract behavior for a nozzle switch to reduce the chance of oozing
+- Updated Insert at Layer Change Post Processing Script so layers can be skipped, contributed by  @tastyratz
+- Updated the "Interleaved Prime Tower" with "Prime Tower Minimum Shell Thickness" so it uses less filament, contributed by @wawanbreton
+
+* Bug fixes:
+- Fixed a bug that caused spiked objects to have missing layers, thanks to @thomasrahm
+- Updated the text in the Open Universal Cura Project (UCP) file to be more correct
+- Fixed the interpolated values for fan speeds and improved the check for minimum layer time
+- Fix a bug where material_print_temp_prepend not being disabled
+- Reduced the chance that oozing in the first travel move will cause a scar on the bottom of the model by updating the Layer Start X and Y
+- Fixed a bug where a slice would fail if the overhang angle was set to 90 degrees
+- Fixed a bug where infill lines are going through the model with a certain setting combination, contributed by @thomasrahm
+- Updated the temperature values in the monitor page to reflect the initial instead of the final bed and print temperatures, contributed by @GregValiant
+
+* Printer definitions, profiles, and materials:
+- Introduced the Ultimaker Method with PLA, PVA, and N12CF profiles and intents
+- Improved dual-support settings for UltiMaker Sline and Method printers
+- Expanded and updated intents for Factor 4
+- Updated CPE and PC settings to improve surface quality for Factor 4
+- Introduced Creality Ender 3 V3 KE, contributed by @vadim-danilchik, @daitj, @VladislavVidenov, @fjventura20
+- Introduced Voron2 StealthChanger 250, StealthChanger 300, and StealthChanger 350,  contributed by @TheSin-
+- Introduced K1 Max, contributed by @itay-grudev
+- Introduced Ankermake M5C, contributed by @augustchi
+- Introduced WEEDO F150S, F152S, F370, ME40, ME40 Lite, and X40 V3+, contributed by @WinstonMao
+
+[5.7.2]
+
+* Bugfixes
+- Fixed a bug where modifier meshes and support meshes were not loaded in the correct position, should resolve https://github.com/Ultimaker/Cura/issues/18761 (and https://github.com/5axes/SpoonAntiWarping/issues/8)
+- Primeblobs were not printed for a second extruder
+- Interleaved prime tower can now be printed with a raft
+- Improved behaviors for start temperature for multiple extruders
+- Improved preheating logic when using a raft with multiple extruders
+- Enabled Raft Remove Inside Corners and Prime Tower Mode to be shipped with a material profile
+
 [5.7.1]
 
 * Introducing the UltiMaker Factor 4
