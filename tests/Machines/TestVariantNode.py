@@ -96,7 +96,7 @@ def test_variantNodeInit(container_registry, machine_node):
 
 def test_variantNodeInit_excludedMaterial(container_registry, machine_node):
     machine_node.exclude_materials = ["material_1"]
-    machine_node.isExcludedMaterial = MagicMock(side_effect=lambda material: material["id"] == "material_1")
+    machine_node.isExcludedMaterialBaseFile = MagicMock(side_effect=lambda material: material == "material_1")
     node = createVariantNode("variant_1", machine_node, container_registry)
 
     assert "material_1" not in node.materials
