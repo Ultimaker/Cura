@@ -14,6 +14,7 @@ from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construc
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
+from cura.Machines.MaterialNode import MaterialNode
 import UM.FlameProfiler
 
 
@@ -167,12 +168,16 @@ class MachineNode(ContainerNode):
 
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
-    def isExcludedMaterial(self, material_base_file: str) -> bool:
+    def isExcludedMaterialBaseFile(self, material_base_file: str) -> bool:
         """Returns whether the material should be excluded from the list of materials."""
         for exclude_material in self.exclude_materials:
             if exclude_material in material_base_file:
                 return True
         return False
+
+    def isExcludedMaterial(self, material: MaterialNode) -> bool:
+        """Returns whether the material should be excluded from the list of materials."""
+        return self.isExcludedMaterialBaseFile(material.base_file)
 
     @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
