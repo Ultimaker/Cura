@@ -511,8 +511,6 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
 
-        rm(self, "bundled_*.json", os.path.join(self.package_folder, self.cpp.package.resdirs[0], "bundled_packages"), recursive = False)
-
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
 
