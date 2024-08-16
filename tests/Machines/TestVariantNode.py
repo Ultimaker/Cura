@@ -46,7 +46,7 @@ def getInstanceContainerSideEffect(*args, **kwargs):
 def machine_node():
     mocked_machine_node = MagicMock()
     mocked_machine_node.container_id = "machine_1"
-    mocked_machine_node.isExcludedMaterial = MagicMock(return_value=False)
+    mocked_machine_node.isExcludedMaterialBaseFile = MagicMock(return_value=False)
     mocked_machine_node.preferred_material = "preferred_material"
     return mocked_machine_node
 
