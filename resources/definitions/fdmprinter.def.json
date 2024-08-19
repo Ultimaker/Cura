@@ -2327,7 +2327,7 @@
                     "label": "Skin Edge Support Thickness",
                     "description": "The thickness of the extra infill that supports skin edges.",
                     "unit": "mm",
-                    "default_value": 0.8,
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
@@ -2342,7 +2342,7 @@
                         {
                             "label": "Skin Edge Support Layers",
                             "description": "The number of infill layers that supports skin edges.",
-                            "default_value": 4,
+                            "default_value": 0,
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "type": "int",
@@ -2353,6 +2353,21 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "extra_infill_lines_to_support_skins":
+                {
+                    "label": "Extra Infill Lines To Support Skins",
+                    "description": "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "walls_and_lines": "Walls and Lines",
+                        "walls": "Walls Only",
+                        "none": "None"
+                    },
+                    "default_value": "walls_and_lines",
+                    "value": "'none' if infill_sparse_density > 50 else 'walls' if skin_edge_support_thickness > 0 else 'walls_and_lines'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d') and wall_line_count > 0 and top_layers > 0"
                 },
                 "lightning_infill_support_angle":
                 {
