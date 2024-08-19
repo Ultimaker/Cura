@@ -24,12 +24,21 @@ class TimeLapse(Script):
                     "type": "str",
                     "default_value": "M240"
                 },
+                "anti_shake_length":
+                {
+                    "label": "Anti-shake length",
+                    "description": "How long to wait (in ms) before capturing to reduce shake.",
+                    "type": "int",
+                    "default_value": 500,
+                    "minimum_value": 0,
+                    "unit": "ms"
+                },
                 "pause_length":
                 {
                     "label": "Pause length",
                     "description": "How long to wait (in ms) after camera was triggered.",
                     "type": "int",
-                    "default_value": 700,
+                    "default_value": 500,
                     "minimum_value": 0,
                     "unit": "ms"
                 },
@@ -92,6 +101,7 @@ class TimeLapse(Script):
         x_park = self.getSettingValueByKey("head_park_x")
         y_park = self.getSettingValueByKey("head_park_y")
         trigger_command = self.getSettingValueByKey("trigger_command")
+        anti_shake_length = self.getSettingValueByKey("anti_shake_length")
         pause_length = self.getSettingValueByKey("pause_length")
         retract = int(self.getSettingValueByKey("retract"))
         zhop = self.getSettingValueByKey("zhop")
@@ -104,6 +114,7 @@ class TimeLapse(Script):
             gcode_to_append += self.putValue(G=1, F=feed_rate,
                                              X=x_park, Y=y_park) + " ;Park print head\n"
         gcode_to_append += self.putValue(M=400) + " ;Wait for moves to finish\n"
+        gcode_to_append += self.putValue(G=4, P=anti_shake_length) + " ;Wait for camera\n"
         gcode_to_append += trigger_command + " ;Snap Photo\n"
         gcode_to_append += self.putValue(G=4, P=pause_length) + " ;Wait for camera\n"
 
@@ -129,7 +140,8 @@ class TimeLapse(Script):
                     layer += gcode_to_append
 
                     if zhop != 0:
-                        layer += self.putValue(G=0, X=last_x, Y=last_y, Z=last_z) + "; Restore position \n"
+                        layer += self.putValue(G=0, X=last_x, Y=last_y) + "; Restore position \n"
+                        layer += self.putValue(G=0, Z=last_z) + "; Restore position \n"
                     else:
                         layer += self.putValue(G=0, X=last_x, Y=last_y) + "; Restore position \n"
 
