@@ -1436,6 +1436,31 @@
                     "enabled": "z_seam_type == 'back'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "scarf_joint_seam_length":
+                {
+                    "label": "Scarf seam length",
+                    "description": "When greater than 0, a scarf joint will be created on the Z seam to make it less visible.",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "scarf_joint_seam_start_height_ratio":
+                {
+                    "label": "Scarf seam start height",
+                    "description": "This is the ratio over the total layer height where the scarf joint seam will start.",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
                 }
             }
         },
