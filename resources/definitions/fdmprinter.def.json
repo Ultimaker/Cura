@@ -765,6 +765,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "reset_flow_duration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "value": 2.0,
+                    "label": "Reset flow duration",
+                    "description": "For any travel move longer than this value, the material flow is reset to the paths target flow",
+                    "unit": "s",
+                    "type": "float"
                 }
             }
         },
@@ -3153,6 +3162,60 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "gradual_flow_enabled":
+                {
+                    "label": "Gradual flow enabled",
+                    "description": "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "max_flow_acceleration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "label": "Gradual flow max acceleration",
+                    "description": "Maximum acceleration for gradual flow changes",
+                    "type": "float",
+                    "unit": "mm\u00b3/s\u00b2",
+                    "default_value": 1,
+                    "minimum_value_warning": 0.1,
+                    "maximum_value_warning": 99999,
+                    "minimum_value": 0.01,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "comments": "when enabled, each second the flow will at max be increased/decreased by this value"
+                },
+                "layer_0_max_flow_acceleration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "value": "max_flow_acceleration",
+                    "label": "Initial layer max flow acceleration",
+                    "description": "Minimum speed for gradual flow changes for the first layer",
+                    "type": "float",
+                    "unit": "mm\u00b3/s\u00b2",
+                    "default_value": 1,
+                    "minimum_value_warning": 0.1,
+                    "maximum_value_warning": 99999,
+                    "minimum_value": 0.01,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "gradual_flow_discretisation_step_size":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "label": "Gradual flow discretisation step size",
+                    "description": "Duration of each step in the gradual flow change",
+                    "type": "float",
+                    "unit": "s",
+                    "default_value": 0.2,
+                    "maximum_value_warning": 1.0,
+                    "maximum_value": 5.0,
+                    "minimum_value_warning": 0.1,
+                    "minimum_value": 0.01,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
