@@ -1461,6 +1461,19 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
+                },
+                "scarf_split_distance":
+                {
+                    "label": "Scarf seam split distance",
+                    "description": "This is the maximum length of an extrusion path when splitting a longer path to apply the scarf seam. A smaller distance will create a more precise but also more verbose G-Code.",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": 0.1,
+                    "maximum_value": 100.0,
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
                 }
             }
         },
