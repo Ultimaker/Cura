@@ -1439,7 +1439,7 @@
                 },
                 "scarf_joint_seam_length":
                 {
-                    "label": "Scarf seam length",
+                    "label": "Scarf Seam Length",
                     "description": "When greater than 0, a scarf joint will be created on the Z seam to make it less visible.",
                     "type": "float",
                     "default_value": 0,
@@ -1451,7 +1451,7 @@
                 },
                 "scarf_joint_seam_start_height_ratio":
                 {
-                    "label": "Scarf seam start height",
+                    "label": "Scarf Seam Start Height",
                     "description": "This is the ratio over the total layer height where the scarf joint seam will start.",
                     "type": "float",
                     "default_value": 0,
@@ -1464,8 +1464,75 @@
                 },
                 "scarf_split_distance":
                 {
-                    "label": "Scarf seam split distance",
+                    "label": "Scarf Seam Split Distance",
                     "description": "This is the maximum length of an extrusion path when splitting a longer path to apply the scarf seam. A smaller distance will create a more precise but also more verbose G-Code.",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": 0.1,
+                    "maximum_value": 100.0,
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_start_speed_ratio":
+                {
+                    "label": "Outer Wall Start Speed Ratio",
+                    "description": "This is the ratio of the top speed to start with when printing an outer wall.",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "minimum_value": 0.0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_acceleration":
+                {
+                    "label": "Outer Wall Acceleration",
+                    "description": "This is the acceleration with which to reach the top speed when printing an outer wall.",
+                    "enabled": "wall_0_start_speed_ratio < 100.0",
+                    "type": "float",
+                    "default_value": 20.0,
+                    "minimum_value": 1.0,
+                    "maximum_value": 1000.0,
+                    "unit": "mm/s\u00b2",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_end_speed_ratio":
+                {
+                    "label": "Outer Wall End Speed Ratio",
+                    "description": "This is the ratio of the top speed to end with when printing an outer wall.",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "minimum_value": 0.0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_deceleration":
+                {
+                    "label": "Outer Wall Deceleration",
+                    "description": "This is the deceleration with which to end printing an outer wall.",
+                    "enabled": "wall_0_end_speed_ratio < 100.0",
+                    "type": "float",
+                    "default_value": 20.0,
+                    "minimum_value": 1.0,
+                    "maximum_value": 1000.0,
+                    "unit": "mm/s\u00b2",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_speed_split_distance":
+                {
+                    "label": "Outer Wall Speed Split Distance",
+                    "description": "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code.",
                     "type": "float",
                     "default_value": 1.0,
                     "minimum_value": 0.1,
