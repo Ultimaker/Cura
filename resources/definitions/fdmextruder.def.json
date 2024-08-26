@@ -172,6 +172,7 @@
                     "default_value": 3,
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
                     "label": "Nozzle Length",
+                    "settable_globally": false,
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
