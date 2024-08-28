@@ -93,6 +93,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                 }
                 if Platform.isWindows():
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
+
+                Logger.info(os.environ)
                 self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
             self._is_running = True
             return True
