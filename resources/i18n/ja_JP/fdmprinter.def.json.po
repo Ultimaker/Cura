@@ -5865,3 +5865,43 @@ msgstr "ラフトサーフェスの第1層をプリントする際に、カス�
 msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "頂点のZシーム"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "段階的なフローの変化におけるステップごとの継続時間"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "段階的なフローの変化を有効にします。有効にすると,フローは目標フローまで段階的に増減します。これは,押し出しモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "この値より長い移動の場合,素材フローはパスの目標フローにリセットされます。"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "段階的なフローの離散化ステップのサイズ"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "段階的なフローが有効"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "段階的なフローの最大加速度"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "初期層の最大フロー加速度"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "フローを段階的に変化させるための最大加速度"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "第1層のフローを段階的に変化させるための最低速度"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "フローの継続時間をリセット"

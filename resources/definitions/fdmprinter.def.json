@@ -28,6 +28,18 @@
             "icon": "Printer",
             "children":
             {
+                "build_volume_fan_nr":
+                {
+                    "label": "Build volume fan number",
+                    "description": "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_name":
                 {
                     "label": "Machine Type",
@@ -288,17 +300,6 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
                     "settable_globally": false
-                },
-                "machine_nozzle_head_distance":
-                {
-                    "label": "Nozzle Length",
-                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
-                    "unit": "mm",
-                    "default_value": 3,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
                 },
                 "machine_nozzle_expansion_angle":
                 {
@@ -764,6 +765,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "reset_flow_duration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "value": 2.0,
+                    "label": "Reset flow duration",
+                    "description": "For any travel move longer than this value, the material flow is reset to the paths target flow",
+                    "unit": "s",
+                    "type": "float"
                 }
             }
         },
@@ -2326,7 +2336,7 @@
                     "label": "Skin Edge Support Thickness",
                     "description": "The thickness of the extra infill that supports skin edges.",
                     "unit": "mm",
-                    "default_value": 0.8,
+                    "default_value": 0,
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
@@ -2341,7 +2351,7 @@
                         {
                             "label": "Skin Edge Support Layers",
                             "description": "The number of infill layers that supports skin edges.",
-                            "default_value": 4,
+                            "default_value": 0,
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "type": "int",
@@ -2352,6 +2362,21 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "extra_infill_lines_to_support_skins":
+                {
+                    "label": "Extra Infill Lines To Support Skins",
+                    "description": "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "walls_and_lines": "Walls and Lines",
+                        "walls": "Walls Only",
+                        "none": "None"
+                    },
+                    "default_value": "walls_and_lines",
+                    "value": "'none' if infill_sparse_density > 50 else 'walls' if skin_edge_support_thickness > 0 else 'walls_and_lines'",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d') and wall_line_count > 0 and top_layers > 0"
                 },
                 "lightning_infill_support_angle":
                 {
@@ -3137,6 +3162,60 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "gradual_flow_enabled":
+                {
+                    "label": "Gradual flow enabled",
+                    "description": "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "max_flow_acceleration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "label": "Gradual flow max acceleration",
+                    "description": "Maximum acceleration for gradual flow changes",
+                    "type": "float",
+                    "unit": "mm\u00b3/s\u00b2",
+                    "default_value": 1,
+                    "minimum_value_warning": 0.1,
+                    "maximum_value_warning": 99999,
+                    "minimum_value": 0.01,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "comments": "when enabled, each second the flow will at max be increased/decreased by this value"
+                },
+                "layer_0_max_flow_acceleration":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "value": "max_flow_acceleration",
+                    "label": "Initial layer max flow acceleration",
+                    "description": "Minimum speed for gradual flow changes for the first layer",
+                    "type": "float",
+                    "unit": "mm\u00b3/s\u00b2",
+                    "default_value": 1,
+                    "minimum_value_warning": 0.1,
+                    "maximum_value_warning": 99999,
+                    "minimum_value": 0.01,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "gradual_flow_discretisation_step_size":
+                {
+                    "enabled": "gradual_flow_enabled",
+                    "label": "Gradual flow discretisation step size",
+                    "description": "Duration of each step in the gradual flow change",
+                    "type": "float",
+                    "unit": "s",
+                    "default_value": 0.2,
+                    "maximum_value_warning": 1.0,
+                    "maximum_value": 5.0,
+                    "minimum_value_warning": 0.1,
+                    "minimum_value": 0.01,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -4466,6 +4545,37 @@
                     "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "build_fan_full_at_height":
+                {
+                    "label": "Build Fan Speed at Height",
+                    "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "build_volume_fan_nr != 0",
+                    "maximum_value_warning": "10.0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false,
+                    "children":
+                    {
+                        "build_fan_full_layer":
+                        {
+                            "label": "Build Fan Speed at Layer",
+                            "description": "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number.",
+                            "type": "int",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "enabled": "build_volume_fan_nr != 0",
+                            "maximum_value_warning": "10 / resolveOrValue('layer_height')",
+                            "value": "max(1, int(math.floor((build_fan_full_at_height - resolveOrValue('layer_height_0')) / resolveOrValue('layer_height')) + 2))",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": false,
+                            "settable_per_meshgroup": false
+                        }
+                    }
                 },
                 "cool_fan_speed":
                 {
