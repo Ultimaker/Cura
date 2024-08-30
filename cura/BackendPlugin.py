@@ -95,8 +95,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
 
                 plugin_env = os.environ
-                if "APPRUN_RUNTIME" in plugin_env and "APPRUN_ORIGINAL_APPRUN_RUNTIME" in plugin_env:
-                    plugin_env["APPRUN_RUNTIME"] = plugin_env["APPRUN_ORIGINAL_APPRUN_RUNTIME"]
+                if "LD_PRELOAD" in plugin_env and "APPRUN_ORIGINAL_LD_PRELOAD" in plugin_env:
+                    plugin_env["LD_PRELOAD"] = plugin_env["APPRUN_ORIGINAL_LD_PRELOAD"]
 
                 Logger.info(plugin_env)
 
