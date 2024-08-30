@@ -94,8 +94,13 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                 if Platform.isWindows():
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
 
-                Logger.info(os.environ)
-                self._process = subprocess.Popen(self._validatePluginCommand(), **popen_kwargs)
+                plugin_env = os.environ
+                if "APPRUN_RUNTIME" in plugin_env and "APPRUN_ORIGINAL_APPRUN_RUNTIME" in plugin_env:
+                    plugin_env["APPRUN_RUNTIME"] = plugin_env["APPRUN_ORIGINAL_APPRUN_RUNTIME"]
+
+                Logger.info(plugin_env)
+
+                self._process = subprocess.Popen(self._validatePluginCommand(), env=plugin_env, **popen_kwargs)
             self._is_running = True
             return True
         except PermissionError:
