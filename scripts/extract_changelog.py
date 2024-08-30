@@ -13,7 +13,7 @@ if __name__ == "__main__":
         args.version = args.version[:-2]
 
     start_token = f"[{args.version}]"
-    pattern_stop_log = "\[\d+(\.\d+){1,2}\]"
+    pattern_stop_log = r"\[\d+(\.\d+){1,2}\]"
     log_line = False
     first_chapter = True
 
