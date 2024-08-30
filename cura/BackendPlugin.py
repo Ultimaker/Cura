@@ -102,8 +102,6 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                     # part of the AppImage and uses the sames libraries
                     plugin_env["APPDIR_MODULE_DIR"] = str(pathlib.Path(validated_plugin_command[0]).parent.absolute())
 
-                Logger.info(plugin_env)
-
                 self._process = subprocess.Popen(validated_plugin_command, env=plugin_env, **popen_kwargs)
             self._is_running = True
             return True
