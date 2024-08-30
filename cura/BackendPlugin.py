@@ -3,6 +3,7 @@
 import socket
 import os
 import subprocess
+import pathlib
 from typing import Optional, List
 
 from UM.Logger import Logger
@@ -74,7 +75,8 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
         """
         if not self.usePlugin():
             return False
-        Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {self._validatePluginCommand()}")
+        validated_plugin_command = self._validatePluginCommand()
+        Logger.info(f"Starting backend_plugin [{self._plugin_id}] with command: {validated_plugin_command}")
         plugin_log_path = os.path.join(Resources.getDataStoragePath(), f"{self.getPluginId()}.log")
         if os.path.exists(plugin_log_path):
             try:
@@ -95,12 +97,14 @@ class BackendPlugin(AdditionalSettingDefinitionsAppender, PluginObject):
                     popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW
 
                 plugin_env = os.environ
-                if "LD_PRELOAD" in plugin_env and "APPRUN_ORIGINAL_LD_PRELOAD" in plugin_env:
-                    plugin_env["LD_PRELOAD"] = plugin_env["APPRUN_ORIGINAL_LD_PRELOAD"]
+                if Platform.isLinux() and len(validated_plugin_command) > 0:
+                    # Add plugin directory to AppImage "modules" directory so that it is started as if it was
+                    # part of the AppImage and uses the sames libraries
+                    plugin_env["APPDIR_MODULE_DIR"] = str(pathlib.Path(validated_plugin_command[0]).parent.absolute())
 
                 Logger.info(plugin_env)
 
-                self._process = subprocess.Popen(self._validatePluginCommand(), env=plugin_env, **popen_kwargs)
+                self._process = subprocess.Popen(validated_plugin_command, env=plugin_env, **popen_kwargs)
             self._is_running = True
             return True
         except PermissionError:
