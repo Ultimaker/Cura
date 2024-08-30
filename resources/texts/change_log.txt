@@ -1,3 +1,145 @@
+[5.8]
+
+* New Z Seam Settings:
+New settings have been added that let you tweak how and where the Z seam is placed
+- "Z Seam On Vertex" allows you to choose if the Z seam is placed on the vertices closest to a selected Z seam position or if it instead follows the selected position exactly
+- "Seam overhang angle" enables you to select the angle at which Z seams will not be printed on overhangs
+- "Support Z Seam Away from Model" and "Min Z Seam Distance from Model" define where the Z seam is placed on supports
+Try it for yourself <a href="https://www.thingiverse.com/thing:6692375?utm_source=changelog&utm_medium=cura&utm_campaign=58">with this toast post-it holder</a>.
+
+* New features and improvements:
+- A search bar has been added to the “Add an offline printer” list
+- Introduced “Support Infill Density Multiplier Initial Layer”, “Raft Infill Overlap Percentage”, Raft Surface Z Offset, and Raft Flow settings to improve dual extrusion rafts
+- Introduced “Cooling during extruder switch" to define the cooling fan behavior during an extruder switch by defining Unchanged, Only last extruder, All fans
+- Updated the retract behavior for a nozzle switch to reduce the chance of oozing
+- Updated Insert at Layer Change Post Processing Script so layers can be skipped, contributed by  @tastyratz
+- Updated the "Interleaved Prime Tower" with "Prime Tower Minimum Shell Thickness" so it uses less filament, contributed by @wawanbreton
+
+* Bug fixes:
+- Fixed a bug that caused spiked objects to have missing layers, thanks to @thomasrahm
+- Updated the text in the Open Universal Cura Project (UCP) file to be more correct
+- Fixed the interpolated values for fan speeds and improved the check for minimum layer time
+- Fix a bug where material_print_temp_prepend not being disabled
+- Reduced the chance that oozing in the first travel move will cause a scar on the bottom of the model by updating the Layer Start X and Y
+- Fixed a bug where a slice would fail if the overhang angle was set to 90 degrees
+- Fixed a bug where infill lines are going through the model with a certain setting combination, contributed by @thomasrahm
+- Updated the temperature values in the monitor page to reflect the initial instead of the final bed and print temperatures, contributed by @GregValiant
+
+* Printer definitions, profiles, and materials:
+- Introduced the Ultimaker Method with PLA, PVA, and N12CF profiles and intents
+- Improved dual-support settings for UltiMaker Sline and Method printers
+- Expanded and updated intents for Factor 4
+- Updated CPE and PC settings to improve surface quality for Factor 4
+- Introduced Creality Ender 3 V3 KE, contributed by @vadim-danilchik, @daitj, @VladislavVidenov, @fjventura20
+- Introduced Voron2 StealthChanger 250, StealthChanger 300, and StealthChanger 350,  contributed by @TheSin-
+- Introduced K1 Max, contributed by @itay-grudev
+- Introduced Ankermake M5C, contributed by @augustchi
+- Introduced WEEDO F150S, F152S, F370, ME40, ME40 Lite, and X40 V3+, contributed by @WinstonMao
+
+[5.7.2]
+
+* Bugfixes
+- Fixed a bug where modifier meshes and support meshes were not loaded in the correct position, should resolve https://github.com/Ultimaker/Cura/issues/18761 (and https://github.com/5axes/SpoonAntiWarping/issues/8)
+- Primeblobs were not printed for a second extruder
+- Interleaved prime tower can now be printed with a raft
+- Improved behaviors for start temperature for multiple extruders
+- Improved preheating logic when using a raft with multiple extruders
+- Enabled Raft Remove Inside Corners and Prime Tower Mode to be shipped with a material profile
+
+[5.7.1]
+
+* Introducing the UltiMaker Factor 4
+- Included support for the new UltiMaker Factor 4, the new 0.6 UltiMaker HT print core, and the new Ultimaker PPS CF material. 
+For an overview of the new features in the UltiMaker Factor 4, please watch <a href="https://youtu.be/ltG5wV8TAy8">our video</a>.
+
+* Bug fixes:
+- Fixed a bug where support lines were printed multiple times
+
+* Printer definitions, profiles and materials:
+- Updated ASA, SR30, and Nylon12-CF profiles for MethodX and Method XL Printers
+
+[5.7]
+
+* New features and improvements:
+- Introduced a way that you can open models from Thingiverse from your browser
+- Introduced Universal Cura Project files. They contain models and settings and can be shared with people who have different printers.
+- Introduced settings that define the raft offset for top, middle and bottom raft layers
+- Introduced an analyzing tool in the cura engine to better track slicing crashes, and started fixing the biggest reports coming in.
+- New Primetower option; Sparse, next to the current Bucket, contributed by @wawanbreton
+- Brim only on the inside setting
+- Allowing to define print sequence manually when printing One at a time, contributed by @alexandr-vladimirov
+- Introduced a setting to apply Monotonic ordering to the Raft Top Surface
+- Introduced a Raft Wall Line Count for the Bottom, Middle and Top of the raft
+- The play speed of the nozzle in the preview is now closer to the movement of the printhead
+- Introduced an option to choose Drop Model to Buildplate every time a project file is loaded
+- Introduced DisplayInfoOnLCD Post Processing Script which combines DisplayFilenameAndLayerOnLCD with DisplayProgress, contributed by @GregValiant
+- Introduced alternative camera navigation similar to FreeCAD Trackpad, contributed by @quarnster
+
+* MethodX specific improvements
+- Enabled Print over Cloud for UltiMaker MethodX and Method XL printers
+- Introduced ASA, SR30, and Nylon12-CF profiles for MethodX and Method XL Printers
+- Improved the predicted printing time so it's closer to the actual printing time on the MethodX and MethodXL
+- Improved the idle nozzle temperature for dual extrusion printing on MethodX and MethodXL
+- Resolved a crash for the Method printer when navigating to the Monitor tab
+- Improved the way that the fanspeeds were listed and controlled for MethodX and MethodXL printers
+- Updated Raft settings for UltiMaker MethodX and MethodXL
+- Enabled Monotonic Raft Surface to improve adhesion
+- Increased the Minimum Retract Distance to improve infill pattern wall overlaps
+
+* Bug fixes:
+- Fixed significantly slower slicing for models with a lot of holes
+- Fixed a significant amount of crashes that are caused by self intersecting polygons
+- Fixed a bug where Align to Buildplate did not work for grouped meshes, resolves https://github.com/Ultimaker/Cura/issues/14237
+- Fixed a bug where the models in a 3mf file would not load in their saved position, note that this also changes the behavior of the "import models" feature of a 3mf file, for this feature the saved model location will be ignored
+- Reduced the amount of floating support in area's near the support overhang angle threshold
+- Fixed a bug with the Initial Extruder Number in the start gcode, resolves https://github.com/Ultimaker/Cura/issues/17501
+- Fixed a bug where Z could be negative if Remove Empty Layers was enabled, resolves https://github.com/Ultimaker/Cura/issues/15975
+- Fixed tree support-related crashes if there are no overhangs, contributed by @thomasrahm
+- Pressing the Esc key now doesn't exiting full screen mode, contributed by @Sophist-UK, resolves https://github.com/Ultimaker/Cura/issues/7499
+- Improved the OAuth protocol to improve signing in with plug-ins, contributed by @wawanbreton
+- Fixed some slicing crashes with tree support, contributed by @ThomasRahm
+- Fixed available height when adding modifier mesh in One at a Time printing, contributed by @fieldofView resolves https://github.com/Ultimaker/Cura/issues/16566
+- Improved behavior for loading 3mfs by giving the models original names, contributed by @pietchaki, resolves https://github.com/Ultimaker/Cura/issues/12089
+- Added an error so LimitXYAccelJerk doesn't run unless Accel Control is enabled in Cura, contributed by @Gregvaliant
+- Some helpful code cleanup contributed by @dmitrygribenchuk
+
+* Bugs resolved since the Beta Release
+- Resolved some crashes when opening project files
+- Resolved the biggest crashes coming in via the analyzing tool in the cura engine
+- Added links to support pages for Method materials to help find the best material compatibility
+- Introduced several visual improvements for the loading Universal Cura Projects window
+- Universal Cura Projects will now be opened in the center of the buildplate
+- The prime tower no longer primes extruders that are not being used
+- Fixed file association for stl, obj, 3mf, gcode, and ufp for MacOS
+- MacOS users can use the open menu multiple times in a row again
+- The support type is now updated in recommended when it’s changed in custom
+- The skirt height is now generated on the innermost skirt instead of the outermost skirt again
+- Fixed the skirt distance for dual extrusion printers
+- The Brim Only Inside setting will not generate a brim on support when it’s not defined
+- Fixed a bug where the project name would accidentally revert after saving, resolves https://github.com/Ultimaker/Cura/issues/11276
+- Improved handling of a fractional layer with tree support, contributed by @ThomasRahm
+
+* Printer definitions, profiles and materials:
+- Introduced high-speed profiles for the layer heights smaller than 0.15mm for Ultimaker PLA, T-PLA, ABS and PETG.
+- Updated Initial Layer Speed settings for UltiMaker S3, and UltiMaker S5
+- Updated the Shrinkage Factor for PET CF to improve dimensional accuracy
+- Renamed UltiMaker PP Transparent to UltiMaker PP Natural
+- Increased part strengths of high speed modes by compensating for slip in high flow rates
+- Improved self-support settings for UltiMaker Materials
+- Improved adhesion settings for UltiMaker ABS
+- Introduced Elegoo Neptune 4 Plus and Max, and updated Elegoo Neptune 4 and Pro, contributed by @mastercaution, @BremerButjer, @gsthnz, @ArthurREGNARD, @NovaScotianNorse, @ToaterUwU, @CharlKlein, @si0ls, @AlbeDarned @fuji97 and @Ev1dentFir3
+- Introduced Anycubic Kobra 2 Printer Definition contributed by @ThatGuyZim
+- Introduced Flying Bear Ghost 6, contributed by @Barrnet
+- Introduced Creality Ender 3 V2 Neo, contributed by @Hougaard22
+- Introduced Dagoma Sigma Pro 500z, and Dagoma Sigma Pro 500z Dual, contributed by @0r31
+- Introduced RRatRig V-Core 3, 200mm, 300mm, 400mm, 500mm and RatRig V-Minion, contributed by @Nu-hin
+- Introduced Flashforge Adventurer 3 (AD3 / AD3C / AD3 Lite / AD3 Pro) & Adventurer AD4, and AD4 Lite , contributed by @jeremie-C
+- Updated the dimensions for Ender 3 V3 S, contributed by @mcuprojects
+- Updated start Gcode for creality_ender3v3se & Anycubic Kobra Go/Kobra 2, contributed by @zanghao912
+- Updated print and retraction settings for Sovol 3D printers, contributed by @asterchades
+- Updated Creality Ender 5 Plus Bed Leveling Command, contributed by @dsnsgithub
+- Updated Voron definition to support Voron/Klipper, contributed by @NerdyGriffin
+
 [5.6]
 
 * New features and improvements:

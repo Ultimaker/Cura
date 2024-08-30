@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -42,7 +43,7 @@ msgstr "G-Code Extruder-Ende"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "Extruder Ende G-Code Dauer"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -78,7 +79,7 @@ msgstr "G-Code Extruder-Start"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "Extruder Start G-Code Dauer"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +167,11 @@ msgstr "Die Anzahl der Drucklüfter für diesen Extruder. Nur vom Standardwert 0
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "Die Zeit, die für die Ausführung des Ende-G-Codes benötigt wird, wenn Sie von diesem Extruder wegschalten."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "Die Zeit, die für die Ausführung des Start-G-Codes benötigt wird, wenn Sie zu diesem Extruder wechseln."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

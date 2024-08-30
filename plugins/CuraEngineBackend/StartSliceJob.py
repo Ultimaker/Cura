@@ -146,12 +146,16 @@ class StartSliceJob(Job):
         self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled: bool = False
         self._build_plate_number: Optional[int] = None
+        self._associated_disabled_extruders: Optional[str] = None
 
         # cache for all setting values from all stacks (global & extruder) for the current machine
         self._all_extruders_settings: Optional[Dict[str, Any]] = None
 
     def getSliceMessage(self) -> Arcus.PythonMessage:
         return self._slice_message
+
+    def getAssociatedDisabledExtruders(self) -> Optional[str]:
+        return self._associated_disabled_extruders
 
     def setBuildPlate(self, build_plate_number: int) -> None:
         self._build_plate_number = build_plate_number
@@ -334,7 +338,7 @@ class StartSliceJob(Job):
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
             associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
-            self.setMessage(", ".join(map(str, sorted(associated_disabled_extruders))))
+            self._associated_disabled_extruders = ", ".join(map(str, sorted(associated_disabled_extruders)))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
@@ -362,7 +366,12 @@ class StartSliceJob(Job):
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)
 
-        for plugin in CuraApplication.getInstance().getBackendPlugins():
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+
+        # Sort backend plugins by name. Not a very good strategy, but at least it is repeatable. This will be improved later.
+        backend_plugins = sorted(backend_plugins, key=lambda backend_plugin: backend_plugin.getId())
+
+        for plugin in backend_plugins:
             if not plugin.usePlugin():
                 continue
             for slot in plugin.getSupportedSlots():
@@ -550,12 +559,16 @@ class StartSliceJob(Job):
         start_gcode = settings["machine_start_gcode"]
         # Remove all the comments from the start g-code
         start_gcode = re.sub(r";.+?(\n|$)", "\n", start_gcode)
-        bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
-        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
-        settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
-        print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
-        pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
-        settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
+
+        if settings["material_bed_temp_prepend"]:
+            bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
+            pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+            settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
+
+        if settings["material_print_temp_prepend"]:
+            print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
+            pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
+            settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
 
         # Replace the setting tokens in start and end g-code.
         # Use values from the first used extruder by default so we get the expected temperatures

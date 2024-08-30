@@ -69,7 +69,7 @@ class UCPDialog(QObject):
         device.writeSuccess.connect(lambda: self._onSuccess())
         device.writeFinished.connect(lambda: self._onFinished())
 
-        file_name = CuraApplication.getInstance().getPrintInformation().baseName
+        file_name = f"UCP_{CuraApplication.getInstance().getPrintInformation().baseName}"
 
         try:
             device.requestWrite(

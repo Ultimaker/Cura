@@ -1,3 +1,4 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -42,7 +43,7 @@ msgstr "Ekstruder G-Code'u Sonlandırma"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "Ekstruder Bitiş G Kodu Süresi"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -78,7 +79,7 @@ msgstr "Ekstruder G-Code'u Başlatma"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "Ekstruder Başlangıç ​​G Kodu Süresi"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +167,11 @@ msgstr "Bu ekstrüdere bağlı yazıcı soğutma fanı sayısı. Yalnızca her b
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "Bu ekstruderden ayrılırken son g kodunun uygulanması için gereken süre."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "Bu ekstrudere geçiş sırasında başlangıç ​​g kodunun uygulanması için gereken süre."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

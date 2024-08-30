@@ -115,15 +115,15 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.sync)
 
-        self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
-        self.syncRequested.connect(self._updatePermissions)
+        self._sync_services: Dict[str, int] = {}
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
+        self._authorization_service.accessTokenChanged.connect(self._updatePermissions)
         self._authorization_service.loadAuthDataFromPreferences()
 
     @pyqtProperty(int, notify=syncStateChanged)
@@ -189,6 +189,20 @@ class Account(QObject):
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
         return self._logged_in
+
+    @pyqtSlot()
+    def stopSyncing(self) -> None:
+        Logger.debug(f"Stopping sync of cloud printers")
+        self._setManualSyncEnabled(True)
+        if self._update_timer.isActive():
+            self._update_timer.stop()
+
+    @pyqtSlot()
+    def startSyncing(self) -> None:
+        Logger.debug(f"Starting sync of cloud printers")
+        self._setManualSyncEnabled(False)
+        if not self._update_timer.isActive():
+            self._update_timer.start()
 
     def _onLoginStateChanged(self, logged_in: bool = False, error_message: Optional[str] = None) -> None:
         if error_message:
