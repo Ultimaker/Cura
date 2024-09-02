@@ -168,6 +168,14 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Fichier 3MF"
 
+msgctxt "name"
+msgid "3MF Reader"
+msgstr "Lecteur 3MF"
+
+msgctxt "name"
+msgid "3MF Writer"
+msgstr "Générateur 3MF"
+
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "Le plugin 3MF Writer est corrompu."
@@ -243,6 +251,10 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "Fichier AMF"
 
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "Lecteur AMF"
+
 msgctxt "@label"
 msgid "Abort"
 msgstr "Abandonner"
@@ -278,6 +290,10 @@ msgstr "À propos de..."
 msgctxt "@button"
 msgid "Accept"
 msgstr "Accepter"
+
+msgctxt "description"
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Accepte les G-Code et les envoie à une imprimante. Ce plugin peut aussi mettre à jour le firmware."
 
 msgctxt "@label"
 msgid "Account synced"
@@ -418,6 +434,10 @@ msgstr "Tous les types supportés ({0})"
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "Autoriser l'envoi de données anonymes"
+
+msgctxt "description"
+msgid "Allows loading and displaying G-code files."
+msgstr "Permet le chargement et l'affichage de fichiers G-Code."
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -574,6 +594,10 @@ msgstr "Sauvegarder maintenant"
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "Sauvegarder et réinitialiser la configuration"
+
+msgctxt "description"
+msgid "Backup and restore your configuration."
+msgstr "Sauvegardez et restaurez votre configuration."
 
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
@@ -747,6 +771,14 @@ msgctxt "@label"
 msgid "Checking..."
 msgstr "Vérification en cours..."
 
+msgctxt "description"
+msgid "Checks for firmware updates."
+msgstr "Vérifie les mises à jour du firmware."
+
+msgctxt "description"
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr "Vérifie les modèles et la configuration de l'impression pour déceler d'éventuels problèmes d'impression et donne des suggestions."
+
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Choisit entre les stratégies de support disponibles. Le support « Normal » créé une structure de support directement sous les zones en porte-à-faux et fait descendre les supports directement vers le bas. Le support « Arborescent » génère une structure de branches depuis le plateau tout autour du modèle qui vont supporter les portes-à-faux sans toucher le modèle ailleur que les zones supportées."
@@ -827,6 +859,14 @@ msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "Fichier G-Code compressé"
 
+msgctxt "name"
+msgid "Compressed G-code Reader"
+msgstr "Lecteur G-Code compressé"
+
+msgctxt "name"
+msgid "Compressed G-code Writer"
+msgstr "Générateur de G-Code compressé"
+
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "Modifications de configuration"
@@ -899,6 +939,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Connecté via le cloud"
 
+msgctxt "description"
+msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
+msgstr "Se connecte à la Digital Library, permettant à Cura d'ouvrir des fichiers à partir de cette dernière et d'y enregistrer des fichiers."
+
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
 msgstr "Consultez la communauté UltiMaker."
@@ -921,7 +965,7 @@ msgstr "Copier dans le presse-papier"
 
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
-msgstr "Copier la valeur vers toutes les extrudeuses"
+msgstr "Copier la valeur vers tous les extrudeurs"
 
 msgctxt "@label"
 msgid "Cost per Meter"
@@ -1034,6 +1078,10 @@ msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "Créez des projets d'impression dans Digital Library."
 
+msgctxt "description"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
+msgstr "Crée un maillage effaceur pour bloquer l'impression du support en certains endroits"
+
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "Création de votre sauvegarde..."
@@ -1046,9 +1094,21 @@ msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Sauvegardes Cura"
 
+msgctxt "name"
+msgid "Cura Backups"
+msgstr "Sauvegardes Cura"
+
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Profil Cura"
+
+msgctxt "name"
+msgid "Cura Profile Reader"
+msgstr "Lecteur de profil Cura"
+
+msgctxt "name"
+msgid "Cura Profile Writer"
+msgstr "Générateur de profil Cura"
 
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
@@ -1078,6 +1138,18 @@ msgstr "Langue de Cura"
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Version Cura"
+
+msgctxt "name"
+msgid "CuraEngine Backend"
+msgstr "Système CuraEngine"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "Plugin CuraEngine permettant de lisser progressivement le débit afin de limiter les sauts lorsque le débit est élevé"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1363,6 +1435,10 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "Activé"
 
+msgctxt "description"
+msgid "Enables ability to generate printable geometry from 2D image files."
+msgstr "Permet de générer une géométrie imprimable à partir de fichiers d'image 2D."
+
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "G-Code de fin"
@@ -1450,6 +1526,10 @@ msgstr "Profil exporté vers <filename>{0}</filename>"
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "Étendez UltiMaker Cura avec des plugins et des profils de matériaux."
+
+msgctxt "description"
+msgid "Extension that allows for user created scripts for post processing"
+msgstr "Extension qui permet le post-traitement des scripts créés par l'utilisateur"
 
 msgctxt "@label"
 msgid "Extruder"
@@ -1599,6 +1679,14 @@ msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "Mise à jour du firmware"
 
+msgctxt "name"
+msgid "Firmware Update Checker"
+msgstr "Vérificateur des mises à jour du firmware"
+
+msgctxt "name"
+msgid "Firmware Updater"
+msgstr "Programme de mise à jour du firmware"
+
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
 msgstr "Échec de la mise à jour du firmware, car cette fonctionnalité n'est pas prise en charge par la connexion avec l'imprimante."
@@ -1697,6 +1785,18 @@ msgstr "Détails G-Code"
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Fichier GCode"
+
+msgctxt "name"
+msgid "G-code Profile Reader"
+msgstr "Lecteur de profil G-Code"
+
+msgctxt "name"
+msgid "G-code Reader"
+msgstr "Lecteur G-Code"
+
+msgctxt "name"
+msgid "G-code Writer"
+msgstr "Générateur de G-Code"
 
 msgctxt "@label"
 msgid "G-code flavor"
@@ -1845,6 +1945,10 @@ msgstr "Si vous essayez d'ajouter une nouvelle imprimante UltiMaker à Cura"
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Si votre imprimante n'apparaît pas dans la liste, lisez le <a href='%1'>guide de dépannage de l'impression en réseau</a>"
+
+msgctxt "name"
+msgid "Image Reader"
+msgstr "Lecteur d'images"
 
 msgctxt "@action:button"
 msgid "Import"
@@ -2130,6 +2234,10 @@ msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "Vue gauche"
 
+msgctxt "name"
+msgid "Legacy Cura Profile Reader"
+msgstr "Lecteur de profil Cura antérieur"
+
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "Informez les développeurs en cas de problème."
@@ -2210,6 +2318,10 @@ msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "Journaux"
 
+msgctxt "description"
+msgid "Logs certain events so that they can be used by the crash reporter"
+msgstr "Enregistre certains événements afin qu'ils puissent être utilisés par le rapporteur d'incident"
+
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "Connexion avec l'imprimante perdue"
@@ -2217,6 +2329,10 @@ msgstr "Connexion avec l'imprimante perdue"
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Paramètres de la machine"
+
+msgctxt "name"
+msgid "Machine Settings Action"
+msgstr "Action Paramètres de la machine"
 
 msgctxt "@backuplist:label"
 msgid "Machines"
@@ -2233,6 +2349,10 @@ msgstr "Assurez-vous que le g-code est adapté à votre imprimante et à la conf
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Fichier d'impression Makerbot"
+
+msgctxt "name"
+msgid "Makerbot Printfile Writer"
+msgstr "Écrivain de fichier d'impression Makerbot"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -2290,6 +2410,14 @@ msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "Gérez vos plug-ins Ultimaker Cura et vos profils matériaux ici. Assurez-vous de maintenir vos plug-ins à jour et de sauvegarder régulièrement votre configuration."
 
+msgctxt "description"
+msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
+msgstr "Gère les extensions de l'application et permet de parcourir les extensions à partir du site Web UltiMaker."
+
+msgctxt "description"
+msgid "Manages network connections to UltiMaker networked printers."
+msgstr "Gère les connexions réseau vers les imprimantes UltiMaker en réseau."
+
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Fabricant"
@@ -2299,6 +2427,10 @@ msgid "Marketplace"
 msgstr "Marketplace"
 
 msgctxt "@label"
+msgid "Marketplace"
+msgstr "Marketplace"
+
+msgctxt "name"
 msgid "Marketplace"
 msgstr "Marketplace"
 
@@ -2317,6 +2449,10 @@ msgstr "Matériau"
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "Couleur du matériau"
+
+msgctxt "name"
+msgid "Material Profiles"
+msgstr "Profils matériels"
 
 msgctxt "@label"
 msgid "Material Type"
@@ -2362,6 +2498,10 @@ msgctxt "@action:label"
 msgid "Mode"
 msgstr "Mode"
 
+msgctxt "name"
+msgid "Model Checker"
+msgstr "Contrôleur de modèle"
+
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "Erreurs du modèle"
@@ -2377,6 +2517,10 @@ msgstr "Modifier les paramètres de chevauchement"
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Surveiller"
+
+msgctxt "name"
+msgid "Monitor Stage"
+msgstr "Étape de surveillance"
 
 msgctxt "@action:button"
 msgid "Monitor print"
@@ -2819,6 +2963,10 @@ msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "Paramètres par modèle"
 
+msgctxt "name"
+msgid "Per Model Settings Tool"
+msgstr "Outil de paramètres par modèle"
+
 msgid "Perspective"
 msgstr "Perspective"
 
@@ -2889,7 +3037,7 @@ msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
 msgstr "Veuillez vérifier les paramètres et si vos modèles:"
 "- S'intègrent dans le volume de fabrication"
-"- Sont affectés à une extrudeuse activée"
+"- Sont affectés à un extrudeur activé"
 "- N sont pas tous définis comme des mailles de modificateur"
 
 msgctxt "@label"
@@ -2944,6 +3092,10 @@ msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "Post-traitement"
 
+msgctxt "name"
+msgid "Post Processing"
+msgstr "Post-traitement"
+
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "Plugin de post-traitement"
@@ -2959,6 +3111,10 @@ msgstr "Préchauffer"
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Préparer"
+
+msgctxt "name"
+msgid "Prepare Stage"
+msgstr "Étape de préparation"
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -2980,9 +3136,13 @@ msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Aperçu"
 
+msgctxt "name"
+msgid "Preview Stage"
+msgstr "Étape de prévisualisation"
+
 msgctxt "@tooltip"
 msgid "Prime Tower"
-msgstr "Tour d'amorçage"
+msgstr "Tour primaire"
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3224,6 +3384,106 @@ msgctxt "@label"
 msgid "Properties"
 msgstr "Propriétés"
 
+msgctxt "description"
+msgid "Provides a machine actions for updating firmware."
+msgstr "Fournit à une machine des actions permettant la mise à jour du firmware."
+
+msgctxt "description"
+msgid "Provides a monitor stage in Cura."
+msgstr "Fournit une étape de surveillance dans Cura."
+
+msgctxt "description"
+msgid "Provides a normal solid mesh view."
+msgstr "Affiche une vue en maille solide normale."
+
+msgctxt "description"
+msgid "Provides a prepare stage in Cura."
+msgstr "Fournit une étape de préparation dans Cura."
+
+msgctxt "description"
+msgid "Provides a preview stage in Cura."
+msgstr "Fournit une étape de prévisualisation dans Cura."
+
+msgctxt "description"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr "Permet de modifier les paramètres de la machine (tels que volume d'impression, taille de buse, etc.)"
+
+msgctxt "description"
+msgid "Provides capabilities to read and write XML-based material profiles."
+msgstr "Offre la possibilité de lire et d'écrire des profils matériels basés sur XML."
+
+msgctxt "description"
+msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr "Fournit les actions de la machine pour les machines UltiMaker (telles que l'assistant de calibration du plateau, sélection des mises à niveau, etc.)"
+
+msgctxt "description"
+msgid "Provides removable drive hotplugging and writing support."
+msgstr "Permet le branchement hot-plug et l'écriture sur lecteur amovible."
+
+msgctxt "description"
+msgid "Provides support for exporting Cura profiles."
+msgstr "Fournit la prise en charge de l'exportation de profils Cura."
+
+msgctxt "description"
+msgid "Provides support for importing Cura profiles."
+msgstr "Fournit la prise en charge de l'importation de profils Cura."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from g-code files."
+msgstr "Fournit la prise en charge de l'importation de profils à partir de fichiers g-code."
+
+msgctxt "description"
+msgid "Provides support for importing profiles from legacy Cura versions."
+msgstr "Fournit la prise en charge de l'importation de profils à partir de versions Cura antérieures."
+
+msgctxt "description"
+msgid "Provides support for reading 3MF files."
+msgstr "Fournit la prise en charge de la lecture de fichiers 3MF."
+
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "Fournit la prise en charge de la lecture de fichiers AMF."
+
+msgctxt "description"
+msgid "Provides support for reading Ultimaker Format Packages."
+msgstr "Fournit un support pour la lecture des paquets de format UltiMaker."
+
+msgctxt "description"
+msgid "Provides support for reading X3D files."
+msgstr "Fournit la prise en charge de la lecture de fichiers X3D."
+
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr "Fournit la prise en charge de la lecture de fichiers modèle 3D."
+
+msgctxt "description"
+msgid "Provides support for writing 3MF and UCP files."
+msgstr "Prise en charge de l'écriture des fichiers 3MF et UCP."
+
+msgctxt "description"
+msgid "Provides support for writing MakerBot Format Packages."
+msgstr "Fournit un support pour l'écriture de paquets de format MakerBot."
+
+msgctxt "description"
+msgid "Provides support for writing Ultimaker Format Packages."
+msgstr "Permet l'écriture de fichiers UltiMaker Format Package."
+
+msgctxt "description"
+msgid "Provides the Per Model Settings."
+msgstr "Fournit les paramètres par modèle."
+
+msgctxt "description"
+msgid "Provides the X-Ray view."
+msgstr "Permet la vue Rayon-X."
+
+msgctxt "description"
+msgid "Provides the link to the CuraEngine slicing backend."
+msgstr "Fournit le lien vers l'arrière du système de découpage CuraEngine."
+
+msgctxt "description"
+msgid "Provides the preview of sliced layerdata."
+msgstr "Fournit l'aperçu des données du slice."
+
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "Version PyQt"
@@ -3259,6 +3519,10 @@ msgstr "Mis en file d'attente"
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "Quitter %1"
+
+msgctxt "description"
+msgid "Reads g-code from a compressed archive."
+msgstr "Lit le G-Code à partir d'une archive compressée."
 
 msgctxt "@button"
 msgid "Recommended"
@@ -3311,6 +3575,10 @@ msgstr "Se souvenir de mon choix"
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Lecteur amovible"
+
+msgctxt "name"
+msgid "Removable Drive Output Device Plugin"
+msgstr "Plugin de périphérique de sortie sur disque amovible"
 
 msgctxt "@action:button"
 msgid "Remove"
@@ -3592,13 +3860,17 @@ msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "Envoi de matériaux à l'imprimante"
 
+msgctxt "name"
+msgid "Sentry Logger"
+msgstr "Journal d'événements dans Sentry"
+
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "Bibliothèque de communication série"
 
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
-msgstr "Définir comme extrudeuse active"
+msgstr "Définir comme extrudeur actif"
 
 msgctxt "@title:column"
 msgid "Setting"
@@ -3800,6 +4072,10 @@ msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "Connectez-vous à la plateforme UltiMaker"
 
+msgctxt "name"
+msgid "Simulation View"
+msgstr "Vue simulation"
+
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "Couche extérieure"
@@ -3828,6 +4104,10 @@ msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Découper automatiquement si les paramètres sont modifiés."
 
+msgctxt "name"
+msgid "Slice info"
+msgstr "Information sur le découpage"
+
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "Échec de la découpe"
@@ -3843,6 +4123,10 @@ msgstr "Lissage"
 msgctxt "@label"
 msgid "Solid"
 msgstr "Solide"
+
+msgctxt "name"
+msgid "Solid View"
+msgstr "Vue solide"
 
 msgctxt "@item:inmenu"
 msgid "Solid view"
@@ -3938,6 +4222,10 @@ msgctxt "@label"
 msgid "Strength"
 msgstr "Résistance"
 
+msgctxt "description"
+msgid "Submits anonymous slice info. Can be disabled through preferences."
+msgstr "Envoie des informations anonymes sur le découpage. Peut être désactivé dans les préférences."
+
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Matériau exporté avec succès vers <filename>%1</filename>"
@@ -3981,6 +4269,10 @@ msgstr "Support"
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "Blocage des supports"
+
+msgctxt "name"
+msgid "Support Eraser"
+msgstr "Effaceur de support"
 
 msgctxt "@tooltip"
 msgid "Support Infill"
@@ -4114,11 +4406,11 @@ msgstr "L'imprimante cloud est hors ligne. Veuillez vérifier si l'imprimante es
 
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
-msgstr "Couleur du matériau dans cet extrudeuse."
+msgstr "Couleur du matériau dans cet extrudeur."
 
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
-msgstr "La configuration de cet extrudeuse n'est pas autorisée et interdit la découpe."
+msgstr "La configuration de cet extrudeur n'est pas autorisée et interdit la découpe."
 
 msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
@@ -4192,7 +4484,7 @@ msgstr "Les zones surlignées indiquent que des surfaces manquent ou sont étran
 
 msgctxt "@tooltip"
 msgid "The material in this extruder."
-msgstr "Matériau dans cet extrudeuse."
+msgstr "Matériau dans cet extrudeur."
 
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
@@ -4208,7 +4500,7 @@ msgstr "Le nouveau diamètre de filament est réglé sur %1 mm, ce qui n'est pa
 
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
-msgstr "Buse insérée dans cet extrudeuse."
+msgstr "Buse insérée dans cet extrudeur."
 
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
@@ -4303,7 +4595,7 @@ msgstr "Il n'y a pas de travaux d'impression dans la file d'attente. Découpez e
 
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
-msgstr "Aucun profil ne correspond à la configuration de cet extrudeuse."
+msgstr "Aucun profil ne correspond à la configuration de cet extrudeur."
 
 msgctxt "@info:status"
 msgid "There is no active printer yet."
@@ -4413,7 +4705,7 @@ msgstr "Ce paramètre n'est pas utilisé car tous les paramètres qu'il influenc
 
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr "Ce paramètre est résolu à partir de valeurs conflictuelles spécifiques à l'extrudeuse :"
+msgstr "Ce paramètre est résolu à partir de valeurs conflictuelles spécifiques à l'extrudeur :"
 
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
@@ -4499,6 +4791,10 @@ msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "A essayé de restaurer une sauvegarde Cura sans disposer de données ou de métadonnées appropriées."
 
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr "Lecteur de Trimesh"
+
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "Dépannage"
@@ -4519,7 +4815,19 @@ msgctxt "@label"
 msgid "Type"
 msgstr "Type"
 
+msgctxt "name"
+msgid "UFP Reader"
+msgstr "Lecteur UFP"
+
+msgctxt "name"
+msgid "UFP Writer"
+msgstr "Générateur UFP"
+
 msgctxt "@item:inmenu"
+msgid "USB printing"
+msgstr "Impression par USB"
+
+msgctxt "name"
 msgid "USB printing"
 msgstr "Impression par USB"
 
@@ -4539,6 +4847,10 @@ msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker Format Package"
 
+msgctxt "name"
+msgid "UltiMaker Network Connection"
+msgstr "Connexion réseau UltiMaker"
+
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "Package UltiMaker vérifié"
@@ -4546,6 +4858,10 @@ msgstr "Package UltiMaker vérifié"
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "Plugin UltiMaker vérifié"
+
+msgctxt "name"
+msgid "UltiMaker machine actions"
+msgstr "Actions de la machine UltiMaker"
 
 msgctxt "@button"
 msgid "UltiMaker printer"
@@ -4558,6 +4874,10 @@ msgstr "Assistance UltiMaker"
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
+
+msgctxt "name"
+msgid "Ultimaker Digital Library"
+msgstr "Ultimaker Digital Library"
 
 msgctxt "@info:status"
 msgid "Unable to add the profile."
@@ -4594,7 +4914,7 @@ msgstr "Impossible de découper"
 
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr "Impossible de découper car la tour d'amorçage ou la (les) position(s) d'amorçage ne sont pas valides."
+msgstr "Impossible de couper car la tour primaire ou la (les) position(s) d'amorçage ne sont pas valides."
 
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
@@ -4732,6 +5052,114 @@ msgctxt "@button"
 msgid "Updating..."
 msgstr "Mise à jour..."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
+msgstr "Configurations des mises à niveau de Cura 2.1 vers Cura 2.2."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
+msgstr "Configurations des mises à niveau de Cura 2.2 vers Cura 2.4."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
+msgstr "Configurations des mises à niveau de Cura 2.5 vers Cura 2.6."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
+msgstr "Configurations des mises à niveau de Cura 2.6 vers Cura 2.7."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
+msgstr "Met à niveau les configurations, de Cura 2.7 vers Cura 3.0."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
+msgstr "Met à niveau les configurations, de Cura 3.0 vers Cura 3.1."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
+msgstr "Configurations des mises à niveau de Cura 3.2 vers Cura 3.3."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
+msgstr "Configurations des mises à niveau de Cura 3.3 vers Cura 3.4."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
+msgstr "Configurations des mises à niveau de Cura 3.4 vers Cura 3.5."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
+msgstr "Configurations des mises à niveau de Cura 3.5 vers Cura 4.0."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
+msgstr "Configurations des mises à niveau de Cura 4.0 vers Cura 4.1."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Configurations des mises à jour de Cura 4.1 vers Cura 4.2."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
+msgstr "Mises à niveau des configurations de Cura 4.11 vers Cura 4.12."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
+msgstr "Mises à niveau des configurations de Cura 4.13 vers Cura 5.0."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr "Configurations des mises à jour de Cura 4.2 vers Cura 4.3."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Configurations des mises à niveau de Cura 4.3 vers Cura 4.4."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
+msgstr "Configurations des mises à niveau de Cura 4.4 vers Cura 4.5."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
+msgstr "Mises à niveau des configurations de Cura 4.5 vers Cura 4.6."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
+msgstr "Mises à niveau des configurations de Cura 4.6.0 vers Cura 4.6.2."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
+msgstr "Mises à niveau des configurations de Cura 4.6.2 vers Cura 4.7."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
+msgstr "Mises à niveau des configurations de Cura 4.7 vers Cura 4.8."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
+msgstr "Mises à niveau des configurations de Cura 4.8 vers Cura 4.9."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
+msgstr "Mises à niveau des configurations de Cura 4.9 vers Cura 4.10."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
+msgstr "Mises à niveau des configurations de Cura 5.2 vers Cura 5.3."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
+msgstr "Configurations des mises à niveau de Cura 5.3 vers Cura 5.4."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
+msgstr "Configurations des mises à niveau de Cura 5.4 vers Cura 5.5."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
+msgstr "Met à jour les configurations de Cura 5.6 à Cura 5.7."
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Charger le firmware personnalisé"
@@ -4767,6 +5195,114 @@ msgstr "Bibliothèque d'utilitaires, y compris la génération d'un diagramme Vo
 msgctxt "@title:column"
 msgid "Value"
 msgstr "Valeur"
+
+msgctxt "name"
+msgid "Version Upgrade 2.1 to 2.2"
+msgstr "Mise à niveau vers 2.1 vers 2.2"
+
+msgctxt "name"
+msgid "Version Upgrade 2.2 to 2.4"
+msgstr "Mise à niveau de 2.2 vers 2.4"
+
+msgctxt "name"
+msgid "Version Upgrade 2.5 to 2.6"
+msgstr "Mise à niveau de 2.5 vers 2.6"
+
+msgctxt "name"
+msgid "Version Upgrade 2.6 to 2.7"
+msgstr "Mise à niveau de 2.6 vers 2.7"
+
+msgctxt "name"
+msgid "Version Upgrade 2.7 to 3.0"
+msgstr "Mise à niveau de version, de 2.7 vers 3.0"
+
+msgctxt "name"
+msgid "Version Upgrade 3.0 to 3.1"
+msgstr "Mise à niveau de version, de 3.0 vers 3.1"
+
+msgctxt "name"
+msgid "Version Upgrade 3.2 to 3.3"
+msgstr "Mise à niveau de 3.2 vers 3.3"
+
+msgctxt "name"
+msgid "Version Upgrade 3.3 to 3.4"
+msgstr "Mise à niveau de 3.3 vers 3.4"
+
+msgctxt "name"
+msgid "Version Upgrade 3.4 to 3.5"
+msgstr "Mise à niveau de 3.4 vers 3.5"
+
+msgctxt "name"
+msgid "Version Upgrade 3.5 to 4.0"
+msgstr "Mise à niveau de 3.5 vers 4.0"
+
+msgctxt "name"
+msgid "Version Upgrade 4.0 to 4.1"
+msgstr "Mise à niveau de 4.0 vers 4.1"
+
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Mise à jour de 4.1 vers 4.2"
+
+msgctxt "name"
+msgid "Version Upgrade 4.11 to 4.12"
+msgstr "Mise à niveau de la version 4.11 vers la version 4.12"
+
+msgctxt "name"
+msgid "Version Upgrade 4.13 to 5.0"
+msgstr "Mise à niveau de la version 4.13 vers la version 5.0"
+
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr "Mise à jour de 4.2 vers 4.3"
+
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr "Mise à niveau de 4.3 vers 4.4"
+
+msgctxt "name"
+msgid "Version Upgrade 4.4 to 4.5"
+msgstr "Mise à niveau de 4.4 vers 4.5"
+
+msgctxt "name"
+msgid "Version Upgrade 4.5 to 4.6"
+msgstr "Mise à niveau de 4.5 vers 4.6"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.0 to 4.6.2"
+msgstr "Mise à niveau de 4.6.0 vers 4.6.2"
+
+msgctxt "name"
+msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr "Mise à niveau de 4.6.2 vers 4.7"
+
+msgctxt "name"
+msgid "Version Upgrade 4.7 to 4.8"
+msgstr "Mise à niveau de 4.7 vers 4.8"
+
+msgctxt "name"
+msgid "Version Upgrade 4.8 to 4.9"
+msgstr "Mise à niveau de 4.8 vers 4.9"
+
+msgctxt "name"
+msgid "Version Upgrade 4.9 to 4.10"
+msgstr "Mise à niveau de 4.9 vers 4.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.2 to 5.3"
+msgstr "Mise à niveau de 5.2 vers 5.3"
+
+msgctxt "name"
+msgid "Version Upgrade 5.3 to 5.4"
+msgstr "Mise à niveau de la version 5.3 vers 5.4"
+
+msgctxt "name"
+msgid "Version Upgrade 5.4 to 5.5"
+msgstr "Mise à niveau de la version 5.4 vers 5.5"
+
+msgctxt "name"
+msgid "Version Upgrade 5.6 to 5.7"
+msgstr "Mise à jour de la version 5.6 à 5.7"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -4884,6 +5420,14 @@ msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "Largeur (mm)"
 
+msgctxt "description"
+msgid "Writes g-code to a compressed archive."
+msgstr "Enregistre le G-Code dans une archive compressée."
+
+msgctxt "description"
+msgid "Writes g-code to a file."
+msgstr "Enregistre le G-Code dans un fichier."
+
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (Largeur)"
@@ -4896,6 +5440,10 @@ msgctxt "@label"
 msgid "X min"
 msgstr "X min"
 
+msgctxt "name"
+msgid "X-Ray View"
+msgstr "Vue Rayon-X"
+
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "Visualisation par rayons X"
@@ -4907,6 +5455,10 @@ msgstr "X/Y"
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "Fichier X3D"
+
+msgctxt "name"
+msgid "X3D Reader"
+msgstr "Lecteur X3D"
 
 msgctxt "@label"
 msgid "Y (Depth)"
@@ -5054,554 +5606,18 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Échec de téléchargement des plugins {}"
 
-msgctxt "description"
-msgid "Manages network connections to UltiMaker networked printers."
-msgstr "Gère les connexions réseau aux imprimantes UltiMaker en réseau."
-
-msgctxt "name"
-msgid "UltiMaker Network Connection"
-msgstr "Connexion réseau UltiMaker"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from g-code files."
-msgstr "Fournit la prise en charge de l'importation de profils à partir de fichiers g-code."
-
-msgctxt "name"
-msgid "G-code Profile Reader"
-msgstr "Lecteur de profil G-Code"
-
-msgctxt "description"
-msgid "Provides a normal solid mesh view."
-msgstr "Affiche une vue en maille solide normale."
-
-msgctxt "name"
-msgid "Solid View"
-msgstr "Vue solide"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "Plugin CuraEngine permettant de lisser progressivement le débit afin de limiter les sauts lorsque le débit est élevé"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
-
-msgctxt "description"
-msgid "Provides support for reading 3MF files."
-msgstr "Fournit la prise en charge de la lecture de fichiers 3MF."
-
-msgctxt "name"
-msgid "3MF Reader"
-msgstr "Lecteur 3MF"
-
-msgctxt "description"
-msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Accepte les G-Code et les envoie à une imprimante. Ce plugin peut aussi mettre à jour le firmware."
-
-msgctxt "name"
-msgid "USB printing"
-msgstr "Impression par USB"
-
-msgctxt "description"
-msgid "Checks for firmware updates."
-msgstr "Vérifie les mises à jour du firmware."
-
-msgctxt "name"
-msgid "Firmware Update Checker"
-msgstr "Vérificateur des mises à jour du firmware"
-
-msgctxt "description"
-msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
-msgstr "Gère les extensions de l'application et permet de parcourir les extensions à partir du site Web UltiMaker."
-
-msgctxt "name"
-msgid "Marketplace"
-msgstr "Marketplace"
-
-msgctxt "description"
-msgid "Backup and restore your configuration."
-msgstr "Sauvegardez et restaurez votre configuration."
-
-msgctxt "name"
-msgid "Cura Backups"
-msgstr "Sauvegardes Cura"
-
-msgctxt "description"
-msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
-msgstr "Permet de modifier les paramètres de la machine (tels que volume d'impression, taille de buse, etc.)"
-
-msgctxt "name"
-msgid "Machine Settings Action"
-msgstr "Action Paramètres de la machine"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
-msgstr "Configurations des mises à niveau de Cura 2.5 vers Cura 2.6."
-
-msgctxt "name"
-msgid "Version Upgrade 2.5 to 2.6"
-msgstr "Mise à niveau de 2.5 vers 2.6"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
-msgstr "Mises à niveau des configurations de Cura 4.7 vers Cura 4.8."
-
-msgctxt "name"
-msgid "Version Upgrade 4.7 to 4.8"
-msgstr "Mise à niveau de 4.7 vers 4.8"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr "Configurations des mises à niveau de Cura 4.4 vers Cura 4.5."
-
-msgctxt "name"
-msgid "Version Upgrade 4.4 to 4.5"
-msgstr "Mise à niveau de 4.4 vers 4.5"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
-msgstr "Met à niveau les configurations, de Cura 3.0 vers Cura 3.1."
-
-msgctxt "name"
-msgid "Version Upgrade 3.0 to 3.1"
-msgstr "Mise à niveau de version, de 3.0 vers 3.1"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
-msgstr "Mises à niveau des configurations de Cura 4.11 vers Cura 4.12."
-
-msgctxt "name"
-msgid "Version Upgrade 4.11 to 4.12"
-msgstr "Mise à niveau de la version 4.11 vers la version 4.12"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr "Configurations des mises à jour de Cura 4.1 vers Cura 4.2."
-
-msgctxt "name"
-msgid "Version Upgrade 4.1 to 4.2"
-msgstr "Mise à jour de 4.1 vers 4.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
-msgstr "Configurations des mises à niveau de Cura 2.6 vers Cura 2.7."
-
-msgctxt "name"
-msgid "Version Upgrade 2.6 to 2.7"
-msgstr "Mise à niveau de 2.6 vers 2.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
-msgstr "Mises à niveau des configurations de Cura 4.6.0 vers Cura 4.6.2."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.0 to 4.6.2"
-msgstr "Mise à niveau de 4.6.0 vers 4.6.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
-msgstr "Configurations des mises à niveau de Cura 3.3 vers Cura 3.4."
-
-msgctxt "name"
-msgid "Version Upgrade 3.3 to 3.4"
-msgstr "Mise à niveau de 3.3 vers 3.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
-msgstr "Mises à niveau des configurations de Cura 4.8 vers Cura 4.9."
-
-msgctxt "name"
-msgid "Version Upgrade 4.8 to 4.9"
-msgstr "Mise à niveau de 4.8 vers 4.9"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr "Mises à niveau des configurations de Cura 4.5 vers Cura 4.6."
-
-msgctxt "name"
-msgid "Version Upgrade 4.5 to 4.6"
-msgstr "Mise à niveau de 4.5 vers 4.6"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr "Configurations des mises à jour de Cura 4.2 vers Cura 4.3."
-
-msgctxt "name"
-msgid "Version Upgrade 4.2 to 4.3"
-msgstr "Mise à jour de 4.2 vers 4.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
-msgstr "Configurations des mises à niveau de Cura 3.2 vers Cura 3.3."
-
-msgctxt "name"
-msgid "Version Upgrade 3.2 to 3.3"
-msgstr "Mise à niveau de 3.2 vers 3.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Configurations des mises à niveau de Cura 4.3 vers Cura 4.4."
-
-msgctxt "name"
-msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Mise à niveau de 4.3 vers 4.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
-msgstr "Met à jour les configurations de Cura 5.6 à Cura 5.7."
-
-msgctxt "name"
-msgid "Version Upgrade 5.6 to 5.7"
-msgstr "Mise à jour de la version 5.6 à 5.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
-msgstr "Configurations des mises à niveau de Cura 2.1 vers Cura 2.2."
-
-msgctxt "name"
-msgid "Version Upgrade 2.1 to 2.2"
-msgstr "Mise à niveau vers 2.1 vers 2.2"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
-msgstr "Configurations des mises à niveau de Cura 5.3 vers Cura 5.4."
-
-msgctxt "name"
-msgid "Version Upgrade 5.3 to 5.4"
-msgstr "Mise à niveau de la version 5.3 vers 5.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
-msgstr "Mises à niveau des configurations de Cura 4.9 vers Cura 4.10."
-
-msgctxt "name"
-msgid "Version Upgrade 4.9 to 4.10"
-msgstr "Mise à niveau de 4.9 vers 4.10"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
-msgstr "Met à niveau les configurations, de Cura 2.7 vers Cura 3.0."
-
-msgctxt "name"
-msgid "Version Upgrade 2.7 to 3.0"
-msgstr "Mise à niveau de version, de 2.7 vers 3.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Configurations des mises à niveau de Cura 3.5 vers Cura 4.0."
-
-msgctxt "name"
-msgid "Version Upgrade 3.5 to 4.0"
-msgstr "Mise à niveau de 3.5 vers 4.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
-msgstr "Mises à niveau des configurations de Cura 5.2 vers Cura 5.3."
-
-msgctxt "name"
-msgid "Version Upgrade 5.2 to 5.3"
-msgstr "Mise à niveau de 5.2 vers 5.3"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Configurations des mises à niveau de Cura 4.0 vers Cura 4.1."
-
-msgctxt "name"
-msgid "Version Upgrade 4.0 to 4.1"
-msgstr "Mise à niveau de 4.0 vers 4.1"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
-msgstr "Mises à niveau des configurations de Cura 4.13 vers Cura 5.0."
-
-msgctxt "name"
-msgid "Version Upgrade 4.13 to 5.0"
-msgstr "Mise à niveau de la version 4.13 vers la version 5.0"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
-msgstr "Configurations des mises à niveau de Cura 3.4 vers Cura 3.5."
-
-msgctxt "name"
-msgid "Version Upgrade 3.4 to 3.5"
-msgstr "Mise à niveau de 3.4 vers 3.5"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
-msgstr "Configurations des mises à niveau de Cura 2.2 vers Cura 2.4."
-
-msgctxt "name"
-msgid "Version Upgrade 2.2 to 2.4"
-msgstr "Mise à niveau de 2.2 vers 2.4"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
-msgstr "Mises à niveau des configurations de Cura 4.6.2 vers Cura 4.7."
-
-msgctxt "name"
-msgid "Version Upgrade 4.6.2 to 4.7"
-msgstr "Mise à niveau de 4.6.2 vers 4.7"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
-msgstr "Configurations des mises à niveau de Cura 5.4 vers Cura 5.5."
-
-msgctxt "name"
-msgid "Version Upgrade 5.4 to 5.5"
-msgstr "Mise à niveau de la version 5.4 vers 5.5"
-
-msgctxt "description"
-msgid "Allows loading and displaying G-code files."
-msgstr "Permet le chargement et l'affichage de fichiers G-Code."
-
-msgctxt "name"
-msgid "G-code Reader"
-msgstr "Lecteur G-Code"
-
-msgctxt "description"
-msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "Envoie des informations anonymes sur le découpage. Peut être désactivé dans les préférences."
-
-msgctxt "name"
-msgid "Slice info"
-msgstr "Information sur le découpage"
-
-msgctxt "description"
-msgid "Provides removable drive hotplugging and writing support."
-msgstr "Permet le branchement hot-plug et l'écriture sur lecteur amovible."
-
-msgctxt "name"
-msgid "Removable Drive Output Device Plugin"
-msgstr "Plugin de périphérique de sortie sur disque amovible"
-
-msgctxt "description"
-msgid "Creates an eraser mesh to block the printing of support in certain places"
-msgstr "Crée un maillage effaceur pour bloquer l'impression du support en certains endroits"
-
-msgctxt "name"
-msgid "Support Eraser"
-msgstr "Effaceur de support"
-
-msgctxt "description"
-msgid "Checks models and print configuration for possible printing issues and give suggestions."
-msgstr "Vérifie les modèles et la configuration de l'impression pour déceler d'éventuels problèmes d'impression et donne des suggestions."
-
-msgctxt "name"
-msgid "Model Checker"
-msgstr "Contrôleur de modèle"
-
-msgctxt "description"
-msgid "Provides a prepare stage in Cura."
-msgstr "Fournit une étape de préparation dans Cura."
-
-msgctxt "name"
-msgid "Prepare Stage"
-msgstr "Étape de préparation"
-
-msgctxt "description"
-msgid "Provides the preview of sliced layerdata."
-msgstr "Fournit l'aperçu des données du slice."
-
-msgctxt "name"
-msgid "Simulation View"
-msgstr "Vue simulation"
-
-msgctxt "description"
-msgid "Provides support for reading AMF files."
-msgstr "Fournit la prise en charge de la lecture de fichiers AMF."
-
-msgctxt "name"
-msgid "AMF Reader"
-msgstr "Lecteur AMF"
-
-msgctxt "description"
-msgid "Provides the X-Ray view."
-msgstr "Permet la vue Rayon-X."
-
-msgctxt "name"
-msgid "X-Ray View"
-msgstr "Vue Rayon-X"
-
-msgctxt "description"
-msgid "Provides a machine actions for updating firmware."
-msgstr "Fournit à une machine des actions permettant la mise à jour du firmware."
-
-msgctxt "name"
-msgid "Firmware Updater"
-msgstr "Programme de mise à jour du firmware"
-
-msgctxt "description"
-msgid "Provides support for importing profiles from legacy Cura versions."
-msgstr "Fournit la prise en charge de l'importation de profils à partir de versions Cura antérieures."
-
-msgctxt "name"
-msgid "Legacy Cura Profile Reader"
-msgstr "Lecteur de profil Cura antérieur"
-
-msgctxt "description"
-msgid "Extension that allows for user created scripts for post processing"
-msgstr "Extension qui permet le post-traitement des scripts créés par l'utilisateur"
-
-msgctxt "name"
-msgid "Post Processing"
-msgstr "Post-traitement"
-
-msgctxt "description"
-msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "Enregistre certains événements afin qu'ils puissent être utilisés par le rapporteur d'incident"
-
-msgctxt "name"
-msgid "Sentry Logger"
-msgstr "Journal d'événements dans Sentry"
-
-msgctxt "description"
-msgid "Provides support for writing MakerBot Format Packages."
-msgstr "Fournit un support pour l'écriture de paquets de format MakerBot."
-
-msgctxt "name"
-msgid "Makerbot Printfile Writer"
-msgstr "Écrivain de fichier d'impression Makerbot"
-
-msgctxt "description"
-msgid "Provides support for importing Cura profiles."
-msgstr "Fournit la prise en charge de l'importation de profils Cura."
-
-msgctxt "name"
-msgid "Cura Profile Reader"
-msgstr "Lecteur de profil Cura"
-
-msgctxt "description"
-msgid "Provides support for reading Ultimaker Format Packages."
-msgstr "Fournit un support pour la lecture des paquets de format UltiMaker."
-
-msgctxt "name"
-msgid "UFP Reader"
-msgstr "Lecteur UFP"
-
-msgctxt "description"
-msgid "Enables ability to generate printable geometry from 2D image files."
-msgstr "Permet de générer une géométrie imprimable à partir de fichiers d'image 2D."
-
-msgctxt "name"
-msgid "Image Reader"
-msgstr "Lecteur d'images"
-
-msgctxt "description"
-msgid "Provides the link to the CuraEngine slicing backend."
-msgstr "Fournit le lien vers l'arrière du système de découpage CuraEngine."
-
-msgctxt "name"
-msgid "CuraEngine Backend"
-msgstr "Système CuraEngine"
-
-msgctxt "description"
-msgid "Writes g-code to a compressed archive."
-msgstr "Enregistre le G-Code dans une archive compressée."
-
-msgctxt "name"
-msgid "Compressed G-code Writer"
-msgstr "Générateur de G-Code compressé"
-
-msgctxt "description"
-msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
-msgstr "Fournit les actions de la machine pour les machines UltiMaker (telles que l'assistant de calibration du plateau, sélection des mises à niveau, etc.)"
-
-msgctxt "name"
-msgid "UltiMaker machine actions"
-msgstr "Actions de la machine UltiMaker"
-
-msgctxt "description"
-msgid "Reads g-code from a compressed archive."
-msgstr "Lit le G-Code à partir d'une archive compressée."
-
-msgctxt "name"
-msgid "Compressed G-code Reader"
-msgstr "Lecteur G-Code compressé"
-
-msgctxt "description"
-msgid "Provides a preview stage in Cura."
-msgstr "Fournit une étape de prévisualisation dans Cura."
-
-msgctxt "name"
-msgid "Preview Stage"
-msgstr "Étape de prévisualisation"
-
-msgctxt "description"
-msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
-msgstr "Se connecte à la Digital Library, permettant à Cura d'ouvrir des fichiers à partir de cette dernière et d'y enregistrer des fichiers."
-
-msgctxt "name"
-msgid "Ultimaker Digital Library"
-msgstr "Ultimaker Digital Library"
-
-msgctxt "description"
-msgid "Provides support for exporting Cura profiles."
-msgstr "Fournit la prise en charge de l'exportation de profils Cura."
-
-msgctxt "name"
-msgid "Cura Profile Writer"
-msgstr "Générateur de profil Cura"
-
-msgctxt "description"
-msgid "Provides support for reading X3D files."
-msgstr "Fournit la prise en charge de la lecture de fichiers X3D."
-
-msgctxt "name"
-msgid "X3D Reader"
-msgstr "Lecteur X3D"
-
-msgctxt "description"
-msgid "Provides support for reading model files."
-msgstr "Fournit la prise en charge de la lecture de fichiers modèle 3D."
-
-msgctxt "name"
-msgid "Trimesh Reader"
-msgstr "Lecteur de Trimesh"
-
-msgctxt "description"
-msgid "Provides a monitor stage in Cura."
-msgstr "Fournit une étape de surveillance dans Cura."
-
-msgctxt "name"
-msgid "Monitor Stage"
-msgstr "Étape de surveillance"
-
-msgctxt "description"
-msgid "Provides the Per Model Settings."
-msgstr "Fournit les paramètres par modèle."
-
-msgctxt "name"
-msgid "Per Model Settings Tool"
-msgstr "Outil de paramètres par modèle"
-
-msgctxt "description"
-msgid "Provides capabilities to read and write XML-based material profiles."
-msgstr "Offre la possibilité de lire et d'écrire des profils matériels basés sur XML."
-
-msgctxt "name"
-msgid "Material Profiles"
-msgstr "Profils matériels"
-
-msgctxt "description"
-msgid "Provides support for writing 3MF and UCP files."
-msgstr "Prise en charge de l'écriture des fichiers 3MF et UCP."
-
-msgctxt "name"
-msgid "3MF Writer"
-msgstr "Générateur 3MF"
-
-msgctxt "description"
-msgid "Provides support for writing Ultimaker Format Packages."
-msgstr "Permet l'écriture de fichiers UltiMaker Format Package."
-
-msgctxt "name"
-msgid "UFP Writer"
-msgstr "Générateur UFP"
-
-msgctxt "description"
-msgid "Writes g-code to a file."
-msgstr "Enregistre le G-Code dans un fichier."
-
-msgctxt "name"
-msgid "G-code Writer"
-msgstr "Générateur de G-Code"
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "Combinaison non recommandée. Chargez le noyau BB dans l'emplacement 1 (gauche) pour une meilleure fiabilité."
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "Fichier d'impression Makerbot Sketch"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "Rechercher l'imprimante"
+
+msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "Il s'agit d'un fichier de projet Cura Universal. Souhaitez-vous l'ouvrir en tant que projet Cura Universal ou importer les modèles qu'il contient ?"

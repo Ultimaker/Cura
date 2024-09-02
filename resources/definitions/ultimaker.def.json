@@ -111,7 +111,6 @@
         "roofing_layer_count": { "value": "1" },
         "roofing_material_flow": { "value": "material_flow" },
         "skin_angles": { "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]" },
-        "skin_edge_support_thickness": { "value": "4 * layer_height if infill_sparse_density < 30 else 0" },
         "skin_material_flow": { "value": "0.95 * material_flow" },
         "skin_material_flow_layer_0": { "value": "95" },
         "skin_monotonic": { "value": "roofing_layer_count == 0" },
@@ -129,7 +128,6 @@
         "support_line_distance": { "minimum_value_warning": "0 if support_structure == 'tree' else support_line_width" },
         "support_tower_maximum_supported_diameter": { "value": "support_tower_diameter" },
         "support_tower_roof_angle": { "value": "0 if support_interface_enable else 65" },
-        "support_use_towers": { "value": false },
         "support_wall_count": { "value": "1 if support_structure == 'tree' else 0" },
         "support_xy_distance_overhang": { "value": "0.2" },
         "support_z_distance": { "value": "0" },
@@ -139,7 +137,8 @@
         "wall_x_material_flow_layer_0": { "value": "0.95 * material_flow_layer_0" },
         "xy_offset": { "value": "-layer_height * 0.1" },
         "xy_offset_layer_0": { "value": "-wall_line_width_0 / 5 + xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_relative": { "value": "True" },
         "zig_zaggify_support": { "value": true }
     }
 }
