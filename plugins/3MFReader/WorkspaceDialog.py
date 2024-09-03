@@ -22,6 +22,8 @@ import time
 
 from cura.CuraApplication import CuraApplication
 
+from .SpecificSettingsModel import SpecificSettingsModel
+
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -61,16 +63,23 @@ class WorkspaceDialog(QObject):
         self._machine_name = ""
         self._machine_type = ""
         self._variant_type = ""
+        self._current_machine_name = ""
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
         self._is_printer_group = False
-        self._updatable_machines_model = MachineListModel(self, listenToChanges=False)
+        self._updatable_machines_model = MachineListModel(self, listenToChanges = False, showCloudPrinters = True)
         self._missing_package_metadata: List[Dict[str, str]] = []
         self._plugin_registry: PluginRegistry = CuraApplication.getInstance().getPluginRegistry()
         self._install_missing_package_dialog: Optional[QObject] = None
         self._is_abstract_machine = False
         self._is_networked_machine = False
+        self._is_compatible_machine = False
+        self._allow_create_machine = True
+        self._exported_settings_model = SpecificSettingsModel()
+        self._exported_settings_model.modelChanged.connect(self.exportedSettingModelChanged.emit)
+        self._current_machine_pos_index = 0
+        self._is_ucp = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -94,6 +103,9 @@ class WorkspaceDialog(QObject):
     extrudersChanged = pyqtSignal()
     isPrinterGroupChanged = pyqtSignal()
     missingPackagesChanged = pyqtSignal()
+    isCompatibleMachineChanged = pyqtSignal()
+    isUcpChanged = pyqtSignal()
+    exportedSettingModelChanged = pyqtSignal()
 
     @pyqtProperty(bool, notify = isPrinterGroupChanged)
     def isPrinterGroup(self) -> bool:
@@ -166,8 +178,30 @@ class WorkspaceDialog(QObject):
             self._machine_name = machine_name
             self.machineNameChanged.emit()
 
+    def setCurrentMachineName(self, machine: str) -> None:
+        self._current_machine_name = machine
+
+    @pyqtProperty(str, notify = machineNameChanged)
+    def currentMachineName(self) -> str:
+        return self._current_machine_name
+
+    @staticmethod
+    def getIndexOfCurrentMachine(list_of_dicts, key, value, defaultIndex):
+        for i, d in enumerate(list_of_dicts):
+            if d.get(key) == value:  # found the dictionary
+                return i
+        return defaultIndex
+
+    @pyqtProperty(int, notify = machineNameChanged)
+    def currentMachinePositionIndex(self):
+        return self._current_machine_pos_index
+
     @pyqtProperty(QObject, notify = updatableMachinesChanged)
     def updatableMachinesModel(self) -> MachineListModel:
+        if self._current_machine_name != "":
+            self._current_machine_pos_index = self.getIndexOfCurrentMachine(self._updatable_machines_model.getItems(), "id", self._current_machine_name, defaultIndex = 0)
+        else:
+            self._current_machine_pos_index = 0
         return cast(MachineListModel, self._updatable_machines_model)
 
     def setUpdatableMachines(self, updatable_machines: List[GlobalStack]) -> None:
@@ -292,7 +326,49 @@ class WorkspaceDialog(QObject):
     @pyqtSlot(str)
     def setMachineToOverride(self, machine_name: str) -> None:
         self._override_machine = machine_name
+        self.updateCompatibleMachine()
 
+    def updateCompatibleMachine(self):
+        registry = ContainerRegistry.getInstance()
+        containers_expected = registry.findDefinitionContainers(name=self._machine_type)
+        containers_selected = registry.findContainerStacks(id=self._override_machine)
+        if len(containers_expected) == 1 and len(containers_selected) == 1:
+            new_compatible_machine = (containers_expected[0] == containers_selected[0].definition)
+            if new_compatible_machine != self._is_compatible_machine:
+                self._is_compatible_machine = new_compatible_machine
+                self.isCompatibleMachineChanged.emit()
+
+    @pyqtProperty(bool, notify = isCompatibleMachineChanged)
+    def isCompatibleMachine(self) -> bool:
+        return self._is_compatible_machine
+
+    def setIsUcp(self, isUcp: bool) -> None:
+        if isUcp != self._is_ucp:
+            self._is_ucp = isUcp
+            self.isUcpChanged.emit()
+
+    @pyqtProperty(bool, notify=isUcpChanged)
+    def isUcp(self):
+        return self._is_ucp
+
+    def setAllowCreatemachine(self, allow_create_machine):
+        self._allow_create_machine = allow_create_machine
+
+    @pyqtProperty(bool, constant = True)
+    def allowCreateMachine(self):
+        return self._allow_create_machine
+
+    @pyqtProperty(QObject, notify=exportedSettingModelChanged)
+    def exportedSettingModel(self):
+        return self._exported_settings_model
+
+    @pyqtProperty("QVariantList", notify=exportedSettingModelChanged)
+    def exportedSettingModelItems(self):
+        return self._exported_settings_model.items
+
+    @pyqtProperty(int, notify=exportedSettingModelChanged)
+    def exportedSettingModelRowCount(self):
+        return self._exported_settings_model.rowCount()
     @pyqtSlot()
     def closeBackend(self) -> None:
         """Close the backend: otherwise one could end up with "Slicing..."""

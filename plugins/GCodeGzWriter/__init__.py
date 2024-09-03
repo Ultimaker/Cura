@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 
 from . import GCodeGzWriter
 

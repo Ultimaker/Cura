@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,6 +41,10 @@ msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "挤出机的结束 G-code"
 
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr "推料器结束 G 代码持续时间"
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "挤出机终点绝对位置"
@@ -71,6 +76,10 @@ msgstr "挤出机打印冷却风扇"
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "挤出机的开始 G-code"
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr "推料器开始 G 代码持续时间"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -156,6 +165,14 @@ msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "打印冷却风扇的数量与该挤出机有关。仅在每个挤出机都对应不同的打印冷却风扇时，对默认值 0 进行更改。"
 
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr "当切走该推料器时,执行最后的 G 代码所需的时间。"
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr "当切换到该推料器时,执行起始 G 代码所需的时间。"
+
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
 msgstr "关闭挤出机时的终止位置的 X 坐标。"
@@ -179,75 +196,3 @@ msgstr "喷嘴 Y 轴坐标偏移。"
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "打开挤压机时的起始位置 Y 坐标。"
-
-#~ msgctxt "wall_0_material_flow_roofing description"
-#~ msgid "Flow compensation on the top surface outermost wall line."
-#~ msgstr "頂部最外牆流量補償"
-
-#~ msgctxt "wall_x_material_flow_roofing description"
-#~ msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
-#~ msgstr "所有牆線，除了最外面的牆線，頂部牆線的流動補償"
-
-#~ msgctxt "group_outer_walls label"
-#~ msgid "Group Outer Walls"
-#~ msgstr "群組外牆"
-
-#~ msgctxt "group_outer_walls description"
-#~ msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
-#~ msgstr "在相同層中，不同島嶼的外牆按順序印製。啟用時，減少流量變化的量，因為牆壁一次印刷一種類型；停用時，減少島嶼之間的行程數，因為相同島嶼的牆壁被分組。"
-
-#~ msgctxt "acceleration_wall_x_roofing description"
-#~ msgid "The acceleration with which the top surface inner walls are printed."
-#~ msgstr "頂部內壁印製時的加速度"
-
-#~ msgctxt "acceleration_wall_0_roofing description"
-#~ msgid "The acceleration with which the top surface outermost walls are printed."
-#~ msgstr "頂部最外牆的印刷加速度"
-
-#~ msgctxt "jerk_wall_x_roofing description"
-#~ msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
-#~ msgstr "印刷頂部最外牆的最大瞬時速度變化。"
-
-#~ msgctxt "jerk_wall_0_roofing description"
-#~ msgid "The maximum instantaneous velocity change with which the top surface outermost walls are printed."
-#~ msgstr "印刷頂部內壁的最大瞬時速度變化。"
-
-#~ msgctxt "speed_wall_x_roofing description"
-#~ msgid "The speed at which the top surface inner walls are printed."
-#~ msgstr "頂部內壁印製時的速度"
-
-#~ msgctxt "speed_wall_0_roofing description"
-#~ msgid "The speed at which the top surface outermost wall is printed."
-#~ msgstr "頂部最外牆印製時的速度"
-
-#~ msgctxt "acceleration_wall_x_roofing label"
-#~ msgid "Top Surface Inner Wall Acceleration"
-#~ msgstr "頂部內壁加速度"
-
-#~ msgctxt "jerk_wall_x_roofing label"
-#~ msgid "Top Surface Inner Wall Jerk"
-#~ msgstr "頂部最外牆突變"
-
-#~ msgctxt "speed_wall_x_roofing label"
-#~ msgid "Top Surface Inner Wall Speed"
-#~ msgstr "頂部內壁速度"
-
-#~ msgctxt "wall_x_material_flow_roofing label"
-#~ msgid "Top Surface Inner Wall(s) Flow"
-#~ msgstr "頂部內壁流"
-
-#~ msgctxt "acceleration_wall_0_roofing label"
-#~ msgid "Top Surface Outer Wall Acceleration"
-#~ msgstr "頂部外牆加速度"
-
-#~ msgctxt "wall_0_material_flow_roofing label"
-#~ msgid "Top Surface Outer Wall Flow"
-#~ msgstr "頂部最外牆流"
-
-#~ msgctxt "speed_wall_0_roofing label"
-#~ msgid "Top Surface Outer Wall Speed"
-#~ msgstr "頂部外牆速度"
-
-#~ msgctxt "jerk_wall_0_roofing label"
-#~ msgid "頂部內壁突變"
-#~ msgstr "Saccade de la paroi externe de la surface supérieure"

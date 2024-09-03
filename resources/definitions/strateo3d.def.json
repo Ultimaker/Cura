@@ -157,8 +157,6 @@
             "value": "jerk_wall * 5 / 10"
         },
         "jerk_wall_x": { "maximum_value_warning": "0.01" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 1500 },
         "machine_center_is_zero": { "default_value": false },
         "machine_depth": { "default_value": 420 },

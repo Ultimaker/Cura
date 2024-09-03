@@ -23,13 +23,8 @@
             "fabtotum_",
             "fdplast_",
             "filo3d_",
-            "generic_bvoh_175",
-            "generic_cpe_175",
-            "generic_hips_175",
-            "generic_pc_175",
+            "generic_",
             "ultimaker_rapidrinse_175",
-            "ultimaker_sr30_175",
-            "generic_tpu_175",
             "goofoo_",
             "ideagen3D_",
             "imade3d_",
@@ -60,13 +55,7 @@
             "1": "ultimaker_method_extruder_right"
         },
         "nozzle_offsetting_for_disallowed_areas": false,
-        "platform_offset": [
-            0,
-            0,
-            0
-        ],
-        "platform_texture": "MakerbotMethod.png",
-        "preferred_material": "generic_pla_175",
+        "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "fast",
         "preferred_variant_name": "1A",
         "supports_network_connection": true,
@@ -99,7 +88,7 @@
         "acceleration_print":
         {
             "enabled": false,
-            "value": 300
+            "value": 800
         },
         "acceleration_print_layer_0":
         {
@@ -202,13 +191,17 @@
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": 5 },
+        "cool_fan_enabled":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "default_material_bed_temperature": { "resolve": "min(extruderValues('default_material_bed_temperature'))" },
         "extruder_prime_pos_abs": { "default_value": true },
         "gradual_support_infill_steps": { "value": 0 },
         "infill_before_walls": { "value": false },
-        "infill_enable_travel_optimization": { "value": true },
         "infill_material_flow": { "value": "material_flow" },
         "infill_overlap": { "value": 0 },
-        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'lines'" },
+        "infill_pattern": { "value": "'grid' if infill_sparse_density < 80 else 'lines'" },
         "infill_wipe_dist": { "value": 0 },
         "inset_direction": { "value": "'inside_out'" },
         "jerk_enabled":
@@ -234,7 +227,7 @@
         "jerk_print":
         {
             "enabled": false,
-            "value": 12.5
+            "value": 6.25
         },
         "jerk_print_layer_0":
         {
@@ -279,7 +272,7 @@
         "jerk_travel":
         {
             "enabled": false,
-            "value": 12.5
+            "value": "jerk_print"
         },
         "jerk_travel_enabled":
         {
@@ -316,8 +309,6 @@
             "enabled": false,
             "value": "jerk_print"
         },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_center_is_zero": { "value": true },
         "machine_end_gcode": { "default_value": "" },
@@ -330,14 +321,16 @@
         "machine_nozzle_cool_down_speed": { "value": 0.8 },
         "machine_nozzle_heat_up_speed": { "value": 3.5 },
         "machine_scale_fan_speed_zero_to_one": { "value": true },
-        "machine_start_gcode": { "default_value": "" },
+        "machine_start_gcode": { "default_value": "G0 Z20" },
         "material_bed_temperature": { "enabled": "machine_heated_bed" },
-        "material_bed_temperature_layer_0": { "enabled": "machine_heated_bed" },
-        "material_final_print_temperature": { "value": "material_print_temperature-10" },
-        "material_flow": { "value": 97 },
+        "material_flow": { "value": 100 },
         "material_initial_print_temperature": { "value": "material_print_temperature-10" },
-        "material_print_temperature": { "value": "default_material_print_temperature" },
+        "material_print_temperature":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
         "material_shrinkage_percentage": { "enabled": true },
+        "min_bead_width": { "value": "0.75*line_width" },
         "min_wall_line_width": { "value": 0.4 },
         "minimum_support_area": { "value": 0.1 },
         "multiple_mesh_overlap": { "value": 0 },
@@ -352,17 +345,90 @@
         "prime_tower_raft_base_line_spacing": { "value": "raft_base_line_width" },
         "prime_tower_wipe_enabled": { "value": true },
         "print_sequence": { "enabled": false },
-        "raft_base_line_spacing": { "value": "2*raft_base_line_width" },
-        "raft_base_line_width": { "value": 1.4 },
+        "raft_airgap":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_base_fan_speed": { "value": 0 },
+        "raft_base_line_spacing":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "value": "2*raft_base_line_width"
+        },
+        "raft_base_line_width":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ],
+            "value": 1.4
+        },
         "raft_base_speed": { "value": 10 },
-        "raft_base_thickness": { "value": 0.8 },
+        "raft_base_thickness":
+        {
+            "force_depends_on_settings": [
+                "raft_interface_extruder_nr",
+                "support_extruder_nr"
+            ],
+            "value": 0.8
+        },
+        "raft_base_wall_count":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ],
+            "value": "raft_wall_count"
+        },
         "raft_interface_extruder_nr": { "value": "raft_surface_extruder_nr" },
+        "raft_interface_fan_speed": { "value": 0 },
+        "raft_interface_infill_overlap":
+        {
+            "force_depends_on_settings": [ "raft_interface_extruder_nr" ]
+        },
         "raft_interface_layers": { "value": 2 },
-        "raft_interface_line_width": { "value": 0.7 },
+        "raft_interface_line_spacing":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
+        },
+        "raft_interface_line_width":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ],
+            "value": 0.7
+        },
         "raft_interface_speed": { "value": 90 },
         "raft_interface_thickness": { "value": 0.3 },
-        "raft_margin": { "value": 3 },
+        "raft_interface_wall_count": { "value": "raft_wall_count" },
+        "raft_interface_z_offset":
+        {
+            "force_depends_on_settings": [
+                "raft_base_thickness",
+                "raft_interface_extruder_nr"
+            ]
+        },
+        "raft_margin": { "value": 1.2 },
+        "raft_smoothing": { "value": 9.5 },
         "raft_surface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable and extruderValue(support_extruder_nr,'material_is_support_material') else raft_base_extruder_nr" },
+        "raft_surface_fan_speed": { "value": 0 },
+        "raft_surface_flow":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_surface_speed":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_surface_thickness":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_surface_wall_count": { "value": "raft_wall_count" },
+        "raft_surface_z_offset":
+        {
+            "force_depends_on_settings": [ "support_extruder_nr" ]
+        },
+        "raft_wall_count": { "value": 2 },
+        "retract_at_layer_change": { "value": true },
         "retraction_amount": { "value": 0.75 },
         "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "value": "speed_travel / 10" },
@@ -371,19 +437,21 @@
         "retraction_hop": { "value": 0.4 },
         "retraction_hop_enabled": { "value": true },
         "retraction_hop_only_when_collides": { "value": false },
-        "retraction_min_travel": { "value": "line_width * 4" },
+        "retraction_min_travel": { "value": "0.6" },
         "retraction_prime_speed": { "value": "retraction_speed" },
         "retraction_speed": { "value": 5 },
         "roofing_layer_count": { "value": 2 },
         "roofing_material_flow": { "value": "material_flow" },
         "roofing_monotonic": { "value": true },
-        "skin_material_flow": { "value": "0.95*material_flow" },
+        "skin_material_flow": { "value": "material_flow" },
+        "skin_material_flow_layer_0": { "value": "material_flow" },
         "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
         "skirt_brim_material_flow": { "value": "material_flow" },
         "skirt_brim_minimal_length": { "value": 500 },
+        "small_skin_width": { "value": 4 },
         "speed_equalize_flow_width_factor": { "value": 0 },
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_print": { "value": 50 },
@@ -396,27 +464,32 @@
         "speed_wall_0": { "value": "speed_wall * 30/40" },
         "speed_wall_x": { "value": "speed_wall" },
         "support_angle": { "value": 40 },
-        "support_bottom_distance": { "value": "support_z_distance / 2" },
+        "support_bottom_height": { "value": "2*support_infill_sparse_thickness" },
         "support_bottom_material_flow": { "value": "material_flow" },
+        "support_bottom_wall_count": { "value": "0" },
         "support_brim_enable": { "value": false },
         "support_conical_min_width": { "value": 10 },
         "support_enable": { "value": true },
         "support_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material'))" },
-        "support_fan_enable": { "value": false },
+        "support_fan_enable": { "value": "True" },
         "support_infill_rate": { "value": 20.0 },
+        "support_infill_sparse_thickness": { "value": "layer_height" },
         "support_interface_enable": { "value": true },
+        "support_interface_height": { "value": "4*support_infill_sparse_thickness" },
         "support_interface_material_flow": { "value": "material_flow" },
-        "support_interface_offset": { "value": 0 },
+        "support_interface_offset": { "value": "1" },
         "support_interface_pattern": { "value": "'lines'" },
-        "support_interface_wall_count": { "value": 2 },
+        "support_interface_wall_count": { "value": "1" },
         "support_material_flow": { "value": "material_flow" },
+        "support_offset": { "value": "1.8" },
         "support_pattern": { "value": "'lines'" },
+        "support_roof_height": { "value": "4*layer_height" },
         "support_roof_material_flow": { "value": "material_flow" },
         "support_supported_skin_fan_speed": { "value": "cool_fan_speed_max" },
-        "support_top_distance": { "value": "support_z_distance" },
-        "support_wall_count": { "value": "1 if support_conical_enabled or support_structure == 'tree' else 0" },
+        "support_use_towers": { "value": "False" },
+        "support_wall_count": { "value": "2 if support_conical_enabled or support_structure == 'tree' else 0" },
         "support_xy_distance": { "value": 0.2 },
-        "support_z_distance": { "value": 0 },
+        "support_xy_distance_overhang": { "value": "support_xy_distance" },
         "switch_extruder_retraction_amount": { "value": 0.5 },
         "switch_extruder_retraction_speeds": { "value": "retraction_speed" },
         "top_bottom_thickness": { "value": "5*layer_height" },
@@ -424,13 +497,15 @@
         "travel_avoid_other_parts": { "value": false },
         "wall_0_inset": { "value": 0 },
         "wall_0_material_flow": { "value": "material_flow" },
-        "wall_0_wipe_dist": { "value": 0 },
+        "wall_0_material_flow_layer_0": { "value": "material_flow" },
+        "wall_0_wipe_dist": { "value": 0.8 },
         "wall_material_flow": { "value": "material_flow" },
         "wall_x_material_flow": { "value": "material_flow" },
+        "wall_x_material_flow_layer_0": { "value": "material_flow" },
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": "xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
         "z_seam_position": { "value": "'backright'" },
+        "z_seam_relative": { "value": true },
         "z_seam_type": { "value": "'sharpest_corner'" },
         "zig_zaggify_infill": { "value": true }
     }

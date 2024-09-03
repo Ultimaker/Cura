@@ -14,7 +14,7 @@
     {
         "acceleration_print": { "default_value": 1000 },
         "adhesion_type": { "default_value": "skirt" },
-        "brim_outside_only": { "default_value": false },
+        "brim_location": { "default_value": "everywhere" },
         "default_material_print_temperature": { "default_value": 220 },
         "infill_sparse_density": { "default_value": 20 },
         "ironing_flow": { "default_value": 7.0 },
@@ -44,7 +44,6 @@
         "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 10 },
         "machine_name": { "default_value": "Erzay3D" },
-        "machine_nozzle_head_distance": { "default_value": 2.5 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_start_gcode": { "default_value": "G28\nG1 Z15.0 F6000\nG92 E0" },

@@ -40,22 +40,16 @@ on:
         options:
           - self-hosted-X64
           - self-hosted-ARM64
-          - macos-11
           - macos-12
 
-env:
-  CONAN_ARGS: ${{ inputs.conan_args || '' }}
-  ENTERPRISE: ${{ inputs.enterprise || false }}
-  STAGING: ${{ inputs.staging || false }}
-
 jobs:
-  installer:
+  macos-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging }}
       architecture: ${{ inputs.architecture }}
       operating_system: ${{ inputs.operating_system }}
     secrets: inherit

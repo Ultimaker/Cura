@@ -4,12 +4,20 @@ on:
   push:
     paths:
       - 'plugins/**'
-      - 'resources/**'
       - 'cura/**'
+      - 'resources/bundled_packages/**'
+      - 'resources/i18n/**'
+      - 'resources/qml/**'
+      - 'resources/setting_visibility/**'
+      - 'resources/shaders/**'
+      - 'resources/texts/**'
+      - 'resources/themes/**'
+      - 'resources/public_key.pem'
+      - 'resources/README_resources.txt'
       - 'icons/**'
       - 'tests/**'
       - 'packaging/**'
-      - '.github/workflows/conan-*.yml'
+      - '.github/workflows/conan-package.yml'
       - '.github/workflows/notify.yml'
       - '.github/workflows/requirements-runner.txt'
       - 'requirements*.txt'
@@ -20,12 +28,9 @@ on:
       - 'main'
       - 'CURA-*'
       - 'PP-*'
-      - '[0-9].[0-9]'
-      - '[0-9].[0-9][0-9]'
-    tags:
-      - '[0-9].[0-9].[0-9]*'
-      - '[0-9].[0-9].[0-9]'
-      - '[0-9].[0-9][0-9].[0-9]*'
+      - 'NP-*'
+      - '[0-9].[0-9]*'
+      - '[0-9].[0-9][0-9]*'
 
 env:
   CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
@@ -43,4 +48,12 @@ jobs:
     with:
       recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
       recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
+    secrets: inherit
+
+  conan-package-create:
+    needs: [ conan-recipe-version, conan-package-export ]
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-create-linux.yml@main
+    with:
+      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
+      conan_extra_args: "-o cura:enable_i18n=True"
     secrets: inherit

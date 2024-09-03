@@ -1,12 +1,12 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from typing import List, cast
 
-from PyQt6.QtCore import QObject, QUrl, QMimeData
+from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtWidgets import QApplication
 
+from UM.Application import Application
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
 from UM.Math.Vector import Vector
@@ -32,11 +32,14 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 
-
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
 
+        self._operation_stack = Application.getInstance().getOperationStack()
+        self._operation_stack.changed.connect(self._onUndoStackChanged)
+
+    undoStackChanged = pyqtSignal()
     @pyqtSlot()
     def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
@@ -44,6 +47,25 @@ class CuraActions(QObject):
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
         event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software?utm_source=cura&utm_medium=software&utm_campaign=dropdown-documentation")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canUndo(self):
+        return self._operation_stack.canUndo()
+
+    @pyqtProperty(bool, notify=undoStackChanged)
+    def canRedo(self):
+        return self._operation_stack.canRedo()
+
+    @pyqtSlot()
+    def undo(self):
+        self._operation_stack.undo()
+
+    @pyqtSlot()
+    def redo(self):
+        self._operation_stack.redo()
+
+    def _onUndoStackChanged(self):
+        self.undoStackChanged.emit()
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
@@ -249,7 +271,11 @@ class CuraActions(QObject):
         # deselect currently selected nodes, and select the new nodes
         for node in Selection.getAllSelectedObjects():
             Selection.remove(node)
+
+        numberOfFixedNodes = len(fixed_nodes)
         for node in nodes:
+            numberOfFixedNodes += 1
+            node.printOrder = numberOfFixedNodes
             Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-11-24 12:51+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>プライムタワーの生成方法:<ul><li><b>通常:</b>二次材料が,プライミングされるバケットを作成します</li><li><b>インターリーブド:</b>プライムタワーをできるだけまばらに作成します。これにより時間とフィラメントが節約されますが,使用できる材料が互いに接着している場合にのみ可能です。</li></ul></html>"
+
+msgctxt "brim_inside_margin description"
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "モデルの周囲のブリムが,他のモデルの望ましくない場所に接触する可能性があります。これにより,この距離内のすべてのブリムがブリムのないモデルから削除されます。"
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -56,10 +64,6 @@ msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "プリントヘッドの領域を持つポリゴンのリストは入力できません。"
 
-msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "別の部品内に完全に囲まれた部品は、別の部品の内側に接触する外側縁ができることがあります。この設定によって、内部の穴からこの間隔内のすべての縁が除去されます。"
-
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
 msgstr "枝がサポートポイントからどれくらい移動できるかについての推奨値。枝は、目的地（ビルドプレートまたはモデルの平らな部分）に到達するためであればこの値に違反することができます。この値を小さくすることで、サポートをより頑丈にすることができますが、枝の量が増加します（材料の使用量やプリント時間も増加します）。"
@@ -85,11 +89,8 @@ msgid "Adaptive layers computes the layer heights depending on the shape of the 
 msgstr "適応レイヤーは、レイヤーの高さをモデルの形状に合わせて計算します。"
 
 msgctxt "infill_wall_line_count description"
-msgid ""
-"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
-"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。\n"
+msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr "インフィルエリア周辺に外壁を追加します。このような壁は、上層/底層ラインにたるみを作ります。つまり、一部の外壁材料の費用で同じ品質を実現するためには、必要な上層/底層スキンが少ないことを意味します。"
 "この機能は、インフィルポリゴン接合と組み合わせて、構成が正しい場合、移動または引き戻しが必要なく、すべてのインフィルを1つの押出経路に接続することができます。"
 
 msgctxt "platform_adhesion description"
@@ -151,6 +152,10 @@ msgstr "一度にすべて"
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
 msgstr "プリントの解像度に影響を与えるすべての設定。これらの設定は、品質（および印刷時間）に大きな影響を与えます。"
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "オブジェクトリストを並べ替えて,印刷順序を手動で設定できます。リストの最初のオブジェクトが最初に印刷されます。"
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -400,21 +405,21 @@ msgctxt "adhesion_type option brim"
 msgid "Brim"
 msgstr "ブリム"
 
+msgctxt "brim_inside_margin label"
+msgid "Brim Avoid Margin"
+msgstr "ブリムを避けるためのマージン"
+
 msgctxt "brim_gap label"
 msgid "Brim Distance"
 msgstr "ブリム距離"
-
-msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "内側縁がマージンに接触しないようにする"
 
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
 msgstr "ブリムライン数"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "外側にブリムのみ印刷"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "ブリムの位置"
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -455,6 +460,14 @@ msgstr "初期レイヤーのビルドプレート温度"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "造形温度"
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "ビルドボリューム温度制限"
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "ビルドボリューム温度警告"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
@@ -868,6 +881,10 @@ msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
 msgstr "印刷中の冷却を有効にする"
 
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "印刷プロセスレポートを有効にする"
+
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "引き戻し有効"
@@ -900,6 +917,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "モデルの周りに壁（ooze shield）を作る。これを生成することで、一つ目のノズルの高さと2つ目のノズルが同じ高さであったとき、2つ目のノズルを綺麗にします。"
 
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "印刷プロセスのレポートを有効にして,問題の検出の可能性があるしきい値を設定します。"
+
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
 msgstr "最上位のスキンレイヤー（空気にさらされている）上の小さな（最大「小さな上部/下部幅」）領域を、デフォルトパターンの代わりに壁で埋められるようにします。"
@@ -931,6 +952,10 @@ msgstr "フィラメントパージ速度の後"
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "スペースがサポートで埋まっている場合でも、モデルの周辺にブリムを印刷します。これにより、サポートの最初の層の一部のエリアがブリムになります。"
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "どこにでも"
 
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
@@ -1036,6 +1061,10 @@ msgctxt "speed_equalize_flow_width_factor label"
 msgid "Flow Equalization Ratio"
 msgstr "フロー均一化率"
 
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "フロー制限"
+
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
 msgstr "流量補正要因"
@@ -1047,6 +1076,10 @@ msgstr "流量補正時の最大抽出オフセット"
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
 msgstr "フロー温度グラフ"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "フロー警告"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
@@ -1189,19 +1222,13 @@ msgid "G-code Flavor"
 msgstr "G-codeフレーバー"
 
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr ""
-"最後に実行するG-codeコマンドは、\n"
+msgid "G-code commands to be executed at the very end - separated by \n."
+msgstr "最後に実行するG-codeコマンドは、"
 "で区切ります。"
 
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
-"."
-msgstr ""
-"最初に実行するG-codeコマンドは、\n"
+msgid "G-code commands to be executed at the very start - separated by \n."
+msgstr "最初に実行するG-codeコマンドは、"
 "で区切ります。"
 
 msgctxt "material_guid description"
@@ -1440,9 +1467,21 @@ msgctxt "wall_transition_filter_distance description"
 msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
 msgstr "異なる数のウォール間を相次いで行き来する場合は、まったく移行しないようにします。移行同士がこの距離よりも近い場合は、それらの移行を削除します。"
 
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトベースが有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
+
 msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "ラフトが有効になっている場合、モデルの周りに余分なラフト領域ができます。値を大きくするとより強力なラフトができますが、多くの材料を使用し、造形範囲は少なくなります。"
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトの中央が有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "ラフトの上部が有効になっている場合,これはモデルの周囲の追加のラフト領域であり,ラフトも与えられます。このマージンを増やすとより強いラフトを作ることができますが,より多くの材料を使用し,プリントのために残される領域は少なくなります。"
 
 msgctxt "meshfix_union_all description"
 msgid "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear."
@@ -1672,6 +1711,10 @@ msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "外壁の経路にはめ込む。外壁がノズルよりも小さく、内壁の後に造形されている場合は、オフセットを使用して、ノズルの穴をモデルの外側ではなく内壁と重なるようにします。"
 
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "内側のみ"
+
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr "内側から外側へ"
@@ -1683,6 +1726,10 @@ msgstr "インターフェイスラインを優先"
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
 msgstr "インターフェイスを優先"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "インターリーブド"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1824,6 +1871,30 @@ msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr "各枝がサポートポイントからどれくらい移動するかを制限します。これにより、サポートをより頑丈にすることができますが、枝の量が増加します（材料の使用量やプリント時間も増加します）。"
 
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "検出するビルドボリューム温度の制限警告。"
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "検出するビルドボリューム温度の異常の制限。"
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "検出する印刷温度異常の制限。"
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "検出するプリント温度警告の制限。"
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "検出するフロー異常の制限。"
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "検出するフロー警告の制限。"
+
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
 msgstr "このメッシュの大きさをを他のメッシュ内に制限します。この設定を使用することで、1つの特定のメッシュ領域の設定を、、全く別のエクストルーダーで作成することができます。"
@@ -1921,8 +1992,9 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "最後のヘッドの既知位置からではなく、エクストルーダー現在位置を絶対位置にします。"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "エアギャップ内で失われたフィラメントを補うために、モデルの第1層と第2層をZ方向にオーバーラップさせます。この値によって、最初のモデルレイヤーがシフトダウンされます。"
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "エアギャップで失われたフィラメントを補うために,モデルの1つ目と2つ目の層をZ方向にオーバーラップさせます。最初のモデルレイヤーより上のすべてのモデルは,この量だけ下にシフトされます。"
+"この設定により,2つ目のレイヤーが最初のレイヤーの下に印刷される場合があることに注意してください。これは意図された動作です。"
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -1948,9 +2020,17 @@ msgctxt "material label"
 msgid "Material"
 msgstr "マテリアル"
 
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "材料のブランド"
+
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "マテリアルGUID"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "材料の種類"
 
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
@@ -2228,6 +2308,10 @@ msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
 msgstr "アイロン方向一貫性"
 
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "単一のラフト上面の表面の順序"
+
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
 msgstr "上面方向一貫性"
@@ -2267,6 +2351,10 @@ msgstr "なし"
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
 msgstr "標準"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "通常"
 
 msgctxt "support_structure option normal"
 msgid "Normal"
@@ -2400,10 +2488,6 @@ msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
 msgstr "メッシュの最後のレイヤーでのみアイロンをかけます。下層にて滑らかな表面仕上げを必要としない場合、時間を節約します。"
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "モデルの外側のみにブリムを印刷します。これにより、後で取り除くブリムの量が減少します。またプレートへの接着力はそれほど低下しません。"
-
 msgctxt "ooze_shield_angle label"
 msgid "Ooze Shield Angle"
 msgstr "Ooze Shield角度"
@@ -2463,6 +2547,10 @@ msgstr "外壁移動距離"
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
 msgstr "同じレイヤー内の異なる島の外壁は順次印刷されます。有効にすると、壁は1つの種類ずつ印刷されるため、フローの変化量が制限されます。無効にすると、同じ島の壁がグループ化されるため、島間の移動回数が減少します。"
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "外側のみ"
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -2544,6 +2632,10 @@ msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
 msgstr "プライムタワーのライン幅"
 
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "プライムタワーの最大ブリッジ距離"
+
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "プライムタワー最小容積"
@@ -2559,6 +2651,10 @@ msgstr "プライムタワーのサイズ"
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
 msgstr "プライムタワー印刷速度"
+
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "プライムタワーのタイプ"
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -2576,6 +2672,10 @@ msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "印刷ジャーク"
 
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "印刷プロセスレポート"
+
 msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "印刷頻度"
@@ -2587,6 +2687,10 @@ msgstr "印刷速度"
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "薄壁印刷"
+
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "モデルの外側,内側,またはその両方にブリムを印刷します。モデルによっては,これによりベッドの適切な接着を確保しながら,後で取り外す必要があるブリムの量を減らすことができます。"
 
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
@@ -2608,6 +2712,10 @@ msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "ノズルサイズよりも細い壁を作ります。"
 
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "ラフト上面のラインを,常に単一方向の隣接するラインと重なる順序で印刷します。これにより,印刷に少し時間がかかりますが,表面の見た目がより均一になり,これはモデルの底面にも表示されます。"
+
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
 msgstr "セカンドブリッジのスキンレイヤーを印刷する際に使用する印刷速度。"
@@ -2616,10 +2724,17 @@ msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
 msgstr "サードブリッジのスキンレイヤーを印刷する際に使用する印刷速度。"
 
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "印刷温度制限"
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "印刷温度警告"
+
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
-msgstr ""
-"壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します\n"
+msgstr "壁より前にインフィルをプリントします　はじめに壁をプリントするとより精密な壁になりますが、オーバーハングのプリントは悪化します"
 "はじめにインフィルをプリントすると丈夫な壁になりますが、インフィルの模様が時折表面から透けて表れます。"
 
 msgctxt "roofing_monotonic description"
@@ -2662,6 +2777,10 @@ msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
 msgstr "ラフト間のラップ"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "ラフトベースの追加マージン"
+
 msgctxt "raft_base_extruder_nr label"
 msgid "Raft Base Extruder"
 msgstr "ラフトベースエクストルーダー"
@@ -2690,6 +2809,10 @@ msgctxt "raft_base_speed label"
 msgid "Raft Base Print Speed"
 msgstr "ラフトベース印刷速度"
 
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "ラフトベースのスムージング"
+
 msgctxt "raft_base_thickness label"
 msgid "Raft Base Thickness"
 msgstr "ラフトベース厚さ"
@@ -2705,6 +2828,10 @@ msgstr "ラフトの余分なマージン"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "ラフトファン速度"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "ラフトの中央の追加マージン"
 
 msgctxt "raft_interface_extruder_nr label"
 msgid "Raft Middle Extruder"
@@ -2734,6 +2861,10 @@ msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
 msgstr "ラフト中間印刷速度"
 
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "ラフト中央のスムージング"
+
 msgctxt "raft_interface_line_spacing label"
 msgid "Raft Middle Spacing"
 msgstr "ラフト中間スペース"
@@ -2741,6 +2872,10 @@ msgstr "ラフト中間スペース"
 msgctxt "raft_interface_thickness label"
 msgid "Raft Middle Thickness"
 msgstr "ラフト中央厚さ"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "ラフト中央の壁の数"
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -2757,6 +2892,10 @@ msgstr "ラフト印刷速度"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "ラフト補整"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "ラフト上部の追加マージン"
 
 msgctxt "raft_surface_extruder_nr label"
 msgid "Raft Top Extruder"
@@ -2790,9 +2929,21 @@ msgctxt "raft_surface_speed label"
 msgid "Raft Top Print Speed"
 msgstr "ラフト上層印刷速度"
 
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "ラフト上部のスムージング"
+
 msgctxt "raft_surface_line_spacing label"
 msgid "Raft Top Spacing"
 msgstr "ラフト最上面スペース"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "ラフト上部の壁の数"
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "ラフトの壁の数"
 
 msgctxt "z_seam_type option random"
 msgid "Random"
@@ -2846,9 +2997,21 @@ msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
 msgstr "重複メッシュの削除"
 
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "ラフトベースの内側の角を削除"
+
 msgctxt "raft_remove_inside_corners label"
 msgid "Remove Raft Inside Corners"
 msgstr "ラフト内側コーナーの削除"
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "ラフト中央の内側の角を削除"
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "ラフト上部の内側の角を削除"
 
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
@@ -2857,6 +3020,18 @@ msgstr "複数のメッシュが重なっている領域を削除します。こ
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
 msgstr "最初に印刷したレイヤーの下に空のレイヤーがある場合は取り除きます。この設定を無効にすると、スライストレランスが「排他」または「中間」に設定されている場合に最初のレイヤーが空になる原因になります。"
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "ラフトベースから内側の角を取り除き,ラフトを凸状にします。"
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "ラフトの中央から内側の角を取り除き,ラフトを凸状にします。"
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "ラフトの上部から内側の角を取り除き,ラフトを凸状にします。"
 
 msgctxt "raft_remove_inside_corners description"
 msgid "Remove inside corners from the raft, causing the raft to become convex."
@@ -2877,6 +3052,10 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "上部/下部パターンの最も外側の部分を同心円の線で置き換えます。 1つまたは2つの線を使用すると、トップ部分の造形が改善されます。"
+
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "設定されたしきい値を超えたイベントのレポート"
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -2949,6 +3128,10 @@ msgstr "シーンにサポートメッシュがある"
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "シームコーナー設定"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "手動で印刷順序を設定する"
 
 msgctxt "draft_shield_height_limitation description"
 msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height."
@@ -3350,10 +3533,6 @@ msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
 msgstr "サポートインターフェイスの優先順位"
 
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "サポートインタフェース解像度"
-
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
 msgstr "サポートインタフェース速度"
@@ -3536,8 +3715,7 @@ msgstr "各レイヤーのプリントを開始する部分をしめすX座標�
 
 msgctxt "z_seam_x description"
 msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr ""
-"レイヤー内の各印刷を開始するX座\n"
+msgstr "レイヤー内の各印刷を開始するX座"
 "標の位置。"
 
 msgctxt "extruder_prime_pos_x description"
@@ -3707,6 +3885,10 @@ msgstr "レイヤー内の各ポリゴンに導入されたポイントの平均
 msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
 msgstr "各線分に導入されたランダム点間の平均距離。ポリゴンの元の点は破棄されるので、積層の値を低くすることで、なめらかな仕上がりになります。この値は、ファジースキンの厚さの半分よりも大きくなければなりません。"
+
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "使用されている材料のブランドです。"
 
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
@@ -4001,11 +4183,8 @@ msgid "The horizontal distance between the first brim line and the outline of th
 msgstr "最初のブリムラインとプリントの最初のレイヤーの輪郭との間の水平距離。小さなギャップがあると、ブリムの取り外しが容易になり、断熱性の面でもメリットがあります。"
 
 msgctxt "skirt_gap description"
-msgid ""
-"The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"スカートと印刷の最初の層の間の水平距離。\n"
+msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr "スカートと印刷の最初の層の間の水平距離。"
 "これは最小距離です。複数のスカートラインがこの距離から外側に展開されます。"
 
 msgctxt "lightning_infill_straightening_angle description"
@@ -4184,6 +4363,10 @@ msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
 msgstr "移動する際の最大瞬時速度の変更。"
 
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "空中で印刷できるブランチの最大長。"
+
 msgctxt "machine_max_feedrate_x description"
 msgid "The maximum speed for the motor of the X-direction."
 msgstr "X方向のモーターの最大速度。"
@@ -4295,6 +4478,18 @@ msgstr "最底面のレイヤー数。下の厚さで計算すると、この値
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
 msgstr "ラフトのベースレイヤーにある線状パターンの周囲にプリントする輪郭の数。"
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "ラフトの中間層の線形パターンの周囲に印刷する輪郭の数。"
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "ラフトの最上層の線形パターンの周囲に印刷する輪郭の数。"
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "ラフトの線形パターンの周囲に印刷する輪郭の数。"
 
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
@@ -4684,6 +4879,10 @@ msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
 msgstr "生成するG-codeの種類です。"
 
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "使用される材料の種類。"
+
 msgctxt "coasting_volume description"
 msgid "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed."
 msgstr "はみ出るフィラメントのボリューム。この値は、一般に、ノズル直径の3乗に近い値でなければならない。"
@@ -4732,9 +4931,21 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "この設定は、ブリッジ壁が始まる直前に、エクストルーダーを動かす距離を制御します。ブリッジが始まる前にコースティングすることにより、ノズル内が減圧され、ブリッジがより平らになります。"
 
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフトベースのアウトラインの内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフトの中央のアウトラインの内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
+
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "この設定は、ラフトの輪郭の内側の角がどの程度丸められるかを制御します。内側の角は、ここで指定した値と等しい半径の半円に丸められます。この設定は、そのような円よりも小さいラフトの輪郭の穴を削除します。"
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "この設定は,ラフト上部の輪郭の内側の角をどの程度丸くするかを制御します。内側の角は,ここで指定した値と等しい半径の半円に丸められます。この設定では,ラフトの輪郭にある円より小さい穴も削除されます。"
 
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
@@ -5095,10 +5306,6 @@ msgstr "ウォール"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
 msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用してプリントされます。値が90の場合は、オーバーハング壁として処理されません。サポートによってサポートされているオーバーハングも、オーバーハングとして処理されません。"
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "サポートの上下にモデルがあるかどうか確認するには、特定のサポートの高さを見ます。低い値はスライスに時間がかかり、高い値にするとサポートのインターフェイスがある場所に通常のサポートを印刷する可能性があります。"
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5492,42 +5699,166 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "移動"
 
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "段階的なフローの変化におけるステップごとの時間"
+msgctxt "cool_during_extruder_switch description"
+msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr "<html>ノズル切り替え中に冷却ファンを作動させるかどうか。これは,ノズルの冷却スピードを上げてにじみを減らすのに役立ちます:<ul><li><b>変更なし:</b>ファンを以前の状態に維持します</li><li><b>最後の押出機のみ:</b>最後に使用した押出機のファンをオンにしますが,他の押出機のファン（もしあれば）はオフにします。これは,完全に別個の押出機がある場合に有用です。</li><li><b>すべてのファン:</b>ノズル切り替え中にすべてのファンをオンにします。これは,冷却ファンが1つのみの場合,または複数のファンが互いに接近している場合に有用です。</li></ul></html>"
 
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "段階的なフローの変化を有効にできます。有効にすると、フローは目標フローまで段階的に増減します。これは、押し出しモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
+msgctxt "cool_during_extruder_switch option all_fans"
+msgid "All fans"
+msgstr "すべてのファン"
 
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "この値より長い移動の場合、素材フローは目標フローにリセットされます。"
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "押出機切り替え中の冷却"
 
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "段階的なフローの離散化ステップのサイズ"
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "サポート構造のZシームと実際の3Dモデルとの間の空間的な関係を管理します。この制御は,ユーザーがプリント後にプリントモデルに損傷を与えたり跡を残したりすることなく,サポート構造をシームレスに取り外せるようにするために,非常に重要です。"
 
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "段階的なフローが有効"
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "モデルからの最小Zシーム距離"
 
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "段階的なフローの最大加速度"
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "サポート材の初期層におけるインフィルのマルチプライヤー。この数字を増やすことで,ベッド接着力を高めることができます。"
 
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "初期層の最大フロー加速度"
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "最後の押出機のみ"
 
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "フローを段階的に変化させるための最大加速度"
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "Zシームをポリゴンの頂点に配置します。これをオフに切り替えることで,頂点と頂点の間にもシームを配置することができます。（サポートのないオーバーハングへのシーム配置制限は上書きさないことに留意してください。）"
 
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "第1層のフローを段階的に変化させるための最低速度"
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "プライムタワー最小シェル厚"
 
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "フロー期間をリセット"
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "ラフトベース フロー"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "ラフトベース インフィル オーバーラップ"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "ラフトベース インフィル オーバーラップ比率"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "ラフトフロー"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "ラフトインターフェース フロー"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "ラフトインターフェース インフィルオーバーラップ"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "ラフトインターフェース インフィルオーバーラップ比率"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "ラフトインターフェース Zオフセット"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "ラフトサーフェス フロー"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "ラフトサーフェス インフィルオーバーラップ"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "ラフトサーフェス インフィルオーバーラップ比率"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "ラフトサーフェス Zオフセット"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "シームオーバーハンギング ウォール角度"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "サポートインフィル密度マルチプライヤー初期層 "
+
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "サポートZシームをモデルから離す"
+
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "ラフトベースのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで,接着力やラフト構造の強度を向上させることができます。"
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "ラフトインターフェースのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで,接着力やラフト構造の強度を向上させることができます。"
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "ラフトのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで,接着力やラフト構造の強度を向上させることができます。"
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "ラフトサーフェスのプリント中に押出す材料の量（通常の押出ラインに対する相対的な量）。フローを増やすことで,接着力やラフト構造の強度を向上させることができます。"
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトベースのウォールとのオーバーラップの量（インフィルラインの幅に対する割合）。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトベースのウォールとのオーバーラップの量。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトインターフェースのウォールとのオーバーラップの量（インフィルラインの幅に対する割合）。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトインターフェースのウォールとのオーバーラップの量。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトサーフェスのウォールとのオーバーラップの量（インフィルラインの幅に対する割合）。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "インフィルとラフトサーフェスのウォールとのオーバーラップの量。わずかにオーバーラップさせることで,ウォールをインフィルにしっかりと接続することができます。"
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "Z軸シームにおける,モデルとそのサポート構造との間の距離。"
+
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "プライムタワーシェルの最小の厚さ。厚くすることでプライムタワーの強度を上げることができます。"
+
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "ウォールのシームがこの角度以上にオーバーハングしないようにしてください。値が90の場合,どのウォールもオーバーハングとして扱われません。"
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "変更なし"
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "ラフトインターフェースの第1層をプリントする際に,このオフセット値で平行移動し,ベースとインターフェースとの間の接着力をカスタマイズしてください。オフセット値をマイナスにすると接着力が向上します。"
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "ラフトサーフェスの第1層をプリントする際に,このオフセット値で平行移動し,インターフェースとサーフェスとの間の接着力をカスタマイズしてください。オフセット値をマイナスにすると接着力が向上します。"
+
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "頂点のZシーム"

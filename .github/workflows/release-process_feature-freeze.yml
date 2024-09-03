@@ -1,0 +1,32 @@
+name: Feature Freeze
+run-name: Feature freeze Cura ${{ inputs.cura_version }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cura_version:
+        description: 'Cura version major and minor, e.g. 5.7'
+        required: true
+        type: string
+
+jobs:
+  parse-version:
+    name: Parse input version string
+    runs-on: ubuntu-latest
+    outputs:
+      package_version: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}.0-alpha.1
+    steps:
+      - name: Parse version string
+        id: version_parser
+        uses: booxmedialtd/ws-action-parse-semver@v1.4.7
+        with:
+          input_string: ${{ inputs.cura_version }}.0
+
+  feature-freeze:
+    name: Process feature freeze
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
+    needs: [parse-version]
+    with:
+      cura_version: ${{ needs.parse-version.outputs.package_version }}
+      create_feature_branch: true
+    secrets: inherit

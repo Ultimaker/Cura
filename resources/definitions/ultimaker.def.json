@@ -8,8 +8,8 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "exclude_materials": [
-            "generic_hips",
-            "structur3d_dap100silicone"
+            "structur3d_",
+            "generic_hips"
         ]
     },
     "overrides":
@@ -80,6 +80,7 @@
             "maximum_value_warning": "120",
             "minimum_value": "0"
         },
+        "material_print_temp_wait": { "value": false },
         "material_print_temperature": { "minimum_value": "0" },
         "material_standby_temperature":
         {
@@ -88,6 +89,9 @@
         },
         "meshfix_maximum_deviation": { "value": "machine_nozzle_size / 10" },
         "meshfix_maximum_resolution": { "value": "max(speed_wall_0 / 75, 0.5)" },
+        "prime_tower_base_curve_magnitude": { "value": 2 },
+        "prime_tower_base_height": { "value": 6 },
+        "prime_tower_base_size": { "value": 10 },
         "raft_base_speed": { "value": "raft_speed" },
         "raft_base_thickness": { "value": "min(machine_nozzle_size * 0.75, 0.3)" },
         "raft_interface_fan_speed": { "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2" },
@@ -96,16 +100,14 @@
         "raft_interface_thickness": { "value": "(raft_base_thickness + raft_surface_thickness) / 2" },
         "raft_speed": { "value": 15 },
         "raft_surface_fan_speed": { "value": "cool_fan_speed_min" },
+        "raft_surface_monotonic": { "value": true },
         "raft_surface_speed": { "value": "speed_topbottom" },
-        "relative_extrusion":
-        {
-            "enabled": false,
-            "value": false
-        },
+        "relative_extrusion": { "enabled": false },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_combing_max_distance": { "value": 15 },
         "retraction_count_max": { "value": 25 },
         "retraction_extrusion_window": { "value": 1 },
+        "retraction_min_travel": { "value": 5 },
         "roofing_layer_count": { "value": "1" },
         "roofing_material_flow": { "value": "material_flow" },
         "skin_angles": { "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]" },
@@ -136,7 +138,8 @@
         "wall_x_material_flow_layer_0": { "value": "0.95 * material_flow_layer_0" },
         "xy_offset": { "value": "-layer_height * 0.1" },
         "xy_offset_layer_0": { "value": "-wall_line_width_0 / 5 + xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_relative": { "value": "True" },
         "zig_zaggify_support": { "value": true }
     }
 }

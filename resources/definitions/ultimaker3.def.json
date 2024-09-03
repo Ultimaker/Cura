@@ -13,16 +13,15 @@
             9066
         ],
         "exclude_materials": [
-            "generic_hips",
             "generic_cffcpe",
             "generic_cffpa",
+            "generic_flexible",
             "generic_gffcpe",
             "generic_gffpa",
+            "generic_hips",
             "generic_petcf",
-            "ultimaker_petcf_black",
-            "ultimaker_petcf_blue",
-            "ultimaker_petcf_gray",
-            "structur3d_dap100silicone"
+            "structur3d_",
+            "ultimaker_petcf"
         ],
         "firmware_update_info":
         {
@@ -71,8 +70,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 215 },
         "machine_disallowed_areas":
@@ -156,7 +153,6 @@
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
         "retraction_hop_only_when_collides": { "value": "True" },
-        "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
         "skin_overlap": { "value": "10" },
         "speed_prime_tower": { "value": "speed_topbottom" },
