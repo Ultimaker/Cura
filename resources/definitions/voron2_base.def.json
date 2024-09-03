@@ -96,19 +96,13 @@
         },
         "roofing_layer_count": { "value": 1 },
         "skirt_brim_minimal_length": { "default_value": 550 },
-        "speed_layer_0": { "value": "math.ceil(speed_print * 0.25)" },
-        "speed_roofing": { "value": "math.ceil(speed_print * 0.33)" },
+        "speed_infill": { "value": "speed_print * 1.5" },
         "speed_slowdown_layers": { "default_value": 4 },
-        "speed_topbottom": { "value": "math.ceil(speed_print * 0.33)" },
         "speed_travel":
         {
             "maximum_value_warning": "math.ceil((machine_max_feedrate_x + machine_max_feedrate_y) / 200) * 100 + 1",
             "value": "speed_print if magic_spiralize else round((machine_max_feedrate_x + machine_max_feedrate_y) / 200) * 100"
         },
-        "speed_travel_layer_0": { "value": "math.ceil(speed_travel * 0.4)" },
-        "speed_wall": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_wall_0": { "value": "math.ceil(speed_print * 0.33)" },
-        "speed_wall_x": { "value": "math.ceil(speed_print * 0.66)" },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
         "travel_avoid_other_parts": { "default_value": false },
         "wall_line_width": { "value": "machine_nozzle_size" },
