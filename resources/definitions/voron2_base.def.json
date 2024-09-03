@@ -34,7 +34,7 @@
         "cool_fan_speed_min": { "value": "cool_fan_speed" },
         "cool_min_layer_time": { "default_value": 15 },
         "cool_min_layer_time_fan_speed_max": { "default_value": 20 },
-        "cool_min_speed": { "value": "min(speed_print_layer_0, round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 5))" },
+        "cool_min_speed": { "value": "max(speed_print_layer_0, round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 2))" },
         "fill_outline_gaps": { "default_value": true },
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "default_value": false },
