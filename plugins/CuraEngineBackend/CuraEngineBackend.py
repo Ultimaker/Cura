@@ -76,6 +76,7 @@ class CuraEngineBackend(QObject, Backend):
         self._default_engine_location = executable_name
 
         search_path = [
+            os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..", "Resources")),
             os.path.abspath(os.path.dirname(sys.executable)),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "bin")),
             os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..")),
@@ -180,7 +181,10 @@ class CuraEngineBackend(QObject, Backend):
         application.getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._slicing_error_message = Message(
-            text = catalog.i18nc("@message", "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."),
+            text = catalog.i18nc("@message", "Oops! We encountered an unexpected error during your slicing process. "
+                                             "Rest assured, we've automatically received the crash logs for analysis, "
+                                             "if you have not disabled data sharing in your preferences. To assist us "
+                                             "further, consider sharing your project details on our issue tracker."),
             title = catalog.i18nc("@message:title", "Slicing failed"),
             message_type = Message.MessageType.ERROR
         )
@@ -540,7 +544,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
             self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
+                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getAssociatedDisabledExtruders(),
                                           title = catalog.i18nc("@info:title", "Unable to slice"),
                                           message_type = Message.MessageType.WARNING)
             self._error_message.show()

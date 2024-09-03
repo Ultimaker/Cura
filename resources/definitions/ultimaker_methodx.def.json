@@ -23,20 +23,7 @@
             "fabtotum_",
             "fdplast_",
             "filo3d_",
-            "generic_asa_175",
-            "generic_abs_175",
-            "generic_bvoh_175",
-            "generic_petg_175",
-            "generic_pla_175",
-            "generic_tough_pla_175",
-            "generic_pva_175",
-            "generic_cffpa_175",
-            "generic_cpe_175",
-            "generic_nylon_175",
-            "generic_hips_175",
-            "generic_pc_175",
-            "ultimaker_sr30_175",
-            "generic_tpu_175",
+            "generic_",
             "goofoo_",
             "ideagen3D_",
             "imade3d_",
@@ -49,6 +36,7 @@
             "polywood_pla",
             "redd_",
             "tizyx_",
+            "ultimaker_tough_pla_175",
             "verbatim_",
             "Vertex_",
             "volumic_",
@@ -71,7 +59,6 @@
             0,
             16
         ],
-        "platform_texture": "MakerbotMethod.png",
         "preferred_material": "ultimaker_absr_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "1XA",
@@ -84,6 +71,7 @@
     },
     "overrides":
     {
+        "build_volume_temperature": { "maximum_value": "107" },
         "machine_depth": { "default_value": 236.48 },
         "machine_disallowed_areas":
         {

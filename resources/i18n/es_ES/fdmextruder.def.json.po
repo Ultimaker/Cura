@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,6 +41,10 @@ msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "GCode final del extrusor"
 
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr "Duración del código G de fin del extrusor"
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "Posición final absoluta del extrusor"
@@ -71,6 +76,10 @@ msgstr "Ventilador de refrigeración de impresión del extrusor"
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "GCode inicial del extrusor"
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr "Duración del código G de inicio del extrusor"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -155,6 +164,14 @@ msgstr "Id. de la tobera de un tren extrusor, como \"AA 0.4\" y \"BB 0.8\"."
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Número del ventilador de refrigeración de impresión asociado al extrusor. Modifique el valor predeterminado 0 solo cuando disponga de un ventilador de refrigeración de impresión diferente para cada extrusor."
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr "El tiempo que tarda en ejecutarse el código G final, cuando se sale de este extrusor."
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr "El tiempo que tardará en ejecutarse el código G de inicio, al cambiar a este extrusor."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

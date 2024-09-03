@@ -97,7 +97,7 @@ def test__parseJWTNoRefreshToken():
     mock_reply = Mock()  # The user profile that the service should respond with.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
     http_mock.readJSON = Mock(return_value = {"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
@@ -119,8 +119,8 @@ def test__parseJWTFailOnRefresh():
     mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)  # The reply is 403: Authentication required, meaning the server responded with a "Can't do that, Dave".
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
-    http_mock.post = lambda url, data, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
+    http_mock.post = lambda url, data, headers_dict, callback, error_callback, urgent, timeout: callback(mock_reply)
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.readJSON", Mock(return_value = {"error_description": "Mock a failed request!"})):
         with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
@@ -142,7 +142,7 @@ def test__parseJWTSucceedOnRefresh():
     mock_reply_failure = Mock()
     mock_reply_failure.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)
     http_mock = Mock()
-    def mock_get(url, headers_dict, callback, error_callback):
+    def mock_get(url, headers_dict, callback, error_callback, timeout):
         if(headers_dict == {"Authorization": "Bearer beep"}):
             callback(mock_reply_success)
         else:
@@ -181,8 +181,8 @@ def test_refreshAccessTokenFailed():
     mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)  # The reply is 403: Authentication required, meaning the server responded with a "Can't do that, Dave".
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
-    http_mock.post = lambda url, data, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
+    http_mock.post = lambda url, data, headers_dict, callback, error_callback, urgent, timeout: callback(mock_reply)
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.readJSON", Mock(return_value = {"error_description": "Mock a failed request!"})):
         with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
@@ -263,7 +263,7 @@ def test_loginAndLogout() -> None:
     mock_reply = Mock()  # The user profile that the service should respond with.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
     http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback: callback(mock_reply)
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
     http_mock.readJSON = Mock(return_value = {"data": {"user_id": "di_resu", "username": "Emanresu"}})
 
     # Let the service think there was a successful response

@@ -21,18 +21,25 @@ class MaterialNode(ContainerNode):
     Its subcontainers are quality profiles.
     """
 
-    def __init__(self, container_id: str, variant: "VariantNode") -> None:
+    def __init__(self, container_id: str, variant: "VariantNode", *,  container: ContainerInterface = None) -> None:
         super().__init__(container_id)
         self.variant = variant
         self.qualities = {}  # type: Dict[str, QualityNode] # Mapping container IDs to quality profiles.
         self.materialChanged = Signal()  # Triggered when the material is removed or its metadata is updated.
 
         container_registry = ContainerRegistry.getInstance()
-        my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
-        self.base_file = my_metadata["base_file"]
-        self.material_type = my_metadata["material"]
-        self.brand = my_metadata["brand"]
-        self.guid = my_metadata["GUID"]
+
+        if container is not None:
+            self.base_file = container.getMetaDataEntry("base_file")
+            self.material_type = container.getMetaDataEntry("material")
+            self.brand = container.getMetaDataEntry("brand")
+            self.guid = container.getMetaDataEntry("GUID")
+        else:
+            my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+            self.base_file = my_metadata["base_file"]
+            self.material_type = my_metadata["material"]
+            self.brand = my_metadata["brand"]
+            self.guid = my_metadata["GUID"]
         self._loadAll()
         container_registry.containerRemoved.connect(self._onRemoved)
         container_registry.containerMetaDataChanged.connect(self._onMetadataChanged)

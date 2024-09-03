@@ -44,6 +44,8 @@
     },
     "overrides":
     {
-        "machine_name": { "default_value": "Ultimaker S7" }
+        "default_material_print_temperature": { "maximum_value_warning": "320" },
+        "machine_name": { "default_value": "Ultimaker S7" },
+        "material_print_temperature_layer_0": { "maximum_value_warning": "320" }
     }
 }

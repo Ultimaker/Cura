@@ -4,12 +4,11 @@ labels: ["Type: Bug", "Status: Triage", "Slicing Error :collision:"]
 body:
 - type: markdown
   attributes:
-    value: |
-       ### 💥 Slicing Crash Analysis Tool 💥
-       We are taking steps to analyze an increase in reported crashes more systematically. We'll need some help with that. 😇
-       Before filling out the report below, we want you to try a special Cura 5.7 Alpha.
-       This version of Cura has an updated slicing engine that will automatically send a report to the Cura Team for analysis. 
-       #### [You can find the downloads here](https://github.com/Ultimaker/Cura/discussions/18080) #### 
+    value: |      
+       ### ✨Try our improved Cura 5.7✨
+       Before filling out the report below, we want you to try the latest Cura 5.7. 
+       This version of Cura has become significantly more reliable and has an updated slicing engine that will automatically send a report to the Cura Team for analysis. 
+       #### [You can find the downloads here](https://github.com/Ultimaker/Cura/releases/latest) #### 
        If you still encounter a crash you are still welcome to report the issue so we can use your model as a test case, you can find instructions on how to do that below.      
        
        ### Project File
@@ -36,7 +35,7 @@ body:
 - type: markdown
   attributes:
     value: |
-      We work hard on improving our slicing crashes. Our most recent release is 5.6.0.
+      We work hard on improving our slicing crashes. Our most recent release is 5.7.1.
       If you are not on the latest version of Cura, [you can download it here](https://github.com/Ultimaker/Cura/releases/latest)
 - type: input
   attributes:

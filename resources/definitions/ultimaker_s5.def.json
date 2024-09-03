@@ -15,6 +15,11 @@
             214476,
             214477
         ],
+        "exclude_materials": [
+            "generic_hips",
+            "generic_flexible",
+            "structur3d_"
+        ],
         "firmware_update_info":
         {
             "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
@@ -69,8 +74,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 240 },
         "machine_end_gcode": { "default_value": "" },
@@ -110,7 +113,6 @@
         "retraction_hop": { "value": "2" },
         "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
         "retraction_hop_only_when_collides": { "value": "True" },
-        "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "45" },
         "speed_prime_tower": { "value": "speed_topbottom" },

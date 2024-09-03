@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-06-08 16:32+0000\n"
+"POT-Creation-Date: 2024-03-11 11:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,6 +41,10 @@ msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Eind-G-code van Extruder"
 
+msgctxt "machine_extruder_end_code_duration label"
+msgid "Extruder End G-Code Duration"
+msgstr "Duur einde G-Code extruder"
+
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
 msgstr "Absolute Eindpositie Extruder"
@@ -71,6 +76,10 @@ msgstr "Printkoelventilator van extruder"
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
 msgstr "Start-G-code van Extruder"
+
+msgctxt "machine_extruder_start_code_duration label"
+msgid "Extruder Start G-Code Duration"
+msgstr "Duur start G-Code extruder"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -155,6 +164,14 @@ msgstr "De nozzle-ID voor een extruder train, bijvoorbeeld \"AA 0.4\" en \"BB 0.
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
 msgstr "Het nummer van de bij deze extruder behorende printkoelventilator. Verander de standaardwaarde 0 alleen als u voor elke extruder een andere printkoelventilator hebt."
+
+msgctxt "machine_extruder_end_code_duration description"
+msgid "The time it takes to execute the end g-code, when switching away from this extruder."
+msgstr "De tijd die nodig is om de g-code aan het einde uit te voeren, wanneer er overgeschakeld wordt van deze extruder."
+
+msgctxt "machine_extruder_start_code_duration description"
+msgid "The time it'll take to execute the start g-code, when switching to this extruder."
+msgstr "De tijd die nodig is om de start g-code uit te voeren, wanneer er wordt overgeschakeld naar deze extruder."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

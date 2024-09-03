@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "position": "0",
-        "setting_version": 22,
+        "setting_version": 23,
         "type": "extruder"
     },
     "settings":
@@ -160,6 +160,18 @@
                     "default_value": 0,
                     "description": "The y-coordinate of the starting position when turning the extruder on.",
                     "label": "Extruder Start Position Y",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_head_distance":
+                {
+                    "default_value": 3,
+                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "label": "Nozzle Length",
                     "settable_globally": false,
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,

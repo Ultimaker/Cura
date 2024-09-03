@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2023-11-24 12:51+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,6 +11,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+msgctxt "prime_tower_mode description"
+msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr "<html>프라임 타워 생성 방법:<ul><li><b>일반:</b> 보조 재료가 프라이밍되는 버킷을 생성합니다.</li><li><b>중간 삽입:</b> 프라임 타워를 최대한 희박하게 생성합니다. 시간과 필라멘트를 절약하지만, 사용된 재료가 서로 밀착되는 경우에만 가능합니다.</li></ul></html>"
+
+msgctxt "brim_inside_margin description"
+msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
+msgstr "모델 주위의 브림은 원하지 않는 다른 모델에 닿을 수 있습니다. 이 설정은 브림이 없는 모델에서 이 거리 내의 모든 브림을 제거합니다."
 
 msgctxt "ironing_inset description"
 msgid "A distance to keep from the edges of the model. Ironing all the way to the edge of the mesh may result in a jagged edge on your print."
@@ -56,10 +64,6 @@ msgctxt "machine_disallowed_areas description"
 msgid "A list of polygons with areas the print head is not allowed to enter."
 msgstr "프린팅 헤드가 위치할 수 없는 구역의 목록입니다."
 
-msgctxt "brim_inside_margin description"
-msgid "A part fully enclosed inside another part can generate an outer brim that touches the inside of the other part. This removes all brim within this distance from internal holes."
-msgstr "다른 부품 내부에 완전히 둘러싸인 부품은 다른 부품의 내부에 닿는 외부 브림을 생성할 수 있습니다. 이렇게 하면 내부 구멍에서 이 거리 내에 있는 모든 브림이 제거됩니다."
-
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
 msgstr "브랜치가 서포트하는 지점에서 뻗어 나가는 거리에 대한 권장 사항입니다. 브랜치는 목적지(빌드 플레이트 또는 모델의 평평한 부분)에 도달하기 위해 이 값을 초과할 수 있습니다. 이 값을 낮추면 서포트가 더 견고해지지만, 브랜치의 양이 늘어나므로 재료 사용량/프린트 시간이 늘어납니다."
@@ -85,11 +89,8 @@ msgid "Adaptive layers computes the layer heights depending on the shape of the 
 msgstr "어댑티브 레이어는 모델의 모양에 따라 레이어의 높이를 계산합니다."
 
 msgctxt "infill_wall_line_count description"
-msgid ""
-"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
-"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n"
+msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr "내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다."
 "이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
 
 msgctxt "platform_adhesion description"
@@ -151,6 +152,10 @@ msgstr "모두 한꺼번에"
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
 msgstr "출력물의 해상도에 영향을 미치는 모든 설정. 이러한 설정은 품질 (및 프린팅 시간)에 큰 영향을 미칩니다."
+
+msgctxt "user_defined_print_order_enabled description"
+msgid "Allows you to order the object list to manually set the print sequence. First object from the list will be printed first."
+msgstr "객체 목록의 순서를 지정하여 출력 순서를 수동으로 설정할 수 있도록 허용합니다. 목록의 첫 번째 객체가 먼저 출력됩니다."
 
 msgctxt "alternate_extra_perimeter label"
 msgid "Alternate Extra Wall"
@@ -400,21 +405,21 @@ msgctxt "adhesion_type option brim"
 msgid "Brim"
 msgstr "브림"
 
+msgctxt "brim_inside_margin label"
+msgid "Brim Avoid Margin"
+msgstr "브림의 여백 회피"
+
 msgctxt "brim_gap label"
 msgid "Brim Distance"
 msgstr "브림 거리"
-
-msgctxt "brim_inside_margin label"
-msgid "Brim Inside Avoid Margin"
-msgstr "내부 브림의 여백 회피"
 
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
 msgstr "브림 선 수"
 
-msgctxt "brim_outside_only label"
-msgid "Brim Only on Outside"
-msgstr "밖에서만 브림 생성"
+msgctxt "brim_location label"
+msgid "Brim Location"
+msgstr "브림 위치"
 
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
@@ -455,6 +460,14 @@ msgstr "초기 레이어의 빌드 플레이트 온도"
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "빌드 볼륨 온도"
+
+msgctxt "bv_temp_anomaly_limit label"
+msgid "Build Volume temperature Limit"
+msgstr "빌드 볼륨 온도 제한"
+
+msgctxt "bv_temp_warn_limit label"
+msgid "Build Volume temperature Warning"
+msgstr "빌드 볼륨 온도 경고"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
@@ -868,6 +881,10 @@ msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
 msgstr "프린팅 냉각 사용"
 
+msgctxt "ppr_enable label"
+msgid "Enable Print Process Reporting"
+msgstr "출력 과정 보고 활성화"
+
 msgctxt "retraction_enable label"
 msgid "Enable Retraction"
 msgstr "리트렉션 활성화"
@@ -900,6 +917,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Ooze 쉴드를 활성화. 이렇게하면 첫 번째 노즐과 동일한 높이에 두 번째 노즐을 닦을 가능성이 있는 모델 주위에 쉘이 생깁니다."
 
+msgctxt "ppr_enable description"
+msgid "Enable print process reporting for setting threshold values for possible fault detection."
+msgstr "발생할 수 있는 오류를 감지하도록 임곗값 설정을 위한 출력 과정 보고를 활성화합니다."
+
 msgctxt "small_skin_on_surface description"
 msgid "Enable small (up to 'Small Top/Bottom Width') regions on the topmost skinned layer (exposed to air) to be filled with walls instead of the default pattern."
 msgstr "맨 위 스킨 레이어(공기에 노출됨)의 작은(최대 '작은 상단/하단 너비') 영역을 기본 패턴 대신 벽으로 채울 수 있습니다."
@@ -931,6 +952,10 @@ msgstr "필라멘트 끝의 퍼지 속도"
 msgctxt "brim_replaces_support description"
 msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
 msgstr "서포트가 차지할 공간이더라도 모델 주변에 브림이 인쇄되도록 합니다. 이렇게 하면 서포트의 첫 번째 레이어 영역 일부가 브림 영역으로 대체됩니다."
+
+msgctxt "brim_location option everywhere"
+msgid "Everywhere"
+msgstr "모두"
 
 msgctxt "support_type option everywhere"
 msgid "Everywhere"
@@ -1036,6 +1061,10 @@ msgctxt "speed_equalize_flow_width_factor label"
 msgid "Flow Equalization Ratio"
 msgstr "흐름 균일화 비율"
 
+msgctxt "flow_anomaly_limit label"
+msgid "Flow Limit"
+msgstr "유량 제한"
+
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
 msgstr "압출 속도 보상 배율"
@@ -1047,6 +1076,10 @@ msgstr "압출 속도 보상 최대 압출 오프셋"
 msgctxt "material_flow_temp_graph label"
 msgid "Flow Temperature Graph"
 msgstr "재료 공급 온도 그래프"
+
+msgctxt "flow_warn_limit label"
+msgid "Flow Warning"
+msgstr "유량 경고"
 
 msgctxt "material_flow_layer_0 description"
 msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
@@ -1189,19 +1222,13 @@ msgid "G-code Flavor"
 msgstr "Gcode 유형"
 
 msgctxt "machine_end_gcode description"
-msgid ""
-"G-code commands to be executed at the very end - separated by \n"
-"."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
+msgid "G-code commands to be executed at the very end - separated by \n."
+msgstr "맨 마지막에 실행될 G 코드 명령 "
 "."
 
 msgctxt "machine_start_gcode description"
-msgid ""
-"G-code commands to be executed at the very start - separated by \n"
-"."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
+msgid "G-code commands to be executed at the very start - separated by \n."
+msgstr "시작과 동시에형실행될 G 코드 명령어 "
 "."
 
 msgctxt "material_guid description"
@@ -1440,9 +1467,21 @@ msgctxt "wall_transition_filter_distance description"
 msgid "If it would be transitioning back and forth between different numbers of walls in quick succession, don't transition at all. Remove transitions if they are closer together than this distance."
 msgstr "서로 다른 수의 벽들 사이를 빠르게 연속적으로 왔다 갔다 하며 전환되는 경우에는 전환하지 마십시오. 이 거리보다 서로 더 가까운 경우에는 전환을 제거하십시오."
 
+msgctxt "raft_base_margin description"
+msgid "If the raft base is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "래프트 베이스가 활성화된 경우, 래프트가 주어진 모델 주위의 추가 래프트 영역입니다. 이 여백을 늘리면 재료를 더 사용하고 출력 영역을 적게 차지하면서 더 강한 래프트를 만들 수 있습니다."
+
 msgctxt "raft_margin description"
 msgid "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
 msgstr "래프트가 활성화 된 경우 래프트가 주어진 모델 주변의 추가 래프트 지역입니다. 이 여백을 늘리면 재료를 더 많이 사용하고 출력물을 적게 차지하면서 더 강력한 래프트가 만들어집니다."
+
+msgctxt "raft_interface_margin description"
+msgid "If the raft middle is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "래프트 중간이 활성화된 경우, 래프트가 주어진 모델 주위의 추가 래프트 영역입니다. 이 여백을 늘리면 재료를 더 사용하고 출력 영역을 적게 차지하면서 더 강한 래프트를 만들 수 있습니다."
+
+msgctxt "raft_surface_margin description"
+msgid "If the raft top is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print."
+msgstr "래프트 상단이 활성화된 경우, 래프트가 주어진 모델 주위의 추가 래프트 영역입니다. 이 여백을 늘리면 재료를 더 사용하고 출력 영역을 적게 차지하면서 더 강한 래프트를 만들 수 있습니다."
 
 msgctxt "meshfix_union_all description"
 msgid "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear."
@@ -1672,6 +1711,10 @@ msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "외벽의 경로에 삽입이 적용됩니다. 외벽이 노즐보다 작고 내벽 다음에 프린팅 된 경우 이 옵셋을 사용하여 노즐의 구멍이 모델 외부가 아닌 내벽과 겹치도록하십시오."
 
+msgctxt "brim_location option inside"
+msgid "Inside Only"
+msgstr "내부만"
+
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr "내부에서 외부로"
@@ -1683,6 +1726,10 @@ msgstr "인터페이스 라인 우선"
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
 msgstr "인터페이스 우선"
+
+msgctxt "prime_tower_mode option interleaved"
+msgid "Interleaved"
+msgstr "중간 삽입"
 
 msgctxt "interlocking_beam_layer_count label"
 msgid "Interlocking Beam Layer Count"
@@ -1824,6 +1871,30 @@ msgctxt "support_tree_limit_branch_reach description"
 msgid "Limit how far each branch should travel from the point it supports. This can make the support more sturdy, but will increase the amount of branches (and because of that material usage/print time)"
 msgstr "각 브랜치가 서포트하는 지점에서 뻗어 나가는 거리를 제한합니다. 이렇게 하면 서포트가 더 견고해질 수 있지만, 브랜치의 양이 늘어나므로 재료 사용량/프린트 시간이 늘어납니다."
 
+msgctxt "bv_temp_warn_limit description"
+msgid "Limit on Build Volume Temperature warning for detection."
+msgstr "감지 시의 빌드 볼륨 온도 제한 경고입니다."
+
+msgctxt "bv_temp_anomaly_limit description"
+msgid "Limit on Build Volume temperature Anomaly for detection."
+msgstr "감지 시의 비정상적인 빌드 볼륨 온도 제한입니다. "
+
+msgctxt "print_temp_anomaly_limit description"
+msgid "Limit on Print Temperature anomaly for detection."
+msgstr "감지 시의 비정상적인 출력 온도 제한입니다."
+
+msgctxt "print_temp_warn_limit description"
+msgid "Limit on Print temperature warning for detection."
+msgstr "감지 시의 출력 온도 제한 경고입니다."
+
+msgctxt "flow_anomaly_limit description"
+msgid "Limit on flow anomaly for detection."
+msgstr "감지 시의 비정상적인 유량 제한입니다."
+
+msgctxt "flow_warn_limit description"
+msgid "Limit on the flow warning for detection."
+msgstr "감지 시의 유량 제한 경고입니다."
+
 msgctxt "cutting_mesh description"
 msgid "Limit the volume of this mesh to within other meshes. You can use this to make certain areas of one mesh print with different settings and with a whole different extruder."
 msgstr "이 메쉬의 볼륨을 다른 메쉬 내로 제한합니다. 이 기능을 사용하면 다른 설정과 전체 익스트루더로 하나의 메쉬 프린팅 영역을 만들 수 있습니다."
@@ -1898,7 +1969,7 @@ msgstr "기기 너비"
 
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr ""
+msgstr "기기 세부 설정"
 
 msgctxt "conical_overhang_enabled label"
 msgid "Make Overhang Printable"
@@ -1921,8 +1992,9 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "익스투루더의 위치를 헤드의 마지막으로 알려진 위치에 상대위치가 아닌 절대 위치로 만듭니다."
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
-msgstr "에어 갭에서 손실 된 필라멘트를 보완하기 위해 Z 방향으로 모델의 첫 번째와 두 번째 레이어가 중첩되도록 합니다. 첫 번째 모델 레이어 위의 모든 모델은이 양만큼 아래로 이동합니다."
+msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "모델의 첫 번째 및 두 번째 레이어를 Z 방향으로 겹쳐서 에어 갭에서 손실된 필라멘트를 보완합니다. 첫 번째 모델 레이어 위의 모든 모델은 이 값만큼 아래로 이동합니다."
+"이 설정으로 인해 두 번째 레이어가 초기 레이어 아래에 출력되는 경우가 있습니다. 이는 의도된 동작입니다."
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -1948,9 +2020,17 @@ msgctxt "material label"
 msgid "Material"
 msgstr "재료"
 
+msgctxt "material_brand label"
+msgid "Material Brand"
+msgstr "재료 브랜드"
+
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "재료 GUID"
+
+msgctxt "material_type label"
+msgid "Material Type"
+msgstr "재료 유형"
 
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
@@ -2228,6 +2308,10 @@ msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
 msgstr "단면 다림질 순서"
 
+msgctxt "raft_surface_monotonic label"
+msgid "Monotonic Raft Top Surface Order"
+msgstr "단면 래프트 상단 표면 순서"
+
 msgctxt "roofing_monotonic label"
 msgid "Monotonic Top Surface Order"
 msgstr "단면 상단 표면 순서"
@@ -2267,6 +2351,10 @@ msgstr "없음"
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
 msgstr "표준"
+
+msgctxt "prime_tower_mode option normal"
+msgid "Normal"
+msgstr "일반"
 
 msgctxt "support_structure option normal"
 msgid "Normal"
@@ -2400,10 +2488,6 @@ msgctxt "ironing_only_highest_layer description"
 msgid "Only perform ironing on the very last layer of the mesh. This saves time if the lower layers don't need a smooth surface finish."
 msgstr "메쉬의 마지막 레이어에서만 다림질을 수행합니다. 이것은 낮은 레이어에서 매끄러운 표면 처리가 필요하지 않은 경우 시간을 절약 할 수 있습니다."
 
-msgctxt "brim_outside_only description"
-msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
-msgstr "모델 바깥 쪽 브림에만 프린팅합니다. 나중에 제거해야하는 브림의 양이 줄어들지만 베드 접착력은 그렇게 많이 줄어들지 않습니다."
-
 msgctxt "ooze_shield_angle label"
 msgid "Ooze Shield Angle"
 msgstr "Ooze 쉴드 각"
@@ -2463,6 +2547,10 @@ msgstr "외벽 이동 거리"
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
 msgstr "동일한 레이어의 서로 다른 섬의 외벽이 순차적으로 인쇄됩니다. 활성화되면 벽 종류별로 하나씩 인쇄되므로 유량 변화량이 제한되며 비활성화되면 동일한 섬의 벽이 그룹화되어 섬 간 이동 수가 감소합니다."
+
+msgctxt "brim_location option outside"
+msgid "Outside Only"
+msgstr "외부만"
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -2544,6 +2632,10 @@ msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
 msgstr "프라임 타워 라인 폭"
 
+msgctxt "prime_tower_max_bridging_distance label"
+msgid "Prime Tower Maximum Bridging Distance"
+msgstr "프라임 타워 최대 브리징 거리"
+
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "프라임 타워 최소 볼륨"
@@ -2559,6 +2651,10 @@ msgstr "프라임 타워 사이즈"
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
 msgstr "프라임 타워 속도"
+
+msgctxt "prime_tower_mode label"
+msgid "Prime Tower Type"
+msgstr "프라임 타워 유형"
 
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
@@ -2576,6 +2672,10 @@ msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Jerk 프린팅"
 
+msgctxt "ppr label"
+msgid "Print Process Reporting"
+msgstr "출력 과정 보고"
+
 msgctxt "print_sequence label"
 msgid "Print Sequence"
 msgstr "프린팅 순서"
@@ -2587,6 +2687,10 @@ msgstr "프린팅 속도"
 msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "얇은 벽 프린팅"
+
+msgctxt "brim_location description"
+msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
+msgstr "모델 외부, 내부 또는 양쪽 모두에 브림을 출력합니다. 모델에 따라 나중에 제거해야 하는 브림의 양을 줄이는 데 도움이 될 수 있으며, 베드에 적절하게 밀착시킬 수 있습니다."
 
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
@@ -2608,6 +2712,10 @@ msgctxt "fill_outline_gaps description"
 msgid "Print pieces of the model which are horizontally thinner than the nozzle size."
 msgstr "노즐 크기보다 수평으로 더 얇은 모델 조각을 프린팅하십시오."
 
+msgctxt "raft_surface_monotonic description"
+msgid "Print raft top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes the surface look more consistent, which is also visible on the model bottom surface."
+msgstr "래프트 상단 표면 선이 항상 한 방향으로 인접한 선과 겹치도록 순서대로 출력합니다. 출력 시간은 약간 더 소요되지만, 모델 하단 표면에서도 보이는 표면을 더 일관적으로 보이게 만들 수 있습니다."
+
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
 msgstr "두번째 브릿지 스킨 레이어를 인쇄 할 때 사용할 인쇄 속도."
@@ -2615,6 +2723,14 @@ msgstr "두번째 브릿지 스킨 레이어를 인쇄 할 때 사용할 인쇄 
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
 msgstr "세번째 브릿지 스킨 레이어를 인쇄 할 때 사용할 인쇄 속도."
+
+msgctxt "print_temp_anomaly_limit label"
+msgid "Print temperature Limit"
+msgstr "출력 온도 제한"
+
+msgctxt "print_temp_warn_limit label"
+msgid "Print temperature Warning"
+msgstr "출력 온도 경고"
 
 msgctxt "infill_before_walls description"
 msgid "Print the infill before printing the walls. Printing the walls first may lead to more accurate walls, but overhangs print worse. Printing the infill first leads to sturdier walls, but the infill pattern might sometimes show through the surface."
@@ -2660,6 +2776,10 @@ msgctxt "raft_airgap label"
 msgid "Raft Air Gap"
 msgstr "래프트 에어 갭"
 
+msgctxt "raft_base_margin label"
+msgid "Raft Base Extra Margin"
+msgstr "래프트 베이스 추가 여백"
+
 msgctxt "raft_base_extruder_nr label"
 msgid "Raft Base Extruder"
 msgstr "래프트 베이스 익스트루더"
@@ -2688,6 +2808,10 @@ msgctxt "raft_base_speed label"
 msgid "Raft Base Print Speed"
 msgstr "래프트 기본 프린팅 속도"
 
+msgctxt "raft_base_smoothing label"
+msgid "Raft Base Smoothing"
+msgstr "래프트 베이스 부드럽게 하기"
+
 msgctxt "raft_base_thickness label"
 msgid "Raft Base Thickness"
 msgstr "래프트 기준 두께"
@@ -2703,6 +2827,10 @@ msgstr "래프트 추가 여백"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "래프트 팬 속도"
+
+msgctxt "raft_interface_margin label"
+msgid "Raft Middle Extra Margin"
+msgstr "래프트 중간 추가 여백"
 
 msgctxt "raft_interface_extruder_nr label"
 msgid "Raft Middle Extruder"
@@ -2732,6 +2860,10 @@ msgctxt "raft_interface_speed label"
 msgid "Raft Middle Print Speed"
 msgstr "래프트 중앙 프린팅 속도"
 
+msgctxt "raft_interface_smoothing label"
+msgid "Raft Middle Smoothing"
+msgstr "래프트 중간 부드럽게 하기"
+
 msgctxt "raft_interface_line_spacing label"
 msgid "Raft Middle Spacing"
 msgstr "래프트 중간 간격"
@@ -2739,6 +2871,10 @@ msgstr "래프트 중간 간격"
 msgctxt "raft_interface_thickness label"
 msgid "Raft Middle Thickness"
 msgstr "래프트 중간 두께"
+
+msgctxt "raft_interface_wall_count label"
+msgid "Raft Middle Wall Count"
+msgstr "래프트 중간 벽 수"
 
 msgctxt "raft_acceleration label"
 msgid "Raft Print Acceleration"
@@ -2755,6 +2891,10 @@ msgstr "래프트 프린팅 속도"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "래프트 부드럽게하기"
+
+msgctxt "raft_surface_margin label"
+msgid "Raft Top Extra Margin"
+msgstr "래프트 상단 추가 여백"
 
 msgctxt "raft_surface_extruder_nr label"
 msgid "Raft Top Extruder"
@@ -2788,9 +2928,21 @@ msgctxt "raft_surface_speed label"
 msgid "Raft Top Print Speed"
 msgstr "래프트 상단 프린팅 속도"
 
+msgctxt "raft_surface_smoothing label"
+msgid "Raft Top Smoothing"
+msgstr "래프트 상단 부드럽게 하기"
+
 msgctxt "raft_surface_line_spacing label"
 msgid "Raft Top Spacing"
 msgstr "래프트 상단 간격"
+
+msgctxt "raft_surface_wall_count label"
+msgid "Raft Top Wall Count"
+msgstr "래프트 상단 벽 수"
+
+msgctxt "raft_wall_count label"
+msgid "Raft Wall Count"
+msgstr "래프트 벽 수"
 
 msgctxt "z_seam_type option random"
 msgid "Random"
@@ -2844,9 +2996,21 @@ msgctxt "carve_multiple_volumes label"
 msgid "Remove Mesh Intersection"
 msgstr "교차된 메쉬 제거"
 
+msgctxt "raft_base_remove_inside_corners label"
+msgid "Remove Raft Base Inside Corners"
+msgstr "래프트 베이스 내부 모서리 제거"
+
 msgctxt "raft_remove_inside_corners label"
 msgid "Remove Raft Inside Corners"
 msgstr "래프트 내부 모서리 제거"
+
+msgctxt "raft_interface_remove_inside_corners label"
+msgid "Remove Raft Middle Inside Corners"
+msgstr "래프트 중간 내부 모서리 제거"
+
+msgctxt "raft_surface_remove_inside_corners label"
+msgid "Remove Raft Top Inside Corners"
+msgstr "래프트 상단 내부 모서리 제거"
 
 msgctxt "carve_multiple_volumes description"
 msgid "Remove areas where multiple meshes are overlapping with each other. This may be used if merged dual material objects overlap with each other."
@@ -2855,6 +3019,18 @@ msgstr "여러 메시가 서로 겹치는 영역을 제거합니다. 병합 된 
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
 msgstr "첫 번째로 프린팅된 레이어 바로 아래의 비어 있는 레이어를 제거합니다. 이 설정을 해제하면 슬라이싱 허용 오차 설정을 배타 또는 중간으로 설정할 경우 첫 번째 레이어가 비어 있게 될 수 있습니다."
+
+msgctxt "raft_base_remove_inside_corners description"
+msgid "Remove inside corners from the raft base, causing the raft to become convex."
+msgstr "래프트가 볼록해지도록 래프트 베이스에서 내부 모서리를 제거합니다."
+
+msgctxt "raft_interface_remove_inside_corners description"
+msgid "Remove inside corners from the raft middle part, causing the raft to become convex."
+msgstr "래프트가 볼록해지도록 래프트 중간 부분에서 내부 모서리를 제거합니다."
+
+msgctxt "raft_surface_remove_inside_corners description"
+msgid "Remove inside corners from the raft top part, causing the raft to become convex."
+msgstr "래프트가 볼록해지도록 래프트 상단 부분에서 내부 모서리를 제거합니다."
 
 msgctxt "raft_remove_inside_corners description"
 msgid "Remove inside corners from the raft, causing the raft to become convex."
@@ -2875,6 +3051,10 @@ msgstr "Repetier"
 msgctxt "skin_outline_count description"
 msgid "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material."
 msgstr "위쪽/아래쪽 패턴의 가장 바깥 쪽 부분을 여러 동심 선으로 바꿉니다. 하나 또는 두 개의 선을 사용하면 내부채움 재료로 시작하는 지붕면이 향상됩니다."
+
+msgctxt "ppr description"
+msgid "Reporting events that go out of set thresholds"
+msgstr "설정된 임곗값을 벗어난 이벤트 보고"
 
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
@@ -2947,6 +3127,10 @@ msgstr "장면에 서포트 메쉬가 있습니다"
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "솔기 코너 환경 설정"
+
+msgctxt "user_defined_print_order_enabled label"
+msgid "Set Print Sequence Manually"
+msgstr "수동으로 인쇄 순서 설정"
 
 msgctxt "draft_shield_height_limitation description"
 msgid "Set the height of the draft shield. Choose to print the draft shield at the full height of the model or at a limited height."
@@ -3348,10 +3532,6 @@ msgctxt "support_interface_priority label"
 msgid "Support Interface Priority"
 msgstr "서포트 인터페이스 우선순위"
 
-msgctxt "support_interface_skip_height label"
-msgid "Support Interface Resolution"
-msgstr "서포트 인터페이스 해상도"
-
 msgctxt "speed_support_interface label"
 msgid "Support Interface Speed"
 msgstr "서포트 인터페이스 속도"
@@ -3704,6 +3884,10 @@ msgctxt "magic_fuzzy_skin_point_dist description"
 msgid "The average distance between the random points introduced on each line segment. Note that the original points of the polygon are discarded, so a high smoothness results in a reduction of the resolution. This value must be higher than half the Fuzzy Skin Thickness."
 msgstr "각 선분에 있는 임의의 점 사이의 평균 거리입니다. 다각형의 원래 점은 버려지므로 해상도가 감소합니다. 이 값은 퍼지 스킨 두께의 절반보다 커야합니다."
 
+msgctxt "material_brand description"
+msgid "The brand of material used."
+msgstr "사용된 재료의 브랜드입니다."
+
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "프린트 헤드 이동시 기본 가속도."
@@ -3997,11 +4181,8 @@ msgid "The horizontal distance between the first brim line and the outline of th
 msgstr "첫 번째 브림 선과 첫 번째 레이어 프린팅의 윤곽 사이의 수평 거리입니다. 작은 간격은 브림을 제거하기 쉽도록 하면서 내열성의 이점을 제공할 수 있습니다."
 
 msgctxt "skirt_gap description"
-msgid ""
-"The horizontal distance between the skirt and the first layer of the print.\n"
-"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
+msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다."
 "이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 msgctxt "lightning_infill_straightening_angle description"
@@ -4180,6 +4361,10 @@ msgctxt "jerk_travel description"
 msgid "The maximum instantaneous velocity change with which travel moves are made."
 msgstr "헤드가 이동하는 최대 순간 속도 변화."
 
+msgctxt "prime_tower_max_bridging_distance description"
+msgid "The maximum length of the branches which may be printed over the air."
+msgstr "공중에서 출력될 수 있는 브랜치의 최대 길이입니다."
+
 msgctxt "machine_max_feedrate_x description"
 msgid "The maximum speed for the motor of the X-direction."
 msgstr "X 방향의 모터 최대 속도입니다."
@@ -4291,6 +4476,18 @@ msgstr "아래층의 수. 바닥 두께로 계산을 할때 이 값은 벽 두�
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
 msgstr "래프트의 베이스 레이어에 있는 선형 패턴 주위에 프린팅 할 윤곽의 수."
+
+msgctxt "raft_interface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the middle layers of the raft."
+msgstr "래프트의 중간 레이어에 있는 선형 패턴 주위에 출력할 윤곽선 수입니다."
+
+msgctxt "raft_surface_wall_count description"
+msgid "The number of contours to print around the linear pattern in the top layers of the raft."
+msgstr "래프트의 상단 레이어에 있는 선형 패턴 주위에 출력할 윤곽선 수입니다."
+
+msgctxt "raft_wall_count description"
+msgid "The number of contours to print around the linear pattern of the raft."
+msgstr "래프트의 선형 패턴 주위에 출력할 윤곽선 수입니다."
 
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
@@ -4680,6 +4877,10 @@ msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
 msgstr "생성 될 gcode의 유형."
 
+msgctxt "material_type description"
+msgid "The type of material used."
+msgstr "사용된 재료의 유형입니다."
+
 msgctxt "coasting_volume description"
 msgid "The volume otherwise oozed. This value should generally be close to the nozzle diameter cubed."
 msgstr "그렇지 않으면 볼륨이 흘러 나옵니다. 이 값은 일반적으로 노즐 직경 입방체에 가깝습니다."
@@ -4728,9 +4929,21 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "이것은 브릿지 벽이 시작되기 직전에 익스트루더가 있어야하는 거리를 제어합니다. 브릿지가 시작되기 전에 코스팅(coasting)을 하면 노즐의 압력을 낮추고 보다 평평한 브릿지를 만들 수 있습니다."
 
+msgctxt "raft_base_smoothing description"
+msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "이 설정은 래프트 베이스의 내부 모서리를 얼마나 둥글게 할지 제어합니다. 내부 모서리는 여기에 지정된 값과 동일한 반경을 가진 반원 모양으로 둥글게 다듬어집니다. 이 설정은 래프트 윤곽선에 있는 이러한 원보다 작은 구멍도 제거합니다."
+
+msgctxt "raft_interface_smoothing description"
+msgid "This setting controls how much inner corners in the raft middle outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "이 설정은 래프트 중간의 내부 모서리를 얼마나 둥글게 할지 제어합니다. 내부 모서리는 여기에 지정된 값과 동일한 반경을 가진 반원 모양으로 둥글게 다듬어집니다. 이 설정은 래프트 윤곽선에 있는 이러한 원보다 작은 구멍도 제거합니다."
+
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "이 설정은 래프트 윤곽의 안쪽 구석의 곡률을 제어합니다. 안쪽 구석이 여기에 지정된 값과 동일한 반경으로 반원 모양으로 휘어집니다. 또한 이 설정을 사용하면 래프트 윤곽에서 그러한 원보다 작은 구멍이 제거됩니다."
+
+msgctxt "raft_surface_smoothing description"
+msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr "이 설정은 래프트 상단의 내부 모서리를 얼마나 둥글게 할지 제어합니다. 내부 모서리는 여기에 지정된 값과 동일한 반경을 가진 반원 모양으로 둥글게 다듬어집니다. 이 설정은 래프트 윤곽선에 있는 이러한 원보다 작은 구멍도 제거합니다."
 
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
@@ -5091,10 +5304,6 @@ msgstr "벽"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
 msgstr "이 각도보다 놓은 오버행(경사면)의 벽은 오버행 벽 설정을 사용해 인쇄됩니다. 값이 90이면 오버행(경사면)으로 처리되는 벽이 없습니다. 서포트로 지지되는 오버행(경사면)도 오버행(경사면)으로 처리되지 않습니다."
-
-msgctxt "support_interface_skip_height description"
-msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."
-msgstr "서포트가 모델의 위와 아래에 있는지 확인하려면 주어진 높이의 단계를 수행하십시오. 값이 낮을수록 슬라이스가 느려지고, 값이 높을수록 서포트 인터페이스가 있어야하는 곳에서는 정상적인 서포트다 프린팅 될 수 있습니다."
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5488,13 +5697,177 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "이동"
 
+msgctxt "cool_during_extruder_switch description"
+msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr "<html>노즐 전환 중 냉각 팬의 활성화 여부를 선택합니다. 노즐을 더 빨리 냉각시켜 흘러내림을 줄일 수 있습니다:<ul><li><b>변경 없음:</b> 팬을 이전 상태와 같이 유지합니다</li><li><b>마지막 압출기만:</b> 마지막으로 사용한 압출기의 팬을 켜고, 나머지 팬이 있을 경우 모두 끕니다. 완전한 별도의 압출기가 있는 경우 유용합니다.</li><li><b>모든 팬:</b> 노즐 전환 중 모든 팬을 켭니다. 냉각팬이 1개만 있거나, 여러 개의 팬이 서로 가까이 있는 경우 유용합니다.</li></ul></html>"
+
+msgctxt "cool_during_extruder_switch option all_fans"
+msgid "All fans"
+msgstr "모든 팬"
+
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "압출기 전환 중 냉각"
+
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "서포트 구조물의 Z 심과 실제 3D 모델 간의 공간 관계를 관리합니다. 이 컨트롤은 인쇄 결과 모델에 손상이나 자국을 남기지 않고 인쇄 후 서포트 구조물을 원활히 제거할 수 있도록 해주므로 매우 중요합니다."
+
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "모델과의 최소 Z 심 거리"
+
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "서포트의 초기 레이어에서 인필을 위한 압출 배율입니다. 이 값을 높이면 베드 밀착에 도움이 될 수 있습니다."
+
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "마지막 압출기만"
+
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "다각형 꼭지점에 Z 심을 배치합니다. 이 기능을 끄면 정점 사이에도 심을 배치할 수 있습니다. (단, 이 경우 지원되지 않는 오버행에 심을 배치하는 데 대한 제약을 무시하지는 않는다는 점에 유의하세요)"
+
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "프라임 타워 최소 셸 두께"
+
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "래프트 기본 흐름"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "래프트 베이스 인필 오버랩"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "래프트 베이스 인필 오버랩 백분율"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "래프트 흐름"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "래프트 인터페이스 흐름"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "래프트 인터페이스 인필 오버랩"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "래프트 인터페이스 인필 오버랩 백분율"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "래프트 인터페이스 Z 오프셋"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "래프트 서피스 흐름"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "래프트 서피스 인필 오버랩"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "래프트 서피스 인필 오버랩 백분율"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "래프트 서피스 Z 오프셋"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "심 오버행잉 월 각도"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "서포트 인필 밀도 압출 배율 초기 레이어"
+
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "모델과 떨어진 서포트 Z 심"
+
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "래프트 베이스 인쇄 시 일반 압출 라인 대비 압출할 재료의 양입니다. 유동이 증가하면 접착력 및 래프트 구조 강도가 향상될 수 있습니다."
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "래프트 인터페이스 인쇄 시 일반 압출 라인 대비 압출할 재료의 양입니다. 유동이 증가하면 접착력 및 래프트 구조 강도가 향상될 수 있습니다."
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "일반 압출 라인 대비 래프트 인쇄 중 압출할 재료의 양입니다. 유동이 증가하면 접착력 및 래프트 구조 강도가 향상될 수 있습니다."
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "래프트 표면 인쇄 시 일반 압출 라인 대비 압출할 재료의 양입니다. 유동이 증가하면 접착력 및 래프트 구조 강도가 향상될 수 있습니다."
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 베이스의 인필과 월 사이의 겹침 정도(인필 라인 너비의 백분율)입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 베이스의 인필과 월 사이의 겹침 정도입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 인터페이스의 인필과 월 사이의 겹침 정도(인필 라인 너비의 백분율)입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 인터페이스의 인필과 월 사이의 겹침 정도입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 표면의 인필과 월 사이의 겹침 정도(인필 라인 너비의 백분율)입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "래프트 표면의 인필과 월 사이의 겹침 정도입니다. 약간의 겹침이 있을 경우 월이 인필에 보다 단단히 연결될 수 있습니다."
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "Z축 심에서 모델과 서포트 구조물 사이의 거리입니다."
+
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "프라임 타워 셸의 최소 두께입니다. 이 값을 늘림으로써 프라임 타워의 강도를 높일 수 있습니다."
+
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "이 각도보다 오버행이 더 큰 월에는 이음새가 생기지 않도록 해야 합니다. 값이 90이면 어떠한 월도 오버행잉으로 처리되지 않습니다."
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "변경 없음"
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "래프트 인터페이스의 첫 번째 레이어 인쇄 시, 해당 오프셋으로 변환하여 베이스와 인터페이스 사이의 접착력을 지정할 수 있습니다. 오프셋이 음수일 경우 접착력 향상을 기대할 수 있습니다."
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "래프트 서피스의 첫 번째 레이어를 인쇄 시, 해당 오프셋으로 변환하여 인터페이스와 표면 사이의 접착력을 지정할 수 있습니다. 오프셋이 음수일 경우 접착력 향상을 기대할 수 있습니다."
+
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "버텍스 상의 Z 심"
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
-msgstr "점진적 흐름 변화의 각 단계 지속 시간"
+msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
 
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "점진적 흐름 변경을 활성화합니다. 활성화하면 흐름이 목표 흐름까지 점진적으로 증가/감소됩니다. 이는 압출기 모터가 시작/정지될 때 흐름이 즉시 변경되지 않는 보우덴 튜브가 있는 프린터에 유용합니다."
+msgstr "점진적 흐름 변경을 활성화합니다. 활성화하면 흐름이 목표 흐름까지 점진적으로 증가/감소합니다. 이는 압출기 모터가 시작/정지될 때 흐름이 즉시 변경되지 않는 보우덴 튜브가 있는 프린터에 유용합니다."
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5506,23 +5879,23 @@ msgstr "점진적 흐름 이산화 단계 크기"
 
 msgctxt "gradual_flow_enabled label"
 msgid "Gradual flow enabled"
-msgstr "점진적 흐름 활성화"
+msgstr "점진적 흐름 활성화됨"
 
 msgctxt "max_flow_acceleration label"
 msgid "Gradual flow max acceleration"
-msgstr "점진적 흐름 최대 가속도"
+msgstr "점진적 흐름 최대 가속"
 
 msgctxt "layer_0_max_flow_acceleration label"
 msgid "Initial layer max flow acceleration"
-msgstr "초기 레이어 최대 흐름 가속도"
+msgstr "초기 레이어 최대 흐름 가속"
 
 msgctxt "max_flow_acceleration description"
 msgid "Maximum acceleration for gradual flow changes"
-msgstr "점진적 흐름 변경에 대한 최대 가속도"
+msgstr "점진적 흐름 변경에 대한 최대 가속"
 
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "첫 번째 레이어의 점진적인 흐름 변화를 위한 최소 속도"
+msgstr "첫 번째 레이어의 점진적 흐름 변경에 대한 최소 속도"
 
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"

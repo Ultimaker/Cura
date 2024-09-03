@@ -1,6 +1,5 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from typing import List, cast
 
 from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
@@ -32,7 +31,6 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
-
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -273,7 +271,11 @@ class CuraActions(QObject):
         # deselect currently selected nodes, and select the new nodes
         for node in Selection.getAllSelectedObjects():
             Selection.remove(node)
+
+        numberOfFixedNodes = len(fixed_nodes)
         for node in nodes:
+            numberOfFixedNodes += 1
+            node.printOrder = numberOfFixedNodes
             Selection.add(node)
 
     def _openUrl(self, url: QUrl) -> None:
