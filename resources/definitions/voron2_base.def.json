@@ -109,6 +109,7 @@
         "speed_wall": { "value": "math.ceil(speed_print * 0.33)" },
         "speed_wall_0": { "value": "math.ceil(speed_print * 0.33)" },
         "speed_wall_x": { "value": "math.ceil(speed_print * 0.66)" },
+        "speed_z_hop": { "value": "machine_max_feedrate_z" },
         "travel_avoid_other_parts": { "default_value": false },
         "wall_line_width": { "value": "machine_nozzle_size" },
         "wall_overhang_angle": { "default_value": 75 },
