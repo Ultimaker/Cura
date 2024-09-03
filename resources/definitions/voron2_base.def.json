@@ -22,11 +22,6 @@
     "overrides":
     {
         "acceleration_enabled": { "default_value": false },
-        "acceleration_layer_0": { "value": 1800 },
-        "acceleration_print": { "default_value": 2200 },
-        "acceleration_roofing": { "value": 1800 },
-        "acceleration_travel_layer_0": { "value": 1800 },
-        "acceleration_wall_0": { "value": 1800 },
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
         "bridge_fan_speed": { "default_value": 100 },
