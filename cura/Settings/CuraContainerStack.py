@@ -5,7 +5,7 @@ from typing import Any, cast, List, Optional, Dict
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
-from UM.Decorators import override
+from UM.Decorators import CachedMemberFunctions, override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Settings.ContainerStack import ContainerStack, InvalidContainerStackError
@@ -237,6 +237,7 @@ class CuraContainerStack(ContainerStack):
         :param new_value: The new value to set the property to.
         """
 
+        CachedMemberFunctions.clearInstanceCache(self)
         container_index = _ContainerIndexes.UserChanges
         self._containers[container_index].setProperty(key, property_name, property_value, container, set_from_cache)
 
