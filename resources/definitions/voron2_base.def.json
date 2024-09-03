@@ -105,9 +105,8 @@
         "speed_slowdown_layers": { "default_value": 4 },
         "speed_travel":
         {
-            "default_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2) / 2",
-            "maximum_value_warning": 501,
-            "value": 300
+            "maximum_value_warning": "math.ceil((machine_max_feedrate_x + machine_max_feedrate_y) / 200) * 100 + 1",
+            "value": "speed_print if magic_spiralize else round((machine_max_feedrate_x + machine_max_feedrate_y) / 200) * 100"
         },
         "travel_avoid_other_parts": { "default_value": false },
         "wall_line_width": { "value": "machine_nozzle_size" },
