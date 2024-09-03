@@ -42,7 +42,7 @@
         "jerk_enabled": { "default_value": false },
         "layer_height_0": { "resolve": "max(machine_nozzle_size / 2, min(extruderValues('layer_height')))" },
         "line_width": { "value": "machine_nozzle_size * 1.125" },
-        "machine_acceleration": { "default_value": 1500 },
+        "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 250 },
         "machine_end_gcode": { "default_value": "print_end" },
         "machine_endstop_positive_direction_x": { "default_value": true },
