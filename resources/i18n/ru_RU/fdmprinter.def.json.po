@@ -5860,3 +5860,43 @@ msgstr "При печати первого слоя поверхности ра�
 msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Z-шов на вершине"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Продолжительность каждого шага изменения плавного потока"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Включите изменения плавного потока. Если эта функция включена, поток постепенно увеличивается/уменьшается до целевого значения. Это полезно для принтеров с трубкой Боудена, где поток не меняется сразу при запуске/остановке двигателя экструдера."
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Для любого перемещения, превышающего это значение, поток материала сбрасывается до целевого потока пути."
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Размер шага дискретизации плавного потока"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Плавный поток включен"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Максимальное ускорение плавного потока"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Максимальное ускорение потока начального слоя"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Максимальное ускорение для изменения плавного потока"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Минимальная скорость изменения плавного потока для первого слоя"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Сбросить продолжительность потока"
