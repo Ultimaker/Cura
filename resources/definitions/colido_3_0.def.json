@@ -1,0 +1,54 @@
+{
+    "version": 2,
+    "name": "CoLiDo 3.0",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "CoLiDo",
+        "manufacturer": "CoLiDo",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": false,
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "fast",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "machine_extruder_trains": { "0": "colido_3_0_extruder_0" },
+        "quality_definition": "colido_3_0",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "acceleration_print": { "value": "1000" },
+        "acceleration_travel": { "value": "1000" },
+        "default_material_print_temperature": { "value": "200" },
+        "gantry_height": { "value": "17.8" },
+        "layer_height": { "value": 0.15 },
+        "layer_height_0": { "value": "max(0.2, layer_height)" },
+        "machine_name": { "default_value": "CoLiDo 3.0" },
+        "machine_width": { "default_value": 223 },
+        "machine_depth": { "default_value": 142 },
+        "machine_height": { "default_value": 150 },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_heated_bed": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-30, -50],
+                [-30, 40],
+                [58, 40],
+                [58, -50]
+            ]
+        },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_start_gcode": { "default_value": "G21 ; Millimeter units\nG90 ; Absolute XYZ\nM82 ; Extruder in absolute mode\nG28 ; Home all axes\nG1 Z15.0 F6000 ;Move the platform down 15mm\n\n;Initialize Temperature\n;M140 S{material_bed_temperature_layer_0} ;heat bed and continue\nM104 S{material_print_temperature_layer_0} ; Set nozzle temperature (no wait)\nM190 S{material_bed_temperature_layer_0} ; Set bed temperature (wait)\nM109 S{material_print_temperature_layer_0} ; Wait for nozzle temp\n\n;Prime the extruder\nG92 E0 ; Reset extruder distance\nG1 F300 E60\nG92 E0 ; Reset extruder distance\n\n;Noozle load line\nM400\nG90 ; Absolute XYZ\nM83 ; Set E to Relative Positioning\n;Move to start position\nG0 X38.0 Y5.0 Z0.8 F3000\nG0 Z{layer_height_0} F6000\nG0 E2 F300\nG0 Y143 E9.4 F{speed_wall_0 / (0.3 * 0.5) / 4 * 60}\nG0 X53 E0.700 F{speed_wall_0 / (0.3 * 0.5) / 4 * 60}\nG0 Y142.5\nG0 E0.2\nG0 X38.5 E0.700\nG0 Y5 E9.4 F{speed_wall_0 / (0.3 * 0.5) / 4 * 60}\nM400\n\nM82 ; Extruder in absolute mode\nG92 E0 ; Reset extruder distance" },
+        "machine_end_gcode": { "default_value": "G91 ;relative positioning\nG1 E-1 F600 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+1 E-3 X-20 Y-1 F4800 ;move Z up a bit and retract filament even more\nM104 S0 ;Set Hotend Temperature\nM106 S0 ;Set Fan Speed\nM140 S0 ;Set Bed Temperature\nG28 ; move X/Y/Z to min/max endstops\nG90 ;absolute positioning\nM84 ;steppers off" },
+        "material_final_print_temperature": { "value": "max(-273.15, material_print_temperature - 5)" },
+        "material_initial_print_temperature": { "value": "max(-273.15, material_print_temperature - 5)" },
+        "retraction_count_max": { "value": 50 }
+    }
+}
