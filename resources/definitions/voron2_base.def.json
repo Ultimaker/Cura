@@ -101,8 +101,8 @@
         "speed_slowdown_layers": { "default_value": 4 },
         "speed_travel":
         {
-            "maximum_value_warning": "max(100, round((machine_max_feedrate_x + machine_max_feedrate_y) / 2, -2)) + 1",
-            "value": "speed_print if magic_spiralize else max(100, round((machine_max_feedrate_x + machine_max_feedrate_y) / 2, -2))"
+            "maximum_value_warning": "max(500, round((machine_max_feedrate_x + machine_max_feedrate_y) / 2, -2)) + 1",
+            "value": "speed_print if magic_spiralize else max(speed_print, round((machine_max_feedrate_x + machine_max_feedrate_y) / 2, -2))"
         },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
         "travel_avoid_other_parts": { "default_value": false },
