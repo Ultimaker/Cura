@@ -563,6 +563,9 @@ class StartSliceJob(Job):
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
         result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
 
+        # If adding of changing a setting here, please update the associated wiki page
+        # https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code
+
         return result
 
     def _cacheAllExtruderSettings(self):
