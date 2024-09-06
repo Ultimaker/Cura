@@ -98,6 +98,7 @@
         "skirt_brim_minimal_length": { "default_value": 550 },
         "speed_infill": { "value": "speed_print * 1.5" },
         "speed_layer_0": { "value": "speed_print * 3 / 8" },
+        "speed_print": { "value": "round(6.4 / layer_height / machine_nozzle_size, -1)" },
         "speed_slowdown_layers": { "default_value": 4 },
         "speed_travel":
         {
