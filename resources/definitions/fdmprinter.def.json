@@ -6063,7 +6063,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "resolve": "extruderValue(adhesion_extruder_nr, 'adhesion_type')",
+                    "resolve": "min(extruderValues('adhesion_type'), key=('raft', 'brim', 'skirt', 'none').index)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
