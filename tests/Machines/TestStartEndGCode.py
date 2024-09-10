@@ -47,12 +47,13 @@ extruder_1_provider = MockValueProvider(extruder_1_values)
 all_extruder_settings = {"-1": global_values, "0": extruder_0_values, "1": extruder_1_values}
 
 test_cases = [
-    ('Static code', 'G0', 'G0'),
+    ('Static code', None, 'G0', 'G0'),
 
-    ('Basic replacement', 'M128 {bed_temperature}', 'M128 50.0'),
+    ('Basic replacement', None, 'M128 {bed_temperature}', 'M128 50.0'),
 
     (
         'Conditional expression with global setting',
+        None,
 '''{if bed_temperature > 30}
 G123
 {else}
@@ -64,6 +65,7 @@ G456
 
     (
         'Conditional expression with extruder setting directly specified by index 0',
+        None,
 '''{if material_temperature > 200, 0}
 G10
 {else}
@@ -74,6 +76,7 @@ G20
     ),
     (
         'Conditional expression with extruder setting directly specified by index 1',
+        None,
 '''{if material_temperature > 200, 1}
 G100
 {else}
@@ -85,6 +88,7 @@ G200
 
     (
         'Conditional expression with extruder index specified by setting',
+        None,
 '''{if material_temperature > 200, initial_extruder}
 G1000
 {else}
@@ -96,6 +100,7 @@ G2000
 
     (
         'Conditional expression with extruder index specified by formula',
+        None,
 '''{if material_temperature > 200, (initial_extruder + 1) % 2}
 X1000
 {else}
@@ -107,6 +112,7 @@ X2000
 
     (
         'Conditional expression with elsif',
+        None,
 '''{if bed_temperature < 30}
 T30
 {elif bed_temperature >= 30 and bed_temperature < 40}
@@ -126,6 +132,7 @@ T-800
 
     (
         'Formula inside a conditional expression',
+        None,
 '''{if bed_temperature < 30}
 Z000
 {else}
@@ -137,6 +144,7 @@ Z{bed_temperature + 10}
 
     (
         'Other commands around conditional expression',
+        None,
 '''
 R000
 # My super initial command
@@ -164,6 +172,7 @@ R357 X951 Y843'''
 
     (
         'Multiple conditional expressions',
+        None,
 '''
 A999
 {if bed_temperature > 30}
@@ -187,13 +196,87 @@ A300
 A777
 '''
     ),
+
+    (
+        'Nested condition expression',
+        SyntaxError,
+'''{if bed_temperature < 30}
+{if material_temperature < 30, 0}
+M000
+{else}
+M888
+{endif}
+{else}
+M{bed_temperature + 10}
+{endif}''',
+        ''
+    ),
+
+    (
+        'Wrong condition expression',
+        SyntaxError,
+'''{of material_temperature > 200, 1}
+G100
+{else}
+G200
+{endif}''',
+        ''
+    ),
+
+    (
+        'Condition expression without start',
+        SyntaxError,
+'''
+W100
+{else}
+W200
+{endif}''',
+        ''
+    ),
+
+    (
+        'Formula with non-existing variable',
+        None,
+        '{material_storage_temperature}',
+        '0'
+    ),
+
+    (
+        'Missing formula end character',
+        None,
+        '{material_temperature, 0',
+        '{material_temperature, 0'
+    ),
+
+    (
+        'Conditional expression with missing end character',
+        SyntaxError,
+'''{if material_temperature > 200, 0
+Q1000
+{else}
+Q2000
+{endif}''',
+        ''
+    ),
+
+(
+        'Unexpected end character',
+        None,
+'''{if material_temperature > 200, 0}}
+S1000
+{else}
+S2000
+{endif}''',
+'''S2000
+'''
+    ),
 ]
 
 def pytest_generate_tests(metafunc):
     if "original_gcode" in metafunc.fixturenames:
         tests_ids = [test[0] for test in test_cases]
         tests_data = [test[1:] for test in test_cases]
-        metafunc.parametrize("original_gcode, expected_gcode", tests_data, ids = tests_ids)
+        metafunc.parametrize("exception_type, original_gcode, expected_gcode", tests_data, ids = tests_ids)
 
 @pytest.fixture
 def cura_application():
@@ -215,8 +298,13 @@ def extruder_manager():
     result.getExtruderStack = MagicMock(side_effect = get_extruder)
     return result
 
-def test_startEndGCode_replace(cura_application, extruder_manager, original_gcode, expected_gcode):
+def test_startEndGCode_replace(cura_application, extruder_manager, exception_type, original_gcode, expected_gcode):
     formatter = GcodeStartEndFormatter(all_extruder_settings, -1)
     formatter._cura_application = cura_application
     formatter._extruder_manager = extruder_manager
-    assert formatter.format(original_gcode) == expected_gcode
+
+    if exception_type is not None:
+        with pytest.raises(exception_type):
+            formatter.format(original_gcode)
+    else:
+        assert formatter.format(original_gcode) == expected_gcode
