@@ -9,12 +9,6 @@
         "manufacturer": "ZYYX Labs AB",
         "file_formats": "application/x3g",
         "platform": "zyyx_platform.3mf",
-        "has_machine_quality": true,
-        "machine_extruder_trains": { "0": "zyyx_plus_extruder_0" },
-        "machine_x3g_variant": "z",
-        "preferred_material": "zyyx_pla",
-        "preferred_quality_type": "normal",
-        "quality_definition": "zyyx_plus",
         "exclude_materials": [
             "3D-Fuel_PLA_PRO_Black",
             "3D-Fuel_PLA_SnapSupport",
@@ -178,7 +172,13 @@
             "zyyx_procarbon",
             "zyyx_proglass",
             "zyyx_pronylon"
-        ]
+        ],
+        "has_machine_quality": true,
+        "machine_extruder_trains": { "0": "zyyx_plus_extruder_0" },
+        "machine_x3g_variant": "z",
+        "preferred_material": "zyyx_pla",
+        "preferred_quality_type": "normal",
+        "quality_definition": "zyyx_plus"
     },
     "overrides":
     {
