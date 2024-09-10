@@ -1,0 +1,51 @@
+;RIGHT EXTRUDER
+; Replicator 1 dual start.gcode
+M73 P0 ; Enable build progress
+G21; set units to mm
+G90 ; absolute positioning
+G162 Z F3000 ; Home Z maximum
+G28 X Y ; Home X Y maximum
+G92 X0 Y0
+M140 S[bed0_temperature] T0 ; Heat buildplate
+M134 T0 ; Stabilize bed temperature
+M104 S180 T0 ; Heat right extruder
+M104 S70 T1 ; Heat lightly left extruder
+M133 T0 ; Stabilize right extruder temperature
+M133 T1 ; Stabilize left extruder temperature
+M104 S0 T1 ; cool down left extruder
+G0 X-45 Y-15; estrema destra in fondo punto di calibrazione ZERO prende offset primario di asse Z
+G161 Z F800
+G92 Z-5 ; Set Z to 5
+G4 P20000 ; 20 seconds wait, before beginning, to stabilize ambient temps
+G1 Z0
+G161 Z F50 ; Home Z maximum slowly
+M132 Z ; Recall home offsets for Z
+G1 Z10
+G28 X Y ; Home X Y maximum
+M132 X Y A B ; Recall home offsets for everything but Z
+G1 X-80 Y65 Z10 F2000 ; Prima posizione di calibrazione
+G161 Z F100
+M131 A ; prima posizione memorizzata
+G1 X100 Y-10 Z10 F2000 ; Seconda posizione di calibrazione
+G161 Z F100
+M131 B ; seconda posizione memorizzata
+G1 X-70 Y-10 Z10 F2000 ; Terza posizione di calibrazione
+G161 Z F100
+M131 AB ; Terza posizione memorizzata
+M132 AB ; avvio del livellamento automatico
+M135 T0 ; Load right extruder offsets
+G1 X-120 Y-75 Z30 F9000 ; Move to wait position off table
+G130 X20 Y20 Z20 A20 B20 ; Lower stepper Vrefs while heating
+M126 S[fan_speed_pwm] ; Set fan speed
+M104 S[extruder0_temperature] T0 ; Heat right extruder
+M133 T0 ; Stabilize right extruder temperature
+G130 X127 Y127 Z40 A127 B127 ; Default stepper Vrefs
+G92 A0 B0 ; Zero extruders
+G1 X100 Y-75 F9000 ; Move to front right corner of bed
+G1 Z0.4 F6000 ; Move down to purge
+G1 X-90 Y-75 E24 F2000 ; Extrude a line of filament across the front edge of the bed
+G1 X-100 Y-75 F180 ; Wait for ooze
+G1 X-110 Y-75 F5000 ; Fast wipe
+G1 Z0.2 F100 ; Lift
+M73 P1 ;@body (notify GPX body has started)
+; end of start.gcode

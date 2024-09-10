@@ -1,0 +1,52 @@
+;start of ZYYX Pro startcode
+M73 P0; enable build progress
+M420 P10; set back fan speed 10 off 11-20 10-100%
+M140 S10 T0; set 100% heater power
+M140 S99 T0; set chamber heater negative hysteresis 19 degrees
+M140 S102 T0; set chamber heater positive hysteresis 2 degrees
+M140 S60 T0; set chamber temperature
+M104 S{material_print_temperature_layer_0} T0; set nozzle temperature
+G21; set units to mm
+G90; set positioning to absolute
+G130 X80 Y90 A127 B127 ; Set Stepper Vref to default value
+; Start build plate homing
+G162 X Y F3000; home XY axes maximum
+G161 Z F1200; home Z axis minimum
+G92 X0 Y0 Z0 E0
+G1 X0 Y0 Z2 F2000
+G1 X-5 Y-5 Z2 F5000
+G162 X Y F300; home XY axes maximum
+G161 Z F200; home Z axis minimum
+G92 X0 Y0 Z0
+M131 A; store surface calibration point 1
+; Homing point 1 complete
+G1 X0 Y0 Z5 F3000; 
+G1 X-182 Y0 Z5 F10000; move to 2nd probing point
+G161 Z F200
+M131 B; store surface calibration point 2
+G92 X-182 Y0 Z0 E0
+G1 X-182 Y0 Z5 F10000
+; Homing point 2 complete
+G1 X0 Y-228 Z5 F8000; move to 3rd calibration point
+G161 Z F200
+M131 AB; store surface calibration point 3
+M132 AB; activate auto leveling
+; Homing point 2 complete
+G1 Z5 F3000
+G1 X-5 Y-5 F5000
+G162 X Y F300
+G1 Z5 F3000
+G161 Z F200
+G92 X135 Y115 Z0 E0
+M132 Z; Recall stored home offset for Z axis
+G1 Z10 F3000; clear nozzle from hole
+G1 X0 Y0 Z10 F8000; move to middle of plate
+; end of ZYYX pro build plate calibration
+M133 T0 ; stabilize extruder temperature
+M126; turn on fan to help heat chamber
+M134 T0; wait for heated chamber temperature
+M127; turn off fan when hot
+;SET_ZXPARAM
+;SET_SUPPORT_BUMPMAP
+G92 E0 ; Set E to 0
+; end of ZYYX Pro start code
