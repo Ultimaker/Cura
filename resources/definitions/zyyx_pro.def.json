@@ -5,7 +5,7 @@
     "metadata":
     {
         "visible": true,
-        "author": "ZYYX Labs AB",
+        "author": "Theodor Hansson",
         "manufacturer": "ZYYX Labs AB",
         "file_formats": "application/x3g",
         "platform": "zyyx_pro_platform.stl",
@@ -181,7 +181,7 @@
         "gantry_height": { "value": "10" },
         "infill_overlap": { "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
         "machine_center_is_zero": { "default_value": true },
-        "machine_depth": { "default_value": 225 },
+        "machine_depth": { "default_value": 228 },
         "machine_disallowed_areas":
         {
             "default_value": [
