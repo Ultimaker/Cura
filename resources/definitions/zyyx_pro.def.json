@@ -9,16 +9,6 @@
         "manufacturer": "ZYYX Labs AB",
         "file_formats": "application/x3g",
         "platform": "zyyx_pro_platform.stl",
-        "has_machine_quality": true,
-        "has_materials": true,
-        "has_variants": true,
-        "machine": "zyyx_pro",
-        "machine_extruder_trains": { "0": "zyyx_pro_extruder" },
-        "machine_x3g_variant": "z",
-        "preferred_material": "zyyx_pla",
-        "preferred_variant_name": "Carbon0.6",
-        "quality_definition": "zyyx_pro",
-        "variants_name": "SwiftTool",
         "exclude_materials": [
             "3D-Fuel_PLA_PRO_Black",
             "3D-Fuel_PLA_SnapSupport",
@@ -174,7 +164,17 @@
             "xyzprinting_tpu",
             "zyyx_pro_flex",
             "zyyx_pro_pla"
-        ]
+        ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine": "zyyx_pro",
+        "machine_extruder_trains": { "0": "zyyx_pro_extruder" },
+        "machine_x3g_variant": "z",
+        "preferred_material": "zyyx_pla",
+        "preferred_variant_name": "Carbon0.6",
+        "quality_definition": "zyyx_pro",
+        "variants_name": "SwiftTool"
     },
     "overrides":
     {
