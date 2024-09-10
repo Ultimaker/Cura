@@ -78,17 +78,12 @@ class GcodeStartEndFormatter:
 
     _instruction_regex = re.compile(r"{(?P<condition>if|else|elif|endif)?\s*(?P<expression>.*?)\s*(?:,\s*(?P<extruder_nr_expr>.*))?\s*}(?P<end_of_line>\n?)")
 
-    def __init__(self,
-                 all_extruder_settings: Dict[str, Dict[str, Any]],
-                 default_extruder_nr: int = -1,
-                 cura_application: CuraApplication = None,
-                 extruder_manager: ExtruderManager = None
-                 ) -> None:
+    def __init__(self, all_extruder_settings: Dict[str, Dict[str, Any]], default_extruder_nr: int = -1) -> None:
         super().__init__()
         self._all_extruder_settings: Dict[str, Dict[str, Any]] = all_extruder_settings
         self._default_extruder_nr: int = default_extruder_nr
-        self._cura_application = cura_application if cura_application is not None else CuraApplication.getInstance()
-        self._extruder_manager = extruder_manager if extruder_manager is not None else ExtruderManager.getInstance()
+        self._cura_application = CuraApplication.getInstance()
+        self._extruder_manager = ExtruderManager.getInstance()
 
     def format(self, text: str) -> str:
         remaining_text: str = text

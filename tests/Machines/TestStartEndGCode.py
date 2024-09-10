@@ -216,5 +216,7 @@ def extruder_manager():
     return result
 
 def test_startEndGCode_replace(cura_application, extruder_manager, original_gcode, expected_gcode):
-    formatter = GcodeStartEndFormatter(all_extruder_settings, -1, cura_application, extruder_manager)
+    formatter = GcodeStartEndFormatter(all_extruder_settings, -1)
+    formatter._cura_application = cura_application
+    formatter._extruder_manager = extruder_manager
     assert formatter.format(original_gcode) == expected_gcode
