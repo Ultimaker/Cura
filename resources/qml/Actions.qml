@@ -78,6 +78,7 @@ Item
     property alias paste: pasteAction
     property alias copy: copyAction
     property alias cut: cutAction
+    property alias exportProjectForSupport: exportProjectForSupportAction
 
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
@@ -557,5 +558,22 @@ Item
         id: browsePackagesAction
         text: "&Marketplace"
         icon.name: "plugins_browse"
+    }
+
+    Action
+    {
+        id: exportProjectForSupportAction
+        text: catalog.i18nc("@action:inmenu menubar:help","Export Project For Support")
+		onTriggered:
+		{
+		    var supportName = CuraActions.supportProjectTag()
+			var args = {
+				"filter_by_machine": false,
+				"file_type": "workspace",
+				"preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+				"limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+			};
+			UM.OutputDeviceManager.requestWriteToDevice("local_file", supportName, args)
+		}
     }
 }
