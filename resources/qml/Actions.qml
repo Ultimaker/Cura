@@ -564,16 +564,16 @@ Item
     {
         id: exportProjectForSupportAction
         text: catalog.i18nc("@action:inmenu menubar:help","Export Project For Support")
-		onTriggered:
-		{
-		    var supportName = CuraActions.supportProjectTag()
-			var args = {
-				"filter_by_machine": false,
-				"file_type": "workspace",
-				"preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-				"limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
-			};
-			UM.OutputDeviceManager.requestWriteToDevice("local_file", supportName, args)
-		}
+        onTriggered:
+        {
+            var supportName = CuraActions.supportProjectTag()
+            var args = {
+                "filter_by_machine": false,
+                "file_type": "workspace",
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+            };
+            UM.OutputDeviceManager.requestWriteToDevice("local_file", supportName, args)
+        }
     }
 }
