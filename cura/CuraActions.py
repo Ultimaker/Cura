@@ -283,6 +283,7 @@ class CuraActions(QObject):
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)
 
+    @pyqtSlot()
     def supportProjectTag(self):
         timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
         return f"exported-project-for-support-{timestamp}"
