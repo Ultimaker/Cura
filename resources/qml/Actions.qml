@@ -6,7 +6,10 @@ pragma Singleton
 import QtQuick 2.10
 import QtQuick.Controls 2.4
 import UM 1.1 as UM
-import Cura 1.5 as Cura
+import _CuraActionsDependencies 1.5 as Cura
+// Was "import Cura 1.5 as Cura", except that results in
+// "Cyclic dependency detected between" Actions.qml and Actions.qml
+// Actions can't import the namespace that it has already been registered to.
 
 Item
 {
