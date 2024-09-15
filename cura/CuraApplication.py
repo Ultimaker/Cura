@@ -1296,6 +1296,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, self.getCuraSceneController, "SceneController")
         qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, self.getExtruderManager, "ExtruderManager")
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, self.getMachineManager, "MachineManager")
+	# Give Actions.qml another namespace to import instead of "Cura" which
+	# it is a member of and causes a cyclic dependency.
+        qmlRegisterSingletonType(MachineManager, "_CuraActionsDependencies", 1, 5, self.getMachineManager, "MachineManager")
         qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, self.getIntentManager, "IntentManager")
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, self.getSettingInheritanceManager, "SettingInheritanceManager")
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManagerWrapper, "SimpleModeSettingsManager")
@@ -1346,6 +1349,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, ContainerManager.getInstance, "ContainerManager")
+	# Give Actions.qml another namespace to import instead of "Cura" which
+	# it is a member of and causes a cyclic dependency.
+        qmlRegisterSingletonType(ContainerManager, "_CuraActionsDependencies", 1, 5, ContainerManager.getInstance, "ContainerManager")
         qmlRegisterType(SidebarCustomMenuItemsModel, "Cura", 1, 0, "SidebarCustomMenuItemsModel")
 
         qmlRegisterType(PrinterOutputDevice, "Cura", 1, 0, "PrinterOutputDevice")
