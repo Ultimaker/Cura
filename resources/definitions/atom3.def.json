@@ -65,6 +65,7 @@
         "machine_heated_bed": { "default_value": true },
         "machine_height": { "default_value": 340 },
         "machine_name": { "default_value": "Atom 3" },
+        "machine_nozzle_head_distance": { "default_value": 6 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_show_variants": { "default_value": true },
         "machine_start_gcode": { "default_value": ";MACHINE START CODE\nG21 ;metric values\nG90 ;absolute positioning\nG28 ;home\nG1 Z5 F9000\n;MACHINE START CODE" },

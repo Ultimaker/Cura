@@ -1,4 +1,4 @@
-# Copyright (c) 2024 UltiMaker
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 from io import StringIO, BufferedIOBase
 import json
@@ -18,7 +18,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.FormatMaps import FormatMaps
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 from cura.CuraVersion import ConanInstalls
@@ -138,30 +137,6 @@ class MakerbotWriter(MeshWriter):
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
-                api = CuraApplication.getInstance().getCuraAPI()
-                metadata_json = api.interface.settings.getSliceMetadata()
-
-                # All the mapping stuff we have to do:
-                product_to_id_map = FormatMaps.getProductIdMap()
-                printer_name_map = FormatMaps.getInversePrinterNameMap()
-                extruder_type_map = FormatMaps.getInverseExtruderTypeMap()
-                material_map = FormatMaps.getInverseMaterialMap()
-                for key, value in metadata_json.items():
-                    if "all_settings" in value:
-                        if "machine_name" in value["all_settings"]:
-                            machine_name = value["all_settings"]["machine_name"]
-                            if machine_name in product_to_id_map:
-                                machine_name = product_to_id_map[machine_name][0]
-                            value["all_settings"]["machine_name"] = printer_name_map.get(machine_name, machine_name)
-                        if "machine_nozzle_id" in value["all_settings"]:
-                            extruder_type = value["all_settings"]["machine_nozzle_id"]
-                            value["all_settings"]["machine_nozzle_id"] = extruder_type_map.get(extruder_type, extruder_type)
-                        if "material_type" in value["all_settings"]:
-                            material_type = value["all_settings"]["material_type"]
-                            value["all_settings"]["material_type"] = material_map.get(material_type, material_type)
-
-                slice_metadata = json.dumps(metadata_json, separators=(", ", ": "), indent=4)
-                zip_stream.writestr("slicemetadata.json", slice_metadata)
         except (IOError, OSError, BadZipFile) as ex:
             Logger.log("e", f"Could not write to (.makerbot) file because: '{ex}'.")
             self.setInformation(catalog.i18nc("@error", "MakerbotWriter could not save to the designated path."))

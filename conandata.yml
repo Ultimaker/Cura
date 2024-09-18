@@ -1,4 +1,4 @@
-version: "5.9.0-alpha.0"
+version: "5.8.1"
 requirements:
   - "cura_resources/(latest)@ultimaker/testing"
   - "uranium/(latest)@ultimaker/testing"
@@ -10,7 +10,7 @@ requirements:
   - "pynest2d/5.3.0"
   - "native_cad_plugin/2.0.0"
 requirements_internal:
-  - "fdm_materials/(latest)@internal/testing"
+  - "fdm_materials/5.8.1"
   - "cura_private_data/(latest)@internal/testing"
 urls:
     default:

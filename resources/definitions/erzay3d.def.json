@@ -44,6 +44,7 @@
         "machine_max_jerk_xy": { "default_value": 10 },
         "machine_max_jerk_z": { "default_value": 10 },
         "machine_name": { "default_value": "Erzay3D" },
+        "machine_nozzle_head_distance": { "default_value": 2.5 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_start_gcode": { "default_value": "G28\nG1 Z15.0 F6000\nG92 E0" },

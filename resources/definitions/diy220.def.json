@@ -35,6 +35,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_name": { "default_value": "Diytech 220" },
+        "machine_nozzle_head_distance": { "default_value": 3 },
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_start_gcode": { "default_value": "G21\nG90\nM82\nM107\nG28\nG1 Z15 F200\nT0\nG92 E0\nG1 E16 F250\nG92 E0\n" },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },

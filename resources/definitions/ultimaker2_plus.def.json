@@ -83,6 +83,7 @@
         "machine_heat_zone_length": { "default_value": 20 },
         "machine_height": { "default_value": 205 },
         "machine_name": { "default_value": "Ultimaker 2+" },
+        "machine_nozzle_head_distance": { "default_value": 5 },
         "machine_show_variants": { "default_value": true },
         "speed_infill": { "value": "speed_print" },
         "speed_support": { "value": "speed_wall_0" },
