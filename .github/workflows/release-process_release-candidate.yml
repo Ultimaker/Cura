@@ -12,7 +12,7 @@ on:
       publish_release_description:
         description: 'Publish the description of the release based on the changelog'
         required: true
-        type: bool
+        type: boolean
 
 jobs:
   parse-version:
