@@ -9,6 +9,11 @@ on:
         required: true
         type: string
 
+      publish_release_description:
+        description: 'Publish the description of the release based on the changelog'
+        required: true
+        type: bool
+
 jobs:
   parse-version:
     name: Parse input version string
@@ -153,6 +158,7 @@ jobs:
           ref: ${{ needs.parse-version.outputs.branch_name }}
 
       - name: Extract changelog
+        if: ${{ inputs.publish_release_description }}
         run: python ./scripts/extract_changelog.py --version ${{ needs.parse-version.outputs.version_major }}.${{ needs.parse-version.outputs.version_minor }}.${{ needs.parse-version.outputs.version_patch }} --changelog ./resources/texts/change_log.txt > formatted_changelog.txt
 
       - name: Create release
