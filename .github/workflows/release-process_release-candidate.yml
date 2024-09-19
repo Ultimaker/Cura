@@ -169,8 +169,8 @@ jobs:
           strategy: replace
           title: UltiMaker Cura ${{ inputs.cura_version }}
           draft: true
-          body-source: file
-          body: formatted_changelog.txt
+          body-source: ${{ inputs.publish_release_description && 'file' || 'literal' }}
+          body: ${{ inputs.publish_release_description && 'formatted_changelog.txt' || '' }}
 
       - name: Download artifacts
         uses: actions/download-artifact@v4.1.7
