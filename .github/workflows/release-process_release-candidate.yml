@@ -163,14 +163,15 @@ jobs:
 
       - name: Create release
         uses: notpeelz/action-gh-create-release@v5.0.1
+        if: ${{ inputs.publish_release_description }}
         with:
           target: ${{ needs.create-tags.outputs.main_commit }}
           tag: ${{ inputs.cura_version }}
           strategy: replace
           title: UltiMaker Cura ${{ inputs.cura_version }}
           draft: true
-          body-source: ${{ inputs.publish_release_description && 'file' || 'literal' }}
-          body: ${{ inputs.publish_release_description && 'formatted_changelog.txt' || '' }}
+          body-source: file
+          body: formatted_changelog.txt
 
       - name: Download artifacts
         uses: actions/download-artifact@v4.1.7
