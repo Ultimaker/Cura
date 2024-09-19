@@ -27,7 +27,6 @@
         "machine_heated_bed": { "default_value": false },
         "machine_height": { "default_value": 200 },
         "machine_name": { "default_value": "3DMaker Starter" },
-        "machine_nozzle_head_distance": { "default_value": 3 },
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_width": { "default_value": 210 },
         "raft_airgap": { "default_value": 0.2 },

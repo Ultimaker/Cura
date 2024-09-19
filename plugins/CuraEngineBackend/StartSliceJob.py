@@ -454,7 +454,12 @@ class StartSliceJob(Job):
         for extruder_stack in global_stack.extruderList:
             self._buildExtruderMessage(extruder_stack)
 
-        for plugin in CuraApplication.getInstance().getBackendPlugins():
+        backend_plugins = CuraApplication.getInstance().getBackendPlugins()
+
+        # Sort backend plugins by name. Not a very good strategy, but at least it is repeatable. This will be improved later.
+        backend_plugins = sorted(backend_plugins, key=lambda backend_plugin: backend_plugin.getId())
+
+        for plugin in backend_plugins:
             if not plugin.usePlugin():
                 continue
             for slot in plugin.getSupportedSlots():
