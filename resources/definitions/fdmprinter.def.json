@@ -2494,7 +2494,7 @@
                     "enabled": "machine_heated_build_volume",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "depends_on_settings": ["extruder_used"]
+                    "depends_on_settings": [ "extruder_used" ]
                 },
                 "material_print_temperature":
                 {
@@ -2608,7 +2608,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false,
-                    "depends_on_settings": ["extruder_used"]
+                    "depends_on_settings": [ "extruder_used" ]
                 },
                 "material_bed_temperature_layer_0":
                 {
