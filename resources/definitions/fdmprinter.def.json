@@ -289,6 +289,17 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "extruder_used":
+                {
+                    "default_value": true,
+                    "description": "Is this extruder used for printing. This setting is controlled by Cura automatically.",
+                    "label": "Extruder Used",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
+                },
                 "machine_nozzle_tip_outer_diameter":
                 {
                     "label": "Outer Nozzle Diameter",
@@ -2482,7 +2493,8 @@
                     "maximum_value_warning": "285",
                     "enabled": "machine_heated_build_volume",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": false,
+                    "depends_on_settings": ["extruder_used"]
                 },
                 "material_print_temperature":
                 {
@@ -2595,7 +2607,8 @@
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "settable_per_meshgroup": false,
+                    "depends_on_settings": ["extruder_used"]
                 },
                 "material_bed_temperature_layer_0":
                 {
