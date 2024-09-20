@@ -10,7 +10,7 @@ on:
         type: string
 
       publish_release_description:
-        description: 'Publish the description of the release based on the changelog'
+        description: 'Create the GitHub release (if existing, the description will be overridden based on the changelog)'
         required: true
         type: boolean
 
