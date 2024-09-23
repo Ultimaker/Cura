@@ -7,7 +7,7 @@ def get_package_wheel_hashes(package, version):
     data = requests.get(url).json()
 
     print(f"    {package}:")
-    print(f"      version: '{version}'")
+    print(f"      version: \"{version}\"")
     print(f"      hashes:")
 
     for url in data["urls"]:
