@@ -317,10 +317,10 @@ pip_requirements:
         - sha256:8f7335278dedd26b58c38e006338242cc0977f06d51579b2b8b87b9b33bff66c
         - sha256:50f3c9b216dc9021042f71b392859a773b904ce1a029077f58f6598272432045
     requests:
-      version: "2.22.0"
+      version: "2.32.3"
       hashes:
-        - sha256:9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31
-        - sha256:11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4
+        - sha256:70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6
+        - sha256:55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760
     twisted:
       version: "21.2.0"
       hashes:
@@ -573,10 +573,10 @@ pip_requirements:
         - sha256:3773c4d81e6e818df2efbc7dd77325ca0dcb688116050fb2b3011218eda36139
         - sha256:920f0d66a896c2d99f0adbb391f990a84091179542c205fa53ce5787aff87954
     urllib3:
-      version: "1.25.9"
+      version: "2.2.3"
       hashes:
-        - sha256:88206b0eb87e6d677d424843ac5209e3fb9d0190d0ee169599165ec25e9d9115
-        - sha256:3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527
+        - sha256:ca899ca043dcb1bafa3e262d73aa25c465bfb49e0bd9dd5d59f1d0acba2f8fac
+        - sha256:e7d814a81dad81e6caf2ec9fdedb284ecc9c73076b62654547cc64ccdcae26e9
     jeepney:
       version: "0.7.1"
       hashes:

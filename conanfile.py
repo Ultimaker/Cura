@@ -135,7 +135,7 @@ class CuraConan(ConanFile):
         # list of conan installs
         for dependency in self.dependencies.host.values():
             conan_installs[dependency.ref.name] = {
-                "version": dependency.ref.version,
+                "version": str(dependency.ref.version),
                 "revision": dependency.ref.revision
             }
         return conan_installs
