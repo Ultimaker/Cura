@@ -812,7 +812,7 @@ class BuildVolume(SceneNode):
             used = extruder in used_extruders
             Logger.info(f"- {extruder.getId()}: {used}")
             changed = (used == extruder.getProperty("extruder_used", "value"))
-            extruder.setProperty("extruder_used", "value", used)
+            extruder.definitionChanges.setProperty("extruder_used", "value", used)
 
     def _nodeActiveExtruderChanged(self):
         self._updateDisallowedAreasAndRebuild()
