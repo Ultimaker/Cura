@@ -803,15 +803,12 @@ class BuildVolume(SceneNode):
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
     def _updateUsedExtruders(self):
-        Logger.info("Updating used extruders")
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             return
         used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         for extruder in global_container_stack.extruderList:
             used = extruder in used_extruders
-            Logger.info(f"- {extruder.getId()}: {used}")
-            changed = (used == extruder.getProperty("extruder_used", "value"))
             extruder.definitionChanges.setProperty("extruder_used", "value", used)
 
     def _nodeActiveExtruderChanged(self):
