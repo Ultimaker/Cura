@@ -1,1 +1,0 @@
-git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon
