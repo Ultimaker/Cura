@@ -57,10 +57,6 @@ class CuraConan(ConanFile):
     def _i18n_options(self):
         return self.conf.get("user.i18n:options", default = {"extract": True, "build": True}, check_type = dict)
 
-    @property
-    def _pycharm_targets(self):
-        return self.conan_data["pycharm_targets"]
-
     # FIXME: These env vars should be defined in the runenv.
     _cura_env = None
 
