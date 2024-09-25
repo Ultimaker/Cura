@@ -40,5 +40,4 @@ jobs:
       project_name: cura
       platform_windows: false
       platform_mac: false
-      conan_extra_args: "-o \"cura/*:enable_i18n=True\""
     secrets: inherit
