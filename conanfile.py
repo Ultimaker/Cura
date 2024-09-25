@@ -318,7 +318,7 @@ class CuraConan(ConanFile):
 
     def build_requirements(self):
         if self.options.get_safe("enable_i18n", False):
-            self.tool_requires("gettext/0.21", force_host_context = True)
+            self.test_requires("gettext/0.21")
 
     def layout(self):
         self.folders.source = "."
@@ -327,7 +327,7 @@ class CuraConan(ConanFile):
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
-        self.cpp.package.resdirs = ["resources", "plugins", "packaging", "pip_requirements"]  # pip_requirements should be the last item in the list
+        self.cpp.package.resdirs = ["resources", "plugins", "packaging"]
 
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
@@ -477,10 +477,6 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
             rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], Path(res_dir).name))
 
     def package_info(self):
-        self.user_info.pip_requirements = "requirements.txt"
-        self.user_info.pip_requirements_git = "requirements-ultimaker.txt"
-        self.user_info.pip_requirements_build = "requirements-dev.txt"
-
         if self.in_local_cache:
             self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
             self.env_info.PYTHONPATH.append(os.path.join(self.package_folder, "site-packages"))
@@ -502,7 +498,3 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         del self.info.options.display_name
         del self.info.options.cura_debug_mode
         self.info.options.rm_safe("enable_i18n")
-
-        # TODO: Use the hash of requirements.txt and requirements-ultimaker.txt, Because changing these will actually result in a different
-        #  Cura. This is needed because the requirements.txt aren't managed by Conan and therefor not resolved in the package_id. This isn't
-        #  ideal but an acceptable solution for now.
