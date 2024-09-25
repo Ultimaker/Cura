@@ -204,9 +204,9 @@ class CuraConan(ConanFile):
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
                     if self.in_local_cache:
-                        src_path = os.path.join(self.package_folder, data["src"])
+                        src_path = str(Path(self.package_folder, data["src"]))
                     else:
-                        src_path = os.path.join(self.source_folder, data["src"])
+                        src_path = str(Path(self.source_folder, data["src"]))
                 else:
                     if data["package"] not in self.deps_cpp_info.deps:
                         continue
@@ -223,7 +223,7 @@ class CuraConan(ConanFile):
             if "package" in binary:  # get the paths from conan package
                 src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = str(self.source_path.joinpath(binary["root"], binary["src"]))
+                src_path = str(Path(self.source_folder, binary["root"], binary["src"]))
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
@@ -338,7 +338,7 @@ class CuraConan(ConanFile):
         vr = VirtualRunEnv(self)
         vr.generate()
 
-        self._generate_cura_version(os.path.join(self.source_folder, "cura"))
+        self._generate_cura_version(str(Path(self.source_folder, "cura")))
 
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
         curaengine = self.dependencies["curaengine"].cpp_info
@@ -347,10 +347,10 @@ class CuraConan(ConanFile):
 
         # Copy the external plugins that we want to bundle with Cura
         if self.options.enterprise:
-            rmdir(self, str(self.source_path.joinpath("plugins", "NativeCADplugin")))
+            rmdir(self, str(Path(self.source_folder, "plugins", "NativeCADplugin")))
             native_cad_plugin = self.dependencies["native_cad_plugin"].cpp_info
-            copy(self, "*", native_cad_plugin.resdirs[0], str(self.source_path.joinpath("plugins", "NativeCADplugin")), keep_path = True)
-            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
+            copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")), keep_path = True)
+            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1], str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
@@ -368,7 +368,7 @@ class CuraConan(ConanFile):
                 copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
 
         # Copy materials (flat)
-        rmdir(self, os.path.join(self.source_folder, "resources", "materials"))
+        rmdir(self, str(Path(self.source_folder, "resources", "materials")))
         fdm_materials = self.dependencies["fdm_materials"].cpp_info
         copy(self, "*", fdm_materials.resdirs[0], self.source_folder)
 
@@ -378,7 +378,7 @@ class CuraConan(ConanFile):
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
         if self.options.devtools:
-            entitlements_file = "'{}'".format(os.path.join(self.source_folder, "packaging", "MacOS", "cura.entitlements"))
+            entitlements_file = "'{}'".format(str(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements")))
             self._generate_pyinstaller_spec(
                 location=self.generators_folder,
                 entrypoint_location="'{}'".format(
@@ -401,8 +401,8 @@ class CuraConan(ConanFile):
 
     def build(self):
         if self.options.get_safe("enable_i18n", False) and self._i18n_options["build"]:
-            for po_file in self.source_path.joinpath("resources", "i18n").glob("**/*.po"):
-                mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_path))
+            for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
+                mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
                 mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
                 mkdir(self, str(unix_path(self, Path(mo_file).parent)))
                 cpp_info = self.dependencies["gettext"].cpp_info
@@ -477,16 +477,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
             rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], Path(res_dir).name))
 
     def package_info(self):
-        if self.in_local_cache:
-            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
-            self.env_info.PYTHONPATH.append(os.path.join(self.package_folder, "site-packages"))
-            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
-            self.env_info.PYTHONPATH.append(os.path.join(self.package_folder, "plugins"))
-        else:
-            self.runenv_info.append_path("PYTHONPATH", self.source_folder)
-            self.env_info.PYTHONPATH.append(self.source_folder)
-            self.runenv_info.append_path("PYTHONPATH", os.path.join(self.source_folder, "plugins"))
-            self.env_info.PYTHONPATH.append(os.path.join(self.source_folder, "plugins"))
+        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))
+        self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
 
     def package_id(self):
         # The following options shouldn't be used to determine the hash, since these are only used to set the CuraVersion.py
