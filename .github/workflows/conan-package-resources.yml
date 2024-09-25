@@ -25,7 +25,7 @@ jobs:
   conan-package:
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
     with:
-      project_name: cura_resources
+      package_name: cura_resources
       conan_recipe_root: "./resources/"
       platform_windows: false
       platform_mac: false
