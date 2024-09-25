@@ -642,3 +642,9 @@ pip_requirements_dev:
   - sip==6.5.1
   - jinja2
 
+python_translation_source_folders:
+  - cura
+  - plugins
+qml_translation_source_folders:
+  - resources/qml
+  - plugins
