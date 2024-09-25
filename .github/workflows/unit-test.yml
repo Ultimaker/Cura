@@ -37,26 +37,10 @@ on:
       - main
       - '[0-9]+.[0-9]+'
 
-permissions:
-  contents: read
-
-env:
-  CONAN_LOGIN_USERNAME: ${{ secrets.CONAN_USER }}
-  CONAN_PASSWORD: ${{ secrets.CONAN_PASS }}
-
 jobs:
-  conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
-    with:
-      project_name: cura
-
   testing:
-    uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@main
-    needs: [ conan-recipe-version ]
+    name: Run unit tests
+# FIXME: use main once merged
+    uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@CURA-11622_conan_v2
     with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      conan_extra_args: '-g VirtualPythonEnv -o cura:devtools=True -c tools.build:skip_test=False --options "*:enable_sentry=False"'
-      unit_test_cmd: 'pytest --junitxml=junit_cura.xml'
-      unit_test_dir: 'tests'
-      conan_generator_dir: './venv/bin'
-    secrets: inherit
+      test_use_pytest: true
