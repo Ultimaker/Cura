@@ -10,7 +10,7 @@ on:
         required: true
         type: string
       conan_args:
-        description: 'Conan args: eq.: --require-override'
+        description: 'Conan args, e.g. --requires'
         default: ''
         required: false
         type: string
@@ -84,15 +84,15 @@ jobs:
       operating_system: self-hosted-Windows-X64
     secrets: inherit
 
+# FIXME: Use main once merged
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-11622_conan_v2
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
       conan_args: ${{ github.event.inputs.conan_args }}
       enterprise: ${{ github.event.inputs.enterprise == 'true' }}
       staging: ${{ github.event.inputs.staging == 'true' }}
-      architecture: X64
       operating_system: self-hosted-Ubuntu22-X64
     secrets: inherit
 
