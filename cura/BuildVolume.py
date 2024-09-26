@@ -810,6 +810,7 @@ class BuildVolume(SceneNode):
         for extruder in global_container_stack.extruderList:
             used = extruder in used_extruders
             extruder.definitionChanges.setProperty("extruder_used", "value", used)
+        global_container_stack.definitionChanges.setProperty("extruders_used", "value", [extruder.position for extruder in used_extruders])
 
     def _nodeActiveExtruderChanged(self):
         self._updateDisallowedAreasAndRebuild()
