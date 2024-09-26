@@ -50,9 +50,10 @@ def quality_changes_container():
 def test_createMachineWithUnknownDefinition(application, container_registry):
     application.getContainerRegistry = MagicMock(return_value=container_registry)
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.ConfigurationErrorMessage.ConfigurationErrorMessage.getInstance") as mocked_config_error:
+        mocked_config_error = MagicMock()
+        with patch("UM.ConfigurationErrorMessage.ConfigurationErrorMessage.getInstance", MagicMock(return_value=mocked_config_error)):
             assert CuraStackBuilder.createMachine("Whatever", "NOPE") is None
-            assert mocked_config_error.addFaultyContainers.called_with("NOPE")
+            mocked_config_error.addFaultyContainers.assert_called_once_with("NOPE")
 
 
 def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container,
