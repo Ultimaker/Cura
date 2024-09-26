@@ -199,14 +199,11 @@ class CuraConan(ConanFile):
 
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
-                    if self.in_local_cache:
-                        src_path = str(Path(self.package_folder, data["src"]))
-                    else:
-                        src_path = str(Path(self.source_folder, data["src"]))
+                    src_path = str(Path(self.source_folder, data["src"]))
                 else:
-                    if data["package"] not in self.deps_cpp_info.deps:
+                    if data["package"] not in self.dependencies:
                         continue
-                    src_path = os.path.join(self.deps_cpp_info[data["package"]].rootpath, data["src"])
+                    src_path = os.path.join(self.dependencies[data["package"]].package_folder, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
             else:
@@ -217,7 +214,7 @@ class CuraConan(ConanFile):
         binaries = []
         for binary in pyinstaller_metadata["binaries"].values():
             if "package" in binary:  # get the paths from conan package
-                src_path = os.path.join(self.deps_cpp_info[binary["package"]].rootpath, binary["src"])
+                src_path = os.path.join(self.dependencies[binary["package"]].package_folder, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
                 src_path = str(Path(self.source_folder, binary["root"], binary["src"]))
                 if self.settings.os == "Windows":
