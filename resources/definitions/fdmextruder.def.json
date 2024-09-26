@@ -27,17 +27,6 @@
                     "settable_per_meshgroup": false,
                     "type": "extruder"
                 },
-                "extruder_used":
-                {
-                    "default_value": true,
-                    "description": "Is this extruder used for printing. This setting is controlled by Cura automatically.",
-                    "label": "Extruder Used",
-                    "settable_globally": false,
-                    "settable_per_extruder": true,
-                    "settable_per_mesh": false,
-                    "settable_per_meshgroup": false,
-                    "type": "bool"
-                },
                 "extruder_prime_pos_z":
                 {
                     "default_value": 0,
@@ -49,6 +38,17 @@
                     "settable_per_mesh": false,
                     "type": "float",
                     "unit": "mm"
+                },
+                "extruder_used":
+                {
+                    "default_value": true,
+                    "description": "Is this extruder used for printing. This setting is controlled by Cura automatically.",
+                    "label": "Extruder Used",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
                 },
                 "machine_extruder_cooling_fan_number":
                 {
