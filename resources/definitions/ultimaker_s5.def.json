@@ -48,10 +48,10 @@
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_abstract_color": true,
         "supports_material_export": true,
         "supports_network_connection": true,
         "supports_usb_connection": false,
-        "supports_abstract_color": true,
         "variants_name": "Print core",
         "weight": -2
     },
