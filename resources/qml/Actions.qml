@@ -564,6 +564,9 @@ Item
                 "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
                 "silent_save": true,
+                "writer_args": {
+                    "include_log": true
+                }
             };
             UM.OutputDeviceManager.requestWriteToDevice("local_file", exportName, args)
         }
