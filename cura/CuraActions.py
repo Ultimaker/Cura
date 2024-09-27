@@ -32,8 +32,6 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 
-from datetime import datetime
-
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
         super().__init__(parent)
@@ -282,8 +280,3 @@ class CuraActions(QObject):
 
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)
-
-    @pyqtSlot(result=str)
-    def supportProjectTag(self) -> str:
-        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-        return f"exported-project-for-support-{timestamp}"

@@ -554,15 +554,16 @@ Item
     Action
     {
         id: exportProjectForSupportAction
-        text: catalog.i18nc("@action:inmenu menubar:help","Export Project For Support")
+        text: catalog.i18nc("@action:inmenu menubar:help", "Export Project For Support")
         onTriggered:
         {
-            var exportName = CuraActions.supportProjectTag()
+            var exportName = Qt.formatDateTime(new Date(), "'export-'yyyyMMdd-HHmmss")
             var args = {
                 "filter_by_machine": false,
                 "file_type": "workspace",
                 "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                 "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                "silent_save": true,
             };
             UM.OutputDeviceManager.requestWriteToDevice("local_file", exportName, args)
         }
