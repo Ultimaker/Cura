@@ -310,7 +310,7 @@
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,
                     "type": "bool",
-                    "force_depends_on_settings": ["extruders_used"]
+                    "force_depends_on_settings": [ "extruders_used" ]
                 },
                 "machine_nozzle_tip_outer_diameter":
                 {
