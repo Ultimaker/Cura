@@ -144,7 +144,6 @@
         "bottom_thickness": { "value": "top_bottom_thickness" },
         "bridge_enable_more_layers": { "value": true },
         "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
-        "bridge_fan_speed_3": { "value": "cool_fan_speed_min" },
         "bridge_settings_enabled": { "value": true },
         "bridge_skin_density": { "value": 100 },
         "bridge_skin_density_2": { "value": 100 },
@@ -373,9 +372,6 @@
         "multiple_mesh_overlap": { "value": 0 },
         "optimize_wall_printing_order": { "value": true },
         "prime_blob_enable": { "enabled": false },
-        "prime_tower_base_height": { "value": 6 },
-        "prime_tower_base_size": { "value": 10 },
-        "prime_tower_enable": { "value": "extruders_enabled_count > 1" },
         "prime_tower_flow": { "value": "material_flow" },
         "prime_tower_line_width":
         {
@@ -522,7 +518,7 @@
             "minimum_value_warning": 1,
             "value": 2
         },
-        "roofing_monotonic": { "value": true },
+        "roofing_material_flow": { "value": "material_flow" },
         "skin_angles":
         {
             "value": [0, 90]
