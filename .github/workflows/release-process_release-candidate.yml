@@ -9,6 +9,11 @@ on:
         required: true
         type: string
 
+      publish_release_description:
+        description: 'Create the GitHub release (if existing, the description will be overridden based on the changelog)'
+        required: true
+        type: boolean
+
 jobs:
   parse-version:
     name: Parse input version string
@@ -153,10 +158,12 @@ jobs:
           ref: ${{ needs.parse-version.outputs.branch_name }}
 
       - name: Extract changelog
+        if: ${{ inputs.publish_release_description }}
         run: python ./scripts/extract_changelog.py --version ${{ needs.parse-version.outputs.version_major }}.${{ needs.parse-version.outputs.version_minor }}.${{ needs.parse-version.outputs.version_patch }} --changelog ./resources/texts/change_log.txt > formatted_changelog.txt
 
       - name: Create release
         uses: notpeelz/action-gh-create-release@v5.0.1
+        if: ${{ inputs.publish_release_description }}
         with:
           target: ${{ needs.create-tags.outputs.main_commit }}
           tag: ${{ inputs.cura_version }}
