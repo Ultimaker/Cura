@@ -14,7 +14,6 @@ Cura.Menu
     title: catalog.i18nc("@title:menu menubar:toplevel", "&Help")
 
     Cura.MenuItem { action: Cura.Actions.showProfileFolder }
-    Cura.MenuItem { action: Cura.Actions.showTroubleshooting}
     Cura.MenuItem { action: Cura.Actions.documentation }
     Cura.MenuItem { action: Cura.Actions.reportBug }
     Cura.MenuItem { action: Cura.Actions.openSponsershipPage }
