@@ -416,8 +416,7 @@
             "maximum_value_warning": 1.8,
             "value": 1.4
         },
-        "raft_base_speed": { "value": "raft_speed" },
-        "raft_base_thickness":
+         "raft_base_thickness":
         {
             "force_depends_on_settings": [
                 "raft_interface_extruder_nr",
