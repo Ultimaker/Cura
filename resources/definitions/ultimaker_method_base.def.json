@@ -144,7 +144,6 @@
         "bottom_thickness": { "value": "top_bottom_thickness" },
         "bridge_enable_more_layers": { "value": true },
         "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
-        "bridge_settings_enabled": { "value": true },
         "bridge_skin_density": { "value": 100 },
         "bridge_skin_density_2": { "value": 100 },
         "bridge_skin_density_3": { "value": 100 },
@@ -518,7 +517,6 @@
             "minimum_value_warning": 1,
             "value": 2
         },
-        "roofing_material_flow": { "value": "material_flow" },
         "skin_angles":
         {
             "value": [0, 90]
