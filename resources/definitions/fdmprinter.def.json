@@ -300,6 +300,18 @@
                     "settable_per_meshgroup": false,
                     "type": "[int]"
                 },
+                "extruder_used":
+                {
+                    "default_value": true,
+                    "description": "Is this extruder used? This setting is controlled by Cura automatically.",
+                    "label": "Extruder Used",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool",
+                    "force_depends_on_settings": ["extruders_used"]
+                },
                 "machine_nozzle_tip_outer_diameter":
                 {
                     "label": "Outer Nozzle Diameter",
@@ -2487,14 +2499,13 @@
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 0,
-                    "resolve": "min(extruderValues('build_volume_temperature'))",
+                    "resolve": "min(extruderValues('build_volume_temperature', where='extruder_used'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
                     "enabled": "machine_heated_build_volume",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "depends_on_settings": [ "extruders_used" ]
+                    "settable_per_extruder": false
                 },
                 "material_print_temperature":
                 {
@@ -2580,7 +2591,7 @@
                     "description": "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value",
                     "unit": "\u00b0C",
                     "type": "float",
-                    "resolve": "max(extruderValues('default_material_bed_temperature'))",
+                    "resolve": "max(extruderValues('default_material_bed_temperature', where='extruder_used'))",
                     "default_value": 60,
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
@@ -2599,7 +2610,7 @@
                     "type": "float",
                     "default_value": 60,
                     "value": "default_material_bed_temperature",
-                    "resolve": "max(extruderValues('material_bed_temperature'))",
+                    "resolve": "max(extruderValues('material_bed_temperature', where='extruder_used'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
@@ -2607,8 +2618,7 @@
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
-                    "settable_per_meshgroup": false,
-                    "depends_on_settings": [ "extruders_used" ]
+                    "settable_per_meshgroup": false
                 },
                 "material_bed_temperature_layer_0":
                 {

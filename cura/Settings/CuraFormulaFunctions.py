@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, List, Optional, TYPE_CHECKING
+from typing import Any, List, Optional, Union, TYPE_CHECKING
 
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from UM.Settings.SettingFunction import SettingFunction
@@ -61,14 +61,20 @@ class CuraFormulaFunctions:
 
         return value
 
-    def _getActiveExtruders(self, context: Optional["PropertyEvaluationContext"] = None) -> List[str]:
+    def _getActiveExtruders(self, context: Optional["PropertyEvaluationContext"] = None,
+                            where: Union[str, List[str]] = None, where_not: Union[str, List[str]] = None) -> List[str]:
         machine_manager = self._application.getMachineManager()
         extruder_manager = self._application.getExtruderManager()
 
         global_stack = machine_manager.activeMachine
 
+        if isinstance(where, str):
+            where = [where]
+        if isinstance(where_not, str):
+            where_not = [where_not]
+
         enabled_extruders = []
-        used_extruders = []
+        filtered_extruders = []
         for extruder in extruder_manager.getActiveExtruderStacks():
             if not extruder.isEnabled:
                 continue
@@ -76,18 +82,22 @@ class CuraFormulaFunctions:
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
                 continue
             enabled_extruders.append(extruder)
-            if extruder.getProperty("extruder_used", "value"):
-                used_extruders.append(extruder)
+            if where and not all(extruder.getProperty(key, "value", context=context) for key in where):
+                continue
+            if where_not and any(extruder.getProperty(key, "value", context=context) for key in where_not):
+                continue
+            filtered_extruders.append(extruder)
 
-        return used_extruders if used_extruders else enabled_extruders
+        return filtered_extruders if filtered_extruders else enabled_extruders
 
     # Gets all extruder values as a list for the given property.
     def getValuesInAllExtruders(self, property_key: str,
-                                context: Optional["PropertyEvaluationContext"] = None) -> List[Any]:
+                                context: Optional["PropertyEvaluationContext"] = None,
+                                *, where: str = None, where_not: str = None) -> List[Any]:
         global_stack = self._application.getMachineManager().activeMachine
 
         result = []
-        for extruder in self._getActiveExtruders(context):
+        for extruder in self._getActiveExtruders(context, where=where, where_not=where_not):
             value = extruder.getRawProperty(property_key, "value", context = context)
 
             if value is None:
