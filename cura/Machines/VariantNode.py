@@ -63,9 +63,8 @@ class VariantNode(ContainerNode):
         filtered_materials = [material for material in materials if not self.machine.isExcludedMaterialBaseFile(material["id"])]
 
         for material in filtered_materials:
-            if material.get("abstract_color", False):
-                if not self.machine.supports_abstract_color:
-                    continue  # do not show abstract color profiles if the machine does not support them
+            if material.get("abstract_color", False) and not self.machine.supports_abstract_color:
+                continue  # do not show abstract color profiles if the machine does not support them
             base_file = material["base_file"]
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
