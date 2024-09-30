@@ -197,7 +197,8 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
         self._resetLastSliceTimeStats()
-        self._snapshot: Optional[QImage] = None 
+        self._snapshot: Optional[QImage] = None
+        self._last_socket_error: Optional[Arcus.Error] = None
 
         application.initializationFinished.connect(self.initialize)
 
@@ -569,7 +570,19 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         # Preparation completed, send it to the backend.
-        self._socket.sendMessage(job.getSliceMessage())
+        if not self._socket.sendMessage(job.getSliceMessage()):
+            if self._last_socket_error is not None and self._last_socket_error.getErrorCode() == Arcus.ErrorCode.MessageTooBigError:
+                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances.")
+            else:
+                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
+
+            self._error_message = Message(error_txt,
+                                          title=catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type=Message.MessageType.WARNING)
+            self._error_message.show()
+            self.setState(BackendState.Error)
+            self.backendError.emit(job)
+            return
 
         # Notify the user that it's now up to the backend to do its job
         self.setState(BackendState.Processing)
@@ -691,6 +704,7 @@ class CuraEngineBackend(QObject, Backend):
         if error.getErrorCode() == Arcus.ErrorCode.Debug:
             return
 
+        self._last_socket_error = error
         self._terminate()
         self._createSocket()
 
