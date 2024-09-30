@@ -1,18 +1,16 @@
-version: "5.8.0-alpha.0"
+version: "5.9.0-alpha.0"
 requirements:
   - "cura_resources/(latest)@ultimaker/testing"
   - "uranium/(latest)@ultimaker/testing"
   - "curaengine/(latest)@ultimaker/testing"
   - "cura_binary_data/(latest)@ultimaker/testing"
   - "fdm_materials/(latest)@ultimaker/testing"
-  - "curaengine_plugin_gradual_flow/0.1.0-beta.3"
-  - "dulcificum/latest@ultimaker/testing"
+  - "dulcificum/0.2.1"
   - "pysavitar/5.3.0"
   - "pynest2d/5.3.0"
-  - "curaengine_grpc_definitions/0.2.0"
   - "native_cad_plugin/2.0.0"
 requirements_internal:
-  - "fdm_materials/(latest)@internal/testing"
+  - "fdm_materials/5.8.1"
   - "cura_private_data/(latest)@internal/testing"
 urls:
     default:
@@ -35,14 +33,6 @@ pyinstaller:
             package: "cura"
             src: "plugins"
             dst: "share/cura/plugins"
-        curaengine_gradual_flow_plugin:
-            package: "curaengine_plugin_gradual_flow"
-            src: "res/plugins/CuraEngineGradualFlow"
-            dst: "share/cura/plugins/CuraEngineGradualFlow"
-        curaengine_gradual_flow_plugin_bundled:
-            package: "curaengine_plugin_gradual_flow"
-            src: "res/bundled_packages"
-            dst: "share/cura/resources/bundled_packages"
         native_cad_plugin:
           package: "native_cad_plugin"
           src: "res/plugins/NativeCADplugin"
@@ -106,11 +96,6 @@ pyinstaller:
             src: "bin"
             dst: "."
             binary: "CuraEngine"
-        curaengine_gradual_flow_plugin_service:
-            package: "curaengine_plugin_gradual_flow"
-            src: "bin"
-            dst: "."
-            binary: "curaengine_plugin_gradual_flow"
     hiddenimports:
         - "pySavitar"
         - "pyArcus"

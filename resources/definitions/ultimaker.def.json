@@ -80,6 +80,7 @@
             "maximum_value_warning": "120",
             "minimum_value": "0"
         },
+        "material_print_temp_wait": { "value": false },
         "material_print_temperature": { "minimum_value": "0" },
         "material_standby_temperature":
         {
@@ -88,6 +89,9 @@
         },
         "meshfix_maximum_deviation": { "value": "machine_nozzle_size / 10" },
         "meshfix_maximum_resolution": { "value": "max(speed_wall_0 / 75, 0.5)" },
+        "prime_tower_base_curve_magnitude": { "value": 2 },
+        "prime_tower_base_height": { "value": 6 },
+        "prime_tower_base_size": { "value": 10 },
         "raft_base_speed": { "value": "raft_speed" },
         "raft_base_thickness": { "value": "min(machine_nozzle_size * 0.75, 0.3)" },
         "raft_interface_fan_speed": { "value": "(raft_base_fan_speed + raft_surface_fan_speed) / 2" },
@@ -107,7 +111,6 @@
         "roofing_layer_count": { "value": "1" },
         "roofing_material_flow": { "value": "material_flow" },
         "skin_angles": { "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]" },
-        "skin_edge_support_thickness": { "value": "4 * layer_height if infill_sparse_density < 30 else 0" },
         "skin_material_flow": { "value": "0.95 * material_flow" },
         "skin_material_flow_layer_0": { "value": "95" },
         "skin_monotonic": { "value": "roofing_layer_count == 0" },
@@ -134,7 +137,8 @@
         "wall_x_material_flow_layer_0": { "value": "0.95 * material_flow_layer_0" },
         "xy_offset": { "value": "-layer_height * 0.1" },
         "xy_offset_layer_0": { "value": "-wall_line_width_0 / 5 + xy_offset" },
-        "z_seam_corner": { "value": "'z_seam_corner_none'" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_relative": { "value": "True" },
         "zig_zaggify_support": { "value": true }
     }
 }

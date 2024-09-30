@@ -18,12 +18,6 @@
             "0": "ultimaker_methodxl_extruder_left",
             "1": "ultimaker_methodxl_extruder_right"
         },
-        "platform_offset": [
-            0,
-            0,
-            0
-        ],
-        "platform_texture": "MakerbotMethod.png",
         "preferred_quality_type": "draft",
         "reference_machine_id": "magma_10",
         "supports_network_connection": true,
@@ -33,6 +27,7 @@
     },
     "overrides":
     {
+        "build_volume_temperature": { "maximum_value": "100" },
         "machine_depth": { "default_value": 320 },
         "machine_disallowed_areas":
         {

@@ -24,6 +24,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Utils.Threading import call_on_qt_thread
+from cura.API import CuraAPI
 
 from UM.i18n import i18nCatalog
 
@@ -85,7 +86,8 @@ class UFPWriter(MeshWriter):
         try:
             archive.addContentType(extension="json", mime_type="application/json")
             setting_textio = StringIO()
-            json.dump(self._getSliceMetadata(), setting_textio, separators=(", ", ": "), indent=4)
+            api = CuraApplication.getInstance().getCuraAPI()
+            json.dump(api.interface.settings.getSliceMetadata(), setting_textio, separators=(", ", ": "), indent=4)
             steam = archive.getStream(SLICE_METADATA_PATH)
             steam.write(setting_textio.getvalue().encode("UTF-8"))
         except EnvironmentError as e:
@@ -210,57 +212,3 @@ class UFPWriter(MeshWriter):
         return [{"name": item.getName()}
                 for item in DepthFirstIterator(node)
                 if item.getMeshData() is not None and not item.callDecoration("isNonPrintingMesh")]
-
-    def _getSliceMetadata(self) -> Dict[str, Dict[str, Dict[str, str]]]:
-        """Get all changed settings and all settings. For each extruder and the global stack"""
-        print_information = CuraApplication.getInstance().getPrintInformation()
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        settings = {
-            "material": {
-                "length": print_information.materialLengths,
-                "weight": print_information.materialWeights,
-                "cost": print_information.materialCosts,
-            },
-            "global": {
-                "changes": {},
-                "all_settings": {},
-            },
-            "quality": asdict(machine_manager.activeQualityDisplayNameMap()),
-        }
-
-        def _retrieveValue(container: InstanceContainer, setting_: str):
-            value_ = container.getProperty(setting_, "value")
-            for _ in range(0, 1024):  # Prevent possibly endless loop by not using a limit.
-                if not isinstance(value_, SettingFunction):
-                    return value_  # Success!
-                value_ = value_(container)
-            return 0  # Fallback value after breaking possibly endless loop.
-
-        global_stack = cast(GlobalStack, Application.getInstance().getGlobalContainerStack())
-
-        # Add global user or quality changes
-        global_flattened_changes = InstanceContainer.createMergedInstanceContainer(global_stack.userChanges, global_stack.qualityChanges)
-        for setting in global_flattened_changes.getAllKeys():
-            settings["global"]["changes"][setting] = _retrieveValue(global_flattened_changes, setting)
-
-        # Get global all settings values without user or quality changes
-        for setting in global_stack.getAllKeys():
-            settings["global"]["all_settings"][setting] = _retrieveValue(global_stack, setting)
-
-        for i, extruder in enumerate(global_stack.extruderList):
-            # Add extruder fields to settings dictionary
-            settings[f"extruder_{i}"] = {
-                "changes": {},
-                "all_settings": {},
-            }
-
-            # Add extruder user or quality changes
-            extruder_flattened_changes = InstanceContainer.createMergedInstanceContainer(extruder.userChanges, extruder.qualityChanges)
-            for setting in extruder_flattened_changes.getAllKeys():
-                settings[f"extruder_{i}"]["changes"][setting] = _retrieveValue(extruder_flattened_changes, setting)
-
-            # Get extruder all settings values without user or quality changes
-            for setting in extruder.getAllKeys():
-                settings[f"extruder_{i}"]["all_settings"][setting] = _retrieveValue(extruder, setting)
-
-        return settings

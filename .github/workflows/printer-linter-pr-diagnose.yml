@@ -5,6 +5,9 @@ on:
     path:
       - "resources/**"
 
+permissions:
+  contents: read
+
 jobs:
   printer-linter-diagnose:
     name: Printer linter PR diagnose
@@ -12,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
 
@@ -50,9 +53,9 @@ jobs:
         run: |
           echo ${{ github.event.number }} > printer-linter-result/pr-id.txt
           echo ${{ github.event.pull_request.head.repo.full_name }} > printer-linter-result/pr-head-repo.txt
-          echo ${{ github.event.pull_request.head.ref }} > printer-linter-result/pr-head-ref.txt
+          echo ${{ github.event.pull_request.head.sha }} > printer-linter-result/pr-head-sha.txt
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: printer-linter-result
           path: printer-linter-result/

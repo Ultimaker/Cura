@@ -96,7 +96,8 @@ class ThreeMFWriter(MeshWriter):
     @staticmethod
     def _convertUMNodeToSavitarNode(um_node,
                                     transformation = Matrix(),
-                                    exported_settings: Optional[Dict[str, Set[str]]] = None):
+                                    exported_settings: Optional[Dict[str, Set[str]]] = None,
+                                    center_mesh = False):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -111,20 +112,26 @@ class ThreeMFWriter(MeshWriter):
         savitar_node = Savitar.SceneNode()
         savitar_node.setName(um_node.getName())
 
-        node_matrix = Matrix()
         mesh_data = um_node.getMeshData()
-        # compensate for original center position, if object(s) is/are not around its zero position
-        if mesh_data is not None:
-            extents = mesh_data.getExtents()
-            if extents is not None:
-                # We use a different coordinate space while writing, so flip Z and Y
-                center_vector = Vector(extents.center.x, extents.center.z, extents.center.y)
-                node_matrix.setByTranslation(center_vector)
-        node_matrix.multiply(um_node.getLocalTransformation())
 
-        matrix_string = ThreeMFWriter._convertMatrixToString(node_matrix.preMultiply(transformation))
+        node_matrix = um_node.getLocalTransformation()
+        node_matrix.preMultiply(transformation)
+        
+        if center_mesh:
+            center_matrix = Matrix()
+            # compensate for original center position, if object(s) is/are not around its zero position
+            if mesh_data is not None:
+                extents = mesh_data.getExtents()
+                if extents is not None:
+                    # We use a different coordinate space while writing, so flip Z and Y
+                    center_vector = Vector(-extents.center.x, -extents.center.y, -extents.center.z)
+                    center_matrix.setByTranslation(center_vector)
+            node_matrix.preMultiply(center_matrix)
+
+        matrix_string = ThreeMFWriter._convertMatrixToString(node_matrix)
 
         savitar_node.setTransformation(matrix_string)
+
         if mesh_data is not None:
             savitar_node.getMeshData().setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
             indices_array = mesh_data.getIndicesAsByteArray()
@@ -147,7 +154,7 @@ class ThreeMFWriter(MeshWriter):
                 for key in changed_setting_keys:
                     savitar_node.setSetting("cura:" + key, str(stack.getProperty(key, "value")))
             else:
-                 # We want to export only the specified settings
+                # We want to export only the specified settings
                 if um_node.getName() in exported_settings:
                     model_exported_settings = exported_settings[um_node.getName()]
 
@@ -283,7 +290,8 @@ class ThreeMFWriter(MeshWriter):
                     for root_child in node.getChildren():
                         savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child,
                                                                                  transformation_matrix,
-                                                                                 exported_model_settings)
+                                                                                 exported_model_settings,
+                                                                                 center_mesh = True)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
@@ -442,7 +450,7 @@ class ThreeMFWriter(MeshWriter):
     def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
         savitar_scene = Savitar.Scene()
         for scene_node in scene_nodes:
-            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node)
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True)
             savitar_scene.addSceneNode(savitar_node)
         parser = Savitar.ThreeMFParser()
         scene_string = parser.sceneToString(savitar_scene)
