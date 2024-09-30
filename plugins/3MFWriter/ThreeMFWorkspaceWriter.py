@@ -9,6 +9,7 @@ from threading import Lock
 import zipfile
 from typing import Dict, Any
 from pathlib import Path
+from zipfile import ZipFile
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -199,7 +200,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             return
 
     @staticmethod
-    def _writeLogFile(archive):
+    def _writeLogFile(archive: ZipFile) -> None:
         """Helper function that writes the Cura log file to the archive.
 
         :param archive: The archive to write to.
