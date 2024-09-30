@@ -73,7 +73,7 @@ jobs:
       latest_release_tag: 'nightly'
 
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-12129-windows-sign-all-executables
     needs: [ default_values ]
     with:
       cura_conan_version: ${{ needs.default_values.outputs.cura_conan_version }}
