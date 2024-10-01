@@ -181,7 +181,6 @@
         "wall_x_material_flow_layer_0": { "value": "1 * material_flow" },
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": 0 },
-        "z_seam_corner": { "value": "'z_seam_corner_any'" },
-        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
+        "z_seam_corner": { "value": "'z_seam_corner'" }, "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }
