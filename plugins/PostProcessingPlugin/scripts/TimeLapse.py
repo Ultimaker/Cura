@@ -53,7 +53,7 @@ class TimeLapse(Script):
                     "type": "int",
                     "default_value": 0,
                     "minimum_value": 0,
-                    "unit": "ms  "
+                    "unit": "ms"
                 },
                 "pause_length":
                 {
@@ -62,7 +62,7 @@ class TimeLapse(Script):
                     "type": "int",
                     "default_value": 500,
                     "minimum_value": 0,
-                    "unit": "ms  "
+                    "unit": "ms"
                 },
                 "park_print_head":
                 {
@@ -84,7 +84,7 @@ class TimeLapse(Script):
                 {
                     "label": "Park Print Head Y",
                     "description": "What Y location does the head move to for photo.",
-                    "unit": "mm  ",
+                    "unit": "mm",
                     "type": "float",
                     "default_value": 0,
                     "enabled": "park_print_head"
@@ -100,7 +100,7 @@ class TimeLapse(Script):
                 {
                     "label": "Z-Hop Height When Parking",
                     "description": "The height to lift the nozzle off the print before parking.",
-                    "unit": "mm  ",
+                    "unit": "mm",
                     "type": "float",
                     "default_value": 2.0,
                     "minimum_value": 0.0
