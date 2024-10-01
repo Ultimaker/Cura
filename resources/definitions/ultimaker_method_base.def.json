@@ -414,8 +414,7 @@
             "value": 1.4
         },
          "raft_base_thickness":
-        {
-            "force_depends_on_settings": [
+         "raft_base_thickness":
                 "raft_interface_extruder_nr",
                 "support_extruder_nr"
             ],
