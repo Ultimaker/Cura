@@ -520,8 +520,7 @@
         "skin_angles":
          "roofing_monotonic": { "value": true },
         },
-        "skin_material_flow": { "value": "material_flow" },
-        "skin_material_flow_layer_0": { "value": "material_flow" },
+         "roofing_monotonic": { "value": true },
         "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 0 },
