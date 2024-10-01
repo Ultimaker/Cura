@@ -216,6 +216,6 @@ DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
 SectionEnd
 
 !ifdef SIGN_SECRET
-!uninstfinalize 'signtool sign /v /fd sha256 /tr http://timestamp.sectigo.com /td sha256 /f C:\actions-runner\code_sign.cer /csp "eToken Base Cryptographic Provider" /kc ${SIGN_SECRET} "%1"' = 0
+!uninstfinalize 'signtool sign /v /fd sha256 /tr http://timestamp.sectigo.com /td sha256 /f C:\actions-runner\code_sign.cer /csp "eToken Base Cryptographic Provider" /kc ${SIGN_SECRET} "${INSTDIR}\uninstall.exe"' = 0
 ; %1 is replaced by the uninstaller exe to be signed.
 !endif
