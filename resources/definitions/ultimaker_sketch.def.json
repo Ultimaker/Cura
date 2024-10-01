@@ -150,8 +150,7 @@
             "maximum_value_warning": 5.75,
             "value": 5.5
         },
-        "retraction_combing": { "value": "'no_outer_surfaces'" },
-        "retraction_min_travel": { "value": "2 * line_width" },
+         "retraction_min_travel": { "value": "2 * line_width" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "25" },
         "roofing_material_flow": { "value": 100 },
