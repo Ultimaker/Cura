@@ -9,6 +9,7 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_xl_platform.stl",
+        "platform_offset": [ 0, 0, 0 ],
         "exclude_materials": [
             "dsm_",
             "Essentium_",
