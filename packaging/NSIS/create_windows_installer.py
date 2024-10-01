@@ -14,7 +14,7 @@ from pathlib import Path
 from jinja2 import Template
 
 
-def generate_nsi(source_path: str, dist_path: str, filename: str):
+def generate_nsi(source_path: str, dist_path: str, filename: str, sign_secret: str):
     dist_loc = Path(os.getcwd(), dist_path)
     source_loc = Path(os.getcwd(), source_path)
     instdir = Path("$INSTDIR")
@@ -57,7 +57,8 @@ def generate_nsi(source_path: str, dist_path: str, filename: str):
         cura_icon = str(source_loc.joinpath("packaging", "icons", "Cura.ico")),
         mapped_out_paths = mapped_out_paths,
         rmdir_paths = rmdir_paths,
-        destination = filename
+        destination = filename,
+        sign_secret = sign_secret,
     )
 
     with open(dist_loc.joinpath("UltiMaker-Cura.nsi"), "w") as f:
@@ -77,6 +78,7 @@ if __name__ == "__main__":
     parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
     parser.add_argument("filename", type = str, help = "Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
+    parser.add_argument("sign_secret", type = str, help = "Supply secret for signing (the uninstaller, as the rest is already signed before).")
     args = parser.parse_args()
-    generate_nsi(args.source_path, args.dist_path, args.filename)
+    generate_nsi(args.source_path, args.dist_path, args.filename, args.sign_secret)
     build(args.dist_path)

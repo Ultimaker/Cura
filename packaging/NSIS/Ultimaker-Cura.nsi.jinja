@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura's build system is released under the terms of the AGPLv3 or higher.
 
 !define APP_NAME "{{ app_name }}"
@@ -15,6 +15,7 @@
 !define REG_ROOT "HKLM"
 !define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}-${VERSION}"
 !define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}-${VERSION}"
+!define SIGN_SECRET "{{ sign_secret }}"
 
 !define REG_START_MENU "Start Menu Folder"
 
@@ -214,3 +215,7 @@ DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
 DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
 SectionEnd
 
+!ifdef SIGN_SECRET
+!uninstfinalize 'signtool sign /v /fd sha256 /tr http://timestamp.sectigo.com /td sha256 /f C:\actions-runner\code_sign.cer /csp "eToken Base Cryptographic Provider" /kc ${SIGN_SECRET} "%1"' = 0
+; %1 is replaced by the uninstaller exe to be signed.
+!endif
