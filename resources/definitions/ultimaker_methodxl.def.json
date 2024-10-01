@@ -9,7 +9,6 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-makerbot",
         "platform": "ultimaker_method_xl_platform.stl",
-        "platform_offset": [ 0, 0, 0 ],
         "exclude_materials": [
             "dsm_",
             "Essentium_",
@@ -55,6 +54,11 @@
             "0": "ultimaker_methodxl_extruder_left",
             "1": "ultimaker_methodxl_extruder_right"
         },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
         "preferred_quality_type": "draft",
         "reference_machine_id": "magma_10",
         "supports_network_connection": true,
