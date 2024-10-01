@@ -1429,6 +1429,23 @@
             }
         }
     },
+    "BASFUltrafuse316L": {
+        "package_info": {
+            "package_id": "BASFUltrafuse316L",
+            "package_type": "material",
+            "display_name": "BASF Ultrafuse 316L",
+            "description": "An innovative filament to produce 316L grade stainless steel parts.",
+            "package_version": "1.0.1",
+            "sdk_version": "8.6.0",
+            "website": "https://forward-am.com/material-portfolio/ultrafuse-filaments-for-fused-filaments-fabrication-fff/metal-filaments/ultrafuse-316l/",
+            "author": {
+                "author_id": "BASF",
+                "display_name": "BASF",
+                "email": null,
+                "website": "https://forward-am.com/"
+            }
+        }
+    },
     "DagomaChromatikPLA": {
         "package_info": {
             "package_id": "DagomaChromatikPLA",
@@ -1582,6 +1599,23 @@
             }
         }
     },
+    "JabilTPE_SEBS1300_95a": {
+        "package_info": {
+            "package_id": "JabilTPE_SEBS1300_95a",
+            "package_type": "material",
+            "display_name": "Jabil TPE SEBS 1300 95a",
+            "description": "Soft material great for prototyping where rubber-like or elastomeric properties and durability are required.",
+            "package_version": "1.0.1",
+            "sdk_version": "8.6.0",
+            "website": "https://www.jabil.com/services/additive-manufacturing/additive-materials/compare-filaments/tpe-sebs-95a.html",
+            "author": {
+                "author_id": "Jabil",
+                "display_name": "Jabil",
+                "email": null,
+                "website": "https://www.jabil.com/"
+            }
+        }
+    },
     "OctofiberPLA": {
         "package_info": {
             "package_id": "OctofiberPLA",
@@ -1608,6 +1642,23 @@
             "package_version": "1.0.1",
             "sdk_version": "8.6.0",
             "website": "http://www.polymaker.com/shop/polyflex/",
+            "author": {
+                "author_id": "Polymaker",
+                "display_name": "Polymaker L.L.C.",
+                "email": "inquiry@polymaker.com",
+                "website": "https://www.polymaker.com"
+            }
+        }
+    },
+    "PolyMaxPC": {
+        "package_info": {
+            "package_id": "PolyMaxPC",
+            "package_type": "material",
+            "display_name": "PolyMax™ PC",
+            "description": "PolyMax™ PC is an engineered PC filament combining excellent strength, toughness, heat resistance and printing quality. It is the ideal choice for a wide range of engineering applications.",
+            "package_version": "1.0.1",
+            "sdk_version": "8.6.0",
+            "website": "http://www.polymaker.com/shop/polymax/",
             "author": {
                 "author_id": "Polymaker",
                 "display_name": "Polymaker L.L.C.",
