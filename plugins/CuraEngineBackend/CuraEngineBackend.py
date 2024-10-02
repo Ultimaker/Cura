@@ -570,7 +570,8 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         # Preparation completed, send it to the backend.
-        if not self._socket.sendMessage(job.getSliceMessage()):
+        immediate_success = self._socket.sendMessage(job.getSliceMessage())
+        if (not CuraApplication.getInstance().getUseExternalBackend()) and (not immediate_success):
             if self._last_socket_error is not None and self._last_socket_error.getErrorCode() == Arcus.ErrorCode.MessageTooBigError:
                 error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances.")
             else:
