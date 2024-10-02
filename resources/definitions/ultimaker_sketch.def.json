@@ -55,6 +55,9 @@
             "basf_",
             "jabil_",
             "polymaker_",
+            "ultimaker_rapidrinse",
+            "ultimaker_sr30",
+            "ultimaker_petg",
             "ultimaker_pva",
             "ultimaker_metallic_pla"
         ],
