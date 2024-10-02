@@ -23,7 +23,7 @@ class InsertAtLayerChange(Script):
             "version": 2,
             "settings":
             {
-                "enable_insatlaychange":
+                "enabled":
                 {
                     "label": "Enable this script",
                     "description": "You must enable the script for it to run.",
@@ -47,33 +47,33 @@ class InsertAtLayerChange(Script):
                         "every_50th": "Every 50th",
                         "every_100th": "Every 100th"},
                     "default_value": "every_layer",
-                    "enabled": "enable_insatlaychange"
+                    "enabled": "enabled"
                 },
                 "start_layer":
                 {
                     "label": "Starting Layer",
-                    "description": "Layer to start the insertion at.  If the Print_Sequence is 'All at Once' then use the layer numbers from the Cura Preview.  Enter '1' to start at gcode LAYER:0. In 'One at a Time' mode use the layer numbers from the first model that prints AND all models will receive the same insertions.  NOTE: There is never an insertion for raft layers.",
+                    "description": "The layer before which the first insertion will take place.  If the Print_Sequence is 'All at Once' then use the layer numbers from the Cura Preview.  Enter '1' to start at gcode LAYER:0. In 'One at a Time' mode use the layer numbers from the first model that prints AND all models will receive the same insertions.  NOTE: There is never an insertion for raft layers.",
                     "type": "int",
                     "default_value": 1,
                     "minimum_value": 1,
-                    "enabled": "insert_frequency != 'once_only' and enable_insatlaychange"
+                    "enabled": "insert_frequency != 'once_only' and enabled"
                 },
                 "end_layer":
                 {
                     "label": "Ending Layer",
-                    "description": "Layer to end the insertion at. Enter '-1' to indicate the entire file.  Use layer numbers from the Cura Preview.",
+                    "description": "The layer before which the last insertion will take place.  Enter '-1' to indicate the entire file.  Use layer numbers from the Cura Preview.",
                     "type": "int",
                     "default_value": -1,
                     "minimum_value": -1,
-                    "enabled": "insert_frequency != 'once_only' and enable_insatlaychange"
+                    "enabled": "insert_frequency != 'once_only' and enabled"
                 },
                 "single_end_layer":
                 {
                     "label": "Layer # for Single Insertion.",
-                    "description": "Layer for a single insertion of the Gcode.  Use the layer numbers from the Cura Preview.  The insertion will be at the start of this layer.",
+                    "description": "The layer before which the Gcode insertion will take place.  Use the layer numbers from the Cura Preview.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "insert_frequency == 'once_only' and enable_insatlaychange"
+                    "enabled": "insert_frequency == 'once_only' and enabled"
                 },
                 "gcode_to_add":
                 {
@@ -81,14 +81,14 @@ class InsertAtLayerChange(Script):
                     "description": "G-code to add at start of the layer. Use a comma to delimit multi-line commands. EX: G28 X Y,M220 S100,M117 HELL0.  NOTE:  All inserted text will be converted to upper-case as some firmwares don't understand lower-case.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "enable_insatlaychange"
+                    "enabled": "enabled"
                 }
             }
         }"""
 
     def execute(self, data):
         # Exit if the script is not enabled
-        if not bool(self.getSettingValueByKey("enable_insatlaychange")):
+        if not bool(self.getSettingValueByKey("enabled")):
             return data
         #Initialize variables
         mycode = self.getSettingValueByKey("gcode_to_add").upper()
@@ -167,8 +167,7 @@ class InsertAtLayerChange(Script):
             case "once_only":
                 the_insert_layer = int(self.getSettingValueByKey("single_end_layer"))-1
             case _:
-                the_insert_layer = int(self.getSettingValueByKey("single_end_layer"))-1
-                raise Exception("Error.  Insert changed to Once Only.")
+                raise ValueError(f"Unexpected insertion frequency {when_to_insert}")
         #Single insertion
         if when_to_insert == "once_only":
             # For print sequence 'All at once'
