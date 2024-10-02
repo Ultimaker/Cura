@@ -128,6 +128,8 @@ class VariantNode(ContainerNode):
             return  # We won't add any materials.
         material_definition = container.getMetaDataEntry("definition")
 
+        if (not self.machine.supports_abstract_color) and container.getMetaDataEntry("abstract_color", False):
+            return
         base_file = container.getMetaDataEntry("base_file")
         if self.machine.isExcludedMaterialBaseFile(base_file):
             return  # Material is forbidden for this printer.
