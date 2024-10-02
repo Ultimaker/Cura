@@ -122,14 +122,12 @@
         "material_flow": { "default_value": 100 },
         "min_bead_width":
         {
-            "default_value": 0.4,
             "minimum_value": "line_width * 0.5",
             "minimum_value_warning": "line_width * 0.75",
             "value": "line_width"
         },
         "min_wall_line_width":
         {
-            "default_value": 0.4,
             "minimum_value": "line_width * 0.5",
             "minimum_value_warning": "line_width * 0.75",
             "value": "line_width"
@@ -150,6 +148,7 @@
             "maximum_value_warning": 5.75,
             "value": 5.5
         },
+        "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_min_travel": { "value": "2 * line_width" },
         "retraction_prime_speed": { "value": "15" },
         "retraction_speed": { "value": "25" },
@@ -181,7 +180,7 @@
         "wall_x_material_flow_layer_0": { "value": "1 * material_flow" },
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": 0 },
-        "z_seam_corner": { "value": "'z_seam_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_any'" },
         "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
     }
 }
