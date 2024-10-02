@@ -46,6 +46,7 @@ class FormatMaps:
          "hips": {"name": "HIPS", "guid": "a468d86a-220c-47eb-99a5-bbb47e514eb0"},
          "tpu": {"name": "TPU 95A", "guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"},
          "im-pla": {"name": "Tough", "guid": "96fca5d9-0371-4516-9e96-8e8182677f3c"}
+         # /!\ When changing this list, make sure the changes are reported accordingly on Digital Factory
     }
 
     __inverse_printer_name: Optional[Dict[str, str]] = None
