@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Logger import Logger
+from UM.Decorators import CachedMemberFunctions
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -70,6 +71,8 @@ class XmlMaterialProfile(InstanceContainer):
         if registry.isReadOnly(self.getId()):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
+
+        CachedMemberFunctions.clearInstanceCache(self)
 
         # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
         # "properties" field and apply the new values to SettingInstances as well.
@@ -480,6 +483,7 @@ class XmlMaterialProfile(InstanceContainer):
                     first.append(element)
 
     def clearData(self):
+        CachedMemberFunctions.clearInstanceCache(self)
         self._metadata = {
             "id": self.getId(),
             "name": ""
@@ -518,6 +522,8 @@ class XmlMaterialProfile(InstanceContainer):
 
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""
+
+        CachedMemberFunctions.clearInstanceCache(self)
 
         containers_to_add = []
         # update the serialized data first
@@ -1084,9 +1090,8 @@ class XmlMaterialProfile(InstanceContainer):
             # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
-        truth_map = { True: "yes", False: "no" }
-        if tag_name != "cura:setting" and instance.value in truth_map:
-            data = truth_map[instance.value]
+        if tag_name != "cura:setting" and isinstance(instance.value, bool):
+            data = "yes" if instance.value else "no"
         else:
             data = str(instance.value)
 

@@ -376,7 +376,7 @@ Item
         anchors
         {
             top: upperBlock.bottom
-            bottom: parent.bottom
+            bottom: buttonLearnMore.top
             left: parent.left
             right: parent.right
             margins: UM.Theme.getSize("default_margin").width
@@ -403,5 +403,19 @@ Item
             settingKey: "machine_end_gcode"
             settingStoreIndex: propertyStoreIndex
         }
+
+    }
+
+    Cura.TertiaryButton
+    {
+        id: buttonLearnMore
+
+        text: catalog.i18nc("@button", "Learn more")
+        iconSource: UM.Theme.getIcon("LinkExternal")
+        isIconOnRightSide: true
+        onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
     }
 }

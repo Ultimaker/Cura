@@ -1,0 +1,40 @@
+{
+    "version": 2,
+    "name": "MakerBot Sketch Large",
+    "inherits": "ultimaker_sketch",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Ultimaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-makerbot-sketch",
+        "platform": "ultimaker_sketch_large_platform.obj",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "ultimaker_sketch_large_extruder" },
+        "preferred_material": "ultimaker_pla_175",
+        "preferred_quality_type": "draft",
+        "preferred_variant_name": "0.4mm",
+        "reference_machine_id": "sketch_large",
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Extruder",
+        "weight": -1
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "MakerBot Sketch Large" },
+        "machine_width": { "default_value": 220 },
+        "retraction_amount":
+        {
+            "maximum_value": 6.5,
+            "maximum_value_warning": 6.25,
+            "value": 6
+        },
+        "retraction_prime_speed": { "value": "retraction_speed * 0.8" },
+        "speed_travel": { "value": 150 }
+    }
+}
