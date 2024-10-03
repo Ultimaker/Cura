@@ -106,10 +106,12 @@
             "value": "speed_print if magic_spiralize else max(speed_print, round((machine_max_feedrate_x + machine_max_feedrate_y) / 2, -2))"
         },
         "speed_z_hop": { "value": "machine_max_feedrate_z" },
+        "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "default_value": false },
         "wall_line_width": { "value": "machine_nozzle_size" },
         "wall_overhang_angle": { "default_value": 75 },
         "wall_overhang_speed_factor": { "default_value": 50 },
+        "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
         "zig_zaggify_infill": { "value": true }
     }
 }
