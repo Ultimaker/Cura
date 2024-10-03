@@ -171,9 +171,7 @@
             "maximum_value": 280,
             "maximum_value_warning": 240
         },
-        "min_bead_width": { "default_value": 0.3 },
-        "min_thin_wall_line_width": { "default_value": 0.3 },
-        "min_wall_line_width": { "default_value": 0.34 },
+        "min_bead_width": { "value": 0.3 },
         "multiple_mesh_overlap": { "value": "0" },
         "raft_airgap": { "value": 0.35 },
         "raft_base_acceleration": { "value": "acceleration_layer_0" },
