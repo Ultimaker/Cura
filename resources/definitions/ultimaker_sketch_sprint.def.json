@@ -136,11 +136,7 @@
             "enabled": false,
             "value": false
         },
-        "jerk_travel_enabled":
-        {
-            "enabled": false,
-            "value": false
-        },
+        "jerk_travel_enabled": { "enabled": false },
         "layer_height_0": { "value": "layer_height if adhesion_type == 'raft' else layer_height * 1.25" },
         "line_width": { "value": 0.42 },
         "machine_center_is_zero": { "default_value": true },
@@ -368,7 +364,6 @@
         "support_top_distance": { "value": "support_z_distance" },
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": 0.3 },
-        "support_xy_distance_overhang": { "value": 0.2 },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         "support_z_distance": { "value": "layer_height if support_structure == 'tree' else 0.25" },
         "top_bottom_thickness": { "value": "5 * layer_height" },
