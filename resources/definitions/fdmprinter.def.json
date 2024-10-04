@@ -16,7 +16,8 @@
         "preferred_quality_type": "normal",
         "machine_extruder_trains": { "0": "fdmextruder" },
         "supports_usb_connection": true,
-        "supports_network_connection": false
+        "supports_network_connection": false,
+        "supports_abstract_color": false
     },
     "settings":
     {
