@@ -1984,11 +1984,201 @@
             }
         }
     },
+    "ULTIMAKERABSMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERABSMETHOD",
+            "package_type": "material",
+            "display_name": "ABS",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-abs/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERNYLONMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERNYLONMETHOD",
+            "package_type": "material",
+            "display_name": "Nylon",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-nylon/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERNYLONCFMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERNYLONCFMETHOD",
+            "package_type": "material",
+            "display_name": "Nylon Carbon Fiber",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-nylon-carbon-fiber/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERPLAMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERPLAMETHOD",
+            "package_type": "material",
+            "display_name": "PLA",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-pla/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERPVAMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERPVAMETHOD",
+            "package_type": "material",
+            "display_name": "PVA",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-pva/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERPETGMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERPETGMETHOD",
+            "package_type": "material",
+            "display_name": "PETG",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-petg/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "ULTIMAKERTOUGHMETHOD": {
+        "package_info": {
+            "package_id": "ULTIMAKERTOUGHMETHOD",
+            "package_type": "material",
+            "display_name": "Tough PLA",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-series-tough/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "BASFMETALMETHOD": {
+        "package_info": {
+            "package_id": "BASFMETALMETHOD",
+            "package_type": "material",
+            "display_name": "BASF Ultrafuse 316L",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-materials/#metal",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "JABILSEBSMETHOD": {
+        "package_info": {
+            "package_id": "JABILSEBSMETHOD",
+            "package_type": "material",
+            "display_name": "Jabil TPE SEBS 95A",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-materials/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
+    "POLYMAKERPCMETHOD": {
+        "package_info": {
+            "package_id": "POLYMAKERPCMETHOD",
+            "package_type": "material",
+            "display_name": "Polymaker PolyMax PC",
+            "description": "Example package for material and quality profiles for Ultimaker materials.",
+            "package_version": "2.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://ultimaker.com/materials/method-materials/",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "UltiMaker",
+                "email": "materials@ultimaker.com",
+                "website": "https://ultimaker.com",
+                "description": "Professional 3D printing made accessible.",
+                "support_website": "https://ultimaker.com/materials/method-materials/"
+            }
+        }
+    },
     "ULTIMAKERBASCFMETHOD": {
         "package_info": {
             "package_id": "ULTIMAKERBASCFMETHOD",
             "package_type": "material",
-            "display_name": "Ultimaker ABS-CF",
+            "display_name": "ABS-CF",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
@@ -2007,7 +2197,7 @@
         "package_info": {
             "package_id": "ULTIMAKERABSRMETHOD",
             "package_type": "material",
-            "display_name": "Ultimaker ABS-R",
+            "display_name": "ABS-R",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
@@ -2026,7 +2216,7 @@
         "package_info": {
             "package_id": "ULTIMAKERASAMETHOD",
             "package_type": "material",
-            "display_name": "Ultimaker ASA",
+            "display_name": "ASA",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
@@ -2045,7 +2235,7 @@
         "package_info": {
             "package_id": "ULTIMAKERNYLON12CFMETHOD",
             "package_type": "material",
-            "display_name": "Ultimaker Nylon12 Carbon Fiber",
+            "display_name": "Nylon12 Carbon Fiber",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
@@ -2064,7 +2254,7 @@
         "package_info": {
             "package_id": "ULTIMAKERRAPIDRINSEMETHOD",
             "package_type": "material",
-            "display_name": "Ultimaker RapidRinse",
+            "display_name": "RapidRinse",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
@@ -2083,7 +2273,7 @@
         "package_info": {
             "package_id": "ULTIMAKERSR30METHOD",
             "package_type": "material",
-            "display_name": "Ultimaker SR-30",
+            "display_name": "SR-30",
             "description": "Example package for material and quality profiles for Ultimaker materials.",
             "package_version": "2.0.0",
             "sdk_version": "8.6.0",
