@@ -39,6 +39,7 @@
         "preferred_quality_type": "draft",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_abstract_color": true,
         "supports_material_export": true,
         "supports_network_connection": true,
         "supports_usb_connection": false,
@@ -112,10 +113,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-                [-30, -80],
-                [-30, 20],
-                [50, 20],
-                [50, -80]
+                [-35, -80],
+                [-35, 30],
+                [55, 30],
+                [55, -80]
             ]
         },
         "machine_heated_bed": { "default_value": true },
