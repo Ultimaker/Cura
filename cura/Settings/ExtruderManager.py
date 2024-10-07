@@ -282,8 +282,8 @@ class ExtruderManager(QObject):
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type == "skirt" and (global_stack.getProperty("skirt_line_count", "value") > 0 or global_stack.getProperty("skirt_brim_minimal_length", "value") > 0):
             used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a skirt.
-        if (adhesion_type == "brim" or global_stack.getProperty("prime_tower_brim_enable", "value")) and (global_stack.getProperty("brim_line_count", "value") > 0 or global_stack.getProperty("skirt_brim_minimal_length", "value") > 0):
-            used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a brim or prime tower brim.
+        if adhesion_type == "brim" and (global_stack.getProperty("brim_line_count", "value") > 0 or global_stack.getProperty("skirt_brim_minimal_length", "value") > 0):
+            used_adhesion_extruders.add("skirt_brim_extruder_nr")  # There's a brim.
         if adhesion_type == "raft":
             used_adhesion_extruders.add("raft_base_extruder_nr")
             if global_stack.getProperty("raft_interface_layers", "value") > 0:

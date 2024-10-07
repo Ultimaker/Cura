@@ -166,6 +166,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
+            self._updateUsedExtruders()
             self.rebuild()
 
             self._scene_objects = new_scene_objects
@@ -202,7 +203,7 @@ class BuildVolume(SceneNode):
             per_mesh_stack.propertyChanged.connect(self._onSettingPropertyChanged)
         active_extruder_changed = node.callDecoration("getActiveExtruderChangedSignal")
         if active_extruder_changed is not None:
-            active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
+            active_extruder_changed.connect(self._nodeActiveExtruderChanged)
 
     def setWidth(self, width: float) -> None:
         self._width = width
@@ -687,6 +688,7 @@ class BuildVolume(SceneNode):
             self._depth = self._global_container_stack.getProperty("machine_depth", "value")
             self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
+            self._updateUsedExtruders()
             self._updateDisallowedAreas()
             self._updateRaftThickness()
             self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
@@ -713,6 +715,7 @@ class BuildVolume(SceneNode):
         update_disallowed_areas = False
         update_raft_thickness = False
         update_extra_z_clearance = True
+        update_used_extruders = False
 
         for setting_key in self._changed_settings_since_last_rebuild:
             if setting_key in ["print_sequence", "support_mesh", "infill_mesh", "cutting_mesh", "anti_overhang_mesh"]:
@@ -746,12 +749,17 @@ class BuildVolume(SceneNode):
 
             if setting_key in self._raft_settings:
                 update_raft_thickness = True
+                update_used_extruders = True
 
             if setting_key in self._extra_z_settings:
                 update_extra_z_clearance = True
 
             if setting_key in self._limit_to_extruder_settings:
                 update_disallowed_areas = True
+                update_used_extruders = True
+
+            if setting_key in self._extruder_settings:
+                update_used_extruders = True
 
             rebuild_me = update_extra_z_clearance or update_disallowed_areas or update_raft_thickness
 
@@ -764,6 +772,9 @@ class BuildVolume(SceneNode):
 
         if update_extra_z_clearance:
             self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
+
+        if update_used_extruders:
+            self._updateUsedExtruders()
 
         if rebuild_me:
             self.rebuild()
@@ -790,6 +801,20 @@ class BuildVolume(SceneNode):
         self._width = self._global_container_stack.getProperty("machine_width", "value")
         self._depth = self._global_container_stack.getProperty("machine_depth", "value")
         self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+
+    def _updateUsedExtruders(self):
+        global_container_stack = self._application.getGlobalContainerStack()
+        if not global_container_stack:
+            return
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
+        for extruder in global_container_stack.extruderList:
+            used = extruder in used_extruders
+            extruder.definitionChanges.setProperty("extruder_used", "value", used)
+        global_container_stack.definitionChanges.setProperty("extruders_used", "value", [extruder.position for extruder in used_extruders])
+
+    def _nodeActiveExtruderChanged(self):
+        self._updateDisallowedAreasAndRebuild()
+        self._updateUsedExtruders()
 
     def _updateDisallowedAreasAndRebuild(self):
         """Calls :py:meth:`cura.BuildVolume._updateDisallowedAreas` and makes sure the changes appear in the scene.
