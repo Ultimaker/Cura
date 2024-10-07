@@ -132,6 +132,7 @@ class ThreeMFReader(MeshReader):
         vertices = numpy.resize(data, (int(data.size / 3), 3))
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
+        mesh_builder.setMeshId(node_id)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
