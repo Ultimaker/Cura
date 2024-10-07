@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Theodor Hansson",
         "manufacturer": "ZYYX Labs AB",
-        "setting_version": 3,
         "file_formats": "application/x3g",
         "platform": "zyyx_platform.3mf",
         "exclude_materials": [
@@ -188,7 +187,8 @@
         "machine_x3g_variant": "z",
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
-        "quality_definition": "zyyx_plus"
+        "quality_definition": "zyyx_plus",
+        "setting_version": 3
     },
     "overrides":
     {

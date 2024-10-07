@@ -7,7 +7,6 @@
         "visible": true,
         "author": "ZYYX Labs AB",
         "manufacturer": "ZYYX Labs AB",
-        "setting_version": 3,
         "file_formats": "text/x-gcode",
         "platform": "zyyx_pro_platform.stl",
         "has_machine_quality": true,
@@ -20,6 +19,7 @@
         "preferred_quality_type": "normal",
         "preferred_variant_name": "Carbon0.4",
         "quality_definition": "zyyx_pro_ii",
+        "setting_version": 3,
         "variants_name": "SwiftTool24"
     },
     "overrides":

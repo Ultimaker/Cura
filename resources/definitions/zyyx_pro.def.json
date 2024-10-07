@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Theodor Hansson",
         "manufacturer": "ZYYX Labs AB",
-        "setting_version": 3,
         "file_formats": "application/x3g",
         "platform": "zyyx_pro_platform.stl",
         "exclude_materials": [
@@ -187,6 +186,7 @@
         "preferred_material": "generic_pla",
         "preferred_variant_name": "Carbon0.6",
         "quality_definition": "zyyx_pro",
+        "setting_version": 3,
         "variants_name": "SwiftTool"
     },
     "overrides":
