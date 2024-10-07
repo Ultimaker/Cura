@@ -67,7 +67,7 @@
             ]
         },
         "infill_extruder_nr": { "value": -1 },
-        "infill_line_distance": { "value": 8 },
+        "infill_line_distance": { "default_value": 8 },
         "infill_material_flow": { "value": 90 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density >= 25 else 'grid'" },
         "infill_sparse_density": { "value": 10 },
