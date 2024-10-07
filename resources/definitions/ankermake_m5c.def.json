@@ -70,7 +70,7 @@
         "infill_line_distance": { "value": 8 },
         "infill_material_flow": { "value": 90 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density >= 25 else 'grid'" },
-        "infill_sparse_density": { "value": 10 },
+        "infill_sparse_density": { "default_value": 10 },
         "infill_sparse_thickness": { "value": 0.25 },
         "infill_wipe_dist": { "value": 0.1 },
         "initial_bottom_layers": { "value": 3 },
