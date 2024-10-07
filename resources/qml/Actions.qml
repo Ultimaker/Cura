@@ -554,7 +554,7 @@ Item
     Action
     {
         id: exportProjectForSupportAction
-        text: catalog.i18nc("@action:inmenu menubar:help", "Export Project For Support")
+        text: catalog.i18nc("@action:inmenu menubar:help", "Export Package For Technical Support")
         onTriggered:
         {
             var exportName = Qt.formatDateTime(new Date(), "'export-'yyyyMMdd-HHmmss")
