@@ -1,5 +1,5 @@
 import pynavlib.pynavlib_interface as pynav
-from UM.Math.Matrix import Matrix
+from UM.Math.Matrix import Matrix, Vector
 from cura.PickingPass import PickingPass
 
 class NavlibClient(pynav.NavlibNavigationModel):
@@ -41,7 +41,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
             from cura.Utils.Threading import call_on_qt_thread
             wrapped_pick = call_on_qt_thread(self.pick)
             
-            self._pointer_pick, id = wrapped_pick(x_n, y_n)
+            self._pointer_pick, _ = wrapped_pick(x_n, y_n)
 
             return pynav.NavlibVector(0., 0., 0.)
         else:
@@ -131,6 +131,8 @@ class NavlibClient(pynav.NavlibNavigationModel):
         if boundingBox is not None:
             pt_min = pynav.NavlibVector(boundingBox.minimum.x, boundingBox.minimum.y, boundingBox.minimum.z)
             pt_max = pynav.NavlibVector(boundingBox.maximum.x, boundingBox.maximum.y, boundingBox.maximum.z)
+            self._scene_center = boundingBox.center
+            self._scene_radius = (boundingBox.maximum - self._scene_center).length()
             return pynav.NavlibBox(pt_min, pt_max)
         
     def get_pivot_position(self)->pynav.NavlibVector:
@@ -178,6 +180,27 @@ class NavlibClient(pynav.NavlibNavigationModel):
         return False
     
     def set_camera_matrix(self, matrix : pynav.NavlibMatrix):
+
+        if not self.get_is_view_perspective():
+            affine = matrix._matrix
+            direction = Vector(-affine[0][2], -affine[1][2], -affine[2][2])
+            distance = self._scene_center - Vector(affine[0][3], affine[1][3], affine[2][3])
+
+            cos_value = direction.dot(distance.normalized())
+
+            offset = 0.
+
+            if (distance.length() < self._scene_radius) and (cos_value > 0.):
+                offset = self._scene_radius
+            elif (distance.length() < self._scene_radius) and (cos_value < 0.):
+                offset = 2. * self._scene_radius
+            elif (distance.length() > self._scene_radius) and (cos_value < 0.):
+                offset = 2. * distance.length()
+
+            matrix._matrix[0][3] = matrix._matrix[0][3] - offset * direction.x
+            matrix._matrix[1][3] = matrix._matrix[1][3] - offset * direction.y
+            matrix._matrix[2][3] = matrix._matrix[2][3] - offset * direction.z    
+
         transformation = Matrix(data = matrix._matrix)
         self._scene.getActiveCamera().setTransformation(transformation)
 
