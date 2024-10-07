@@ -70,14 +70,12 @@
         "machine_max_feedrate_e": { "default_value": 45 },
         "material_bed_temperature":
         {
-            "maximum_value": "140",
-            "maximum_value_warning": "120",
+            "maximum_value": "120",
             "minimum_value": "0"
         },
         "material_bed_temperature_layer_0":
         {
-            "maximum_value": "140",
-            "maximum_value_warning": "120",
+            "maximum_value": "120",
             "minimum_value": "0"
         },
         "material_print_temp_wait": { "value": false },
@@ -111,7 +109,6 @@
         "roofing_layer_count": { "value": "1" },
         "roofing_material_flow": { "value": "material_flow" },
         "skin_angles": { "value": "[] if infill_pattern not in ['cross', 'cross_3d'] else [20, 110]" },
-        "skin_edge_support_thickness": { "value": "4 * layer_height if infill_sparse_density < 30 else 0" },
         "skin_material_flow": { "value": "0.95 * material_flow" },
         "skin_material_flow_layer_0": { "value": "95" },
         "skin_monotonic": { "value": "roofing_layer_count == 0" },

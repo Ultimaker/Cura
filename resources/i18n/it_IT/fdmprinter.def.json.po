@@ -5860,3 +5860,43 @@ msgstr "Quando si stampa il primo strato della superficie del raft, traslare con
 msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Cucitura Z sul vertice"
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Durata di ogni gradino per la variazione graduale del flusso"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Abilitare le variazioni graduali del flusso. Quando abilitate, il flusso viene aumentato/diminuito gradualmente fino al flusso target. Ciò è utile per le stampanti dotate di tubo bowden dove il flusso non viene modificato immediatamente all'avvio/arresto del motore dell'estrusore."
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Per ogni spostamento del percorso superiore a questo valore, il flusso del materiale viene reimpostato su quello target dei percorsi."
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Dimensione del gradino di discretizzazione del flusso graduale"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Flusso graduale abilitato"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Accelerazione massima del flusso graduale"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Accelerazione massima del flusso per lo strato iniziale"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Accelerazione massima per le variazioni graduali del flusso"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Velocità minima per le variazioni graduali del flusso per il primo strato."
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Reimpostare la durata del flusso"
