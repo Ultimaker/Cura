@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Logger import Logger
+from UM.Decorators import CachedMemberFunctions
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -70,6 +71,8 @@ class XmlMaterialProfile(InstanceContainer):
         if registry.isReadOnly(self.getId()):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
+
+        CachedMemberFunctions.clearInstanceCache(self)
 
         # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
         # "properties" field and apply the new values to SettingInstances as well.
@@ -480,6 +483,7 @@ class XmlMaterialProfile(InstanceContainer):
                     first.append(element)
 
     def clearData(self):
+        CachedMemberFunctions.clearInstanceCache(self)
         self._metadata = {
             "id": self.getId(),
             "name": ""
@@ -518,6 +522,8 @@ class XmlMaterialProfile(InstanceContainer):
 
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""
+
+        CachedMemberFunctions.clearInstanceCache(self)
 
         containers_to_add = []
         # update the serialized data first
@@ -911,9 +917,6 @@ class XmlMaterialProfile(InstanceContainer):
         base_metadata["approximate_diameter"] = str(round(float(cast(float, property_values.get("diameter", 2.85))))) # In mm
         base_metadata["properties"] = property_values
         base_metadata["definition"] = "fdmprinter"
-
-        # Certain materials are loaded but should not be visible / selectable to the user.
-        base_metadata["visible"] = not base_metadata.get("abstract_color", False)
 
         compatible_entries = data.iterfind("./um:settings/um:setting[@key='hardware compatible']", cls.__namespaces)
         try:
