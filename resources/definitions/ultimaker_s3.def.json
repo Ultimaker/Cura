@@ -17,7 +17,9 @@
         "exclude_materials": [
             "generic_hips",
             "generic_flexible",
-            "structur3d_"
+            "generic_cffpps",
+            "structur3d_",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
