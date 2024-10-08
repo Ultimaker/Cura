@@ -4,9 +4,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2024-03-11 11:28+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2024-08-03 02:34+0000\n"
+"Last-Translator: h1data <h1data@users.noreply.github.com>\n"
+"Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +19,7 @@ msgstr "密着性"
 
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "使用するフィラメントの太さの調整　この値を使用するフィラメントの太さと一致させてください。"
+msgstr "使用するフィラメントの太さの調整。この値を使用するフィラメントの太さと一致させてください。"
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
@@ -31,7 +31,7 @@ msgstr "直径"
 
 msgctxt "machine_extruder_end_code description"
 msgid "End g-code to execute when switching away from this extruder."
-msgstr "このエクストルーダーから切り替えた時に G-Code の終了を実行します。"
+msgstr "エクストルーダーの最終位置をこのエクストルーダーから切り替えた時に終了G-Codeを実行します。"
 
 msgctxt "extruder_nr label"
 msgid "Extruder"
@@ -39,7 +39,7 @@ msgstr "エクストルーダー"
 
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "エクストルーダーがG-Codeを終了する"
+msgstr "エクストルーダー終了G-Code"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
@@ -47,15 +47,15 @@ msgstr "エクストルーダー終了Gコードの時間"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
-msgstr "エクストルーダーのエンドポジションの絶対値"
+msgstr "エクストルーダー終了位置の絶対値"
 
 msgctxt "machine_extruder_end_pos_x label"
 msgid "Extruder End Position X"
-msgstr "エクストルーダーエンド位置X"
+msgstr "エクストルーダー終了位置X座標"
 
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
-msgstr "エクストルーダーエンド位置Y"
+msgstr "エクストルーダー終了位置Y座標"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -75,7 +75,7 @@ msgstr "エクストルーダープリント冷却ファン"
 
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "エクストルーダーがG-Codeを開始する"
+msgstr "エクストルーダー開始G-Code"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
@@ -83,15 +83,15 @@ msgstr "エクストルーダー開始Gコードの時間"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
-msgstr "エクストルーダーのスタート位置の絶対値"
+msgstr "エクストルーダーの開始位置の絶対値"
 
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
-msgstr "エクストルーダー　スタート位置X"
+msgstr "エクストルーダー開始位置X座標"
 
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
-msgstr "エクストルーダースタート位置Y"
+msgstr "エクストルーダー開始位置Y座標"
 
 msgctxt "machine_settings label"
 msgid "Machine"
@@ -99,23 +99,23 @@ msgstr "プリンター"
 
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "プリンター詳細設定"
+msgstr "プリンター固有の設定"
 
 msgctxt "machine_extruder_end_pos_abs description"
 msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
-msgstr "ヘッドの既存の認識位置よりもエクストルーダーの最終位置を絶対位置とする。"
+msgstr "エクストルーダーの最終位置を、ヘッドの最後の地点からの相対位置ではなく絶対値にします。"
 
 msgctxt "machine_extruder_start_pos_abs description"
 msgid "Make the extruder starting position absolute rather than relative to the last-known location of the head."
-msgstr "ヘッドの最後の既知位置からではなく、エクストルーダーのスタート位置を絶対位置にします。"
+msgstr "エクストルーダーの開始位置を、ヘッドの最後の地点からの相対位置ではなく、絶対値にします。"
 
 msgctxt "material description"
 msgid "Material"
-msgstr "マテリアル"
+msgstr "材料"
 
 msgctxt "material label"
 msgid "Material"
-msgstr "マテリアル"
+msgstr "材料"
 
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
@@ -127,31 +127,31 @@ msgstr "ノズルID"
 
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
-msgstr "Xノズルオフセット"
+msgstr "ノズルX座標オフセット"
 
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
-msgstr "Yノズルオフセット"
+msgstr "ノズルY座標オフセット"
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
-msgstr "このエクストルーダーに切り替えた時に G-Code の開始を実行します。"
+msgstr "このエクストルーダーに切り替えた時に開始G-Codeを実行します。"
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
-msgstr "プリント開始時のノズルの位置を表すX座標。"
+msgstr "プリント開始時における主要ノズル地点のX座標。"
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
-msgstr "プリント開始時にノズル位置を表すY座標。"
+msgstr "プリント開始時における主要ノズル地点のY座標。"
 
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
-msgstr "印刷開始時にノズルがポジションを確認するZ座標。"
+msgstr "プリント開始時における主要ノズル地点のZ座標。"
 
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
-msgstr "エクストルーダーの列。デュアルノズル印刷時に使用。"
+msgstr "印刷に使用するエクストルーダーの列。デュアルノズル印刷時に使用。"
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -159,7 +159,7 @@ msgstr "ノズルの内径。標準以外のノズルを使用する場合は、
 
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "\"AA 0.4\"や\"BB 0.8\"などのノズルID。"
+msgstr "\"AA 0.4\" や \"BB 0.8\" など、エクストルーダーのノズルID。"
 
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
@@ -167,32 +167,32 @@ msgstr "このエクストルーダーに関連付けられているプリント
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr "このエクストルーダーから切り替えるときに,終了Gコードを実行するのにかかる時間。"
+msgstr "このエクストルーダーから切り替えるときに、終了Gコードを実行するのにかかる時間。"
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr "このエクストルーダーに切り替えるときに,開始Gコードを実行するのにかかる時間。"
+msgstr "このエクストルーダーに切り替えるときに、開始Gコードを実行するのにかかる時間。"
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
-msgstr "エクストルーダーを切った際のX座標の最終位置。"
+msgstr "エクストルーダーをオフにする際の終了位置X座標。"
 
 msgctxt "machine_nozzle_offset_x description"
 msgid "The x-coordinate of the offset of the nozzle."
-msgstr "ノズルのX軸のオフセット。"
+msgstr "ノズルのX座標のオフセット。"
 
 msgctxt "machine_extruder_start_pos_x description"
 msgid "The x-coordinate of the starting position when turning the extruder on."
-msgstr "エクストルーダーのX座標のスタート位置。"
+msgstr "エクストルーダーをオンにする際の開始位置X座標。"
 
 msgctxt "machine_extruder_end_pos_y description"
 msgid "The y-coordinate of the ending position when turning the extruder off."
-msgstr "エクストルーダーを切った際のY座標の最終位置。"
+msgstr "エクストルーダーをオフにする際の終了位置Y座標。"
 
 msgctxt "machine_nozzle_offset_y description"
 msgid "The y-coordinate of the offset of the nozzle."
-msgstr "ノズルのY軸のオフセット。"
+msgstr "ノズルのY座標のオフセット。"
 
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
-msgstr "エクストルーダーのY座標のスタート位置。"
+msgstr "エクストルーダーをオンにする際の開始位置Y座標。"
