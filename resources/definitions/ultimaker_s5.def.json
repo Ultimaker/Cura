@@ -18,7 +18,9 @@
         "exclude_materials": [
             "generic_hips",
             "generic_flexible",
-            "structur3d_"
+            "generic_cffpps",
+            "structur3d_",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
@@ -48,6 +50,7 @@
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_abstract_color": true,
         "supports_material_export": true,
         "supports_network_connection": true,
         "supports_usb_connection": false,

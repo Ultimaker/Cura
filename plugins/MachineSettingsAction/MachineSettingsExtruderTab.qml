@@ -182,7 +182,7 @@ Item
         Cura.GcodeTextArea   // "Extruder Start G-code"
         {
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            anchors.bottom: buttonLearnMore.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             anchors.left: parent.left
             width: base.columnWidth - UM.Theme.getSize("default_margin").width
@@ -196,7 +196,7 @@ Item
         Cura.GcodeTextArea   // "Extruder End G-code"
         {
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            anchors.bottom: buttonLearnMore.top
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             width: base.columnWidth - UM.Theme.getSize("default_margin").width
@@ -205,6 +205,18 @@ Item
             containerStackId: base.extruderStackId
             settingKey: "machine_extruder_end_code"
             settingStoreIndex: propertyStoreIndex
+        }
+
+        Cura.TertiaryButton
+        {
+            id: buttonLearnMore
+
+            text: catalog.i18nc("@button", "Learn more")
+            iconSource: UM.Theme.getIcon("LinkExternal")
+            isIconOnRightSide: true
+            onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
         }
     }
 }

@@ -1,0 +1,82 @@
+{
+    "version": 2,
+    "name": "ZYYX Pro II",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "ZYYX Labs AB",
+        "manufacturer": "ZYYX Labs AB",
+        "file_formats": "text/x-gcode",
+        "platform": "zyyx_pro_platform.stl",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine": "zyyx_pro_ii",
+        "machine_extruder_trains": { "0": "zyyx_pro_ii_extruder" },
+        "machine_x3g_variant": "z",
+        "preferred_material": "zyyx_pla",
+        "preferred_quality_type": "normal",
+        "preferred_variant_name": "Carbon0.4",
+        "quality_definition": "zyyx_pro_ii",
+        "setting_version": 3,
+        "variants_name": "SwiftTool24"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": "10" },
+        "infill_overlap": { "value": "12 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0" },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_depth": { "default_value": 235 },
+        "machine_disallowed_areas":
+        {
+            "default_value": [
+                [
+                    [-58, 117.5],
+                    [-58, 108],
+                    [-50, 108],
+                    [-50, 117.5]
+                ],
+                [
+                    [119, 117.5],
+                    [119, 108],
+                    [140, 108],
+                    [140, 117.5]
+                ],
+                [
+                    [-58, -117.5],
+                    [-58, -108],
+                    [-50, -108],
+                    [-50, -117.5]
+                ],
+                [
+                    [119, -117.5],
+                    [119, -108],
+                    [140, -108],
+                    [140, -117.5]
+                ]
+            ]
+        },
+        "machine_end_gcode": { "default_value": "; ZYYX 3D Printer end gcode\nM73 P100 ; end build progress\nG0 Z195 F1000 ; send Z axis to bottom of machine\nM104 S0 T0 ; cool down extruder\nM127 ; stop blower fan\nG162 X Y F3000 ; home XY maximum\nM18 ; disable stepper\nM70 P5 (ZYYX Print Finished!)\nM72 P1 ; play Ta-Da song\n" },
+        "machine_gcode_flavor": { "default_value": "Makerbot" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-37, 50],
+                [25, 50],
+                [25, -40],
+                [-37, -40]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 210 },
+        "machine_name": { "default_value": "ZYYX Pro II" },
+        "machine_start_gcode": { "default_value": ";start of ZYYX Pro II startcode\n M73 P0; enable build progress\n G21; set units to mm\n G90; set positioning to absolute\n G130 X80 Y80 A127 B127 ; Set Stepper Vref to default value\n G162 X Y F3000; home XY axes maximum\n G161 Z F450\n G161 Z F450; home Z axis minimum\n G92 X0 Y0 Z0 E0\n G1 X0 Y0 Z20 F3000\n G1 X-120 Y-110 Z10 F3000\n G130 X0 Y0 Z3 A0 B0 ; Set Stepper Vref to low value\n M420 P10; set back fan speed 10 off 11-20 10-100%\n  M140 S10 T0; set 100% heater power\n M140 S99 T0; set chamber heater negative hysteresis 19 degrees\n M140 S110 T0; set chamber heater positive hysteresis 10 degrees\n M140 S{material_bed_temperature_layer_0} T0; set chamber temperature\n M104 S100 T0; set extruder temp 100 while heating\n M134 T0; wait for heated chamber temperature\n M420 P13; set fan speed 10 off 11-20 10-100%\n G130 X80 Y80 Z64 A127 B127 ; Set Stepper Vref to default value\n ; Perform probing of build plate\n G162 X Y F3000; home XY axes maximum\n G161 Z F450\n G161 Z F450; home Z axis minimum\n G92 X0 Y0 Z0 E0\n G1 X0 Y0 Z5 F200\n G161 Z F200; home Z axis minimum again\n G92 X0 Y0 Z0 E0\n M131 A; store surface calibration point 1\n G1 X0 Y0 Z5 F200\n G1 X-182 Y0 Z5 F3000; move to 2nd probing point\n G161 Z F200\n M131 B; store surface calibration point 2\n G92 X-182 Y0 Z0 E0\n G1 X-182 Y0 Z5 F200\n G1 X0 Y0 Z5 F3000; move to home point\n G161 Z F200; home Z axis minimum again\n G92 X0 Y0 Z0 E0; set reference again\n G1 X0 Y0 Z5 F200; clear Z\n G1 X0 Y-228 Z5 F3000; move to 3rd calibration point\n G161 Z F200\n M131 AB; store surface calibration point 3\n M132 AB; activate auto leveling\n G92 X0 Y-228 Z0 E0\n G1 X0 Y-228 Z5 F200\n G162 X Y F3000\n G161 Z F200\n G92 X135 Y115 Z0 E0\n M132 Z; Recall stored home offset for Z axis\n G1 X135 Y115 Z5 F450; clear nozzle from hole\n G1 X0 Y115 Z5 F3000; clear nozzle from hole\n ; end of ZYYX pro build plate calibration\n M127; turn off fan\n M104 S{material_print_temperature_layer_0} T0\n M133 T0 ; stabilize extruder temperature\n ;SET_ZXPARAM\n ;SET_SUPPORT_BUMPMAP\n G92 E0 ; Set E to 0\n ; end of ZYYX Pro II start code" },
+        "machine_steps_per_mm_e": { "default_value": 415 },
+        "machine_steps_per_mm_x": { "default_value": 88.888889 },
+        "machine_steps_per_mm_y": { "default_value": 88.888889 },
+        "machine_steps_per_mm_z": { "default_value": 400 },
+        "machine_width": { "default_value": 285 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

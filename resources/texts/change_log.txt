@@ -1,3 +1,11 @@
+[5.8.1]
+
+* Bug fixes:
+- Fixed an issue where materials could not be synced to UltiMaker Printers
+
+* Profile Improvements
+- Significant improvements for PVA and TPU 95A profiles for UltiMaker Factor 4
+
 [5.8]
 
 * New Z Seam Settings:

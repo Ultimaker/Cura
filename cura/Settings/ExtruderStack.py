@@ -5,7 +5,7 @@ from typing import Any, Dict, TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import pyqtProperty, pyqtSignal
 
-from UM.Decorators import override
+from UM.Decorators import CachedMemberFunctions, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -86,6 +86,7 @@ class ExtruderStack(CuraContainerStack):
     def setCompatibleMaterialDiameter(self, value: float) -> None:
         old_approximate_diameter = self.getApproximateMaterialDiameter()
         if self.getCompatibleMaterialDiameter() != value:
+            CachedMemberFunctions.clearInstanceCache(self)
             self.definitionChanges.setProperty("material_diameter", "value", value)
             self.compatibleMaterialDiameterChanged.emit()
 
