@@ -8928,7 +8928,7 @@
                 "scarf_joint_seam_length":
                 {
                     "label": "Scarf Seam Length",
-                    "description": "When greater than 0, a scarf joint will be created on the Z seam to make it less visible.",
+                    "description": "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective.",
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
@@ -8940,7 +8940,7 @@
                 "scarf_joint_seam_start_height_ratio":
                 {
                     "label": "Scarf Seam Start Height",
-                    "description": "This is the ratio over the total layer height where the scarf joint seam will start.",
+                    "description": "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be less than 100 to be effective.",
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": 0,
@@ -8952,8 +8952,8 @@
                 },
                 "scarf_split_distance":
                 {
-                    "label": "Scarf Seam Split Distance",
-                    "description": "This is the maximum length of an extrusion path when splitting a longer path to apply the scarf seam. A smaller distance will create a more precise but also more verbose G-Code.",
+                    "label": "Scarf Seam Step Length",
+                    "description": "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code.",
                     "type": "float",
                     "default_value": 1.0,
                     "minimum_value": 0.1,
