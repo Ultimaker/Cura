@@ -2016,31 +2016,31 @@ msgstr "Внутрішні стінки"
 
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
-msgstr ""
+msgstr "Вставте USB стік у Ваш принтер та запустіть процедуру завантаження профілів нових матеріалів."
 
 msgctxt "@button"
 msgid "Install"
-msgstr ""
+msgstr "Встановити"
 
 msgctxt "@header"
 msgid "Install Materials"
-msgstr ""
+msgstr "Встановити матеріали"
 
 msgctxt "@window:title"
 msgid "Install Package"
-msgstr ""
+msgstr "Встановити пакет"
 
 msgctxt "@action:button"
 msgid "Install Packages"
-msgstr ""
+msgstr "Встановити пакети"
 
 msgctxt "@header"
 msgid "Install Packages"
-msgstr ""
+msgstr "Встановити пакети"
 
 msgctxt "@header"
 msgid "Install Plugins"
-msgstr ""
+msgstr "Встановити плагіни"
 
 msgctxt "@action:button"
 msgid "Install missing packages"
