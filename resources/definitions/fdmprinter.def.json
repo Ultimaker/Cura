@@ -8940,7 +8940,7 @@
                 "scarf_joint_seam_start_height_ratio":
                 {
                     "label": "Scarf Seam Start Height",
-                    "description": "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be less than 100 to be effective.",
+                    "description": "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective.",
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": 0,
