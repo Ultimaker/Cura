@@ -13,35 +13,66 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._hit_selection_only = False
         self._picking_pass = None
 
-    def pick(self, x, y):
-        if self._picking_pass is None:
-            return None, None
+    def pick(self, x, y, check_selection = False, radius = 0.) :
 
-        picked_depth = self._picking_pass.getPickedDepth(x, y)
+        if self._picking_pass is None or radius < 0. :
+            return None
 
-        max_depth = 16777.215
+        step = 0.
+        if radius == 0. :
+            grid_resolution = 0
+        else:
+            grid_resolution = 5
+            step = (2. * radius) / float(grid_resolution)
 
-        if 0. < picked_depth < max_depth:
-            selection_pass = self._renderer.getRenderPass("selection")
-            picked_object_id = selection_pass.getIdAtPosition(x, y)
-            return self._picking_pass.getPickedPosition(x, y), picked_object_id
-        
-        return None, None
+        min_depth = 99999.
+        result_position = None
+
+        for i in range(grid_resolution + 1) :
+            for j in range(grid_resolution + 1) :
+
+                coord_x = (x - radius) + i * step
+                coord_y = (y - radius) + j * step
+            
+                picked_depth = self._picking_pass.getPickedDepth(coord_x, coord_y)
+                max_depth = 16777.215
+
+                if 0. < picked_depth < max_depth :
+
+                    valid_hit = True
+                    if check_selection:
+                        selection_pass = self._renderer.getRenderPass("selection")
+                        picked_object_id = selection_pass.getIdAtPosition(coord_x, coord_y)
+                        picked_object = self._scene.findObject(picked_object_id)
+
+                        from UM.Scene.Selection import Selection
+                        valid_hit = Selection.isSelected(picked_object)
+
+                    if not valid_hit and grid_resolution > 0. :
+                        continue
+                    elif not valid_hit and grid_resolution == 0. :
+                        return None
+
+                    if picked_depth < min_depth :
+                        min_depth = picked_depth
+                        result_position = self._picking_pass.getPickedPosition(coord_x, coord_y)
+                
+        return result_position
     
     def get_pointer_position(self)->pynav.NavlibVector:
 
         from UM.Qt.QtApplication import QtApplication
-        mw = QtApplication.getInstance().getMainWindow()
+        main_window = QtApplication.getInstance().getMainWindow()
 
-        x_n = 2. * mw._mouse_x / self._scene.getActiveCamera().getViewportWidth() - 1.
-        y_n = 2. * mw._mouse_y / self._scene.getActiveCamera().getViewportHeight() - 1.
+        x_n = 2. * main_window._mouse_x / self._scene.getActiveCamera().getViewportWidth() - 1.
+        y_n = 2. * main_window._mouse_y / self._scene.getActiveCamera().getViewportHeight() - 1.
 
         if self.get_is_view_perspective():
             self._was_pick = True
             from cura.Utils.Threading import call_on_qt_thread
             wrapped_pick = call_on_qt_thread(self.pick)
             
-            self._pointer_pick, _ = wrapped_pick(x_n, y_n)
+            self._pointer_pick = wrapped_pick(x_n, y_n)
 
             return pynav.NavlibVector(0., 0., 0.)
         else:
@@ -51,20 +82,20 @@ class NavlibClient(pynav.NavlibNavigationModel):
             return pynav.NavlibVector(pointer_position.x, pointer_position.y, pointer_position.z)
 
     def get_view_extents(self)->pynav.NavlibBox:
-        projectionMatrix = self._scene.getActiveCamera().getProjectionMatrix()
+        projection_matrix = self._scene.getActiveCamera().getProjectionMatrix()
         
-        pt_min = pynav.NavlibVector(projectionMatrix._left, projectionMatrix._bottom, projectionMatrix._near)
-        pt_max = pynav.NavlibVector(projectionMatrix._right, projectionMatrix._top, projectionMatrix._far)
+        pt_min = pynav.NavlibVector(projection_matrix._left, projection_matrix._bottom, projection_matrix._near)
+        pt_max = pynav.NavlibVector(projection_matrix._right, projection_matrix._top, projection_matrix._far)
 
         return pynav.NavlibBox(pt_min, pt_max)
 
     def get_view_frustum(self)->pynav.NavlibFrustum:
 
-        projectionMatrix = self._scene.getActiveCamera().getProjectionMatrix()
-        halfHeight = 2. / projectionMatrix.getData()[1,1]
-        halfWidth = halfHeight * (projectionMatrix.getData()[1,1] / projectionMatrix.getData()[0,0])
+        projection_matrix = self._scene.getActiveCamera().getProjectionMatrix()
+        half_height = 2. / projection_matrix.getData()[1,1]
+        half_width = half_height * (projection_matrix.getData()[1,1] / projection_matrix.getData()[0,0])
 
-        return pynav.NavlibFrustum(-halfWidth, halfWidth, -halfHeight, halfHeight, projectionMatrix._near, 100. * projectionMatrix._far)
+        return pynav.NavlibFrustum(-half_width, half_width, -half_height, half_height, projection_matrix._near, 100. * projection_matrix._far)
     
     def get_is_view_perspective(self)->bool:
         return self._scene.getActiveCamera().isPerspective()
@@ -112,27 +143,27 @@ class NavlibClient(pynav.NavlibNavigationModel):
         # of their __calculate_aabb settings?
         from UM.Scene.SceneNode import SceneNode
 
-        objectsTreeRoot = SceneNode()
-        objectsTreeRoot.setCalculateBoundingBox(True)
+        objects_tree_root = SceneNode()
+        objects_tree_root.setCalculateBoundingBox(True)
 
         for node in self._scene.getRoot().getChildren() :
             if node.__class__.__qualname__ == "CuraSceneNode" :
-                objectsTreeRoot.addChild(node)
+                objects_tree_root.addChild(node)
 
-        for node in objectsTreeRoot.getAllChildren():
+        for node in objects_tree_root.getAllChildren():
             node.setCalculateBoundingBox(True)
 
-        if objectsTreeRoot.getAllChildren().__len__() > 0 :
-            boundingBox = objectsTreeRoot.getBoundingBox()
+        if objects_tree_root.getAllChildren().__len__() > 0 :
+            bounding_box = objects_tree_root.getBoundingBox()
         else :
             self._scene.getRoot().setCalculateBoundingBox(True)
-            boundingBox = self._scene.getRoot().getBoundingBox()
+            bounding_box = self._scene.getRoot().getBoundingBox()
 
-        if boundingBox is not None:
-            pt_min = pynav.NavlibVector(boundingBox.minimum.x, boundingBox.minimum.y, boundingBox.minimum.z)
-            pt_max = pynav.NavlibVector(boundingBox.maximum.x, boundingBox.maximum.y, boundingBox.maximum.z)
-            self._scene_center = boundingBox.center
-            self._scene_radius = (boundingBox.maximum - self._scene_center).length()
+        if bounding_box is not None:
+            pt_min = pynav.NavlibVector(bounding_box.minimum.x, bounding_box.minimum.y, bounding_box.minimum.z)
+            pt_max = pynav.NavlibVector(bounding_box.maximum.x, bounding_box.maximum.y, bounding_box.maximum.z)
+            self._scene_center = bounding_box.center
+            self._scene_radius = (bounding_box.maximum - self._scene_center).length()
             return pynav.NavlibBox(pt_min, pt_max)
         
     def get_pivot_position(self)->pynav.NavlibVector:
@@ -140,33 +171,14 @@ class NavlibClient(pynav.NavlibNavigationModel):
     
     def get_hit_look_at(self)->pynav.NavlibVector:
         
-        # !!!!!!
-        # Hit testing in Orthographic view is not reliable
-        # Picking starts in camera position, not on near plane
-        # which results in wrong depth values (visible geometry
-        # cannot be picked properly)
-        # !!!!!! 
-
         if self._was_pick and self._pointer_pick is not None:
             return pynav.NavlibVector(self._pointer_pick.x, self._pointer_pick.y, self._pointer_pick.z)
         elif self._was_pick and self._pointer_pick is None:
             return None
 
         from cura.Utils.Threading import call_on_qt_thread
-        
-        # Iterate over the grid of given aperture to find
-        # the depth- wise closest position 
-
         wrapped_pick = call_on_qt_thread(self.pick)
-        picked_position, picked_object_id = wrapped_pick(0, 0)
-
-        if self._hit_selection_only:
-            picked_object = self._scene.findObject(picked_object_id)
-            from UM.Scene.Selection import Selection
-            if not Selection.isSelected(picked_object):
-                return None
-
-        # Return the closest point
+        picked_position = wrapped_pick(0, 0, self._hit_selection_only, 0.5)
 
         if picked_position is not None:
             return pynav.NavlibVector(picked_position.x, picked_position.y, picked_position.z)
@@ -181,6 +193,12 @@ class NavlibClient(pynav.NavlibNavigationModel):
     
     def set_camera_matrix(self, matrix : pynav.NavlibMatrix):
 
+        # !!!!!!
+        # Hit testing in Orthographic view is not reliable
+        # Picking starts in camera position, not on near plane
+        # which results in wrong depth values (visible geometry
+        # cannot be picked properly) - Workaround needed (camera position offset)
+        # !!!!!! 
         if not self.get_is_view_perspective():
             affine = matrix._matrix
             direction = Vector(-affine[0][2], -affine[1][2], -affine[2][2])
