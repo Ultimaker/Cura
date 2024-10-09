@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"POT-Creation-Date: 2024-10-09 14:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,6 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
+#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f мм"
@@ -145,10 +146,11 @@ msgid "*You will need to restart the application for these changes to have effec
 msgstr "*Для применения данных изменений вам потребуется перезапустить приложение."
 
 msgctxt "@text"
-msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- Добавляйте настройки материалов и плагины из Marketplace "
-" - Выполняйте резервное копирование и синхронизацию своих настроек материалов и плагинов "
-" - Делитесь идеями и получайте помощь от 48 000 пользователей в сообществе Ultimaker"
+msgid ""
+"- Add material profiles and plug-ins from the Marketplace\n"
+"- Back-up and sync your material profiles and plug-ins\n"
+"- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgstr "- Добавляйте настройки материалов и плагины из Marketplace  - Выполняйте резервное копирование и синхронизацию своих настроек материалов и плагинов  - Делитесь идеями и получайте помощь от 48 000 пользователей в сообществе Ultimaker"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -202,38 +204,45 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>В пользовательском профиле будут сохранены только измененные пользователем настройки.</b><br/>Для поддерживающих его материалов новый пользовательский профиль будет наследовать свойства от <b>%1</b>."
 
+#, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>Средство визуализации OpenGL: {renderer}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>Поставщик OpenGL: {vendor}</li>"
 
+#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>Версия OpenGL: {version}</li>"
 
 msgctxt "@label crash message"
-msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>В Cura возникла критическая ошибка. Отправьте нам этот отчет о сбое для устранения проблемы</p></b>"
-"            <p>Нажмите кнопку «Отправить отчет», чтобы автоматически опубликовать отчет об ошибке на наших серверах</p>"
+msgid ""
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
+msgstr "<p><b>В Cura возникла критическая ошибка. Отправьте нам этот отчет о сбое для устранения проблемы</p></b>            <p>Нажмите кнопку «Отправить отчет», чтобы автоматически опубликовать отчет об ошибке на наших серверах</p>        "
 
 msgctxt "@label crash message"
-msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>В ПО UltiMaker Cura обнаружена ошибка.</p></b>"
-"                    <p>Во время запуска обнаружена неустранимая ошибка. Возможно, она вызвана некоторыми файлами конфигурации с неправильными данными. Рекомендуется создать резервную копию конфигурации и сбросить ее.</p>"
-"                    <p>Резервные копии хранятся в папке конфигурации.</p>"
-"                    <p>Отправьте нам этот отчет о сбое для устранения проблемы.</p>"
+msgid ""
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
+msgstr "<p><b>В ПО UltiMaker Cura обнаружена ошибка.</p></b>                    <p>Во время запуска обнаружена неустранимая ошибка. Возможно, она вызвана некоторыми файлами конфигурации с неправильными данными. Рекомендуется создать резервную копию конфигурации и сбросить ее.</p>                    <p>Резервные копии хранятся в папке конфигурации.</p>                    <p>Отправьте нам этот отчет о сбое для устранения проблемы.</p>                "
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Одна или несколько 3D-моделей могут не напечататься оптимальным образом из-за размера модели и конфигурации материала:</p>"
-"<p>{model_names}</p>"
-"<p>Узнайте, как обеспечить максимально возможное качество и высокую надежность печати.</p>"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ознакомиться с руководством по качеству печати</a></p>"
+msgid ""
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr "<p>Одна или несколько 3D-моделей могут не напечататься оптимальным образом из-за размера модели и конфигурации материала:</p><p>{model_names}</p><p>Узнайте, как обеспечить максимально возможное качество и высокую надежность печати.</p><p><a href=\"https://ultimaker.com/3D-model-assistant\">Ознакомиться с руководством по качеству печати</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -395,6 +404,7 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Добавить принтер вручную"
 
+#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "Добавление принтера {name} ({model}) из вашей учетной записи"
@@ -435,6 +445,7 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Все файлы (*)"
 
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Все поддерживаемые типы ({0})"
@@ -527,6 +538,7 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "Вы уверены, что хотите переместить %1 в начало очереди?"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "Действительно удалить {printer_name} временно?"
@@ -539,6 +551,7 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Вы уверены, что желаете удалить %1? Это нельзя будет отменить!"
 
+#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Действительно удалить {0}? Это действие невозможно будет отменить!"
@@ -703,10 +716,12 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "Не удается подключиться к принтеру UltiMaker?"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Невозможно импортировать профиль из <filename>{0}</filename>, пока не добавлен принтер."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Невозможно открыть любой другой файл, если G-code файл уже загружен. Пропускаю импортирование {0}"
@@ -788,7 +803,12 @@ msgid "Checks models and print configuration for possible printing issues and gi
 msgstr "Проверка моделей и конфигурации печати для выявления возможных проблем печати; рекомендации."
 
 msgctxt "@label"
-msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid ""
+"Chooses between the techniques available to generate support. \n"
+"\n"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
+"\n"
+"\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Выберите одну из доступных техник создания поддержки. Поддержка со стандартной структурой создается непосредственно под выступающими деталями, и затем опускает эти области вниз линейно. У поддержки с древовидной структурой ветви тянутся к выступающим областям и модель опирается на концы этих ветвей, которые охватывают модель с разных сторон, чтобы таким образом максимально поддерживать ее по всей площади печатной пластины."
 
 msgctxt "@action:inmenu menubar:edit"
@@ -826,6 +846,10 @@ msgstr "Цветовая модель"
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "Цветовая схема"
+
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "Комбинация не рекомендуется. Для повышения надежности установите сердечник BB в слот 1 (слева)."
 
 msgctxt "@info"
 msgid "Compare and save."
@@ -991,6 +1015,7 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Не удалось создать архив из каталога с данными пользователя: {}"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Не могу найти имя файла при записи в {device}."
@@ -1019,10 +1044,12 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "Невозможно сохранить архив материалов в {}:"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Не могу записать <filename>{0}</filename>: <message>{1}</message>"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Невозможно сохранить на внешний носитель {0}: {1}"
@@ -1031,20 +1058,26 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Облако не залило данные на принтер."
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}"
-"Нет разрешения на выполнение процесса."
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}Нет разрешения на выполнение процесса."
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}"
-"Его блокирует операционная система (антивирус?)"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}Его блокирует операционная система (антивирус?)"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}"
-"Ресурс временно недоступен"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr "Не удалось запустить EnginePlugin: {self._plugin_id}Ресурс временно недоступен"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1130,14 +1163,16 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Не удалось запустить Cura"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura обнаружены профили материалов, которые пока не установлены в главном принтере группы {0}."
 
 msgctxt "@info:credit"
-msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "Cura разработана компанией UltiMaker B.V. совместно с сообществом."
-"Cura использует следующие проекты с открытым исходным кодом:"
+msgid ""
+"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura proudly uses the following open source projects:"
+msgstr "Cura разработана компанией UltiMaker B.V. совместно с сообществом.Cura использует следующие проекты с открытым исходным кодом:"
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1150,14 +1185,6 @@ msgstr "Версия Cura"
 msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "Движок CuraEngine"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "Плагин CuraEngine для постепенного сглаживания потока и ограничения резких скачков потока"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1415,10 +1442,12 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "Извлечь"
 
+#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Извлекает внешний носитель {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "Извлечено {0}. Вы можете теперь безопасно извлечь носитель."
@@ -1507,6 +1536,10 @@ msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Экспортировать материал"
 
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr ""
+
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Экспорт профиля"
@@ -1527,6 +1560,7 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Экспорт успешно завершен"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Экспортирование профиля в <filename>{0}</filename>"
@@ -1563,6 +1597,7 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr "Продолжительность G-кода запуска экструдера"
 
+#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr "Экструдер {0}"
@@ -1587,6 +1622,7 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Архив материалов для синхронизации с принтерами не создан."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Невозможно извлечь {0}. Другая программа может использовать это устройство."
@@ -1595,22 +1631,27 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Не могу экспортировать материал <filename>%1</filename>: <message>%2</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Невозможно экспортировать профиль в <filename>{0}</filename>: <message>{1}</message>"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Невозможно экспортировать профиль в <filename>{0}</filename>: Плагин записи уведомил об ошибке."
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>:"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>:"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>: {1}"
@@ -1627,6 +1668,7 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Архив материалов не сохранен"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr "Не удалось выполнить запись на определенный облачный принтер: {0} не в удаленных кластерах."
@@ -1655,6 +1697,7 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Файл сохранён"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "В файле {0} нет подходящих профилей."
@@ -1878,6 +1921,7 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr "Размещение сетки"
 
+#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Группа #{group_nr}"
@@ -2362,6 +2406,10 @@ msgctxt "name"
 msgid "Makerbot Printfile Writer"
 msgstr "Модуль записи файлов печати Makerbot"
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "Файл для печати эскиза Makerbot"
+
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
 msgstr "MakerbotWriter не может сохранить файл в указанное место."
@@ -2606,6 +2654,7 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "Ошибка сети"
 
+#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "Доступна новая стабильная прошивка %s"
@@ -2618,6 +2667,7 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Новые принтеры UltiMaker можно подключить к Digital Factory и управлять ими удаленно."
 
+#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "Для {machine_name} доступны новые функции или исправления! Если у вас не установлена самая последняя версия прошивки принтера, рекомендуем обновить ее до версии {latest_version}."
@@ -2666,6 +2716,7 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Оценка расходов недоступна"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Отсутствует собственный профиль для импорта в файл <filename>{0}</filename>"
@@ -2802,6 +2853,7 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Показать только верхние слои"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
@@ -3017,11 +3069,12 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "Дайте необходимые разрешения при авторизации в этом приложении."
 
 msgctxt "@info"
-msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "Проверьте наличие подключения к принтеру:"
-"- Убедитесь, что принтер включен."
-"- Убедитесь, что принтер подключен к сети."
-"- Убедитесь, что вы вошли в систему (это необходимо для поиска принтеров, подключенных к облаку)."
+msgid ""
+"Please make sure your printer has a connection:\n"
+"- Check if the printer is turned on.\n"
+"- Check if the printer is connected to the network.\n"
+"- Check if you are signed in to discover cloud-connected printers."
+msgstr "Проверьте наличие подключения к принтеру:- Убедитесь, что принтер включен.- Убедитесь, что принтер подключен к сети.- Убедитесь, что вы вошли в систему (это необходимо для поиска принтеров, подключенных к облаку)."
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -3048,11 +3101,12 @@ msgid "Please remove the print"
 msgstr "Пожалуйста, удалите напечатанное"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
-msgstr "Проверьте настройки и убедитесь в том, что ваши модели:"
-"- соответствуют допустимой области печати"
-"- назначены активированному экструдеру"
-"- не заданы как объекты-модификаторы"
+msgid ""
+"Please review settings and check if your models:\n"
+"- Fit within the build volume\n"
+"- Are assigned to an enabled extruder\n"
+"- Are not all set as modifier meshes"
+msgstr "Проверьте настройки и убедитесь в том, что ваши модели:- соответствуют допустимой области печати- назначены активированному экструдеру- не заданы как объекты-модификаторы"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -3358,6 +3412,7 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Параметры профиля"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Профиль {0} имеет неизвестный тип файла или повреждён."
@@ -3382,18 +3437,22 @@ msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "Язык программирования"
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Файл проекта <filename>{0}</filename> содержит неизвестный тип принтера <message>{1}</message>. Не удалось импортировать принтер. Вместо этого будут импортированы модели."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Файл проекта <filename>{0}</filename> поврежден: <message>{1}</message>."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Файл проекта <filename>{0}</filename> создан с использованием профилей, несовместимых с данной версией UltiMaker Cura."
 
+#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Файл проекта <filename>{0}</filename> внезапно стал недоступен: <message>{1}.</message>."
@@ -3522,6 +3581,7 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Версия Qt"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "Тип качества \"{0}\" несовместим с текущим определением активной машины \"{1}\"."
@@ -3762,10 +3822,12 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Сохранить на внешний носитель"
 
+#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Сохранить на внешний носитель {0}"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Сохранено на внешний носитель {0} как {1}"
@@ -3774,6 +3836,7 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Сохранение"
 
+#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Сохранение на внешний носитель <filename>{0}</filename>"
@@ -3789,6 +3852,10 @@ msgstr "Масштабировать большие модели"
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "Поиск"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "Поиск принтера"
 
 msgctxt "@info"
 msgid "Search in the browser"
@@ -4022,10 +4089,6 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Показать онлайн документацию"
 
-msgctxt "@action:inmenu"
-msgid "Show Online Troubleshooting"
-msgstr "Показать сетевое руководство по устранению неполадок"
-
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "Показать всё"
@@ -4151,9 +4214,11 @@ msgid "Solid view"
 msgstr "Просмотр модели"
 
 msgctxt "@label"
-msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "Некоторые из скрытых параметров используют значения, отличающиеся от их вычисленных значений."
-"Щёлкните, чтобы сделать эти параметры видимыми."
+msgid ""
+"Some hidden settings use values different from their normal calculated value.\n"
+"\n"
+"Click to make these settings visible."
+msgstr "Некоторые из скрытых параметров используют значения, отличающиеся от их вычисленных значений.Щёлкните, чтобы сделать эти параметры видимыми."
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -4168,9 +4233,11 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "Некоторые определенные в <b>%1</b> значения настроек были переопределены."
 
 msgctxt "@tooltip"
-msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "Значения некоторых параметров отличаются от значений профиля."
-"Нажмите для открытия менеджера профилей."
+msgid ""
+"Some setting/override values are different from the values stored in the profile.\n"
+"\n"
+"Click to open the profile manager."
+msgstr "Значения некоторых параметров отличаются от значений профиля.Нажмите для открытия менеджера профилей."
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -4252,6 +4319,7 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Успешно импортированный материал <filename>%1</filename>"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Профиль {0} успешно импортирован."
@@ -4460,6 +4528,7 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "Этот экструдер используется для печати поддержек. Используется при наличии нескольких экструдеров."
 
+#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Файл <filename>{0}</filename> уже существует. Вы уверены, что желаете перезаписать его?"
@@ -4525,11 +4594,15 @@ msgid "The nozzle inserted in this extruder."
 msgstr "Сопло, вставленное в данный экструдер."
 
 msgctxt "@label"
-msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Шаблон заполнительного материала печати:"
-"Для быстрой печати нефункциональной модели выберите шаблон «Линейный», «Зигзагообразный» или «Молния»."
-"Для функциональной части, не подвергающейся большому напряжению, мы рекомендуем шаблон «Сетка», «Треугольник» или «Шестигранник из треугольников»."
-"Для функциональной 3D-печати, требующей высокой прочности в разных направлениях, используйте шаблон «Куб», «Динамический куб», «Четверть куба», «Восьмигранник» или «Гироид»."
+msgid ""
+"The pattern of the infill material of the print:\n"
+"\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
+"\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
+"\n"
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "Шаблон заполнительного материала печати:Для быстрой печати нефункциональной модели выберите шаблон «Линейный», «Зигзагообразный» или «Молния».Для функциональной части, не подвергающейся большому напряжению, мы рекомендуем шаблон «Сетка», «Треугольник» или «Шестигранник из треугольников».Для функциональной 3D-печати, требующей высокой прочности в разных направлениях, используйте шаблон «Куб», «Динамический куб», «Четверть куба», «Восьмигранник» или «Гироид»."
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
@@ -4648,8 +4721,8 @@ msgid "This configuration is not available because %1 is not recognized. Please 
 msgstr "Данная конфигурация недоступна, поскольку %1 не распознан. Посетите %2 и загрузите подходящий профиль материала."
 
 msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr "Это файл проекта Cura Universal. Хотите открыть его как проект Cura или Cura Universal Project или импортировать из него модели?"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "Это файл проекта Cura Universal. Вы хотите открыть его как Cura Universal Project или импортировать модели из него?"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4687,6 +4760,7 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Данный принтер управляет группой из %1 принтера (-ов)."
 
+#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Данный профиль <filename>{0}</filename> содержит неверные данные, поэтому его невозможно импортировать."
@@ -4700,9 +4774,11 @@ msgid "This project contains materials or plugins that are currently not install
 msgstr "Этот проект содержит материалы или плагины, которые сейчас не установлены в Cura.<br/>Установите недостающие пакеты и снова откройте проект."
 
 msgctxt "@label"
-msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "Значение этого параметра отличается от значения в профиле."
-"Щёлкните для восстановления значения из профиля."
+msgid ""
+"This setting has a value that is different from the profile.\n"
+"\n"
+"Click to restore the value of the profile."
+msgstr "Значение этого параметра отличается от значения в профиле.Щёлкните для восстановления значения из профиля."
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4721,9 +4797,11 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "Данная настройка всегда используется совместно всеми экструдерами. Изменение данного значения приведет к изменению значения для всех экструдеров."
 
 msgctxt "@label"
-msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "Обычно это значение вычисляется, но в настоящий момент было установлено явно."
-"Щёлкните для восстановления вычисленного значения."
+msgid ""
+"This setting is normally calculated, but it currently has an absolute value set.\n"
+"\n"
+"Click to restore the calculated value."
+msgstr "Обычно это значение вычисляется, но в настоящий момент было установлено явно.Щёлкните для восстановления вычисленного значения."
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4757,6 +4835,7 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Для автоматической синхронизации профилей материалов со всеми принтерами, подключенными к Digital Factory, необходимо войти в Cura."
 
+#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Чтобы установить подключение, перейдите на сайт {website_link}"
@@ -4769,6 +4848,7 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Для печати непосредственно на принтере через сеть необходимо подключить принтер к сети с помощью сетевого кабеля или подключить его к сети Wi-Fi. Если вы не подключили Cura к принтеру, вы можете использовать USB-накопитель для переноса файлов G-Code на принтер."
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "Чтобы удалить {printer_name} без возможности восстановления, перейдите на сайт {digital_factory_link}"
@@ -4913,14 +4993,17 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Невозможно разместить все объекты внутри печатаемого объёма"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "Не удается найти локальный исполняемый файл сервера EnginePlugin для: {self._plugin_id}"
 
+#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "Невозможно завершить работу EnginePlugin: {self._plugin_id}"
-"Доступ запрещен."
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr "Невозможно завершить работу EnginePlugin: {self._plugin_id}Доступ запрещен."
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -4929,6 +5012,14 @@ msgstr "Нет связи с сервером учетных записей Ult
 msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Невозможно прочитать пример файла данных."
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr ""
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Unable to slice"
@@ -4942,10 +5033,12 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Слайсинг невозможен, так как черновая башня или её позиция неверные."
 
+#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Невозможно разделить на слои из-за наличия объектов, связанных с отключенным экструдером %s."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Не удалось выполнить слайсинг из-за настроек модели. Следующие настройки ошибочны для одной или нескольких моделей: {error_labels}"
@@ -4954,6 +5047,7 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Невозможно нарезать модель, используя текущий материал, так как он несовместим с выбранной машиной или конфигурацией."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Не могу выполнить слайсинг на текущих настройках. Проверьте следующие настройки: {0}"
@@ -4962,6 +5056,7 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Невозможно начать новый вход в систему. Проверьте, возможно другой сеанс еще не завершен."
 
+#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr "Невозможно записать в файл: {0}"
@@ -5014,6 +5109,7 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "Неизвестный пакет"
 
+#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "Неизвестный код ошибки при загрузке задания печати: {0}"
@@ -5186,6 +5282,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr "Обновляет конфигурации с Cura 5.6 до Cura 5.7."
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Залить собственную прошивку"
@@ -5330,6 +5430,10 @@ msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
 msgstr "Обновление версии с 5.6 до 5.7"
 
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "Просмотреть принтеры в Digital Factory"
@@ -5382,6 +5486,7 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "Внимание"
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "Внимание! Профиль не отображается, так как его тип качества \"{0}\" недоступен для текущей конфигурации. Выберите комбинацию материала и сопла, которым подходит этот тип качества."
@@ -5503,21 +5608,35 @@ msgid "Yes"
 msgstr "Да"
 
 msgctxt "@label"
-msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
+msgid ""
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
 msgstr "Вы удаляете все принтеры из Cura. Это действие невозможно будет отменить.Продолжить?"
 
+#, python-brace-format
 msgctxt "@label"
-msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr[0] "Вы удаляете {0} принтер из Cura. Это действие невозможно будет отменить.\nПродолжить?"
-msgstr[1] "Вы удаляете {0} принтера из Cura. Это действие невозможно будет отменить.\nПродолжить?"
-msgstr[2] "Вы удаляете {0} принтеров из Cura. Это действие невозможно будет отменить.\nПродолжить?"
+msgid ""
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
+"Вы удаляете {0} принтер из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
+msgstr[1] ""
+"Вы удаляете {0} принтера из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
+msgstr[2] ""
+"Вы удаляете {0} принтеров из Cura. Это действие невозможно будет отменить.\n"
+"Продолжить?"
 msgstr[3] ""
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Вы пытаетесь подключиться к принтеру, на котором не работает UltiMaker Connect. Обновите прошивку принтера до последней версии."
 
+#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "Вы пытаетесь подключиться к {0}, но это не главный принтер группы. Откройте веб-страницу, чтобы настроить его в качестве главного принтера группы."
@@ -5528,9 +5647,7 @@ msgstr "В данный момент у вас отсутствуют резер
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr "Вы изменили некоторые настройки профиля."
-"Сохранить измененные настройки после переключения профилей?"
-"Изменения можно отменить и загрузить настройки по умолчанию из \"%1\"."
+msgstr "Вы изменили некоторые настройки профиля.Сохранить измененные настройки после переключения профилей?Изменения можно отменить и загрузить настройки по умолчанию из \"%1\"."
 
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
@@ -5560,10 +5677,12 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "Ваш новый принтер автоматически появится в Cura"
 
+#, python-brace-format
 msgctxt "@info:status"
-msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "Ваш принтер <b>{printer_name}</b> может быть подключен через облако."
-" Управляйте очередью печати и следите за результатом из любого места благодаря подключению принтера к Digital Factory"
+msgid ""
+"Your printer <b>{printer_name}</b> could be connected via cloud.\n"
+" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "Ваш принтер <b>{printer_name}</b> может быть подключен через облако. Управляйте очередью печати и следите за результатом из любого места благодаря подключению принтера к Digital Factory"
 
 msgctxt "@label"
 msgid "Z"
@@ -5625,6 +5744,7 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "версия: %1"
 
+#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "{printer_name} будет удален до следующей синхронизации учетной записи."
@@ -5633,18 +5753,18 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Встраиваемые модули ({} шт.) не загружены"
 
-msgctxt "@label"
-msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
-msgstr "Комбинация не рекомендуется. Для повышения надежности установите сердечник BB в слот 1 (слева)."
+#~ msgctxt "description"
+#~ msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+#~ msgstr "Плагин CuraEngine для постепенного сглаживания потока и ограничения резких скачков потока"
 
-msgctxt "@item:inlistbox"
-msgid "Makerbot Sketch Printfile"
-msgstr "Файл для печати эскиза Makerbot"
+#~ msgctxt "name"
+#~ msgid "CuraEngineGradualFlow"
+#~ msgstr "CuraEngineGradualFlow"
 
-msgctxt "@label:textbox"
-msgid "Search Printer"
-msgstr "Поиск принтера"
+#~ msgctxt "@action:inmenu"
+#~ msgid "Show Online Troubleshooting"
+#~ msgstr "Показать сетевое руководство по устранению неполадок"
 
-msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
-msgstr "Это файл проекта Cura Universal. Вы хотите открыть его как Cura Universal Project или импортировать модели из него?"
+#~ msgctxt "@text:window"
+#~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+#~ msgstr "Это файл проекта Cura Universal. Хотите открыть его как проект Cura или Cura Universal Project или импортировать из него модели?"
