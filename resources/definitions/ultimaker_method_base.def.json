@@ -158,6 +158,7 @@
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
         "brim_width": { "value": 5 },
+        "cool_during_extruder_switch": { "value": "'only_last_extruder'" },
         "cool_fan_enabled":
         {
             "force_depends_on_settings": [ "support_extruder_nr" ]
