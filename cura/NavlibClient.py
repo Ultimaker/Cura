@@ -1,6 +1,9 @@
 import pynavlib.pynavlib_interface as pynav
-from UM.Math.Matrix import Matrix, Vector
+from UM.Math.Matrix import Matrix
+from UM.Math.Vector import Vector
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 from cura.PickingPass import PickingPass
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 class NavlibClient(pynav.NavlibNavigationModel):
 
@@ -13,13 +16,13 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._hit_selection_only = False
         self._picking_pass = None
 
-    def pick(self, x, y, check_selection = False, radius = 0.) :
+    def pick(self, x, y, check_selection = False, radius = 0.):
 
-        if self._picking_pass is None or radius < 0. :
+        if self._picking_pass is None or radius < 0.:
             return None
 
         step = 0.
-        if radius == 0. :
+        if radius == 0.:
             grid_resolution = 0
         else:
             grid_resolution = 5
@@ -28,8 +31,8 @@ class NavlibClient(pynav.NavlibNavigationModel):
         min_depth = 99999.
         result_position = None
 
-        for i in range(grid_resolution + 1) :
-            for j in range(grid_resolution + 1) :
+        for i in range(grid_resolution + 1):
+            for j in range(grid_resolution + 1):
 
                 coord_x = (x - radius) + i * step
                 coord_y = (y - radius) + j * step
@@ -37,7 +40,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
                 picked_depth = self._picking_pass.getPickedDepth(coord_x, coord_y)
                 max_depth = 16777.215
 
-                if 0. < picked_depth < max_depth :
+                if 0. < picked_depth < max_depth:
 
                     valid_hit = True
                     if check_selection:
@@ -48,12 +51,12 @@ class NavlibClient(pynav.NavlibNavigationModel):
                         from UM.Scene.Selection import Selection
                         valid_hit = Selection.isSelected(picked_object)
 
-                    if not valid_hit and grid_resolution > 0. :
+                    if not valid_hit and grid_resolution > 0.:
                         continue
-                    elif not valid_hit and grid_resolution == 0. :
+                    elif not valid_hit and grid_resolution == 0.:
                         return None
 
-                    if picked_depth < min_depth :
+                    if picked_depth < min_depth:
                         min_depth = picked_depth
                         result_position = self._picking_pass.getPickedPosition(coord_x, coord_y)
                 
@@ -99,7 +102,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
     
     def get_is_view_perspective(self)->bool:
         return self._scene.getActiveCamera().isPerspective()
-    
+
     def get_selection_extents(self)->pynav.NavlibBox:
 
         from UM.Scene.Selection import Selection
@@ -109,8 +112,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
             pt_min = pynav.NavlibVector(bounding_box.minimum.x, bounding_box.minimum.y, bounding_box.minimum.z)
             pt_max = pynav.NavlibVector(bounding_box.maximum.x, bounding_box.maximum.y, bounding_box.maximum.z)
             return pynav.NavlibBox(pt_min, pt_max)
-        pass
-    
+
     def get_selection_transform(self)->pynav.NavlibMatrix:
         return pynav.NavlibMatrix()
     
@@ -137,33 +139,25 @@ class NavlibClient(pynav.NavlibNavigationModel):
         return pynav.NavlibMatrix()
     
     def get_model_extents(self)->pynav.NavlibBox:
+        
+        result_bbox = AxisAlignedBox()
+        build_volume_bbox = None
 
-        # Why does running getCalculateBoundingBox on scene
-        # root always takes into accont all of the objects, no matter
-        # of their __calculate_aabb settings?
-        from UM.Scene.SceneNode import SceneNode
-
-        objects_tree_root = SceneNode()
-        objects_tree_root.setCalculateBoundingBox(True)
-
-        for node in self._scene.getRoot().getChildren() :
-            if node.__class__.__qualname__ == "CuraSceneNode" :
-                objects_tree_root.addChild(node)
-
-        for node in objects_tree_root.getAllChildren():
+        for node in DepthFirstIterator(self._scene.getRoot()):
             node.setCalculateBoundingBox(True)
+            if node.__class__.__qualname__ == "CuraSceneNode" :
+                result_bbox = result_bbox + node.getBoundingBox()
+            elif node.__class__.__qualname__ == "BuildVolume":
+                build_volume_bbox = node.getBoundingBox()
 
-        if objects_tree_root.getAllChildren().__len__() > 0 :
-            bounding_box = objects_tree_root.getBoundingBox()
-        else :
-            self._scene.getRoot().setCalculateBoundingBox(True)
-            bounding_box = self._scene.getRoot().getBoundingBox()
+        if not result_bbox.isValid():
+            result_bbox = build_volume_bbox
 
-        if bounding_box is not None:
-            pt_min = pynav.NavlibVector(bounding_box.minimum.x, bounding_box.minimum.y, bounding_box.minimum.z)
-            pt_max = pynav.NavlibVector(bounding_box.maximum.x, bounding_box.maximum.y, bounding_box.maximum.z)
-            self._scene_center = bounding_box.center
-            self._scene_radius = (bounding_box.maximum - self._scene_center).length()
+        if result_bbox is not None:
+            pt_min = pynav.NavlibVector(result_bbox.minimum.x, result_bbox.minimum.y, result_bbox.minimum.z)
+            pt_max = pynav.NavlibVector(result_bbox.maximum.x, result_bbox.maximum.y, result_bbox.maximum.z)
+            self._scene_center = result_bbox.center
+            self._scene_radius = (result_bbox.maximum - self._scene_center).length()
             return pynav.NavlibBox(pt_min, pt_max)
         
     def get_pivot_position(self)->pynav.NavlibVector:
@@ -182,8 +176,6 @@ class NavlibClient(pynav.NavlibNavigationModel):
 
         if picked_position is not None:
             return pynav.NavlibVector(picked_position.x, picked_position.y, picked_position.z)
-        
-        pass
     
     def get_units_to_meters(self)->float:
         return 0.05
@@ -229,10 +221,6 @@ class NavlibClient(pynav.NavlibNavigationModel):
 
     def set_hit_selection_only(self, onlySelection : bool):
         self._hit_selection_only = onlySelection
-        pass
-
-    def set_active_command(self, commandId : str):
-        pass
 
     def set_motion_flag(self, motion : bool):
         if motion:
