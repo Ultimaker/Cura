@@ -176,6 +176,7 @@
         },
         "min_bead_width": { "value": 0.3 },
         "multiple_mesh_overlap": { "value": "0" },
+        "print_sequence": { "enabled": false },
         "raft_airgap": { "value": 0.35 },
         "raft_base_acceleration": { "value": "acceleration_layer_0" },
         "raft_base_speed":
