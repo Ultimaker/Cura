@@ -171,7 +171,7 @@
         "material_flow": { "default_value": 100 },
         "material_print_temperature":
         {
-            "maximum_value": 280,
+            "maximum_value": 260,
             "maximum_value_warning": 240
         },
         "min_bead_width": { "value": 0.3 },
