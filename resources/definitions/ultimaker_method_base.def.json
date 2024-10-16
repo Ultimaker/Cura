@@ -342,6 +342,11 @@
         "multiple_mesh_overlap": { "value": 0 },
         "optimize_wall_printing_order": { "value": true },
         "prime_blob_enable": { "enabled": false },
+        "prime_tower_enable":
+        {
+            "default_value": "extruders_enabled_count > 1",
+            "enabled": "extruders_enabled_count > 1"
+        },
         "prime_tower_flow": { "value": "material_flow" },
         "prime_tower_line_width":
         {
