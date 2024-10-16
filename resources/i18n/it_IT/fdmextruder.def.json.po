@@ -1,9 +1,8 @@
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,15 +82,15 @@ msgstr "Durata del G-code di inizio dell'estrusore"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
-msgstr "Posizione assoluta avvio estrusore"
+msgstr "Assoluto posizione avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_x label"
 msgid "Extruder Start Position X"
-msgstr "Posizione X avvio estrusore"
+msgstr "X posizione avvio estrusore"
 
 msgctxt "machine_extruder_start_pos_y label"
 msgid "Extruder Start Position Y"
-msgstr "Posizione Y avvio estrusore"
+msgstr "Y posizione avvio estrusore"
 
 msgctxt "machine_settings label"
 msgid "Machine"
@@ -99,7 +98,7 @@ msgstr "Macchina"
 
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "Impostazioni specifiche della macchina"
+msgstr "Impostazioni macchina specifiche"
 
 msgctxt "machine_extruder_end_pos_abs description"
 msgid "Make the extruder ending position absolute rather than relative to the last-known location of the head."
@@ -124,10 +123,6 @@ msgstr "Diametro ugello"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID ugello"
-
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr ""
 
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
@@ -156,10 +151,6 @@ msgstr "Indica la coordinata Z della posizione in cui l’ugello si innesca all�
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Treno estrusore utilizzato per la stampa. Utilizzato nell’estrusione multipla."
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr ""
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -204,3 +195,11 @@ msgstr "La coordinata y dell’offset dell’ugello."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "La coordinata y della posizione di partenza all’accensione dell’estrusore."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Lunghezza ugello"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "La differenza di altezza tra la punta dell'ugello e la parte più bassa della testina di stampa."
