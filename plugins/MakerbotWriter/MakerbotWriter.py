@@ -112,15 +112,13 @@ class MakerbotWriter(MeshWriter):
         match file_format:
             case "application/x-makerbot-sketch":
                 filename, filedata = "print.gcode", gcode_text_io.getvalue()
-                self._PNG_FORMATS = self._PNG_FORMAT
             case "application/x-makerbot":
                 filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
-                self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
             case _:
                 raise Exception("Unsupported Mime type")
 
         png_files = []
-        for png_format in self._PNG_FORMATS:
+        for png_format in (self._PNG_FORMAT + self._PNG_FORMAT_METHOD):
             width, height, prefix = png_format["width"], png_format["height"], png_format["prefix"]
             thumbnail_buffer = self._createThumbnail(width, height)
             if thumbnail_buffer is None:
