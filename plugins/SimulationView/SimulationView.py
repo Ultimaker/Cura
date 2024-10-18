@@ -256,9 +256,19 @@ class SimulationView(CuraView):
             polylines = self.getLayerData()
             if polylines is not None:
                 for polyline in polylines.polygons:
-                    for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
+                    for line_index in range(len(polyline.lineLengths)):
+                        line_length = polyline.lineLengths[line_index]
+                        line_feedrate = polyline.lineFeedrates[line_index][0]
+
+                        if line_feedrate > 0.0:
+                            line_duration = line_length / line_feedrate
+                        else:
+                            # Something is wrong with this line, set an arbitrary non-null duration
+                            line_duration = 0.1
+
                         total_duration += line_duration / SimulationView.SIMULATION_FACTOR
                         self._cumulative_line_duration.append(total_duration)
+
                     # for tool change we add an extra tool path
                     self._cumulative_line_duration.append(total_duration)
             # set current cached layer
@@ -583,7 +593,7 @@ class SimulationView(CuraView):
         self._max_thickness = sys.float_info.min
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration = {}
+        self._cumulative_line_duration = []
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
