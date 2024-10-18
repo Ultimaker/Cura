@@ -132,7 +132,7 @@
         "infill_pattern": { "value": "'lines'" },
         "infill_sparse_density": { "value": 15 },
         "infill_wipe_dist": { "value": 0 },
-        "initial_layer_line_width_factor": { "value": 150 },
+        "initial_layer_line_width_factor": { "value": "100 if adhesion_type == 'raft' else 150" },
         "inset_direction": { "value": "'inside_out'" },
         "jerk_enabled":
         {
@@ -140,7 +140,13 @@
             "value": false
         },
         "jerk_travel_enabled": { "enabled": false },
-        "layer_height_0": { "value": "layer_height if adhesion_type == 'raft' else layer_height * 1.25" },
+        "layer_height":
+        {
+            "maximum_value": 0.4,
+            "maximum_value_warning": 0.2,
+            "value": 0.2
+        },
+        "layer_height_0": { "value": "layer_height if adhesion_type == 'raft' else 0.25" },
         "line_width": { "value": 0.42 },
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 221.5 },
@@ -177,32 +183,39 @@
         "min_bead_width": { "value": 0.3 },
         "multiple_mesh_overlap": { "value": "0" },
         "print_sequence": { "enabled": false },
-        "raft_airgap": { "value": 0.35 },
+        "raft_airgap": { "value": 0.2 },
         "raft_base_acceleration": { "value": "acceleration_layer_0" },
         "raft_base_speed":
         {
             "maximum_value": "raft_speed",
-            "maximum_value_warning": "raft_speed * 1/2",
-            "value": "raft_speed * 1/4"
+            "maximum_value_warning": "raft_speed * 0.6",
+            "value": "raft_speed * 0.35"
         },
         "raft_interface_acceleration": { "value": "acceleration_print * 0.2" },
-        "raft_interface_line_width": { "value": 0.7 },
+        "raft_interface_line_width": { "value": 0.5 },
         "raft_interface_speed":
         {
-            "maximum_value": 300,
-            "maximum_value_warning": 275,
-            "value": "raft_speed * 3/4"
+            "maximum_value": "speed_print",
+            "maximum_value_warning": "speed_print * 22/25",
+            "value": "raft_speed * 0.9"
         },
         "raft_interface_wall_count": { "value": "raft_wall_count" },
         "raft_margin": { "value": "1.5" },
         "raft_smoothing": { "value": "9.5" },
-        "raft_speed": { "value": 200 },
+        "raft_speed":
+        {
+            "maximum_value": "speed_print",
+            "maximum_value_warning": "speed_print * 24/25",
+            "value": "speed_print * 4/5"
+        },
         "raft_surface_acceleration": { "value": "acceleration_print * 0.5" },
+        "raft_surface_infill_overlap": { "value": 50 },
         "raft_surface_line_width": { "value": 0.4 },
         "raft_surface_speed":
         {
-            "maximum_value": 300,
-            "maximum_value_warning": 275
+            "maximum_value": "speed_print",
+            "maximum_value_warning": "speed_print * 24/25",
+            "value": "raft_speed"
         },
         "raft_surface_wall_count": { "value": "raft_wall_count" },
         "raft_wall_count": { "value": 2 },
@@ -218,10 +231,13 @@
         "retraction_min_travel": { "value": 0.8 },
         "retraction_prime_speed": { "value": "35" },
         "retraction_speed": { "value": "35" },
+        "scarf_joint_seam_length": { "value": 3 },
+        "scarf_joint_seam_start_height_ratio": { "value": 25 },
+        "scarf_split_distance": { "value": 0.1 },
         "seam_overhang_angle": { "value": 30 },
         "skin_edge_support_thickness": { "value": 0 },
         "skin_material_flow": { "value": "material_flow" },
-        "skin_material_flow_layer_0": { "value": "material_flow * 0.95" },
+        "skin_material_flow_layer_0": { "value": "material_flow if adhesion_type == 'raft' else material_flow * 0.95" },
         "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 10 },
@@ -373,7 +389,7 @@
         "travel_avoid_distance": { "value": 0.625 },
         "travel_avoid_supports": { "value": true },
         "wall_0_inset": { "value": "0" },
-        "wall_0_material_flow_layer_0": { "value": "material_flow * 0.95" },
+        "wall_0_material_flow_layer_0": { "value": "skin_material_flow_layer_0" },
         "wall_0_wipe_dist": { "value": 0.2 },
         "wall_line_width_x": { "value": 0.58 },
         "wall_overhang_angle": { "value": 35 },
@@ -385,7 +401,7 @@
         "wall_thickness": { "value": 1 },
         "wall_x_material_flow_layer_0": { "value": "material_flow" },
         "xy_offset": { "value": 0 },
-        "xy_offset_layer_0": { "value": -0.1 },
+        "xy_offset_layer_0": { "value": "0 if adhesion_type == 'raft' else -0.1" },
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
         "z_seam_position": { "value": "'backleft'" },
         "z_seam_type": { "value": "'sharpest_corner'" },
