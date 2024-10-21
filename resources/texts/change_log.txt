@@ -5,7 +5,7 @@
 - Updated the Start and End G-code edit options (for both Machine and Extruder) to extend to include If/Else statements and formulas
 - Introduced Build Fan Speed at Height, Build Fan Speed at Layer, and Build Volume Fan Number to control extra fans, like those controlling the build volume separately
 - Added the "Extra Infill Lines to Support Skins" setting and other improvements to help make printing over sparse infill more reliable, contributed by @Hello1024
-- Significant speed improvements interacting with custom settings especially if your printer has multiple extruders
+- Significant UI speed improvements interacting with custom settings especially if your printer has multiple extruders
 - Introduced an Anycolor option for the UltiMaker S and F series enabling you to print with any UltiMaker color loaded in the material station that is compatible with the printjobs. Note that it’s only compatible with the latest version of the firmware (for Factor 4 >=10.1  and for S-series >=9.0)
 - Added an option to Export Package for Technical Support to the help menu, it includes a project file with the settings but also the logs
 - Improved the way materials are selected when using multiple extruders to print the build plate adhesion so it doesn't default to the first extruder but the best option instead.
