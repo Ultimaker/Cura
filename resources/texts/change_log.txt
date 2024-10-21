@@ -2,7 +2,7 @@
 
 * New features and improvements:
 - Introduced scarf seam settings in experimental, Scarf Seam Length, Scarf Seam Start Height, and Scarf Seam Split Distance
-- Updated the Start and End G-code edit options (for both Machine and Extruder) to extend to include If/Else statements and formulas
+- Updated the Start and End G-code edit options (for both Machine and Extruder) to include If/Else statements and formulas
 - Introduced Build Fan Speed at Height, Build Fan Speed at Layer, and Build Volume Fan Number to control extra fans, like those controlling the build volume separately
 - Added the "Extra Infill Lines to Support Skins" setting and other improvements to help make printing over sparse infill more reliable, contributed by @Hello1024
 - Significant UI speed improvements interacting with custom settings especially if your printer has multiple extruders
