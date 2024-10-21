@@ -8948,7 +8948,8 @@
                     "unit": "%",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "enabled": "scarf_joint_seam_length > 0"
                 },
                 "scarf_split_distance":
                 {
@@ -8958,10 +8959,12 @@
                     "default_value": 1.0,
                     "minimum_value": 0.1,
                     "maximum_value": 100.0,
+                    "maximum_value_warning": "scarf_joint_seam_length",
                     "unit": "mm",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "enabled": "scarf_joint_seam_length > 0"
                 },
                 "wall_0_start_speed_ratio":
                 {
