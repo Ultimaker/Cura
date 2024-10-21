@@ -44,7 +44,7 @@
 
 * Community Translations
 - Updated Japanese translations by @h1data
-- Brazilian Portuguese by Cláudio
+- Brazilian Portuguese by @Patola
 
 [5.8.1]
 
