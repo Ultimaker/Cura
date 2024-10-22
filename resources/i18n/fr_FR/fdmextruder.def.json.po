@@ -1,9 +1,8 @@
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -196,3 +195,11 @@ msgstr "Les coordonnées Y du décalage de la buse."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Les coordonnées Y de la position de départ lors de la mise en marche de l'extrudeuse."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Longueur de la buse"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "Différence de hauteur entre l'extrémité de la buse et la partie la plus basse de la tête d'impression."
