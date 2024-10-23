@@ -85,10 +85,14 @@ class NavlibClient(pynav.NavlibNavigationModel):
             return pynav.NavlibVector(pointer_position.x, pointer_position.y, pointer_position.z)
 
     def get_view_extents(self)->pynav.NavlibBox:
-        projection_matrix = self._scene.getActiveCamera().getProjectionMatrix()
-        
-        pt_min = pynav.NavlibVector(projection_matrix._left, projection_matrix._bottom, projection_matrix._near)
-        pt_max = pynav.NavlibVector(projection_matrix._right, projection_matrix._top, projection_matrix._far)
+
+        view_width = self._scene.getActiveCamera().getViewportWidth()
+        view_height = self._scene.getActiveCamera().getViewportHeight()
+        horizontal_zoom = view_width * self._scene.getActiveCamera().getZoomFactor()
+        vertical_zoom = view_height * self._scene.getActiveCamera().getZoomFactor()
+
+        pt_min = pynav.NavlibVector(-view_width / 2 - horizontal_zoom, -view_height / 2 - vertical_zoom, -9001)
+        pt_max = pynav.NavlibVector(view_width / 2 + horizontal_zoom, view_height / 2 + vertical_zoom, 9001)
 
         return pynav.NavlibBox(pt_min, pt_max)
 
@@ -98,7 +102,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
         half_height = 2. / projection_matrix.getData()[1,1]
         half_width = half_height * (projection_matrix.getData()[1,1] / projection_matrix.getData()[0,0])
 
-        return pynav.NavlibFrustum(-half_width, half_width, -half_height, half_height, projection_matrix._near, 100. * projection_matrix._far)
+        return pynav.NavlibFrustum(-half_width, half_width, -half_height, half_height, 1., 5000.)
     
     def get_is_view_perspective(self)->bool:
         return self._scene.getActiveCamera().isPerspective()
@@ -215,9 +219,9 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._scene.getActiveCamera().setTransformation(transformation)
 
     def set_view_extents(self, extents: pynav.NavlibBox):
-        self._scene.getActiveCamera().getProjectionMatrix().setOrtho(extents._min._x, extents._max._x, 
-                                                                     extents._min._y, extents._max._y, 
-                                                                     extents._min._z, extents._max._z)
+        view_width = self._scene.getActiveCamera().getViewportWidth()
+        new_zoom = (extents._min._x + view_width / 2.) / - view_width
+        self._scene.getActiveCamera().setZoomFactor(new_zoom)
 
     def set_hit_selection_only(self, onlySelection : bool):
         self._hit_selection_only = onlySelection
