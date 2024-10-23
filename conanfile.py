@@ -281,13 +281,17 @@ class CuraConan(ConanFile):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
+        # filter all binary files in binaries on the blacklist
+        blacklist = pyinstaller_metadata["blacklist"]
+        filtered_binaries = [b for b in binaries if b not in blacklist]
+
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
                 display_name = self._app_name,
                 entrypoint = entrypoint_location,
                 datas = datas,
-                binaries = binaries,
+                binaries = filtered_binaries,
                 venv_script_path = str(self._script_dir),
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
