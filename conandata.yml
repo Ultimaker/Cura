@@ -124,6 +124,13 @@ pyinstaller:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
         Linux: "./icons/cura-128.png"
+    blacklist:
+      - "libassimp.so"
+      - "PyQt6/Qt6/qml/QtQuick3D" # directory
+      - "libqtquick3deffectplugin.so"
+      - "libqtquick3dphysicshelpersplugin.so"
+      - "libqtquick3dparticleeffectsplugin.so"
+      - "etc......."
 pycharm_targets:
   - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja
     module_name: Cura
