@@ -225,6 +225,11 @@ class ThreeMFReader(MeshReader):
             archive = zipfile.ZipFile(file_name, "r")
             self._base_name = os.path.basename(file_name)
             parser = Savitar.ThreeMFParser()
+            for name in archive.namelist():
+                if (name.startswith("3D/") and name.endswith(".model") and name != "3D/3dmodel.model"):
+                    Logger.log("i", "Parse 3mf sub model " + name)
+                    substr = archive.open(name).read()
+                    parser.parse(b"/" + bytes(name, "utf-8") + b":" + substr)
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
 
