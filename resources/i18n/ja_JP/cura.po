@@ -5609,3 +5609,23 @@ msgstr "プリンターを検索"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "これはCura Universalプロジェクトファイルです。Cura Universalプロジェクトとして開きますか？それとも,そこからモデルをインポートしますか？"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "技術サポート用のパッケージをエクスポート"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "モデルデータをエンジンに送信できません。もう一度試すか,サポートにお問い合わせください。"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "モデルデータをエンジンに送信できません。詳細度の低いモデルの使用またはインスタンス数の低減をお試しください。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Cura 5.8から Cura 5.9に構成をアップグレードします。"
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "バージョン5.8から5.9へのアップグレード"

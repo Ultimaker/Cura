@@ -5863,6 +5863,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "頂点のZシーム"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "インフィルパターンにラインを追加して,上のスキンをサポートします。  このオプションは,下のインフィルが上にプリントされるスキンレイヤーを正しくサポートしていないために,複雑な形状のスキンに時々現れる穴やプラスチックの塊を防ぎます。「ウォール」はスキンのアウトラインのみをサポートしますが,「ウォールとライン」はスキンを構成するラインの端もサポートします。"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "高さでのビルドファンの速度"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "レイヤーでのビルドファンの速度"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "ビルドボリュームファンの数"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "スカーフシームに沿って押し出す際のフロー変更における各ステップの長さを決定します。距離が短いほど,より正確になりますが,Gコードはより複雑になります。"
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "スカーフシームの長さを決定します。これは,Zシームをより目立たなくするシームタイプです。効果を得るには,0より大きい値にする必要があります。"
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "段階的なフローの変化におけるステップごとの継続時間"
@@ -5870,6 +5894,10 @@ msgstr "段階的なフローの変化におけるステップごとの継続時
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "段階的なフローの変化を有効にします。有効にすると,フローは目標フローまで段階的に増減します。これは,押し出しモーターの始動/停止時にフローがすぐに変化しないボーデンチューブを備えたプリンターに便利です。"
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "スキンをサポートするための追加のインフィルライン"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5899,6 +5927,90 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "第1層のフローを段階的に変化させるための最低速度"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "なし"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "アウターウォールの加速"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "アウターウォールの減速"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "アウターウォールの終了速度比"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "アウターウォールの速度スプリットの距離"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "アウターウォールの開始速度比"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "フローの継続時間をリセット"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "スカーフシームの長さ"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "スカーフシームの開始の高さ"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "スカーフシームのステップ長"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "ファンが通常の速度で回転する高さ。下のレイヤーでは,ファンは初期速度から通常速度まで徐々に加速します。"
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "ビルドファンが最大速度で回転するレイヤー。この値は計算され,整数に丸められます。"
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "ビルドボリュームを冷却するファンの数。これが0に設定されている場合,ビルドボリュームファンがないことを意味します。"
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "スカーフシームが始まる,選択したレイヤーの高さの比率。数値が低いほど,シームは高くなります。効果を得るには,100未満にする必要があります。"
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "これは,アウターウォールをプリントする際における最高速度に達するまでの加速度です。"
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "これは,アウターウォールのプリントを終了する際の減速度です。"
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "これは,アウターウォールの加減速を適用するために長いパスを分割する際の押し出しパスの最大長です。距離が短いほど,より正確ですが,より冗長なGコードが作成されます。"
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "これは,アウターウォールをプリントする際における終了時の最高速度の比率です。"
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "これは,アウターウォールをプリントする際における開始時の最高速度の比率です。"
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "ウォールのみ"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "ウォールとライン"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "この角度を超えて張り出したウォールは,張り出したウォールの設定を使用してプリントされます。値が90の場合,張り出したウォールとして扱われることはありません。サポートによって支えられている張り出しも,張り出したウォールとして扱われません。さらに,張り出しが半分未満のラインも,張り出しとして扱われません。"
