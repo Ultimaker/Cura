@@ -4,6 +4,7 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from cura.PickingPass import PickingPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from cura.Scene.OverlayNode import OverlayNode, SceneNode
 
 class NavlibClient(pynav.NavlibNavigationModel):
 
@@ -15,6 +16,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._was_pick = False
         self._hit_selection_only = False
         self._picking_pass = None
+        self._pivot_node = OverlayNode(node=SceneNode(), image_path="resources/images/3dx_pivot.png", size=3.)
 
     def pick(self, x, y, check_selection = False, radius = 0.):
 
@@ -218,6 +220,20 @@ class NavlibClient(pynav.NavlibNavigationModel):
         transformation = Matrix(data = matrix._matrix)
         self._scene.getActiveCamera().setTransformation(transformation)
 
+        active_camera = self._scene.getActiveCamera()
+        if active_camera.isPerspective():
+            camera_position = active_camera.getWorldPosition()
+            dist = (camera_position - self._pivot_node.getWorldPosition()).length()
+            scale = dist/400
+            if scale < 1.0:
+                scale = scale * scale
+        else:
+            view_width = active_camera.getViewportWidth()
+            current_size = view_width + (2 * active_camera.getZoomFactor() * view_width)
+            scale = current_size / view_width * 5
+
+        self._pivot_node.scale(scale)
+
     def set_view_extents(self, extents: pynav.NavlibBox):
         view_width = self._scene.getActiveCamera().getViewportWidth()
         new_zoom = (extents._min._x + view_width / 2.) / - view_width
@@ -235,4 +251,13 @@ class NavlibClient(pynav.NavlibNavigationModel):
         else:
             self._was_pick = False
             self._renderer.removeRenderPass(self._picking_pass)
-            
+    
+    def set_pivot_position(self, position):
+        self._pivot_node._target_node.setPosition(position=Vector(position._x, position._y, position._z), transform_space = 3)
+    
+    def set_pivot_visible(self, visible):
+        if visible:
+            self._scene.getRoot().addChild(self._pivot_node)
+        else:
+            self._scene.getRoot().removeChild(self._pivot_node)
+        
