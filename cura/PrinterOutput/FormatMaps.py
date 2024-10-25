@@ -35,16 +35,11 @@ class FormatMaps:
          "nylon12-cf": {"name": "Nylon 12 CF", "guid": "3c6f2877-71cc-4760-84e6-4b89ab243e3b"},
          "nylon-cf": {"name": "Nylon CF", "guid": "17abb865-ca73-4ccd-aeda-38e294c9c60b"},
          "nylon": {"name": "Nylon", "guid": "9475b03d-fd19-48a2-b7b5-be1fb46abb02"},
-         "pc": {"name": "PC", "guid": "62414577-94d1-490d-b1e4-7ef3ec40db02"},
          "petg": {"name": "PETG", "guid": "2d004bbd-d1bb-47f8-beac-b066702d5273"},
          "pla": {"name": "PLA", "guid": "abb9c58e-1f56-48d1-bd8f-055fde3a5b56"},
          "pva": {"name": "PVA", "guid": "add51ef2-86eb-4c39-afd5-5586564f0715"},
          "wss1": {"name": "RapidRinse", "guid": "a140ef8f-4f26-4e73-abe0-cfc29d6d1024"},
          "sr30": {"name": "SR-30", "guid": "77873465-83a9-4283-bc44-4e542b8eb3eb"},
-         "bvoh": {"name": "BVOH", "guid": "923e604c-8432-4b09-96aa-9bbbd42207f4"},
-         "cpe": {"name": "CPE", "guid": "da1872c1-b991-4795-80ad-bdac0f131726"},
-         "hips": {"name": "HIPS", "guid": "a468d86a-220c-47eb-99a5-bbb47e514eb0"},
-         "tpu": {"name": "TPU 95A", "guid": "19baa6a9-94ff-478b-b4a1-8157b74358d2"},
          "im-pla": {"name": "Tough", "guid": "96fca5d9-0371-4516-9e96-8e8182677f3c"}
          # /!\ When changing this list, make sure the changes are reported accordingly on Digital Factory
     }
