@@ -9,7 +9,7 @@
         "manufacturer": "Eazao",
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
-        "has_materials": false,
+        "has_materials": true,
         "machine_extruder_trains": { "0": "eazao_m600_extruder_0" },
         "preferred_quality_type": "normal"
     },
@@ -58,7 +58,7 @@
         "retraction_amount": { "value": 7 },
         "retraction_combing": { "value": "'noskin'" },
         "retraction_count_max": { "value": 100 },
-        "retraction_enable": { "value": false },
+        "retraction_enable": { "value": true },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
         "speed_print": { "value": 20.0 },
