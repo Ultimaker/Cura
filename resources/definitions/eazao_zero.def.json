@@ -19,7 +19,6 @@
         "acceleration_travel": { "value": 300 },
         "adhesion_type": { "default_value": "none" },
         "bottom_layers": { "value": 3 },
-        "cool_fan_enabled": { "value": false },
         "infill_sparse_density": { "value": 0 },
         "initial_bottom_layers": { "value": 3 },
         "jerk_print": { "value": 10 },
