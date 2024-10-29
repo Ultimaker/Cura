@@ -130,6 +130,8 @@ from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .PrintOrderManager import PrintOrderManager
 from .SingleInstance import SingleInstance
 
+from .NavlibClient import NavlibClient
+
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
@@ -1036,6 +1038,10 @@ class CuraApplication(QtApplication):
         controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
+
+        self._navlib_client = NavlibClient(controller.getScene(), self.getRenderer())
+        self._navlib_client.put_profile_hint("UltiMaker Cura")
+        self._navlib_client.enable_navigation(True)
 
         # Hide the splash screen
         self.closeSplash()
