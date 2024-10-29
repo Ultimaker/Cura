@@ -14,7 +14,7 @@ except:
     from PyQt5.QtGui import QImage
 
 class OverlayNode(SceneNode):
-    def __init__(self, node, image_path, parent=None, size=1.):
+    def __init__(self, node, image_path, size, parent=None):
         super().__init__(parent)
         self._target_node = node
         self.setCalculateBoundingBox(False)
@@ -63,6 +63,6 @@ class OverlayNode(SceneNode):
         position_matrix.setByTranslation(node_position)
         camera_orientation = self._scene.getActiveCamera().getOrientation().toMatrix()
 
-        renderer.queueNode(self._scene.getRoot(), shader=self._shader, mesh=self._drawed_mesh.getTransformed(position_matrix.multiply(camera_orientation)), type=3)
+        renderer.queueNode(self._scene.getRoot(), shader=self._shader, mesh=self._drawed_mesh.getTransformed(position_matrix.multiply(camera_orientation)), overlay=True)
 
         return True  # This node does it's own rendering.
