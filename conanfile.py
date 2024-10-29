@@ -283,7 +283,7 @@ class CuraConan(ConanFile):
 
         # filter all binary files in binaries on the blacklist
         blacklist = pyinstaller_metadata["blacklist"]
-        filtered_binaries = [b for b in binaries if any([all([(part in b) for part in parts]) for parts in blacklist])]
+        filtered_binaries = [b for b in binaries if not any([all([(part in b) for part in parts]) for parts in blacklist])]
 
         # TEMP: print to make sure -- remove this before merge
         print("specifically don't include:")
