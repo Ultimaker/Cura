@@ -261,11 +261,17 @@ class CuraConan(ConanFile):
                         to_remove_dirs.append(pathname)
                         break
         for file in to_remove_files:
-            os.remove(file)
-            print(f"deleted file: {file}")
+            try:
+                os.remove(file)
+                print(f"deleted file: {file}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete file {file} results in: {str(ex)}")
         for dir_ in to_remove_dirs:
-            rmdir(self, dir_)
-            print(f"deleted dir_: {dir_}")
+            try:
+                rmdir(self, dir_)
+                print(f"deleted dir_: {dir_}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete folder {dir_} results in: {str(ex)}")
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
@@ -338,8 +344,11 @@ class CuraConan(ConanFile):
         # In case the installer isn't actually pyinstaller (Windows at the moment), outright remove the offending files:
         specifically_delete = set(binaries) - set(filtered_binaries)
         for (unwanted_path, _) in specifically_delete:
-            print(f"delete: {unwanted_path}")
-            os.remove(unwanted_path)
+            try:
+                os.remove(unwanted_path)
+                print(f"delete: {unwanted_path}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete binary {unwanted_path} results in: {str(ex)}")
 
         # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
