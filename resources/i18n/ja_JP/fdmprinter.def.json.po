@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-13 09:02+0100\n"
-"PO-Revision-Date: 2024-10-27 13:38+0000\n"
+"PO-Revision-Date: 2024-10-30 02:17+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -1560,11 +1560,11 @@ msgstr "インフィルオーバーハング角度"
 
 msgctxt "infill_overlap_mm label"
 msgid "Infill Overlap"
-msgstr "インフィル重複"
+msgstr "インフィルの重なり"
 
 msgctxt "infill_overlap label"
 msgid "Infill Overlap Percentage"
-msgstr "インフィル重複率"
+msgstr "インフィルの重なり (%)"
 
 msgctxt "infill_pattern label"
 msgid "Infill Pattern"
@@ -3178,11 +3178,11 @@ msgstr "表面拡張距離"
 
 msgctxt "skin_overlap_mm label"
 msgid "Skin Overlap"
-msgstr "表面重複"
+msgstr "表面の重なり"
 
 msgctxt "skin_overlap label"
 msgid "Skin Overlap Percentage"
-msgstr "表面重複率"
+msgstr "表面の重なり (%)"
 
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
@@ -5741,11 +5741,11 @@ msgstr "ラフト土台フロー量"
 
 msgctxt "raft_base_infill_overlap_mm label"
 msgid "Raft Base Infill Overlap"
-msgstr "ラフト土台インフィル重複"
+msgstr "ラフト土台でのインフィルの重なり"
 
 msgctxt "raft_base_infill_overlap label"
 msgid "Raft Base Infill Overlap Percentage"
-msgstr "ラフト土台インフィル重複率"
+msgstr "ラフト土台でのインフィルの重なり (%)"
 
 msgctxt "raft_flow label"
 msgid "Raft Flow"
@@ -5757,11 +5757,11 @@ msgstr "ラフト境界面フロー量"
 
 msgctxt "raft_interface_infill_overlap_mm label"
 msgid "Raft Interface Infill Overlap"
-msgstr "ラフト境界面インフィル重複"
+msgstr "ラフト境界面でのインフィルの重なり"
 
 msgctxt "raft_interface_infill_overlap label"
 msgid "Raft Interface Infill Overlap Percentage"
-msgstr "ラフト境界面インフィル重複率"
+msgstr "ラフト境界面でのインフィルの重なり (%)"
 
 msgctxt "raft_interface_z_offset label"
 msgid "Raft Interface Z Offset"
@@ -5773,11 +5773,11 @@ msgstr "ラフト表層フロー量"
 
 msgctxt "raft_surface_infill_overlap_mm label"
 msgid "Raft Surface Infill Overlap"
-msgstr "ラフト表面インフィル重複"
+msgstr "ラフト表面でのインフィルの重なり"
 
 msgctxt "raft_surface_infill_overlap label"
 msgid "Raft Surface Infill Overlap Percentage"
-msgstr "ラフト表面インフィル重複率"
+msgstr "ラフト表面でのインフィルの重なり (%)"
 
 msgctxt "raft_surface_z_offset label"
 msgid "Raft Surface Z Offset"
@@ -5817,11 +5817,11 @@ msgstr "インフィルとラフト土台のウォールが重なる量（イン
 
 msgctxt "raft_base_infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "インフィルとラフト土台のウォールとの重なる量。わずかな重なりにより、ウォールがインフィルにしっかりと接続されます。"
+msgstr "インフィルとラフト土台のウォールが重なる量。わずかな重なりにより、ウォールがインフィルにしっかりと接続されます。"
 
 msgctxt "raft_interface_infill_overlap description"
 msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "インフィルとラフト境界面のウォールとの重なる量（インフィルラインの幅に対する割合）。わずかな重なりにより、ウォールがインフィルにしっかりと接続されます。"
+msgstr "インフィルとラフト境界面のウォールが重なる量（インフィルラインの幅に対する割合）。わずかな重なりにより、ウォールがインフィルにしっかりと接続されます。"
 
 msgctxt "raft_interface_infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
