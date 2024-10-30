@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-13 09:02+0100\n"
-"PO-Revision-Date: 2024-10-27 12:31+0000\n"
+"PO-Revision-Date: 2024-10-30 02:53+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -2806,7 +2806,7 @@ msgstr "G-codeは一度に1つしか読み込めません。{0}の取り込み�
 
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
-msgstr "申し訳ありません。スライス処理中に予期せぬエラーが発生しました。設定でデータ共有を無効にしていない場合は、クラッシュログを自動的に受信し分析を行います。また、Issue trackerでプロジェクトの詳細を共有いただけると助かります。"
+msgstr "申し訳ありません。スライス処理中に予期せぬエラーが発生しました。環境設定でデータ共有を無効にしていない場合は、クラッシュログを自動的に受信し分析を行います。また、Issue trackerでプロジェクトの詳細を共有いただけると助かります。"
 
 msgctxt "@action:button"
 msgid "Open"
@@ -2926,7 +2926,7 @@ msgstr[0] "%1個の設定を上書きします。"
 
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
-msgstr "プレファレンス(&R)"
+msgstr "環境設定(&R)"
 
 msgctxt "@item:inlistbox"
 msgid "PNG Image"
@@ -3891,7 +3891,7 @@ msgstr "表示項目設定"
 
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
-msgstr "プレファレンスをセットアップ中..."
+msgstr "環境設定をセットアップ中..."
 
 msgctxt "@info:progress"
 msgid "Setting up scene..."
@@ -4237,7 +4237,7 @@ msgstr "強度"
 
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
-msgstr "匿名のスライス情報を登録します。設定により無効になる可能性があります。"
+msgstr "匿名のスライス情報を登録します。環境設定により無効になる場合があります。"
 
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
