@@ -285,11 +285,13 @@ class CuraConan(ConanFile):
         blacklist = pyinstaller_metadata["blacklist"]
         filtered_binaries = [b for b in binaries if not any([all([(part in b[0].lower()) for part in parts]) for parts in blacklist])]
 
-        # TEMP: print to make sure -- remove this before merge
-        print("specifically don't include:")
-        print(set(binaries) - set(filtered_binaries))
-        print("=== === ===")
+        # In case the installer isn't actually pyinstaller (Windows at the moment), outright remove the offending files:
+        specifically_delete = set(binaries) - set(filtered_binaries)
+        for (unwanted_path, _) in specifically_delete:
+            print(f"delete: {unwanted_path}")
+            os.remove(unwanted_path)
 
+        # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
