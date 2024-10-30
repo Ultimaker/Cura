@@ -264,7 +264,7 @@ class CuraConan(ConanFile):
             os.remove(file)
             print(f"deleted file: {file}")
         for dir_ in to_remove_dirs:
-            os.remove(dir_)
+            rmdir(self, dir_)
             print(f"deleted dir_: {dir_}")
 
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
