@@ -2759,6 +2759,10 @@ msgid "Nozzle Size"
 msgstr "Taille de la buse"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Taille de la buse"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Nombre de copies"
 

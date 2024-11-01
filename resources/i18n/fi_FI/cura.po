@@ -2820,6 +2820,10 @@ msgid "Nozzle Size"
 msgstr "Suuttimen koko"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Suuttimen koko"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Kopioiden määrä"
 

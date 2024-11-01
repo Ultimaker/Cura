@@ -2759,6 +2759,10 @@ msgid "Nozzle Size"
 msgstr "Maat nozzle"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Maat nozzle"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Aantal exemplaren"
 

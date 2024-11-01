@@ -2831,6 +2831,10 @@ msgid "Nozzle Size"
 msgstr "噴頭孔徑"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "噴頭孔徑"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "複製個數"
 

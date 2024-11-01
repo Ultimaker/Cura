@@ -2830,6 +2830,10 @@ msgid "Nozzle Size"
 msgstr "Fúvóka méret"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Fúvóka méret"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Másolatok száma"
 

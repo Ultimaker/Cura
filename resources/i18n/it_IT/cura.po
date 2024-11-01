@@ -2761,6 +2761,10 @@ msgid "Nozzle Size"
 msgstr "Dimensione ugello"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Dimensione ugello"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Numero di copie"
 

@@ -2846,6 +2846,10 @@ msgid "Nozzle Size"
 msgstr "Tamanho do bico"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Tamanho do bico"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Número de Cópias"
 

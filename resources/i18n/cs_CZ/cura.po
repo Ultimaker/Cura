@@ -2845,6 +2845,10 @@ msgid "Nozzle Size"
 msgstr "Velikost trysky"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Velikost trysky"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Počet kopií"
 

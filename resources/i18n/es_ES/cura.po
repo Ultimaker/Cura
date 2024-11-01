@@ -2761,6 +2761,10 @@ msgid "Nozzle Size"
 msgstr "Tamaño de la tobera"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "Tamaño de la tobera"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "Número de copias"
 

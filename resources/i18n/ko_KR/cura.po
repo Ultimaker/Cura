@@ -2756,6 +2756,10 @@ msgid "Nozzle Size"
 msgstr "노즐 크기"
 
 msgctxt "@label"
+msgid "Nozzle size"
+msgstr "노즐 크기"
+
+msgctxt "@label"
 msgid "Number of Copies"
 msgstr "복제할 수"
 
