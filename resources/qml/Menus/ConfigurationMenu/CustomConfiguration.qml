@@ -281,9 +281,21 @@ Item
 
                 UM.Label
                 {
-                    text: catalog.i18nc("@label", Cura.MachineManager.activeDefinitionVariantsName)
+                    text: getDefinitionVariantLabel(Cura.MachineManager.activeDefinitionVariantsName)
                     height: parent.height
                     width: selectors.textWidth
+
+                    function getDefinitionVariantLabel(name) {
+                        if (name === "Nozzle Size" || name === "Nozzle size") {
+                            return catalog.i18nc("@label", "Nozzle Size");
+                        } else if (name === "Print Core" || name === "Print core") {
+                            return catalog.i18nc("@label", "Print Core");
+                        } else if (name === "Extruder") {
+                            return catalog.i18nc("@label", "Extruder");
+                        } else {
+                            return ""; // Or a default label if needed
+                        }
+                    }
                 }
 
                 Cura.PrintSetupHeaderButton
