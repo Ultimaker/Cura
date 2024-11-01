@@ -2757,7 +2757,7 @@ msgid "Nozzle offset Y"
 msgstr "Desplazamiento de la tobera sobre el eje Y"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Tamaño de la tobera"
 
 msgctxt "@label"

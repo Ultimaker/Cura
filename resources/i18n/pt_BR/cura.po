@@ -2842,7 +2842,7 @@ msgid "Nozzle offset Y"
 msgstr "Deslocamento Y do Bico"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Tamanho do bico"
 
 msgctxt "@label"

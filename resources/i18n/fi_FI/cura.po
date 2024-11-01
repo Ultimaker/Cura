@@ -2816,7 +2816,7 @@ msgid "Nozzle offset Y"
 msgstr "Suuttimen Y-siirtymä"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Suuttimen koko"
 
 msgctxt "@label"

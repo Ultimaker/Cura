@@ -2826,7 +2826,7 @@ msgid "Nozzle offset Y"
 msgstr "Fúvóka Y eltolás"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Fúvóka méret"
 
 msgctxt "@label"

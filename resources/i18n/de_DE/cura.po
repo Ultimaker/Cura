@@ -2757,7 +2757,7 @@ msgid "Nozzle offset Y"
 msgstr "Y-Versatz Düse"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Düsengröße"
 
 msgctxt "@label"

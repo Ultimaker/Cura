@@ -2829,7 +2829,7 @@ msgid "Nozzle offset Y"
 msgstr "Korekcja dyszy Y"
 
 msgctxt "@label"
-msgid "Nozzle size"
+msgid "Nozzle Size"
 msgstr "Rozmiar dyszy"
 
 msgctxt "@label"
