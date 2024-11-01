@@ -281,7 +281,7 @@ Item
 
                 UM.Label
                 {
-                    text: Cura.MachineManager.activeDefinitionVariantsName
+                    text: catalog.i18nc("@label", Cura.MachineManager.activeDefinitionVariantsName)
                     height: parent.height
                     width: selectors.textWidth
                 }
