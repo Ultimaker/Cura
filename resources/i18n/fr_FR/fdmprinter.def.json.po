@@ -6114,6 +6114,310 @@ msgstr "déplacement"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 #~ msgstr "La différence de hauteur entre la pointe de la buse et la partie la plus basse de la tête d'impression."
 
-#~ msgctxt "wall_overhang_angle description"
-#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-#~ msgstr "Les parois ayant un angle supérieur à cette valeur seront imprimées en utilisant les paramètres de parois en porte-à-faux. Si la valeur est 90, aucune paroi ne sera considérée comme étant en porte-à-faux. La saillie soutenue par le support ne sera pas non plus considérée comme étant en porte-à-faux."
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "Refroidissement lors de la commutation de l'extrudeuse"
+
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "Gérez la relation spatiale entre le joint en Z de la structure de support et le modèle 3D réel. Ce contrôle est essentiel, car il permet aux utilisateurs d'assurer le retrait transparent des structures de support après l'impression, sans endommager le modèle imprimé ni y laisser de marques."
+
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "Distance min. du joint Z par rapport au modèle"
+
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "Multiplicateur pour le remplissage des couches initiales du support. L'augmentation de ce facteur peut contribuer à l'adhérence du lit."
+
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "Seulement pour la dernière extrudeuse"
+
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "Placz la couture en Z sur un sommet du polygone. Si vous désactivez cette option, vous pouvez également placer la couture entre les sommets. (Gardez à l'esprit que cela n'annule pas les restrictions imposées au placement de la couture sur un surplomb non supporté.)"
+
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "Épaisseur minimale de l'enveloppe de la tour d'amorçage"
+
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "Débit de base du radeau"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "Recouvrement du remplissage de la base du radier"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "Pourcentage de chevauchement du remplissage de la base du radier"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "Débit du radier"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "Débit de l'interface du radier"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "Recouvrement de l'interface du radier"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "Pourcentage de chevauchement de l'interface du radier"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "Décalage Z de l'interface du radeau"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "Écoulement de la surface du radier"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "Chevauchement du remplissage de la surface du radier"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "Pourcentage du remplissage de la surface du radier"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "Décalage Z de la surface du radier"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "Angle du mur en surplomb du joint"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "Couche initiale du multiplicateur de densité du support de remplissage"
+
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "Joint Z du support à l'opposé du modèle"
+
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de la base du radeau. L'augmentation du débit peut améliorer l'adhérence et la solidité structurelle de l'empilement."
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de l'interface du radeau. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du radeau."
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder lors de l'impression du chevron. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du chevron."
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "La quantité de matériau, par rapport à une ligne d'extrusion normale, à extruder pendant l'impression de la surface du radeau. L'augmentation du débit peut améliorer l'adhérence et la résistance structurelle du chevron."
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les parois de la base du radeau, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux parois de se raccorder fermement au remplissage."
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "Le degré de chevauchement entre le remplissage et les parois de la base du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de l'interface du radier, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de l'interface du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les parois de la surface du radier, en pourcentage de la largeur de la ligne de remplissage. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "La quantité de chevauchement entre le remplissage et les murs de la surface du radier. Un léger chevauchement permet aux murs de se raccorder fermement au remplissage."
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "La distance entre le modèle et sa structure de support au niveau de la couture de l'axe z."
+
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "L'épaisseur minimale de la coque de l'échafaudage principal. Vous pouvez l'augmenter pour rendre l'échafaudage plus solide."
+
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "Essayez d'éviter les coutures sur les murs qui dépassent cet angle. Lorsque la valeur est de 90, aucun mur ne sera traité comme étant en surplomb."
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "Inchangé"
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "Lors de l'impression de la première couche de l'interface du radeau, ce décalage permet de personnaliser l'adhérence entre la base et l'interface. Un décalage négatif devrait améliorer l'adhérence."
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "Lors de l'impression de la première couche de la surface du radeau, il faut tenir compte de ce décalage pour personnaliser l'adhérence entre l'interface et la surface. Un décalage négatif devrait améliorer l'adhérence."
+
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "Joint en Z sur le sommet"
+
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "Ajoutez des lignes supplémentaires dans le motif de remplissage pour soutenir les peaux situées au-dessus. Cette option permet d'éviter les trous ou les bulles de plastique qui apparaissent parfois dans les peaux de forme complexe, parce que le remplissage en dessous ne soutient pas correctement la couche de peau imprimée au-dessus. L'option \"Murs\" ne prend en charge que les contours de la peau, tandis que l'option \"Murs et lignes\" prend également en charge les extrémités des lignes qui composent la peau."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "Construire la vitesse du ventilateur en hauteur"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "Vitesse du ventilateur de construction à la couche"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "Numéro du ventilateur de volume de construction"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "Détermine la longueur de chaque étape du changement de flux lors de l'extrusion le long de la jointure biaisée. Une distance plus petite se traduira par un G-code plus précis mais aussi plus complexe."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Détermine la longueur de la jointure biaisée, un type de jointure qui devrait rendre la jointure en Z moins visible. La valeur doit être supérieure à 0 pour être active."
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Durée de chaque pas dans la variation progressive du débit"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Activer les variations de débit progressives. Lorsque cette option est activée, le débit est augmenté ou réduit progressivement jusqu'au débit souhaité. Cette option est utile pour les imprimantes avec un tube bowden où le débit n'est pas modifié immédiatement lorsque le moteur de l'extrudeur démarre ou s'arrête."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "Lignes de remplissage supplémentaires pour soutenir les peaux"
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Pour tout déplacement supérieur à cette valeur, le débit de matière est réinitialisé au débit souhaité pour les trajectoires"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Taille de pas de la discrétisation du débit progressif"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Débit progressif activé"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Accélération progressive jusqu'au débit max"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Accélération maximale du débit lors de la première couche"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Accélération maximale pour les variations de débit progressives"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Vitesse minimale pour les variations de débit progressives pour la première couche"
+
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "Aucune"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "Accélération du mur extérieur"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "Décélération du mur extérieur"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "Rapport de vitesse de fin de mur extérieur"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "Distance de division de la vitesse de mur extérieur"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "Rapport de vitesse de départ du mur extérieur"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Réinitialiser la durée du débit"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "Longueur de la jointure biaisée"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "Hauteur de départ de la jointure biaisée"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "Longueur du pas de la jointure biaisée"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "Hauteur à laquelle les ventilateurs tournent à la vitesse normale. Dans les couches inférieures, la vitesse du ventilateur passe progressivement de la vitesse initiale à la vitesse normale."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "La couche à laquelle les ventilateurs de construction tournent à pleine vitesse. Cette valeur est calculée et arrondie à un nombre entier."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "Le numéro du ventilateur qui refroidit le volume de construction. S'il est fixé à 0, cela signifie qu'il n'y a pas de ventilateur de volume de construction."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "Le ratio de la hauteur de couche sélectionnée à laquelle la jointure biaisée commencera. Un nombre inférieur entraînera une plus grande hauteur de biais. Il doit être inférieur à 100 pour être actif."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "Il s'agit de l'accélération permettant d'atteindre la vitesse maximale lors de l'impression d'un mur extérieur."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "Il s'agit de la décélération permettant de terminer l'impression d'un mur extérieur."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "Il s'agit de la longueur maximale d'un chemin d'extrusion lors de la division d'un chemin plus long pour appliquer l'accélération/décélération du mur extérieur. Une distance plus petite créera un code G plus précis mais aussi plus verbeux."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "Il s'agit du ratio de la vitesse maximale à laquelle il faut terminer lors de l'impression d'un mur extérieur."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "Il s'agit du rapport entre la vitesse maximale et la vitesse de départ lors de l'impression d'un mur extérieur."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "Murs uniquement"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "Murs et lignes"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Les murs qui dépassent de plus de cet angle seront imprimés en utilisant les paramètres des murs en surplomb. Lorsque la valeur est de 90, aucun mur n'est traité comme étant en surplomb. Les surplombs qui sont soutenus par un support ne seront pas non plus traités comme des surplombs. En outre, toute ligne dont le surplomb est inférieur à la moitié ne sera pas non plus traitée comme un surplomb."
