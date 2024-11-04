@@ -408,4 +408,5 @@ charset-normalizer==2.1.0; \
     --hash=sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5
 
 pynavlib==0.9.1; \
-    --hash=sha256:92f9cb4a1b8c081fed1c3b6805fd603c189c4985b8a87aa4bebb07cf9c532e4d
+    --hash=sha256:92f9cb4a1b8c081fed1c3b6805fd603c189c4985b8a87aa4bebb07cf9c532e4d \ 
+    --hash=sha256:085e461863d62c735c8cb76b2e5b60dbc35683820bd348cb38a70e26f69cb32b
