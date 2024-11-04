@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"POT-Creation-Date: 2024-11-04 11:49+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -1049,6 +1049,10 @@ msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Materiál navíc pro extruzi po změně trysky."
 
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
+
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
 msgstr "Primární pozice extruderu X"
@@ -1060,6 +1064,10 @@ msgstr "Primární pozice extruderu Y"
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "První Z pozice extruderu"
+
+msgctxt "variant_name"
+msgid "Extruder:"
+msgstr ""
 
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
@@ -1415,6 +1423,10 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "Má vyhřívanou podložku"
 
+msgctxt "variant_name"
+msgid "Head"
+msgstr ""
+
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "Rychlost zahřívání"
@@ -1454,6 +1466,14 @@ msgstr "Horizontální expanze"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Horizontální faktor zvětšení pro kompenzaci smrštění"
+
+msgctxt "variant_name"
+msgid "Hot end"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hotend"
+msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
@@ -1882,6 +1902,26 @@ msgstr "Je tento materiál typicky při tisku používán jako materiál podpory
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
 msgstr "Rozmazat jen okrajové části modelu a žádné díry modelu."
+
+msgctxt "variant_name"
+msgid "KLEMA 180 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Pro Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Twin Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 500 Size"
+msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -2477,13 +2517,25 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr "Ne na vnějším povrchu"
 
+msgctxt "variant_name"
+msgid "Nozzle"
+msgstr ""
+
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
 msgstr "Úhel trysky"
 
+msgctxt "variant_name"
+msgid "Nozzle Diam"
+msgstr ""
+
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Průměr trysky"
+
+msgctxt "variant_name"
+msgid "Nozzle Diameter"
+msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2492,6 +2544,10 @@ msgstr "Zakázané oblasti pro trysku"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID trysky"
+
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "Velikost trysky"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2512,6 +2568,14 @@ msgstr "Retrakční vzdálenost přepnutí trysek"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "Retrakční rychlost přepnutí trysek"
+
+msgctxt "variant_name"
+msgid "Nozzle Type"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle diameter"
+msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2801,6 +2865,14 @@ msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Akcelerace tisku"
 
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print Head"
+msgstr ""
+
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Trh při tisku"
@@ -2828,6 +2900,10 @@ msgstr ""
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Vytiskněte věž vedle tisku, která slouží k naplnění materiálu po každém přepnutí trysky."
+
+msgctxt "variant_name"
+msgid "Print core"
+msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2876,6 +2952,10 @@ msgstr "Tisknout linky horního povrchu v takovém pořadí, aby se navazující
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
 msgstr "Tisknout horní / dolní linky v takovém pořadí, aby se navazující linky překrývaly ve stejném směru. Tisk zabere trochu více času, ale hladké povrchy budou vypadat více jednolité."
+
+msgctxt "variant_name"
+msgid "PrintHead type"
+msgstr ""
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3908,6 +3988,14 @@ msgstr "Povrchová energie."
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
 msgstr "Prohodí pořadí tisku vnitřní a druhé nejvnitřnější čáry límce. Toto usnadňuje odstraňování límce."
+
+msgctxt "variant_name"
+msgid "SwiftTool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool24"
+msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -5260,6 +5348,18 @@ msgstr "Model bude zvětšen tímto faktorem ve směru Z (vertikálně), aby byl
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "Model bude zvětšen tímto faktorem, aby bylo kompenzováno smrštění materiálu po vychladnutí."
+
+msgctxt "variant_name"
+msgid "Tool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool:"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Toolhead"
+msgstr ""
 
 msgctxt "top_layers label"
 msgid "Top Layers"

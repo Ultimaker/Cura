@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"POT-Creation-Date: 2024-11-04 11:49+0000\n"
 "PO-Revision-Date: 2022-01-02 20:24+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -1049,6 +1049,10 @@ msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "噴頭切換後額外裝填的線材量。"
 
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
+
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
 msgstr "擠出機 X 軸起始位置"
@@ -1060,6 +1064,10 @@ msgstr "擠出機 Y 軸起始位置"
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "擠出機初始 Z 軸位置"
+
+msgctxt "variant_name"
+msgid "Extruder:"
+msgstr ""
 
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
@@ -1417,6 +1425,10 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "有熱床"
 
+msgctxt "variant_name"
+msgid "Head"
+msgstr ""
+
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "加熱速度"
@@ -1455,6 +1467,14 @@ msgstr "水平擴展"
 
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hot end"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hotend"
 msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
@@ -1884,6 +1904,26 @@ msgstr ""
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
 msgstr "只在列印外側時隨機抖動，內部孔洞不抖動。"
+
+msgctxt "variant_name"
+msgid "KLEMA 180 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Pro Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Twin Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 500 Size"
+msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -2479,13 +2519,25 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr "不在外表面上"
 
+msgctxt "variant_name"
+msgid "Nozzle"
+msgstr ""
+
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
 msgstr "噴頭角度"
 
+msgctxt "variant_name"
+msgid "Nozzle Diam"
+msgstr ""
+
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "噴頭直徑"
+
+msgctxt "variant_name"
+msgid "Nozzle Diameter"
+msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2494,6 +2546,10 @@ msgstr "噴頭禁入區域"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "噴頭 ID"
+
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "噴頭孔徑"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2514,6 +2570,14 @@ msgstr "噴頭切換回抽距離"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "噴頭切換回抽速度"
+
+msgctxt "variant_name"
+msgid "Nozzle Type"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle diameter"
+msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2803,6 +2867,14 @@ msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "列印加速度"
 
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print Head"
+msgstr ""
+
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "列印加加速度"
@@ -2830,6 +2902,10 @@ msgstr ""
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "在列印件旁邊印一個塔，用在每次切換噴頭後填充線材。"
+
+msgctxt "variant_name"
+msgid "Print core"
+msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2878,6 +2954,10 @@ msgstr "再列印頂層表面線條時，命令相鄰線條於單方向重疊. �
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
 msgstr "再列印頂層/底層線條時，命令相鄰線條於單方向重疊. 雖然會花更多時間列印，但會使平面更平整."
+
+msgctxt "variant_name"
+msgid "PrintHead type"
+msgstr ""
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3909,6 +3989,14 @@ msgstr "表面能量。"
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool24"
 msgstr ""
 
 msgctxt "alternate_carve_order description"
@@ -5262,6 +5350,18 @@ msgstr ""
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "為了補償線材在冷卻時的收縮，模型會依此比例放大列印。"
+
+msgctxt "variant_name"
+msgid "Tool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool:"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Toolhead"
+msgstr ""
 
 msgctxt "top_layers label"
 msgid "Top Layers"

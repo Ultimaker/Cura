@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"POT-Creation-Date: 2024-11-04 11:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -6000,3 +6000,103 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr ""
 
+
+msgctxt "variant_name"
+msgid "Extruder:"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "PrintHead type"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print core"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle Diam"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 500 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Toolhead"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hot end"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print Head"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle Type"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Twin Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool:"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Pro Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hotend"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Head"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool24"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle diameter"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 180 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle Diameter"
+msgstr ""

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"POT-Creation-Date: 2024-11-04 11:49+0000\n"
 "PO-Revision-Date: 2022-07-15 11:17+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -1046,6 +1046,10 @@ msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr ""
 
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
+
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
 msgstr "Suulakkeen esitäytön X-sijainti"
@@ -1057,6 +1061,10 @@ msgstr "Suulakkeen esitäytön Y-sijainti"
 msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "Suulakkeen esitäytön Z-sijainti"
+
+msgctxt "variant_name"
+msgid "Extruder:"
+msgstr ""
 
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
@@ -1410,6 +1418,10 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "Sisältää lämmitettävän alustan"
 
+msgctxt "variant_name"
+msgid "Head"
+msgstr ""
+
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr ""
@@ -1448,6 +1460,14 @@ msgstr "Vaakalaajennus"
 
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hot end"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Hotend"
 msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
@@ -1876,6 +1896,26 @@ msgstr ""
 
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 180 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Pro Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 250 Twin Size"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "KLEMA 500 Size"
 msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
@@ -2472,13 +2512,25 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr ""
 
+msgctxt "variant_name"
+msgid "Nozzle"
+msgstr ""
+
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle Diam"
 msgstr ""
 
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Suuttimen läpimitta"
+
+msgctxt "variant_name"
+msgid "Nozzle Diameter"
+msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2487,6 +2539,10 @@ msgstr "Suuttimen kielletyt alueet"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Suuttimen tunnus"
+
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "Suuttimen koko"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2507,6 +2563,14 @@ msgstr "Suuttimen vaihdon takaisinvetoetäisyys"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "Suuttimen vaihdon takaisinvetonopeus"
+
+msgctxt "variant_name"
+msgid "Nozzle Type"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Nozzle diameter"
+msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2796,6 +2860,14 @@ msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Tulostuksen kiihtyvyys"
 
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Print Head"
+msgstr ""
+
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Tulostuksen nykäisy"
@@ -2823,6 +2895,10 @@ msgstr ""
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Tulosta tulosteen viereen torni, jolla materiaali esitäytetään aina suuttimen vaihdon jälkeen."
+
+msgctxt "variant_name"
+msgid "Print core"
+msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2870,6 +2946,10 @@ msgstr ""
 
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
+msgctxt "variant_name"
+msgid "PrintHead type"
 msgstr ""
 
 msgctxt "material_print_temperature label"
@@ -3902,6 +3982,14 @@ msgstr ""
 
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "SwiftTool24"
 msgstr ""
 
 msgctxt "alternate_carve_order description"
@@ -5252,6 +5340,18 @@ msgstr ""
 
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Tool:"
+msgstr ""
+
+msgctxt "variant_name"
+msgid "Toolhead"
 msgstr ""
 
 msgctxt "top_layers label"
