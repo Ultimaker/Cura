@@ -5879,11 +5879,11 @@ msgstr "Numéro du ventilateur de volume de construction"
 
 msgctxt "scarf_split_distance description"
 msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
-msgstr "Détermine la longueur de chaque étape du changement de flux lors de l'extrusion le long de la couture du foulard. Une distance plus petite se traduira par un code G plus précis mais aussi plus complexe."
+msgstr "Détermine la longueur de chaque étape du changement de flux lors de l'extrusion le long de la jointure biaisée. Une distance plus petite se traduira par un G-code plus précis mais aussi plus complexe."
 
 msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
-msgstr "Détermine la longueur du joint d'écharpe, un type de joint qui devrait rendre le joint Z moins visible. La valeur doit être supérieure à 0 pour être efficace."
+msgstr "Détermine la longueur de la jointure biaisée, un type de jointure qui devrait rendre la jointure en Z moins visible. La valeur doit être supérieure à 0 pour être active."
 
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
@@ -5955,15 +5955,15 @@ msgstr "Réinitialiser la durée du débit"
 
 msgctxt "scarf_joint_seam_length label"
 msgid "Scarf Seam Length"
-msgstr "Longueur de la couture de l'écharpe"
+msgstr "Longueur de la jointure biaisée"
 
 msgctxt "scarf_joint_seam_start_height_ratio label"
 msgid "Scarf Seam Start Height"
-msgstr "Hauteur de départ de la couture de l'écharpe"
+msgstr "Hauteur de départ de la jointure biaisée"
 
 msgctxt "scarf_split_distance label"
 msgid "Scarf Seam Step Length"
-msgstr "Longueur du pas de couture de l'écharpe"
+msgstr "Longueur du pas de la jointure biaisée"
 
 msgctxt "build_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
@@ -5979,7 +5979,7 @@ msgstr "Le numéro du ventilateur qui refroidit le volume de construction. S'il 
 
 msgctxt "scarf_joint_seam_start_height_ratio description"
 msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
-msgstr "Le ratio de la hauteur de couche sélectionnée à laquelle la couture de l'écharpe commencera. Un nombre inférieur entraînera une plus grande hauteur de couture. Il doit être inférieur à 100 pour être efficace."
+msgstr "Le ratio de la hauteur de couche sélectionnée à laquelle la jointure biaisée commencera. Un nombre inférieur entraînera une plus grande hauteur de biais. Il doit être inférieur à 100 pour être actif."
 
 msgctxt "wall_0_acceleration description"
 msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
