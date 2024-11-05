@@ -7,8 +7,8 @@
         "visible": true,
         "author": "barrnet",
         "platform": "flyingbear_platform.obj",
-        "platform_texture": "flyingbear_platform.png",
         "has_textured_buildplate": true,
+        "platform_texture": "flyingbear_platform.png",
         "quality_definition": "flyingbear_base"
     },
     "overrides":

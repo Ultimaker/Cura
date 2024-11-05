@@ -7,8 +7,8 @@
         "visible": true,
         "author": "Nail` Gimadeev (C)",
         "platform": "uni_300_platform.stl",
-        "platform_texture": "uni.png",
         "has_textured_buildplate": true,
+        "platform_texture": "uni.png",
         "quality_definition": "uni_base"
     },
     "overrides":

@@ -11,6 +11,7 @@
         "platform": "dagoma_sigma_pro.obj",
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
+        "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains":
         {
@@ -18,7 +19,6 @@
             "1": "dagoma_sigma_pro_dual_extruder_left"
         },
         "platform_texture": "dagoma_sigma_pro.png",
-        "has_textured_buildplate": true,
         "preferred_quality_type": "h0.2",
         "preferred_variant_name": "Brass 0.4mm",
         "quality_definition": "dagoma_sigma_pro_dual",

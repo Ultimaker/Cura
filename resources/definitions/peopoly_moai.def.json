@@ -11,9 +11,9 @@
         "platform": "moai.obj",
         "has_machine_quality": true,
         "has_materials": false,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "peopoly_moai_extruder_0" },
-        "platform_texture": "moai.jpg",
-        "has_textured_buildplate": true
+        "platform_texture": "moai.jpg"
     },
     "overrides":
     {

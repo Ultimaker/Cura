@@ -58,6 +58,7 @@
         ],
         "has_machine_quality": true,
         "has_materials": true,
+        "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_sketch_sprint_extruder" },
         "platform_offset": [
@@ -66,7 +67,6 @@
             0
         ],
         "platform_texture": "MakerbotSketchSprint.png",
-        "has_textured_buildplate": true,
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "0.4mm",

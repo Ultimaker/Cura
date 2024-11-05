@@ -10,6 +10,7 @@
         "file_formats": "text/x-gcode",
         "platform": "hellbot_magna.obj",
         "has_materials": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains":
         {
             "0": "hellbot_magna_dual_extruder_1",
@@ -20,8 +21,7 @@
             -1,
             0
         ],
-        "platform_texture": "hellbot.png",
-        "has_textured_buildplate": true
+        "platform_texture": "hellbot.png"
     },
     "overrides":
     {
