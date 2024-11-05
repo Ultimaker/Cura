@@ -17,6 +17,7 @@
         "preferred_quality_type": "h0.2",
         "preferred_variant_name": "Brass 0.4mm",
         "quality_definition": "dagoma_sigma_pro",
+        "has_textured_buildplate": true,
         "variants_name": "Nozzle"
     },
     "overrides":

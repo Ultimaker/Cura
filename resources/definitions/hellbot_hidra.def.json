@@ -20,7 +20,8 @@
             0,
             5
         ],
-        "platform_texture": "hellbot_hidra.png"
+        "platform_texture": "hellbot_hidra.png",
+        "has_textured_buildplate": true
     },
     "overrides":
     {

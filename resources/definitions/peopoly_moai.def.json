@@ -12,7 +12,8 @@
         "has_machine_quality": true,
         "has_materials": false,
         "machine_extruder_trains": { "0": "peopoly_moai_extruder_0" },
-        "platform_texture": "moai.jpg"
+        "platform_texture": "moai.jpg",
+        "has_textured_buildplate": true
     },
     "overrides":
     {

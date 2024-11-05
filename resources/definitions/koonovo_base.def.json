@@ -14,6 +14,7 @@
         "has_materials": true,
         "machine_extruder_trains": { "0": "koonovo_base_extruder_0" },
         "platform_texture": "koonovo.png",
+        "has_textured_buildplate": true,
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard"
     },

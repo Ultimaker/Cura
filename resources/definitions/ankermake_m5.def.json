@@ -12,6 +12,7 @@
         "has_machine_quality": true,
         "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
         "platform_texture": "ankermake_m5.png",
+        "has_textured_buildplate": true,
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal"
     },

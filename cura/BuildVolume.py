@@ -252,13 +252,17 @@ class BuildVolume(SceneNode):
         if not self.getMeshData() or not self.isVisible():
             return True
 
+        theme = self._application.getTheme()
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "default.shader"))
             self._grid_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "grid.shader"))
-            theme = self._application.getTheme()
-            self._grid_shader.setUniformValue("u_plateColor", Color(*theme.getColor("buildplate").getRgb()))
             self._grid_shader.setUniformValue("u_gridColor0", Color(*theme.getColor("buildplate_grid").getRgb()))
             self._grid_shader.setUniformValue("u_gridColor1", Color(*theme.getColor("buildplate_grid_minor").getRgb()))
+
+        plate_color = Color(*theme.getColor("buildplate").getRgb())
+        if self._global_container_stack.getMetaDataEntry("has_textured_buildplate", False):
+            plate_color.setA(0.5)
+        self._grid_shader.setUniformValue("u_plateColor", plate_color)
 
         renderer.queueNode(self, mode = RenderBatch.RenderMode.Lines)
         renderer.queueNode(self, mesh = self._origin_mesh, backface_cull = True)

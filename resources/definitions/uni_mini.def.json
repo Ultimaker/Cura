@@ -8,6 +8,7 @@
         "author": "Nail` Gimadeev (C)",
         "platform": "uni_mini_platform.stl",
         "platform_texture": "uni.png",
+        "has_textured_buildplate": true,
         "quality_definition": "uni_base"
     },
     "overrides":

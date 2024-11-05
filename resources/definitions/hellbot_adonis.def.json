@@ -16,7 +16,8 @@
             -1,
             0
         ],
-        "platform_texture": "hellbot.png"
+        "platform_texture": "hellbot.png",
+        "has_textured_buildplate": true
     },
     "overrides":
     {

@@ -11,7 +11,8 @@
         "platform": "hellbot_magna_SE.obj",
         "has_materials": true,
         "machine_extruder_trains": { "0": "hellbot_magna_SE_extruder" },
-        "platform_texture": "hellbot_magna_SE.png"
+        "platform_texture": "hellbot_magna_SE.png",
+        "has_textured_buildplate": true
     },
     "overrides":
     {

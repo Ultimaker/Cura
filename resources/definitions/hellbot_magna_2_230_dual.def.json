@@ -15,7 +15,8 @@
             "0": "hellbot_magna_2_230_dual_extruder_0",
             "1": "hellbot_magna_2_230_dual_extruder_1"
         },
-        "platform_texture": "Magna2_230.png"
+        "platform_texture": "Magna2_230.png",
+        "has_textured_buildplate": true
     },
     "overrides":
     {

@@ -66,6 +66,7 @@
             0
         ],
         "platform_texture": "MakerbotSketchSprint.png",
+        "has_textured_buildplate": true,
         "preferred_material": "ultimaker_pla_175",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "0.4mm",

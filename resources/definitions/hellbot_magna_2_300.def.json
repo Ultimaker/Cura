@@ -11,7 +11,8 @@
         "platform": "Hellbot_Magna_2_300.obj",
         "has_materials": true,
         "machine_extruder_trains": { "0": "hellbot_magna_2_300_extruder_0" },
-        "platform_texture": "Magna2_300.png"
+        "platform_texture": "Magna2_300.png",
+        "has_textured_buildplate": true
     },
     "overrides":
     {
