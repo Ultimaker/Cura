@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.7\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-11-04 11:49+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: 2024-10-29 03:52+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -1065,10 +1065,6 @@ msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "Posição Z de Purga do Extrusor"
 
-msgctxt "variant_name"
-msgid "Extruder:"
-msgstr ""
-
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
 msgstr "Extrusores Compartilham Aquecedor"
@@ -1425,10 +1421,6 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "Tem Mesa Aquecida"
 
-msgctxt "variant_name"
-msgid "Head"
-msgstr ""
-
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "Velocidade de Aquecimento"
@@ -1468,14 +1460,6 @@ msgstr "Expansão Horizontal"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Compensação de Fator de Encolhimento Horizontal"
-
-msgctxt "variant_name"
-msgid "Hot end"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Hotend"
-msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
@@ -1904,26 +1888,6 @@ msgstr "Se esse material é ou não tipicamente usado como material de suporte d
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
 msgstr "Flutuar movimento apenas nos contornos e não nos furos das peças."
-
-msgctxt "variant_name"
-msgid "KLEMA 180 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Pro Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Twin Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 500 Size"
-msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -2521,25 +2485,13 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr "Não na Superfície Externa"
 
-msgctxt "variant_name"
-msgid "Nozzle"
-msgstr ""
-
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
 msgstr "Ângulo do Bico"
 
-msgctxt "variant_name"
-msgid "Nozzle Diam"
-msgstr ""
-
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Diâmetro do bico"
-
-msgctxt "variant_name"
-msgid "Nozzle Diameter"
-msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2572,14 +2524,6 @@ msgstr "Distância de Retração da Troca de Bico"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "Velocidade de Retração da Troca do Bico"
-
-msgctxt "variant_name"
-msgid "Nozzle Type"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Nozzle diameter"
-msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2873,10 +2817,6 @@ msgctxt "variant_name"
 msgid "Print Core"
 msgstr ""
 
-msgctxt "variant_name"
-msgid "Print Head"
-msgstr ""
-
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Jerk da Impressão"
@@ -2904,10 +2844,6 @@ msgstr "Imprime um brim na parte de fora do modelo, de dentro, ou ambos. Depende
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Imprimir uma torre próxima à impressão que serve para purgar o material a cada troca de bico."
-
-msgctxt "variant_name"
-msgid "Print core"
-msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2956,10 +2892,6 @@ msgstr "Imprime os filetes da superfície superior em uma ordem que faz com que 
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
 msgstr "Imprime filetes superiores e inferiores em uma ordem que os faz sempre se sobreporem a filetes adjacentes em uma única direção. Faz levar um pouco mais de tempo na impressão, mas torna superfícies planas mais consistentes."
-
-msgctxt "variant_name"
-msgid "PrintHead type"
-msgstr ""
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3992,14 +3924,6 @@ msgstr "Energia de superfície."
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
 msgstr "Troca a ordem de impressão do filete de brim mais interno e o segundo mais interno. Isto melhora a remoção do brim."
-
-msgctxt "variant_name"
-msgid "SwiftTool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "SwiftTool24"
-msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -5352,18 +5276,6 @@ msgstr "Para compensar pelo encolhimento do material enquanto esfria, o modelo s
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "Para compensar o encolhimento do material enquanto esfria, o modelo será redimensionado por este fator."
-
-msgctxt "variant_name"
-msgid "Tool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Tool:"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Toolhead"
-msgstr ""
 
 msgctxt "top_layers label"
 msgid "Top Layers"

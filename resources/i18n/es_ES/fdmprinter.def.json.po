@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-11-04 11:49+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1058,10 +1058,6 @@ msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "Posición de preparación del extrusor sobre el eje Z"
 
-msgctxt "variant_name"
-msgid "Extruder:"
-msgstr ""
-
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
 msgstr "Calentador compartido de extrusores"
@@ -1414,10 +1410,6 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "Tiene una placa de impresión caliente"
 
-msgctxt "variant_name"
-msgid "Head"
-msgstr ""
-
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "Velocidad de calentamiento"
@@ -1457,14 +1449,6 @@ msgstr "Expansión horizontal"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "Factor de escala horizontal para la compensación de la contracción"
-
-msgctxt "variant_name"
-msgid "Hot end"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Hotend"
-msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
@@ -1893,26 +1877,6 @@ msgstr "Este material se utiliza normalmente como material de soporte durante la
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
 msgstr "Use solo los contornos de las piezas, no los orificios de las piezas."
-
-msgctxt "variant_name"
-msgid "KLEMA 180 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Pro Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Twin Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 500 Size"
-msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -2508,25 +2472,13 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr "No en la superficie exterior"
 
-msgctxt "variant_name"
-msgid "Nozzle"
-msgstr ""
-
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
 msgstr "Ángulo de la tobera"
 
-msgctxt "variant_name"
-msgid "Nozzle Diam"
-msgstr ""
-
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "Diámetro de la tobera"
-
-msgctxt "variant_name"
-msgid "Nozzle Diameter"
-msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2559,14 +2511,6 @@ msgstr "Distancia de retracción del cambio de tobera"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "Velocidad de retracción del cambio de tobera"
-
-msgctxt "variant_name"
-msgid "Nozzle Type"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Nozzle diameter"
-msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2860,10 +2804,6 @@ msgctxt "variant_name"
 msgid "Print Core"
 msgstr ""
 
-msgctxt "variant_name"
-msgid "Print Head"
-msgstr ""
-
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Impulso de impresión"
@@ -2891,10 +2831,6 @@ msgstr "Imprima un borde en el exterior del modelo, en el interior o en ambos. D
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Imprimir una torre junto a la impresión que sirve para preparar el material tras cada cambio de tobera."
-
-msgctxt "variant_name"
-msgid "Print core"
-msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2943,10 +2879,6 @@ msgstr "Imprime colocando las líneas de la superficie superior de modo que siem
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
 msgstr "Imprime colocando las líneas superior e inferior de modo que siempre se superpongan a las líneas adyacentes en una dirección. Esto lleva un poco más de tiempo de impresión, pero hace que las superficies planas tengan un aspecto más consistente."
-
-msgctxt "variant_name"
-msgid "PrintHead type"
-msgstr ""
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3979,14 +3911,6 @@ msgstr "Energía de la superficie."
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
 msgstr "Intercambie el orden de impresión de las líneas más internas y del segundo borde más interno. De ese modo se mejora la eliminación del borde."
-
-msgctxt "variant_name"
-msgid "SwiftTool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "SwiftTool24"
-msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -5337,18 +5261,6 @@ msgstr "Para compensar la contracción del material al enfriarse, el modelo se e
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "Para compensar la contracción del material a medida que se enfría, el modelo se escala con este factor."
-
-msgctxt "variant_name"
-msgid "Tool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Tool:"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Toolhead"
-msgstr ""
 
 msgctxt "top_layers label"
 msgid "Top Layers"

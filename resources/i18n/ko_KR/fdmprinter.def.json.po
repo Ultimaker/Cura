@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-11-04 11:49+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1058,10 +1058,6 @@ msgctxt "extruder_prime_pos_z label"
 msgid "Extruder Prime Z Position"
 msgstr "익스트루더 프라임 Z 포지션"
 
-msgctxt "variant_name"
-msgid "Extruder:"
-msgstr ""
-
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
 msgstr "압출기의 히터 공유"
@@ -1414,10 +1410,6 @@ msgctxt "machine_heated_bed label"
 msgid "Has Heated Build Plate"
 msgstr "히팅 빌드 플레이트가 있음"
 
-msgctxt "variant_name"
-msgid "Head"
-msgstr ""
-
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
 msgstr "가열 속도"
@@ -1457,14 +1449,6 @@ msgstr "수평 확장"
 msgctxt "material_shrinkage_percentage_xy label"
 msgid "Horizontal Scaling Factor Shrinkage Compensation"
 msgstr "수평 확장 배율 수축 보정"
-
-msgctxt "variant_name"
-msgid "Hot end"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Hotend"
-msgstr ""
 
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
@@ -1893,26 +1877,6 @@ msgstr "이 재료는 일반적으로 프린팅 중에 서포트 재료로 사�
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
 msgstr "부품의 윤곽만 지터하고 부품의 구멍은 지터하지 않습니다."
-
-msgctxt "variant_name"
-msgid "KLEMA 180 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Pro Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 250 Twin Size"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "KLEMA 500 Size"
-msgstr ""
 
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
@@ -2508,25 +2472,13 @@ msgctxt "retraction_combing option no_outer_surfaces"
 msgid "Not on Outer Surface"
 msgstr "외부 표면에 없음"
 
-msgctxt "variant_name"
-msgid "Nozzle"
-msgstr ""
-
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
 msgstr "노즐 각도"
 
-msgctxt "variant_name"
-msgid "Nozzle Diam"
-msgstr ""
-
 msgctxt "machine_nozzle_size label"
 msgid "Nozzle Diameter"
 msgstr "노즐 지름"
-
-msgctxt "variant_name"
-msgid "Nozzle Diameter"
-msgstr ""
 
 msgctxt "nozzle_disallowed_areas label"
 msgid "Nozzle Disallowed Areas"
@@ -2559,14 +2511,6 @@ msgstr "노즐 스위치 리트렉션 거리"
 msgctxt "switch_extruder_retraction_speeds label"
 msgid "Nozzle Switch Retraction Speed"
 msgstr "노즐 스위치 리트렉션 속도"
-
-msgctxt "variant_name"
-msgid "Nozzle Type"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Nozzle diameter"
-msgstr ""
 
 msgctxt "machine_extruder_count label"
 msgid "Number of Extruders"
@@ -2860,10 +2804,6 @@ msgctxt "variant_name"
 msgid "Print Core"
 msgstr ""
 
-msgctxt "variant_name"
-msgid "Print Head"
-msgstr ""
-
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Jerk 프린팅"
@@ -2891,10 +2831,6 @@ msgstr "모델 외부, 내부 또는 양쪽 모두에 브림을 출력합니다.
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "각 노즐을 교체 한 후에 재료를 프라이밍(Priming)하는 프린팅 옆에 타워를 프린팅하십시오."
-
-msgctxt "variant_name"
-msgid "Print core"
-msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2943,10 +2879,6 @@ msgstr "한 방향으로 주변 라인들과 항상 겹치게 하기 위해 상�
 msgctxt "skin_monotonic description"
 msgid "Print top/bottom lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
 msgstr "한 방향으로 주변 라인들과 항상 겹치게 하기 위해 상단/하단 라인들을 배치하여 프린트하십시오. 이는 프린트하는 데 더 많은 시간이 소모되지만 평평한 면이 보다 일관적으로 보이게 합니다."
-
-msgctxt "variant_name"
-msgid "PrintHead type"
-msgstr ""
 
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
@@ -3979,14 +3911,6 @@ msgstr "표면의 에너지입니다."
 msgctxt "brim_smart_ordering description"
 msgid "Swap print order of the innermost and second innermost brim lines. This improves brim removal."
 msgstr "가장 안쪽의 브림 라인과 그다음으로 안쪽에 있는 브림 라인의 프린트 순서를 바꿉니다. 이렇게 하면 브림이 잘 제거됩니다."
-
-msgctxt "variant_name"
-msgid "SwiftTool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "SwiftTool24"
-msgstr ""
 
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
@@ -5337,18 +5261,6 @@ msgstr "냉각됨에 따라 재료 수축을 보정하기 위해 모델이 이 �
 msgctxt "material_shrinkage_percentage description"
 msgid "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor."
 msgstr "냉각됨에 따라 재료 수축을 보상하기 위해 모델이 이 배율로 확장됩니다."
-
-msgctxt "variant_name"
-msgid "Tool"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Tool:"
-msgstr ""
-
-msgctxt "variant_name"
-msgid "Toolhead"
-msgstr ""
 
 msgctxt "top_layers label"
 msgid "Top Layers"
