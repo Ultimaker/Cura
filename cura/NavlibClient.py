@@ -10,7 +10,7 @@ from UM.Resources import Resources
 class NavlibClient(pynav.NavlibNavigationModel):
 
     def __init__(self, scene, renderer) -> None:
-        super().__init__(True, pynav.NavlibOptions.RowMajorOrder)
+        super().__init__(False, pynav.NavlibOptions.RowMajorOrder)
         self._scene = scene
         self._renderer = renderer
         self._pointer_pick = None
