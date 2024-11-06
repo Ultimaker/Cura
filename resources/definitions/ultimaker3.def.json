@@ -21,7 +21,9 @@
             "generic_hips",
             "generic_petcf",
             "structur3d_",
-            "ultimaker_petcf"
+            "ultimaker_petcf",
+            "generic_cffpps",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {

@@ -5861,6 +5861,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Z-naad op vertex"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "Voeg extra lijnen toe aan het invulpatroon om de skins erboven te ondersteunen. Deze optie voorkomt gaten of plastic klodders die soms te zien zijn in complex gevormde skins doordat de invulling eronder de skinlaag die erboven wordt geprint niet correct ondersteunt. 'Wanden' ondersteunt alleen de contouren van de skin, terwijl 'Wanden en lijnen' ook de uiteinden van de lijnen ondersteunt die de skin vormen."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "Constructieventilatorsnelheid op hoogte"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "Constructieventilatorsnelheid op laag"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "Ventilatornummer constructievolume "
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "Bepaalt de lengte van elke stap in de stroomverandering bij het extruderen langs de schuine naad. Een kleinere afstand resulteert in een nauwkeurigere maar ook complexere G-code."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Bepaalt de lengte van de schuine naad, een naadtype dat de Z-naad minder zichtbaar moet maken. Moet hoger zijn dan 0 om effectief te zijn."
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "Duur van elke stap in de geleidelijke stroomverandering"
@@ -5868,6 +5892,10 @@ msgstr "Duur van elke stap in de geleidelijke stroomverandering"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "Geleidelijke stroomwijzigingen inschakelen. Als deze optie is ingeschakeld, wordt de stroom geleidelijk verhoogd/verlaagd tot de doelstroom. Dit is handig voor printers met een bowdenbuis waarbij de stroom niet onmiddellijk verandert wanneer de extrudermotor start/stopt."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "Extra invullijnen ter ondersteuning van skins"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5925,90 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "Minimumsnelheid voor geleidelijke stroomveranderingen voor de eerste laag"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "Geen"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "Buitenwandversnelling"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "Buitenwandvertraging"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "Snelheidsverhouding buitenwand"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "Snelheid splitafstand buitenwand"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "Startsnelheidsverhouding buitenwand"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "Stroomduur opnieuw instellen"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "Lengte schuine naad"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "Starthoogte schuine naad"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "Staplengte schuine naad"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "De hoogte waarop de ventilatoren op normale ventilatorsnelheid draaien. Op de lagen hieronder neemt de ventilatorsnelheid geleidelijk toe van de initiële ventilatorsnelheid naar de normale ventilatorsnelheid."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "De laag waarbij de bouwventilatoren op volle ventilatorsnelheid draaien. Deze waarde wordt berekend en afgerond op een heel getal."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "Het nummer van de ventilator die het constructievolume koelt. Als dit is ingesteld op 0, betekent dit dat er geen constructievolumeventilator is."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "De verhouding van de geselecteerde laaghoogte waarop de schuine naad zal beginnen. Een lager getal resulteert in een grotere naadhoogte. Moet lager zijn dan 100 om effectief te zijn."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "Dit is de versnelling waarmee men de topsnelheid bereikt als men een buitenwand afdrukt."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "Dit is de vertraging waarmee men het afdrukken van een buitenwand beëindigt."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "Dit is de maximale lengte van een extrusiepad bij het splitsen van een langer pad om de versnelling/vertraging van de buitenwand toe te passen. Een kleinere afstand zorgt voor een preciezere maar ook uitgebreide G-code."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "Dit is de verhouding van de topsnelheid om mee te eindigen bij het printen van een buitenwand."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "Dit is de verhouding van de topsnelheid om mee te beginnen bij het printen van een buitenwand."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "Alleen wanden"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "Wanden en lijnen"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Wanden die meer oversteken dan deze hoek worden afgedrukt met behulp van de instellingen voor overhangende wanden. Als de waarde 90 is, worden er geen wanden behandeld als overhangend. Overhangen die ondersteund worden door ondersteuning worden ook niet behandeld als overhang. Daarnaast wordt elke lijn die voor minder dan de helft overhangt ook niet behandeld als overhang."

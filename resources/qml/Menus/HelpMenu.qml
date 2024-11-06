@@ -18,6 +18,8 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.reportBug }
     Cura.MenuItem { action: Cura.Actions.openSponsershipPage }
     Cura.MenuSeparator { }
+    Cura.MenuItem { action: Cura.Actions.exportProjectForSupport }
+    Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.whatsNew }
     Cura.MenuItem { action: Cura.Actions.about }
 }

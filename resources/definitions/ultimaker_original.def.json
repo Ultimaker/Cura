@@ -25,7 +25,9 @@
             "ultimaker_petcf",
             "ultimaker_petg",
             "ultimaker_pva",
-            "ultimaker_tough_pla"
+            "ultimaker_tough_pla",
+            "generic_cffpps",
+            "ultimaker_ppscf"
         ],
         "firmware_file": "MarlinUltimaker-{baudrate}.hex",
         "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}.hex",

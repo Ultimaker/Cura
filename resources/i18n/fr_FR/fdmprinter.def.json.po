@@ -5861,6 +5861,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Joint en Z sur le sommet"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "Ajoutez des lignes supplémentaires dans le motif de remplissage pour soutenir les peaux situées au-dessus. Cette option permet d'éviter les trous ou les bulles de plastique qui apparaissent parfois dans les peaux de forme complexe, parce que le remplissage en dessous ne soutient pas correctement la couche de peau imprimée au-dessus. L'option \"Murs\" ne prend en charge que les contours de la peau, tandis que l'option \"Murs et lignes\" prend également en charge les extrémités des lignes qui composent la peau."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "Construire la vitesse du ventilateur en hauteur"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "Vitesse du ventilateur de construction à la couche"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "Numéro du ventilateur de volume de construction"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "Détermine la longueur de chaque étape du changement de flux lors de l'extrusion le long de la couture du foulard. Une distance plus petite se traduira par un code G plus précis mais aussi plus complexe."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Détermine la longueur du joint d'écharpe, un type de joint qui devrait rendre le joint Z moins visible. La valeur doit être supérieure à 0 pour être efficace."
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "Durée de chaque pas dans la variation progressive du débit"
@@ -5868,6 +5892,10 @@ msgstr "Durée de chaque pas dans la variation progressive du débit"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "Activer les variations de débit progressives. Lorsque cette option est activée, le débit est augmenté ou réduit progressivement jusqu'au débit souhaité. Cette option est utile pour les imprimantes avec un tube bowden où le débit n'est pas modifié immédiatement lorsque le moteur de l'extrudeur démarre ou s'arrête."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "Lignes de remplissage supplémentaires pour soutenir les peaux"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5925,90 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "Vitesse minimale pour les variations de débit progressives pour la première couche"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "Aucune"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "Accélération du mur extérieur"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "Décélération du mur extérieur"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "Rapport de vitesse de fin de mur extérieur"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "Distance de division de la vitesse de mur extérieur"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "Rapport de vitesse de départ du mur extérieur"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "Réinitialiser la durée du débit"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "Longueur de la couture de l'écharpe"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "Hauteur de départ de la couture de l'écharpe"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "Longueur du pas de couture de l'écharpe"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "Hauteur à laquelle les ventilateurs tournent à la vitesse normale. Dans les couches inférieures, la vitesse du ventilateur passe progressivement de la vitesse initiale à la vitesse normale."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "La couche à laquelle les ventilateurs de construction tournent à pleine vitesse. Cette valeur est calculée et arrondie à un nombre entier."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "Le numéro du ventilateur qui refroidit le volume de construction. S'il est fixé à 0, cela signifie qu'il n'y a pas de ventilateur de volume de construction."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "Le ratio de la hauteur de couche sélectionnée à laquelle la couture de l'écharpe commencera. Un nombre inférieur entraînera une plus grande hauteur de couture. Il doit être inférieur à 100 pour être efficace."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "Il s'agit de l'accélération permettant d'atteindre la vitesse maximale lors de l'impression d'un mur extérieur."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "Il s'agit de la décélération permettant de terminer l'impression d'un mur extérieur."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "Il s'agit de la longueur maximale d'un chemin d'extrusion lors de la division d'un chemin plus long pour appliquer l'accélération/décélération du mur extérieur. Une distance plus petite créera un code G plus précis mais aussi plus verbeux."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "Il s'agit du ratio de la vitesse maximale à laquelle il faut terminer lors de l'impression d'un mur extérieur."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "Il s'agit du rapport entre la vitesse maximale et la vitesse de départ lors de l'impression d'un mur extérieur."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "Murs uniquement"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "Murs et lignes"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Les murs qui dépassent de plus de cet angle seront imprimés en utilisant les paramètres des murs en surplomb. Lorsque la valeur est de 90, aucun mur n'est traité comme étant en surplomb. Les surplombs qui sont soutenus par un support ne seront pas non plus traités comme des surplombs. En outre, toute ligne dont le surplomb est inférieur à la moitié ne sera pas non plus traitée comme un surplomb."

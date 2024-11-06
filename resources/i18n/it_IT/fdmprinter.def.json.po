@@ -5861,6 +5861,31 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Cucitura Z sul vertice"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "Aggiunge linee supplementari nel modello di riempimento per supportare gli strati sovrastanti. Questa opzione impedisce la formazione di vuoti o bolle di plastica che a volte compaiono nei modelli più complessi a causa del fatto che il riempimento sottostante non supporta correttamente lo strato stampato al di sopra."
+"'Pareti' supporta solo i margini dello strato, mentre 'Pareti e linee' supporta anche le estremità delle file che compongono lo strato."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "Velocità della ventola di costruzione per altezza "
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "Velocità della ventola di costruzione per strato"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "Numero ventola volume di stampa"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "Determina la lunghezza di ciascun passo nella modifica del flusso durante l'estrusione lungo la cucitura a sciarpa. Una distanza minore determina un codice G più preciso ma anche più complesso."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Determina la lunghezza della cucitura a sciarpa, un tipo di cucitura che dovrebbe rendere la cucitura Z meno visibile. Deve essere superiore a 0 per essere efficace."
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "Durata di ogni gradino per la variazione graduale del flusso"
@@ -5868,6 +5893,10 @@ msgstr "Durata di ogni gradino per la variazione graduale del flusso"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "Abilitare le variazioni graduali del flusso. Quando abilitate, il flusso viene aumentato/diminuito gradualmente fino al flusso target. Ciò è utile per le stampanti dotate di tubo bowden dove il flusso non viene modificato immediatamente all'avvio/arresto del motore dell'estrusore."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "Linee di rinforzo extra per sostenere gli strati superiori"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5926,90 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "Velocità minima per le variazioni graduali del flusso per il primo strato."
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "Nessuno"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "Accelerazione parete esterna"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "Decelerazione parete esterna"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "Rapporto di velocità finale parete esterna"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "Velocità distanza di divisione della parete esterna"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "Rapporto di velocità iniziale parete esterna"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "Reimpostare la durata del flusso"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "Lunghezza cucitura a sciarpa"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "Altezza iniziale cucitura a sciarpa"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "Lunghezza passo cucitura a sciarpa"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "L'altezza alla quale le ventole girano a velocità regolare. Nei livelli sottostanti la velocità delle ventole aumenta gradualmente da Velocità iniziale della ventola a Velocità regolare della ventola."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Lo strato a cui le ventole di costruzione girano alla massima velocità. Questo valore viene calcolato e arrotondato a un numero intero."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "Il numero della ventola che raffredda il volume di stampa. Se è impostato su 0, significa che non è presente alcuna ventola per il volume di stampa."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "Il rapporto tra l'altezza dello strato selezionato e l'inizio della cucitura a sciarpa. Un numero più basso comporta un'altezza di cucitura maggiore. Per essere efficace, deve essere inferiore a 100."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "Si tratta dell'accelerazione con cui si raggiunge la velocità massima quando si stampa una parete esterna."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "Si tratta della decelerazione con cui terminare la stampa di una parete esterna."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "È la lunghezza massima di un percorso di estrusione se si divide un percorso più lungo per poter utilizzare l'accelerazione/decelerazione della parete esterna. Una distanza minore crea un codice G più preciso ma anche più laborioso."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "Si tratta del rapporto della velocità massima con cui terminare la stampa di una parete esterna."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "Questo è il rapporto della velocità massima da cui partire quando si stampa una parete esterna."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "Solo pareti"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "Pareti e linee"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Le pareti che sporgono più di questo angolo verranno stampate utilizzando le impostazioni per le pareti sporgenti. Con un valore di 90, nessun muro verrà considerato come sporgente. Anche le sporgenze sostenute da un supporto non verranno trattate come tali. Infine, qualsiasi linea che sia meno della metà della sporgenza non verrà gestita come tale."
