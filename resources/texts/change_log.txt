@@ -29,6 +29,17 @@
 - Fixed a bug that prevented changes to the initial layer diameter from being applied properly, contributed by @ThomasRahm
 - Fixed a rounding issue in the engine math, @0x5844
 
+* Bugs resolved after the first Beta
+- Spiralize outer contour no longer adds unnecessary seams to the model
+- When coasting is enabled the printhead no longer drops down 
+- Updated the strategy for sharpest corner - smart hiding seam location combination
+- Fixed a bug where long scarf seams and short scarf seam steps would result in the seam being moved outward
+- Fixed a bug where seam acceleration and deceleration were not working 
+- Fixed a bug where infill was wrongly removed from narrow spaces 
+- Triple-clicking values and searches that you entered now has you select everything so you can edit it in the field similar to other desktop applications
+- Updated dependencies and improved how unwanted and unused binaries are excluded from the building process. 
+- Added Eazao material for the new Eazao printers
+
 * Printer definitions, profiles, and materials:
 - Introduced Makerbot Sketch Sprint
 - Introduced Makerbot Sketch and Sketch Large
@@ -45,6 +56,12 @@
 * Community Translations
 - Updated Japanese translations by @h1data
 - Brazilian Portuguese by @Patola
+
+* Known issues
+- This second beta introduces a change that affects the UI so please use buttons, dropdowns, menus, and flows. We hope we did this correctly but it is a tricky change. If you see the crash please report it to us, and we will also see it show up in our crash tracking tool. 
+- There is a slight regression in terms of seam alignment in different strategies we hope to resolve before stable
+- We see an increase in micro-segments in the outer wall, which we hope to resolve before stable 
+- We see rare cases of Cura crashing after opening project files with custom extruders or printer settings than the printer that is already loaded
 
 [5.8.1]
 
