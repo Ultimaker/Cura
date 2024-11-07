@@ -157,7 +157,6 @@ class SliceInfo(QObject, Extension):
             global_stack = machine_manager.activeMachine
 
             data = dict()  # The data that we're going to submit.
-            data["time_stamp"] = time.time()
             data["schema_version"] = 1000
             data["cura_version"] = self._application.getVersion()
             data["cura_build_type"] = ApplicationMetadata.CuraBuildType
@@ -334,8 +333,6 @@ class SliceInfo(QObject, Extension):
             flat_data = dict()
             self._flattenData(data, flat_data)
             data = flat_data
-            timestamp = datetime.datetime.utcfromtimestamp(float(data["time_stamp"]))
-            data["timestamp"] = f"{str(timestamp)} UTC"
 
             # Convert data to bytes
             binary_data = json.dumps(data).encode("utf-8")
