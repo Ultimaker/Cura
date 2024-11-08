@@ -8983,7 +8983,7 @@
                 },
                 "wall_0_acceleration":
                 {
-                    "label": "Outer Wall Acceleration",
+                    "label": "Outer Wall Start Acceleration",
                     "description": "This is the acceleration with which to reach the top speed when printing an outer wall.",
                     "enabled": "wall_0_start_speed_ratio < 100.0",
                     "type": "float",
@@ -9010,7 +9010,7 @@
                 },
                 "wall_0_deceleration":
                 {
-                    "label": "Outer Wall Deceleration",
+                    "label": "Outer Wall End Deceleration",
                     "description": "This is the deceleration with which to end printing an outer wall.",
                     "enabled": "wall_0_end_speed_ratio < 100.0",
                     "type": "float",
