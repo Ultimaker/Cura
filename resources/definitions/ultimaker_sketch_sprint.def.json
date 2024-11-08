@@ -58,6 +58,7 @@
         ],
         "has_machine_quality": true,
         "has_materials": true,
+        "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_sketch_sprint_extruder" },
         "platform_offset": [
