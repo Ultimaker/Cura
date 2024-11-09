@@ -1,3 +1,68 @@
+[5.9]
+
+* New features and improvements:
+- Introduced scarf seam settings in experimental, Scarf Seam Length, Scarf Seam Start Height, and Scarf Seam Split Distance
+- Updated the Start and End G-code edit options (for both Machine and Extruder) to include If/Else statements and formulas
+- Introduced Build Fan Speed at Height, Build Fan Speed at Layer, and Build Volume Fan Number to control extra fans, like those controlling the build volume separately
+- Added the "Extra Infill Lines to Support Skins" setting and other improvements to help make printing over sparse infill more reliable, contributed by @Hello1024
+- Significant UI speed improvements interacting with custom settings especially if your printer has multiple extruders
+- Introduced an Anycolor option for the UltiMaker S and F series enabling you to print with any UltiMaker color loaded in the material station that is compatible with the printjobs. Note that it’s only compatible with the latest version of the firmware (for Factor 4 >=10.1  and for S-series >=9.0)
+- Added an option to Export Package for Technical Support to the help menu, it includes a project file with the settings but also the logs
+- Improved the way materials are selected when using multiple extruders to print the build plate adhesion so it doesn't default to the first extruder but the best option instead.
+- Improved processes so not only installers but also executables inside installers are signed for Windows
+- Introduced an error message that informs when a file is too big to slice
+- Made it possible for multiple Engine plugins that are registered to the same slot to be used together. (Only for Modify plugins, and Plugins will be addressed alphabetically)
+- Moved the Gradual Flow Engine Plug-in to CuraEngine instead
+- Improved and expanded the Insert at Layer Change post-processing script, contributed by @GregValiant
+- Improved and expanded the Time Lapse Post Processing script, contributed by @GregValiant
+- Added a registry entry to provide the option to silent uninstall on Windows, contributed by @Rotzbua
+
+* Bug fixes:
+- Fixed a crash that would occur when renaming profile names that would result in changing the order of the profiles
+- Fixed a bug so objects in a 3MF reload in the same position as they were saved again, contributed by @nilsiism
+- Fixed an issue where overhanging walls and walls that were adjacent to overhanging walls were not printed at the correct speed
+- Fixed a bug that prevented the "Sync materials with printers" page from displaying when accessed immediately after starting Cura or signing in
+- Fixed a bug where reloading an updated model would result in not all the duplicates of the model being updated
+- Fixed a bug that showed incompatible materials when switching between printers with a different filament diameter. 
+- Fixed a bug where tree support in enclosed holes have missing layers
+- Made improvements in the G-codePathModify slot for Engine Plugins, contributed by @ThomasRahm
+- Fixed a bug that prevented changes to the initial layer diameter from being applied properly, contributed by @ThomasRahm
+- Fixed a rounding issue in the engine math, @0x5844
+
+* Bugs resolved after the first Beta
+- Spiralize outer contour no longer adds unnecessary seams to the model
+- When coasting is enabled the printhead no longer drops down 
+- Updated the strategy for sharpest corner - smart hiding seam location combination
+- Fixed a bug where long scarf seams and short scarf seam steps would result in the seam being moved outward
+- Fixed a bug where seam acceleration and deceleration were not working 
+- Fixed a bug where infill was wrongly removed from narrow spaces 
+- Triple-clicking values and searches that you entered now has you select everything so you can edit it in the field similar to other desktop applications
+- Updated dependencies and improved how unwanted and unused binaries are excluded from the building process. 
+- Added Eazao material for the new Eazao printers
+
+* Printer definitions, profiles, and materials:
+- Introduced Makerbot Sketch Sprint
+- Introduced Makerbot Sketch and Sketch Large
+- Introduced new materials to the UltiMaker Method series, ABS, PETG, Nylon-CF, and Tough PLA
+- Introduced Labs Extruder for the UltiMaker Method series together with BASF Ultrafuse 316L, TPE SEBS 1300 95A, and Polymax PC. Except BASF Ultrafuse 316L is not available on the Method XL.
+- Various setting improvements for ABS and Nylon for UltiMaker Method series
+- Various setting improvements for dual extrusion support for the UltiMaker Method series
+- Implemented a hard limit so the bed temperature cannot be more than 120C on all UltiMaker printers.
+- Introduced the Creality CR-M4, contributed by @kixell
+- Introduced Eazao M500, M600, M700, and Potter, and updated the Eazao Zero, contributed by @Eazo
+- Introduced ZYYX+, ZYYX Pro, and ZYYX Pro ii, contributed by @theodorhansson
+- Updated acceleration settings for the Creality Ender-2 V3 SE, contributed by @T9Air
+
+* Community Translations
+- Updated Japanese translations by @h1data
+- Brazilian Portuguese by @Patola
+
+* Known issues
+- This second beta introduces a change that affects the UI so please use buttons, dropdowns, menus, and flows. We hope we did this correctly but it is a tricky change. If you see the crash please report it to us, and we will also see it show up in our crash tracking tool. 
+- There is a slight regression in terms of seam alignment in different strategies we hope to resolve before stable
+- We see an increase in micro-segments in the outer wall, which we hope to resolve before stable 
+- We see rare cases of Cura crashing after opening project files with custom extruders or printer settings than the printer that is already loaded
+
 [5.8.1]
 
 * Bug fixes:

@@ -5861,6 +5861,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "버텍스 상의 Z 심"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "위 스킨을 지지하기 위해 내부채움 패턴에 선을 추가로 더합니다. 이 옵션은 아래의 내부채움이 위에 출력되는 스킨 레이어를 제대로 지지하지 못해 복잡한 모양의 스킨에 구멍이나 플라스틱 방울이 생기는 것을 방지합니다. '벽'은 스킨의 윤곽선만 지지하는 반면 '벽 및 선'은 스킨을 이루는 선의 끝부분도 지지합니다."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "높이에서 팬 속도 설정"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "레이어에서 팬 속도 설정"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "빌드 볼륨 팬 번호"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "스카프 솔기를 따라 압출할 때 흐름 변화에서 각 단계의 길이를 결정합니다. 거리가 짧을수록 더 정밀하지만 G코드도 복잡해집니다."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Z 솔기를 덜 보이게 하는 솔기 유형인 스카프 솔기의 길이를 결정합니다. 0보다 커야 효과적입니다."
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
@@ -5868,6 +5892,10 @@ msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "점진적 흐름 변경을 활성화합니다. 활성화하면 흐름이 목표 흐름까지 점진적으로 증가/감소합니다. 이는 압출기 모터가 시작/정지될 때 흐름이 즉시 변경되지 않는 보우덴 튜브가 있는 프린터에 유용합니다."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "스킨을 지지하는 추가 내부채움 선"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5925,90 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "첫 번째 레이어의 점진적 흐름 변경에 대한 최소 속도"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "없음"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "외벽 가속"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "외벽 감속"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "외벽 종료 속도 비율"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "외벽 속도 분할 거리"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "외벽 시작 속도 비율"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "흐름 지속 시간 재설정"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "스카프 솔기 길이"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "스카프 솔기 시작 높이"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "스카프 솔기 단계 길이"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "일반 팬 속도에서 팬이 회전하는 높이입니다. 아래 레이어에서는 팬 속도가 초기 팬 속도에서 일반 팬 속도로 점차 증가합니다."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "빌드 팬이 최대 팬 속도로 회전하는 레이어입니다. 이 값은 계산되어 정수로 반올림됩니다."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "빌드 볼륨을 냉각하는 팬의 수입니다. 0으로 설정하면 빌드 볼륨 팬이 없는 것을 나타냅니다."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "스카프 솔기가 시작되는 선택한 레이어 높이의 비율입니다. 숫자가 낮을수록 솔기 높이가 커집니다. 100보다 낮아야 효과적입니다."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "외벽을 출력할 때 최고 속도에 도달하는 가속도입니다."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "외벽 출력을 종료할 때의 감속도입니다."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "외벽 가속/감속을 적용하기 위해 긴 경로를 분할 때 압출 경로의 최대 길이입니다. 거리가 짧을수록 더 정밀해지지만 G코드도 복잡해집니다."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "외벽을 출력할 때 종료되는 최고 속도의 비율입니다."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "외벽을 출력할 때 시작되는 최고 속도의 비율입니다."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "벽만"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "벽 및 선"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "이 각도보다 더 돌출된 벽은 돌출 벽 설정을 사용하여 출력됩니다. 값이 90인 경우 벽은 돌출부로 간주하지 않습니다. 지지대가 지지하는 돌출부도 돌출부로 간주하지 않습니다. 또한 돌출부의 절반보다 짧은 선도 돌출부로 간주하지 않습니다."

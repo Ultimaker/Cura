@@ -68,6 +68,9 @@ class CuraEngineBackend(QObject, Backend):
         """
 
         super().__init__()
+        self._init_done = False
+        self._immediate_slice_after_init = False
+
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
@@ -268,6 +271,10 @@ class CuraEngineBackend(QObject, Backend):
         self._machine_error_checker = application.getMachineErrorChecker()
         self._machine_error_checker.errorCheckFinished.connect(self._onStackErrorCheckFinished)
 
+        self._init_done = True
+        if self._immediate_slice_after_init:
+            self.slice()
+
     def close(self) -> None:
         """Terminate the engine process.
 
@@ -341,6 +348,11 @@ class CuraEngineBackend(QObject, Backend):
 
     def slice(self) -> None:
         """Perform a slice of the scene."""
+
+        if not self._init_done:
+            self._immediate_slice_after_init = True
+            return
+        self._immediate_slice_after_init = False
 
         self._createSnapshot()
 
