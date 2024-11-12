@@ -90,7 +90,7 @@ class CuraConan(ConanFile):
 
     @property
     def _base_dir(self):
-        return Path(self.source_folder, "venv")
+        return Path(self.source_folder if self.source_folder is not None else self.deploy_folder, "venv")
 
     @property
     def _share_dir(self):
@@ -199,7 +199,7 @@ class CuraConan(ConanFile):
 
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
-                    src_path = str(Path(self.source_folder, data["src"]))
+                    src_path = str(Path(self._base_dir, data["src"]))
                 else:
                     if data["package"] not in self.dependencies:
                         continue
@@ -216,7 +216,7 @@ class CuraConan(ConanFile):
             if "package" in binary:  # get the paths from conan package
                 src_path = os.path.join(self.dependencies[binary["package"]].package_folder, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = str(Path(self.source_folder, binary["root"], binary["src"]))
+                src_path = str(Path(self._base_dir, binary["root"], binary["src"]))
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
@@ -402,7 +402,7 @@ class CuraConan(ConanFile):
                 self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def deploy(self):
-        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.install_folder, "packaging"), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.deploy_folder, "packaging"), keep_path = True)
 
         # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
@@ -445,8 +445,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
-        entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
-        self._generate_pyinstaller_spec(location = self._base_dir,
+        entitlements_file = "'{}'".format(Path(self.deploy_folder, "packaging", "MacOS", "cura.entitlements"))
+        self._generate_pyinstaller_spec(location = self.deploy_folder,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None")
