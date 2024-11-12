@@ -1905,10 +1905,10 @@ class CuraApplication(QtApplication):
                         # Use a regex to extract the filename
                         content_disposition = str(response.rawHeader(content_disposition_header_key).data(),
                                                   encoding='utf-8')
-                        content_disposition_match = re.match(r'attachment; filename="?(?P<filename>.*)"?',
+                        content_disposition_match = re.match(r'attachment; filename=(?P<filename>.*)',
                                                              content_disposition)
                         if content_disposition_match is not None:
-                            filename = content_disposition_match.group("filename")
+                            filename = content_disposition_match.group("filename").strip("\"")
 
                     tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
                     with open(tmp.name, "wb") as f:
