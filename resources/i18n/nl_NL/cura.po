@@ -2755,6 +2755,10 @@ msgid "Nozzle offset Y"
 msgstr "Nozzle-offset Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Maat nozzle"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Maat nozzle"
 

@@ -15,9 +15,11 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "machine_extruder_trains": { "0": "fdmextruder" },
+        "has_textured_buildplate": false,
         "supports_usb_connection": true,
         "supports_network_connection": false,
-        "supports_abstract_color": false
+        "supports_abstract_color": false,
+        "variants_name_has_translation": false
     },
     "settings":
     {
@@ -8981,7 +8983,7 @@
                 },
                 "wall_0_acceleration":
                 {
-                    "label": "Outer Wall Acceleration",
+                    "label": "Outer Wall Start Acceleration",
                     "description": "This is the acceleration with which to reach the top speed when printing an outer wall.",
                     "enabled": "wall_0_start_speed_ratio < 100.0",
                     "type": "float",
@@ -9008,7 +9010,7 @@
                 },
                 "wall_0_deceleration":
                 {
-                    "label": "Outer Wall Deceleration",
+                    "label": "Outer Wall End Deceleration",
                     "description": "This is the deceleration with which to end printing an outer wall.",
                     "enabled": "wall_0_end_speed_ratio < 100.0",
                     "type": "float",
