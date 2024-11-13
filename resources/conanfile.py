@@ -15,9 +15,8 @@ class CuraResource(ConanFile):
     url = "https://github.com/Ultimaker/cura"
     description = "Cura Resources"
     topics = ("conan", "cura")
-    settings = "os", "compiler", "build_type", "arch"
     no_copy_source = True
-    package_type = "header-library"
+    package_type = "shared-library"
 
     @property
     def _shared_resources(self):
