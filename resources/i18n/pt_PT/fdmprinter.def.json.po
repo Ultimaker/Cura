@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -94,7 +94,7 @@ msgstr "Camadas Adaptáveis calcula as espessuras das camadas conforme a forma d
 
 msgctxt "extra_infill_lines_to_support_skins description"
 msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
-msgstr ""
+msgstr "Adicione linhas extra ao padrão de preenchimento para suportar as películas superiores.   Esta opção previne o surgimento de buracos ou bolhas de plástico que por vezes surgem em películas de forma complexa devido ao facto de o preenchimento inferior não suportar corretamente a camada da película a ser impressa acima.  A opção \"Paredes\" suporta apenas os contornos da película, ao passo que a opção \"Paredes e Linhas\" também suporta as extremidades das linhas que compôem a película."
 
 msgctxt "infill_wall_line_count description"
 msgid ""
@@ -444,11 +444,11 @@ msgstr "Largura da Aba"
 
 msgctxt "build_fan_full_at_height label"
 msgid "Build Fan Speed at Height"
-msgstr ""
+msgstr "Velocidade da ventoinha de montagem em altura"
 
 msgctxt "build_fan_full_layer label"
 msgid "Build Fan Speed at Layer"
-msgstr ""
+msgstr "Velocidade da ventoinha de montagem em camada"
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
@@ -492,7 +492,7 @@ msgstr "Aviso de temperatura do volume de construção"
 
 msgctxt "build_volume_fan_nr label"
 msgid "Build volume fan number"
-msgstr ""
+msgstr "Número da ventoinha de volume de montagem"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
@@ -732,11 +732,11 @@ msgstr "Detetar vãos (bridges) e modificar as definições da velocidade de imp
 
 msgctxt "scarf_split_distance description"
 msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
-msgstr ""
+msgstr "Determina o comprimento de cada etapa na variação de fluxo ao expelir ao longo da costura do encaixe. Uma menor distância irá resultar num código G mais preciso mas também mais complexo."
 
 msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
-msgstr ""
+msgstr "Determina o comprimento da costura do encaixe, um tipo de costura que deverá tornar a costura Z menos visível. Deve ser superior a 0 de modo a ser eficaz."
 
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
@@ -1028,7 +1028,7 @@ msgstr "A costura extensiva tenta coser buracos abertos na malha, ao fechá-los 
 
 msgctxt "extra_infill_lines_to_support_skins label"
 msgid "Extra Infill Lines To Support Skins"
-msgstr ""
+msgstr "Linhas de preenchimento extra para suportar as películas"
 
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
@@ -1041,6 +1041,10 @@ msgstr "Paredes Revestimento Extra"
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Material extra a preparar após a substituição do nozzle."
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -2438,7 +2442,7 @@ msgstr "Nenhum"
 
 msgctxt "extra_infill_lines_to_support_skins option none"
 msgid "None"
-msgstr ""
+msgstr "Nenhuma"
 
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
@@ -2483,6 +2487,10 @@ msgstr "Áreas não permitidas ao nozzle"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID do Nozzle"
+
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "Tamanho do nozzle"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2614,15 +2622,15 @@ msgstr "Aceleração da parede exterior"
 
 msgctxt "wall_0_acceleration label"
 msgid "Outer Wall Acceleration"
-msgstr ""
+msgstr "Aceleração da parede externa"
 
 msgctxt "wall_0_deceleration label"
 msgid "Outer Wall Deceleration"
-msgstr ""
+msgstr "Desaceleração da parede externa"
 
 msgctxt "wall_0_end_speed_ratio label"
 msgid "Outer Wall End Speed Ratio"
-msgstr ""
+msgstr "Taxa de velocidade da extremidade da parede externa"
 
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
@@ -2650,11 +2658,11 @@ msgstr "Velocidade Parede Exterior"
 
 msgctxt "wall_0_speed_split_distance label"
 msgid "Outer Wall Speed Split Distance"
-msgstr ""
+msgstr "Distância de separação de velocidade da parede externa"
 
 msgctxt "wall_0_start_speed_ratio label"
 msgid "Outer Wall Start Speed Ratio"
-msgstr ""
+msgstr "Taxa de velocidade de início da parede externa"
 
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
@@ -2791,6 +2799,10 @@ msgstr "Posição Y da torre de preparação"
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Aceleração de impressão"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
 
 msgctxt "jerk_print label"
 msgid "Print Jerk"
@@ -3298,15 +3310,15 @@ msgstr "Compensação de redução do fator de escala"
 
 msgctxt "scarf_joint_seam_length label"
 msgid "Scarf Seam Length"
-msgstr ""
+msgstr "Comprimento da costura do encaixe"
 
 msgctxt "scarf_joint_seam_start_height_ratio label"
 msgid "Scarf Seam Start Height"
-msgstr ""
+msgstr "Altura de início da costura do encaixe"
 
 msgctxt "scarf_split_distance label"
 msgid "Scarf Seam Step Length"
-msgstr ""
+msgstr "Comprimento da etapa de costura do encaixe"
 
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
@@ -4366,7 +4378,7 @@ msgstr "A altura acima das partes horizontais do modelo em que deve imprimir o m
 
 msgctxt "build_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
-msgstr ""
+msgstr "A altura a que as ventoinhas giram a uma velocidade normal. Nas camadas inferiores, a velocidade da ventoinha aumenta gradualmente, desde a Velocidade de Ventoinha Inicial a Velocidade de Ventoinha Normal."
 
 msgctxt "cool_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
@@ -4476,7 +4488,7 @@ msgstr "A largura máxima das áreas do revestimento superior a serem removidas.
 
 msgctxt "build_fan_full_layer description"
 msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
-msgstr ""
+msgstr "A camada em que as ventoinhas de montagem giram a uma velocidade de ventoinha total. Este valor é calculado e arredondado para um número inteiro."
 
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
@@ -4764,7 +4776,7 @@ msgstr "O número de linhas utilizado para a aba do suporte. Uma aba com mais li
 
 msgctxt "build_volume_fan_nr description"
 msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
-msgstr ""
+msgstr "O número da ventoinha que arrefece o volume de montagem. Se este número estiver programado para 0, tal significa que não existe ventoinha de volume de montagem."
 
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
@@ -4860,7 +4872,7 @@ msgstr "A mudança de velocidade instantânea máxima de impressão para a camad
 
 msgctxt "scarf_joint_seam_start_height_ratio description"
 msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
-msgstr ""
+msgstr "A taxa de altura da camada selecionada a que terá início a costura do enciaxe. Um número mais baixo irá resultar numa maior altura de costura. Deve ser inferior a 100 para ser eficaz. "
 
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
@@ -5192,23 +5204,23 @@ msgstr "Isto controla a distância que o extrusor deve desacelerar imediatamente
 
 msgctxt "wall_0_acceleration description"
 msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
-msgstr ""
+msgstr "Trata-se da aceleração com que se poderá alcançar a velocidade máxima ao imprimir uma parede externa."
 
 msgctxt "wall_0_deceleration description"
 msgid "This is the deceleration with which to end printing an outer wall."
-msgstr ""
+msgstr "Trata-se da desaceleração com que se poderá concluir a impressão da parede externa."
 
 msgctxt "wall_0_speed_split_distance description"
 msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
-msgstr ""
+msgstr "Trata-se do comprimento máximo de uma direção de extrusão ao dividir uma trajetória mais longa para aplicar a aceleração/desaceleração da parede externa. Uma distância menor irá criar um código G mais preciso, mas também mais verboso."
 
 msgctxt "wall_0_end_speed_ratio description"
 msgid "This is the ratio of the top speed to end with when printing an outer wall."
-msgstr ""
+msgstr "Trata-se da taxa de velocidade máxima de conclusão de impressão de uma parede externa."
 
 msgctxt "wall_0_start_speed_ratio description"
 msgid "This is the ratio of the top speed to start with when printing an outer wall."
-msgstr ""
+msgstr "Trata-se da taxa de velocidade máxima de início de impressão de uma parede externa."
 
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
@@ -5592,15 +5604,15 @@ msgstr "Paredes"
 
 msgctxt "extra_infill_lines_to_support_skins option walls"
 msgid "Walls Only"
-msgstr ""
+msgstr "Apenas paredes"
 
 msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
 msgid "Walls and Lines"
-msgstr ""
+msgstr "Paredes e linhas"
 
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr ""
+msgstr "As paredes com um excedente que ultrapassa este ângulo serão impressas utilizando as definições de parede excendente. Quando o valor é igual a 90, nenhuma parede será tratada como excedente. O excedente suportado pelo suporte também não será tratado como excedente. Adicionalmente, qualquer linha que seja inferior à metade excedente também não será tratada como excedente."
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."

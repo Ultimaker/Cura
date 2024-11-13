@@ -1,10 +1,9 @@
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-10-09 14:27+0000\n"
-"PO-Revision-Date: 2024-08-03 02:34+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"PO-Revision-Date: 2024-10-27 13:25+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -15,7 +14,7 @@ msgstr ""
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
-msgstr "密着性"
+msgstr "接着"
 
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
@@ -23,7 +22,7 @@ msgstr "使用するフィラメントの太さの調整。この値を使用す
 
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
-msgstr "ビルドプレート密着性"
+msgstr "ビルドプレートとの接着"
 
 msgctxt "material_diameter label"
 msgid "Diameter"
@@ -125,10 +124,6 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ノズルID"
 
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr ""
-
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
 msgstr "ノズルX座標オフセット"
@@ -156,10 +151,6 @@ msgstr "プリント開始時における主要ノズル地点のZ座標。"
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "印刷に使用するエクストルーダーの列。デュアルノズル印刷時に使用。"
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr ""
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -204,3 +195,11 @@ msgstr "ノズルのY座標のオフセット。"
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "エクストルーダーをオンにする際の開始位置Y座標。"
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "ノズルの長さ"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "ノズル先端とプリントヘッドの最下部との高さの差。"

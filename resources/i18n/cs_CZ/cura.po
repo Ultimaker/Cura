@@ -2841,6 +2841,10 @@ msgid "Nozzle offset Y"
 msgstr "Y offset trysky"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Velikost trysky"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Velikost trysky"
 
