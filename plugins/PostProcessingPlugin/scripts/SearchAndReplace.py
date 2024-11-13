@@ -1,8 +1,7 @@
 # Copyright (c) 2017 Ghostkeeper
 # The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 # Altered by GregValiant (Greg Foresi) February, 2023.
-#    Added an option to replace the 'First Instance Only'
-#    Added option to limit the Search to a layer range.
+#    Added option for a layer search with a Start Layer and an End layer.
 #    Added 'Ignore StartUp G-code' and 'Ignore Ending G-code' options
 
 import re
@@ -31,21 +30,21 @@ class SearchAndReplace(Script):
                 "replace":
                 {
                     "label": "Replace with:",
-                    "description": "The 'Search For' text will get replaced by this text.  For Multi-Line insertions use the newline character 'backslash plus n' as the delimiter. Also for multi-line insertions the last character must be 'backslash plus n'",
+                    "description": "The 'Search For' text will get replaced by this text.  For MultiLine insertions use the newline character 'backslash plus n' as the delimiter. If your Search term ends with a 'newline' remember to add 'newline' to the end of this Replace term.",
                     "type": "str",
                     "default_value": ""
                 },
                 "is_regex":
                 {
                     "label": "Use Regular Expressions",
-                    "description": "When disabled the search string is treated as a simple text string.  When enabled, the search text will be re-compiled as a 'regular' python expression.",
+                    "description": "When disabled the search string is treated as a simple text string.  When enabled, the search text will be recompiled as a 'regular' python expression.",
                     "type": "bool",
                     "default_value": false
                 },
                 "enable_layer_search":
                 {
                     "label": "Enable search within a Layer Range:",
-                    "description": "When enabled, You can choose a Start and End layer for the search.  When 'Layer Search' is enabled the StartUp and Ending g-codes are always ignored.",
+                    "description": "When enabled, You can choose a Start and End layer for the search.  When 'Layer Search' is enabled the StartUp and Ending gcodes are always ignored.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": true
@@ -79,7 +78,7 @@ class SearchAndReplace(Script):
                 "ignore_start":
                 {
                     "label": "Ignore StartUp G-code:",
-                    "description": "When enabled the StartUp G-code is unaffected.  The StartUp G-code is everything from ';generated with Cura...' to ';LAYER_COUNT:' inclusive.",
+                    "description": "When enabled the StartUp Gcode is unaffected.  The StartUp Gcode is everything from ';generated with Cura...' to ';LAYER_COUNT:' inclusive.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "not enable_layer_search"
@@ -87,7 +86,7 @@ class SearchAndReplace(Script):
                 "ignore_end":
                 {
                     "label": "Ignore Ending G-code:",
-                    "description": "When enabled the Ending G-code is unaffected.",
+                    "description": "When enabled the Ending Gcode is unaffected.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "not enable_layer_search"
