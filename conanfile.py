@@ -207,9 +207,12 @@ class CuraConan(ConanFile):
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
             else:
-                continue
-            if Path(src_path).exists():
-                datas.append((str(src_path), data["dst"]))
+                raise ConanException("Misformatted conan data for pyinstaller datas, expected either package or root option")
+
+            if not Path(src_path).exists():
+                raise ConanException(f"Missing folder {src_path} for pyinstaller data {data}")
+
+            datas.append((str(src_path), data["dst"]))
 
         binaries = []
         for binary in pyinstaller_metadata["binaries"].values():
@@ -220,10 +223,10 @@ class CuraConan(ConanFile):
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
-                continue
+                raise ConanException("Misformatted conan data for pyinstaller binaries, expected either package or root option")
+
             if not Path(src_path).exists():
-                self.output.warning(f"Source path for binary {binary['binary']} does not exist")
-                continue
+                raise ConanException(f"Missing folder {src_path} for pyinstaller binary {binary}")
 
             for bin in Path(src_path).glob(binary["binary"] + "*[.exe|.dll|.so|.dylib|.so.]*"):
                 binaries.append((str(bin), binary["dst"]))
