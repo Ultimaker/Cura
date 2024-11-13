@@ -203,6 +203,7 @@ class CuraConan(ConanFile):
                 else:
                     if data["package"] not in self.dependencies:
                         continue
+                    print(data["package"], dir(self.dependencies[data["package"]]))
                     src_path = os.path.join(self.dependencies[data["package"]].package_folder, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
