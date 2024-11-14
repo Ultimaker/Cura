@@ -8934,6 +8934,7 @@
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
+                    "maximum_value_warning": "50.0",
                     "unit": "mm",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
