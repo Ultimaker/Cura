@@ -197,9 +197,12 @@ class CuraConan(ConanFile):
             if not self.options.internal and data.get("internal", False):
                 continue
 
+            if "oses" in data and self.settings.os not in data["oses"]:
+                continue
+
             if "package" in data:  # get the paths from conan package
                 if data["package"] == self.name:
-                    src_path = str(Path(self._base_dir, data["src"]))
+                    src_path = str(Path(self.source_folder, data["src"]))
                 else:
                     if data["package"] not in self.dependencies:
                         continue
@@ -219,7 +222,7 @@ class CuraConan(ConanFile):
             if "package" in binary:  # get the paths from conan package
                 src_path = os.path.join(self.dependencies[binary["package"]].package_folder, binary["src"])
             elif "root" in binary:  # get the paths relative from the sourcefolder
-                src_path = str(Path(self._base_dir, binary["root"], binary["src"]))
+                src_path = str(Path(self.source_folder, binary["root"], binary["src"]))
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
