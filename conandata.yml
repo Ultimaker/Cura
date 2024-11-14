@@ -41,10 +41,12 @@ pyinstaller:
             package: "native_cad_plugin"
             src: "res/plugins/NativeCADplugin"
             dst: "share/cura/plugins/NativeCADplugin"
+            enterprise_only: true
         native_cad_plugin_bundled:
             package: "native_cad_plugin"
             src: "res/bundled_packages"
             dst: "share/cura/resources/bundled_packages"
+            enterprise_only: true
         cura_resources:
             package: "cura"
             src: "resources"

@@ -194,7 +194,7 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
-            if not self.options.internal and data.get("internal", False):
+            if (not self.options.internal and data.get("internal", False)) or (not self.options.enterprise and data.get("enterprise_only", False)):
                 continue
 
             if "oses" in data and self.settings.os not in data["oses"]:
