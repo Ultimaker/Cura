@@ -205,7 +205,12 @@ class CuraConan(ConanFile):
                     src_path = str(Path(self.source_folder, data["src"]))
                 else:
                     if data["package"] not in self.dependencies:
-                        continue
+                        raise ConanException(f"Required package {data["package"]} does not exist as a dependency")
+
+                    package_folder = self.dependencies[data["package"]].package_folder
+                    if package_folder is None:
+                        raise ConanException(f"Unable to find package_folder for {data["package"]}, check that it has not been skipped")
+
                     src_path = os.path.join(self.dependencies[data["package"]].package_folder, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
