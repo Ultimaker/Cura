@@ -407,7 +407,7 @@ pywin32-ctypes==0.2.0; \
 charset-normalizer==2.1.0; \
     --hash=sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5
 
-pynavlib==0.9.2;  \
+pynavlib==0.9.3;  \
   sys_platform != "linux" \
-    --hash=sha256:98434eff8ad122b487aea2213f0c690b2c8080e5b9d7c52c0a39702b4a1a37d9 \
-    --hash=sha256:fdfcd2cfc9c3090d7b322ccd307ab8c7fa6cf46e627c5c376c672042312a40e9
+    --hash=sha256:87a2d58e8f77584364a31ebf792d0dab5550b9ad3c8d4c6a5c722aead530ff72 \
+    --hash=sha256:8b8ee65441730279d6540526b36196e47155b9eaf275dc0e5555b3526f62f121
