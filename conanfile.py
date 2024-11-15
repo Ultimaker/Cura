@@ -151,7 +151,7 @@ class CuraConan(ConanFile):
         buffer = StringIO()
         # with venv_vars.apply():
         self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+ package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
-                 env = "run",
+                 env = "virtual_python_env",
                  stdout = buffer)
 
         print(f"############################################################ {buffer.getvalue()}")
