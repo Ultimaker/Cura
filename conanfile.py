@@ -143,7 +143,7 @@ class CuraConan(ConanFile):
         # list of python installs
         run_env = VirtualRunEnv(self)
         env = run_env.environment()
-        env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
+        #env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
         venv_vars = env.vars(self, scope = "run")
 
         outer = '"' if self.settings.os == "Windows" else "'"
