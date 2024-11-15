@@ -89,8 +89,12 @@ class CuraConan(ConanFile):
         return "default"
 
     @property
+    def _root_dir(self):
+        return Path(self.deploy_folder if hasattr(self, "deploy_folder") else self.source_folder)
+
+    @property
     def _base_dir(self):
-        return Path(self.source_folder if self.source_folder is not None else self.deploy_folder, "venv")
+        return self._root_dir.joinpath("venv")
 
     @property
     def _share_dir(self):
@@ -140,23 +144,14 @@ class CuraConan(ConanFile):
         self.output.info("Collecting python installs")
         python_installs = {}
 
-        # list of python installs
-        # run_env = VirtualRunEnv(self)
-        # env = run_env.environment()
-        #env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
-        # venv_vars = env.vars(self, scope = "run")
-
         outer = '"' if self.settings.os == "Windows" else "'"
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
-        # with venv_vars.apply():
-        self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+ package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
-                 env = ["conanrun", "virtual_python_env"],
+        env_path = str(self._root_dir.joinpath("conanrun"))
+        self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+    package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
+                 env = env_path,
                  stdout = buffer)
 
-        print(f"############################################################ {buffer.getvalue()}")
-        # for name, value in venv_vars.items():
-        #     print(f"{name}={value}")
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
         for package in packages:
             name, version = package.split(",")
