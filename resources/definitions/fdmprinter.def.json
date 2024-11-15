@@ -1426,7 +1426,7 @@
                         "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
-                    "enabled": "z_seam_type != 'random'",
+                    "enabled": "z_seam_type == 'sharpest_corner'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
