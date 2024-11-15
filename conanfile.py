@@ -141,20 +141,22 @@ class CuraConan(ConanFile):
         python_installs = {}
 
         # list of python installs
-        run_env = VirtualRunEnv(self)
-        env = run_env.environment()
+        # run_env = VirtualRunEnv(self)
+        # env = run_env.environment()
         #env.prepend_path("PYTHONPATH", str(self._site_packages.as_posix()))
-        venv_vars = env.vars(self, scope = "run")
+        # venv_vars = env.vars(self, scope = "run")
 
         outer = '"' if self.settings.os == "Windows" else "'"
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
-        with venv_vars.apply():
-            self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+ package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
-                          env = "conanrun",
-                          stdout = buffer)
+        # with venv_vars.apply():
+        self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+ package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
+                 env = "run",
+                 stdout = buffer)
 
         print(f"############################################################ {buffer.getvalue()}")
+        # for name, value in venv_vars.items():
+        #     print(f"{name}={value}")
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
         for package in packages:
             name, version = package.split(",")
