@@ -154,11 +154,13 @@ class CuraConan(ConanFile):
                           env = "conanrun",
                           stdout = buffer)
 
+        print(f"############################################################ {buffer.getvalue()}")
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
         for package in packages:
             name, version = package.split(",")
             python_installs[name] = {"version": version}
 
+        print(python_installs)
         return python_installs
 
     def _generate_cura_version(self, location):
@@ -172,6 +174,8 @@ class CuraConan(ConanFile):
         build_tag = f"+{cura_version.build}" if cura_version.build else ""
         internal_tag = f"+internal" if self.options.internal else ""
         cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
+
+        self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 
         with open(os.path.join(location, "CuraVersion.py"), "w") as f:
             f.write(cura_version_py.render(
