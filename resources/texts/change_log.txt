@@ -24,21 +24,30 @@
 - Fixed a bug that prevented the "Sync materials with printers" page from displaying when accessed immediately after starting Cura or signing in
 - Fixed a bug where reloading an updated model would result in not all the duplicates of the model being updated
 - Fixed a bug that showed incompatible materials when switching between printers with a different filament diameter. 
-- Fixed a bug where tree support in enclosed holes have missing layers
+- Fixed a bug where tree support in enclosed holes has missing layers
 - Made improvements in the G-codePathModify slot for Engine Plugins, contributed by @ThomasRahm
 - Fixed a bug that prevented changes to the initial layer diameter from being applied properly, contributed by @ThomasRahm
 - Fixed a rounding issue in the engine math, @0x5844
 
-* Bugs resolved after the first Beta
+* Bugs resolved since the Beta release
 - Spiralize outer contour no longer adds unnecessary seams to the model
 - When coasting is enabled the printhead no longer drops down 
-- Updated the strategy for sharpest corner - smart hiding seam location combination
+- Fixed coasting strategy so it's only applied to outer/inner walls, and not to skin, top-bottom, or infill
+- Fixed wiping direction when printing a single wall
+- Improved wiping in combination with the scarf seam
+- Significantly improved the strategy for sharpest corner - smart hiding seam location combination
 - Fixed a bug where long scarf seams and short scarf seam steps would result in the seam being moved outward
 - Fixed a bug where seam acceleration and deceleration were not working 
 - Fixed a bug where infill was wrongly removed from narrow spaces 
 - Triple-clicking values and searches that you entered now has you select everything so you can edit it in the field similar to other desktop applications
 - Updated dependencies and improved how unwanted and unused binaries are excluded from the building process. 
 - Added Eazao material for the new Eazao printers
+- Updated the urls schemes to make them more robust when attempting to open files in Cura
+- Retract before outer wall now only works on the initial layer
+- Resolved the biggest crashes coming in via the analyzing tool in the cura engine
+- Removed an unwanted Z-hop when starting a new layer
+- Layer starts are more visible in the print preview with the scarf seam
+- Made the X to close windows a little bigger
 
 * Printer definitions, profiles, and materials:
 - Introduced Makerbot Sketch Sprint
@@ -48,6 +57,7 @@
 - Various setting improvements for ABS and Nylon for UltiMaker Method series
 - Various setting improvements for dual extrusion support for the UltiMaker Method series
 - Implemented a hard limit so the bed temperature cannot be more than 120C on all UltiMaker printers.
+- Fixed an error in the profile Ultimaker 2 profile naming
 - Introduced the Creality CR-M4, contributed by @kixell
 - Introduced Eazao M500, M600, M700, and Potter, and updated the Eazao Zero, contributed by @Eazo
 - Introduced ZYYX+, ZYYX Pro, and ZYYX Pro ii, contributed by @theodorhansson
@@ -56,12 +66,6 @@
 * Community Translations
 - Updated Japanese translations by @h1data
 - Brazilian Portuguese by @Patola
-
-* Known issues
-- This second beta introduces a change that affects the UI so please use buttons, dropdowns, menus, and flows. We hope we did this correctly but it is a tricky change. If you see the crash please report it to us, and we will also see it show up in our crash tracking tool. 
-- There is a slight regression in terms of seam alignment in different strategies we hope to resolve before stable
-- We see an increase in micro-segments in the outer wall, which we hope to resolve before stable 
-- We see rare cases of Cura crashing after opening project files with custom extruders or printer settings than the printer that is already loaded
 
 [5.8.1]
 
