@@ -147,7 +147,7 @@ class CuraConan(ConanFile):
         outer = '"' if self.settings.os == "Windows" else "'"
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
-        env_path = str(self._root_dir.joinpath("conanrun"))
+        env_path = str(self._root_dir.joinpath("virtual_python_env"))
         self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+    package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
                  env = env_path,
                  stdout = buffer)
