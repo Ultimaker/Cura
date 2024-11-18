@@ -22,11 +22,11 @@
 - Fixed a bug so objects in a 3MF reload in the same position as they were saved again, contributed by @nilsiism
 - Fixed an issue where overhanging walls and walls that were adjacent to overhanging walls were not printed at the correct speed
 - Fixed a bug that prevented the "Sync materials with printers" page from displaying when accessed immediately after starting Cura or signing in
-- Fixed a bug where reloading an updated model would result in not all the duplicates of the model being updated
+- Fixed a bug where reloading an updated model would not update the duplicates of the model on the build plate
 - Fixed a bug that showed incompatible materials when switching between printers with a different filament diameter. 
 - Fixed a bug where tree support in enclosed holes has missing layers
 - Made improvements in the G-codePathModify slot for Engine Plugins, contributed by @ThomasRahm
-- Fixed a bug that prevented changes to the initial layer diameter from being applied properly, contributed by @ThomasRahm
+- Fixed a bug that prevented changes to the initial layer diameter from being applied properly in tree support, contributed by @ThomasRahm
 - Fixed a rounding issue in the engine math, @0x5844
 
 * Bugs resolved since the Beta release
@@ -36,18 +36,18 @@
 - Fixed wiping direction when printing a single wall
 - Improved wiping in combination with the scarf seam
 - Significantly improved the strategy for sharpest corner - smart hiding seam location combination
-- Fixed a bug where long scarf seams and short scarf seam steps would result in the seam being moved outward
-- Fixed a bug where seam acceleration and deceleration were not working 
+- Fixed a bug where long scarf seam length and short scarf seam steps would result in the seam being moved outward
+- Fixed a bug where seam acceleration and deceleration around seam were not working
 - Fixed a bug where infill was wrongly removed from narrow spaces 
 - Triple-clicking values and searches that you entered now has you select everything so you can edit it in the field similar to other desktop applications
 - Updated dependencies and improved how unwanted and unused binaries are excluded from the building process. 
 - Added Eazao material for the new Eazao printers
 - Updated the urls schemes to make them more robust when attempting to open files in Cura
-- Retract before outer wall now only works on the initial layer
-- Resolved the biggest crashes coming in via the analyzing tool in the cura engine
+- Retract before outer wall now works correctly on all layers
+- Resolved top reported crashes coming in via the analyzing tool Sentry
 - Removed an unwanted Z-hop when starting a new layer
 - Layer starts are more visible in the print preview with the scarf seam
-- Made the X to close windows a little bigger
+- Made the X to close floating and pop up windows a little bigger
 
 * Printer definitions, profiles, and materials:
 - Introduced Makerbot Sketch Sprint
@@ -56,7 +56,7 @@
 - Introduced new materials for Labs Extruder of the UltiMaker Method series, BASF Ultrafuse 316L, TPE SEBS 1300 95A, and Polymax PC. Except BASF Ultrafuse 316L is not available on the Method XL.
 - Various setting improvements for ABS and Nylon for UltiMaker Method series
 - Various setting improvements for dual extrusion support for the UltiMaker Method series
-- Implemented a hard limit so the bed temperature cannot be more than 120C on all UltiMaker printers.
+- Implemented a hard limit so the bed temperature cannot be more than 120°C on all UltiMaker printers.
 - Fixed an error in the profile Ultimaker 2 profile naming
 - Introduced the Creality CR-M4, contributed by @kixell
 - Introduced Eazao M500, M600, M700, and Potter, and updated the Eazao Zero, contributed by @Eazo
