@@ -60,7 +60,7 @@
 - Fixed an error in the profile Ultimaker 2 profile naming
 - Introduced the Creality CR-M4, contributed by @kixell
 - Introduced Eazao M500, M600, M700, and Potter, and updated the Eazao Zero, contributed by @Eazo
-- Introduced ZYYX+, ZYYX Pro, and ZYYX Pro ii, contributed by @theodorhansson
+- Introduced ZYYX+ and ZYYX Pro, contributed by @theodorhansson
 - Updated acceleration settings for the Creality Ender-2 V3 SE, contributed by @T9Air
 
 * Community Translations
