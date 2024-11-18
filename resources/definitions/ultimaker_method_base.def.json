@@ -141,7 +141,11 @@
             "value": "min(extruderValues('extruder_nr'))"
         },
         "adhesion_type": { "value": "'raft'" },
-        "bottom_thickness": { "value": "top_bottom_thickness" },
+        "bottom_thickness":
+        {
+            "minimum_value_warning": 0.3,
+            "value": "top_bottom_thickness"
+        },
         "bridge_enable_more_layers": { "value": true },
         "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
         "bridge_skin_density": { "value": 100 },
@@ -575,7 +579,11 @@
             "minimum_value_warning": 0.3,
             "value": "4*layer_height"
         },
-        "top_thickness": { "value": "top_bottom_thickness * 1.5" },
+        "top_thickness":
+        {
+            "minimum_value_warning": 0.3,
+            "value": "top_bottom_thickness * 1.5"
+        },
         "travel_avoid_distance": { "value": "3 if extruders_enabled_count > 1 else machine_nozzle_tip_outer_diameter / 2 * 1.5" },
         "travel_avoid_other_parts": { "value": false },
         "wall_0_inset": { "value": 0 },
