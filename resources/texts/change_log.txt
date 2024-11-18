@@ -48,7 +48,6 @@
 - Removed an unwanted Z-hop when starting a new layer
 - Layer starts are more visible in the print preview with the scarf seam
 - Made the X to close floating and pop up windows a little bigger
-- Fixed a bug where the build plate could be displayed incorrectly in the 3D view
 - Improved the visuals of printers with a build plate texture, they now render more consistently regardless of zoom or angle of view
 - The UI now displays correctly on Wayland, with this fix we noticed some performance drop compared to X11
 
