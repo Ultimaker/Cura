@@ -24,6 +24,7 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*", "*.jinja"
     settings = "os", "compiler", "build_type", "arch"
+    generators = "VirtualPythonEnv"
 
     # FIXME: Remove specific branch once merged to main
     python_requires = "translationextractor/[>=2.2.0]@ultimaker/cura_11622"
@@ -147,9 +148,8 @@ class CuraConan(ConanFile):
         outer = '"' if self.settings.os == "Windows" else "'"
         inner = "'" if self.settings.os == "Windows" else '"'
         buffer = StringIO()
-        env_path = str(self._root_dir.joinpath("virtual_python_env"))
         self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+    package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
-                 env = env_path,
+                 env = "virtual_python_env",
                  stdout = buffer)
 
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
