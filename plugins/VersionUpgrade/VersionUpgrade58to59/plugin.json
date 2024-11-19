@@ -1,0 +1,8 @@
+{
+    "name": "Version Upgrade 5.8 to 5.9",
+    "author": "UltiMaker",
+    "version": "1.0.0",
+    "description": "Upgrades configurations from Cura 5.8 to Cura 5.9.",
+    "api": 8,
+    "i18n-catalog": "cura"
+}
