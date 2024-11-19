@@ -632,11 +632,13 @@ pip_requirements:
 
 pip_requirements_dev:
   - pytest
-  - pyinstaller==6.3.0
-  - pyinstaller-hooks-contrib
   - pyyaml
   - sip==6.5.1
   - jinja2
+
+pip_requirements_installer:
+  - pyinstaller==6.3.0
+  - pyinstaller-hooks-contrib
 
 python_translation_source_folders:
   - cura
