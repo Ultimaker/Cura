@@ -75,7 +75,7 @@ app = BUNDLE(
     coll,
     name='{{ display_name }}.app',
     icon={{ icon }},
-    bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_") + "_" {{ short_version }},
+    bundle_identifier={{ osx_bundle_identifier }} + "_" + '{{ display_name }}'.replace(" ", "_"),
     version={{ version }},
     info_plist={
         'CFBundleDisplayName': '{{ display_name }}',
