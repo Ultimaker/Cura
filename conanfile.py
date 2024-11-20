@@ -24,7 +24,7 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*", "*.jinja"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "VirtualPythonEnv"
+    generators = "VirtualPythonEnv"#, "VirtualRunEnv"
 
     # FIXME: Remove specific branch once merged to main
     python_requires = "translationextractor/[>=2.2.0]@ultimaker/cura_11622"
@@ -61,21 +61,21 @@ class CuraConan(ConanFile):
     # FIXME: These env vars should be defined in the runenv.
     _cura_env = None
 
-    @property
-    def _cura_run_env(self):
-        if self._cura_env:
-            return self._cura_env
-
-        self._cura_env = Environment()
-        self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
-        self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
-        self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
-
-        if self.settings.os == "Linux":
-            self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
-            self._cura_env.define("QT_QPA_PLATFORMTHEME", "xdgdesktopportal")
-            self._cura_env.define("QT_XKB_CONFIG_ROOT", "/usr/share/X11/xkb")
-        return self._cura_env
+    # @property
+    # def _cura_run_env(self):
+    #     if self._cura_env:
+    #         return self._cura_env
+    #
+    #     self._cura_env = Environment()
+    #     self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
+    #     self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
+    #     self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
+    #
+    #     if self.settings.os == "Linux":
+    #         self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
+    #         self._cura_env.define("QT_QPA_PLATFORMTHEME", "xdgdesktopportal")
+    #         self._cura_env.define("QT_XKB_CONFIG_ROOT", "/usr/share/X11/xkb")
+    #     return self._cura_env
 
     @property
     def _app_name(self):
@@ -160,6 +160,23 @@ class CuraConan(ConanFile):
         print(python_installs)
         return python_installs
 
+    # def _generate_version_summary(self):
+    #     version = self.conf.get("user.cura:version", default = self.version, check_type = str)
+    #     cura_version = Version(version)
+    #
+    #     version_data = {
+    #         "version_major": cura_version.major,
+    #         "version_minor": cura_version.minor,
+    #         "version_patch": cura_version.patch,
+    #         "version_build": cura_version.build if cura_version.build != "" else "0",
+    #         "version_full": self.version,
+    #         "cura_app_name": self._app_name,
+    #     }
+    #
+    #     file_path = os.path.join(os.getcwd(), 'version_summary.yml')
+    #     self.output.info(f"Generating version summary to {file_path}")
+    #     save(self, file_path, activate_github_actions_version_env)
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -179,6 +196,7 @@ class CuraConan(ConanFile):
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
                 cura_version = cura_version,
+                cura_version_full = self.version,
                 cura_build_type = "Enterprise" if self.options.enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self.conan_data["urls"][self._urls]["cloud_api_root"],
@@ -294,9 +312,6 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
         copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
         copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
-        copy(self, "requirements.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "requirements-dev.txt", self.recipe_folder, self.export_sources_folder)
-        copy(self, "requirements-ultimaker.txt", self.recipe_folder, self.export_sources_folder)
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
     def config_options(self):
@@ -327,8 +342,8 @@ class CuraConan(ConanFile):
 
     def layout(self):
         self.folders.source = "."
-        self.folders.build = "venv"
-        self.folders.generators = os.path.join(self.folders.build, "conan")
+        self.folders.build = "build"
+        self.folders.generators = os.path.join(self.folders.build, "generators")
 
         self.cpp.package.libdirs = [os.path.join("site-packages", "cura")]
         self.cpp.package.bindirs = ["bin"]
@@ -336,12 +351,12 @@ class CuraConan(ConanFile):
 
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
-        cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
-        ext = ".ps1" if self.settings.os == "Windows" else ".sh"
-        cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
+        # cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
+        # ext = ".ps1" if self.settings.os == "Windows" else ".sh"
+        # cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
 
-        vr = VirtualRunEnv(self)
-        vr.generate()
+        # vr = VirtualRunEnv(self)
+        # vr.generate()
 
         self._generate_cura_version(str(Path(self.source_folder, "cura")))
 
@@ -435,29 +450,6 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
 
-        # Generate the GitHub Action version info Environment
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
-        cura_version = Version(version)
-        env_prefix = "Env:" if self.settings.os == "Windows" else ""
-        activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
-        """).render(cura_version_major = cura_version.major,
-                    cura_version_minor = cura_version.minor,
-                    cura_version_patch = cura_version.patch,
-                    cura_version_build = cura_version.build if cura_version.build != "" else "0",
-                    cura_version_full = self.version,
-                    cura_app_name = self._app_name,
-                    env_prefix = env_prefix)
-
-        ext = ".sh" if self.settings.os != "Windows" else ".ps1"
-        save(self, os.path.join(self.deploy_folder, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
-
-        self._generate_cura_version(os.path.join(self._site_packages, "cura"))
-
         entitlements_file = "'{}'".format(Path(self.deploy_folder, "packaging", "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self.deploy_folder,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
@@ -471,8 +463,8 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         copy(self, "*", src = os.path.join(self.source_folder, "resources"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[0]))
         copy(self, "*.mo", os.path.join(self.build_folder, "resources"), os.path.join(self.package_folder, "resources"))
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
-        copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
+        copy(self, "pip_requirements_*.txt", src = self.generators_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
@@ -488,12 +480,4 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
 
     def package_id(self):
-        # The following options shouldn't be used to determine the hash, since these are only used to set the CuraVersion.py
-        # which will als be generated by the deploy method during the `conan install cura/5.1.0@_/_`
-        del self.info.options.enterprise
-        del self.info.options.staging
-        del self.info.options.pyinstaller
-        del self.info.options.cloud_api_version
-        del self.info.options.display_name
-        del self.info.options.cura_debug_mode
         self.info.options.rm_safe("enable_i18n")

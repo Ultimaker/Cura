@@ -38,6 +38,4 @@ jobs:
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
     with:
       package_name: cura
-      platform_windows: false
-      platform_mac: false
     secrets: inherit
