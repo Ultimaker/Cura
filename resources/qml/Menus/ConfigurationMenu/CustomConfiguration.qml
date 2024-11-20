@@ -18,6 +18,12 @@ Item
         name: "cura"
     }
 
+    UM.I18nCatalog
+    {
+        id: catalog_fdmprinter
+        name: "fdmprinter.def.json"
+    }
+
     width: parent.width
     height: childrenRect.height
 
@@ -281,7 +287,7 @@ Item
 
                 UM.Label
                 {
-                    text: Cura.MachineManager.activeDefinitionVariantsName
+                    text: catalog_fdmprinter.i18nc("variant_name", Cura.MachineManager.activeDefinitionVariantsName)
                     height: parent.height
                     width: selectors.textWidth
                 }

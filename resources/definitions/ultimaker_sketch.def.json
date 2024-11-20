@@ -72,6 +72,7 @@
         "supports_network_connection": true,
         "supports_usb_connection": false,
         "variants_name": "Extruder",
+        "variants_name_has_translation": true,
         "weight": -1
     },
     "overrides":

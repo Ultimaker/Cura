@@ -15,9 +15,11 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "machine_extruder_trains": { "0": "fdmextruder" },
+        "has_textured_buildplate": false,
         "supports_usb_connection": true,
         "supports_network_connection": false,
-        "supports_abstract_color": false
+        "supports_abstract_color": false,
+        "variants_name_has_translation": false
     },
     "settings":
     {
@@ -1434,7 +1436,7 @@
                         "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
-                    "enabled": "z_seam_type != 'random'",
+                    "enabled": "z_seam_type == 'sharpest_corner'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -8942,6 +8944,7 @@
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
+                    "maximum_value_warning": "50.0",
                     "unit": "mm",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
@@ -8991,7 +8994,7 @@
                 },
                 "wall_0_acceleration":
                 {
-                    "label": "Outer Wall Acceleration",
+                    "label": "Outer Wall Start Acceleration",
                     "description": "This is the acceleration with which to reach the top speed when printing an outer wall.",
                     "enabled": "wall_0_start_speed_ratio < 100.0",
                     "type": "float",
@@ -9018,7 +9021,7 @@
                 },
                 "wall_0_deceleration":
                 {
-                    "label": "Outer Wall Deceleration",
+                    "label": "Outer Wall End Deceleration",
                     "description": "This is the deceleration with which to end printing an outer wall.",
                     "enabled": "wall_0_end_speed_ratio < 100.0",
                     "type": "float",
