@@ -32,7 +32,6 @@ class CuraConan(ConanFile):
     options = {
         "enterprise": [True, False],
         "staging": [True, False],
-        "pyinstaller": [True, False],
         "cloud_api_version": ["ANY"],
         "display_name": ["ANY"],  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
@@ -42,7 +41,6 @@ class CuraConan(ConanFile):
     default_options = {
         "enterprise": False,
         "staging": False,
-        "pyinstaller": False,
         "cloud_api_version": "1",
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
@@ -354,20 +352,6 @@ class CuraConan(ConanFile):
         if self.options.internal:
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
-
-        if self.options.pyinstaller:
-            entitlements_file = "'{}'".format(str(Path(self.source_folder, "packaging", "MacOS", "cura.entitlements")))
-            self._generate_pyinstaller_spec(
-                location=self.generators_folder,
-                entrypoint_location="'{}'".format(
-                    os.path.join(self.source_folder, self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace(
-                    "\\", "\\\\"),
-                icon_path="'{}'".format(os.path.join(self.source_folder, "packaging",
-                                                     self.conan_data["pyinstaller"]["icon"][
-                                                         str(self.settings.os)])).replace("\\", "\\\\"),
-                entitlements_file=entitlements_file if self.settings.os == "Macos" else "None",
-                cura_source_folder=self.source_folder
-            )
 
         if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
             vb = VirtualBuildEnv(self)
