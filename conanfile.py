@@ -58,25 +58,6 @@ class CuraConan(ConanFile):
     def _i18n_options(self):
         return self.conf.get("user.i18n:options", default = {"extract": True, "build": True}, check_type = dict)
 
-    # FIXME: These env vars should be defined in the runenv.
-    _cura_env = None
-
-    # @property
-    # def _cura_run_env(self):
-    #     if self._cura_env:
-    #         return self._cura_env
-    #
-    #     self._cura_env = Environment()
-    #     self._cura_env.define("QML2_IMPORT_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "qml")))
-    #     self._cura_env.define("QT_PLUGIN_PATH", str(self._site_packages.joinpath("PyQt6", "Qt6", "plugins")))
-    #     self._cura_env.define("CURA_DATA_ROOT", str(self._share_dir.joinpath("cura")))
-    #
-    #     if self.settings.os == "Linux":
-    #         self._cura_env.define("QT_QPA_FONTDIR", "/usr/share/fonts")
-    #         self._cura_env.define("QT_QPA_PLATFORMTHEME", "xdgdesktopportal")
-    #         self._cura_env.define("QT_XKB_CONFIG_ROOT", "/usr/share/X11/xkb")
-    #     return self._cura_env
-
     @property
     def _app_name(self):
         if self.options.enterprise:
@@ -159,23 +140,6 @@ class CuraConan(ConanFile):
 
         print(python_installs)
         return python_installs
-
-    # def _generate_version_summary(self):
-    #     version = self.conf.get("user.cura:version", default = self.version, check_type = str)
-    #     cura_version = Version(version)
-    #
-    #     version_data = {
-    #         "version_major": cura_version.major,
-    #         "version_minor": cura_version.minor,
-    #         "version_patch": cura_version.patch,
-    #         "version_build": cura_version.build if cura_version.build != "" else "0",
-    #         "version_full": self.version,
-    #         "cura_app_name": self._app_name,
-    #     }
-    #
-    #     file_path = os.path.join(os.getcwd(), 'version_summary.yml')
-    #     self.output.info(f"Generating version summary to {file_path}")
-    #     save(self, file_path, activate_github_actions_version_env)
 
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
@@ -351,12 +315,6 @@ class CuraConan(ConanFile):
 
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
-        # cura_run_envvars = self._cura_run_env.vars(self, scope = "run")
-        # ext = ".ps1" if self.settings.os == "Windows" else ".sh"
-        # cura_run_envvars.save_script(os.path.join(self.folders.generators, f"cura_run_environment{ext}"))
-
-        # vr = VirtualRunEnv(self)
-        # vr.generate()
 
         self._generate_cura_version(str(Path(self.source_folder, "cura")))
 
