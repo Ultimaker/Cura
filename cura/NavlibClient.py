@@ -17,7 +17,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._was_pick = False
         self._hit_selection_only = False
         self._picking_pass = None
-        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "3dx_pivot.png"), size=3.)
+        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "3dx_pivot.png"), size=2.5)
 
     def pick(self, x, y, check_selection = False, radius = 0.):
 
@@ -226,8 +226,6 @@ class NavlibClient(pynav.NavlibNavigationModel):
             camera_position = active_camera.getWorldPosition()
             dist = (camera_position - self._pivot_node.getWorldPosition()).length()
             scale = dist / 400.
-            if scale < 1.:
-                scale = scale * scale
         else:
             view_width = active_camera.getViewportWidth()
             current_size = view_width + (2. * active_camera.getZoomFactor() * view_width)
