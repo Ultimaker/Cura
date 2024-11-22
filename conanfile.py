@@ -136,7 +136,6 @@ class CuraConan(ConanFile):
             name, version = package.split(",")
             python_installs[name] = {"version": version}
 
-        print(python_installs)
         return python_installs
 
     def _generate_cura_version(self, location):
@@ -372,6 +371,9 @@ class CuraConan(ConanFile):
                 self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def deploy(self):
+        ''' Note: this deploy step is actually used to prepare for building a Cura distribution with pyinstaller, which is not
+            the original purpose in the Conan philosophy '''
+
         copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.deploy_folder, "packaging"), keep_path = True)
 
         # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
