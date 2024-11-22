@@ -18,7 +18,7 @@ jobs:
             -   name: Checkout
                 uses: actions/checkout@v4
 
-            -   uses: technote-space/get-diff-action@v6
+            -   uses: greguintow/get-diff-action@v7
                 with:
                     PATTERNS: |
                         resources/+(definitions|extruders)/*.def.json

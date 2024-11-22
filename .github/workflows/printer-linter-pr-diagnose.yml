@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 2
 
-      - uses: technote-space/get-diff-action@v6
+      - uses: greguintow/get-diff-action@v7
         with:
           DIFF_FILTER: AMRCD
           PATTERNS: |
