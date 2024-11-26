@@ -1,0 +1,17 @@
+name: Nightly build - stable release
+run-name: Nightly build - stable release
+
+on:
+  schedule:
+    # Daily at 5:15 CET
+    - cron: '15 4 * * *'
+
+jobs:
+  build-nightly:
+# FIXME: Use main once merged
+    uses: ultimaker/cura/.github/workflows/nightly.yml@CURA-11622_conan_v2
+    with:
+# FIXME: Use stable channel once merged
+      cura_conan_version: "cura/[*]@ultimaker/cura_11622"
+      release_tag: "nightly"
+      caller_workflow: "nightly-stable.yml"

@@ -6,7 +6,7 @@ on:
     inputs:
       cura_conan_version:
         description: 'Cura Conan Version'
-        default: 'cura/latest@ultimaker/testing'
+        default: 'cura/[*]@ultimaker/testing'
         required: true
         type: string
       conan_args:
@@ -21,11 +21,6 @@ on:
         type: boolean
       staging:
         description: 'Use staging API'
-        default: false
-        required: true
-        type: boolean
-      nightly:
-        description: 'Upload to nightly release'
         default: false
         required: true
         type: boolean
@@ -48,15 +43,6 @@ on:
         default: false
         required: true
         type: boolean
-      nightly:
-        default: false
-        required: true
-        type: boolean
-
-  schedule:
-    # Daily at 4:15 CET (main-branch) and 5:15 CET (release-branch)
-    - cron: '15 3 * * *'
-    - cron: '15 4 * * *'
 
 env:
   CONAN_ARGS: ${{ inputs.conan_args || '' }}

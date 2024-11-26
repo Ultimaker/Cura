@@ -1,0 +1,17 @@
+name: Nightly build - dev release
+run-name: Nightly build - dev release
+
+on:
+  schedule:
+    # Daily at 4:15 CET
+    - cron: '15 3 * * *'
+
+jobs:
+  build-nightly:
+# FIXME: Use main once merged
+    uses: ultimaker/cura/.github/workflows/nightly.yml@CURA-11622_conan_v2
+    with:
+# FIXME: Use testing channel once merged
+      cura_conan_version: "cura/[*]@ultimaker/cura_11622"
+      release_tag: "nightly-5.6" # Fixed version, we reuse the same tag forever
+      caller_workflow: "nightly-testing.yml"
