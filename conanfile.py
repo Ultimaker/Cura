@@ -24,7 +24,8 @@ class CuraConan(ConanFile):
     build_policy = "missing"
     exports = "LICENSE*", "*.jinja"
     settings = "os", "compiler", "build_type", "arch"
-    generators = "VirtualPythonEnv"#, "VirtualRunEnv"
+    generators = "VirtualPythonEnv"
+    tool_requires = "gettext/0.21"
 
     # FIXME: Remove specific branch once merged to main
     python_requires = "translationextractor/[>=2.2.0]@ultimaker/cura_11622"
@@ -36,7 +37,7 @@ class CuraConan(ConanFile):
         "display_name": ["ANY"],  # TODO: should this be an option??
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
         "internal": [True, False],
-        "enable_i18n": [True, False],
+        "i18n_extract": [True, False],
     }
     default_options = {
         "enterprise": False,
@@ -45,16 +46,12 @@ class CuraConan(ConanFile):
         "display_name": "UltiMaker Cura",
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
-        "enable_i18n": False,
+        "i18n_extract": False,
     }
 
     def set_version(self):
         if not self.version:
             self.version = self.conan_data["version"]
-
-    @property
-    def _i18n_options(self):
-        return self.conf.get("user.i18n:options", default = {"extract": True, "build": True}, check_type = dict)
 
     @property
     def _app_name(self):
@@ -275,14 +272,13 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
-    def config_options(self):
-        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
-            del self.options.enable_i18n
-
     def validate(self):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         if version and Version(version) <= Version("4"):
             raise ConanInvalidConfiguration("Only versions 5+ are support")
+
+        if self.options.i18n_extract and self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
+            raise ConanInvalidConfiguration("Unable to extract translations on Windows without Bash installed")
 
     def requirements(self):
         for req in self.conan_data["requirements"]:
@@ -296,10 +292,6 @@ class CuraConan(ConanFile):
             for req in self.conan_data["requirements_enterprise"]:
                 self.requires(req)
         self.requires("cpython/3.12.2")
-
-    def build_requirements(self):
-        if self.options.get_safe("enable_i18n", False):
-            self.test_requires("gettext/0.21")
 
     def layout(self):
         self.folders.source = "."
@@ -352,7 +344,7 @@ class CuraConan(ConanFile):
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
             copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
 
-        if self.options.get_safe("enable_i18n", False) and self._i18n_options["extract"]:
+        if self.options.i18n_extract:
             vb = VirtualBuildEnv(self)
             vb.generate()
 
@@ -362,13 +354,16 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.options.get_safe("enable_i18n", False) and self._i18n_options["build"]:
-            for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
-                mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
-                mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
-                mkdir(self, str(unix_path(self, Path(mo_file).parent)))
-                cpp_info = self.dependencies["gettext"].cpp_info
-                self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
+        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
+            self.output.warning("Skipping generation of binary translation files because Bash could not be found and is required")
+            return
+
+        for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
+            mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
+            mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
+            mkdir(self, str(unix_path(self, Path(mo_file).parent)))
+            cpp_info = self.dependencies["gettext"].cpp_info
+            self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
 
     def deploy(self):
         ''' Note: this deploy step is actually used to prepare for building a Cura distribution with pyinstaller, which is not
