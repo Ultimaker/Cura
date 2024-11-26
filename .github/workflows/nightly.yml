@@ -91,9 +91,13 @@ jobs:
                 branch_specific="" is_main else f"?branch={short_version}",
               ))
 
-      - name: Update nightly release description (with date)
+      - name: Update nightly release description and binaries
         if: always()
         run: |
           gh release edit ${{ inputs.release_tag }} --title "${{ steps.rename-installers.outputs.cura_version }}" --notes-file release-notes.md
+
+          for file in "installers/*"; do
+            gh release upload ${{ inputs.release_tag }} $file --clobber
+          done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
