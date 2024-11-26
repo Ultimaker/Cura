@@ -599,6 +599,7 @@ class SimulationView(CuraView):
         visible_line_types = []
         if self.getShowSkin():  # Actually "shell".
             visible_line_types.append(LayerPolygon.SkinType)
+            visible_line_types.append(LayerPolygon.RoofType)
             visible_line_types.append(LayerPolygon.Inset0Type)
             visible_line_types.append(LayerPolygon.InsetXType)
         if self.getShowInfill():

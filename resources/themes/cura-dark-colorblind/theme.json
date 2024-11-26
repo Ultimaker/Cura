@@ -16,6 +16,7 @@
         "layerview_inset_0": [255, 64, 0, 255],
         "layerview_inset_x": [0, 156, 128, 255],
         "layerview_skin": [255, 255, 86, 255],
+        "layerview_roof": [160, 255, 86, 255],
         "layerview_support": [255, 255, 0, 255],
 
         "layerview_infill": [0, 255, 255, 255],

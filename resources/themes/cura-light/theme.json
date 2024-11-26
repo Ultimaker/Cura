@@ -457,6 +457,7 @@
         "layerview_inset_0": [230, 0, 0, 255],
         "layerview_inset_x": [0, 230, 0, 255],
         "layerview_skin": [230, 230, 0, 255],
+        "layerview_roof": [160, 230, 0, 255],
         "layerview_support": [0, 230, 230, 127],
         "layerview_skirt": [0, 230, 230, 255],
         "layerview_infill": [230, 115, 0, 255],

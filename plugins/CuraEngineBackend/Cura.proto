@@ -82,6 +82,7 @@ message Polygon {
         MoveRetractionType = 9;
         SupportInterfaceType = 10;
         PrimeTowerType = 11;
+        RoofType = 12;
     }
     Type type = 1; // Type of move
     bytes points = 2; // The points of the polygon, or two points if only a line segment (Currently only line segments are used)
