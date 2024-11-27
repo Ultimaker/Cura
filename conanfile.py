@@ -121,12 +121,13 @@ class CuraConan(ConanFile):
         self.output.info("Collecting python installs")
         python_installs = {}
 
-        outer = '"' if self.settings.os == "Windows" else "'"
-        inner = "'" if self.settings.os == "Windows" else '"'
+        temp_exec = "temp.py"
+        code = f"import importlib.metadata;  print(';'.join([(package.metadata['Name']+','+    package.metadata['Version']) for package in importlib.metadata.distributions()]))"
+        save(self, temp_exec, code)
+
         buffer = StringIO()
-        self.run(f"""python -c {outer}import importlib.metadata;  print({inner};{inner}.join([(package.metadata[{inner}Name{inner}]+{inner},{inner}+    package.metadata[{inner}Version{inner}]) for package in importlib.metadata.distributions()])){outer}""",
-                 env = "virtual_python_env",
-                 stdout = buffer)
+        self.run(f"""python {temp_exec}""", env = "virtual_python_env", stdout = buffer)
+        rm(self, temp_exec, ".")
 
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
         for package in packages:
