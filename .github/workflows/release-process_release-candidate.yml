@@ -99,7 +99,6 @@ jobs:
         run: |
           echo "main_commit=`git rev-parse HEAD`" >> "$GITHUB_OUTPUT"
 
-
   create-dependencies-packages:
     name: Create conan packages for dependencies
     uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
@@ -113,27 +112,8 @@ jobs:
             conan_recipe_root: "resources"
     with:
       repository: ${{ matrix.repository }}
-      ref_name: ${{ needs.parse-version.outputs.branch_name }}
-      version: ${{ inputs.cura_version }}
-      conan_release: true
-      conan_user_channel: ultimaker/stable
-      conan_internal: false
-      conan_latest: true
+      branch: ${{ needs.parse-version.outputs.branch_name }}
       conan_recipe_root: ${{ matrix.conan_recipe_root }}
-    secrets: inherit
-
-  create-cura-package:
-    name: Create conan package for Cura
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
-    needs: [parse-version, create-dependencies-packages]
-    with:
-      repository: Cura
-      ref_name: ${{ needs.parse-version.outputs.branch_name }}
-      version: ${{ inputs.cura_version }}
-      conan_release: true
-      conan_user_channel: ultimaker/stable
-      conan_internal: false
-      conan_latest: true
     secrets: inherit
 
   create-installers:
@@ -141,10 +121,8 @@ jobs:
     uses: ./.github/workflows/installers.yml
     needs: [parse-version, create-cura-package]
     with:
-      cura_conan_version: cura/${{ inputs.cura_version }}@/
-      enterprise: false
-      staging: false
-      nightly: false
+      cura_conan_version: cura/${{ inputs.cura_version }}@ultimaker/stable
+      conan_args: "-c user.sentry:environment=production"
     secrets: inherit
 
   create-release-draft:
@@ -174,7 +152,7 @@ jobs:
           body: formatted_changelog.txt
 
       - name: Download artifacts
-        uses: actions/download-artifact@v4.1.7
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
           merge-multiple: true
