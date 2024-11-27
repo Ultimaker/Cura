@@ -37,6 +37,7 @@ jobs:
     needs: [parse-version]
     with:
       cura_version: ${{ inputs.cura_version }}
+      branch: ${{ needs.parse-version.outputs.branch_name }}
       create_feature_branch: false
     secrets: inherit
 

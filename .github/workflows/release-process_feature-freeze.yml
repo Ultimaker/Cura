@@ -28,5 +28,6 @@ jobs:
     needs: [parse-version]
     with:
       cura_version: ${{ needs.parse-version.outputs.package_version }}
+      branch: ${{ needs.parse-version.outputs.branch_name }}
       create_feature_branch: true
     secrets: inherit
