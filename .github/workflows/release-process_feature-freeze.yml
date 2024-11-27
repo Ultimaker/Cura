@@ -24,7 +24,8 @@ jobs:
 
   feature-freeze:
     name: Process feature freeze
-    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
+# FIXME: Use main once merged
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@CURA-11622_conan_v2
     needs: [parse-version]
     with:
       cura_version: ${{ needs.parse-version.outputs.package_version }}
