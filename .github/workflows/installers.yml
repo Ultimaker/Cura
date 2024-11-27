@@ -48,7 +48,6 @@ on:
 jobs:
   windows-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
-    needs: [ default_values ]
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
@@ -61,7 +60,6 @@ jobs:
 # FIXME: Use main once merged
   linux-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-11622_conan_v2
-    needs: [ default_values ]
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
@@ -72,7 +70,6 @@ jobs:
 
   macos-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
-    needs: [ default_values ]
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
@@ -84,7 +81,6 @@ jobs:
 
   macos-arm-installer:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
-    needs: [ default_values ]
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
