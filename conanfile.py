@@ -25,7 +25,7 @@ class CuraConan(ConanFile):
     exports = "LICENSE*", "*.jinja"
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualPythonEnv"
-    tool_requires = "gettext/0.21"
+    tool_requires = "gettext/0.22.5"
 
     # FIXME: Remove specific branch once merged to main
     python_requires = "translationextractor/[>=2.2.0]@ultimaker/cura_11622"
@@ -348,9 +348,7 @@ class CuraConan(ConanFile):
             vb = VirtualBuildEnv(self)
             vb.generate()
 
-            # # FIXME: once m4, autoconf, automake are Conan V2 ready use self.win_bash and add gettext as base tool_requirement
-            cpp_info = self.dependencies["gettext"].cpp_info
-            pot = self.python_requires["translationextractor"].module.ExtractTranslations(self, cpp_info.bindirs[0])
+            pot = self.python_requires["translationextractor"].module.ExtractTranslations(self)
             pot.generate()
 
     def build(self):
@@ -362,8 +360,7 @@ class CuraConan(ConanFile):
             mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
             mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
             mkdir(self, str(unix_path(self, Path(mo_file).parent)))
-            cpp_info = self.dependencies["gettext"].cpp_info
-            self.run(f"{cpp_info.bindirs[0]}/msgfmt {po_file} -o {mo_file} -f", env="conanbuild", ignore_errors=True)
+            self.run(f"msgfmt {po_file} -o {mo_file} -f", env="conanbuild")
 
     def deploy(self):
         ''' Note: this deploy step is actually used to prepare for building a Cura distribution with pyinstaller, which is not
