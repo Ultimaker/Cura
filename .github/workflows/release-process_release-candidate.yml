@@ -113,7 +113,7 @@ jobs:
           - repository: Cura
             conan_recipe_root: "resources"
     with:
-      repository: ${{ matrix.repository }}
+      repository: Ultimaker/${{ matrix.repository }}
       branch: ${{ needs.parse-version.outputs.branch_name }}
       conan_recipe_root: ${{ matrix.conan_recipe_root }}
     secrets: inherit
