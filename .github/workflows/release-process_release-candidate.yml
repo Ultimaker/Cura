@@ -32,7 +32,8 @@ jobs:
 
   freeze-packages-versions:
     name: Freeze packges versions
-    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
+# FIXME: Use main once merged
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@CURA-11622_conan_v2
     needs: [parse-version]
     with:
       cura_version: ${{ inputs.cura_version }}
@@ -101,7 +102,8 @@ jobs:
 
   create-packages:
     name: Create conan packages
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
+# FIXME: Use main once merged
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-11622_conan_v2
     needs: [parse-version, freeze-packages-versions]
     strategy:
       matrix:
