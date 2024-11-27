@@ -17,7 +17,7 @@ class NavlibClient(pynav.NavlibNavigationModel):
         self._was_pick = False
         self._hit_selection_only = False
         self._picking_pass = None
-        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "3dx_pivot.png"), size=2.5)
+        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "cor.png"), size=2.5)
 
     def pick(self, x, y, check_selection = False, radius = 0.):
 
