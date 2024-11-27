@@ -273,10 +273,6 @@ class CuraConan(ConanFile):
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
     def validate(self):
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
-        if version and Version(version) <= Version("4"):
-            raise ConanInvalidConfiguration("Only versions 5+ are support")
-
         if self.options.i18n_extract and self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
             raise ConanInvalidConfiguration("Unable to extract translations on Windows without Bash installed")
 
