@@ -2755,6 +2755,10 @@ msgid "Nozzle offset Y"
 msgstr "Nozzle-offset Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Maat nozzle"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Maat nozzle"
 
@@ -5620,3 +5624,23 @@ msgstr "Zoek printer"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "Dit is een Cura Universal-projectbestand. Wilt u het openen als Cura Universal Project of de modellen ervan importeren?"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "Exportpakket voor technische ondersteuning"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer het opnieuw of neem contact op met ondersteuning."
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer een minder gedetailleerd model te gebruiken of verminder het aantal instanties."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Upgrades van configuraties van Cura 5.8 naar Cura 5.9."
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "Versie-upgrade 5.8 naar 5.9"

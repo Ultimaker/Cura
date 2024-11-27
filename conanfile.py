@@ -217,6 +217,62 @@ class CuraConan(ConanFile):
                 python_installs=self._python_installs(),
             ))
 
+    def _delete_unwanted_binaries(self, root):
+        dynamic_binary_file_exts = [".so", ".dylib", ".dll", ".pyd", ".pyi"]
+        prohibited = [
+            "qt5compat",
+            "qtcharts",
+            "qtcoap",
+            "qtdatavis3d",
+            "qtlottie",
+            "qtmqtt",
+            "qtnetworkauth",
+            "qtquick3d",
+            "qtquick3dphysics",
+            "qtquicktimeline",
+            "qtvirtualkeyboard",
+            "qtwayland"
+        ]
+        forbiddens = [x.encode() for x in prohibited]
+        to_remove_files = []
+        to_remove_dirs = []
+        for root, dir_, files in os.walk(root):
+            for filename in files:
+                if not any([(x in filename) for x in dynamic_binary_file_exts]):
+                    continue
+                pathname = os.path.join(root, filename)
+                still_exist = True
+                for forbidden in prohibited:
+                    if forbidden.lower() in str(pathname).lower():
+                        to_remove_files.append(pathname)
+                        still_exist = False
+                        break
+                if not still_exist:
+                    continue
+                with open(pathname, "rb") as file:
+                    bytez = file.read().lower()
+                    for forbidden in forbiddens:
+                        if bytez.find(forbidden) >= 0:
+                            to_remove_files.append(pathname)
+            for dirname in dir_:
+                for forbidden in prohibited:
+                    if forbidden.lower() == str(dirname).lower():
+                        pathname = os.path.join(root, dirname)
+                        to_remove_dirs.append(pathname)
+                        break
+        for file in to_remove_files:
+            try:
+                os.remove(file)
+                print(f"deleted file: {file}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete file {file} results in: {str(ex)}")
+        for dir_ in to_remove_dirs:
+            try:
+                rmdir(self, dir_)
+                print(f"deleted dir_: {dir_}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete folder {dir_} results in: {str(ex)}")
+
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
@@ -281,13 +337,27 @@ class CuraConan(ConanFile):
         version = self.conf.get("user.cura:version", default = self.version, check_type = str)
         cura_version = Version(version)
 
+        # filter all binary files in binaries on the blacklist
+        blacklist = pyinstaller_metadata["blacklist"]
+        filtered_binaries = [b for b in binaries if not any([all([(part in b[0].lower()) for part in parts]) for parts in blacklist])]
+
+        # In case the installer isn't actually pyinstaller (Windows at the moment), outright remove the offending files:
+        specifically_delete = set(binaries) - set(filtered_binaries)
+        for (unwanted_path, _) in specifically_delete:
+            try:
+                os.remove(unwanted_path)
+                print(f"delete: {unwanted_path}")
+            except Exception as ex:
+                print(f"WARNING: Attempt to delete binary {unwanted_path} results in: {str(ex)}")
+
+        # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
                 name = str(self.options.display_name).replace(" ", "-"),
                 display_name = self._app_name,
                 entrypoint = entrypoint_location,
                 datas = datas,
-                binaries = binaries,
+                binaries = filtered_binaries,
                 venv_script_path = str(self._script_dir),
                 hiddenimports = pyinstaller_metadata["hiddenimports"],
                 collect_all = pyinstaller_metadata["collect_all"],
@@ -390,17 +460,11 @@ class CuraConan(ConanFile):
             copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path = False)
 
             # Copy the external plugins that we want to bundle with Cura
-            rmdir(self,str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")))
-            curaengine_plugin_gradual_flow = self.dependencies["curaengine_plugin_gradual_flow"].cpp_info
-            copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "CuraEngineGradualFlow")), keep_path = True)
-            copy(self, "*", curaengine_plugin_gradual_flow.bindirs[0], self.source_folder, keep_path = False)
-            copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
-
             if self._enterprise:
                 rmdir(self, str(self.source_path.joinpath("plugins", "NativeCADplugin")))
-                curaengine_plugin_gradual_flow = self.dependencies["native_cad_plugin"].cpp_info
-                copy(self, "*", curaengine_plugin_gradual_flow.resdirs[0], str(self.source_path.joinpath("plugins", "NativeCADplugin")), keep_path = True)
-                copy(self, "bundled_*.json", curaengine_plugin_gradual_flow.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
+                native_cad_plugin = self.dependencies["native_cad_plugin"].cpp_info
+                copy(self, "*", native_cad_plugin.resdirs[0], str(self.source_path.joinpath("plugins", "NativeCADplugin")), keep_path = True)
+                copy(self, "bundled_*.json", native_cad_plugin.resdirs[1], str(self.source_path.joinpath("resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
@@ -411,8 +475,10 @@ class CuraConan(ConanFile):
 
         for dependency in self.dependencies.host.values():
             for bindir in dependency.cpp_info.bindirs:
+                self._delete_unwanted_binaries(bindir)
                 copy(self, "*.dll", bindir, str(self._site_packages), keep_path = False)
             for libdir in dependency.cpp_info.libdirs:
+                self._delete_unwanted_binaries(libdir)
                 copy(self, "*.pyd", libdir, str(self._site_packages), keep_path = False)
                 copy(self, "*.pyi", libdir, str(self._site_packages), keep_path = False)
                 copy(self, "*.dylib", libdir, str(self._base_dir.joinpath("lib")), keep_path = False)
@@ -502,6 +568,11 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
+        self._delete_unwanted_binaries(self._site_packages)
+        self._delete_unwanted_binaries(self.package_folder)
+        self._delete_unwanted_binaries(self._base_dir)
+        self._delete_unwanted_binaries(self._share_dir)
+
         entitlements_file = "'{}'".format(Path(self.cpp_info.res_paths[2], "MacOS", "cura.entitlements"))
         self._generate_pyinstaller_spec(location = self._base_dir,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
@@ -516,10 +587,6 @@ echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
         copy(self, "requirement*.txt", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
-
-        # Remove the CuraEngineGradualFlow plugin from the package
-        rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[1], "CuraEngineGradualFlow"))
-        rm(self, "bundled_*.json", os.path.join(self.package_folder, self.cpp.package.resdirs[0], "bundled_packages"), recursive = False)
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))

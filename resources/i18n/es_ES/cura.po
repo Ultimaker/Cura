@@ -2757,6 +2757,10 @@ msgid "Nozzle offset Y"
 msgstr "Desplazamiento de la tobera sobre el eje Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Tamaño de la tobera"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Tamaño de la tobera"
 
@@ -5622,3 +5626,23 @@ msgstr "Buscar impresora"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "Este es un archivo de proyectos Cura Universal. ¿Quiere abrirlo como Proyecto Cura Universal o importar los modelos a partir de él?"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "Exportar paquete para asistencia técnica"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "No se han podido enviar los datos del modelo al motor. Vuelva a intentarlo o póngase en contacto con el servicio de asistencia."
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "Imposible enviar los datos del modelo al motor. Intente utilizar un modelo menos detallado o reduzca el número de instancias."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Actualiza las configuraciones de Cura 5.8 a Cura 5.9."
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "Actualización de la versión 5.8 a 5.9"
