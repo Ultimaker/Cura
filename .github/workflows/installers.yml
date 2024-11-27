@@ -37,11 +37,11 @@ on:
         type: string
       enterprise:
         default: false
-        required: true
+        required: false
         type: boolean
       staging:
         default: false
-        required: true
+        required: false
         type: boolean
 
 
