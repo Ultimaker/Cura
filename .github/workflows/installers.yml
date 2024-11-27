@@ -54,7 +54,6 @@ jobs:
       conan_args: ${{ inputs.conan_args }}
       enterprise: ${{ inputs.enterprise == 'true' }}
       staging: ${{ inputs.staging == 'true' }}
-      architecture: X64
       operating_system: self-hosted-Windows-X64
     secrets: inherit
 
