@@ -48,6 +48,7 @@ on:
 jobs:
   windows-installer:
 # FIXME: Use main once merged
+    name: Create Windows installer
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -59,6 +60,7 @@ jobs:
 
 # FIXME: Use main once merged
   linux-installer:
+    name: Create Linux AppImage
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -70,6 +72,7 @@ jobs:
 
   macos-installer:
 # FIXME: Use main once merged
+    name: Create MacOS-X64 packages
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -82,6 +85,7 @@ jobs:
 
   macos-arm-installer:
 # FIXME: Use main once merged
+    name: Create MacOS-ARM64 packages
     uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
