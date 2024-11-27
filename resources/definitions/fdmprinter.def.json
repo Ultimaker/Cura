@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 23,
+        "setting_version": 24,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -15,8 +15,11 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "machine_extruder_trains": { "0": "fdmextruder" },
+        "has_textured_buildplate": false,
         "supports_usb_connection": true,
-        "supports_network_connection": false
+        "supports_network_connection": false,
+        "supports_abstract_color": false,
+        "variants_name_has_translation": false
     },
     "settings":
     {
@@ -508,6 +511,16 @@
                     "description": "Apply the extruder offset to the coordinate system. Affects all extruders.",
                     "type": "bool",
                     "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_start_gcode_first":
+                {
+                    "label": "Start GCode must be first",
+                    "description": "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code.",
+                    "type": "bool",
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1423,7 +1436,7 @@
                         "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
-                    "enabled": "z_seam_type != 'random'",
+                    "enabled": "z_seam_type == 'sharpest_corner'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -6063,7 +6076,7 @@
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "resolve": "extruderValue(adhesion_extruder_nr, 'adhesion_type')",
+                    "resolve": "min(extruderValues('adhesion_type'), key=('raft', 'brim', 'skirt', 'none').index)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -8366,7 +8379,7 @@
                 "wall_overhang_angle":
                 {
                     "label": "Overhanging Wall Angle",
-                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either.",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang.",
                     "unit": "\u00b0",
                     "type": "float",
                     "minimum_value": "0",
@@ -8922,6 +8935,115 @@
                     "description": "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped.",
                     "type": "bool",
                     "default_value": true,
+                    "settable_per_mesh": true
+                },
+                "scarf_joint_seam_length":
+                {
+                    "label": "Scarf Seam Length",
+                    "description": "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective.",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "50.0",
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "scarf_joint_seam_start_height_ratio":
+                {
+                    "label": "Scarf Seam Start Height",
+                    "description": "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective.",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true,
+                    "enabled": "scarf_joint_seam_length > 0"
+                },
+                "scarf_split_distance":
+                {
+                    "label": "Scarf Seam Step Length",
+                    "description": "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code.",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": 0.1,
+                    "maximum_value": 100.0,
+                    "maximum_value_warning": "scarf_joint_seam_length",
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true,
+                    "enabled": "scarf_joint_seam_length > 0"
+                },
+                "wall_0_start_speed_ratio":
+                {
+                    "label": "Outer Wall Start Speed Ratio",
+                    "description": "This is the ratio of the top speed to start with when printing an outer wall.",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "minimum_value": 0.0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_acceleration":
+                {
+                    "label": "Outer Wall Start Acceleration",
+                    "description": "This is the acceleration with which to reach the top speed when printing an outer wall.",
+                    "enabled": "wall_0_start_speed_ratio < 100.0",
+                    "type": "float",
+                    "default_value": 20.0,
+                    "minimum_value": 1.0,
+                    "maximum_value": 100000.0,
+                    "unit": "mm/s\u00b2",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_end_speed_ratio":
+                {
+                    "label": "Outer Wall End Speed Ratio",
+                    "description": "This is the ratio of the top speed to end with when printing an outer wall.",
+                    "type": "float",
+                    "default_value": 100.0,
+                    "minimum_value": 0.0,
+                    "maximum_value": 100.0,
+                    "unit": "%",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_deceleration":
+                {
+                    "label": "Outer Wall End Deceleration",
+                    "description": "This is the deceleration with which to end printing an outer wall.",
+                    "enabled": "wall_0_end_speed_ratio < 100.0",
+                    "type": "float",
+                    "default_value": 20.0,
+                    "minimum_value": 1.0,
+                    "maximum_value": 100000.0,
+                    "unit": "mm/s\u00b2",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "wall_0_speed_split_distance":
+                {
+                    "label": "Outer Wall Speed Split Distance",
+                    "description": "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code.",
+                    "type": "float",
+                    "default_value": 1.0,
+                    "minimum_value": 0.1,
+                    "maximum_value": 100.0,
+                    "unit": "mm",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
                     "settable_per_mesh": true
                 }
             }

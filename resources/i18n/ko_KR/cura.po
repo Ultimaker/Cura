@@ -2752,6 +2752,10 @@ msgid "Nozzle offset Y"
 msgstr "노즐 오프셋 Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "노즐 크기"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "노즐 크기"
 
@@ -5608,3 +5612,23 @@ msgstr "프린터 검색"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "이 항목은 Cura Universal 프로젝트 파일입니다. 해당 파일을 Cura Universal 프로젝트로 열거나, 파일에서 모델을 불러올까요?"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "기술 지원을 위해 패키지 내보내기"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "모델 데이터를 엔진에 전송할 수 없습니다. 다시 시도하거나 지원팀에 문의해 주세요."
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "모델 데이터를 엔진에 전송할 수 없습니다. 덜 세부적인 모델을 사용하거나 인스턴스 수를 줄이세요."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Cura 5.8에서 Cura 5.9로 구성을 업그레이드합니다."
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "5.8에서 5.9로 버전 업그레이드"

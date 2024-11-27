@@ -2752,6 +2752,10 @@ msgid "Nozzle offset Y"
 msgstr "喷嘴偏移 Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "喷嘴孔径"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "喷嘴孔径"
 
@@ -5610,3 +5614,23 @@ msgstr "搜索打印机"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "这是一个 Cura 通用项目文件。您想将其作为 Cura 通用项目打开还是导入其中的模型？"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "导出包用于技术支持"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "无法将模型数据发送到引擎。请重试,或联系支持人员。"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "无法将模型数据发送到引擎。请尝试使用较少细节的模型,或减少实例数量。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "将配置从 Cura 5.8 升级到 Cura 5.9。"
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "版本升级 5.8 到 5.9"

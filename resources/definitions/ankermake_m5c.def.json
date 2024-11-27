@@ -10,6 +10,7 @@
         "file_formats": "text/x-gcode",
         "platform": "ankermake_m5c_platform.obj",
         "has_machine_quality": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "ankermake_m5c_extruder_0" },
         "platform_texture": "ankermake_m5c.png",
         "preferred_material": "generic_pla",
@@ -67,7 +68,6 @@
             ]
         },
         "infill_extruder_nr": { "value": -1 },
-        "infill_line_distance": { "value": 8 },
         "infill_material_flow": { "value": 90 },
         "infill_pattern": { "value": "'lines' if infill_sparse_density >= 25 else 'grid'" },
         "infill_sparse_density": { "value": 10 },

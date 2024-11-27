@@ -1,20 +1,18 @@
-version: "5.9.0-alpha.0"
-
+version: "5.10.0-alpha.0"
 requirements:
-  - "cura_resources/5.9.0-alpha.0@ultimaker/cura_11622"
-  - "uranium/5.9.0-alpha.0@ultimaker/cura_11622"
-  - "curaengine/5.9.0-alpha.0@ultimaker/cura_11622"
-  - "cura_binary_data/5.9.0-alpha.0@ultimaker/cura_11622"
-  - "fdm_materials/5.9.0-alpha.0@ultimaker/cura_11622"
+  - "cura_resources/5.10.0-alpha.0@ultimaker/cura_11622"
+  - "uranium/5.10.0-alpha.0@ultimaker/cura_11622"
+  - "curaengine/5.10.0-alpha.0@ultimaker/cura_11622"
+  - "cura_binary_data/5.10.0-alpha.0@ultimaker/cura_11622"
+  - "fdm_materials/5.10.0-alpha.0@ultimaker/cura_11622"
   - "dulcificum/0.2.0-alpha.0@ultimaker/cura_11622"
   - "pysavitar/5.4.0-alpha.0@ultimaker/cura_11622"
   - "pynest2d/5.4.0-alpha.0@ultimaker/cura_11622"
 requirements_internal:
   - "fdm_materials/5.8.1"
-  - "cura_private_data/5.9.0-alpha.0@internal/cura_11622"
+  - "cura_private_data/5.10.0-alpha.0@internal/cura_11622"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
-
 urls:
     default:
         cloud_api_root: "https://api.ultimaker.com"
@@ -124,6 +122,19 @@ pyinstaller:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
         Linux: "./icons/cura-128.png"
+    blacklist:
+      - [ "assimp" ]
+      - [ "qt", "charts" ]
+      - [ "qt", "coap" ]
+      - [ "qt", "data", "vis" ]
+      - [ "qt", "lab", "animat" ]
+      - [ "qt", "mqtt" ]
+      - [ "qt", "net", "auth" ]
+      - [ "qt", "quick3d" ]
+      - [ "qt", "timeline" ]
+      - [ "qt", "virt", "key" ]
+      - [ "qt", "wayland", "compos" ]
+      - [ "qt", "5", "compat" ]
 
 pycharm_targets:
   - jinja_path: .run_templates/pycharm_cura_run.run.xml.jinja

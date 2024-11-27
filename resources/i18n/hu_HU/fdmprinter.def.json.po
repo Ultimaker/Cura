@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-07-08 09:05+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -96,6 +96,10 @@ msgstr "Lépésméret"
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
 msgstr "Az adaptív rétegek kiszámítják a szükséges rétegmagasságokat a modell alakjától függően."
+
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr ""
 
 msgctxt "infill_wall_line_count description"
 msgid ""
@@ -445,6 +449,14 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Perem szélesség"
 
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr ""
+
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Tárgyasztal tapadás"
@@ -483,6 +495,10 @@ msgstr ""
 
 msgctxt "bv_temp_warn_limit label"
 msgid "Build Volume temperature Warning"
+msgstr ""
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
 msgstr ""
 
 msgctxt "prime_tower_brim_enable description"
@@ -721,6 +737,14 @@ msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Érzékelje a hidakat, és módosítsa a nyomtatási sebességet, az adagolást és a ventilátorbeállításokat, a nyomtatásuk idejére."
 
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr ""
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr ""
@@ -845,6 +869,10 @@ msgctxt "dual label"
 msgid "Dual Extrusion"
 msgstr "Duál extrudálás"
 
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
 msgstr "Elliptikus (kör)"
@@ -937,6 +965,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Engedélyezi a szivárgáspajzsot. Ez létrehoz egy héjat a modell körül, úgy, hogy az nem ér a modellhez, azonban a fej visszaálláskor, az esetlegesen fúvókából kicsöppenő anyagmaradványokat 'letörli' ebben a héjban."
 
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
 msgstr ""
@@ -1001,6 +1033,10 @@ msgctxt "meshfix_extensive_stitching description"
 msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
 msgstr "A kiterjedt felfűzés megkísérli felfűzni a nyílt lyukakat a hálóban úgy, hogy a lyukakat érintő poligonokat bezárja. Ez a funkció jelentősen növelheti a feldolgozási időt."
 
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr ""
+
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
 msgstr "Extra kitöltési falszám"
@@ -1012,6 +1048,10 @@ msgstr "Extra felületi falszám"
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Egy extra anyagmennyiség, amivel több anyagot tol vissza a fejbe fúvókaváltás után."
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -1197,6 +1237,10 @@ msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
 msgstr ""
 
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr ""
+
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr ""
@@ -1316,6 +1360,18 @@ msgstr "Fokozatos támaszkitöltési lépésmagasság"
 msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
 msgstr "Fokozatos támasz kitöltési lépések"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
 
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
@@ -1708,6 +1764,10 @@ msgstr "Első réteg Z átfedés"
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Kezdeti nyomtatási hőmérséklet"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
 
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
@@ -2151,6 +2211,10 @@ msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
 msgstr "Maximális utazási felbontás"
 
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
 msgstr "Maximális gyorsulás az X tengelyen"
@@ -2319,6 +2383,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr ""
 
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
 msgctxt "min_feature_size description"
 msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
 msgstr ""
@@ -2383,6 +2451,10 @@ msgctxt "adhesion_type option none"
 msgid "None"
 msgstr "Nincs"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr ""
+
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr "Nincs"
@@ -2427,9 +2499,9 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Fúvóka ID"
 
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Fúvóka hossza"
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "Fúvóka méret"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2559,6 +2631,18 @@ msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
 msgstr "Külső fal gyorsulás"
 
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr ""
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr ""
+
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "Külső fali extruder"
@@ -2582,6 +2666,14 @@ msgstr "Külső falvonal szélessége"
 msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
 msgstr "Külső fal sebesség"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr ""
 
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
@@ -2718,6 +2810,10 @@ msgstr "Előtorony Y helyzet"
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Nyomtatási gyorsulás"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
 
 msgctxt "jerk_print label"
 msgid "Print Jerk"
@@ -3155,6 +3251,10 @@ msgctxt "ppr description"
 msgid "Reporting events that go out of set thresholds"
 msgstr ""
 
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
 msgstr ""
@@ -3217,6 +3317,18 @@ msgstr ""
 
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr ""
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr ""
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
 msgstr ""
 
 msgctxt "support_meshes_present label"
@@ -4275,6 +4387,10 @@ msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
 msgstr "A modell vízszintes részeinek feletti magasság, amelyet formaként nyomtatunk."
 
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr ""
+
 msgctxt "cool_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
 msgstr "Az a magasság, ahol a ventillátorok a normál hűtési sebességgel forognak.Az alacsonyabb rétegekben a hűtés még kissebb, és fokozatosan növekedik a sebessége a normál szintig, ahogy eléri ezt a magasságot."
@@ -4282,10 +4398,6 @@ msgstr "Az a magasság, ahol a ventillátorok a normál hűtési sebességgel fo
 msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "A fúvóka csúcsa és az állványzat közötti magasságkülönbség (A keresztező X és/vagy az Y tengely állványzata)"
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "A fúvóka csúcsa és a nyomtatófej legalacsonyabb része (fűtőblokk) közötti magasságkülönbség."
 
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
@@ -4386,6 +4498,10 @@ msgstr "Az eltávolítandó kéreg felület legnagyobb szélessége. Az ettől k
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
 msgstr "Az eltávolítandó felső kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek felső részének nyomtatásához felhasznált időt és anyagot."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr ""
 
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
@@ -4671,6 +4787,10 @@ msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
 msgstr "A támasz alá nyomtatandó peremvonalak száma. Több perem vonal javítja a tálcához való tapadást, viszon extra anyagfelhasználást is jelent."
 
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr ""
+
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
 msgstr "Ez a szám a tutaj felső rétegeinek száma. Ezek teljesen kitöltött rétegek amiken a modellek nyugszanak. 2 réteg használata sokkal simább első réteget fog eredményezni a modellen, mint ha 1 lenne."
@@ -4762,6 +4882,10 @@ msgstr ""
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
 msgstr "A maximális pillanatnyi sebességváltozás változtatása a kezdő rétegen."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr ""
 
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
@@ -5090,6 +5214,26 @@ msgstr ""
 msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "Ez határozza meg, hogy a fejnek a szélekhez képest mennyi a távolsága a hídfal megkezdése előtt. A híd nyomtatásának megkezdése előtt az olvadókamra nyomást csökkentheti, ami így vízszintesebb hídhoz vezethez."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr ""
 
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
@@ -5471,8 +5615,16 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr ""
 
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr ""
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr ""
+
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
@@ -5891,6 +6043,10 @@ msgstr "fej átpozícionálás"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "A modell első és második rétege között átfedést hoz létre Z irányban.Ez képes kompenzálni azt a hibát, ami az első rétegben keletkezett. Ezt a hibát az okozza, hogy a tutaj légrésben az első réteg benyúlik, így nem alakul ki a tökéletes első réteg.Az első réteg feletti összes rész magasságát érinti ez a beállítás."
 
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle Length"
+#~ msgstr "Fúvóka hossza"
+
 #~ msgctxt "brim_outside_only description"
 #~ msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
 #~ msgstr "Csak a modell külső falaihoz nyomtat Peremet. Ez csökkenti a perem nyomtatási költségét, és nem szükséges a belső részeken eltávolítani majd azt, továbbá a test letapadását nem csökkenti jelentősen."
@@ -5898,6 +6054,10 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"
 #~ msgstr "Interfész felosztás"
+
+#~ msgctxt "machine_nozzle_head_distance description"
+#~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+#~ msgstr "A fúvóka csúcsa és a nyomtatófej legalacsonyabb része (fűtőblokk) közötti magasságkülönbség."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."

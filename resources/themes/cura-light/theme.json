@@ -642,11 +642,11 @@
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
         "welcome_wizard_window": [46, 50],
-        "modal_window_minimum": [60.0, 45],
+        "modal_window_minimum": [60.0, 50.0],
         "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
-        "message_close": [1, 1],
+        "message_close": [2, 2],
         "message_radius": [0.25, 0.25],
         "message_action_button": [0, 2.5],
         "message_image": [15.0, 10.0],
