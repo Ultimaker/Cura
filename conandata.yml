@@ -621,7 +621,7 @@ pip_requirements_core:
         - sha256:7d972cfa8439bdcb35a7be78b7ef86d73b34b808c74be56dfa785c8a93b851bf
         - sha256:72068b206ee809c9c596b57b5287259ea41ddb4774d86725b19f35bf56aa32a9
     pywin32:
-      version: "306"
+      version: "308"
       hashes:
         - sha256:796ff4426437896550d2981b9c2ac0ffd75238ad9ea2d3bfa67a1abd546d262e
         - sha256:4fc888c59b3c0bef905ce7eb7e2106a07712015ea1c8234b703a088d46110e8e
@@ -642,10 +642,10 @@ pip_requirements_core:
         - sha256:7873ca4dc60ab3287919881a7d4f88baee4a6e639aa6962de25a98ba6b193341
         - sha256:71b3322d949b4cc20776436a9c9ba0eeedcbc9c650daa536df63f0ff111bb920
     pywin32-ctypes:
-      version: "0.2.0"
+      version: "0.2.3"
       hashes:
-        - sha256:9dc2d991b3479cc2df15930958b674a48a227d5361d413827a4cfd0b5876fc98
-        - sha256:24ffc3b341d457d48e8922352130cf2644024a4ff09762a2261fd34c36ee5942
+        - sha256:8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8
+        - sha256:d162dc04946d704503b2edc4d55f3dba5c1d539ead017afa00142c38b9885755
 
 pip_requirements_dev:
   any_os:
