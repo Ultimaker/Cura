@@ -121,13 +121,13 @@ class CuraConan(ConanFile):
         self.output.info("Collecting python installs")
         python_installs = {}
 
-        temp_exec = "temp.py"
+        collect_python_installs = "collect_python_installs.py"
         code = f"import importlib.metadata;  print(';'.join([(package.metadata['Name']+','+    package.metadata['Version']) for package in importlib.metadata.distributions()]))"
-        save(self, temp_exec, code)
+        save(self, collect_python_installs, code)
 
         buffer = StringIO()
-        self.run(f"""python {temp_exec}""", env = "virtual_python_env", stdout = buffer)
-        rm(self, temp_exec, ".")
+        self.run(f"""python {collect_python_installs}""", env = "virtual_python_env", stdout = buffer)
+        rm(self, collect_python_installs, ".")
 
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
         for package in packages:
