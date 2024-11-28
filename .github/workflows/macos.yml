@@ -43,8 +43,9 @@ on:
           - macos-12
 
 jobs:
+# FIXME: Use main once merged
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
