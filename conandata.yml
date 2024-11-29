@@ -257,7 +257,7 @@ pycharm_targets:
 
 pip_requirements_core:
   any_os:
-    libCharon:
+    charon:
       url: "git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon"
     PyQt6-NetworkAuth:
       version: "6.6.0"
