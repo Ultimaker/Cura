@@ -1,0 +1,37 @@
+{
+    "version": 2,
+    "name": "Sovol SV08",
+    "inherits": "voron2_base",
+    "metadata":
+    {
+        "visible": true,
+        "manufacturer": "Sovol 3D",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "sovol_sv08",
+        "variants_name": "Nozzle Size",
+        "platform": "sovol_sv08_buildplate_model.stl"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 350 },
+        "machine_width": { "default_value": 350 },
+        "machine_height": { "default_value": 345 },
+        "machine_name": { "default_value": "SV08" },
+        "retraction_amount": { "default_value": 0.5 },
+        "machine_max_acceleration_x": { "default_value": 40000 },
+        "machine_max_acceleration_y": { "default_value": 40000 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_max_acceleration_e": { "default_value": 5000 },
+        "machine_max_feedrate_x": { "default_value": 700 },
+        "machine_max_feedrate_y": { "default_value": 700 },
+        "machine_max_feedrate_z": { "default_value": 20 },
+        "machine_max_feedrate_e": { "default_value": 50 },
+        "machine_max_jerk_e": { "default_value": 5 },
+        "machine_max_jerk_xy": { "default_value": 20 },
+        "machine_max_jerk_z": { "default_value": 0.5 },
+        "retraction_min_travel": { "default_value": 1 },
+        "retraction_hop": { "default_value": 0.4 },
+        "machine_start_gcode": { "default_value": "G28\nG90\nG1 X0 F9000\nG1 Y20\nG1 Z0.600 F600\nG1 Y0 F9000\nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\nG90\nG1 X0 F9000\nG1 Y20\nG1 Z0.600 F600\nG1 Y0 F9000\nM400\nG91\nM83\nM140 S{material_bed_temperature_layer_0} ;set bed temp\nM104 S{material_print_temperature_layer_0} ;set extruder temp\nM190 S{material_bed_temperature_layer_0} ;wait for bed temp\nM109 S{material_print_temperature_layer_0};wait for extruder temp\nG1 E25 F300\nG4 P1000\nG1 E-0.200 Z5 F600\nG1 X88.000 F9000\nG1 Z-5.000 F600\nG1 X87.000 E20.88 F1800\nG1 X87.000 E13.92 F1800\nG1 Y1 E0.16 F1800\nG1 X-87.000 E13.92 F1800\nG1 X-87.000 E20.88 F1800\nG1 Y1 E0.24 F1800\nG1 X87.000 E20.88 F1800\nG1 X87.000 E13.92 F1800\nG1 E-0.200 Z1 F600\nM400\nG90 ;absolute positioning\nM82 ;absolute extrusion mode\n" },
+        "machine_end_gcode": { "default_value": "END_PRINT\n" }
+    }
+}
