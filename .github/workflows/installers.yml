@@ -7,91 +7,29 @@ on:
       cura_conan_version:
         description: 'Cura Conan Version'
         default: 'cura/[*]@ultimaker/testing'
-        required: true
         type: string
       conan_args:
         description: 'Conan args, e.g. --requires'
         default: ''
-        required: false
         type: string
       enterprise:
         description: 'Build Cura as an Enterprise edition'
         default: false
-        required: true
         type: boolean
       staging:
         description: 'Use staging API'
         default: false
-        required: true
-        type: boolean
-
-  workflow_call:
-    inputs:
-      cura_conan_version:
-        default: 'cura/latest@ultimaker/testing'
-        required: true
-        type: string
-      conan_args:
-        default: ''
-        required: false
-        type: string
-      enterprise:
-        default: false
-        required: false
-        type: boolean
-      staging:
-        default: false
-        required: false
         type: boolean
 
 
 jobs:
-  windows-installer:
+  installers:
 # FIXME: Use main once merged
-    name: Create Windows installer
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-11622_conan_v2
+    name: Create installers
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
       enterprise: ${{ inputs.enterprise == 'true' }}
       staging: ${{ inputs.staging == 'true' }}
-      operating_system: self-hosted-Windows-X64
-    secrets: inherit
-
-# FIXME: Use main once merged
-  linux-installer:
-    name: Create Linux AppImage
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-11622_conan_v2
-    with:
-      cura_conan_version: ${{ inputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
-      operating_system: self-hosted-Ubuntu22-X64
-    secrets: inherit
-
-  macos-installer:
-# FIXME: Use main once merged
-    name: Create MacOS-X64 packages
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-11622_conan_v2
-    with:
-      cura_conan_version: ${{ inputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
-      architecture: X64
-      operating_system: self-hosted-X64
-    secrets: inherit
-
-  macos-arm-installer:
-# FIXME: Use main once merged
-    name: Create MacOS-ARM64 packages
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-11622_conan_v2
-    with:
-      cura_conan_version: ${{ inputs.cura_conan_version }}
-      conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
-      architecture: ARM64
-      operating_system: self-hosted-ARM64
     secrets: inherit

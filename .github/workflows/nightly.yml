@@ -5,15 +5,12 @@ on:
   workflow_call:
     inputs:
       cura_conan_version:
-        default: ''
         required: true
         type: string
       release_tag:
-        default: ''
         required: true
         type: string
       caller_workflow:
-        default: ''
         required: true
         type: string
 
@@ -23,51 +20,31 @@ jobs:
     name: Create installers
     id: create-installers
 # FIXME: Use main once merged
-    uses: ultimaker/cura/github/workflows/installers.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-11622_conan_v2
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
     secrets: inherit
 
   update-nightly-release:
+    name: Upload installers
     runs-on: ubuntu-latest
     needs: [ create-installers ]
     steps:
+      - name: Setup the build environment
+# FIXME: Use main once merged
+        uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@CURA-11622_conan_v2
+
       - name: Download installers jobs artifacts
         uses: actions/download-artifact@v4
         with:
+          pattern: UltiMaker-Cura-*
           path: installers
           merge-multiple: true
 
       - name: Rename the installers
         id: rename-installers
-        shell: python
         working-directory: installers
-        run: |
-          import os
-
-          first_file = True
-
-          for file in os.listdir("."):
-            if file.startswith("UltiMaker-Cura-"):
-              # Find the commit tag, and replace it with "nightly"
-              index_plus = file.index("+")
-              file_start = file[:index_plus]
-              file_end = file[index_plus:]
-              file_end = file_end[file_end.index("-")+1:]
-
-              new_file_name = f"{file_start}-nightly-{file_end}"
-              os.rename(file, new_file_name)
-
-              if first_file:
-                first_file = False
-
-                short_version = file_start.split("-")[2]
-                short_version = ".".join(short_version.split(".")[:2])
-
-                with open(os.environ["GITHUB_OUTPUT"], "a") as github_output:
-                  github_output.write(f"cura_version={file_start}\n")
-                  github_output.write(f"short_version={file_start}\n")
-
+        run: python ./Cura-workflows/runner_scripts/rename_installers.py --tag "nightly" >> $GITHUB_OUTPUT
 
       - name: create the release notes
         shell: python
@@ -92,11 +69,11 @@ jobs:
               ))
 
       - name: Update nightly release description and binaries
-        if: always()
+        working-directory: installers
         run: |
           gh release edit ${{ inputs.release_tag }} --title "${{ steps.rename-installers.outputs.cura_version }}" --notes-file release-notes.md
 
-          for file in "installers/*"; do
+          for file in "*"; do
             gh release upload ${{ inputs.release_tag }} $file --clobber
           done
         env:
