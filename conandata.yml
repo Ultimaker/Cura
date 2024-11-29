@@ -298,6 +298,11 @@ pip_requirements_core:
       hashes:
         - sha256:8ac8bea693b3ee119f11b022fc9b9481c9f1af06cb38bc859bf5d16bbbe49b23
         - sha256:f01e8edab14d1999700c980c21a1546f37417216ad915a53be649d263130181e
+    setuptools:
+      version: "75.6.0"
+      hashes:
+        - sha256:ce74b49e8f7110f9bf04883b730f4765b774ef3ef28f722cce7c273d253aaf7d
+        - sha256:8199222558df7c86216af4f84c30e9b34a61d8ba19366cc914424cdbd28252f6
     sentry-sdk:
       version: "0.13.5"
       hashes:
