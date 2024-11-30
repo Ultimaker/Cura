@@ -53,5 +53,3 @@ class TestCollidesWithAreas:
 def test_outsideBuildArea(cura_scene_node):
     cura_scene_node.setOutsideBuildArea(True)
     assert cura_scene_node.isOutsideBuildArea
-
-
