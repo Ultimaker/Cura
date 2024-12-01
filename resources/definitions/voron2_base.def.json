@@ -36,7 +36,6 @@
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "default_value": false },
         "infill_enable_travel_optimization": { "default_value": true },
-        "jerk_enabled": { "default_value": false },
         "layer_height_0": { "resolve": "max(machine_nozzle_size / 2, min(extruderValues('layer_height')))" },
         "line_width": { "value": "machine_nozzle_size * 1.125" },
         "machine_acceleration": { "default_value": 3000 },
