@@ -21,7 +21,6 @@
     },
     "overrides":
     {
-        "acceleration_enabled": { "default_value": false },
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
         "bridge_fan_speed": { "default_value": 100 },
