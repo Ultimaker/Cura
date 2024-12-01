@@ -23,9 +23,11 @@
     {
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
+        "bridge_fan_speed": { "default_value": 100 },
         "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
         "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
         "bridge_settings_enabled": { "default_value": true },
+        "bridge_wall_coast": { "default_value": 10 },
         "cool_fan_full_at_height": { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
         "cool_fan_full_layer": { "value": 4 },
         "cool_min_layer_time": { "default_value": 15 },
@@ -33,6 +35,7 @@
         "cool_min_speed": { "value": "max(round(speed_layer_0 / 2), round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 2))" },
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "default_value": false },
+        "infill_enable_travel_optimization": { "default_value": true },
         "layer_height_0": { "resolve": "max(machine_nozzle_size / 2, min(extruderValues('layer_height')))" },
         "line_width": { "value": "machine_nozzle_size * 1.125" },
         "machine_acceleration": { "default_value": 3000 },
@@ -102,6 +105,8 @@
         "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "default_value": false },
         "wall_line_width": { "value": "machine_nozzle_size" },
+        "wall_overhang_angle": { "default_value": 75 },
+        "wall_overhang_speed_factor": { "default_value": 50 },
         "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
         "zig_zaggify_infill": { "value": true }
     }
