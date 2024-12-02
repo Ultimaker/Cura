@@ -25,7 +25,8 @@ def build_dmg(source_path: str, dist_path: str, filename: str, app_name: str) ->
                  f"{dist_path}/{filename}",
                  f"{dist_path}/{app_name}"]
 
-    subprocess.run(arguments)
+    print(f"Run create dmg command [{" ".join([str(arg) for arg in arguments])}]")
+    subprocess.run(arguments, check=True)
 
 
 def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_version: str, installer_filename: str) -> None:
@@ -57,7 +58,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         print("CODESIGN_IDENTITY missing. The installer is not being signed")
 
     print(f"Run package build command [{" ".join([str(arg) for arg in pkg_build_arguments])}]")
-    subprocess.run(pkg_build_arguments)
+    subprocess.run(pkg_build_arguments, check=True)
 
     # This automatically generates a distribution.xml file that is used to build the installer.
     # If you want to make any changes to how the installer functions, this file should be changed to do that.
@@ -69,7 +70,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         Path(dist_path, "distribution.xml"),  # Output location for sythesized distributions file
     ]
     print(f"Run distribution creation command [{" ".join([str(arg) for arg in distribution_creation_arguments])}]")
-    subprocess.run(distribution_creation_arguments)
+    subprocess.run(distribution_creation_arguments, check=True)
 
     # This creates the distributable package (Installer)
     installer_creation_arguments = [
@@ -83,7 +84,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         installer_creation_arguments.extend(["--sign", codesign_identity])
 
     print(f"Run installer creation command [{" ".join([str(arg) for arg in installer_creation_arguments])}]")
-    subprocess.run(installer_creation_arguments)
+    subprocess.run(installer_creation_arguments, check=True)
 
 
 def notarize_file(dist_path: str, filename: str) -> None:
@@ -102,7 +103,8 @@ def notarize_file(dist_path: str, filename: str) -> None:
         Path(dist_path, filename)
     ]
 
-    subprocess.run(notarize_arguments)
+    print(f"Run notarize command [{" ".join([str(arg) for arg in notarize_arguments])}]")
+    subprocess.run(notarize_arguments, check=True)
 
 
 def create_pkg_installer(filename: str,  dist_path: str, cura_version: str, app_name: str) -> None:
