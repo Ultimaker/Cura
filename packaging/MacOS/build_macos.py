@@ -56,7 +56,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     else:
         print("CODESIGN_IDENTITY missing. The installer is not being signed")
 
-    print(f"Run package build command [{" ".join(pkg_build_arguments)}]")
+    print(f"Run package build command [{" ".join([str(arg) for arg in pkg_build_arguments])}]")
     subprocess.run(pkg_build_arguments)
 
     # This automatically generates a distribution.xml file that is used to build the installer.
@@ -68,7 +68,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         "--package", Path(dist_path, component_filename),  # Package that will be inside installer
         Path(dist_path, "distribution.xml"),  # Output location for sythesized distributions file
     ]
-    print(f"Run distribution creation command [{" ".join(distribution_creation_arguments)}]")
+    print(f"Run distribution creation command [{" ".join([str(arg) for arg in distribution_creation_arguments])}]")
     subprocess.run(distribution_creation_arguments)
 
     # This creates the distributable package (Installer)
@@ -82,7 +82,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     if codesign_identity:
         installer_creation_arguments.extend(["--sign", codesign_identity])
 
-    print(f"Run installer creation command [{" ".join(installer_creation_arguments)}]")
+    print(f"Run installer creation command [{" ".join([str(arg) for arg in installer_creation_arguments])}]")
     subprocess.run(installer_creation_arguments)
 
 
