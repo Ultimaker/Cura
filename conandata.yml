@@ -661,7 +661,7 @@ pip_requirements_dev:
 
 pip_requirements_installer:
   any_os:
-    pyinstaller: { version: "6.3.0" }
+    pyinstaller: { version: "6.11.1" }
     pyinstaller-hooks-contrib: {}
 
 python_translation_source_folders:
