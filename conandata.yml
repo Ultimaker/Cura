@@ -259,20 +259,6 @@ pip_requirements_core:
   any_os:
     charon:
       url: "git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon"
-    PyQt6-NetworkAuth:
-      version: "6.6.0"
-      hashes:
-        - sha256:7b90b81792fe53105287c8cbb5e4b22bc44a482268ffb7d3e33f852807f86182
-        - sha256:f60ff9a62f5129dc2a9d4c495fb47f9a03e4dfb666b50fb7d61f46e89bf7b6a2
-        - sha256:c7e2335159aa795e2fe6fb069ccce6308672ab80f26c50fab57caf957371cbb5
-        - sha256:cdfc0bfaea16a9e09f075bdafefb996aa9fdec392052ba4fb3cbac233c1958fb
-    PyQt6-NetworkAuth-Qt6:
-      version: "6.6.0"
-      hashes:
-        - sha256:bcd56bfc892fec961c51eba3c0bf32ba8317a762d9e254d3830569611ed569d6
-        - sha256:4cc48fd375730a0ba5fbed9d64abb2914f587377560a78a63aff893f9e276a45
-        - sha256:481d9093e1fb1ac6843d8beabcd359cc34b74b9a2cbb3e2b68d96bd3f178d4e0
-        - sha256:5006deabf55304d4a3e0b3c954f93e5835546b11e789d14653a2493d12d3a063
     certifi:
       version: "2023.5.7"
       hashes:
