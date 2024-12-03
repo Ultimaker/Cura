@@ -602,8 +602,28 @@ pip_requirements_core:
     keyring:
       version: "25.5.0"
       hashes:
-        - sha256:8f607d7d1cc502c43a932a275a56fe47db50271904513a379d39df1af277ac48
-        - sha256:045703609dd3fccfcdb27da201684278823b72af515aedec1a8515719a038cb8
+        - sha256:e67f8ac32b04be4714b42fe84ce7dad9c40985b9ca827c592cc303e7c26d9741
+        - sha256:4c753b3ec91717fe713c4edd522d625889d8973a349b0e582622f49766de58e6
+    jaraco.classes:
+      version: "3.4.0"
+      hashes:
+        - sha256:f662826b6bed8cace05e7ff873ce0f9283b5c924470fe664fff1c2f00f581790
+        - sha256:47a024b51d0239c0dd8c8540c6c7f484be3b8fcf0b2d85c13825780d3b3f3acd
+    jaraco.functools:
+      version: "4.1.0"
+      hashes:
+        - sha256:ad159f13428bc4acbf5541ad6dec511f91573b90fba04df61dafa2a1231cf649
+        - sha256:70f7e0e2ae076498e212562325e805204fc092d7b4c17e0e86c959e249701a9d
+    jaraco.context:
+      version: "6.0.1"
+      hashes:
+        - sha256:f797fc481b490edb305122c9181830a3a5b76d84ef6d1aef2fb9b47ab956f9e4
+        - sha256:9bae4ea555cf0b14938dc0aee7c9f32ed303aa20a3b73e7dc80111628792d1b3
+    more_itertools:
+      version: "10.5.0"
+      hashes:
+        - sha256:037b0d3203ce90cca8ab1defbbdac29d5f993fc20131f3664dc8d6acfa872aef
+        - sha256:5482bfef7849c25dc3c6dd53a6173ae4795da2a41a80faea6700d9f5846c5da6
     charset-normalizer:
       version: "2.1.0"
       hashes:
