@@ -32,8 +32,7 @@ jobs:
 
   freeze-packages-versions:
     name: Freeze packges versions
-# FIXME: Use main once merged
-    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@CURA-11622_conan_v2
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
     needs: [parse-version]
     with:
       cura_version: ${{ inputs.cura_version }}
@@ -103,8 +102,7 @@ jobs:
 
   create-packages:
     name: Create conan packages
-# FIXME: Use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
     needs: [parse-version, freeze-packages-versions]
     strategy:
       matrix:
@@ -114,15 +112,14 @@ jobs:
           - repository: Cura
             conan_recipe_root: "resources"
     with:
-      repository: Ultimaker/${{ matrix.repository }}
+      repository: ${{ matrix.repository }}
       branch: ${{ needs.parse-version.outputs.branch_name }}
       conan_recipe_root: ${{ matrix.conan_recipe_root }}
     secrets: inherit
 
   create-installers:
     name: Create installers
-# FIXME: Use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     needs: [parse-version, create-packages]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}@ultimaker/stable

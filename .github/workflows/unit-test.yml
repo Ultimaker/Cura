@@ -40,7 +40,6 @@ on:
 jobs:
   testing:
     name: Run unit tests
-# FIXME: use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/unit-test.yml@main
     with:
       test_use_pytest: true

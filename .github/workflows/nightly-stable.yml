@@ -8,10 +8,8 @@ on:
 
 jobs:
   build-nightly:
-# FIXME: Use main once merged
-    uses: ultimaker/cura/.github/workflows/nightly.yml@CURA-11622_conan_v2
+    uses: ./.github/workflows/nightly.yml
     with:
-# FIXME: Use stable channel once merged
-      cura_conan_version: "cura/[*]@ultimaker/cura_11622"
+      cura_conan_version: "cura/[*]@ultimaker/stable"
       release_tag: "nightly"
       caller_workflow: "nightly-stable.yml"

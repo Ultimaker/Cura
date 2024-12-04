@@ -33,7 +33,6 @@ on:
       - '[0-9].[0-9][0-9]*'
 
 jobs:
-# FIXME: Use main once merged
   conan-package:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@main
     secrets: inherit

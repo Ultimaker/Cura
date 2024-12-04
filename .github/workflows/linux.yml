@@ -34,9 +34,8 @@ on:
           - self-hosted-Ubuntu22-X64
 
 jobs:
-# FIXME: Use main once merged
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}

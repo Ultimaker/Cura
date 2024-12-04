@@ -35,8 +35,7 @@ on:
 
 jobs:
   windows-installer:
-    # FIXME: Use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}

@@ -19,8 +19,7 @@ jobs:
   create-installers:
     name: Create installers
     id: create-installers
-# FIXME: Use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
     secrets: inherit
@@ -31,8 +30,7 @@ jobs:
     needs: [ create-installers ]
     steps:
       - name: Setup the build environment
-# FIXME: Use main once merged
-        uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@CURA-11622_conan_v2
+        uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
 
       - name: Download installers jobs artifacts
         uses: actions/download-artifact@v4

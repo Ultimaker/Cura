@@ -10,7 +10,6 @@ on:
 
 jobs:
   update-translations:
-# FIXME: Use main once merged
-    uses: ultimaker/cura-workflows/.github/workflows/update-translations.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/update-translations.yml@main
       with:
         branch: ${{ inputs.branch }}

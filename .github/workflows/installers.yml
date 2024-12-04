@@ -24,12 +24,11 @@ on:
 
 jobs:
   installers:
-# FIXME: Use main once merged
     name: Create installers
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-11622_conan_v2
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
-      enterprise: ${{ inputs.enterprise == 'true' }}
-      staging: ${{ inputs.staging == 'true' }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging  }}
     secrets: inherit

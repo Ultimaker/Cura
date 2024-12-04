@@ -36,10 +36,6 @@ class CuraResource(ConanFile):
             copy(self, pattern="*", src=os.path.join(self.recipe_folder, shared_resources),
                  dst=os.path.join(self.export_sources_folder, shared_resources))
 
-    def validate(self):
-        if Version(self.version) <= Version("4"):
-            raise ConanInvalidConfiguration("Only versions 5+ are support")
-
     def layout(self):
         self.cpp.source.resdirs = self._shared_resources
         self.cpp.package.resdirs = [f"res/{res}" for res in self._shared_resources]
