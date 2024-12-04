@@ -28,7 +28,7 @@ class CuraConan(ConanFile):
     tool_requires = "gettext/0.22.5"
 
     # FIXME: Remove specific branch once merged to main
-    python_requires = "translationextractor/[>=2.2.0]@ultimaker/cura_11622"
+    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
 
     options = {
         "enterprise": [True, False],
@@ -454,27 +454,6 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
         copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
-
-        # Generate the GitHub Action version info Environment
-        version = self.conf.get("user.cura:version", default = self.version, check_type = str)
-        cura_version = Version(version)
-        env_prefix = "Env:" if self.settings.os == "Windows" else ""
-        activate_github_actions_version_env = Template(r"""echo "CURA_VERSION_MAJOR={{ cura_version_major }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_MINOR={{ cura_version_minor }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_PATCH={{ cura_version_patch }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_BUILD={{ cura_version_build }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_VERSION_FULL={{ cura_version_full }}" >> ${{ env_prefix }}GITHUB_ENV
-echo "CURA_APP_NAME={{ cura_app_name }}" >> ${{ env_prefix }}GITHUB_ENV
-        """).render(cura_version_major = cura_version.major,
-                    cura_version_minor = cura_version.minor,
-                    cura_version_patch = cura_version.patch,
-                    cura_version_build = cura_version.build if cura_version.build != "" else "0",
-                    cura_version_full = self.version,
-                    cura_app_name = self._app_name,
-                    env_prefix = env_prefix)
-
-        ext = ".sh" if self.settings.os != "Windows" else ".ps1"
-        save(self, os.path.join(self._script_dir, f"activate_github_actions_version_env{ext}"), activate_github_actions_version_env)
 
         self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
