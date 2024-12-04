@@ -2,6 +2,8 @@
 
 <div align = center>
 
+# ⚠️ ⚠️ On 03-12-2024, we will start merging branches on all the Cura-related repositories, that contain a migration of our Conan recipes to use Conan 2, and also a huge rework on many GitHub workflows. Unfortunately, we cannot test everything until it is merged, so it is very likely that some existing workflows will stop working. If you are a developer, you may also encounter troubles when updating your branches or updating your Conan dependencies. This message will be removed when the situation is stable enough. After that, please open new issues if you are still in trouble with the new recipes/workflows. Sorry for the inconvenience. ⚠️ ⚠️
+
 [![Badge Issues]][Issues]   
 [![Badge PullRequests]][PullRequests]   
 [![Badge Closed]][Closed]
