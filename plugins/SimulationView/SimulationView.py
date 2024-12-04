@@ -222,12 +222,11 @@ class SimulationView(CuraView):
 
             self.setPath(i + fractional_value)
 
-    def advanceTime(self, time_increase: float) -> bool:
+    def advanceTime(self, time_increase: float) -> None:
         """
         Advance the time by the given amount.
 
         :param time_increase: The amount of time to advance (in seconds).
-        :return: True if the time was advanced, False if the end of the simulation was reached.
         """
         total_duration = 0.0
         if len(self.cumulativeLineDuration()) > 0:
@@ -237,15 +236,13 @@ class SimulationView(CuraView):
             # If we have reached the end of the simulation, go to the next layer.
             if self.getCurrentLayer() == self.getMaxLayers():
                 # If we are already at the last layer, go to the first layer.
-                self.setTime(total_duration)
-                return False
-
-            # advance to the next layer, and reset the time
-            self.setLayer(self.getCurrentLayer() + 1)
+                self.setLayer(0)
+            else:
+                # advance to the next layer, and reset the time
+                self.setLayer(self.getCurrentLayer() + 1)
             self.setTime(0.0)
         else:
             self.setTime(self._current_time + time_increase)
-        return True
 
     def cumulativeLineDuration(self) -> List[float]:
         # Make sure _cumulative_line_duration is initialized properly
