@@ -30,7 +30,7 @@
         "cool_fan_full_at_height": { "value": "resolveOrValue('layer_height_0') + resolveOrValue('layer_height') * max(1, cool_fan_full_layer - 1)" },
         "cool_fan_full_layer": { "value": 4 },
         "cool_min_layer_time": { "default_value": 15 },
-        "cool_min_layer_time_fan_speed_max": { "default_value": 20 },
+        "cool_min_layer_time_fan_speed_max": { "value": "cool_min_layer_time + 5" },
         "cool_min_speed": { "value": "max(round(speed_layer_0 / 2), round(speed_wall_0 * 3 / 4) if cool_lift_head else round(speed_wall_0 / 2))" },
         "gantry_height": { "value": 30 },
         "infill_before_walls": { "default_value": false },
