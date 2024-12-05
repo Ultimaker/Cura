@@ -107,6 +107,7 @@ pyinstaller:
         - "fcntl"
         - "stl"
         - "serial"
+        - "win32timezone"
     collect_all:
         - "cura"
         - "UM"
