@@ -23,7 +23,6 @@
     {
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
-        "bridge_fan_speed": { "default_value": 100 },
         "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
         "bridge_fan_speed_3": { "resolve": "max(cool_fan_speed, 20)" },
         "bridge_settings_enabled": { "default_value": true },
@@ -74,7 +73,6 @@
         "meshfix_maximum_resolution": { "default_value": 0.01 },
         "min_infill_area": { "default_value": 5.0 },
         "minimum_polygon_circumference": { "default_value": 0.2 },
-        "optimize_wall_printing_order": { "default_value": true },
         "retraction_amount": { "default_value": 0.75 },
         "retraction_combing": { "value": "'noskin'" },
         "retraction_combing_max_distance": { "default_value": 10 },
