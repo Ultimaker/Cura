@@ -2044,75 +2044,75 @@ msgstr "Встановити плагіни"
 
 msgctxt "@action:button"
 msgid "Install missing packages"
-msgstr ""
+msgstr "Встановлення невстановлених пакети"
 
 msgctxt "@title"
 msgid "Install missing packages"
-msgstr ""
+msgstr "Встановити невстановлені пакти"
 
 msgctxt "@label"
 msgid "Install missing packages from project file."
-msgstr ""
+msgstr "Встановити пропущені пакети з файлу проекту"
 
 msgctxt "@button"
 msgid "Install pending updates"
-msgstr ""
+msgstr "Встановити незавершені оновлення"
 
 msgctxt "@label"
 msgid "Installed Materials"
-msgstr ""
+msgstr "Встановленно Materials"
 
 msgctxt "@label"
 msgid "Installed Plugins"
-msgstr ""
+msgstr "Встановлені плагіни"
 
 msgctxt "@button"
 msgid "Installing..."
-msgstr ""
+msgstr "Встановлення"
 
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Намір"
 
 msgctxt "@label"
 msgid "Interface"
-msgstr ""
+msgstr "Інтерфейс"
 
 msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
-msgstr ""
+msgstr "Бібліотека міжпроцесової взаємодії"
 
 msgctxt "@title:window"
 msgid "Invalid IP address"
-msgstr ""
+msgstr "Недійсна ІР адреса"
 
 msgctxt "@info:status"
 msgid "Invalid file URL:"
-msgstr ""
+msgstr "Недійсний URL файлу"
 
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
-msgstr ""
+msgstr "Інвертувати напрямок зуму камери"
 
 msgctxt "@label"
 msgid "Is printed as support."
-msgstr ""
+msgstr "Надруковано як підтримка"
 
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
-msgstr ""
+msgstr "Схоже ви не маєте сумісного принтеру під'єднаного до Digital Factory. Впевніться що Ваш принтер приєднано і має останню прошивку."
 
 msgctxt "@item:inlistbox"
 msgid "JPEG Image"
-msgstr ""
+msgstr "JPEG зображення"
 
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
-msgstr ""
+msgstr "JPG зображення"
 
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
-msgstr ""
+msgstr "JSON parser"
 
 msgctxt "@label"
 msgid "Job Name"
