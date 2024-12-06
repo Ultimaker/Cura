@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "E1",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "zonestar_e4_base",
+        "position": "0"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 0 },
+        "machine_extruder_end_code": { "default_value": ";End G-code of E1\nG92 E0\nG1 E-80 F3000; pull filament\nG92 E0\n" },
+        "machine_extruder_start_code": { "default_value": ";Start G-code of E1\nG92 E0\nG1 E20 F2100; push filament-1\nG92 E0\nG1 E25 F1200; push filament-2\nG92 E0\nG1 E20 F1800; push filament-3\nG92 E0\nG1 E15 F600; push filament-4\nG92 E0\n" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
