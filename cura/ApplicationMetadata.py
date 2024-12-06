@@ -11,6 +11,7 @@ DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
 DEFAULT_CURA_LATEST_URL = "https://software.ultimaker.com/latest.json"
 
+
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
 # CuraVersion.py.in template.
