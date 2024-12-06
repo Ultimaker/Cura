@@ -13,3 +13,4 @@ jobs:
       cura_conan_version: "cura/[*]@ultimaker/stable"
       release_tag: "nightly"
       caller_workflow: "nightly-stable.yml"
+    secrets: inherit

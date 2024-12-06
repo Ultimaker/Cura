@@ -13,3 +13,4 @@ jobs:
       cura_conan_version: "cura/[*]@ultimaker/testing"
       release_tag: "nightly-stable" # Fixed version, we reuse the same tag forever
       caller_workflow: "nightly-testing.yml"
+    secrets: inherit
