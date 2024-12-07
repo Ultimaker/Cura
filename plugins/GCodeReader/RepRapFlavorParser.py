@@ -11,14 +11,6 @@ class RepRapFlavorParser(FlavorParser.FlavorParser):
     def __init__(self):
         super().__init__()
 
-    def processMCode(self, M, line, position, path):
-        if M == 82:
-            # Set absolute extrusion mode
-            self._is_absolute_extrusion = True
-        elif M == 83:
-            # Set relative extrusion mode
-            self._is_absolute_extrusion = False
-
     def _gCode90(self, position, params, path):
         """Set the absolute positioning
 
