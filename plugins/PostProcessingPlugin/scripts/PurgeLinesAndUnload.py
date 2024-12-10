@@ -131,17 +131,20 @@ class PurgeLinesAndUnload(Script):
 
     def execute(self, data):
         # Run the selected procedures
-        if self.getSettingValueByKey("add_purge_lines"):
-            self._add_purge_lines(data)
-        if self.getSettingValueByKey("move_to_start"):
-            self._move_to_start(data)
-        if self.getSettingValueByKey("adjust_starting_e"):
-            self._adjust_starting_e(data)
-        if self.getSettingValueByKey("enable_unload"):
-            self._unload_filament(data)
+        # Mapping settings to corresponding methods
+        procedures = {
+            "add_purge_lines": self._add_purge_lines,
+            "move_to_start": self._move_to_start,
+            "adjust_starting_e": self._adjust_starting_e,
+            "enable_unload": self._unload_filament
+        }
+        # Run selected procedures
+        for setting, method in procedures.items():
+            if self.getSettingValueByKey(setting):
+                method(data)
         # Format the startup and ending gcodes
         data[1] = self._format_string(data[1])
-        data[len(data) - 1] = self._format_string(data[len(data) - 1])
+        data[-1] = self._format_string(data[-1])
         return data
 
     # Add Purge Lines to the user defined position on the build plate
@@ -606,9 +609,13 @@ class PurgeLinesAndUnload(Script):
         adjust_amt = self.getSettingValueByKey("adjust_e_loc_to")
         lines = data[1].split("\n")
         lines.reverse()
+        if curaApp.getProperty("machine_firmware_retract", "value"):
+            search_pattern = "G10"
+        else:
+            search_pattern = "G1 F(\d*) E-(\d.*)"
         for index, line in enumerate(lines):
-            if re.search("G1 F(\d*) E-(\d.*)", line) is not None:
-                lines[index] = re.sub("G1 F(\d*) E-(\d.*)", f"G92 E{adjust_amt}", line)
+            if re.search(search_pattern, line):
+                lines[index] = re.sub(search_pattern, f"G92 E{adjust_amt}", line)
                 lines.reverse()
                 data[1] = "\n".join(lines)
                 break
