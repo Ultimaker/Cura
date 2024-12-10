@@ -275,11 +275,6 @@ pip_requirements_core:
       hashes:
         - sha256:b7cf7d3fef75f1e4c80a96ca660efbd51473d7e8f39b5ab9210febc7809012a4
         - sha256:92a8b58ce734b2a4494878e0ecf7d79ccd7a128b5fc6014c401e0b61f006f0f6
-    keyring:
-      version: "23.0.1"
-      hashes:
-        - sha256:8f607d7d1cc502c43a932a275a56fe47db50271904513a379d39df1af277ac48
-        - sha256:045703609dd3fccfcdb27da201684278823b72af515aedec1a8515719a038cb8
     trimesh:
       version: "3.9.36"
       hashes:
