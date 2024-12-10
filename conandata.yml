@@ -163,7 +163,7 @@ pyinstaller:
       - [ "qt", "lab", "animat" ]
       - [ "qt", "mqtt" ]
       - [ "qt", "net", "auth" ]
-      - [ "qt", "quick3d" ]
+      - [ "quick3d" ]
       - [ "qt", "timeline" ]
       - [ "qt", "virt", "key" ]
       - [ "qt", "wayland", "compos" ]

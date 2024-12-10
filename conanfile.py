@@ -179,6 +179,7 @@ class CuraConan(ConanFile):
             "qtmqtt",
             "qtnetworkauth",
             "qtquick3d",
+            "quick3d",
             "qtquick3dphysics",
             "qtquicktimeline",
             "qtvirtualkeyboard",
@@ -207,7 +208,7 @@ class CuraConan(ConanFile):
                             to_remove_files.append(pathname)
             for dirname in dir_:
                 for forbidden in prohibited:
-                    if forbidden.lower() == str(dirname).lower():
+                    if forbidden.lower() in str(dirname).lower():
                         pathname = os.path.join(root, dirname)
                         to_remove_dirs.append(pathname)
                         break
