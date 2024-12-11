@@ -100,8 +100,6 @@ pyinstaller:
         - "pyDulcificum"
         - "pynest2d"
         - "PyQt6"
-        - "PyQt6.Qt"
-        - "PyQt6.Qt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "logging.handlers"
@@ -112,6 +110,9 @@ pyinstaller:
         - "win32cred"
         - "win32timezone"
         - "pkgutil"
+    hiddenimports_WINDOWS_ONLY:
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     collect_all:
         - "cura"
         - "UM"
@@ -120,12 +121,13 @@ pyinstaller:
         - "sqlite3"
         - "trimesh"
         - "win32ctypes"
-        - "PyQt6.Qt"
-        - "PyQt6.Qt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "stl"
         - "keyrings.alt"
+    collect_all_WINDOWS_ONLY:
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     icon:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
