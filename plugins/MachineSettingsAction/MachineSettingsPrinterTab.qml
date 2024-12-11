@@ -214,7 +214,7 @@ Item
 
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y min")
+                labelText: catalog.i18nc("@label", "Y min ( '-' towards back)")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
@@ -254,7 +254,7 @@ Item
                 settingKey: "machine_head_with_fans_polygon"
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y max")
+                labelText: catalog.i18nc("@label", "Y max ( '+' towards front)")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
