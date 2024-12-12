@@ -41,7 +41,7 @@ jobs:
       - name: Rename the installers
         id: rename-installers
         working-directory: installers
-        run: python ./Cura-workflows/runner_scripts/rename_installers.py --tag "nightly" >> $GITHUB_OUTPUT
+        run: python ../Cura-workflows/runner_scripts/rename_installers.py --tag "nightly" >> $GITHUB_OUTPUT
 
       - name: create the release notes
         shell: python
