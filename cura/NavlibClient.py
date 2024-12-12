@@ -70,8 +70,8 @@ class NavlibClient(pynav.NavlibNavigationModel):
         from UM.Qt.QtApplication import QtApplication
         main_window = QtApplication.getInstance().getMainWindow()
 
-        x_n = 2. * main_window._mouse_x / self._scene.getActiveCamera().getViewportWidth() - 1.
-        y_n = 2. * main_window._mouse_y / self._scene.getActiveCamera().getViewportHeight() - 1.
+        x_n = 2. * main_window._mouse_x / main_window.width() - 1.
+        y_n = 2. * main_window._mouse_y / main_window.height() - 1.
 
         if self.get_is_view_perspective():
             self._was_pick = True
