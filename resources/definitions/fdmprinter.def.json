@@ -8415,7 +8415,7 @@
                 "wall_overhang_speed_factors":
                 {
                     "label": "Overhanging Wall Speeds",
-                    "description": "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting '[75, 50, 25]'.",
+                    "description": "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]",
                     "unit": "%",
                     "type": "[int]",
                     "default_value": "[100]",
