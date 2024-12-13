@@ -8,12 +8,8 @@ on:
         description: 'Cura Conan Version'
         default: 'cura/[*]@ultimaker/testing'
         type: string
-      package_overrides:
-        description: 'Space-separated List of specific packages to be used'
-        default: ''
-        type: string
       conan_args:
-        description: 'Conan args'
+        description: 'Conan args, e.g. --requires'
         default: ''
         type: string
       enterprise:
@@ -32,7 +28,6 @@ jobs:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
-      package_overrides: ${{ inputs.package_overrides }}
       conan_args: ${{ inputs.conan_args }}
       enterprise: ${{ inputs.enterprise }}
       staging: ${{ inputs.staging  }}
