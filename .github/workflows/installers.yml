@@ -9,7 +9,7 @@ on:
         default: 'cura/[*]@ultimaker/testing'
         type: string
       package_overrides:
-        description: 'Space-separated List of specific packages to be used'
+        description: 'List of specific packages to be used (space-separated)'
         default: ''
         type: string
       conan_args:
