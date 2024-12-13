@@ -8401,17 +8401,6 @@
                     "value": "support_angle",
                     "settable_per_mesh": true
                 },
-                "wall_overhang_speed_factor":
-                {
-                    "label": "Overhanging Wall Speed",
-                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "25",
-                    "settable_per_mesh": true
-                },
                 "wall_overhang_speed_factors":
                 {
                     "label": "Overhanging Wall Speeds",
