@@ -110,6 +110,8 @@
         "wall_overhang_angle": { "default_value": 75 },
         "wall_overhang_speed_factor": { "default_value": 50 },
         "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_relative": { "value": "True" },
         "zig_zaggify_infill": { "value": true },
         "zig_zaggify_support": { "value": true }
     }
