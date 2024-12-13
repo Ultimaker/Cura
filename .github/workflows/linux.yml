@@ -7,7 +7,6 @@ on:
       cura_conan_version:
         description: 'Cura Conan Version'
         default: ''
-        required: true
         type: string
       package_overrides:
         description: 'List of specific packages to be used (space-separated)'
