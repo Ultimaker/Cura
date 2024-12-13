@@ -6,7 +6,7 @@ on:
     inputs:
       cura_conan_version:
         description: 'Cura Conan Version'
-        default: 'cura/[*]@ultimaker/testing'
+        default: ''
         required: true
         type: string
       package_overrides:
