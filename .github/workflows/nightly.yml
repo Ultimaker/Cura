@@ -62,7 +62,7 @@ jobs:
                 timestamp=str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
                 caller_workflow=caller_workflow,
                 branch="" if is_main else short_version,
-                branch_specific="" is_main else f"?branch={short_version}",
+                branch_specific="" if is_main else f"?branch={short_version}",
               ))
 
       - name: Update nightly release description and binaries
