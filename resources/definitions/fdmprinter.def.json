@@ -4412,6 +4412,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retraction_combing_avoid_distance":
+                {
+                    "label": "Distance to Walls",
+                    "description": "Preferred distance to outer walls when doing an inside combing travel move.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "value": "machine_nozzle_size * 1.5",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "machine_nozzle_size * 0.5",
+                    "maximum_value_warning": "machine_nozzle_size * 10",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
