@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Creality CR-M4",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "machine_depth": { "default_value": 450 },
+        "machine_height": { "default_value": 470 },
+        "machine_name": { "default_value": "Creality CR-M4" },
+        "machine_width": { "default_value": 450 }
+    }
+}

@@ -18,7 +18,9 @@
         "exclude_materials": [
             "generic_hips",
             "generic_flexible",
-            "structur3d_"
+            "generic_cffpps",
+            "structur3d_",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
@@ -48,10 +50,12 @@
         "preferred_variant_buildplate_name": "Glass",
         "preferred_variant_name": "AA 0.4",
         "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_abstract_color": true,
         "supports_material_export": true,
         "supports_network_connection": true,
         "supports_usb_connection": false,
-        "variants_name": "Print core",
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true,
         "weight": -2
     },
     "overrides":
@@ -74,8 +78,6 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'triangles'" },
         "infill_wipe_dist": { "value": "0" },
         "jerk_enabled": { "value": "True" },
-        "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
-        "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_acceleration": { "default_value": 3000 },
         "machine_depth": { "default_value": 240 },
         "machine_end_gcode": { "default_value": "" },

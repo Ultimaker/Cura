@@ -344,6 +344,21 @@ Item
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
+
+            /* 
+               - Allows user to toggle if Start Gcode is the absolute first gcode.
+            */
+            Cura.SimpleCheckBox  // "Make sure Start Code is before all gcodes"
+            {
+                id: applyStartGcodeFirstCheckbox
+                containerStackId: machineStackId
+                settingKey: "machine_start_gcode_first"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Start GCode must be first")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
 			
 			
             /* The "Shared Heater" feature is temporarily disabled because its
@@ -376,7 +391,7 @@ Item
         anchors
         {
             top: upperBlock.bottom
-            bottom: parent.bottom
+            bottom: buttonLearnMore.top
             left: parent.left
             right: parent.right
             margins: UM.Theme.getSize("default_margin").width
@@ -403,5 +418,19 @@ Item
             settingKey: "machine_end_gcode"
             settingStoreIndex: propertyStoreIndex
         }
+
+    }
+
+    Cura.TertiaryButton
+    {
+        id: buttonLearnMore
+
+        text: catalog.i18nc("@button", "Learn more")
+        iconSource: UM.Theme.getIcon("LinkExternal")
+        isIconOnRightSide: true
+        onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
     }
 }

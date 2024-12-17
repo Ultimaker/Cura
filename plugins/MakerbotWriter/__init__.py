@@ -11,14 +11,23 @@ catalog = i18nCatalog("cura")
 def getMetaData():
     file_extension = "makerbot"
     return {
-        "mesh_writer": {
-            "output": [{
-                "extension": file_extension,
-                "description": catalog.i18nc("@item:inlistbox", "Makerbot Printfile"),
-                "mime_type": "application/x-makerbot",
-                "mode": MakerbotWriter.MakerbotWriter.OutputMode.BinaryMode,
-            }],
-        }
+        "mesh_writer":
+            {
+            "output": [
+                {
+                    "extension": file_extension,
+                    "description": catalog.i18nc("@item:inlistbox", "Makerbot Printfile"),
+                    "mime_type": "application/x-makerbot",
+                    "mode": MakerbotWriter.MakerbotWriter.OutputMode.BinaryMode,
+                },
+                {
+                    "extension": file_extension,
+                    "description": catalog.i18nc("@item:inlistbox", "Makerbot Sketch Printfile"),
+                    "mime_type": "application/x-makerbot-sketch",
+                    "mode": MakerbotWriter.MakerbotWriter.OutputMode.BinaryMode,
+                }
+            ]
+        },
     }
 
 
