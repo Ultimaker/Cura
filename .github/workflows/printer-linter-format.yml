@@ -1,34 +1,19 @@
 name: printer-linter-format
 
 on:
-    push:
-        paths:
-            - 'resources/definitions/**'
-            - 'resources/extruders/**'
-            - 'resources/intent/**'
-            - 'resources/quality/**'
-            - 'resources/variants/**'
+  push:
+    paths:
+      - 'resources/definitions/**'
+      - 'resources/extruders/**'
+      - 'resources/intent/**'
+      - 'resources/quality/**'
+      - 'resources/variants/**'
 
 jobs:
-    printer-linter-format:
-        name: Printer linter auto format
-
-        runs-on: ubuntu-latest
-        steps:
-            -   name: Setup the build environment
-                uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
-
-            -   uses: greguintow/get-diff-action@v7
-                with:
-                    PATTERNS: |
-                        resources/+(definitions|extruders)/*.def.json
-                        resources/+(intent|quality|variants)/**/*.inst.cfg
-
-            -   name: Format file
-                if: env.GIT_DIFF && !env.MATCHED_FILES
-                run: python printer-linter/src/terminal.py --format ${{ env.GIT_DIFF_FILTERED }}
-
-            -   uses: stefanzweifel/git-auto-commit-action@v4
-                if: env.GIT_DIFF && !env.MATCHED_FILES
-                with:
-                    commit_message: "Applied printer-linter format"
+  printer-linter-format:
+    name: Printer linter auto format
+    uses: ultimaker/cura-workflows/.github/workflows/lint-formatter.yml@main
+    with:
+      file_patterns: resources/+(definitions|extruders)/*.def.json resources/+(intent|quality|variants)/**/*.inst.cfg
+      command: python printer-linter/src/terminal.py --format
+      commit_message: "Apply printer-linter format"
