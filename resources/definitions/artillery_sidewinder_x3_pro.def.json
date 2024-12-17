@@ -15,7 +15,7 @@
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         
         
-        "coasting_enable": { "value": true },
+        "coasting_enable": { "value": true }
     },
     "metadata": {
         "quality_definition": "artillery_base",
