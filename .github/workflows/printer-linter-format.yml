@@ -14,6 +14,8 @@ jobs:
     name: Printer linter auto format
     uses: ultimaker/cura-workflows/.github/workflows/lint-formatter.yml@main
     with:
-      file_patterns: resources/+(definitions|extruders)/*.def.json resources/+(intent|quality|variants)/**/*.inst.cfg
+      file_patterns: |
+        resources/+(definitions|extruders)/*.def.json
+        resources/+(intent|quality|variants)/**/*.inst.cfg
       command: python printer-linter/src/terminal.py --format
       commit_message: "Apply printer-linter format"
