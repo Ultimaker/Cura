@@ -617,7 +617,7 @@ class MachineManager(QObject):
 
         if not self._global_container_stack:
             return 0
-        value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.qualityChanges.getId())
+        value = self._global_container_stack.getRawProperty("nominal_layer_height", "value", skip_until_container = self._global_container_stack.qualityChanges.getId())
         if isinstance(value, SettingFunction):
             value = value(self._global_container_stack)
         return value

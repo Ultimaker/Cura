@@ -15,7 +15,7 @@ def fetchLayerHeight(quality_group: "QualityGroup") -> float:
     from cura.CuraApplication import CuraApplication
     global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
 
-    default_layer_height = global_stack.definition.getProperty("layer_height", "value")
+    default_layer_height = global_stack.definition.getProperty("nominal_layer_height", "value")
 
     # Get layer_height from the quality profile for the GlobalStack
     if quality_group.node_for_global is None:
@@ -23,13 +23,13 @@ def fetchLayerHeight(quality_group: "QualityGroup") -> float:
     container = quality_group.node_for_global.container
 
     layer_height = default_layer_height
-    if container and container.hasProperty("layer_height", "value"):
-        layer_height = container.getProperty("layer_height", "value")
+    if container and container.hasProperty("nominal_layer_height", "value"):
+        layer_height = container.getProperty("nominal_layer_height", "value")
     else:
         # Look for layer_height in the GlobalStack from material -> definition
         container = global_stack.definition
-        if container and container.hasProperty("layer_height", "value"):
-            layer_height = container.getProperty("layer_height", "value")
+        if container and container.hasProperty("nominal_layer_height", "value"):
+            layer_height = container.getProperty("nominal_layer_height", "value")
 
     if isinstance(layer_height, SettingFunction):
         layer_height = layer_height(global_stack)

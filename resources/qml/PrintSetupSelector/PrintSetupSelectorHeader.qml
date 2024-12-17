@@ -26,7 +26,7 @@ RowLayout
         {
             id: layerHeight
             containerStack: Cura.MachineManager.activeStack
-            key: "layer_height"
+            key: "nominal_layer_height"
             watchedProperties: ["value"]
         }
     }

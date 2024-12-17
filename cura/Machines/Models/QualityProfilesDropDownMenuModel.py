@@ -71,7 +71,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
             return
 
         if not self._layer_height_unit:
-            unit = global_stack.definition.getProperty("layer_height", "unit")
+            unit = global_stack.definition.getProperty("nominal_layer_height", "unit")
             if not unit:
                 unit = ""
             self._layer_height_unit = unit
