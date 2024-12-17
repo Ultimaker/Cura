@@ -66,11 +66,10 @@ jobs:
               ))
 
       - name: Update nightly release description and binaries
-        working-directory: installers
         run: |
           gh release edit ${{ inputs.release_tag }} --title "${{ steps.rename-installers.outputs.cura_version }}" --notes-file release-notes.md
 
-          for file in "*"; do
+          for file in "installers/*"; do
             gh release upload ${{ inputs.release_tag }} $file --clobber
           done
         env:
