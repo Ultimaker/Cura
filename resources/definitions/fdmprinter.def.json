@@ -4414,8 +4414,8 @@
                 },
                 "retraction_combing_avoid_distance":
                 {
-                    "label": "Distance to Walls",
-                    "description": "Preferred distance to outer walls when doing an inside combing travel move.",
+                    "label": "Inside Travel Avoid Distance",
+                    "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
