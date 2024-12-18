@@ -384,6 +384,7 @@
                         "RepRap (RepRap)": "RepRap",
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
+                        "Cheetah": "Griffin+Cheetah",
                         "Makerbot": "Makerbot",
                         "BFB": "Bits from Bytes",
                         "MACH3": "Mach3",
