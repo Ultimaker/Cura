@@ -109,6 +109,9 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/restore_window_geometry")
         restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
+        UM.Preferences.resetPreference("tool/flip_y_axis_tool_handle")
+        flipToolhandleYCheckbox.checked = boolcheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
 //        /setDefaultCameraMode(defaultCameraMode)
@@ -662,6 +665,21 @@ UM.PreferencesPage
                     }
                 }
             }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should the Y axis of the translate toolhandle be flipped?")
+
+                UM.CheckBox
+                {
+                    id: flipToolhandleYCheckbox
+                    text: catalog.i18nc("@option:check", "Flip toolhandle Y axis")
+                    checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+                    onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
+                }
+            }
+
 
             Item
             {
