@@ -21,6 +21,11 @@
     },
     "overrides":
     {
+        "acceleration_enabled": { "default_value": true },
+        "acceleration_layer_0": { "value": 500 },
+        "acceleration_print": { "default_value": 5000 },
+        "acceleration_travel": { "value": 7000 },
+        "acceleration_wall_0": { "value": 3000 },
         "adhesion_type": { "default_value": "skirt" },
         "alternate_extra_perimeter": { "default_value": true },
         "bridge_fan_speed_2": { "resolve": "max(cool_fan_speed, 50)" },
