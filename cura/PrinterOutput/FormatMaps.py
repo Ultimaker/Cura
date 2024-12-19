@@ -13,7 +13,9 @@ class FormatMaps:
         "fire_e": "ultimaker_method",
         "lava_f": "ultimaker_methodx",
         "magma_10": "ultimaker_methodxl",
-        "sketch": "ultimaker_sketch"
+        "sketch": "ultimaker_sketch",
+        "sketch_large": "ultimaker_sketch_large",
+        "sketch_sprint": "ultimaker_sketch_sprint"
     }
 
     # A map from the extruder-name in their native file-formats to the internal name we use.
