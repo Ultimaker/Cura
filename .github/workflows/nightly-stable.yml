@@ -11,6 +11,6 @@ jobs:
     uses: ./.github/workflows/nightly.yml
     with:
       cura_conan_version: "cura/[*]@ultimaker/stable"
-      release_tag: "nightly"
+      release_tag: "nightly-stable"
       caller_workflow: "nightly-stable.yml"
     secrets: inherit
