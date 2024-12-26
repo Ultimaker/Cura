@@ -56,6 +56,8 @@ class PurgeLinesAndUnload_V2(Script):
         self.machine_right = self.machine_width - 1.0
         self.machine_front = 1.0
         self.machine_back = self.machine_depth - 1.0
+        self.start_x = None
+        self.start_y = None
 
     def initialize(self) -> None:
         super().initialize()
@@ -352,7 +354,7 @@ class PurgeLinesAndUnload_V2(Script):
                 add_move("Y", self.machine_back)
             else:
                 add_move("Y", self.machine_front)
-        if len(moves) <= 1:
+        if len(moves) == 1 and self.start_y:
             moves.append(f"G0 F{self.speed_travel} Y{self.start_y} ; Move to start Y\n")
         # Combine moves into a single G-code string or return a comment if no movement is needed
         return "".join(moves) if len(moves) > 1 else f";----------[Already at {location_name}, No Moves necessary]\n"
@@ -707,8 +709,6 @@ class PurgeLinesAndUnload_V2(Script):
 
     # Travel moves around the bed periphery to keep strings from crossing the footprint of the model.
     def _move_to_start(self, data: str) -> str:
-        self.start_x = None
-        self.start_y = None
         move_str = None
         layer = data[2].split("\n")
         for line in layer:
