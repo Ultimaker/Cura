@@ -355,7 +355,7 @@ class PurgeLinesAndUnload(Script):
             else:
                 add_move("Y", self.machine_front)
 
-        # Combine moves into a single G-code string or return empty if no movement is needed
+        # Combine moves into a single G-code string or return a comment if no movement is needed
         return "".join(moves) if len(moves) > 1 else f";----------[Already at {location_name}, No Moves necessary]\n"
 
     def _get_build_plate_extents(self):
