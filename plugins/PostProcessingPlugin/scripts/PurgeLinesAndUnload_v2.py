@@ -35,7 +35,7 @@ class Position(tuple, Enum):
     RIGHT_REAR = ("right", "rear")
 
 
-class PurgeLinesAndUnload(Script):
+class PurgeLinesAndUnload_V2(Script):
 
     def __init__(self):
         super().__init__()
@@ -79,8 +79,8 @@ class PurgeLinesAndUnload(Script):
 
     def getSettingDataString(self):
         return """{
-            "name": "Purge Lines and Unload Filament",
-            "key": "PurgeLinesAndUnload",
+            "name": "Purge Lines and Unload Filament V2",
+            "key": "PurgeLinesAndUnload_V2",
             "metadata": {},
             "version": 2,
             "settings":
@@ -315,11 +315,9 @@ class PurgeLinesAndUnload(Script):
     def _move_to_location(self, location_name: str, location: tuple) -> str:
         """
         Compare the input tuple (B) with the end purge location (A) and describe the move from A to B.
-
         Parameters:
             location_name (str): A descriptive name for the target location.
             location (tuple): The target tuple (e.g., ("right", "front")).
-
         Returns:
             str: G-code for the move from A to B or an empty string if no move is required.
         """
@@ -331,7 +329,7 @@ class PurgeLinesAndUnload(Script):
         start_side, start_depth = self.end_purge_location
         target_side, target_depth = location
 
-        moves = [f";MESH:NONMESH---------[Move to {location_name}]\n G0 F600 Z2 ; Move up\n"]
+        moves = [f";MESH:NONMESH---------[Move to {location_name}]\nG0 F600 Z2 ; Move up\n"]
 
         # Helper function to add G-code for moves
         def add_move(axis: str, position: float) -> None:
@@ -354,7 +352,8 @@ class PurgeLinesAndUnload(Script):
                 add_move("Y", self.machine_back)
             else:
                 add_move("Y", self.machine_front)
-
+        if len(moves) <= 1:
+            moves.append(f"G0 F{self.speed_travel} Y{self.start_y} ; Move to start Y\n")
         # Combine moves into a single G-code string or return a comment if no movement is needed
         return "".join(moves) if len(moves) > 1 else f";----------[Already at {location_name}, No Moves necessary]\n"
 
@@ -708,36 +707,36 @@ class PurgeLinesAndUnload(Script):
 
     # Travel moves around the bed periphery to keep strings from crossing the footprint of the model.
     def _move_to_start(self, data: str) -> str:
-        start_x = None
-        start_y = None
+        self.start_x = None
+        self.start_y = None
         move_str = None
         layer = data[2].split("\n")
         for line in layer:
             if line.startswith("G0") and " X" in line and " Y" in line:
-                start_x = self.getValue(line, "X")
-                start_y = self.getValue(line, "Y")
+                self.start_x = self.getValue(line, "X")
+                self.start_y = self.getValue(line, "Y")
                 break
-        start_x = start_x or 0
-        start_y = start_y or 0
+        self.start_x = self.start_x or 0
+        self.start_y = self.start_y or 0
         if self.end_purge_location is None:
             self.end_purge_location = Position.LEFT_FRONT
         midpoint_x = self.machine_width / 2
         midpoint_y = self.machine_depth / 2
         if not self.origin_at_center:
-            if float(start_x) <= float(midpoint_x):
+            if float(self.start_x) <= float(midpoint_x):
                 x_target = Location.LEFT
             else:
                 x_target = Location.RIGHT
-            if float(start_y) <= float(midpoint_y):
+            if float(self.start_y) <= float(midpoint_y):
                 y_target = Location.FRONT
             else:
                 y_target = Location.REAR
         else:
-            if float(start_x) <= 0:
+            if float(self.start_x) <= 0:
                 x_target = Location.LEFT
             else:
                 x_target = Location.RIGHT
-            if float(start_y) <= 0:
+            if float(self.start_y) <= 0:
                 y_target = Location.FRONT
             else:
                 y_target = Location.REAR
