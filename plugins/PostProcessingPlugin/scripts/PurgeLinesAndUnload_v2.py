@@ -20,14 +20,19 @@ from enum import Enum
 
 
 class Location(str, Enum):
-    LEFT_FRONT = "LF"
-    RIGHT_FRONT = "RF"
-    LEFT_REAR = "LR"
-    RIGHT_REAR = "RR"
     LEFT = "left"
     RIGHT = "right"
     TOP = "top"
     BOTTOM = "bottom"
+    REAR = "rear"
+    FRONT = "front"
+
+
+class Position(tuple, Enum):
+    LEFT_FRONT = ("left", "front")
+    RIGHT_FRONT = ("right", "front")
+    LEFT_REAR = ("left", "rear")
+    RIGHT_REAR = ("right", "rear")
 
 
 class PurgeLinesAndUnload(Script):
@@ -36,7 +41,7 @@ class PurgeLinesAndUnload(Script):
         super().__init__()
         self.curaApp = Application.getInstance().getGlobalContainerStack()
         self.extruder = self.curaApp.extruderList
-        self.start_location = None
+        self.end_purge_location = None
         self.speed_travel = None
         # This will be True when there are more than 4 'machine_disallowed_areas'
         self.show_warning = False
@@ -198,7 +203,7 @@ class PurgeLinesAndUnload(Script):
         self._get_build_plate_extents()
         self.speed_travel = self.extruder[0].getProperty("speed_travel", "value") * 60
         # The start location changes according to which quadrant the nozzle is in at the beginning
-        self.start_location = self._get_real_start_point(data[1])
+        self.end_purge_location = self._get_real_start_point(data[1])
 
         # Mapping settings to corresponding methods
         procedures = {
@@ -224,9 +229,9 @@ class PurgeLinesAndUnload(Script):
             Message(title="[Purge Lines and Unload]", text=msg_text).show()
         return data
 
-    def _get_real_start_point(self, first_section: str) -> str:
+    def _get_real_start_point(self, first_section: str) -> tuple:
         last_x, last_y = 0.0, 0.0
-        start_quadrant = Location.LEFT_FRONT
+        start_quadrant = Position.LEFT_FRONT
 
         for line in first_section.split("\n"):
             if line.startswith(";") and not line.startswith(";LAYER_COUNT") or not line:
@@ -244,13 +249,13 @@ class PurgeLinesAndUnload(Script):
             self.machine_width / 2, self.machine_depth / 2)
 
         if last_x <= midpoint_x and last_y <= midpoint_y:
-            start_quadrant = Location.LEFT_FRONT
+            start_quadrant = Position.LEFT_FRONT
         elif last_x > midpoint_x and last_y <= midpoint_y:
-            start_quadrant = Location.RIGHT_FRONT
+            start_quadrant = Position.RIGHT_FRONT
         elif last_x > midpoint_x and last_y > midpoint_y:
-            start_quadrant = Location.RIGHT_REAR
+            start_quadrant = Position.RIGHT_REAR
         elif last_x <= midpoint_x and last_y > midpoint_y:
-            start_quadrant = Location.LEFT_REAR
+            start_quadrant = Position.LEFT_REAR
 
         return start_quadrant
 
@@ -270,16 +275,16 @@ class PurgeLinesAndUnload(Script):
         prime_tower_y = self.curaApp.getProperty("prime_tower_position_y", "value")
         prime_tower_loc = self._prime_tower_quadrant(prime_tower_x, prime_tower_y)
         # Shortstop an error if Start Location comes through as None
-        if self.start_location is None:
-            self.start_location = Location.LEFT_FRONT
-        if prime_tower_loc != self.start_location:
+        if self.end_purge_location is None:
+            self.end_purge_location = Position.LEFT_FRONT
+        if prime_tower_loc != self.end_purge_location:
             startup = first_section[1].split("\n")
             for index, line in enumerate(startup):
                 if ";LAYER_COUNT:" in line:
                     try:
                         if startup[index + 1].startswith("G0"):
                             prime_move = startup[index + 1] + " ; Move to Prime Tower"
-                            adjustment_lines = self._get_adjustment_lines(prime_tower_loc)
+                            adjustment_lines = self._move_to_location("Prime Tower", prime_tower_loc)
                             startup[index + 1] = adjustment_lines + prime_move + "\n" + startup[index]
                             startup.pop(index)
                             first_section[1] = "\n".join(startup)
@@ -288,45 +293,70 @@ class PurgeLinesAndUnload(Script):
                         pass
         # The start_location changes to the prime tower location in case 'Move to Start' is enabled.
         if move_to_prime_present:
-            self.start_location = prime_tower_loc
+            self.end_purge_location = prime_tower_loc
         return first_section
 
     # Determine the quadrant that the prime tower rests in so the orthogonal moves can be calculated
-    def _prime_tower_quadrant(self, prime_tower_x: float, prime_tower_y: float) -> str:
+    def _prime_tower_quadrant(self, prime_tower_x: float, prime_tower_y: float) -> tuple:
         midpoint_x, midpoint_y = (0.0, 0.0) if self.origin_at_center else (
             self.machine_width / 2, self.machine_depth / 2)
 
         if prime_tower_x < midpoint_x and prime_tower_y < midpoint_y:
-            return Location.LEFT_FRONT
+            return Position.LEFT_FRONT
         elif prime_tower_x > midpoint_x and prime_tower_y < midpoint_y:
-            return Location.RIGHT_FRONT
+            return Position.RIGHT_FRONT
         elif prime_tower_x > midpoint_x and prime_tower_y > midpoint_y:
-            return Location.RIGHT_REAR
+            return Position.RIGHT_REAR
         elif prime_tower_x < midpoint_x and prime_tower_y > midpoint_y:
-            return Location.LEFT_REAR
+            return Position.LEFT_REAR
         else:
-            return Location.LEFT_FRONT  # return Default in case of no match
+            return Position.LEFT_FRONT  # return Default in case of no match
 
-    # This puts the 'Move to Prime' tower lines together when they are required
-    def _get_adjustment_lines(self, prime_tower_loc: str):
-        adj_lines = ";MESH:NONMESH---------[Move to Prime Tower]"
-        # Move commands linked to keys (Start location, Prime tower location)
-        move_commands = {
-            (Location.LEFT_FRONT, Location.RIGHT_FRONT): f"G0 F{self.speed_travel} X{self.machine_right}",
-            (Location.LEFT_FRONT, Location.RIGHT_REAR): f"G0 F{self.speed_travel} X{self.machine_right}",
-            (Location.LEFT_FRONT, Location.LEFT_REAR): f"G0 F{self.speed_travel} Y{self.machine_back}",
-            (Location.RIGHT_REAR, Location.LEFT_FRONT): f"G0 F{self.speed_travel} X{self.machine_left}",
-            (Location.RIGHT_REAR, Location.RIGHT_FRONT): f"G0 F{self.speed_travel} Y{self.machine_front}",
-            (Location.RIGHT_REAR, Location.LEFT_REAR): f"G0 F{self.speed_travel} X{self.machine_left}"
-        }
+    def _move_to_location(self, location_name: str, location: tuple) -> str:
+        """
+        Compare the input tuple (B) with the end purge location (A) and describe the move from A to B.
 
-        key = (self.start_location, prime_tower_loc)
-        if key in move_commands:
-            adj_lines += f"\n{move_commands[key]} ; Start move"
-            adj_lines += "\nG0 F600 Z0 ; Nail down the string"
-            adj_lines += "\nG0 F600 Z2 ; Move up"
+        Parameters:
+            location_name (str): A descriptive name for the target location.
+            location (tuple): The target tuple (e.g., ("right", "front")).
 
-        return adj_lines
+        Returns:
+            str: G-code for the move from A to B or an empty string if no move is required.
+        """
+        # Validate input
+        if len(self.end_purge_location) != 2 or len(location) != 2:
+            raise ValueError("Both locations must be tuples of length 2.")
+
+        # Extract components
+        start_side, start_depth = self.end_purge_location
+        target_side, target_depth = location
+
+        moves = [f";MESH:NONMESH---------[Move to {location_name}]\n G0 F600 Z2 ; Move up\n"]
+
+        # Helper function to add G-code for moves
+        def add_move(axis: str, position: float) -> None:
+            moves.append(
+                f"G0 F{self.speed_travel} {axis}{position} ; Start move\n"
+                f"G0 F600 Z0 ; Nail down the string\n"
+                f"G0 F600 Z2 ; Move up\n"
+            )
+
+        # Compare sides
+        if start_side != target_side:
+            if target_side == Location.RIGHT:
+                add_move("X", self.machine_right)
+            else:
+                add_move("X", self.machine_left)
+
+        # Compare positions
+        if start_depth != target_depth:
+            if target_depth == Location.REAR:
+                add_move("Y", self.machine_back)
+            else:
+                add_move("Y", self.machine_front)
+
+        # Combine moves into a single G-code string or return empty if no movement is needed
+        return "".join(moves) if len(moves) > 1 else f";----------[Already at {location_name}, No Moves necessary]\n"
 
     def _get_build_plate_extents(self):
         # Machine disallowed areas can be ordered at the whim of the definition author and cannot be counted on when parsed
@@ -415,7 +445,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
 
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.RIGHT:
                 purge_len = int(self.machine_depth - 20) if purge_extrusion_full else int(
                     (self.machine_back - self.machine_front) / 2)
@@ -437,7 +467,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
 
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
             elif where_at == Location.BOTTOM:
                 purge_len = int(self.machine_width) - 20 if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
@@ -459,7 +489,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
 
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.TOP:
                 purge_len = int(self.machine_width - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
@@ -482,7 +512,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_right - 20} Y{self.machine_back - 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3} ; Wipe\n"
 
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
         # Some cartesian printers (BIBO, Weedo, MethodX, etc.) are Origin at Center
         elif self.bed_shape == "rectangular" and self.origin_at_center:
             if where_at == Location.LEFT:
@@ -504,7 +534,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
 
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.RIGHT:
                 purge_len = int(self.machine_back - 20) if purge_extrusion_full else int(
                     (self.machine_back - self.machine_front) / 2)
@@ -524,7 +554,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
 
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
             elif where_at == Location.BOTTOM:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
@@ -544,7 +574,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{print_speed} X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
 
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.TOP:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
                     int(self.machine_right - 10))
@@ -565,12 +595,12 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{self.machine_right - 20} Y{self.machine_back - 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{print_speed} X{self.machine_right - 35} Y{self.machine_back - 3} ; Wipe\n"
 
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
         elif self.bed_shape == "elliptic":
             if where_at in [Location.LEFT, Location.RIGHT]:
                 radius_1 = round((self.machine_width / 2) - 1, 2)
-            else:       # For where_at in [Location.BOTTOM, Location.TOP]
+            else:  # For where_at in [Location.BOTTOM, Location.TOP]
                 radius_1 = round((self.machine_depth / 2) - 1, 2)
 
             purge_len = int(radius_1) * math.pi / 4
@@ -592,7 +622,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{print_speed} X-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
 
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.RIGHT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
@@ -609,7 +639,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{print_speed} X{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{print_speed} X{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
 
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
             elif where_at == Location.BOTTOM:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
@@ -625,7 +655,7 @@ class PurgeLinesAndUnload(Script):
                 # Wipe
                 purge_str += f"G0 F{print_speed} Y-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{print_speed} Y-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
-                self.start_location = Location.LEFT_FRONT
+                self.end_purge_location = Position.LEFT_FRONT
             elif where_at == Location.TOP:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} ; Travel\n"
@@ -641,7 +671,7 @@ class PurgeLinesAndUnload(Script):
                 # Wipe
                 purge_str += f"G0 F{print_speed} Y{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{print_speed} Y{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
-                self.start_location = Location.RIGHT_REAR
+                self.end_purge_location = Position.RIGHT_REAR
 
         # Common ending for purge_str
         purge_str += "G0 F600 Z2 ; Move Z\n;---------------------[End of Purge]"
@@ -680,6 +710,7 @@ class PurgeLinesAndUnload(Script):
     def _move_to_start(self, data: str) -> str:
         start_x = None
         start_y = None
+        move_str = None
         layer = data[2].split("\n")
         for line in layer:
             if line.startswith("G0") and " X" in line and " Y" in line:
@@ -688,64 +719,46 @@ class PurgeLinesAndUnload(Script):
                 break
         start_x = start_x or 0
         start_y = start_y or 0
-        if self.start_location is None:
-            self.start_location = Location.LEFT_FRONT
-        move_str = f";MESH:NONMESH---------[Travel to Layer Start]\nG0 F600 Z2 ; Move up\n"
+        if self.end_purge_location is None:
+            self.end_purge_location = Position.LEFT_FRONT
         midpoint_x = self.machine_width / 2
         midpoint_y = self.machine_depth / 2
         if not self.origin_at_center:
             if float(start_x) <= float(midpoint_x):
-                goto_str = "Lt"
+                x_target = Location.LEFT
             else:
-                goto_str = "Rt"
+                x_target = Location.RIGHT
             if float(start_y) <= float(midpoint_y):
-                goto_str += "Frt"
+                y_target = Location.FRONT
             else:
-                goto_str += "Bk"
+                y_target = Location.REAR
         else:
             if float(start_x) <= 0:
-                goto_str = "Lt"
+                x_target = Location.LEFT
             else:
-                goto_str = "Rt"
+                x_target = Location.RIGHT
             if float(start_y) <= 0:
-                goto_str += "Frt"
+                y_target = Location.FRONT
             else:
-                goto_str += "Bk"
-
+                y_target = Location.REAR
+        target_location = (x_target, y_target)
         if self.bed_shape == "rectangular":
-            if goto_str == "LtFrt":
-                move_str += f"G0 F{self.speed_travel} X{self.machine_left + 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-                move_str += f"G0 F{self.speed_travel} Y{self.machine_front + 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-            elif goto_str == "RtFrt":
-                move_str += f"G0 F{self.speed_travel} X{self.machine_right - 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-                move_str += f"G0 F{self.speed_travel} Y{self.machine_front + 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-            elif goto_str == "LtBk":
-                move_str += f"G0 F{self.speed_travel} X{self.machine_left + 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-                move_str += f"G0 F{self.speed_travel} Y{self.machine_back - 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-            elif goto_str == "RtBk":
-                move_str += f"G0 F{self.speed_travel} X{self.machine_right - 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
-                move_str += f"G0 F{self.speed_travel} Y{self.machine_back - 5} Z2 ; Ortho move\n"
-                move_str += f"G0 F600 Z0 ; Nail down the string\nG0 Z2 ; Move up\n"
+            move_str = self._move_to_location("Layer Start", target_location)
         elif self.bed_shape == "elliptic" and self.origin_at_center:
+            move_str = f";MESH:NONMESH---------[Travel to Layer Start]\nG0 F600 Z2 ; Move up\n"
+
             radius = self.machine_width / 2
             offset_sin = round(2 ** .5 / 2 * radius, 2)
-            if goto_str == "LtFrt":
+            if target_location == Position.LEFT_FRONT:
                 move_str += f"G0 F{self.speed_travel} X-{offset_sin} Z2 ; Move\nG0 Y-{offset_sin} Z2 ; Move to start\n"
-            elif goto_str == "LtBk":
-                if self.start_location == Location.LEFT_REAR:
+            elif target_location == Position.LEFT_REAR:
+                if self.end_purge_location == Position.LEFT_REAR:
                     move_str += f"G2 X0 Y{offset_sin} I{offset_sin} J{offset_sin} ; Move around to start\n"
                 else:
                     move_str += f"G0 F{self.speed_travel} X-{offset_sin} Z2 ; Ortho move\nG0 Y{offset_sin} Z2 ; Ortho move\n"
-            elif goto_str == "RtFrt":
+            elif target_location == Position.RIGHT_FRONT:
                 move_str += f"G0 F{self.speed_travel} X{offset_sin} Z2 ; Ortho move\nG0 Y-{offset_sin} Z2 ; Ortho move\n"
-            elif goto_str == "RtBk":
+            elif target_location == Position.RIGHT_REAR:
                 move_str += f"G0 F{self.speed_travel} X{offset_sin} Z2 ; Ortho move\nG0 Y{offset_sin} Z2 ; Ortho move\n"
         move_str += ";---------------------[End of layer start travels]"
         # Add the move_str to the end of the StartUp section and move 'LAYER_COUNT' to the end.
@@ -843,7 +856,7 @@ class PurgeLinesAndUnload(Script):
             elif temp_line.startswith(";") and ";" in temp_line[1:]:
                 temp_lines[temp_index] = temp_line[1:].replace(temp_line[1:].split(";")[0],
                                                                ";" + temp_line[1:].split(";")[0] + str(" " * (
-                                                                       gap_len - 1 - len(
-                                                                   temp_line[1:].split(";")[0]))), 1)
+                                                                   gap_len - 1 - len(
+                                                                        temp_line[1:].split(";")[0]))), 1)
         any_gcode_str = "\n".join(temp_lines)
         return any_gcode_str
