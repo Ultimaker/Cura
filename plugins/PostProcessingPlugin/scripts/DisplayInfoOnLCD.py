@@ -47,7 +47,7 @@ class DisplayInfoOnLCD(Script):
                 self._instance.setProperty("enable_countdown", "value", enable_countdown)
         except:
             pass
-
+            
     def getSettingDataString(self):
         return """{
             "name": "Display Info on LCD",
@@ -238,15 +238,6 @@ class DisplayInfoOnLCD(Script):
         add_m118_line = self.getSettingValueByKey("add_m118_line")
         add_m118_a1 = self.getSettingValueByKey("add_m118_a1")
         add_m118_p0 = self.getSettingValueByKey("add_m118_p0")
-        m118_text = "M118 "
-        m118_str = "M118 "
-        if add_m118_line:
-            if add_m118_a1 and not add_m118_p0:
-                m118_str = "M118 A1 "
-            if add_m118_p0 and not add_m118_a1:
-                m118_str = "M118 P0 "
-            if add_m118_p0 and add_m118_a1:
-                m118_str = "M118 A1 P0 "
         add_m73_line = self.getSettingValueByKey("add_m73_line")
         add_m73_time = self.getSettingValueByKey("add_m73_time")
         add_m73_percent = self.getSettingValueByKey("add_m73_percent")
@@ -318,12 +309,22 @@ class DisplayInfoOnLCD(Script):
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
             print_sequence = Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")
-            ## Add the Initial Layer Height just below Layer Height in data[0]
+            # Add the Initial Layer Height just below Layer Height in data[0]
+            extruder_count = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
             init_layer_hgt_line = ";Initial Layer Height: " + str(Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value"))
-            nozzle_size_line = ";Nozzle Size T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value"))
-            match = re.search(";Layer height: (\d\.\d*)", data[0])[0]
-            data[0] = re.sub(match, match + "\n" + init_layer_hgt_line + "\n" + nozzle_size_line, data[0])
-            ## Get settings
+            nozzle_size_line = ";Nozzle Size T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value"))            
+            filament_type = "\n;Filament type for T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("material_type", "value"))
+            if extruder_count > 1:
+                nozzle_size_line += "\n;Nozzle Size T1: " + str(Application.getInstance().getGlobalContainerStack().extruderList[1].getProperty("machine_nozzle_size", "value"))
+                filament_type += "\n;Filament type for T1: " + str(Application.getInstance().getGlobalContainerStack().extruderList[1].getProperty("material_type", "value"))
+            lines = data[0].split("\n")
+            for index, line in enumerate(lines):
+                if line.startswith(";Layer height:"):
+                    lines[index] += "\n" + init_layer_hgt_line + "\n" + nozzle_size_line
+                if line.startswith(";Filament used"):
+                    lines[index] += filament_type
+            data[0] = "\n".join(lines)
+            # Get settings
             display_total_layers = self.getSettingValueByKey("display_total_layers")
             display_remaining_time = self.getSettingValueByKey("display_remaining_time")
             speed_factor = self.getSettingValueByKey("speed_factor") / 100
@@ -336,13 +337,13 @@ class DisplayInfoOnLCD(Script):
             if add_m73_line:
                 data[1] = "M75\n" + data[1]
                 data[len(data)-1] += "M77\n"
-            ## Initialize some variables
+            # Initialize some variables
             first_layer_index = 0
             time_total = int(data[0].split(";TIME:")[1].split("\n")[0])
             number_of_layers = 0
             time_elapsed = 0
 
-            ## If at least one of the settings is disabled, there is enough room on the display to display "layer"
+            # If at least one of the settings is disabled, there is enough room on the display to display "layer"
             first_section = data[0]
             lines = first_section.split("\n")
             for line in lines:
@@ -356,10 +357,10 @@ class DisplayInfoOnLCD(Script):
                     orig_hhh = cura_time/3600
                     orig_hr = round(orig_hhh // 1)
                     orig_mmm = math.floor((orig_hhh % 1) * 60)
-                    if add_m118_line: lines.insert(tindex + 5, m118_str + "Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
-                    if add_m117_line: lines.insert(tindex + 5,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
-                    ## Add M73 line at beginning
-                    mins = int(60 * hr + mmm)
+                    if add_m118_line: lines.insert(tindex + 6,"M118 Adjusted Print Time " + str(hr) + "hr " + str(mmm) + "min")
+                    if add_m117_line: lines.insert(tindex + 6,"M117 ET " + str(hr) + "hr " + str(mmm) + "min")
+                    # Add M73 line at beginning
+                    mins = int(60 * hr + mmm)   
                     if add_m73_line and (add_m73_time or add_m73_percent):
                         if m73_time:
                             m73_str += " R{}".format(mins)
@@ -383,13 +384,13 @@ class DisplayInfoOnLCD(Script):
                                 if pause_cmd[q] in data[num]:
                                     pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
                         pause_str = f" with {pause_count} pause(s)"
-                    ## This line goes in to convert seconds to hours and minutes
-                    lines.insert(tindex + 5, f";Cura Time Estimate: {orig_hr}hr {orig_mmm}min {pause_str}")
+                    # This line goes in to convert seconds to hours and minutes
+                    lines.insert(tindex + 1, f";Cura Time Estimate: {orig_hr}hr {orig_mmm}min {pause_str}")
                     data[0] = "\n".join(lines)
                     if add_m117_line:
                         data[len(data)-1] += "M117 Orig Cura Est " + str(orig_hr) + "hr " + str(orig_mmm) + "min\n"
                     if add_m118_line:
-                        data[len(data)-1] += m118_str + " Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
+                        data[len(data)-1] += "M118 Est w/FudgeFactor  " + str(speed_factor * 100) + "% was " + str(hr) + "hr " + str(mmm) + "min\n"
             if not display_total_layers or not display_remaining_time:
                 base_display_text = "layer "
             else:
@@ -463,7 +464,7 @@ class DisplayInfoOnLCD(Script):
                             a1_str = ""
                             p0_str = ""
                             if add_m118_a1:
-                                a1_str = "A1 "
+                                a1_str = "A1 "                            
                             if add_m118_p0:
                                 p0_str = "P0 "
                             lines[l_index] += "\nM118 " + a1_str + p0_str + display_text
@@ -592,8 +593,8 @@ class DisplayInfoOnLCD(Script):
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
         finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
         return finish_str, estimate_str, adjusted_str, print_start_str
-
-    def get_time_to_go(self, time_str: str):
+        
+    def get_time_to_go(self, time_str: str):    
         alt_time = time_str[:-1]
         hhh = int(float(alt_time) / 3600)
         if hhh > 0:
