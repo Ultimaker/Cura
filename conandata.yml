@@ -9,7 +9,7 @@ requirements:
   - "pysavitar/5.4.0-alpha.0@ultimaker/stable"
   - "pynest2d/5.4.0-alpha.0@ultimaker/stable"
 requirements_internal:
-  - "fdm_materials/5.8.1"
+  - "fdm_materials/5.10.0-alpha.0@internal/testing"
   - "cura_private_data/5.10.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
@@ -100,9 +100,6 @@ pyinstaller:
         - "pyDulcificum"
         - "pynest2d"
         - "PyQt6"
-        - "PyQt6.Qt"
-        - "PyQt6.Qt6"
-        - "PyQt6.QtQml"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "logging.handlers"
@@ -113,6 +110,9 @@ pyinstaller:
         - "win32cred"
         - "win32timezone"
         - "pkgutil"
+    hiddenimports_WINDOWS_ONLY:
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     collect_all:
         - "cura"
         - "UM"
@@ -121,13 +121,13 @@ pyinstaller:
         - "sqlite3"
         - "trimesh"
         - "win32ctypes"
-        - "PyQt6.Qt"
-        - "PyQt6.Qt6"
-        - "PyQt6.QtQml"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
         - "stl"
         - "keyrings.alt"
+    collect_all_WINDOWS_ONLY:
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     icon:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
