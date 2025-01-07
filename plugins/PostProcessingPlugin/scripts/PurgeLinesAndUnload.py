@@ -39,19 +39,19 @@ class PurgeLinesAndUnload(Script):
 
     def __init__(self):
         super().__init__()
-        self.curaApp = Application.getInstance().getGlobalContainerStack()
-        self.extruder = self.curaApp.extruderList
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
+        self.extruder = self.global_stack.extruderList
         self.end_purge_location = None
         self.speed_travel = None
         # This will be True when there are more than 4 'machine_disallowed_areas'
         self.show_warning = False
-        self.disallowed_areas = self.curaApp.getProperty("machine_disallowed_areas", "value")
-        self.extruder = self.curaApp.extruderList
-        self.extruder_count = self.curaApp.getProperty("machine_extruder_count", "value")
-        self.bed_shape = self.curaApp.getProperty("machine_shape", "value")
-        self.origin_at_center = self.curaApp.getProperty("machine_center_is_zero", "value")
-        self.machine_width = self.curaApp.getProperty("machine_width", "value")
-        self.machine_depth = self.curaApp.getProperty("machine_depth", "value")
+        self.disallowed_areas = self.global_stack.getProperty("machine_disallowed_areas", "value")
+        self.extruder = self.global_stack.extruderList
+        self.extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
+        self.bed_shape = self.global_stack.getProperty("machine_shape", "value")
+        self.origin_at_center = self.global_stack.getProperty("machine_center_is_zero", "value")
+        self.machine_width = self.global_stack.getProperty("machine_width", "value")
+        self.machine_depth = self.global_stack.getProperty("machine_depth", "value")
         self.machine_left = 1.0
         self.machine_right = self.machine_width - 1.0
         self.machine_front = 1.0
@@ -60,7 +60,7 @@ class PurgeLinesAndUnload(Script):
     def initialize(self) -> None:
         super().initialize()
         # Get the StartUp Gcode from Cura and attempt to catch if it contains purge lines.  Message the user if an extrusion is in the startup.
-        startup_gcode = self.curaApp.getProperty("machine_start_gcode", "value")
+        startup_gcode = self.global_stack.getProperty("machine_start_gcode", "value")
         start_lines = startup_gcode.splitlines()
         for line in start_lines:
             if "G1" in line and " E" in line and (" X" in line or " Y" in line):
@@ -68,8 +68,8 @@ class PurgeLinesAndUnload(Script):
                         text="It appears that there are 'purge lines' in the StartUp Gcode. Using the 'Add Purge Lines' function of this script will comment them out.").show()
                 break
         # 'is_rectangular' is used to disable half-length purge lines for elliptic beds.
-        self._instance.setProperty("is_rectangular", "value", True if self.curaApp.getProperty("machine_shape", "value") == "rectangular" else False)
-        self._instance.setProperty("move_to_prime_tower", "value", True if self.curaApp.getProperty("machine_extruder_count", "value") > 1 else False)
+        self._instance.setProperty("is_rectangular", "value", True if self.global_stack.getProperty("machine_shape", "value") == "rectangular" else False)
+        self._instance.setProperty("move_to_prime_tower", "value", True if self.global_stack.getProperty("machine_extruder_count", "value") > 1 else False)
         # Set the default E adjustment
         self._instance.setProperty("adjust_e_loc_to", "value", -abs(round(float(self.extruder[0].getProperty("retraction_amount", "value")), 1)))
 
@@ -270,8 +270,8 @@ class PurgeLinesAndUnload(Script):
             return first_section
         adjustment_lines = ""
         move_to_prime_present = False
-        prime_tower_x = self.curaApp.getProperty("prime_tower_position_x", "value")
-        prime_tower_y = self.curaApp.getProperty("prime_tower_position_y", "value")
+        prime_tower_x = self.global_stack.getProperty("prime_tower_position_x", "value")
+        prime_tower_y = self.global_stack.getProperty("prime_tower_position_y", "value")
         prime_tower_loc = self._prime_tower_quadrant(prime_tower_x, prime_tower_y)
         # Shortstop an error if Start Location comes through as None
         if self.end_purge_location is None:
@@ -353,6 +353,7 @@ class PurgeLinesAndUnload(Script):
                 add_move("X", self.machine_right)
             else:
                 add_move("X", self.machine_left)
+        # Add a comment to highlight the move
         self.data_str = "; start_side: " + str(start_side) + " |  Start Depth: " + str(start_depth) + " |  target_side: " + str(target_side) + " | target depth: " + str(target_depth) + "\n"
         # Compare positions
         if start_depth != target_depth:
@@ -360,15 +361,17 @@ class PurgeLinesAndUnload(Script):
                 add_move("Y", self.machine_back)
             else:
                 add_move("Y", self.machine_front)
-        if len(moves) <= 1:
+        if len(moves) == 1:
             moves.append(f"G0 F{self.speed_travel} Y{self.start_y} ; Move to start Y\n")
-        # Combine moves into a single G-code string or return a comment if no movement is needed
-        return "".join(moves) if len(moves) > 1 else f";----------[Already at {location_name}, No Moves necessary]\n"
+        # Combine moves into a single G-code string and return
+        return "".join(moves)
 
     def _get_build_plate_extents(self):
-        # Machine disallowed areas can be ordered at the whim of the definition author and cannot be counted on when parsed
-        # This determines a simple rectangle that will be available for the purge lines.  For some machines (Ex: UM3) it can be a small rectangle.
-        # If there are "extruder offsets" then use them to adjust the 'machine_right' and 'machine_back' independent of any disallowed areas.
+        """
+            Machine disallowed areas can be ordered at the whim of the definition author and cannot be counted on when parsed
+            This determines a simple rectangle that will be available for the purge lines.  For some machines (Ex: UM3) it can be a small rectangle.
+            If there are "extruder offsets" then use them to adjust the 'machine_right' and 'machine_back' independent of any disallowed areas.
+        """
         if self.bed_shape == "rectangular":
             if self.disallowed_areas:
                 if len(self.disallowed_areas) > 4:
@@ -428,12 +431,12 @@ class PurgeLinesAndUnload(Script):
         def calculate_purge_volume(line_width, purge_length, volume_per_mm):
             return round((line_width * 0.3 * purge_length) * 1.25 / volume_per_mm, 5)
 
-        where_at = self.getSettingValueByKey("purge_line_location")
+        purge_location = self.getSettingValueByKey("purge_line_location")
         purge_extrusion_full = True if self.getSettingValueByKey("purge_line_length") == "purge_full" else False
         purge_str = ";TYPE:CUSTOM----------[Purge Lines]\nG0 F600 Z2 ; Move up\nG92 E0 ; Reset extruder\n"
         # Normal cartesian printer with origin at the left front corner
         if self.bed_shape == "rectangular" and not self.origin_at_center:
-            if where_at == Location.LEFT:
+            if purge_location == Location.LEFT:
                 purge_len = int(self.machine_back - 20) if purge_extrusion_full else int(
                     (self.machine_back - self.machine_front) / 2)
                 y_stop = int(self.machine_back - 10) if purge_extrusion_full else int(self.machine_depth / 2)
@@ -453,7 +456,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.RIGHT:
+            elif purge_location == Location.RIGHT:
                 purge_len = int(self.machine_depth - 20) if purge_extrusion_full else int(
                     (self.machine_back - self.machine_front) / 2)
                 y_stop = int(self.machine_front + 10) if purge_extrusion_full else int(self.machine_depth / 2)
@@ -473,7 +476,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif where_at == Location.BOTTOM:
+            elif purge_location == Location.BOTTOM:
                 purge_len = int(self.machine_width) - self.nozzle_offset_x - 20 if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_right - 10) if purge_extrusion_full else int(self.machine_width / 2)
@@ -493,7 +496,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.TOP:
+            elif purge_location == Location.TOP:
                 purge_len = int(self.machine_width - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_left + 10) if purge_extrusion_full else int(self.machine_width / 2)
@@ -516,7 +519,7 @@ class PurgeLinesAndUnload(Script):
                 self.end_purge_location = Position.RIGHT_REAR
         # Some cartesian printers (BIBO, Weedo, MethodX, etc.) are Origin at Center
         elif self.bed_shape == "rectangular" and self.origin_at_center:
-            if where_at == Location.LEFT:
+            if purge_location == Location.LEFT:
                 purge_len = int(self.machine_back - self.machine_front - 20) if purge_extrusion_full else abs(
                     int(self.machine_front - 10))
                 y_stop = int(self.machine_back - 10) if purge_extrusion_full else 0
@@ -535,7 +538,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.RIGHT:
+            elif purge_location == Location.RIGHT:
                 purge_len = int(self.machine_back - 20) if purge_extrusion_full else int(
                     (self.machine_back - self.machine_front) / 2)
                 y_stop = int(self.machine_front + 10) if purge_extrusion_full else 0
@@ -554,7 +557,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif where_at == Location.BOTTOM:
+            elif purge_location == Location.BOTTOM:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_right - 10) if purge_extrusion_full else 0
@@ -573,7 +576,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.TOP:
+            elif purge_location == Location.TOP:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
                     int(self.machine_right - 10))
                 x_stop = int(self.machine_left + 10) if purge_extrusion_full else 0
@@ -595,13 +598,13 @@ class PurgeLinesAndUnload(Script):
                 self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
         elif self.bed_shape == "elliptic":
-            if where_at in [Location.LEFT, Location.RIGHT]:
+            if purge_location in [Location.LEFT, Location.RIGHT]:
                 radius_1 = round((self.machine_width / 2) - 1, 2)
-            else:  # For where_at in [Location.BOTTOM, Location.TOP]
+            else:  # For purge_location in [Location.BOTTOM, Location.TOP]
                 radius_1 = round((self.machine_depth / 2) - 1, 2)
             purge_len = int(radius_1) * math.pi / 4
             purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
-            if where_at == Location.LEFT:
+            if purge_location == Location.LEFT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
@@ -617,7 +620,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} X-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.RIGHT:
+            elif purge_location == Location.RIGHT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
@@ -633,7 +636,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif where_at == Location.BOTTOM:
+            elif purge_location == Location.BOTTOM:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
@@ -649,7 +652,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif where_at == Location.TOP:
+            elif purge_location == Location.TOP:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
@@ -815,17 +818,17 @@ class PurgeLinesAndUnload(Script):
     # Make an adjustment to the starting E location so the skirt/brim/raft starts out when the nozzle starts out.
     def _adjust_starting_e(self, data: str) -> str:
         if not self.extruder[0].getProperty("retraction_enable", "value"):
-            return
-        adjust_amt = self.getSettingValueByKey("adjust_e_loc_to")
+            return data
+        adjust_amount = self.getSettingValueByKey("adjust_e_loc_to")
         lines = data[1].split("\n")
         lines.reverse()
-        if self.curaApp.getProperty("machine_firmware_retract", "value"):
-            search_pattern = "G10"
+        if self.global_stack.getProperty("machine_firmware_retract", "value"):
+            search_pattern = r"G10"
         else:
-            search_pattern = "G1 F(\d*) E-(\d.*)"
+            search_pattern = r"G1 F(\d*) E-(\d.*)"
         for index, line in enumerate(lines):
             if re.search(search_pattern, line):
-                lines[index] = re.sub(search_pattern, f"G92 E{adjust_amt}", line)
+                lines[index] = re.sub(search_pattern, f"G92 E{adjust_amount}", line)
                 lines.reverse()
                 data[1] = "\n".join(lines)
                 break
@@ -856,10 +859,10 @@ class PurgeLinesAndUnload(Script):
     def _get_initial_tool(self) -> int:
         # Get the Initial Extruder
         num = Application.getInstance().getExtruderManager().getInitialExtruderNr()
-        if num == None or num == -1:
+        if num is None or num == -1:
             num = 0
         # If there is an extruder offset X then it will be used to adjust the "machine_right" and a Y offset will adjust the "machine_back"
-        if self.extruder_count > 1 and bool(self.curaApp.getProperty("machine_use_extruder_offset_to_offset_coords", "value")):
+        if self.extruder_count > 1 and bool(self.global_stack.getProperty("machine_use_extruder_offset_to_offset_coords", "value")):
             self.nozzle_offset_x = self.extruder[1].getProperty("machine_nozzle_offset_x", "value")
             self.nozzle_offset_y = self.extruder[1].getProperty("machine_nozzle_offset_y", "value")
         else:
