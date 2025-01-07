@@ -1,6 +1,7 @@
 # Copyright (c) 2017 Ghostkeeper
 # The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 # Altered by GregValiant (Greg Foresi) February, 2023.
+#    Added option for "first instance only"
 #    Added option for a layer search with a Start Layer and an End layer.
 #    Added 'Ignore StartUp G-code' and 'Ignore Ending G-code' options
 
@@ -23,7 +24,7 @@ class SearchAndReplace(Script):
                 "search":
                 {
                     "label": "Search for:",
-                    "description": "All occurrences of this text (within the search range) will be replaced by the 'Replace with' text.  The search string is CASE SPECIFIC so 'LAYER' is not the same as 'layer'.",
+                    "description": "CASE SPECIFIC.  'LAYER' is not the same as 'Layer'.  All occurrences of this text (within the search range) will be replaced by the 'Replace with' string.",
                     "type": "str",
                     "default_value": ""
                 },
@@ -95,8 +96,8 @@ class SearchAndReplace(Script):
         }"""
 
     def execute(self, data):
-        curaApp = Application.getInstance().getGlobalContainerStack()
-        extruder = curaApp.extruderList
+        cura_app = Application.getInstance().getGlobalContainerStack()
+        extruder = cura_app.extruderList
         retract_enabled = bool(extruder[0].getProperty("retraction_enable", "value"))
         # If retractions are enabled then the CuraEngine inserts a single data item for the retraction at the end of the last layer
         # 'top_layer' accounts for that
@@ -117,7 +118,7 @@ class SearchAndReplace(Script):
             ignore_end = True
         first_instance_only = bool(self.getSettingValueByKey("first_instance_only"))
 
-    #Find the raft and layer:0 indexes--------------------------------------------------------------------------
+        #Find the raft and layer:0 indexes
         raft_start_index = 0
         layer_0_index = 0
         start_index = 1
@@ -139,7 +140,7 @@ class SearchAndReplace(Script):
                 raft_layers = 0
         except:
             pass
-    #Determine the actual start and end indexes of the data----------------------------------------------------
+        #Determine the actual start and end indexes of the data
         try:
             if not enable_layer_search:
                 if ignore_start:
@@ -167,30 +168,24 @@ class SearchAndReplace(Script):
             start_index = 2
             end_index = len(data) - top_layer
 
-    # If "first_instance_only" is enabled:
+        # Make replacements
         replaceone = False
-        if first_instance_only:
-            if not is_regex:
-                search_string = re.escape(search_string)
-            search_regex = re.compile(search_string)
-            for num in range(start_index, end_index, 1):
-                layer = data[num]
+        if not is_regex:
+            search_string = re.escape(search_string)
+        search_regex = re.compile(search_string)
+        for num in range(start_index, end_index, 1):
+            layer = data[num]
+            # First_instance only
+            if first_instance_only:
                 if re.search(search_regex, layer) and replaceone == False:
                     data[num] = re.sub(search_regex, replace_string, data[num], 1)
                     replaceone = True
                     break
-                if replaceone: break
-            return data
-
-    # For all the replacements
-        if not is_regex:
-            search_string = re.escape(search_string)
-        search_regex = re.compile(search_string)
-        if end_index > start_index:
-            for index in range(start_index, end_index, 1):
-                layer = data[index]
-                data[index] = re.sub(search_regex, replace_string, layer)
-        elif end_index == start_index:
-            layer = data[start_index]
-            data[start_index] = re.sub(search_regex, replace_string, layer)
+            # All
+            else:
+                if end_index > start_index:
+                    data[num] = re.sub(search_regex, replace_string, layer)
+                elif end_index == start_index:
+                    layer = data[start_index]
+                    data[start_index] = re.sub(search_regex, replace_string, layer)
         return data
