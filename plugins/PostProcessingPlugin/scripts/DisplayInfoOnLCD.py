@@ -308,15 +308,16 @@ class DisplayInfoOnLCD(Script):
 
     # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
         elif display_option == "display_progress":
-            print_sequence = Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")
+            global_stack = Application.getInstance().getGlobalContainerStack()
+            print_sequence = global_stack.getProperty("print_sequence", "value")
             # Add the Initial Layer Height just below Layer Height in data[0]
-            extruder_count = Application.getInstance().getGlobalContainerStack().getProperty("machine_extruder_count", "value")
-            init_layer_hgt_line = ";Initial Layer Height: " + str(Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value"))
-            nozzle_size_line = ";Nozzle Size T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("machine_nozzle_size", "value"))            
-            filament_type = "\n;Filament type for T0: " + str(Application.getInstance().getGlobalContainerStack().extruderList[0].getProperty("material_type", "value"))
+            extruder_count = global_stack.getProperty("machine_extruder_count", "value")
+            init_layer_hgt_line = ";Initial Layer Height: " + str(global_stack.getProperty("layer_height_0", "value"))
+            nozzle_size_line = ";Nozzle Size T0: " + str(global_stack.extruderList[0].getProperty("machine_nozzle_size", "value"))            
+            filament_type = "\n;Filament type for T0: " + str(global_stack.extruderList[0].getProperty("material_type", "value"))
             if extruder_count > 1:
-                nozzle_size_line += "\n;Nozzle Size T1: " + str(Application.getInstance().getGlobalContainerStack().extruderList[1].getProperty("machine_nozzle_size", "value"))
-                filament_type += "\n;Filament type for T1: " + str(Application.getInstance().getGlobalContainerStack().extruderList[1].getProperty("material_type", "value"))
+                nozzle_size_line += "\n;Nozzle Size T1: " + str(global_stack.extruderList[1].getProperty("machine_nozzle_size", "value"))
+                filament_type += "\n;Filament type for T1: " + str(global_stack.extruderList[1].getProperty("material_type", "value"))
             lines = data[0].split("\n")
             for index, line in enumerate(lines):
                 if line.startswith(";Layer height:"):
