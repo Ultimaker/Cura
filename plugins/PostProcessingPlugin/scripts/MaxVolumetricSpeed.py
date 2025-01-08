@@ -22,11 +22,11 @@ class MaxVolumetricSpeed(Script):
 
     def initialize(self) -> None:
         super().initialize()
-        curaApp = Application.getInstance().getGlobalContainerStack()
-        extruder_count = int(curaApp.getProperty("machine_extruder_count", "value"))
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        extruder_count = int(global_stack.getProperty("machine_extruder_count", "value"))
         if extruder_count > 1:
             self._instance.setProperty("multi_extruder", "value", True)
-        gcode_flavor = curaApp.getProperty("machine_gcode_flavor", "value")
+        gcode_flavor = global_stack.getProperty("machine_gcode_flavor", "value")
         if gcode_flavor in ["Repetier", "RepRap (RepRap)"]:
             self._instance.setProperty("jerk_cmd", "value", "M566")
             
@@ -159,10 +159,10 @@ class MaxVolumetricSpeed(Script):
             return data
         
         # Get settings from Cura
-        curaApp = Application.getInstance().getGlobalContainerStack()
-        extruder_count = curaApp.getProperty("machine_extruder_count", "value")
-        extruder = curaApp.extruderList
-        firmware_retraction = bool(curaApp.getProperty("machine_firmware_retract", "value"))
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        extruder_count = global_stack.getProperty("machine_extruder_count", "value")
+        extruder = global_stack.extruderList
+        firmware_retraction = bool(global_stack.getProperty("machine_firmware_retract", "value"))
         enable_volumetric_t0 = self.getSettingValueByKey("enable_volumetric_t0")
         enable_volumetric_t1 = self.getSettingValueByKey("enable_volumetric_t1") if extruder_count > 1 else False
         filament_dia_t0 = float(extruder[0].getProperty("material_diameter", "value"))
@@ -174,8 +174,8 @@ class MaxVolumetricSpeed(Script):
             speed_e_reset_t0 = cura_retract_speed_t0 if cura_retract_speed_t0 >= cura_prime_speed_t0 else cura_prime_speed_t0
             max_E_flow_rate_t0 = self.getSettingValueByKey("max_E_flow_rate_t0")
             enable_jerk_adjustment_t0 = self.getSettingValueByKey("enable_jerk_adjustment_t0")
-            max_e_jerk_t0 = round(self.getSettingValueByKey("max_e_jerk_t0"),1) if enable_jerk_adjustment_t0 else curaApp.getProperty("machine_max_jerk_e", "value")
-            default_jerk_t0 = curaApp.getProperty("machine_max_jerk_e", "value")
+            max_e_jerk_t0 = round(self.getSettingValueByKey("max_e_jerk_t0"),1) if enable_jerk_adjustment_t0 else global_stack.getProperty("machine_max_jerk_e", "value")
+            default_jerk_t0 = global_stack.getProperty("machine_max_jerk_e", "value")
         else:
             cura_retract_speed_t0 = float(extruder[0].getProperty("retraction_retract_speed", "value"))
             cura_prime_speed_t0 = float(extruder[0].getProperty("retraction_prime_speed", "value"))
@@ -189,8 +189,8 @@ class MaxVolumetricSpeed(Script):
             filament_dia_t1 = float(extruder[1].getProperty("material_diameter", "value"))
             max_E_flow_rate_t1 = self.getSettingValueByKey("max_E_flow_rate_t1")
             enable_jerk_adjustment_t1 = self.getSettingValueByKey("enable_jerk_adjustment_t1")
-            max_e_jerk_t1 = round(self.getSettingValueByKey("max_e_jerk_t1"),1) if enable_jerk_adjustment_t1 else curaApp.getProperty("machine_max_jerk_e", "value")
-            default_jerk_t1 = curaApp.getProperty("machine_max_jerk_e", "value")
+            max_e_jerk_t1 = round(self.getSettingValueByKey("max_e_jerk_t1"),1) if enable_jerk_adjustment_t1 else global_stack.getProperty("machine_max_jerk_e", "value")
+            default_jerk_t1 = global_stack.getProperty("machine_max_jerk_e", "value")
         elif not enable_volumetric_t1 and extruder_count > 1:
             cura_retract_speed_t1 = float(extruder[1].getProperty("retraction_retract_speed", "value"))
             cura_prime_speed_t1 = float(extruder[1].getProperty("retraction_prime_speed", "value"))
