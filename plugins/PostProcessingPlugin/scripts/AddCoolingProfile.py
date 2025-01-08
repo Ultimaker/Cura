@@ -353,10 +353,10 @@ class AddCoolingProfile(Script):
 
     def initialize(self) -> None:
         super().initialize()
-        curaApp = Application.getInstance().getGlobalContainerStack()
-        extruder = curaApp.extruderList
-        extruder_count = curaApp.getProperty("machine_extruder_count", "value")
-        scripts = curaApp.getMetaDataEntry("post_processing_scripts")
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        extruder = global_stack.extruderList
+        extruder_count = global_stack.getProperty("machine_extruder_count", "value")
+        scripts = global_stack.getMetaDataEntry("post_processing_scripts")
         if scripts != None:
             script_count = scripts.count("AddCoolingProfile")
             if script_count > 0:
@@ -365,8 +365,14 @@ class AddCoolingProfile(Script):
         if extruder_count > 1:
             if extruder[0].getProperty("machine_extruder_cooling_fan_number", "value") != extruder[1].getProperty("machine_extruder_cooling_fan_number", "value"):
                 self._instance.setProperty("enable_off_fan_speed_enable", "value", True)
-        self.has_bv_fan = bool(curaApp.getProperty("build_volume_fan_nr", "value"))
-        self.bv_fan_nr = int(curaApp.getProperty("build_volume_fan_nr", "value"))
+        
+        self.has_bv_fan = False
+        self.bv_fan_nr = 0        
+        try:
+            self.has_bv_fan = bool(global_stack.getProperty("build_volume_fan_nr", "value"))
+            self.bv_fan_nr = int(global_stack.getProperty("build_volume_fan_nr", "value"))
+        except:
+            pass
         if self.has_bv_fan:
             self._instance.setProperty("enable_bv_fan", "value", True)
 
@@ -375,12 +381,12 @@ class AddCoolingProfile(Script):
         if ";POSTPROCESSED" in data[0]:
             return data
         #Initialize variables that are buried in if statements.
-        self.curaApp = Application.getInstance().getGlobalContainerStack()
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
         #Get some information from Cura-----------------------------------
-        extruder = self.curaApp.extruderList
-        extruder_count = self.curaApp.getProperty("machine_extruder_count", "value")
+        extruder = self.global_stack.extruderList
+        extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
 
         #This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
         fan_mode = True
@@ -390,7 +396,7 @@ class AddCoolingProfile(Script):
         except:
             pass
         bed_adhesion = (extruder[0].getProperty("adhesion_type", "value"))
-        print_sequence = str(self.curaApp.getProperty("print_sequence", "value"))
+        print_sequence = str(self.global_stack.getProperty("print_sequence", "value"))
 
         #Assign the fan numbers to the tools------------------------------
         if extruder_count == 1:
@@ -727,7 +733,7 @@ class AddCoolingProfile(Script):
             if modified_data.endswith("\n"): modified_data = modified_data[0:-1]
             multi_fan_data[l_index] = modified_data
         # Insure the fans get shut off if 'off_fan_speed' was enabled
-        if self.curaApp.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
+        if self.global_stack.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
@@ -854,7 +860,7 @@ class AddCoolingProfile(Script):
             multi_fan_data[l_index] = modified_data
             modified_data = ""
         # Insure the fans get shut off if 'off_fan_speed' was enabled
-        if self.curaApp.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
+        if self.global_stack.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
@@ -949,7 +955,7 @@ class AddCoolingProfile(Script):
         if bv_end_layer != -1:
             bv_end_layer -= 1
         # Get the PWM speed or if RepRap then the 0-1 speed
-        if self.curaApp.extruderList[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"):
+        if self.global_stack.extruderList[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"):
             bv_fan_speed = round(self.getSettingValueByKey("bv_fan_speed") * .01, 1)
         else:
             bv_fan_speed = int(self.getSettingValueByKey("bv_fan_speed") * 2.55)
