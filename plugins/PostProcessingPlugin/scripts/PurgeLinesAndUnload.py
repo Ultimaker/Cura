@@ -225,7 +225,6 @@ class PurgeLinesAndUnload(Script):
             else:
                 msg_text = "Open the Gcode file for preview in Cura.  Make sure the 'Purge Lines' don't run underneath something else and are acceptable."
             Message(title="[Purge Lines and Unload]", text=msg_text).show()
-        data[1] += self.data_str
         return data
 
     def _get_real_start_point(self, first_section: str) -> tuple:
@@ -327,8 +326,8 @@ class PurgeLinesAndUnload(Script):
         # Extract components
         start_side, start_depth = self.end_purge_location
         target_side, target_depth = location
-
-        moves = [f";MESH:NONMESH---------[Move to {location_name}]\nG0 F600 Z2 ; Move up\n"]
+        # Start of the moves and a comment to highlight the move
+        moves = [f";MESH:NONMESH---------[Circle around to {location_name}]    Start from: {str(start_side)} {str(start_depth)}    Go to: {target_side} {target_depth}\nG0 F600 Z2 ; Move up\n"]
 
         # Helper function to add G-code for moves
         def add_move(axis: str, position: float) -> None:
@@ -353,8 +352,6 @@ class PurgeLinesAndUnload(Script):
                 add_move("X", self.machine_right)
             else:
                 add_move("X", self.machine_left)
-        # Add a comment to highlight the move
-        self.data_str = "; start_side: " + str(start_side) + " |  Start Depth: " + str(start_depth) + " |  target_side: " + str(target_side) + " | target depth: " + str(target_depth) + "\n"
         # Compare positions
         if start_depth != target_depth:
             if target_depth == Location.REAR:
