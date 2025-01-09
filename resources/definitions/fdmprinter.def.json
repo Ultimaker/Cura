@@ -4712,6 +4712,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "cool_min_layer_time_overhang_min_segment_length":
+                {
+                    "label": "Minimum Overhang Segment Length",
+                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "500",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "cool_min_speed":
                 {
                     "label": "Minimum Speed",
