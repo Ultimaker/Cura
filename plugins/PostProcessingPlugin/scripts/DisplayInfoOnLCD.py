@@ -238,12 +238,14 @@ class DisplayInfoOnLCD(Script):
         add_m118_line = self.getSettingValueByKey("add_m118_line")
         add_m118_a1 = self.getSettingValueByKey("add_m118_a1")
         add_m118_p0 = self.getSettingValueByKey("add_m118_p0")
+        m118_str = "M118 "
+        m118_text = "M118 "
         add_m73_line = self.getSettingValueByKey("add_m73_line")
         add_m73_time = self.getSettingValueByKey("add_m73_time")
         add_m73_percent = self.getSettingValueByKey("add_m73_percent")
         m73_str = ""
 
-    # This is Display Filename and Layer on LCD---------------------------------------------------------
+        # This is from the original Display Filename and Layer on LCD
         if display_option == "filename_layer":
             max_layer = 0
             lcd_text = "M117 "
@@ -256,7 +258,7 @@ class DisplayInfoOnLCD(Script):
                 lcd_text += "Printing "
                 octo_text += "Printing "
             if not self.getSettingValueByKey("scroll"):
-                lcd_text += "Layer "
+                lcd_text += "Lay "
                 octo_text += "Layer "
             else:
                 lcd_text += file_name + " - Layer "
@@ -275,15 +277,15 @@ class DisplayInfoOnLCD(Script):
                             max_layer = str(int(max_layer) - 1)
                     if line.startswith(";LAYER:"):
                         if self.getSettingValueByKey("maxlayer"):
-                            display_text += " of " + max_layer
-                            m118_text += " of " + max_layer
+                            display_text += "/" + max_layer
+                            m118_text += "/" + max_layer
                             if not self.getSettingValueByKey("scroll"):
-                                display_text += " " + file_name
-                                m118_text += " " + file_name
+                                display_text += "|" + file_name
+                                m118_text += " | " + file_name
                         else:
                             if not self.getSettingValueByKey("scroll"):
-                                display_text += " " + file_name + "!"
-                                m118_text += " " + file_name + "!"
+                                display_text += "|" + file_name + "!"
+                                m118_text += " | " + file_name + "!"
                             else:
                                 display_text += "!"
                                 m118_text += "!"
@@ -291,6 +293,8 @@ class DisplayInfoOnLCD(Script):
                         if add_m117_line:
                             lines.insert(line_index + 1, display_text)
                         if add_m118_line:
+                            if not (add_m118_p0 and add_m118_a1):
+                                m118_str = m118_text
                             if add_m118_a1 and not add_m118_p0:
                                 m118_str = m118_text.replace("M118 ","M118 A1 ")
                             if add_m118_p0 and not add_m118_a1:
@@ -306,7 +310,7 @@ class DisplayInfoOnLCD(Script):
                 Message(title = "Display Info on LCD - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
             return data
 
-    # Display Progress (from 'Show Progress' and 'Display Progress on LCD')---------------------------------------
+        # This is from 'Show Progress on LCD'
         elif display_option == "display_progress":
             global_stack = Application.getInstance().getGlobalContainerStack()
             print_sequence = global_stack.getProperty("print_sequence", "value")
