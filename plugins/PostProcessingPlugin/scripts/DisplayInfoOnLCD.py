@@ -210,7 +210,7 @@ class DisplayInfoOnLCD(Script):
                     "description": "This might be M0, or M25 or M600 if Filament Change is used.  If you have mixed commands then delimit them with a comma ',' (Ex: M0,M600).  Spaces are not allowed.",
                     "type": "str",
                     "default_value": "M0",
-                    "enabled": "countdown_to_pause and enable_countdown and display_remaining_time"
+                    "enabled": "display_option == 'display_progress' and countdown_to_pause and enable_countdown and display_remaining_time"
                 },
                 "enable_end_message":
                 {
