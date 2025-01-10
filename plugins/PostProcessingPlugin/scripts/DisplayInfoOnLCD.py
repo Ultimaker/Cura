@@ -377,18 +377,21 @@ class DisplayInfoOnLCD(Script):
                     if bool(self.getSettingValueByKey("countdown_to_pause")):
                         pause_count = 0
                         pause_setting = self.getSettingValueByKey("pause_cmd").upper()
-                        pause_cmd = []
-                        if "," in pause_setting:
-                            pause_cmd = pause_setting.split(",")
+                        if pause_setting != "":
+                            pause_cmd = []
+                            if "," in pause_setting:
+                                pause_cmd = pause_setting.split(",")
+                            else:
+                                pause_cmd.append(pause_setting)
+                            for q in range(0, len(pause_cmd)):
+                                pause_cmd[q] = "\n" + pause_cmd[q]
+                            for num in range(2,len(data) - 2, 1):
+                                for q in range(0,len(pause_cmd)):
+                                    if pause_cmd[q] in data[num]:
+                                        pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
+                            pause_str = f"with {pause_count} pause(s)"
                         else:
-                            pause_cmd.append(pause_setting)
-                        for q in range(0, len(pause_cmd)):
-                            pause_cmd[q] = "\n" + pause_cmd[q]
-                        for num in range(2,len(data) - 2, 1):
-                            for q in range(0,len(pause_cmd)):
-                                if pause_cmd[q] in data[num]:
-                                    pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
-                        pause_str = f" with {pause_count} pause(s)"
+                            pause_str = ""
                     # This line goes in to convert seconds to hours and minutes
                     lines.insert(tindex + 1, f";Cura Time Estimate: {orig_hr}hr {orig_mmm}min {pause_str}")
                     data[0] = "\n".join(lines)
@@ -527,7 +530,6 @@ class DisplayInfoOnLCD(Script):
                         except:
                             continue
                     data[num] = layer
-            setting_data = ""
             if bool(self.getSettingValueByKey("enable_end_message")):
                 message_str = self.message_to_user(speed_factor)
                 Message(title = "[Display Info on LCD] - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
