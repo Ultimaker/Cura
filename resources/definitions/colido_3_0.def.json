@@ -27,6 +27,7 @@
         "gantry_height": { "value": "17.8" },
         "layer_height": { "value": 0.15 },
         "layer_height_0": { "value": "max(0.2, layer_height)" },
+        "machine_acceleration": { "default_value": 1000 },
         "machine_name": { "default_value": "CoLiDo 3.0" },
         "machine_width": { "default_value": 223 },
         "machine_depth": { "default_value": 142 },
