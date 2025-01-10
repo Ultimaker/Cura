@@ -58,8 +58,7 @@
             "ultimaker_rapidrinse",
             "ultimaker_sr30",
             "ultimaker_petg",
-            "ultimaker_pva",
-            "ultimaker_metallic_pla"
+            "ultimaker_pva"
         ],
         "has_machine_quality": true,
         "has_materials": true,
