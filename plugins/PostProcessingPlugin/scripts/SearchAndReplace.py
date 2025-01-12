@@ -96,8 +96,8 @@ class SearchAndReplace(Script):
         }"""
 
     def execute(self, data):
-        cura_app = Application.getInstance().getGlobalContainerStack()
-        extruder = cura_app.extruderList
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        extruder = global_stack.extruderList
         retract_enabled = bool(extruder[0].getProperty("retraction_enable", "value"))
         # If retractions are enabled then the CuraEngine inserts a single data item for the retraction at the end of the last layer
         # 'top_layer' accounts for that
@@ -140,6 +140,7 @@ class SearchAndReplace(Script):
                 raft_layers = 0
         except:
             pass
+            
         #Determine the actual start and end indexes of the data
         try:
             if not enable_layer_search:
