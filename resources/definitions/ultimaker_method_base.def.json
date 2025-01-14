@@ -34,7 +34,10 @@
         "acceleration_enabled":
         {
             "enabled": false,
-            "value": true
+            "value": true,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "acceleration_infill":
         {
@@ -54,7 +57,10 @@
         "acceleration_print":
         {
             "enabled": false,
-            "value": 800
+            "value": 800,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "acceleration_print_layer_0":
         {
@@ -99,12 +105,18 @@
         "acceleration_travel":
         {
             "enabled": false,
-            "value": 5000
+            "value": 5000,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "acceleration_travel_enabled":
         {
             "enabled": false,
-            "value": true
+            "value": true,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "acceleration_travel_layer_0":
         {
@@ -204,7 +216,10 @@
         "jerk_enabled":
         {
             "enabled": false,
-            "value": true
+            "value": true,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "jerk_infill":
         {
@@ -224,7 +239,10 @@
         "jerk_print":
         {
             "enabled": false,
-            "value": 6.25
+            "value": 6.25,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "jerk_print_layer_0":
         {
@@ -269,12 +287,18 @@
         "jerk_travel":
         {
             "enabled": false,
-            "value": "jerk_print"
+            "value": "jerk_print",
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "jerk_travel_enabled":
         {
             "enabled": false,
-            "value": true
+            "value": true,
+            "settable_per_mesh": false,
+            "settable_per_extruder": false,
+            "settable_per_meshgroup": false
         },
         "jerk_travel_layer_0":
         {
