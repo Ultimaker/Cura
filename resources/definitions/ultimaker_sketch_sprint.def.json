@@ -383,7 +383,9 @@
         "wall_overhang_speed_factors":
         {
             "minimum_value_warning": 15,
-            "value": [18]
+            "value": [
+                18
+            ]
         },
         "wall_thickness": { "value": 1 },
         "wall_x_material_flow_layer_0": { "value": "material_flow" },
