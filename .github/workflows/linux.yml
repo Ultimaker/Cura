@@ -39,7 +39,7 @@ on:
 
 jobs:
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-test-arm
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       package_overrides: ${{ inputs.package_overrides }}
