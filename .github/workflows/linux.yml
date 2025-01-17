@@ -34,6 +34,7 @@ on:
         type: choice
         options:
           - ubuntu-22.04
+          - ubuntu-22.04-arm
           - self-hosted-Ubuntu22-X64
 
 jobs:
