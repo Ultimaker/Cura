@@ -11,7 +11,11 @@ AppDir:
     exec_args: $@
   apt:
     arch:
+    {% if arch == "x86_64" %}
     - amd64
+    {% elif arch == "aarch64" %}
+    - arm64
+    {% endif %}
     allow_unauthenticated: true
     sources:
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
