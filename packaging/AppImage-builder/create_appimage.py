@@ -52,7 +52,7 @@ def generate_appimage_builder_config(dist_path, version, appimage_filename):
                                        version = version,
                                        arch = platform.machine(),
                                        file_name = appimage_filename)
-
+    print(appimage_builder)
     with open(os.path.join(Path(__file__).parent, "AppImageBuilder.yml"), "w") as appimage_builder_file:
         appimage_builder_file.write(appimage_builder)
 
