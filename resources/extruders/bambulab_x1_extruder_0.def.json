@@ -10,7 +10,7 @@
     "overrides":
     {
         "extruder_nr": { "default_value": 0 },
-        "material_diameter": { "default_value": 1.75 },
-		"machine_extruder_change_duration":  { "default_value": 44 }
+        "machine_extruder_change_duration": { "default_value": 44 },
+        "material_diameter": { "default_value": 1.75 }
     }
 }
