@@ -5,6 +5,7 @@ import argparse
 import os
 import shutil
 import subprocess
+import platform
 
 from pathlib import Path
 
@@ -49,7 +50,7 @@ def generate_appimage_builder_config(dist_path, version, appimage_filename):
     appimage_builder = template.render(app_dir = "./AppDir",
                                        icon = "cura-icon.png",
                                        version = version,
-                                       arch = "x86_64",
+                                       arch = platform.machine(),
                                        file_name = appimage_filename)
 
     with open(os.path.join(Path(__file__).parent, "AppImageBuilder.yml"), "w") as appimage_builder_file:
