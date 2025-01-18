@@ -47,11 +47,6 @@ AppDir:
       - usr/share/doc/*/NEWS.*
       - usr/share/doc/*/TODO.*
       - usr/lib/x86_64-linux-gnu/libssl.so*
-    symlinks:
-      - link: runtime/compat/lib/ld-linux-aarch64.so.1
-        target: runtime/compat/usr/lib/ld-linux-aarch64.so.1
-      - link: lib/ld-linux-aarch64.so.1
-        target: usr/lib/ld-linux-aarch64.so.1
   runtime:
     env:
       {% if arch == "x86_64" %}
@@ -70,9 +65,8 @@ AppDir:
       GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/{{ arch }}-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
       - /usr/share:$APPDIR/usr/share
-      {% if arch == "aarch64" %}
-      - $APPDIR/runtime/compat/
-      {% endif %}
+  after_budnle:
+    - ln "$TARGET_APPDIR/runtime/compat/usr/lib" "$TARGET_APPDIR/runtime/compat/lib"
   test:
     fedora-30:
       image: appimagecrafters/tests-env:fedora-30
