@@ -53,8 +53,8 @@ AppDir:
       APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       {% elif arch == "aarch64" %}
-      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/aarch64-linux-gnu:$APPDIR/lib/aarch64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/aarch64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
-      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/aarch64-linux-gnu:$APPDIR/lib/aarch64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/aarch64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/runtime/compat/usr:$APPDIR/usr/lib/aarch64-linux-gnu:$APPDIR/lib/aarch64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/aarch64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/runtime/compat/usr:$APPDIR/usr/lib/aarch64-linux-gnu:$APPDIR/lib/aarch64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/aarch64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       {% endif %}
       PYTHONPATH: "$APPDIR"
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
