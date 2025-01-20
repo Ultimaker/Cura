@@ -22,10 +22,12 @@
     "overrides":
     {
         "acceleration_enabled": { "default_value": true },
-        "acceleration_layer_0": { "value": 500 },
+        "acceleration_layer_0": { "value": "math.ceil(acceleration_print / 10)" },
         "acceleration_print": { "default_value": 5000 },
-        "acceleration_travel": { "value": 7000 },
-        "acceleration_wall_0": { "value": 3000 },
+        "acceleration_roofing": { "value": "math.ceil(acceleration_topbottom * 3000 / 5000) " },
+        "acceleration_support": { "value": "math.ceil(acceleration_print / 2)" },
+        "acceleration_travel": { "value": "acceleration_print if magic_spiralize else min(math.ceil(acceleration_print * 7000 / 5000), round((machine_max_acceleration_x + machine_max_acceleration_y) / 2, -2))" },
+        "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 3000 / 5000)" },
         "adhesion_type":
         {
             "default_value": "skirt",
