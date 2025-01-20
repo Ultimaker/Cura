@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "name": "Creality CR-3040 Pro",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "DragonSlayer_SE",
+        "quality_definition": "creality_base"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "machine_depth": { "default_value": 300 },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-20, 10],
+                [10, 10],
+                [10, -10],
+                [-20, -10]
+            ]
+        },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Creality CR-3040 Pro" },
+        "machine_width": { "default_value": 300 }
+    }
+}
