@@ -6,6 +6,7 @@
     {
         "visible": true,
         "author": "DragonSlayer_SE",
+        "platform": "creality_300x300.stl",
         "quality_definition": "creality_base"
     },
     "overrides":
