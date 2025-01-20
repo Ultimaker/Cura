@@ -11,12 +11,22 @@ AppDir:
     exec_args: $@
   apt:
     arch:
-    - amd64
+      {% if arch == "x86_64" %}
+      - amd64
+      {% elif arch == "aarch64" %}
+      - arm64
+      {% endif %}
     allow_unauthenticated: true
     sources:
+      {% if arch == "x86_64" %}
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
       - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
+      {% elif arch == "aarch64" %}
+      - sourceline: deb http://ports.ubuntu.com/ubuntu-ports/ noble main restricted universe multiverse
+      - sourceline: deb http://ports.ubuntu.com/ubuntu-ports/ noble-updates main restricted universe multiverse
+      - sourceline: deb http://ports.ubuntu.com/ubuntu-ports/ noble-security main restricted universe multiverse
+      {% endif %}
     include:
       - xdg-desktop-portal-kde
       - libgtk-3-0
@@ -41,17 +51,21 @@ AppDir:
       - usr/lib/x86_64-linux-gnu/libssl.so*
   runtime:
     env:
-      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
-      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/{{ arch }}-linux-gnu:$APPDIR/lib/{{ arch }}-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/{{ arch }}-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/{{ arch }}-linux-gnu:$APPDIR/lib/{{ arch }}-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/{{ arch }}-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       PYTHONPATH: "$APPDIR"
       QT_PLUGIN_PATH: "$APPDIR/qt/plugins"
       QML2_IMPORT_PATH: "$APPDIR/qt/qml"
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
       QT_QPA_PLATFORM: xcb
-      GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
-      GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+      GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/{{ arch }}-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+      GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/{{ arch }}-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
       - /usr/share:$APPDIR/usr/share
+  {% if arch == "aarch64" %}
+  after_runtime:
+    - ln -sr "$TARGET_APPDIR/runtime/compat/usr/lib" "$TARGET_APPDIR/runtime/compat/lib"
+  {% endif %}
   test:
     fedora-30:
       image: appimagecrafters/tests-env:fedora-30
@@ -77,3 +91,4 @@ AppImage:
   arch: {{ arch }}
   file_name: {{ file_name }}
   update-information: guess
+  comp: zstd
