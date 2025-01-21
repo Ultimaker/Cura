@@ -54,6 +54,8 @@
             "ultimaker_rapidrinse",
             "ultimaker_sr30",
             "ultimaker_petg",
+            "ultimaker_pc-abs",
+            "ultimaker_pc-abs-fr",
             "ultimaker_metallic_pla"
         ],
         "has_machine_quality": true,
