@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2025 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -12,7 +12,7 @@ Button
     id: configurationItem
 
     property var configuration: null
-    hoverEnabled: isValidMaterial
+    hoverEnabled: isValidMaterial && isValidCore
 
     property bool isValidMaterial:
     {
@@ -25,8 +25,26 @@ Button
         for (var index in extruderConfigurations)
         {
             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
-
             if (name == "" || name == "Unknown")
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+    property bool isValidCore:
+    {
+        if (configuration === null)
+        {
+            return false
+        }
+        var extruderConfigurations = configuration.extruderConfigurations
+        var coresList = configuration.validCoresForPrinterType
+        for (var index in extruderConfigurations)
+        {
+            var name = extruderConfigurations[index].hotendID ? extruderConfigurations[index].hotendID : ""
+            if (name != "" && ! coresList.includes(name))
             {
                 return false
             }
@@ -72,11 +90,11 @@ Button
                 {
                     width: Math.round(parent.width / (configuration !== null ? configuration.extruderConfigurations.length : 1))
                     printCoreConfiguration: modelData
-                    visible: configurationItem.isValidMaterial
+                    visible: configurationItem.isValidMaterial && configurationItem.isValidCore
                 }
             }
 
-            // Unknown material
+            // Unknown material or core ('variant')
             Item
             {
                 id: unknownMaterial
@@ -86,7 +104,7 @@ Button
                 anchors.top: parent.top
                 anchors.topMargin: UM.Theme.getSize("thin_margin").width / 2
 
-                visible: !configurationItem.isValidMaterial
+                visible: ! (configurationItem.isValidMaterial && configurationItem.isValidCore)
 
                 UM.ColorImage
                 {
@@ -102,13 +120,9 @@ Button
                 UM.Label
                 {
                     id: unknownMaterialMessage
-                    text:
-                    {
-                        if (configuration === null)
-                        {
-                            return ""
-                        }
 
+                    function whenUnknownMaterial()
+                    {
                         var extruderConfigurations = configuration.extruderConfigurations
                         var unknownMaterials = []
                         for (var index in extruderConfigurations)
@@ -135,9 +149,35 @@ Button
 
                         unknownMaterials = "<b>" + unknownMaterials + "</b>"
                         var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile.");
-                        var result = draftResult.arg(unknownMaterials).arg("<a href=' '>" + catalog.i18nc("@label","Marketplace") + "</a> ")
+                        return draftResult.arg(unknownMaterials).arg("<a href=' '>" + catalog.i18nc("@label","Marketplace") + "</a> ")
+                    }
 
-                        return result
+                    function whenMismatchedCore()
+                    {
+                        var extruderConfigurations = configuration.extruderConfigurations
+                        var coresList = configuration.validCoresForPrinterType
+                        var mismatchedCores = []
+                        for (var index in extruderConfigurations)
+                        {
+                            var name = extruderConfigurations[index].hotendID ? extruderConfigurations[index].hotendID : ""
+                            if (name != "" && ! coresList.includes(name))
+                            {
+                                mismatchedCores.push(name)
+                            }
+                        }
+
+                        mismatchedCores = "<b>" + mismatchedCores + "</b>"
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is either mismatched, or unrecognized. Please visit %2 to check with cores this printer-type supports.");
+                        return draftResult.arg(mismatchedCores).arg("<a href=' '>" + catalog.i18nc("@label","WEBSITE") + "</a> ")
+                    }
+
+                    text:
+                    {
+                        if (configuration === null)
+                        {
+                            return ""
+                        }
+                        return isValidMaterial ? whenMismatchedCore() : whenUnknownMaterial()
                     }
                     width: extruderRow.width
 
@@ -225,7 +265,7 @@ Button
 
     onClicked:
     {
-        if(isValidMaterial)
+        if (isValidMaterial && isValidCore)
         {
             toggleContent()
             Cura.MachineManager.applyRemoteConfiguration(configuration)
