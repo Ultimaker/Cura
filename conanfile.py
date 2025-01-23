@@ -179,6 +179,7 @@ class CuraConan(ConanFile):
             "qtmqtt",
             "qtnetworkauth",
             "qtquick3d",
+            "quick3d",
             "qtquick3dphysics",
             "qtquicktimeline",
             "qtvirtualkeyboard",
@@ -207,7 +208,7 @@ class CuraConan(ConanFile):
                             to_remove_files.append(pathname)
             for dirname in dir_:
                 for forbidden in prohibited:
-                    if forbidden.lower() == str(dirname).lower():
+                    if forbidden.lower() in str(dirname).lower():
                         pathname = os.path.join(root, dirname)
                         to_remove_dirs.append(pathname)
                         break
@@ -309,6 +310,12 @@ class CuraConan(ConanFile):
             except Exception as ex:
                 print(f"WARNING: Attempt to delete binary {unwanted_path} results in: {str(ex)}")
 
+        hiddenimports = pyinstaller_metadata["hiddenimports"]
+        collect_all = pyinstaller_metadata["collect_all"]
+        if self.settings.os == "Windows":
+            hiddenimports += pyinstaller_metadata["hiddenimports_WINDOWS_ONLY"]
+            collect_all += pyinstaller_metadata["collect_all_WINDOWS_ONLY"]
+
         # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
             f.write(pyinstaller.render(
@@ -318,8 +325,8 @@ class CuraConan(ConanFile):
                 datas = datas,
                 binaries = filtered_binaries,
                 venv_script_path = str(self._script_dir),
-                hiddenimports = pyinstaller_metadata["hiddenimports"],
-                collect_all = pyinstaller_metadata["collect_all"],
+                hiddenimports = hiddenimports,
+                collect_all = collect_all,
                 icon = icon_path,
                 entitlements_file = entitlements_file,
                 osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
