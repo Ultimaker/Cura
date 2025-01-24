@@ -51,8 +51,8 @@
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_network_connection": true,
         "supports_usb_connection": false,
-      "variants_name": "Print Core",
-      "variants_name_has_translation": true
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true
     },
     "overrides":
     {

@@ -10,7 +10,7 @@
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
         "machine_extruder_trains": { "0": "eazao_zero_extruder_0" },
-      "preferred_material": "eazao_clay",
+        "preferred_material": "eazao_clay",
         "preferred_quality_type": "normal"
     },
     "overrides":

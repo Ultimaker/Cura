@@ -16,7 +16,7 @@
             "chromatik_",
             "3D-Fuel_",
             "bestfilament_",
-          "eazao_",
+            "eazao_",
             "emotiontech_",
             "eryone_",
             "eSUN_",
@@ -58,7 +58,7 @@
         ],
         "has_machine_quality": true,
         "has_materials": true,
-      "has_textured_buildplate": true,
+        "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "ultimaker_sketch_sprint_extruder" },
         "platform_offset": [
@@ -74,7 +74,7 @@
         "supports_network_connection": true,
         "supports_usb_connection": false,
         "variants_name": "Extruder",
-      "variants_name_has_translation": true,
+        "variants_name_has_translation": true,
         "weight": -1
     },
     "overrides":
