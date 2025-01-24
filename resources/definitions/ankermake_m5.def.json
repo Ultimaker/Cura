@@ -10,7 +10,7 @@
         "file_formats": "text/x-gcode",
         "platform": "ankermake_m5_platform.obj",
         "has_machine_quality": true,
-      "has_textured_buildplate": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
         "platform_texture": "ankermake_m5.png",
         "preferred_material": "generic_pla",

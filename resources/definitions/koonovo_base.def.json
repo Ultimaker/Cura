@@ -12,7 +12,7 @@
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
         "has_materials": true,
-      "has_textured_buildplate": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "koonovo_base_extruder_0" },
         "platform_texture": "koonovo.png",
         "preferred_material": "generic_pla",
