@@ -34,6 +34,9 @@
         "acceleration_enabled":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": true
         },
         "acceleration_infill":
@@ -54,6 +57,9 @@
         "acceleration_print":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": 800
         },
         "acceleration_print_layer_0":
@@ -99,11 +105,17 @@
         "acceleration_travel":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": 5000
         },
         "acceleration_travel_enabled":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": true
         },
         "acceleration_travel_layer_0":
@@ -204,6 +216,9 @@
         "jerk_enabled":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": true
         },
         "jerk_infill":
@@ -224,6 +239,9 @@
         "jerk_print":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": 6.25
         },
         "jerk_print_layer_0":
@@ -269,11 +287,17 @@
         "jerk_travel":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": "jerk_print"
         },
         "jerk_travel_enabled":
         {
             "enabled": false,
+            "settable_per_extruder": false,
+            "settable_per_mesh": false,
+            "settable_per_meshgroup": false,
             "value": true
         },
         "jerk_travel_layer_0":
