@@ -2755,6 +2755,10 @@ msgid "Nozzle offset Y"
 msgstr "Décalage buse Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Taille de la buse"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Taille de la buse"
 

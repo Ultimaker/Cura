@@ -2752,6 +2752,10 @@ msgid "Nozzle offset Y"
 msgstr "喷嘴偏移 Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "喷嘴孔径"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "喷嘴孔径"
 

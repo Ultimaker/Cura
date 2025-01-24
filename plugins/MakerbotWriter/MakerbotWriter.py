@@ -250,7 +250,7 @@ class MakerbotWriter(MeshWriter):
         meta["preferences"] = dict()
         bounds = application.getBuildVolume().getBoundingBox()
         meta["preferences"]["instance0"] = {
-            "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
+            "machineBounds": [bounds.right, bounds.front, bounds.left, bounds.back] if bounds is not None else None,
             "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
         }
 
