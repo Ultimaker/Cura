@@ -570,8 +570,8 @@ pip_requirements_core:
     pynavlib:
       version: "0.9.3"
       hashes:
-        --hash=sha256:87a2d58e8f77584364a31ebf792d0dab5550b9ad3c8d4c6a5c722aead530ff72
-        --hash=sha256:8b8ee65441730279d6540526b36196e47155b9eaf275dc0e5555b3526f62f121
+        --sha256:87a2d58e8f77584364a31ebf792d0dab5550b9ad3c8d4c6a5c722aead530ff72
+        --sha256:8b8ee65441730279d6540526b36196e47155b9eaf275dc0e5555b3526f62f121
   Windows:
     twisted-iocpsupport:
       version: "1.0.2"
