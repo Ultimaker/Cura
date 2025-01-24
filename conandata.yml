@@ -567,12 +567,11 @@ pip_requirements_core:
       hashes:
         - sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5
         - sha256:575e708016ff3a5e3681541cb9d79312c416835686d054a23accb873b254f413
-
-  Macos:
     pynavlib:
       version: "0.9.3"
       hashes:
         - sha256:8b8ee65441730279d6540526b36196e47155b9eaf275dc0e5555b3526f62f121
+        - sha256:87a2d58e8f77584364a31ebf792d0dab5550b9ad3c8d4c6a5c722aead530ff72
 
   Windows:
     twisted-iocpsupport:
@@ -595,10 +594,6 @@ pip_requirements_core:
       hashes:
         - sha256:8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8
         - sha256:d162dc04946d704503b2edc4d55f3dba5c1d539ead017afa00142c38b9885755
-    pynavlib:
-      version: "0.9.3"
-      hashes:
-        - sha256:87a2d58e8f77584364a31ebf792d0dab5550b9ad3c8d4c6a5c722aead530ff72
 
 pip_requirements_dev:
   any_os:
