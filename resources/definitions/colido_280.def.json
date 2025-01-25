@@ -1,0 +1,46 @@
+{
+    "version": 2,
+    "name": "CoLiDo 280",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "CoLiDo",
+        "manufacturer": "CoLiDo",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": false,
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "fine",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "machine_extruder_trains": { "0": "colido_280_extruder_0" },
+        "quality_definition": "colido_280",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": "27" },
+        "machine_name": { "default_value": "CoLiDo 280" },
+        "machine_width": { "default_value": 280 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_shape": { "default_value": "rectangular" },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_heated_bed": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-18, -23],
+                [-18, 54],
+                [51, 54],
+                [51, -23]
+            ]
+        },
+        "machine_extruder_count": { "default_value": 1 },
+        "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
+        "machine_start_gcode": { "default_value": "G21 ; Millimeter units\nG90 ; Absolute XYZ\nM82 ; Extruder in absolute mode\nM107 ; Start with the fan off\nG28 ; Home all axes\nG1 Z15.0 F3000 ;Move the platform down 15mm\n\n;Initialize Temperature\n;M140 S{material_bed_temperature_layer_0} ;heat bed and continue\nM104 S{material_print_temperature_layer_0} ; Set nozzle temperature (no wait)\nM190 S{material_bed_temperature_layer_0} ; Set bed temperature (wait)\nM109 S{material_print_temperature_layer_0} ; Wait for nozzle temp\n\n;Prime the extruder\nG92 E0 ; Zero the extruded length\nG1 F200 E3 ; Extrude 3mm of feed stock\nG92 E0 ; Zero the extruded length again" },
+        "machine_end_gcode": { "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F4800 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning" }
+    }
+}
