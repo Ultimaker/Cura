@@ -167,7 +167,7 @@ Button
                         }
 
                         mismatchedCores = "<b>" + mismatchedCores + "</b>"
-                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is either mismatched, or unrecognized. Please visit %2 to check with cores this printer-type supports.");
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit %2 to check which cores this printer-type supports w.r.t. new slices.");
                         return draftResult.arg(mismatchedCores).arg("<a href=' '>" + catalog.i18nc("@label","WEBSITE") + "</a> ")
                     }
 
@@ -177,7 +177,19 @@ Button
                         {
                             return ""
                         }
-                        return isValidMaterial ? whenMismatchedCore() : whenUnknownMaterial()
+
+                        var extruderConfigurations = configuration.extruderConfigurations
+                        var perExtruder = []
+                        for (var index in extruderConfigurations)
+                        {
+                            var matName = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
+                            var coreName = extruderConfigurations[index].hotendID ? extruderConfigurations[index].hotendID : ""
+                            perExtruder.push(` [${coreName}/${matName}]`)
+                        }
+
+                        var configsStr = "<i>" + perExtruder + "</i>"
+                        var warnStr = isValidMaterial ? whenMismatchedCore() : whenUnknownMaterial()
+                        return configsStr + "<br/>" + warnStr
                     }
                     width: extruderRow.width
 
