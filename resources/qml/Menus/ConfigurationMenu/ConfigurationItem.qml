@@ -78,7 +78,7 @@ Button
                 right: parent.right
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
-            height: childrenRect.height
+            height: unknownMaterial.visible ? unknownMaterial.height : (repeater.count > 0 ? repeater.itemAt(0).height : 0)
             spacing: UM.Theme.getSize("default_margin").width
 
             Repeater
@@ -98,11 +98,10 @@ Button
             Item
             {
                 id: unknownMaterial
-                height: unknownMaterialMessage.height + UM.Theme.getSize("thin_margin").width / 2
+                height: unknownMaterialMessage.height
                 width: parent.width
 
                 anchors.top: parent.top
-                anchors.topMargin: UM.Theme.getSize("thin_margin").width / 2
 
                 visible: ! (configurationItem.isValidMaterial && configurationItem.isValidCore)
 
