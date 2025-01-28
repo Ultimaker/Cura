@@ -249,13 +249,17 @@ class MakerbotWriter(MeshWriter):
 
         meta["preferences"] = dict()
         bounds = application.getBuildVolume().getBoundingBox()
+        intent = CuraApplication.getInstance().getIntentManager().currentIntentCategory
         meta["preferences"]["instance0"] = {
             "machineBounds": [bounds.right, bounds.front, bounds.left, bounds.back] if bounds is not None else None,
-            "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
+            "printMode": intent
         }
 
         if file_format == "application/x-makerbot":
             accel_overrides = meta["accel_overrides"] = {}
+            if intent in ['highspeed', 'highspeedsolid']:
+                accel_overrides['do_input_shaping'] = True
+                accel_overrides['do_corner_rounding'] = True
             bead_mode_overrides = accel_overrides["bead_mode"] = {}
 
             accel_enabled = global_stack.getProperty('acceleration_enabled', 'value')
