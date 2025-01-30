@@ -4650,6 +4650,19 @@
                         }
                     }
                 },
+                "cool_fan_speed_overhang_factor":
+                {
+                    "label": "Fan Speed Overhang Factor",
+                    "description": "Factor to adjust the fan speed with when overhang walls are printed.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "200",
+                    "default_value": 100,
+                    "enabled": "cool_fan_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "cool_min_layer_time_fan_speed_max":
                 {
                     "label": "Regular/Maximum Fan Speed Threshold",
