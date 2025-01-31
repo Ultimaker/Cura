@@ -76,7 +76,20 @@ class GcodeStartEndFormatter:
     # will be used. Alternatively, if the expression is formatted as "{[expression], [extruder_nr]}",
     # then the expression will be evaluated with the extruder stack of the specified extruder_nr.
 
-    _instruction_regex = re.compile(r"{(?P<condition>if|else|elif|endif)?\s*(?P<expression>.*?)\s*(?:,\s*(?P<extruder_nr_expr>[0-9-]*))?\s*}(?P<end_of_line>\n?)")
+    # Regex explanation:
+    # First, check if this is a conditional statement, and capture the condition if so.
+    # Then, start capturing the expression, pausing if you find either an open bracket (which requires 
+    # capturing to the matching closing bracket), a comma (signifying the end of the expression and the 
+    # start of the extruder reference), or a close brace (end of expression, using global settings). 
+    # If an open bracket is found, capture to the end of this bracket set recursively (ensuring all 
+    # brackets end up closed), capturing all characters (including any commas). At this point, continue
+    # capturing the expression using the same techniques. Once a comma or closing brace is found outside 
+    # of any brackets, continue to test for the extruder number if any more data is within the braces.
+    # The re.X flag is used here to ignore whitespace and newlines, making the regex more readable.
+
+    _instruction_regex = re.compile(r"""{(?P<condition>if|else|elif|endif)?\s*
+                                    (?P<expression>([^,}(]*(?P<brackets>\(([^()]*+|(?&brackets))*\))*?[^},\(]*)+)
+                                    (?:,\s*(?P<extruder_nr_expr>.*))?\s*}(?P<end_of_line>\n?)""", re.X)
 
     def __init__(self, all_extruder_settings: Dict[str, Dict[str, Any]], default_extruder_nr: int = -1) -> None:
         super().__init__()
