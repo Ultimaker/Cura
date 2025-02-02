@@ -669,12 +669,12 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should the Y axis of the translate toolhandle be flipped?")
+                text: catalog.i18nc("@info:tooltip", "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before.")
 
                 UM.CheckBox
                 {
                     id: flipToolhandleYCheckbox
-                    text: catalog.i18nc("@option:check", "Flip toolhandle Y axis")
+                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
                     onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
                 }
