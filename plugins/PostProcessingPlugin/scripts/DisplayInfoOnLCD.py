@@ -202,7 +202,7 @@ class DisplayInfoOnLCD(Script):
                 "countdown_to_pause":
                 {
                     "label": "Countdown to Pauses",
-                    "description": "This must run AFTER any script that adds a pause.  Instead of the remaining print time the LCD will show the estimated time to the next layer that has a pause (TP).",
+                    "description": "This must run AFTER any script that adds a pause.  Instead of the remaining print time the LCD will show the estimated time to the next layer that has a pause (TP).  Countdown to Pause is not available when in One-at-a-Time' mode.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "display_option == 'display_progress' and enable_countdown and display_remaining_time"
@@ -252,7 +252,8 @@ class DisplayInfoOnLCD(Script):
         else:
             data = self._display_progress(data)
         return data
-        # This is from the original 'Display Filename and Layer on LCD'
+
+    # This is from the original 'Display Filename and Layer on LCD'
     def _display_filename_layer(self, data: str) -> str:
         data[0] = self._add_stats(data)
         max_layer = 0
@@ -385,7 +386,7 @@ class DisplayInfoOnLCD(Script):
                             for q in range(0,len(pause_cmd)):
                                 if pause_cmd[q] in data[num]:
                                     pause_count += data[num].count(pause_cmd[q], 0, len(data[num]))
-                        pause_str = f"with {pause_count} pause(s)"
+                        pause_str = f"with {pause_count} pause" + ("s" if pause_count > 1 else "")
                     else:
                         pause_str = ""
                 # This line goes in to convert seconds to hours and minutes
@@ -626,11 +627,11 @@ class DisplayInfoOnLCD(Script):
         extruder_count = global_stack.getProperty("machine_extruder_count", "value")
         init_layer_hgt_line = ";Initial Layer Height: " + str(global_stack.getProperty("layer_height_0", "value"))
         nozzle_size_line = ";Nozzle Size (T0): " + str(global_stack.extruderList[0].getProperty("machine_nozzle_size", "value"))
-        filament_type = "\n;Filament Type (T0): " + str(global_stack.extruderList[0].getProperty("material_type", "value"))
+        filament_type = "\n;Filament Type (T0): " + str(global_stack.extruderList[0].material.getMetaDataEntry("material", ""))
         print_temperature_line = ";Print Temperature (T0): " + str(global_stack.extruderList[0].getProperty("material_print_temperature", "value"))
         if extruder_count > 1:
             nozzle_size_line += "\n;Nozzle Size (T1): " + str(global_stack.extruderList[1].getProperty("machine_nozzle_size", "value"))
-            filament_type += "\n;Filament type (T1): " + str(global_stack.extruderList[1].getProperty("material_type", "value"))
+            filament_type += "\n;Filament type (T1): " + str(global_stack.extruderList[1].material.getMetaDataEntry("material", ""))
             print_temperature_line += "\n;Print Temperature (T1): " + str(global_stack.extruderList[1].getProperty("material_print_temperature", "value"))
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
