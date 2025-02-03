@@ -3232,6 +3232,19 @@
                     "minimum_value": 0.01,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "material_pressure_advance_factor":
+                {
+                    "enabled": false,
+                    "label": "Pressure advance factor",
+                    "description": "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion",
+                    "default_value": 0.05,
+                    "maximum_value_warning": 1.0,
+                    "minimum_value": 0,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
                 }
             }
         },
