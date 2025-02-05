@@ -4300,7 +4300,7 @@
                     "default_value": 0,
                     "minimum_value": 0,
                     "maximum_value": 100,
-                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4313,7 +4313,7 @@
                     "default_value": 0,
                     "minimum_value": 0,
                     "maximum_value": 100,
-                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
