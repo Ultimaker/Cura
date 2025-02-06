@@ -47,7 +47,8 @@ on:
 
 jobs:
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+#FIXME Use workflow from main after merging
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-12261-3dconnectionmouse
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       package_overrides: ${{ inputs.package_overrides }}
