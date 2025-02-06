@@ -40,9 +40,6 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
 
         container_registry = ContainerRegistry.getInstance()
         same_guid = container_registry.findInstanceContainersMetadata(GUID = self.guid)
-        if not same_guid:
-            same_guid = container_registry.findInstanceContainersMetadata(alternative_GUID = self.guid)
-
         if same_guid:
             read_only = sorted(filter(lambda metadata: container_registry.isReadOnly(metadata["id"]), same_guid), key = lambda metadata: metadata["name"])
             if read_only:
@@ -51,11 +48,10 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
                 material_metadata = min(same_guid, key = lambda metadata: metadata["name"])
         else:
             material_metadata = {
-                "GUID": self.guid,
                 "color_code": self.color,
                 "brand": self.brand,
                 "material": self.material,
                 "name": "Empty" if self.material == "empty" else "Unknown"
             }
 
-        return MaterialOutputModel(guid = material_metadata["GUID"], type = material_metadata["material"], brand = material_metadata["brand"], color = material_metadata.get("color_code", "#ffc924"), name = material_metadata["name"])
+        return MaterialOutputModel(guid = self.guid, type = material_metadata["material"], brand = material_metadata["brand"], color = material_metadata.get("color_code", "#ffc924"), name = material_metadata["name"])
