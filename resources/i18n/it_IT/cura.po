@@ -2757,6 +2757,10 @@ msgid "Nozzle offset Y"
 msgstr "Scostamento Y ugello"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Dimensione ugello"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Dimensione ugello"
 

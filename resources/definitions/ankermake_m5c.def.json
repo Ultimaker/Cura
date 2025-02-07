@@ -10,6 +10,7 @@
         "file_formats": "text/x-gcode",
         "platform": "ankermake_m5c_platform.obj",
         "has_machine_quality": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "ankermake_m5c_extruder_0" },
         "platform_texture": "ankermake_m5c.png",
         "preferred_material": "generic_pla",
@@ -237,7 +238,12 @@
         "wall_extruder_nr": { "value": -1 },
         "wall_line_width_0": { "value": 0.44 },
         "wall_overhang_angle": { "value": 45 },
-        "wall_overhang_speed_factor": { "value": 40 },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                40
+            ]
+        },
         "wall_thickness": { "value": 0.84 },
         "wall_x_extruder_nr": { "value": -1 },
         "zig_zaggify_infill": { "value": true }
