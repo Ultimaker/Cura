@@ -120,7 +120,12 @@
         "support_z_distance": { "value": "layer_height * 2" },
         "top_bottom_thickness": { "value": "layer_height * 4" },
         "wall_overhang_angle": { "value": 55 },
-        "wall_overhang_speed_factor": { "value": 55 },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                55
+            ]
+        },
         "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'lines'" }
     }
 }
