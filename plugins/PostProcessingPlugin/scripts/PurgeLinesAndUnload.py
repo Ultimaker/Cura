@@ -56,7 +56,7 @@ class PurgeLinesAndUnload(Script):
         self.machine_right = self.machine_width - 1.0
         self.machine_front = 1.0
         self.machine_back = self.machine_depth - 1.0
-
+        
     def initialize(self) -> None:
         super().initialize()
         # Get the StartUp Gcode from Cura and attempt to catch if it contains purge lines.  Message the user if an extrusion is in the startup.
@@ -72,7 +72,7 @@ class PurgeLinesAndUnload(Script):
         self._instance.setProperty("move_to_prime_tower", "value", True if self.global_stack.getProperty("machine_extruder_count", "value") > 1 else False)
         # Set the default E adjustment
         self._instance.setProperty("adjust_e_loc_to", "value", -abs(round(float(self.extruder[0].getProperty("retraction_amount", "value")), 1)))
-
+        
     def getSettingDataString(self):
         return """{
             "name": "Purge Lines and Unload Filament",
@@ -113,6 +113,17 @@ class PurgeLinesAndUnload(Script):
                         "purge_half": "Half"},
                     "default_value": "purge_full",
                     "enabled": "add_purge_lines and is_rectangular"
+                },
+                "border_distance":
+                {
+                    "label": "    Border Distance",
+                    "description": "This is the distance from the build plate edge to the first purge line. '0' works for most printers but you might want the lines further inboard.  The allowable range is -12 to 12.   ⚠️ Negative numbers are allowed for printers that have 'Disallowed Areas'.  You must use due caution when using a negative value.",
+                    "type": "int",
+                    "unit": "mm  ",
+                    "default_value": 0,
+                    "minimum_value": -12,
+                    "maximum_value": 12,
+                    "enabled": "add_purge_lines"
                 },
                 "move_to_start":
                 {
@@ -160,7 +171,7 @@ class PurgeLinesAndUnload(Script):
                 "unload_quick_purge":
                 {
                     "label": "    Quick purge before unload",
-                    "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick puge' will take place at the last position of the nozzle.",
+                    "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick puge' will take place at the last position of the nozzle.  If there is no 'Present Print' move in the Ending Gcode then the Quick Purge can be over the print.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "enable_unload"
@@ -202,6 +213,7 @@ class PurgeLinesAndUnload(Script):
         self._get_build_plate_extents()
         # The start location changes according to which quadrant the nozzle is in at the beginning
         self.end_purge_location = self._get_real_start_point(data[1])
+        self.border_distance = self.getSettingValueByKey("border_distance")
 
         # Mapping settings to corresponding methods
         procedures = {
@@ -392,30 +404,30 @@ class PurgeLinesAndUnload(Script):
                         if mid_y > y > back_y:
                             back_y = y
                 if self.origin_at_center:
-                    self.machine_left = round(left_x + 1, 2)
-                    self.machine_right = round(right_x - 1, 2)
-                    self.machine_front = round(front_y - 1, 2)
-                    self.machine_back = round(back_y + 1, 2)
+                    self.machine_left = round(left_x, 2)
+                    self.machine_right = round(right_x, 2)
+                    self.machine_front = round(front_y, 2)
+                    self.machine_back = round(back_y, 2)
                 else:
-                    self.machine_left = round(left_x + 1 + self.machine_width / 2, 2)
-                    self.machine_right = round(right_x - 1 + self.machine_width / 2, 2)
-                    self.machine_front = round((self.machine_depth / 2) - front_y - 1, 2)
-                    self.machine_back = round((self.machine_depth / 2) - back_y + 1, 2)
+                    self.machine_left = round(left_x + self.machine_width / 2, 2)
+                    self.machine_right = round(right_x + self.machine_width / 2, 2)
+                    self.machine_front = round((self.machine_depth / 2) - front_y, 2)
+                    self.machine_back = round((self.machine_depth / 2) - back_y, 2)
             else:
                 if self.origin_at_center:
-                    self.machine_left = round(-(self.machine_width / 2) + 1, 2)
-                    self.machine_right = round((self.machine_width / 2) - 1 - self.nozzle_offset_x, 2)
-                    self.machine_front = round(-(self.machine_depth / 2) + 1 + self.nozzle_offset_y, 2)
-                    self.machine_back = round((self.machine_depth / 2) - 1 - self.nozzle_offset_y, 2)
+                    self.machine_left = round(-(self.machine_width / 2), 2)
+                    self.machine_right = round((self.machine_width / 2) - self.nozzle_offset_x, 2)
+                    self.machine_front = round(-(self.machine_depth / 2) + self.nozzle_offset_y, 2)
+                    self.machine_back = round((self.machine_depth / 2) - self.nozzle_offset_y, 2)
                 else:
-                    self.machine_left = 1
-                    self.machine_right = self.machine_width - 1 - self.nozzle_offset_x
+                    self.machine_left = 0
+                    self.machine_right = self.machine_width - self.nozzle_offset_x
                     if self.nozzle_offset_y >= 0:
-                        self.machine_front = 1
-                        self.machine_back = self.machine_depth - 1 - self.nozzle_offset_y
+                        self.machine_front = 0
+                        self.machine_back = self.machine_depth - self.nozzle_offset_y
                     elif self.nozzle_offset_y < 0:
-                        self.machine_front = 1 + abs(self.nozzle_offset_y)
-                        self.machine_back = self.machine_depth - 1
+                        self.machine_front = abs(self.nozzle_offset_y)
+                        self.machine_back = self.machine_depth
         return
 
     # Add Purge Lines to the user defined position on the build plate
@@ -439,18 +451,18 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MinX")
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_left} Y{self.machine_front + 10} ; Move to start\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left} Y{y_stop} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{self.machine_left + 3} Y{y_stop} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 10} E{round(purge_volume * 2, 5)} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{y_stop} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 10} E{round(purge_volume * 2, 5)} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
                 purge_len = int(self.machine_depth - 20) if purge_extrusion_full else int((self.machine_back - self.machine_front) / 2)
@@ -458,18 +470,18 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MaxX")
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_right} ; Move\nG0 Y{self.machine_back - 10} ; Move\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} ; Move\nG0 Y{self.machine_back - 10} ; Move\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right} Y{y_stop} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{self.machine_right - 3} Y{y_stop} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 10} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{y_stop} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 10} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.BOTTOM:
                 purge_len = int(self.machine_width) - self.nozzle_offset_x - 20 if purge_extrusion_full else int(
@@ -478,18 +490,18 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MinY")
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Y{self.machine_front} ; Move to start\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Y{self.machine_front + self.border_distance} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{x_stop} Y{self.machine_front + 3} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 10} Y{self.machine_front + 3} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front + self.border_distance} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{x_stop} Y{self.machine_front + 3 + self.border_distance} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 10} Y{self.machine_front + 3 + self.border_distance} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.TOP:
                 purge_len = int(self.machine_width - 20) if purge_extrusion_full else int(
@@ -498,19 +510,19 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MaxY")
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} Y{self.machine_back} ; Ortho Move to back\n"
+                purge_str += f"G0 F{self.speed_travel} Y{self.machine_back - self.border_distance} ; Ortho Move to back\n"
                 purge_str += f"G0 X{self.machine_right - 10} ; Ortho move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{x_stop} Y{self.machine_back - 3} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 10} Y{self.machine_back - 3} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back - self.border_distance} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{x_stop} Y{self.machine_back - 3 - self.border_distance} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 10} Y{self.machine_back - 3 - self.border_distance} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Some cartesian printers (BIBO, Weedo, MethodX, etc.) are Origin at Center
         elif self.bed_shape == "rectangular" and self.origin_at_center:
@@ -520,18 +532,18 @@ class PurgeLinesAndUnload(Script):
                 y_stop = int(self.machine_back - 10) if purge_extrusion_full else 0
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_left} Y{self.machine_front + 10} ; Move to start\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left} Y{y_stop} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{self.machine_left + 3} Y{y_stop} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 10} E{round(purge_volume * 2, 5)} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{y_stop} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 10} E{round(purge_volume * 2, 5)} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
                 purge_len = int(self.machine_back - 20) if purge_extrusion_full else int(
@@ -539,18 +551,18 @@ class PurgeLinesAndUnload(Script):
                 y_stop = int(self.machine_front + 10) if purge_extrusion_full else 0
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_right} Z2 ; Move\nG0 Y{self.machine_back - 10} Z2 ; Move to start\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} Z2 ; Move\nG0 Y{self.machine_back - 10} Z2 ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right} Y{y_stop} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{self.machine_right - 3} Y{y_stop} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 10} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{y_stop} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 10} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.BOTTOM:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
@@ -558,18 +570,18 @@ class PurgeLinesAndUnload(Script):
                 x_stop = int(self.machine_right - 10) if purge_extrusion_full else 0
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Z2 ; Move\nG0 Y{self.machine_front} Z2 ; Move to start\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Z2 ; Move\nG0 Y{self.machine_front + self.border_distance} Z2 ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{x_stop} Y{self.machine_front + 3} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 10} Y{self.machine_front + 3} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front + self.border_distance} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{x_stop} Y{self.machine_front + 3 + self.border_distance} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_left + 10} Y{self.machine_front + 3 + self.border_distance} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.TOP:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
@@ -577,19 +589,19 @@ class PurgeLinesAndUnload(Script):
                 x_stop = int(self.machine_left + 10) if purge_extrusion_full else 0
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
-                purge_str += f"G0 F{self.speed_travel} Y{self.machine_back} Z2; Ortho Move to back\n"
+                purge_str += f"G0 F{self.speed_travel} Y{self.machine_back - self.border_distance} Z2; Ortho Move to back\n"
                 purge_str += f"G0 X{self.machine_right - 10} Z2 ; Ortho Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 # Purge two lines
-                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back} E{purge_volume} ; First line\n"
-                purge_str += f"G0 X{x_stop} Y{self.machine_back - 3} ; Move over\n"
-                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 10} Y{self.machine_back - 3} E{purge_volume * 2} ; Second line\n"
+                purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back - self.border_distance} E{purge_volume} ; First line\n"
+                purge_str += f"G0 X{x_stop} Y{self.machine_back - 3 - self.border_distance} ; Move over\n"
+                purge_str += f"G1 F{self.print_speed} X{self.machine_right - 10} Y{self.machine_back - 3 - self.border_distance} E{purge_volume * 2} ; Second line\n"
                 # Retract if enabled
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 35} Y{self.machine_back - 3} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
         elif self.bed_shape == "elliptic":
