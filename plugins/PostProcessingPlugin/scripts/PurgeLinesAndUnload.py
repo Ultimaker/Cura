@@ -22,8 +22,6 @@ from enum import Enum
 class Location(str, Enum):
     LEFT = "left"
     RIGHT = "right"
-    TOP = "top"
-    BOTTOM = "bottom"
     REAR = "rear"
     FRONT = "front"
 
@@ -98,8 +96,8 @@ class PurgeLinesAndUnload(Script):
                     "options": {
                         "left": "On left edge (Xmin)",
                         "right": "On right edge (Xmax)",
-                        "bottom": "On front edge (Ymin)",
-                        "top": "On back edge (Ymax)"},
+                        "front": "On front edge (Ymin)",
+                        "rear": "On back edge (Ymax)"},
                     "default_value": "left",
                     "enabled": "add_purge_lines"
                 },
@@ -160,7 +158,7 @@ class PurgeLinesAndUnload(Script):
                 "unload_quick_purge":
                 {
                     "label": "    Quick purge before unload",
-                    "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick puge' will take place at the last position of the nozzle.",
+                    "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick purge' will take place at the last position of the nozzle.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "enable_unload"
@@ -471,7 +469,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif purge_location == Location.BOTTOM:
+            elif purge_location == Location.FRONT:
                 purge_len = int(self.machine_width) - self.nozzle_offset_x - 20 if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_right - 10) if purge_extrusion_full else int(self.machine_width / 2)
@@ -491,7 +489,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif purge_location == Location.TOP:
+            elif purge_location == Location.REAR:
                 purge_len = int(self.machine_width - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_left + 10) if purge_extrusion_full else int(self.machine_width / 2)
@@ -552,7 +550,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif purge_location == Location.BOTTOM:
+            elif purge_location == Location.FRONT:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
                     (self.machine_right - self.machine_left) / 2)
                 x_stop = int(self.machine_right - 10) if purge_extrusion_full else 0
@@ -571,7 +569,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3} Z0.3 ; Slide over and down\n"
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif purge_location == Location.TOP:
+            elif purge_location == Location.REAR:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
                     int(self.machine_right - 10))
                 x_stop = int(self.machine_left + 10) if purge_extrusion_full else 0
@@ -595,7 +593,7 @@ class PurgeLinesAndUnload(Script):
         elif self.bed_shape == "elliptic":
             if purge_location in [Location.LEFT, Location.RIGHT]:
                 radius_1 = round((self.machine_width / 2) - 1, 2)
-            else:  # For purge_location in [Location.BOTTOM, Location.TOP]
+            else:  # For purge_location in [Location.FRONT, Location.REAR]
                 radius_1 = round((self.machine_depth / 2) - 1, 2)
             purge_len = int(radius_1) * math.pi / 4
             purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
@@ -631,7 +629,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
-            elif purge_location == Location.BOTTOM:
+            elif purge_location == Location.FRONT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
@@ -647,7 +645,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
-            elif purge_location == Location.TOP:
+            elif purge_location == Location.REAR:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} ; Travel\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
