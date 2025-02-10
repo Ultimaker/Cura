@@ -169,11 +169,7 @@ class PurgeLinesAndUnload(Script):
                 "unload_quick_purge":
                 {
                     "label": "    Quick purge before unload",
-<<<<<<< HEAD
-                    "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick puge' will take place at the last position of the nozzle.  If there is no 'Present Print' move in the Ending Gcode then the Quick Purge can be over the print.",
-=======
                     "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick purge' will take place at the last position of the nozzle.",
->>>>>>> 1728db94273aa91e9497c0b5af02464b983e18c7
                     "type": "bool",
                     "default_value": false,
                     "enabled": "enable_unload"
