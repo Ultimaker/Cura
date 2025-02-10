@@ -54,7 +54,9 @@ class PurgeLinesAndUnload(Script):
         self.machine_right = self.machine_width - 1.0
         self.machine_front = 1.0
         self.machine_back = self.machine_depth - 1.0
-        
+        self.start_x = None
+        self.start_y = None
+
     def initialize(self) -> None:
         super().initialize()
         # Get the StartUp Gcode from Cura and attempt to catch if it contains purge lines.  Message the user if an extrusion is in the startup.
