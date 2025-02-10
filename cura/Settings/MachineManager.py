@@ -1678,7 +1678,7 @@ class MachineManager(QObject):
             intent_category = self.activeIntentCategory,
             intent_name = IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
             custom_profile = self.activeQualityOrQualityChangesName if global_stack.qualityChanges is not empty_quality_changes_container else None,
-            layer_height = self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
+            layer_height = float("{:.2f}".format(self.activeQualityLayerHeight)) if self.isActiveQualitySupported else None,
             is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported
         )
 
