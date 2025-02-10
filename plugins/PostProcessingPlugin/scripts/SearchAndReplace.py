@@ -14,7 +14,7 @@ class SearchAndReplace(Script):
     """
 
     def getSettingDataString(self):
-        return """{
+        return r"""{
             "name": "Search and Replace",
             "key": "SearchAndReplace",
             "metadata": {},
@@ -24,21 +24,21 @@ class SearchAndReplace(Script):
                 "search":
                 {
                     "label": "Search for:",
-                    "description": "All occurrences of this text (within the search range) will be replaced by the 'Replace with' string.  The search string is 'Case Specific' and 'Layer' is not the same as 'layer'.",
+                    "description": "All occurrences of this text (within the search range) will be replaced by the 'Replace with' string.  The search string is 'Case Sensitive' and 'Layer' is not the same as 'layer'.",
                     "type": "str",
                     "default_value": ""
                 },
                 "replace":
                 {
                     "label": "Replace with:",
-                    "description": "The 'Search For' text will get replaced by this text.  For MultiLine insertions use the newline character 'backslash n' as the delimiter. If your Search term ends with a 'newline' remember to add 'newline' to the end of this Replace term.",
+                    "description": "The 'Search For' text will get replaced by this text.  For MultiLine insertions use the newline character '\\n' as the delimiter. If your Search term ends with a '\\n' remember to add '\\n' to the end of this Replace term.",
                     "type": "str",
                     "default_value": ""
                 },
                 "is_regex":
                 {
                     "label": "Use Regular Expressions",
-                    "description": "When disabled the search string is treated as a simple text string.  When enabled, the search text will be recompiled as a 'regular' python expression.",
+                    "description": "When disabled the search string is treated as a simple text string.  When enabled, the search text will be interpreted as a Python regular expression.",
                     "type": "bool",
                     "default_value": false
                 },
@@ -119,7 +119,7 @@ class SearchAndReplace(Script):
         layer_list = [-1,0]
         lay_num = 1
         for index, layer in enumerate(data):
-            if re.search(";LAYER:(-?\d+)", layer):
+            if re.search(r";LAYER:(-?\d+)", layer):
                 data_list.append(index)
                 layer_list.append(lay_num)
                 lay_num += 1
