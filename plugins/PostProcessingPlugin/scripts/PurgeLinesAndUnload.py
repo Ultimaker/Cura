@@ -81,7 +81,7 @@ class PurgeLinesAndUnload(Script):
             "version": 2,
             "settings":
             {
-            "add_purge_lines":
+                "add_purge_lines":
                 {
                     "label": "Add Purge Lines to StartUp",
                     "description": "The purge lines can be left, right, front or back.  If there are purge lines present in the StartUp Gcode remove them or comment them out before using this script.  You don't want to double dip.",
@@ -116,8 +116,8 @@ class PurgeLinesAndUnload(Script):
                 },
                 "border_distance":
                 {
-                    "label": "    Border Distance",
-                    "description": "This is the distance from the build plate edge to the first purge line. '0' works for most printers but you might want the lines further inboard.  The allowable range is -12 to 12.   ⚠️ Negative numbers are allowed for printers that have 'Disallowed Areas'.  You must use due caution when using a negative value.",
+                    "label": "Border Distance",
+                    "description": "This is the distance from the build plate edge to the first purge line. '0' works for most printers but you might want the lines further inboard.  The allowable range is -12 to 12.  ⚠️ Negative numbers are allowed for printers that have 'Disallowed Areas'.  You must use due caution when using a negative value.",
                     "type": "int",
                     "unit": "mm  ",
                     "default_value": 0,
@@ -144,7 +144,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "adjust_e_loc_to":
                 {
-                    "label": "    Starting E location",
+                    "label": "Starting E location",
                     "description": "This is usually a negative amount and often equal to the '-Retraction Distance'.  This 'G92 E' adjustment changes where the printer 'thinks' the end of the filament is in relation to the nozzle.  It replaces the retraction that Cura adds prior to the start of 'LAYER:0'.  If retraction is not enabled then this setting has no effect.",
                     "type": "float",
                     "unit": "mm  ",
@@ -161,7 +161,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_distance":
                 {
-                    "label": "    Unload Distance",
+                    "label": "Unload Distance",
                     "description": "The amount of filament to unload.  Bowden printers usually require a significant amount and direct drives not as much.",
                     "type": "int",
                     "default_value": 440,
@@ -170,7 +170,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_quick_purge":
                 {
-                    "label": "    Quick purge before unload",
+                    "label": "Quick purge before unload",
                     "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick purge' will take place at the last position of the nozzle.",
                     "type": "bool",
                     "default_value": false,
