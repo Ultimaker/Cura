@@ -116,8 +116,8 @@ class PurgeLinesAndUnload(Script):
                 },
                 "move_to_start":
                 {
-                    "label": "Circle around to layer start",
-                    "description": "Depending on where the 'Layer Start X' and 'Layer Start Y' are for the print, the opening travel move can pass across the print area and leave a string there.  This option will generate an orthogonal path that moves the nozzle around the edges of the build plate and then comes in to the Start Point.  The nozzle will drop and touch the build plate at each stop in order to nail down the string so it doesn't follow in a straight line.",
+                    "label": "Circle around to layer start  ⚠️​",
+                    "description": "Depending on where the 'Layer Start X' and 'Layer Start Y' are for the print, the opening travel move can pass across the print area and leave a string there.  This option will generate an orthogonal path that moves the nozzle around the edges of the build plate and then comes in to the Start Point.  || ⚠️​ || The nozzle will drop to Z0.0 and touch the build plate at each stop in order to 'nail down the string' so it doesn't follow in a straight line.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": true
@@ -434,8 +434,7 @@ class PurgeLinesAndUnload(Script):
         # Normal cartesian printer with origin at the left front corner
         if self.bed_shape == "rectangular" and not self.origin_at_center:
             if purge_location == Location.LEFT:
-                purge_len = int(self.machine_back - 20) if purge_extrusion_full else int(
-                    (self.machine_back - self.machine_front) / 2)
+                purge_len = int(self.machine_back - 20) if purge_extrusion_full else int((self.machine_back - self.machine_front) / 2)
                 y_stop = int(self.machine_back - 10) if purge_extrusion_full else int(self.machine_depth / 2)
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MinX")
@@ -454,8 +453,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 X{self.machine_left + 3} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
-                purge_len = int(self.machine_depth - 20) if purge_extrusion_full else int(
-                    (self.machine_back - self.machine_front) / 2)
+                purge_len = int(self.machine_depth - 20) if purge_extrusion_full else int((self.machine_back - self.machine_front) / 2)
                 y_stop = int(self.machine_front + 10) if purge_extrusion_full else int(self.machine_depth / 2)
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 purge_str = purge_str.replace("Lines", "Lines at MaxX")
@@ -778,7 +776,7 @@ class PurgeLinesAndUnload(Script):
     # Unloading a large amount of filament in a single command can trip the 'Overlong Extrusion' warning in some firmware.  Unloads longer than 150mm are split into individual 150mm segments.
     def _unload_filament(self, data: str) -> str:
         extrude_speed = 3000
-        quick_purge_speed = 240
+        quick_purge_speed = round(float(self.extruder[0].getProperty("machine_nozzle_size", "value")) * 500)
         retract_amount = self.extruder[0].getProperty("retraction_amount", "value")
         quick_purge_amount = retract_amount + 5 if retract_amount < 2.0 else retract_amount * 2
         unload_distance = self.getSettingValueByKey("unload_distance")
