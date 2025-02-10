@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import subprocess
 from pathlib import Path
 from PyInstaller.utils.hooks import collect_all
 
@@ -71,6 +72,9 @@ coll = COLLECT(
 )
 
 {% if macos == true %}
+# Restore the path from embedded pynavlib to system-wide-installed 3DconnexionNavlib
+subprocess.run(['install_name_tool', '-change', '@rpath/3DconnexionNavlib', '/Library/Frameworks/3DconnexionNavlib.framework/3DconnexionNavlib', 'dist/UltiMaker Cura.app/Contents/Frameworks/pynavlib/_pynavlib.cpython-312-darwin.so'], check=True)
+
 app = BUNDLE(
     coll,
     name='{{ display_name }}.app',
