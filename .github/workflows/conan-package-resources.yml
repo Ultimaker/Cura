@@ -21,19 +21,8 @@ on:
       - '[0-9].[0-9][0-9]*'
 
 jobs:
-  get-conan-recipe-version:
-    uses: ./.github/workflows/get-conan-recipe-version.yml
-    with:
-      conan_recipe_root: "./resources/"
-      repository: ${{ github.repository }}
-      branch: ${{ github.ref_name }}
-      release: false
-      internal: false
-    secrets: inherit
-
   conan-package:
     name: Create Conan Package
-    needs: get-conan-recipe-version
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@main
     with:
       conan_recipe_root: "./resources/"
@@ -44,7 +33,7 @@ jobs:
 
   notify-dependent-package:
     name: Notify Dependent Repository
-    needs: [get-conan-recipe-version, conan-package]
+    needs: conan-package
     runs-on: ubuntu-latest
 
     steps:
@@ -55,4 +44,4 @@ jobs:
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/DEPENDENT_ORG/DEPENDENT_REPO/dispatches \
-          -d '{"event_type": "dependency-version-update", "client_payload": { "version": "${{ needs.get-conan-recipe-version.outputs.version_base }}", "full_version": "${{ needs.get-conan-recipe-version.outputs.version_full }}", "package_name": "${{ needs.get-conan-recipe-version.outputs.package_name }}" }}'
+          -d '{"event_type": "dependency-version-update", "client_payload": { "version": "${{ needs.conan-package.outputs.version_base }}", "full_version": "${{ needs.conan-package.outputs.version_full }}", "package_name": "${{ needs.conan-package.outputs.package_name }}" }}'
