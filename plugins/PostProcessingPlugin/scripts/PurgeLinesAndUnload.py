@@ -161,7 +161,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "adjust_e_loc_to":
                 {
-                    "label": "Starting E location",
+                    "label": "    Starting E location",
                     "description": "This is usually a negative amount and often equal to the '-Retraction Distance'.  This 'G92 E' adjustment changes where the printer 'thinks' the end of the filament is in relation to the nozzle.  It replaces the retraction that Cura adds prior to the start of 'LAYER:0'.  If retraction is not enabled then this setting has no effect.",
                     "type": "float",
                     "unit": "mm  ",
@@ -178,7 +178,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_distance":
                 {
-                    "label": "Unload Distance",
+                    "label": "    Unload Distance",
                     "description": "The amount of filament to unload.  Bowden printers usually require a significant amount and direct drives not as much.",
                     "type": "int",
                     "default_value": 440,
@@ -187,7 +187,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_quick_purge":
                 {
-                    "label": "Quick purge before unload",
+                    "label": "    Quick purge before unload",
                     "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick purge' will take place at the last position of the nozzle.",
                     "type": "bool",
                     "default_value": false,
