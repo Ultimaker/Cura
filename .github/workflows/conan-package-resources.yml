@@ -41,7 +41,7 @@ jobs:
         id: get-package-version
         run: |
           # Replace this with your real logic to determine the package version
-          PACKAGE_VERSION=$(cat ./conanfile.py | grep version | head -n 1 | cut -d '"' -f 2)
+          PACKAGE_VERSION=$(cat ./resources/conanfile.py | grep version | head -n 1 | cut -d '"' -f 2)
           echo "Detected package version: $PACKAGE_VERSION"
 
           # Set the package_version as an output for this job
