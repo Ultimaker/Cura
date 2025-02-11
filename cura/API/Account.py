@@ -232,6 +232,7 @@ class Account(QObject):
 
     def _onProfileChanged(self, profile: Optional[UserProfile]) -> None:
         self._user_profile = profile
+        self._updatePermissions()
         self.userProfileChanged.emit()
 
     def _sync(self) -> None:

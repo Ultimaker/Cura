@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-07-08 09:05+0000\n"
+"POT-Creation-Date: 2024-11-06 10:43+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -96,6 +96,10 @@ msgstr "Velikost kroku adaptivní vrstvy"
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
 msgstr "Adaptivní vrstvy vypočítávají výšky vrstev v závislosti na tvaru modelu."
+
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr ""
 
 msgctxt "infill_wall_line_count description"
 msgid ""
@@ -445,6 +449,14 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Šířka límce"
 
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr ""
+
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Adheze topné podložky"
@@ -483,6 +495,10 @@ msgstr ""
 
 msgctxt "bv_temp_warn_limit label"
 msgid "Build Volume temperature Warning"
+msgstr ""
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
 msgstr ""
 
 msgctxt "prime_tower_brim_enable description"
@@ -721,6 +737,14 @@ msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Zjistěte mosty a upravte rychlost tisku, průtok a nastavení ventilátoru během tisku mostů."
 
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr ""
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr "Určuje pořadí, v jakém budou tištěny zdi. Tištění vnějších zdí jako prvních pomáhá rozměrové přesnosti, jelikož se vady z vnitřních stěn nemohou přenášet na vnějšek. Naproti tomu tištění vnějších zdí nakonec dovoluje jejich lepší vrstvení při tištění převisů. Pokud je nepravidelný počet čar ve vnitřních stěnách, tisknou se 'zbylé střední čáry' nakonec."
@@ -845,6 +869,10 @@ msgctxt "dual label"
 msgid "Dual Extrusion"
 msgstr "Dvojitá extruze"
 
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Doba trvání každého kroku v postupné změně průtoku"
+
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
 msgstr "Eliptická"
@@ -937,6 +965,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Povolit vnější ochranu proti úniku. Tím se vytvoří model kolem modelu, který pravděpodobně otře druhou trysku, pokud je ve stejné výšce jako první tryska."
 
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
+
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
 msgstr ""
@@ -1001,6 +1033,10 @@ msgctxt "meshfix_extensive_stitching description"
 msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
 msgstr "Rozsáhlé sešívání se snaží spojit otevřené otvory v mřížce uzavřením díry dotykem mnohoúhelníků. Tato možnost může přinést spoustu času zpracování."
 
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr ""
+
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
 msgstr "Počet navíc výplní zdí"
@@ -1012,6 +1048,10 @@ msgstr "Počet povrchových zdí navíc"
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Materiál navíc pro extruzi po změně trysky."
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -1197,6 +1237,10 @@ msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
 msgstr "Rychlost proplachování"
 
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
+
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Pro struktury o šířce okolo jedno až dvojnásobku velikosti trysky musí být šířky čar upravovány, aby to se dodržovala správná tloušťka modelu. Toto nastavení ovládá minimální dovolenou šířku čáry pro zdi. Z minimální šířky čáry se také odvozuje maximální šířka, jelikož při určité tloušťce tvaru se přechází z N na N + 1 zdí, kdy je N zdí širokých, zatímco N + 1 zdi jsou úzké. Nejvyšší možná šířka čáry zdi je tedy dvojnásobek tohoto nastavení."
@@ -1314,6 +1358,18 @@ msgstr "Výška výplně krokové podpory"
 msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
 msgstr "Postupné kroky vyplňování podpory"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Velikost kroku diskretizace postupné změny průtoku"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Postupné změny průtoku povoleny"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Maximální zrychlení postupných změn průtoku"
 
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
@@ -1706,6 +1762,10 @@ msgstr "Počáteční překrytí vrstvy Z"
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Počáteční teplota tisku"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "Maximální zrychlení průtoku pro první vrstvu"
 
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
@@ -2149,6 +2209,10 @@ msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
 msgstr "Maximální rozlišení pohybu"
 
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Maximální zrychlení pro postupné změny průtoku"
+
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
 msgstr "Maximální zrychlení pro motor ve směru X"
@@ -2317,6 +2381,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "Minimální velikost plochy pro střechy podpěry. Polygony, které mají plochu menší než tato hodnota, budou vytištěny jako normální podpora."
 
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
+
 msgctxt "min_feature_size description"
 msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
 msgstr "Minimální tloušťka tenkých částí. Části modelu, které jsou tenčí než tato hodnota nebudou tištěny, zatímco části širší než tato hodnota budou rozšířeny na Minimální šířku čáry zdi."
@@ -2381,6 +2449,10 @@ msgctxt "adhesion_type option none"
 msgid "None"
 msgstr "Žádný"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr ""
+
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr "Žádný"
@@ -2425,9 +2497,9 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID trysky"
 
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Délka trysky"
+msgctxt "variant_name"
+msgid "Nozzle Size"
+msgstr "Velikost trysky"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2557,6 +2629,18 @@ msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
 msgstr "Akcelerace tisku vnější zdi"
 
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr ""
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr ""
+
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "Extruder vnější zdi"
@@ -2580,6 +2664,14 @@ msgstr "Šířka čáry vnější stěny"
 msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
 msgstr "Rychlost tisku vnější zdi"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr ""
 
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
@@ -2716,6 +2808,10 @@ msgstr "Pozice Y hlavní věže"
 msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Akcelerace tisku"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
 
 msgctxt "jerk_print label"
 msgid "Print Jerk"
@@ -3153,6 +3249,10 @@ msgctxt "ppr description"
 msgid "Reporting events that go out of set thresholds"
 msgstr ""
 
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Doba trvání resetování průtoku"
+
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
 msgstr "Preferované umístění podpor"
@@ -3216,6 +3316,18 @@ msgstr "Změnit stupnici rychlosti ventilátoru na 0 až 1, namísto 0 až 256."
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
 msgstr "Faktor zvětšení pro kompenzaci smrštění"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr ""
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr ""
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr ""
 
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
@@ -4273,6 +4385,10 @@ msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
 msgstr "Výška nad vodorovnými částmi modelu, které chcete vytisknout."
 
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr ""
+
 msgctxt "cool_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
 msgstr "Výška, při které se otáčejí ventilátory při normální rychlosti ventilátoru. Ve vrstvách pod rychlostí ventilátoru se postupně zvyšuje z počáteční rychlosti ventilátoru na normální rychlost ventilátoru."
@@ -4280,10 +4396,6 @@ msgstr "Výška, při které se otáčejí ventilátory při normální rychlost
 msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "Výškový rozdíl mezi špičkou trysky a portálovým systémem (osy X a Y)."
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "Výškový rozdíl mezi špičkou trysky a nejnižší částí tiskové hlavy."
 
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
@@ -4384,6 +4496,10 @@ msgstr "Největší šířka oblastí povrchu, které mají být odstraněny. Ka
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
 msgstr "Největší šířka horních oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní kůže na šikmých plochách v modelu."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr ""
 
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
@@ -4669,6 +4785,10 @@ msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
 msgstr "Počet řádků použitých pro podpůrný límec. Více límcových linií zvyšuje přilnavost k stavební desce za cenu nějakého dalšího materiálu."
 
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr ""
+
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
 msgstr "Počet vrchních vrstev na druhé vrstvě voru. Jedná se o plně vyplněné vrstvy, na kterých model sedí. Výsledkem 2 vrstev je hladší horní povrch než 1."
@@ -4760,6 +4880,10 @@ msgstr "Preferované umístění struktur podpory. Pokud nemohou být struktury 
 msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
 msgstr "Maximální okamžitá změna rychlosti tisku pro počáteční vrstvu."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr ""
 
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
@@ -5088,6 +5212,26 @@ msgstr "Ve scéně existují podpůrné masky. Toto nastavení je kontrolováno 
 msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "Tím se řídí vzdálenost, kterou by extrudér měl dojet bezprostředně před začátkem zdi mostu. Pobyt před startem můstku může snížit tlak v trysce a může vést k ploššímu můstku."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr ""
 
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
@@ -5469,9 +5613,17 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr "Stěny"
 
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr ""
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr ""
+
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "Stěny, které přesahují více než tento úhel, budou vytištěny pomocí nastavení převislých stěn. Pokud je hodnota 90, nebudou se žádné stěny považovat za převislé. Převis, který je podporován podporou, nebude považován ani za převis."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5893,57 +6045,29 @@ msgstr "cestování"
 #~ msgid "Brim Only on Outside"
 #~ msgstr "Límec pouze venku"
 
-#~ msgctxt "gradual_flow_discretisation_step_size description"
-#~ msgid "Duration of each step in the gradual flow change"
-#~ msgstr "Doba trvání každého kroku v postupné změně průtoku"
-
-#~ msgctxt "gradual_flow_enabled description"
-#~ msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-#~ msgstr "Povolit postupné změny průtoku. Když je povoleno, průtok se postupně zvyšuje / snižuje na cílový průtok. Toto je užitečné pro tiskárny s Bowdenovou trubicí, kde se průtok okamžitě nezmění, když se spustí / zastaví extrudér."
-
-#~ msgctxt "reset_flow_duration description"
-#~ msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-#~ msgstr "Pro jakýkoli pohyb delší než tato hodnota se materiálový průtok resetuje na cílový průtok dráhy"
-
-#~ msgctxt "gradual_flow_discretisation_step_size label"
-#~ msgid "Gradual flow discretisation step size"
-#~ msgstr "Velikost kroku diskretizace postupné změny průtoku"
-
-#~ msgctxt "gradual_flow_enabled label"
-#~ msgid "Gradual flow enabled"
-#~ msgstr "Postupné změny průtoku povoleny"
-
-#~ msgctxt "max_flow_acceleration label"
-#~ msgid "Gradual flow max acceleration"
-#~ msgstr "Maximální zrychlení postupných změn průtoku"
-
-#~ msgctxt "layer_0_max_flow_acceleration label"
-#~ msgid "Initial layer max flow acceleration"
-#~ msgstr "Maximální zrychlení průtoku pro první vrstvu"
-
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
 
-#~ msgctxt "max_flow_acceleration description"
-#~ msgid "Maximum acceleration for gradual flow changes"
-#~ msgstr "Maximální zrychlení pro postupné změny průtoku"
-
-#~ msgctxt "layer_0_max_flow_acceleration description"
-#~ msgid "Minimum speed for gradual flow changes for the first layer"
-#~ msgstr "Minimální rychlost pro postupné změny průtoku pro první vrstvu"
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle Length"
+#~ msgstr "Délka trysky"
 
 #~ msgctxt "brim_outside_only description"
 #~ msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
 #~ msgstr "Límec tiskněte pouze na vnější stranu modelu. Tím se snižuje množství límce, který je třeba následně odstranit, zatímco to tolik nesnižuje přilnavost k podložce."
 
-#~ msgctxt "reset_flow_duration label"
-#~ msgid "Reset flow duration"
-#~ msgstr "Doba trvání resetování průtoku"
-
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"
 #~ msgstr "Rozlišení rozhraní podpor"
+
+#~ msgctxt "machine_nozzle_head_distance description"
+#~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+#~ msgstr "Výškový rozdíl mezi špičkou trysky a nejnižší částí tiskové hlavy."
+
+#~ msgctxt "wall_overhang_angle description"
+#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+#~ msgstr "Stěny, které přesahují více než tento úhel, budou vytištěny pomocí nastavení převislých stěn. Pokud je hodnota 90, nebudou se žádné stěny považovat za převislé. Převis, který je podporován podporou, nebude považován ani za převis."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."

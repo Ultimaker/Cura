@@ -2767,6 +2767,10 @@ msgid "Nozzle offset Y"
 msgstr "Смещение сопла по оси Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Диаметр сопла"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Диаметр сопла"
 
@@ -5648,3 +5652,23 @@ msgstr "Поиск принтера"
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
 msgstr "Это файл проекта Cura Universal. Вы хотите открыть его как Cura Universal Project или импортировать модели из него?"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "Экспортировать пакет для технической поддержки"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "Не удается отправить данные модели в устройство. Повторите попытку или обратитесь в службу поддержки."
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "Не удается отправить данные модели в устройство. Попробуйте использовать менее подробную модель или уменьшите количество копий."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Обновляет конфигурации с Cura 5.8 до Cura 5.9."
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "Обновление версии 5.8 до 5.9"

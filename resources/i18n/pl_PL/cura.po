@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-08 09:05+0200\n"
+"POT-Creation-Date: 2024-10-09 14:27+0200\n"
 "PO-Revision-Date: 2021-09-07 08:02+0200\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -1201,14 +1201,6 @@ msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "Zaplecze CuraEngine"
 
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr ""
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr ""
-
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Waluta:"
@@ -1558,6 +1550,10 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Eksportuj Materiał"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr ""
 
 msgctxt "@title:window"
 msgid "Export Profile"
@@ -2833,6 +2829,10 @@ msgid "Nozzle offset Y"
 msgstr "Korekcja dyszy Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Rozmiar dyszy"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Rozmiar dyszy"
 
@@ -4102,10 +4102,6 @@ msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Pokaż dokumentację internetową"
 
-msgctxt "@action:inmenu"
-msgid "Show Online Troubleshooting"
-msgstr ""
-
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "Pokaż wszystko"
@@ -5034,6 +5030,14 @@ msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr ""
 
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr ""
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr ""
+
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "Nie można pociąć"
@@ -5295,6 +5299,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Prześlij niestandardowe oprogramowanie"
@@ -5437,6 +5445,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
 msgstr ""
 
 msgctxt "@button"
