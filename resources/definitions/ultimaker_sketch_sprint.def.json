@@ -131,7 +131,7 @@
             ]
         },
         "infill_before_walls": { "value": false },
-        "infill_line_width": { "value": 0.45 },
+        "infill_line_width": { "value": "0.45 if layer_height == 0.2 else 0.4" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'lines'" },
         "infill_sparse_density": { "value": 15 },
