@@ -1,4 +1,4 @@
-name: conan-package-resources
+name: conan-package-resources-and-notify
 
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
         id: get-package-version
         run: |
           # Replace this with your real logic to determine the package version
-          PACKAGE_VERSION=$(cat ./resources/conanfile.py | grep version | head -n 1 | cut -d '"' -f 2)
+          PACKAGE_VERSION=$(cat ./conanfile.py | grep version | head -n 1 | cut -d '"' -f 2)
           echo "Detected package version: $PACKAGE_VERSION"
           echo "package_version=$PACKAGE_VERSION" >> $GITHUB_ENV
 
