@@ -72,7 +72,7 @@ class PurgeLinesAndUnload(Script):
         self._instance.setProperty("move_to_prime_tower", "value", True if self.global_stack.getProperty("machine_extruder_count", "value") > 1 else False)
         # Set the default E adjustment
         self._instance.setProperty("adjust_e_loc_to", "value", -abs(round(float(self.extruder[0].getProperty("retraction_amount", "value")), 1)))
-        
+
     def getSettingDataString(self):
         return """{
             "name": "Purge Lines and Unload Filament",
@@ -125,6 +125,23 @@ class PurgeLinesAndUnload(Script):
                     "maximum_value": 12,
                     "enabled": "add_purge_lines"
                 },
+                "prime_blob_enable":
+                {
+                    "label": "    Start with Prime Blob️​",
+                    "description": "Enable a stationary purge before starting the purge lines.  Available only when purge line location is 'left' or 'front'",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "add_purge_lines and purge_line_location in ['front', 'left']"
+                },
+                "prime_blob_distance":
+                {
+                    "label": "        Blob Distance️​",
+                    "description": "How many mm's of filament should be extruded for the blob.",
+                    "type": "int",
+                    "default_value": 0,
+                    "unit": "mm  ",
+                    "enabled": "add_purge_lines and prime_blob_enable and purge_line_location in ['front', 'left']"
+                },
                 "move_to_start":
                 {
                     "label": "Circle around to layer start  ⚠️​",
@@ -144,7 +161,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "adjust_e_loc_to":
                 {
-                    "label": "    Starting E location",
+                    "label": "Starting E location",
                     "description": "This is usually a negative amount and often equal to the '-Retraction Distance'.  This 'G92 E' adjustment changes where the printer 'thinks' the end of the filament is in relation to the nozzle.  It replaces the retraction that Cura adds prior to the start of 'LAYER:0'.  If retraction is not enabled then this setting has no effect.",
                     "type": "float",
                     "unit": "mm  ",
@@ -161,7 +178,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_distance":
                 {
-                    "label": "    Unload Distance",
+                    "label": "Unload Distance",
                     "description": "The amount of filament to unload.  Bowden printers usually require a significant amount and direct drives not as much.",
                     "type": "int",
                     "default_value": 440,
@@ -170,7 +187,7 @@ class PurgeLinesAndUnload(Script):
                 },
                 "unload_quick_purge":
                 {
-                    "label": "    Quick purge before unload",
+                    "label": "Quick purge before unload",
                     "description": "When printing something fine that has a lot of retractions in a short space (like lettering or spires) right before the unload, the filament can get hung up in the hot end and unload can fail.  A quick purge will soften the end of the filament so it will retract correctly.  This 'quick purge' will take place at the last position of the nozzle.",
                     "type": "bool",
                     "default_value": false,
@@ -214,6 +231,11 @@ class PurgeLinesAndUnload(Script):
         # The start location changes according to which quadrant the nozzle is in at the beginning
         self.end_purge_location = self._get_real_start_point(data[1])
         self.border_distance = self.getSettingValueByKey("border_distance")
+        self.prime_blob_enable = self.getSettingValueByKey("prime_blob_enable")
+        if self.prime_blob_enable:
+            self.prime_blob_distance = self.getSettingValueByKey("prime_blob_distance")
+        else:
+            self.prime_blob_distance = 0
 
         # Mapping settings to corresponding methods
         procedures = {
@@ -295,7 +317,7 @@ class PurgeLinesAndUnload(Script):
                         if startup[index + 1].startswith("G0"):
                             prime_move = startup[index + 1] + " ; Move to Prime Tower"
                             adjustment_lines = self._move_to_location("Prime Tower", prime_tower_loc)
-                            startup[index + 1] = adjustment_lines + prime_move + "\n" + startup[index]
+                            startup[index + 1] = adjustment_lines + prime_move + "\n;---------------------[End of Prime Tower moves]\n" + startup[index]
                             startup.pop(index)
                             first_section[1] = "\n".join(startup)
                             move_to_prime_present = True
@@ -443,6 +465,7 @@ class PurgeLinesAndUnload(Script):
         purge_location = self.getSettingValueByKey("purge_line_location")
         purge_extrusion_full = True if self.getSettingValueByKey("purge_line_length") == "purge_full" else False
         purge_str = ";TYPE:CUSTOM----------[Purge Lines]\nG0 F600 Z2 ; Move up\nG92 E0 ; Reset extruder\n"
+        purge_str += self._get_blob_code()
         # Normal cartesian printer with origin at the left front corner
         if self.bed_shape == "rectangular" and not self.origin_at_center:
             if purge_location == Location.LEFT:
@@ -562,7 +585,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
+                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.FRONT:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
@@ -581,7 +604,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.REAR:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
@@ -601,7 +624,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
         elif self.bed_shape == "elliptic":
@@ -788,7 +811,8 @@ class PurgeLinesAndUnload(Script):
     # Unloading a large amount of filament in a single command can trip the 'Overlong Extrusion' warning in some firmware.  Unloads longer than 150mm are split into individual 150mm segments.
     def _unload_filament(self, data: str) -> str:
         extrude_speed = 3000
-        quick_purge_speed = round(float(self.extruder[0].getProperty("machine_nozzle_size", "value")) * 500)
+        quick_purge_speed = round(float(self.nozzle_size) * 500)
+        if self.material_diameter > 2: quick_purge_speed *= .38 # Adjustment for 2.85 filament
         retract_amount = self.extruder[0].getProperty("retraction_amount", "value")
         quick_purge_amount = retract_amount + 5 if retract_amount < 2.0 else retract_amount * 2
         unload_distance = self.getSettingValueByKey("unload_distance")
@@ -875,17 +899,33 @@ class PurgeLinesAndUnload(Script):
         else:
             self.nozzle_offset_x = 0.0
             self.nozzle_offset_y = 0.0
-        material_diameter = self.extruder[num].getProperty("material_diameter", "value")
+        self.material_diameter = self.extruder[num].getProperty("material_diameter", "value")
+        self.nozzle_size = self.extruder[num].getProperty("machine_nozzle_size", "value")
         self.init_line_width = self.extruder[num].getProperty("skirt_brim_line_width", "value")
         self.print_speed = round(self.extruder[num].getProperty("speed_print", "value") * 60 * .75)
         self.speed_travel = round(self.extruder[num].getProperty("speed_travel", "value") * 60)
         self.retract_dist = self.extruder[num].getProperty("retraction_amount", "value")
         self.retraction_enable = self.extruder[num].getProperty("retraction_enable", "value")
         self.retract_speed = self.extruder[num].getProperty("retraction_retract_speed", "value") * 60
-        self.mm3_per_mm = (material_diameter / 2) ** 2 * math.pi
+        self.mm3_per_mm = (self.material_diameter / 2) ** 2 * math.pi
         # Don't add purge lines if 'T0' has offsets.
         t0_x_offset = self.extruder[0].getProperty("machine_nozzle_offset_x", "value")
         t0_y_offset = self.extruder[0].getProperty("machine_nozzle_offset_y", "value")
         if t0_x_offset or t0_y_offset:
             self.t0_has_offsets = True
         return num
+
+    def _get_blob_code(self) -> str:
+        if not self.prime_blob_enable or self.prime_blob_distance == 0 or self.getSettingValueByKey("purge_line_location") not in ["front", "left"]:
+            return ""
+        # Set extruder speed for 1.75 filament
+        speed_blob = round(float(self.nozzle_size) * 500)
+        # Adjust speed if 2.85 filament
+        if self.material_diameter > 2: speed_blob *= .4
+        blob_string = "G0 F1200 Z20 ; Move up\n"
+        blob_string += f"G1 F{speed_blob} E{self.prime_blob_distance} ; Blob\n"
+        blob_string += f"G1 F{self.retract_speed} E-{self.retract_dist} ; Retract\n"
+        blob_string += "G92 E0 ; Reset extruder\n"
+        blob_string += "M300 P500 S600 ; Beep\n"
+        blob_string += "G4 S2 ; Wait\n"
+        return blob_string
