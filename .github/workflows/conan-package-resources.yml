@@ -21,7 +21,19 @@ on:
       - '[0-9].[0-9][0-9]*'
 
 jobs:
+  get-conan-recipe-version:
+    uses: ./.github/workflows/get-conan-recipe-version.yml
+    with:
+      conan_recipe_root: "./resources/"
+      repository: ${{ github.repository }}
+      branch: ${{ github.ref_name }}
+      release: false
+      internal: false
+    secrets: inherit
+
   conan-package:
+    name: Create Conan Package
+    needs: get-conan-recipe-version
     uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@main
     with:
       conan_recipe_root: "./resources/"
@@ -30,27 +42,10 @@ jobs:
       install_system_dependencies: false
     secrets: inherit
 
-  extract-package-version:
-    runs-on: ubuntu-latest
-    needs: conan-package
-    outputs:
-      package_version: ${{ steps.get-package-version.outputs.package_version }}
-
-    steps:
-      - name: Extract Conan Package Version
-        id: get-package-version
-        run: |
-          # Replace this with your real logic to determine the package version
-          PACKAGE_VERSION=$(cat ./resources/conanfile.py | grep version | head -n 1 | cut -d '"' -f 2)
-          echo "Detected package version: $PACKAGE_VERSION"
-
-          # Set the package_version as an output for this job
-          echo "::set-output name=package_version::$PACKAGE_VERSION"
-
-  # Job 3: Notify the dependent repository
   notify-dependent-package:
+    name: Notify Dependent Repository
+    needs: [get-conan-recipe-version, conan-package]
     runs-on: ubuntu-latest
-    needs: extract-package-version  # This ensures that it runs after extract-package-version
 
     steps:
       - name: Notify Dependent Repository
@@ -60,4 +55,4 @@ jobs:
           curl -X POST -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/DEPENDENT_ORG/DEPENDENT_REPO/dispatches \
-          -d '{"event_type": "dependency-package-change", "client_payload": { "changed_dependency": "dependency-package", "version": "${{ needs.extract-package-version.outputs.package_version }}" }}'
+          -d '{"event_type": "dependency-version-update", "client_payload": { "version": "${{ needs.get-conan-recipe-version.outputs.version_base }}", "full_version": "${{ needs.get-conan-recipe-version.outputs.version_full }}", "package_name": "${{ needs.get-conan-recipe-version.outputs.package_name }}" }}'
