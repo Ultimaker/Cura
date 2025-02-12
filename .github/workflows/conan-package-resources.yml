@@ -12,6 +12,7 @@ on:
       - 'resources/quality/**'
       - 'resources/variants/**'
       - 'resources/conanfile.py'
+      - 'resources/conandata.yml'
     branches:
       - 'main'
       - 'CURA-*'
