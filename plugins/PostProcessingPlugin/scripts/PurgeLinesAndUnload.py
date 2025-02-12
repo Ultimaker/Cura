@@ -585,7 +585,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.speed_travel} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
+                purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.FRONT:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else int(
@@ -604,7 +604,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
+                purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.REAR:
                 purge_len = int(self.machine_right - self.machine_left - 20) if purge_extrusion_full else abs(
@@ -624,7 +624,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
                 purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
+                purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
         elif self.bed_shape == "elliptic":
