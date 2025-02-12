@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/conan-package-resources.yml'
+      - 'conandata.yml'
       - 'resources/definitions/**'
       - 'resources/extruders/**'
       - 'resources/images/**'
