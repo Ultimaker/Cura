@@ -18,7 +18,6 @@ on:
 jobs:
   create-installers:
     name: Create installers
-    id: create-installers
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
@@ -42,7 +41,7 @@ jobs:
       - name: Rename the installers
         id: rename-installers
         working-directory: installers
-        run: python ./Cura-workflows/runner_scripts/rename_installers.py --tag "nightly" >> $GITHUB_OUTPUT
+        run: python ../Cura-workflows/runner_scripts/rename_installers.py --tag "nightly" >> $GITHUB_OUTPUT
 
       - name: create the release notes
         shell: python
@@ -62,16 +61,14 @@ jobs:
               f.write(release_notes.render(
                 timestamp=str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
                 caller_workflow=caller_workflow,
-                branch="" if is_main else short_version,
-                branch_specific="" is_main else f"?branch={short_version}",
+                branch_specific="" if is_main else f"?branch={short_version}",
               ))
 
       - name: Update nightly release description and binaries
-        working-directory: installers
         run: |
           gh release edit ${{ inputs.release_tag }} --title "${{ steps.rename-installers.outputs.cura_version }}" --notes-file release-notes.md
 
-          for file in "*"; do
+          for file in "installers/*"; do
             gh release upload ${{ inputs.release_tag }} $file --clobber
           done
         env:
