@@ -1,5 +1,6 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import json
 
 import io
 import os
@@ -13,6 +14,7 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
+from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Version import Version
 
@@ -30,9 +32,13 @@ class Backup:
     """These files should be ignored when making a backup."""
 
     IGNORED_FOLDERS = []  # type: List[str]
+    """These folders should be ignored when making a backup."""
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
+
+    TO_INSTALL_FILE = "packages.json"
+    """File that contains the 'to_install' dictionary, that manages plugins to be installed on next startup."""
 
     catalog = i18nCatalog("cura")
     """Re-use translation catalog"""
@@ -42,7 +48,7 @@ class Backup:
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[Dict[str, str]]
 
-    def makeFromCurrent(self) -> None:
+    def makeFromCurrent(self, available_remote_plugins: frozenset[str] = frozenset()) -> None:
         """Create a back-up from the current user config folder."""
 
         cura_release = self._application.getVersion()
@@ -92,21 +98,40 @@ class Backup:
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
-    def _makeArchive(self, buffer: "io.BytesIO", root_path: str) -> Optional[ZipFile]:
+    def _fillToInstallsJson(self, file_path: str, reinstall_on_restore: dict[str, str], archive: ZipFile) -> None:
+        pass  # TODO!
+
+    def _findRedownloadablePlugins(self, available_remote_plugins: frozenset) -> dict[str, str]:
+        """ Find all plugins that should be able to be reinstalled from the Marketplace.
+
+        :param plugins_path: Path to all plugins in the user-space.
+        :return: Set of all package-id's of plugins that can be reinstalled from the Marketplace.
+        """
+        plugin_reg = PluginRegistry.getInstance()
+        id = "id"
+        return {v["location"]: v[id] for v in plugin_reg.getAllMetaData()
+                if v[id] in available_remote_plugins and not plugin_reg.isBundledPlugin(v[id])}
+
+    def _makeArchive(self, buffer: "io.BytesIO", root_path: str, available_remote_plugins: frozenset) -> Optional[ZipFile]:
         """Make a full archive from the given root path with the given name.
 
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
         ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
+        reinstall_instead_plugins = self._findRedownloadablePlugins(available_remote_plugins)
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
-            for root, folders, files in os.walk(root_path):
+            for root, folders, files in os.walk(root_path, topdown=True):
+                folders[:] = [f for f in folders if f not in reinstall_instead_plugins]
                 for item_name in folders + files:
                     absolute_path = os.path.join(root, item_name)
                     if ignore_string.search(absolute_path):
                         continue
-                    archive.write(absolute_path, absolute_path[len(root_path) + len(os.sep):])
+                    if item_name == self.TO_INSTALL_FILE:
+                        self._fillToInstallsJson(absolute_path, reinstall_instead_plugins, archive)
+                    else:
+                        archive.write(absolute_path, absolute_path[len(root_path) + len(os.sep):])
             archive.close()
             return archive
         except (IOError, OSError, BadZipfile) as error:

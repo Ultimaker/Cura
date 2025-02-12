@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, Optional, Tuple, TYPE_CHECKING
@@ -22,7 +22,10 @@ class BackupsManager:
     def __init__(self, application: "CuraApplication") -> None:
         self._application = application
 
-    def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
+    def shouldReinstallDownloadablePlugins(self) -> bool:
+        return True
+
+    def createBackup(self, available_remote_plugins: frozenset[str] = frozenset()) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         """
         Get a back-up of the current configuration.
 
@@ -31,7 +34,7 @@ class BackupsManager:
 
         self._disableAutoSave()
         backup = Backup(self._application)
-        backup.makeFromCurrent()
+        backup.makeFromCurrent(available_remote_plugins if self.shouldReinstallDownloadablePlugins() else frozenset())
         self._enableAutoSave()
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
         return backup.zip_file, backup.meta_data
