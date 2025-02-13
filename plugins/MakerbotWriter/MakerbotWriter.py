@@ -46,6 +46,13 @@ class MakerbotWriter(MeshWriter):
                 suffixes=["makerbot"]
             )
         )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-makerbot-replicator_plus",
+                comment="Makerbot Toolpath Package",
+                suffixes=["makerbot"]
+            )
+        )
 
     _PNG_FORMAT = [
         {"prefix": "isometric_thumbnail", "width": 120, "height": 120},
@@ -114,6 +121,8 @@ class MakerbotWriter(MeshWriter):
                 filename, filedata = "print.gcode", gcode_text_io.getvalue()
             case "application/x-makerbot":
                 filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
+            case "application/x-makerbot-replicator_plus":
+                filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue(), nb_extruders=1)
             case _:
                 raise Exception("Unsupported Mime type")
 
@@ -250,7 +259,7 @@ class MakerbotWriter(MeshWriter):
         meta["preferences"] = dict()
         bounds = application.getBuildVolume().getBoundingBox()
         meta["preferences"]["instance0"] = {
-            "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
+            "machineBounds": [bounds.right, bounds.front, bounds.left, bounds.back] if bounds is not None else None,
             "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
         }
 

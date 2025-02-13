@@ -25,6 +25,12 @@ def getMetaData():
                     "description": catalog.i18nc("@item:inlistbox", "Makerbot Sketch Printfile"),
                     "mime_type": "application/x-makerbot-sketch",
                     "mode": MakerbotWriter.MakerbotWriter.OutputMode.BinaryMode,
+                },
+                {
+                    "extension": file_extension,
+                    "description": catalog.i18nc("@item:inlistbox", "Makerbot Replicator+ Printfile"),
+                    "mime_type": "application/x-makerbot-replicator_plus",
+                    "mode": MakerbotWriter.MakerbotWriter.OutputMode.BinaryMode,
                 }
             ]
         },

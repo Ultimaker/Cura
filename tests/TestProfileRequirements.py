@@ -1,8 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import configparser #To read the profiles.
-import os #To join paths.
+import configparser  # To read the profiles.
+import os  # To join paths.
 import pytest
 
 ##  Makes sure that the variants for the Ultimaker 3 Extended are exactly the
@@ -13,7 +13,7 @@ import pytest
 #   needed, but until then we should keep them the same. It's happened all too
 #   often that we updated the variants for the UM3 but forgot about the UM3E.
 @pytest.mark.parametrize("um3_file, um3e_file", [
-    #List the corresponding files below.
+    # List the corresponding files below.
     ("ultimaker3_aa0.25.inst.cfg", "ultimaker3_extended_aa0.25.inst.cfg"),
     ("ultimaker3_aa0.8.inst.cfg", "ultimaker3_extended_aa0.8.inst.cfg"),
     ("ultimaker3_aa04.inst.cfg", "ultimaker3_extended_aa04.inst.cfg"),

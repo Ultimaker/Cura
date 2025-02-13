@@ -2767,6 +2767,10 @@ msgid "Nozzle offset Y"
 msgstr "Смещение сопла по оси Y"
 
 msgctxt "@label"
+msgid "Nozzle Size"
+msgstr "Диаметр сопла"
+
+msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Диаметр сопла"
 
