@@ -14,8 +14,8 @@
         ],
         "firmware_update_info":
         {
-            "check_urls": [ "https://software.ultimaker.com/releases/firmware/5078167/stable/um-update.swu.version" ],
-            "id": 5078167,
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/10600/stable/um-update.swu.version" ],
+            "id": 10600,
             "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
