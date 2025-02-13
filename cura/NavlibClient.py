@@ -28,7 +28,7 @@ class NavlibClient(parent_class):
         self._was_pick = False
         self._hit_selection_only = False
         self._picking_pass = None
-        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "3dx_pivot.png"), size=3.)
+        self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "cor.png"), size=2.5)
 
     def put_profile_hint(self, hint) -> None:
         if pynav:
@@ -89,8 +89,8 @@ class NavlibClient(parent_class):
         from UM.Qt.QtApplication import QtApplication
         main_window = QtApplication.getInstance().getMainWindow()
 
-        x_n = 2. * main_window._mouse_x / self._scene.getActiveCamera().getViewportWidth() - 1.
-        y_n = 2. * main_window._mouse_y / self._scene.getActiveCamera().getViewportHeight() - 1.
+        x_n = 2. * main_window._mouse_x / main_window.width() - 1.
+        y_n = 2. * main_window._mouse_y / main_window.height() - 1.
 
         if self.get_is_view_perspective():
             self._was_pick = True
@@ -245,8 +245,6 @@ class NavlibClient(parent_class):
             camera_position = active_camera.getWorldPosition()
             dist = (camera_position - self._pivot_node.getWorldPosition()).length()
             scale = dist / 400.
-            if scale < 1.:
-                scale = scale * scale
         else:
             view_width = active_camera.getViewportWidth()
             current_size = view_width + (2. * active_camera.getZoomFactor() * view_width)
