@@ -25,7 +25,10 @@ class FormatMaps:
         "mk14_c": "1C",
         "mk14": "1A",
         "mk14_s": "2A",
-        "mk14_e": "LABS"
+        "mk14_e": "LABS",
+        "sketch_extruder": "0.4mm",
+        "sketch_l_extruder": "0.4mm",
+        "sketch_sprint_extruder": "0.4mm",
     }
 
     # A map from the material-name in their native file-formats to some info, including the internal name we use.

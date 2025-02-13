@@ -258,10 +258,86 @@ class MakerbotWriter(MeshWriter):
 
         meta["preferences"] = dict()
         bounds = application.getBuildVolume().getBoundingBox()
+        intent = CuraApplication.getInstance().getIntentManager().currentIntentCategory
         meta["preferences"]["instance0"] = {
             "machineBounds": [bounds.right, bounds.front, bounds.left, bounds.back] if bounds is not None else None,
-            "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
+            "printMode": intent
         }
+
+        if file_format == "application/x-makerbot":
+            accel_overrides = meta["accel_overrides"] = {}
+            if intent in ['highspeed', 'highspeedsolid']:
+                accel_overrides['do_input_shaping'] = True
+                accel_overrides['do_corner_rounding'] = True
+            bead_mode_overrides = accel_overrides["bead_mode"] = {}
+
+            accel_enabled = global_stack.getProperty('acceleration_enabled', 'value')
+
+            if accel_enabled:
+                global_accel_setting = global_stack.getProperty('acceleration_print', 'value')
+                accel_overrides["rate_mm_per_s_sq"] = {
+                    "x": global_accel_setting,
+                    "y": global_accel_setting
+                }
+
+                if global_stack.getProperty('acceleration_travel_enabled', 'value'):
+                    travel_accel_setting = global_stack.getProperty('acceleration_travel', 'value')
+                    bead_mode_overrides['Travel Move'] = {
+                        "rate_mm_per_s_sq": {
+                            "x": travel_accel_setting,
+                            "y": travel_accel_setting
+                        }
+                    }
+
+            jerk_enabled = global_stack.getProperty('jerk_enabled', 'value')
+            if jerk_enabled:
+                global_jerk_setting = global_stack.getProperty('jerk_print', 'value')
+                accel_overrides["max_speed_change_mm_per_s"] = {
+                    "x": global_jerk_setting,
+                    "y": global_jerk_setting
+                }
+
+                if global_stack.getProperty('jerk_travel_enabled', 'value'):
+                    travel_jerk_setting = global_stack.getProperty('jerk_travel', 'value')
+                    if 'Travel Move' not in bead_mode_overrides:
+                        bead_mode_overrides['Travel Move' ] = {}
+                    bead_mode_overrides['Travel Move'].update({
+                        "max_speed_change_mm_per_s": {
+                            "x": travel_jerk_setting,
+                            "y": travel_jerk_setting
+                        }
+                    })
+
+
+            # Get bead mode settings per extruder
+            available_bead_modes = {
+                "infill": "FILL",
+                "prime_tower": "PRIME_TOWER",
+                "roofing": "TOP_SURFACE",
+                "support_infill": "SUPPORT",
+                "support_interface": "SUPPORT_INTERFACE",
+                "wall_0": "WALL_OUTER",
+                "wall_x": "WALL_INNER",
+                "skirt_brim": "SKIRT"
+            }
+            for idx, extruder in enumerate(extruders):
+                for bead_mode_setting, bead_mode_tag in available_bead_modes.items():
+                    ext_specific_tag = "%s_%s" % (bead_mode_tag, idx)
+                    if accel_enabled or jerk_enabled:
+                        bead_mode_overrides[ext_specific_tag] = {}
+
+                    if accel_enabled:
+                        accel_val = extruder.getProperty('acceleration_%s' % bead_mode_setting, 'value')
+                        bead_mode_overrides[ext_specific_tag]["rate_mm_per_s_sq"] = {
+                            "x": accel_val,
+                            "y": accel_val
+                        }
+                    if jerk_enabled:
+                        jerk_val = extruder.getProperty('jerk_%s' % bead_mode_setting, 'value')
+                        bead_mode_overrides[ext_specific_tag][ "max_speed_change_mm_per_s"] = {
+                            "x": jerk_val,
+                            "y": jerk_val
+                        }
 
         meta["miracle_config"] = {"gaggles": {"instance0": {}}}
 
