@@ -2,7 +2,7 @@ version: "5.10.0-alpha.0"
 requirements:
   - "cura_resources/5.10.0-alpha.0@ultimaker/testing"
   - "uranium/5.10.0-alpha.0@ultimaker/testing"
-  - "curaengine/5.10.0-alpha.0@ultimaker/testing"
+  - "curaengine/5.10.0-alpha.0@ultimaker/cura_12250"
   - "cura_binary_data/5.10.0-alpha.0@ultimaker/testing"
   - "fdm_materials/5.10.0-alpha.0@ultimaker/testing"
   - "dulcificum/0.2.1@ultimaker/stable"
