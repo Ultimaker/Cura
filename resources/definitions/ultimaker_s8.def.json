@@ -69,7 +69,7 @@
         "acceleration_wall_0_roofing": { "value": "acceleration_wall_0" },
         "acceleration_wall_x": { "value": "acceleration_print" },
         "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
-        "adhesion_type": { "value": "skirt" },
+        "adhesion_type": { "value": "'skirt'" },
         "bottom_thickness": { "value": "3*layer_height if top_layers==4 else top_bottom_thickness" },
         "bridge_skin_material_flow": { "value": 200 },
         "bridge_skin_speed":
@@ -385,7 +385,7 @@
         "support_infill_rate": { "value": "80 if gradual_support_infill_steps != 0 else 15" },
         "support_interface_enable": { "value": true },
         "support_pattern": { "value": "'gyroid' if support_structure == 'tree' else 'lines'" },
-        "support_structure": { "value": "normal" },
+        "support_structure": { "value": "'normal'" },
         "support_z_distance": { "value": "0.4*material_shrinkage_percentage_z/100.0" },
         "top_bottom_thickness": { "value": "round(4*layer_height, 2)" },
         "travel_avoid_other_parts": { "value": false },
@@ -398,8 +398,8 @@
         "wall_material_flow": { "value": 95 },
         "wall_overhang_angle": { "value": 45 },
         "wall_x_material_flow": { "value": 100 },
-        "z_seam_corner": { "value": "z_seam_corner_weighted" },
-        "z_seam_position": { "value": "backright" },
-        "z_seam_type": { "value": "sharpest_corner" }
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_position": { "value": "'backright'" },
+        "z_seam_type": { "value": "'sharpest_corner'" }
     }
 }
