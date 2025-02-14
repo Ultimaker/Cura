@@ -166,8 +166,8 @@ Button
                         }
 
                         mismatchedCores = "<b>" + mismatchedCores + "</b>"
-                        var draftResult = catalog.i18nc("@label", "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit %2 to check which cores this printer-type supports w.r.t. new slices.");
-                        return draftResult.arg(mismatchedCores).arg("<a href=' '>" + catalog.i18nc("@label","WEBSITE") + "</a> ")
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices.");
+                        return draftResult.arg(mismatchedCores).arg("https://support.ultimaker.com/s/article/1667411313529")
                     }
 
                     text:
@@ -199,9 +199,16 @@ Button
 
                     wrapMode: Text.WordWrap
 
-                    onLinkActivated:
+                    onLinkActivated: (link) =>
                     {
-                        Cura.Actions.browsePackages.trigger()
+                        if(link.trim().length === 0)
+                        {
+                            Cura.Actions.browsePackages.trigger();
+                        }
+                        else
+                        {
+                            Qt.openUrlExternally(link);
+                        }
                     }
                 }
 

@@ -3359,6 +3359,19 @@
                     "minimum_value": 0.01,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "material_pressure_advance_factor":
+                {
+                    "enabled": false,
+                    "label": "Pressure advance factor",
+                    "description": "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion",
+                    "default_value": 0.05,
+                    "maximum_value_warning": 1.0,
+                    "minimum_value": 0,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
                 }
             }
         },
@@ -4969,6 +4982,31 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang":
+                {
+                    "label": "Minimum Layer Time with Overhang",
+                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 5,
+                    "value": "cool_min_layer_time",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang_min_segment_length":
+                {
+                    "label": "Minimum Overhang Segment Length",
+                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "500",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -8674,15 +8712,13 @@
                     "value": "support_angle",
                     "settable_per_mesh": true
                 },
-                "wall_overhang_speed_factor":
+                "wall_overhang_speed_factors":
                 {
-                    "label": "Overhanging Wall Speed",
-                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
+                    "label": "Overhanging Wall Speeds",
+                    "description": "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]",
                     "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "25",
+                    "type": "[int]",
+                    "default_value": "[100]",
                     "settable_per_mesh": true
                 },
                 "bridge_settings_enabled":

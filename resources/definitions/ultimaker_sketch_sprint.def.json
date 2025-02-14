@@ -129,7 +129,7 @@
             ]
         },
         "infill_before_walls": { "value": false },
-        "infill_line_width": { "value": 0.45 },
+        "infill_line_width": { "value": "0.45 if layer_height == 0.2 else 0.4" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'lines'" },
         "infill_sparse_density": { "value": 15 },
@@ -379,10 +379,12 @@
         "wall_0_wipe_dist": { "value": 0.2 },
         "wall_line_width_x": { "value": 0.58 },
         "wall_overhang_angle": { "value": 35 },
-        "wall_overhang_speed_factor":
+        "wall_overhang_speed_factors":
         {
             "minimum_value_warning": 15,
-            "value": 17.5
+            "value": [
+                18
+            ]
         },
         "wall_thickness": { "value": 1 },
         "wall_x_material_flow_layer_0": { "value": "material_flow" },
