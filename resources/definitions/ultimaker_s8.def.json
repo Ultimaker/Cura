@@ -311,7 +311,7 @@
             "maximum_value_warning": 300,
             "value": "speed_wall"
         },
-        "speed_skirt_brim":
+        "skirt_brim_speed":
         {
             "maximum_value_warning": 300,
             "value": "speed_layer_0"
