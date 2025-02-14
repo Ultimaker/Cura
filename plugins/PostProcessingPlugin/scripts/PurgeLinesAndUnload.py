@@ -142,6 +142,24 @@ class PurgeLinesAndUnload(Script):
                     "unit": "mm  ",
                     "enabled": "add_purge_lines and prime_blob_enable and purge_line_location in ['front', 'left']"
                 },
+                "prime_blob_loc_x":
+                {
+                    "label": "        Blob Location X",
+                    "description": "The 'X' position to put the prime blob. 'Origin at Center' printers might require a negative value here.  Keep in mind that purge lines always start in the left front, or the right rear.  Pay attention or the nozzle can sit down into the prime blob.",
+                    "type": "int",
+                    "default_value": 0,
+                    "unit": "mm  ",
+                    "enabled": "add_purge_lines and prime_blob_enable and purge_line_location in ['front', 'left']"
+                },
+                "prime_blob_loc_y":
+                {
+                    "label": "        Blob location Y",
+                    "description": "The 'Y' position to put the prime blob. 'Origin at Center' printers might require a negative value here.  Keep in mind that purge lines always start in the left front, or the right rear.  Pay attention or the nozzle can sit down into the prime blob.",
+                    "type": "int",
+                    "default_value": 0,
+                    "unit": "mm  ",
+                    "enabled": "add_purge_lines and prime_blob_enable and purge_line_location in ['front', 'left']"
+                },
                 "move_to_start":
                 {
                     "label": "Circle around to layer start  ⚠️​",
@@ -922,7 +940,10 @@ class PurgeLinesAndUnload(Script):
         speed_blob = round(float(self.nozzle_size) * 500)
         # Adjust speed if 2.85 filament
         if self.material_diameter > 2: speed_blob *= .4
+        blob_x = self.getSettingValueByKey("prime_blob_loc_x")
+        blob_y = self.getSettingValueByKey("prime_blob_loc_y")
         blob_string = "G0 F1200 Z20 ; Move up\n"
+        blob_string += f"G0 F{self.speed_travel} X{blob_x} Y{blob_y} ; Move to blob location\n"
         blob_string += f"G1 F{speed_blob} E{self.prime_blob_distance} ; Blob\n"
         blob_string += f"G1 F{self.retract_speed} E-{self.retract_dist} ; Retract\n"
         blob_string += "G92 E0 ; Reset extruder\n"
