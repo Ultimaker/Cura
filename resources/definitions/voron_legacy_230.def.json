@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "Voron Legacy 230",
+    "inherits": "voron_legacy_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "uncholowapo",
+        "platform": "voron_legacy_230_bed.stl",
+        "platform_offset": [0, -62.46, 0],
+        "quality_definition": "voron2_base"
+    },
+    "overrides":
+    {
+        "machine_name": { "default_value": "VORON Legacy 230" }
+    }
+}
