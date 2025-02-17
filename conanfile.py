@@ -1,4 +1,8 @@
 import os
+import requests
+import yaml
+import tempfile
+import tarfile
 from io import StringIO
 from pathlib import Path
 
@@ -135,6 +139,67 @@ class CuraConan(ConanFile):
 
         return python_installs
 
+    def _make_pip_dependency_description(self, package, version, dependencies):
+        url = ["https://pypi.org/pypi", package]
+        if version is not None:
+            url.append(version)
+        url.append("json")
+
+        data = requests.get("/".join(url)).json()
+
+        # print('++++++++++++++++++++++++++++++++++++++++')
+        # print(data)
+
+        dependency_description = {
+            "author":  data["info"]["author"],
+            "summary": data["info"]["summary"],
+            "version": data["info"]["version"],
+            "license": data["info"]["license"]
+        }
+
+        for url_data in data["urls"]:
+            if url_data["packagetype"] == "sdist":
+                sources_url = url_data["url"]
+                dependency_description["sources_url"] = sources_url
+
+                # Download the sources to get the license file inside
+                self.output.info(f"Retrieving license for {package}")
+                response = requests.get(sources_url)
+                response.raise_for_status()
+
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    sources_path = os.path.join(temp_dir, "sources.tar.gz")
+                    with open(sources_path, 'wb') as sources_file:
+                        sources_file.write(response.content)
+
+                    with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                        license_file = "LICENSE"
+
+                        for source_file in sources_archive.getnames():
+                            if Path(source_file).name == license_file:
+                                sources_archive.extract(source_file, temp_dir)
+
+                                license_file_path = os.path.join(temp_dir, source_file)
+                                with open(license_file_path, 'r') as file:
+                                    dependency_description["license_full"] = file.read()
+
+        if dependency_description["license"] is not None and len(dependency_description["license"]) > 32:
+            # Some packages have their full license in this field
+            dependency_description["license_full"] = dependency_description["license"]
+            dependency_description["license"] = data["info"]["name"]
+
+        dependencies[data["info"]["name"]] = dependency_description
+
+    def _dependencies_description(self):
+        dependencies = {}
+
+        pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
+        with open(pip_requirements_summary, 'r') as file:
+            for package_name, package_version in yaml.safe_load(file).items():
+                self._make_pip_dependency_description(package_name, package_version, dependencies)
+
+        return dependencies
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -165,6 +230,7 @@ class CuraConan(ConanFile):
                 cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
                 conan_installs=self._conan_installs(),
                 python_installs=self._python_installs(),
+                dependencies_description=self._dependencies_description(),
             ))
 
     def _delete_unwanted_binaries(self, root):
@@ -483,6 +549,7 @@ class CuraConan(ConanFile):
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
         copy(self, "pip_requirements_*.txt", src = self.generators_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
+        copy(self, "pip_requirements_summary.yml", src = self.generators_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
