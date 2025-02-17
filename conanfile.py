@@ -210,6 +210,44 @@ class CuraConan(ConanFile):
 
         dependencies[data["info"]["name"]] = dependency_description
 
+    @staticmethod
+    def _get_license_from_repository(sources_url, version, license_file_name = None):
+        git_url = sources_url
+        if git_url.endswith('/'):
+            git_url = git_url[:-1]
+        if not git_url.endswith(".git"):
+            git_url = f"{git_url}.git"
+        git_url = git_url.replace("/cgit/", "/")
+
+        tags = [f"v{version}", version]
+        files = ["LICENSE", "LICENSE.txt", "LICENSE.md", "COPYRIGHT", "COPYING", "COPYING.LIB"] if license_file_name is None else [license_file_name]
+
+        with tempfile.TemporaryDirectory() as clone_dir:
+            repo = Repo.clone_from(git_url, clone_dir, depth=1, no_checkout=True)
+
+            for tag in tags:
+                try:
+                    repo.git.fetch('--depth', '1', 'origin', 'tag', tag)
+                except GitCommandError:
+                    continue
+
+                repo.git.sparse_checkout('init', '--cone')
+                for file_name in files:
+                    repo.git.sparse_checkout('add', file_name)
+
+                try:
+                    repo.git.checkout(tag)
+                except GitCommandError:
+                    pass
+
+                for file_name in files:
+                    license_file = os.path.join(clone_dir, file_name)
+                    if os.path.exists(license_file):
+                        with open(license_file, 'r') as file:
+                            return file.read()
+
+                break
+
     def _make_conan_dependency_description(self, dependency, dependencies):
         dependency_description = {
             "summary": dependency.description,
@@ -230,46 +268,27 @@ class CuraConan(ConanFile):
 
                 if is_repository_source:
                     self.output.info(f"Retrieving license for {dependency.ref.name}")
-
-                    git_url = source_url
-                    if git_url.endswith('/'):
-                        git_url = git_url[:-1]
-                    if not git_url.endswith(".git"):
-                        git_url = f"{git_url}.git"
-
-                    tags = [f"v{str(dependency.ref.version)}", str(dependency.ref.version)]
-                    files = ["LICENSE", "LICENSE.txt", "COPYRIGHT", "COPYING", "COPYING.LIB"]
-
-                    with tempfile.TemporaryDirectory() as clone_dir:
-                        repo = Repo.clone_from(git_url, clone_dir, depth=1, no_checkout=True)
-
-                        for tag in tags:
-                            try:
-                                repo.git.fetch('--depth', '1', 'origin', 'tag', tag)
-                            except GitCommandError:
-                                continue
-
-                            repo.git.sparse_checkout('init', '--cone')
-                            for file_name in files:
-                                repo.git.sparse_checkout('add', file_name)
-
-                            try:
-                                repo.git.checkout(tag)
-                            except GitCommandError:
-                                pass
-
-                            for file_name in files:
-                                license_file = os.path.join(clone_dir, file_name)
-                                if os.path.exists(license_file):
-                                    with open(license_file, 'r') as file:
-                                        dependency_description["license_full"] = file.read()
-                                        break
-
-                            break
+                    dependency_description["license_full"] = self._get_license_from_repository(source_url, str(dependency.ref.version))
 
                 break
 
         dependencies[dependency.ref.name] = dependency_description
+
+    def _make_extra_dependency_description(self, dependency_name, dependency_data, dependencies):
+        sources_url = dependency_data["sources_url"]
+        version = dependency_data["version"]
+
+        self.output.info(f"Retrieving license for {dependency_name}")
+        license_file = dependency_data["license_file"] if "license_file" in dependency_data else None
+        license_full = self._get_license_from_repository(sources_url, version, license_file)
+
+        dependencies[dependency_name] = {
+            "summary": dependency_data["summary"],
+            "version": version,
+            "license": dependency_data["license"],
+            "license_full": license_full,
+            "sources_url": sources_url,
+        }
 
     def _dependencies_description(self):
         dependencies = {}
@@ -281,6 +300,14 @@ class CuraConan(ConanFile):
 
         for dependency in self.dependencies.values():
             self._make_conan_dependency_description(dependency, dependencies)
+
+            if "extra_dependencies" in dependency.conan_data:
+                for dependency in dependency.conan_data["extra_dependencies"]:
+                    self._make_extra_dependency_description(dependency, dependencies)
+
+        if "extra_dependencies" in self.conan_data:
+            for dependency_name, dependency_data in self.conan_data["extra_dependencies"].items():
+                self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
 
         return dependencies
 
