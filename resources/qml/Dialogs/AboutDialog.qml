@@ -19,9 +19,7 @@ UM.Dialog
     // Flag to toggle between main dependencies information and extensive dependencies information
     property bool showDefaultDependencies: true
 
-    minimumWidth: 500 * screenScaleFactor
     minimumHeight: 700 * screenScaleFactor
-    width: minimumWidth
     height: minimumHeight
 
     backgroundColor: UM.Theme.getColor("main_background")
@@ -172,6 +170,7 @@ UM.Dialog
             {
                 visible: showDefaultDependencies
                 width: parent.width
+                spacing: UM.Theme.getSize("narrow_margin").height
 
                 Repeater
                 {
