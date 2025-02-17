@@ -5,6 +5,8 @@ import tempfile
 import tarfile
 from io import StringIO
 from pathlib import Path
+from git import Repo
+from git.exc import GitCommandError
 
 from jinja2 import Template
 
@@ -139,6 +141,11 @@ class CuraConan(ConanFile):
 
         return python_installs
 
+    @staticmethod
+    def _is_repository_url(url):
+        # That will not work for ALL open-source projects, but should already get a large majority of them
+        return (url.startswith("https://github.com/") or url.startswith("https://gitlab.com/")) and "conan-center-index" not in url
+
     def _make_pip_dependency_description(self, package, version, dependencies):
         url = ["https://pypi.org/pypi", package]
         if version is not None:
@@ -147,11 +154,7 @@ class CuraConan(ConanFile):
 
         data = requests.get("/".join(url)).json()
 
-        # print('++++++++++++++++++++++++++++++++++++++++')
-        # print(data)
-
         dependency_description = {
-            "author":  data["info"]["author"],
             "summary": data["info"]["summary"],
             "version": data["info"]["version"],
             "license": data["info"]["license"]
@@ -183,12 +186,90 @@ class CuraConan(ConanFile):
                                 with open(license_file_path, 'r') as file:
                                     dependency_description["license_full"] = file.read()
 
+        for source_url, check_source in [("source", False),
+                                         ("Source", False),
+                                         ("Source Code", False),
+                                         ("Repository", False),
+                                         ("Code", False),
+                                         ("homepage", True),
+                                         ("Homepage", True)]:
+            try:
+                url = data["info"]["project_urls"][source_url]
+                if check_source and not self._is_repository_url(url):
+                    # That will not work for ALL open-source projects, but should already get a large majority of them
+                    continue
+                dependency_description["sources_url"] = url
+                break
+            except KeyError:
+                pass
+
         if dependency_description["license"] is not None and len(dependency_description["license"]) > 32:
             # Some packages have their full license in this field
             dependency_description["license_full"] = dependency_description["license"]
             dependency_description["license"] = data["info"]["name"]
 
         dependencies[data["info"]["name"]] = dependency_description
+
+    def _make_conan_dependency_description(self, dependency, dependencies):
+        dependency_description = {
+            "summary": dependency.description,
+            "version": str(dependency.ref.version),
+            "license": ', '.join(dependency.license) if (isinstance(dependency.license, list) or isinstance(dependency.license, tuple)) else dependency.license,
+        }
+
+        for source_url, check_source in [(dependency.homepage, True),
+                                         (dependency.url, True),
+                                         (dependency.homepage, False),
+                                         (dependency.url, False)]:
+            if source_url is None:
+                continue
+
+            is_repository_source = self._is_repository_url(source_url)
+            if not check_source or is_repository_source:
+                dependency_description["sources_url"] = source_url
+
+                if is_repository_source:
+                    self.output.info(f"Retrieving license for {dependency.ref.name}")
+
+                    git_url = source_url
+                    if git_url.endswith('/'):
+                        git_url = git_url[:-1]
+                    if not git_url.endswith(".git"):
+                        git_url = f"{git_url}.git"
+
+                    tags = [f"v{str(dependency.ref.version)}", str(dependency.ref.version)]
+                    files = ["LICENSE", "LICENSE.txt", "COPYRIGHT", "COPYING", "COPYING.LIB"]
+
+                    with tempfile.TemporaryDirectory() as clone_dir:
+                        repo = Repo.clone_from(git_url, clone_dir, depth=1, no_checkout=True)
+
+                        for tag in tags:
+                            try:
+                                repo.git.fetch('--depth', '1', 'origin', 'tag', tag)
+                            except GitCommandError:
+                                continue
+
+                            repo.git.sparse_checkout('init', '--cone')
+                            for file_name in files:
+                                repo.git.sparse_checkout('add', file_name)
+
+                            try:
+                                repo.git.checkout(tag)
+                            except GitCommandError:
+                                pass
+
+                            for file_name in files:
+                                license_file = os.path.join(clone_dir, file_name)
+                                if os.path.exists(license_file):
+                                    with open(license_file, 'r') as file:
+                                        dependency_description["license_full"] = file.read()
+                                        break
+
+                            break
+
+                break
+
+        dependencies[dependency.ref.name] = dependency_description
 
     def _dependencies_description(self):
         dependencies = {}
@@ -197,6 +278,9 @@ class CuraConan(ConanFile):
         with open(pip_requirements_summary, 'r') as file:
             for package_name, package_version in yaml.safe_load(file).items():
                 self._make_pip_dependency_description(package_name, package_version, dependencies)
+
+        for dependency in self.dependencies.values():
+            self._make_conan_dependency_description(dependency, dependencies)
 
         return dependencies
 
