@@ -43,6 +43,7 @@ class CuraConan(ConanFile):
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
         "internal": [True, False],
         "i18n_extract": [True, False],
+        "skip_licenses_download": [True, False],
     }
     default_options = {
         "enterprise": False,
@@ -52,6 +53,7 @@ class CuraConan(ConanFile):
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
         "i18n_extract": False,
+        "skip_licenses_download": False,
     }
 
     def set_version(self):
@@ -165,26 +167,27 @@ class CuraConan(ConanFile):
                 sources_url = url_data["url"]
                 dependency_description["sources_url"] = sources_url
 
-                # Download the sources to get the license file inside
-                self.output.info(f"Retrieving license for {package}")
-                response = requests.get(sources_url)
-                response.raise_for_status()
+                if not self.options.skip_licenses_download:
+                    # Download the sources to get the license file inside
+                    self.output.info(f"Retrieving license for {package}")
+                    response = requests.get(sources_url)
+                    response.raise_for_status()
 
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    sources_path = os.path.join(temp_dir, "sources.tar.gz")
-                    with open(sources_path, 'wb') as sources_file:
-                        sources_file.write(response.content)
+                    with tempfile.TemporaryDirectory() as temp_dir:
+                        sources_path = os.path.join(temp_dir, "sources.tar.gz")
+                        with open(sources_path, 'wb') as sources_file:
+                            sources_file.write(response.content)
 
-                    with tarfile.open(sources_path, 'r:gz') as sources_archive:
-                        license_file = "LICENSE"
+                        with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                            license_file = "LICENSE"
 
-                        for source_file in sources_archive.getnames():
-                            if Path(source_file).name == license_file:
-                                sources_archive.extract(source_file, temp_dir)
+                            for source_file in sources_archive.getnames():
+                                if Path(source_file).name == license_file:
+                                    sources_archive.extract(source_file, temp_dir)
 
-                                license_file_path = os.path.join(temp_dir, source_file)
-                                with open(license_file_path, 'r') as file:
-                                    dependency_description["license_full"] = file.read()
+                                    license_file_path = os.path.join(temp_dir, source_file)
+                                    with open(license_file_path, 'r') as file:
+                                        dependency_description["license_full"] = file.read()
 
         for source_url, check_source in [("source", False),
                                          ("Source", False),
@@ -266,7 +269,7 @@ class CuraConan(ConanFile):
             if not check_source or is_repository_source:
                 dependency_description["sources_url"] = source_url
 
-                if is_repository_source:
+                if is_repository_source and not self.options.skip_licenses_download:
                     self.output.info(f"Retrieving license for {dependency.ref.name}")
                     dependency_description["license_full"] = self._get_license_from_repository(source_url, str(dependency.ref.version))
 
@@ -278,17 +281,19 @@ class CuraConan(ConanFile):
         sources_url = dependency_data["sources_url"]
         version = dependency_data["version"]
 
-        self.output.info(f"Retrieving license for {dependency_name}")
-        license_file = dependency_data["license_file"] if "license_file" in dependency_data else None
-        license_full = self._get_license_from_repository(sources_url, version, license_file)
-
-        dependencies[dependency_name] = {
+        dependency_description = {
             "summary": dependency_data["summary"],
             "version": version,
             "license": dependency_data["license"],
-            "license_full": license_full,
             "sources_url": sources_url,
         }
+
+        if not self.options.skip_licenses_download:
+            self.output.info(f"Retrieving license for {dependency_name}")
+            license_file = dependency_data["license_file"] if "license_file" in dependency_data else None
+            dependency_description["license_full"] = self._get_license_from_repository(sources_url, version, license_file)
+
+        dependencies[dependency_name] = dependency_description
 
     def _dependencies_description(self):
         dependencies = {}
@@ -302,8 +307,8 @@ class CuraConan(ConanFile):
             self._make_conan_dependency_description(dependency, dependencies)
 
             if "extra_dependencies" in dependency.conan_data:
-                for dependency in dependency.conan_data["extra_dependencies"]:
-                    self._make_extra_dependency_description(dependency, dependencies)
+                for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
+                    self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
 
         if "extra_dependencies" in self.conan_data:
             for dependency_name, dependency_data in self.conan_data["extra_dependencies"].items():
