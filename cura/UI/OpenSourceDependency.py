@@ -9,7 +9,6 @@ class OpenSourceDependency(QObject):
     def __init__(self, name, data):
         super().__init__()
         self._name = name
-        self._author = data['author'] if data['author'] is not None else ''
         self._version = data['version'] if data['version'] is not None else ''
         self._summary = data['summary'] if data['summary'] is not None else ''
         self._license = data['license'] if data['license'] is not None and len(data['license']) > 0 else name
@@ -19,10 +18,6 @@ class OpenSourceDependency(QObject):
     @pyqtProperty(str, constant=True)
     def name(self):
         return self._name
-
-    @pyqtProperty(str, constant=True)
-    def author(self):
-        return self._author
 
     @pyqtProperty(str, constant=True)
     def version(self):
