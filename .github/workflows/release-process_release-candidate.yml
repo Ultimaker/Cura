@@ -32,7 +32,7 @@ jobs:
 
   freeze-packages-versions:
     name: Freeze packges versions
-    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
+    uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@CURA-12400_legal_fix
     needs: [parse-version]
     with:
       cura_version: ${{ inputs.cura_version }}
@@ -102,7 +102,7 @@ jobs:
 
   create-dependencies-packages:
     name: Create conan packages for dependencies
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-12400_legal_fix
     needs: [parse-version, freeze-packages-versions]
     strategy:
       matrix:
@@ -124,7 +124,7 @@ jobs:
 
   create-cura-package:
     name: Create conan package for Cura
-    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package-release.yml@CURA-12400_legal_fix
     needs: [parse-version, create-dependencies-packages]
     with:
       repository: Cura
