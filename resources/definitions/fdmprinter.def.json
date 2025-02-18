@@ -384,6 +384,7 @@
                         "RepRap (RepRap)": "RepRap",
                         "UltiGCode": "Ultimaker 2",
                         "Griffin": "Griffin",
+                        "Cheetah": "Griffin+Cheetah",
                         "Makerbot": "Makerbot",
                         "BFB": "Bits from Bytes",
                         "MACH3": "Mach3",
@@ -461,7 +462,7 @@
                 "machine_head_with_fans_polygon":
                 {
                     "label": "Machine Head & Fan Polygon",
-                    "description": "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates.",
+                    "description": "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam.",
                     "type": "polygon",
                     "default_value": [
                         [-20, 10],
@@ -1540,6 +1541,90 @@
                             "value": "skin_angles",
                             "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "flooring_extruder_nr":
+                {
+                    "label": "Bottom Surface Skin Extruder",
+                    "description": "The extruder train used for printing the bottom most skin. This is used in multi-extrusion.",
+                    "type": "optional_extruder",
+                    "default_value": "-1",
+                    "value": "top_bottom_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": true,
+                    "settable_globally": true,
+                    "enabled": "extruders_enabled_count > 1 and max(extruderValues('flooring_layer_count')) > 0 and max(extruderValues('bottom_layers')) > 0"
+                },
+                "flooring_layer_count":
+                {
+                    "label": "Bottom Surface Skin Layers",
+                    "description": "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces.",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "bottom_layers - 1",
+                    "type": "int",
+                    "maximum_value": "999999",
+                    "value": "0",
+                    "limit_to_extruder": "flooring_extruder_nr",
+                    "settable_per_mesh": true,
+                    "enabled": "bottom_layers > 0",
+                    "children":
+                    {
+                        "flooring_line_width":
+                        {
+                            "label": "Bottom Surface Skin Line Width",
+                            "description": "Width of a single line of the areas at the bottom of the print.",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.4,
+                            "type": "float",
+                            "value": "skin_line_width",
+                            "limit_to_extruder": "flooring_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "flooring_layer_count > 0 and bottom_layers > 0"
+                        },
+                        "flooring_pattern":
+                        {
+                            "label": "Bottom Surface Skin Pattern",
+                            "description": "The pattern of the bottom most layers.",
+                            "type": "enum",
+                            "options":
+                            {
+                                "lines": "Lines",
+                                "concentric": "Concentric",
+                                "zigzag": "Zig Zag"
+                            },
+                            "default_value": "lines",
+                            "value": "top_bottom_pattern",
+                            "limit_to_extruder": "flooring_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "flooring_layer_count > 0 and bottom_layers > 0"
+                        },
+                        "flooring_monotonic":
+                        {
+                            "label": "Monotonic Bottom Surface Order",
+                            "description": "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                            "type": "bool",
+                            "value": true,
+                            "default_value": true,
+                            "enabled": "flooring_layer_count > 0 and bottom_layers > 0 and flooring_pattern != 'concentric'",
+                            "limit_to_extruder": "flooring_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "flooring_angles":
+                        {
+                            "label": "Bottom Surface Skin Line Directions",
+                            "description": "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                            "type": "[int]",
+                            "default_value": "[ ]",
+                            "value": "skin_angles",
+                            "enabled": "flooring_pattern != 'concentric' and flooring_layer_count > 0 and bottom_layers > 0",
+                            "limit_to_extruder": "flooring_extruder_nr",
                             "settable_per_mesh": true
                         }
                     }
@@ -2952,6 +3037,34 @@
                                     "maximum_value_warning": "150",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "wall_0_material_flow_flooring":
+                                {
+                                    "label": "Bottom Surface Outer Wall Flow",
+                                    "description": "Flow compensation on the bottom surface outermost wall line.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_0_material_flow",
+                                    "minimum_value": "0.0001",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "wall_x_material_flow_flooring":
+                                {
+                                    "label": "Bottom Surface Inner Wall(s) Flow",
+                                    "description": "Flow compensation on bottom surface wall lines for all wall lines except the outermost one.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_x_material_flow",
+                                    "minimum_value": "0.0001",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -2984,6 +3097,21 @@
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true,
                             "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
+                        "flooring_material_flow":
+                        {
+                            "label": "Bottom Surface Skin Flow",
+                            "description": "Flow compensation on lines of the areas at the bottom of the print.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "skin_material_flow",
+                            "minimum_value": "0.0001",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "flooring_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "flooring_layer_count > 0 and bottom_layers > 0"
                         },
                         "infill_material_flow":
                         {
@@ -3231,6 +3359,19 @@
                     "minimum_value": 0.01,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "material_pressure_advance_factor":
+                {
+                    "enabled": false,
+                    "label": "Pressure advance factor",
+                    "description": "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion",
+                    "default_value": 0.05,
+                    "maximum_value_warning": 1.0,
+                    "minimum_value": 0,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
                 }
             }
         },
@@ -3339,6 +3480,34 @@
                                     "value": "speed_wall_x",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "speed_wall_0_flooring":
+                                {
+                                    "label": "Bottom Surface Outer Wall Speed",
+                                    "description": "The speed at which the bottom surface outermost wall is printed.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "minimum_value": "0.1",
+                                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                                    "maximum_value_warning": "150",
+                                    "default_value": 30,
+                                    "value": "speed_wall_0",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "speed_wall_x_flooring":
+                                {
+                                    "label": "Bottom Surface Inner Wall Speed",
+                                    "description": "The speed at which the bottom surface inner walls are printed.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "minimum_value": "0.1",
+                                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                                    "maximum_value_warning": "150",
+                                    "default_value": 60,
+                                    "value": "speed_wall_x",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -3356,6 +3525,21 @@
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true,
                             "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
+                        "speed_flooring":
+                        {
+                            "label": "Bottom Surface Skin Speed",
+                            "description": "The speed at which bottom surface skin layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                            "maximum_value_warning": "150",
+                            "default_value": 25,
+                            "value": "speed_topbottom",
+                            "limit_to_extruder": "flooring_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "flooring_layer_count > 0 and bottom_layers > 0"
                         },
                         "speed_topbottom":
                         {
@@ -3712,6 +3896,36 @@
                                     "enabled": "resolveOrValue('acceleration_enabled')",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "acceleration_wall_0_flooring":
+                                {
+                                    "label": "Bottom Surface Outer Wall Acceleration",
+                                    "description": "The acceleration with which the bottom surface outermost walls are printed.",
+                                    "unit": "mm/s\u00b2",
+                                    "type": "float",
+                                    "minimum_value": "0.1",
+                                    "minimum_value_warning": "100",
+                                    "maximum_value_warning": "10000",
+                                    "default_value": 3000,
+                                    "value": "acceleration_wall_0",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "acceleration_wall_x_flooring":
+                                {
+                                    "label": "Bottom Surface Inner Wall Acceleration",
+                                    "description": "The acceleration with which the bottom surface inner walls are printed.",
+                                    "unit": "mm/s\u00b2",
+                                    "type": "float",
+                                    "minimum_value": "0.1",
+                                    "minimum_value_warning": "100",
+                                    "maximum_value_warning": "10000",
+                                    "default_value": 3000,
+                                    "value": "acceleration_wall_x",
+                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -3728,6 +3942,21 @@
                             "value": "acceleration_topbottom",
                             "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "acceleration_flooring":
+                        {
+                            "label": "Bottom Surface Skin Acceleration",
+                            "description": "The acceleration with which bottom surface skin layers are printed.",
+                            "unit": "mm/s\u00b2",
+                            "type": "float",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "100",
+                            "maximum_value_warning": "10000",
+                            "default_value": 3000,
+                            "value": "acceleration_topbottom",
+                            "enabled": "resolveOrValue('acceleration_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
+                            "limit_to_extruder": "flooring_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "acceleration_topbottom":
@@ -4039,6 +4268,34 @@
                                     "enabled": "resolveOrValue('jerk_enabled')",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "jerk_wall_0_flooring":
+                                {
+                                    "label": "Bottom Surface Outer Wall Jerk",
+                                    "description": "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "50",
+                                    "default_value": 20,
+                                    "value": "jerk_wall_0",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "jerk_wall_x_flooring":
+                                {
+                                    "label": "Bottom Surface Inner Wall Jerk",
+                                    "description": "The maximum instantaneous velocity change with which the bottom surface inner walls are printed.",
+                                    "unit": "mm/s",
+                                    "type": "float",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "50",
+                                    "default_value": 20,
+                                    "value": "jerk_wall_x",
+                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         },
@@ -4054,6 +4311,20 @@
                             "value": "jerk_topbottom",
                             "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "jerk_flooring":
+                        {
+                            "label": "Bottom Surface Skin Jerk",
+                            "description": "The maximum instantaneous velocity change with which bottom surface skin layers are printed.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "50",
+                            "default_value": 20,
+                            "value": "jerk_topbottom",
+                            "enabled": "resolveOrValue('jerk_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
+                            "limit_to_extruder": "flooring_extruder_nr",
                             "settable_per_mesh": true
                         },
                         "jerk_topbottom":
@@ -4711,6 +4982,31 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang":
+                {
+                    "label": "Minimum Layer Time with Overhang",
+                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 5,
+                    "value": "cool_min_layer_time",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "600",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang_min_segment_length":
+                {
+                    "label": "Minimum Overhang Segment Length",
+                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "500",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -7500,6 +7796,88 @@
                     "enabled": "retraction_enable and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "interlocking_enable":
+                {
+                    "label": "Generate Interlocking Structure",
+                    "description": "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials.",
+                    "type": "bool",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": false,
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_width":
+                {
+                    "label": "Interlocking Beam Width",
+                    "description": "The width of the interlocking structure beams.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 0.8,
+                    "value": "2 * wall_line_width_0",
+                    "minimum_value": "min_odd_wall_line_width",
+                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
+                    "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "interlocking_orientation":
+                {
+                    "label": "Interlocking Structure Orientation",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 22.5,
+                    "minimum_value": "0",
+                    "maximum_value": "360",
+                    "resolve": "min(extruderValues('interlocking_orientation'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_beam_layer_count":
+                {
+                    "label": "Interlocking Beam Layer Count",
+                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "maximum_value_warning": "50",
+                    "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_depth":
+                {
+                    "label": "Interlocking Depth",
+                    "description": "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "1",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_depth'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "interlocking_boundary_avoidance":
+                {
+                    "label": "Interlocking Boundary Avoidance",
+                    "description": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
+                    "type": "int",
+                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
+                    "default_value": 2,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "resolveOrValue('interlocking_depth')",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "5",
+                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
@@ -7922,88 +8300,6 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
-                "interlocking_enable":
-                {
-                    "label": "Generate Interlocking Structure",
-                    "description": "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials.",
-                    "type": "bool",
-                    "enabled": "extruders_enabled_count > 1",
-                    "default_value": false,
-                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('interlocking_enable'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_beam_width":
-                {
-                    "label": "Interlocking Beam Width",
-                    "description": "The width of the interlocking structure beams.",
-                    "type": "float",
-                    "unit": "mm",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 0.8,
-                    "value": "2 * wall_line_width_0",
-                    "minimum_value": "min_odd_wall_line_width",
-                    "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
-                    "maximum_value_warning": "max(extruderValues('wall_line_width_0')) * 6",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "interlocking_orientation":
-                {
-                    "label": "Interlocking Structure Orientation",
-                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
-                    "unit": "\u00b0",
-                    "type": "float",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 22.5,
-                    "minimum_value": "0",
-                    "maximum_value": "360",
-                    "resolve": "min(extruderValues('interlocking_orientation'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_beam_layer_count":
-                {
-                    "label": "Interlocking Beam Layer Count",
-                    "description": "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 2,
-                    "minimum_value": "1",
-                    "maximum_value_warning": "50",
-                    "resolve": "max(extruderValues('interlocking_beam_layer_count'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_depth":
-                {
-                    "label": "Interlocking Depth",
-                    "description": "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 2,
-                    "minimum_value": "1",
-                    "maximum_value": "10",
-                    "maximum_value_warning": "5",
-                    "resolve": "max(extruderValues('interlocking_depth'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
-                "interlocking_boundary_avoidance":
-                {
-                    "label": "Interlocking Boundary Avoidance",
-                    "description": "The distance from the outside of a model where interlocking structures will not be generated, measured in cells.",
-                    "type": "int",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('interlocking_enable')",
-                    "default_value": 2,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "resolveOrValue('interlocking_depth')",
-                    "maximum_value": "10",
-                    "maximum_value_warning": "5",
-                    "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
                 "support_skip_some_zags":
                 {
                     "label": "Break Up Support In Chunks",
@@ -8416,15 +8712,13 @@
                     "value": "support_angle",
                     "settable_per_mesh": true
                 },
-                "wall_overhang_speed_factor":
+                "wall_overhang_speed_factors":
                 {
-                    "label": "Overhanging Wall Speed",
-                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
+                    "label": "Overhanging Wall Speeds",
+                    "description": "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]",
                     "unit": "%",
-                    "type": "float",
-                    "default_value": 100,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "25",
+                    "type": "[int]",
+                    "default_value": "[100]",
                     "settable_per_mesh": true
                 },
                 "bridge_settings_enabled":

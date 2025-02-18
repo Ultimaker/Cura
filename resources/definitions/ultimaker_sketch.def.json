@@ -52,7 +52,6 @@
             "ultimaker_rapidrinse",
             "ultimaker_sr30",
             "ultimaker_petg",
-            "ultimaker_metallic_pla",
             "basf_",
             "jabil_",
             "polymaker_",
@@ -60,7 +59,8 @@
             "ultimaker_sr30",
             "ultimaker_petg",
             "ultimaker_pva",
-            "ultimaker_metallic_pla"
+            "ultimaker_pc-abs",
+            "ultimaker_pc-abs-fr"
         ],
         "has_machine_quality": true,
         "has_materials": true,
