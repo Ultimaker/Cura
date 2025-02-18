@@ -1,3 +1,8 @@
+[5.9.1]
+
+* New features and improvements:
+The About Page now shows some of the used sources, their licenses, and their versions in a clearer way. This will be even more complete in Cura 5.10.
+
 [5.9]
 
 * New features and improvements:
