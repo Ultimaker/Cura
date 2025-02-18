@@ -44,7 +44,7 @@ on:
 
 jobs:
   macos-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-macos.yml@CURA-12400_legal_fix
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       conan_args: ${{ inputs.conan_args }}
