@@ -36,6 +36,7 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
+from UM.PluginObject import PluginObject
 from UM.Preferences import Preferences
 from UM.Qt.Bindings.FileProviderModel import FileProviderModel
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
@@ -130,8 +131,6 @@ from .Machines.Models.IntentSelectionModel import IntentSelectionModel
 from .PrintOrderManager import PrintOrderManager
 from .SingleInstance import SingleInstance
 
-from .NavlibClient import NavlibClient
-
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
@@ -220,6 +219,7 @@ class CuraApplication(QtApplication):
         self._machine_error_checker = None
 
         self._backend_plugins: List[BackendPlugin] = []
+        self._view_manipulators: List[PluginObject] = []
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
         self._material_management_model = None
@@ -845,6 +845,7 @@ class CuraApplication(QtApplication):
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
         self._plugin_registry.addType("backend_plugin", self._addBackendPlugin)
+        self._plugin_registry.addType("view_manipulator", self._addViewManipulator)
 
         if Platform.isLinux():
             lib_suffixes = {"", "64", "32", "x32"}  # A few common ones on different distributions.
@@ -1038,10 +1039,6 @@ class CuraApplication(QtApplication):
         controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
-
-        self._navlib_client = NavlibClient(controller.getScene(), self.getRenderer())
-        self._navlib_client.put_profile_hint("UltiMaker Cura")
-        self._navlib_client.enable_navigation(True)
 
         # Hide the splash screen
         self.closeSplash()
@@ -1950,6 +1947,9 @@ class CuraApplication(QtApplication):
 
     def getBackendPlugins(self) -> List["BackendPlugin"]:
         return self._backend_plugins
+
+    def _addViewManipulator(self, view_manipulator: "PluginObject"):
+        self._view_manipulators.append(view_manipulator)
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):

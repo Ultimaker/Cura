@@ -3,25 +3,18 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from cura.PickingPass import PickingPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from cura.Scene.OverlayNode import OverlayNode, SceneNode
+from UM.Scene import SceneNode
 from UM.Resources import Resources
+from UM.PluginObject import PluginObject
 from UM.Logger import Logger
+from .OverlayNode import OverlayNode
+import pynavlib.pynavlib_interface as pynav
 
-try:
-    import pynavlib.pynavlib_interface as pynav
-    parent_class = pynav.NavlibNavigationModel
-except BaseException as exception:
-    Logger.warning(f"Unable to load 3DConnexion library: {exception}")
-    pynav = None
-    parent_class = object
-
-class NavlibClient(parent_class):
+class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
 
     def __init__(self, scene, renderer) -> None:
-        if not pynav:
-            return
-
-        super().__init__(False, pynav.NavlibOptions.RowMajorOrder)
+        pynav.NavlibNavigationModel.__init__(self, False, pynav.NavlibOptions.RowMajorOrder)
+        PluginObject.__init__(self)
         self._scene = scene
         self._renderer = renderer
         self._pointer_pick = None
@@ -29,14 +22,8 @@ class NavlibClient(parent_class):
         self._hit_selection_only = False
         self._picking_pass = None
         self._pivot_node = OverlayNode(node=SceneNode(), image_path=Resources.getPath(Resources.Images, "cor.png"), size=2.5)
-
-    def put_profile_hint(self, hint) -> None:
-        if pynav:
-            super().put_profile_hint(hint)
-
-    def enable_navigation(self, enabled) -> None:
-        if pynav:
-            super().enable_navigation(enabled)
+        self.put_profile_hint("UltiMaker Cura")
+        self.enable_navigation(True)
 
     def pick(self, x, y, check_selection = False, radius = 0.):
 
