@@ -280,12 +280,13 @@ class CuraConan(ConanFile):
     def _make_extra_dependency_description(self, dependency_name, dependency_data, dependencies):
         sources_url = dependency_data["sources_url"]
         version = dependency_data["version"]
+        home_url = dependency_data["home_url"] if "home_url" in dependency_data else sources_url
 
         dependency_description = {
             "summary": dependency_data["summary"],
             "version": version,
             "license": dependency_data["license"],
-            "sources_url": sources_url,
+            "sources_url": home_url,
         }
 
         if not self.options.skip_licenses_download:
