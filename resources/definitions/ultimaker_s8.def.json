@@ -273,6 +273,11 @@
         "skin_material_flow": { "value": 95 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
+        "skirt_brim_speed":
+        {
+            "maximum_value_warning": 300,
+            "value": "speed_layer_0"
+        },
         "skirt_line_count": { "value": 5 },
         "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": 4 },
@@ -310,11 +315,6 @@
         {
             "maximum_value_warning": 300,
             "value": "speed_wall"
-        },
-        "speed_skirt_brim":
-        {
-            "maximum_value_warning": 300,
-            "value": "speed_layer_0"
         },
         "speed_support":
         {
@@ -382,7 +382,6 @@
             "value": "speed_wall"
         },
         "support_brim_line_count": { "value": 5 },
-        "support_density": { "value": "15 if support_structure == 'tree' else 20" },
         "support_infill_rate": { "value": "80 if gradual_support_infill_steps != 0 else 15" },
         "support_interface_enable": { "value": true },
         "support_pattern": { "value": "'gyroid' if support_structure == 'tree' else 'lines'" },
