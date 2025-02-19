@@ -17,7 +17,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = ">=2.7.0"
+required_conan_version = ">=2.7.0" # When changing the version, also change the one in conandata.yml/extra_dependencies
 
 
 class CuraConan(ConanFile):
@@ -148,6 +148,28 @@ class CuraConan(ConanFile):
         # That will not work for ALL open-source projects, but should already get a large majority of them
         return (url.startswith("https://github.com/") or url.startswith("https://gitlab.com/")) and "conan-center-index" not in url
 
+    def _retrieve_pip_license(self, package, sources_url, dependency_description):
+        # Download the sources to get the license file inside
+        self.output.info(f"Retrieving license for {package}")
+        response = requests.get(sources_url)
+        response.raise_for_status()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            sources_path = os.path.join(temp_dir, "sources.tar.gz")
+            with open(sources_path, 'wb') as sources_file:
+                sources_file.write(response.content)
+
+            with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                license_file = "LICENSE"
+
+                for source_file in sources_archive.getnames():
+                    if Path(source_file).name == license_file:
+                        sources_archive.extract(source_file, temp_dir)
+
+                        license_file_path = os.path.join(temp_dir, source_file)
+                        with open(license_file_path, 'r') as file:
+                            dependency_description["license_full"] = file.read()
+
     def _make_pip_dependency_description(self, package, version, dependencies):
         url = ["https://pypi.org/pypi", package]
         if version is not None:
@@ -168,26 +190,7 @@ class CuraConan(ConanFile):
                 dependency_description["sources_url"] = sources_url
 
                 if not self.options.skip_licenses_download:
-                    # Download the sources to get the license file inside
-                    self.output.info(f"Retrieving license for {package}")
-                    response = requests.get(sources_url)
-                    response.raise_for_status()
-
-                    with tempfile.TemporaryDirectory() as temp_dir:
-                        sources_path = os.path.join(temp_dir, "sources.tar.gz")
-                        with open(sources_path, 'wb') as sources_file:
-                            sources_file.write(response.content)
-
-                        with tarfile.open(sources_path, 'r:gz') as sources_archive:
-                            license_file = "LICENSE"
-
-                            for source_file in sources_archive.getnames():
-                                if Path(source_file).name == license_file:
-                                    sources_archive.extract(source_file, temp_dir)
-
-                                    license_file_path = os.path.join(temp_dir, source_file)
-                                    with open(license_file_path, 'r') as file:
-                                        dependency_description["license_full"] = file.read()
+                    self._retrieve_pip_license(package, sources_url, dependency_description)
 
         for source_url, check_source in [("source", False),
                                          ("Source", False),
@@ -200,6 +203,7 @@ class CuraConan(ConanFile):
                 url = data["info"]["project_urls"][source_url]
                 if check_source and not self._is_repository_url(url):
                     # That will not work for ALL open-source projects, but should already get a large majority of them
+                    self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
                     continue
                 dependency_description["sources_url"] = url
                 break
@@ -299,17 +303,17 @@ class CuraConan(ConanFile):
     def _dependencies_description(self):
         dependencies = {}
 
-        pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
-        with open(pip_requirements_summary, 'r') as file:
-            for package_name, package_version in yaml.safe_load(file).items():
-                self._make_pip_dependency_description(package_name, package_version, dependencies)
-
         for dependency in [self] + list(self.dependencies.values()):
             self._make_conan_dependency_description(dependency, dependencies)
 
             if "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
                     self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
+
+        pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
+        with open(pip_requirements_summary, 'r') as file:
+            for package_name, package_version in yaml.safe_load(file).items():
+                self._make_pip_dependency_description(package_name, package_version, dependencies)
 
         return dependencies
 
