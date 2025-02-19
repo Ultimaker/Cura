@@ -304,16 +304,12 @@ class CuraConan(ConanFile):
             for package_name, package_version in yaml.safe_load(file).items():
                 self._make_pip_dependency_description(package_name, package_version, dependencies)
 
-        for dependency in self.dependencies.values():
+        for dependency in [self] + list(self.dependencies.values()):
             self._make_conan_dependency_description(dependency, dependencies)
 
             if "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
                     self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
-
-        if "extra_dependencies" in self.conan_data:
-            for dependency_name, dependency_data in self.conan_data["extra_dependencies"].items():
-                self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
 
         return dependencies
 
