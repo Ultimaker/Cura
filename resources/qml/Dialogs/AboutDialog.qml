@@ -375,7 +375,7 @@ UM.Dialog
                                 "whether future versions of the GNU Lesser General Public License shall\n" +
                                 "apply, that proxy's public statement of acceptance of any version is\n" +
                                 "permanent authorization for you to choose that version for the\n" +
-                                "Library.\n", url: "https://code.qt.io/cgit/qt/qtbase.git/" });
+                                "Library.\n", url: "https://github.com/Ultimaker/Cura/blob/main/licenses_thirdparty/qt.md" });
                         projectsModel.append({ name: "PyQt", description: catalog.i18nc("@label Description for application dependency", "GUI framework bindings"), license: "GPL", license_full: "", url: "https://riverbankcomputing.com/software/pyqt" });
                         projectsModel.append({ name: "SIP", description: catalog.i18nc("@label Description for application dependency", "C/C++ Binding library"), license: "GPL", license_full: "", url: "https://riverbankcomputing.com/software/sip" });
                         projectsModel.append({ name: "Protobuf", description: catalog.i18nc("@label Description for application dependency", "Data interchange format"), license: "BSD", license_full: "", url: "https://developers.google.com/protocol-buffers" });
