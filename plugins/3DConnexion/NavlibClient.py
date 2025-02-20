@@ -14,9 +14,10 @@ from .OverlayNode import OverlayNode
 import pynavlib.pynavlib_interface as pynav
 
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
     from typing import Optional
-    from UM.Scene import Scene
+    from UM.Scene.Scene import Scene
     from UM.View.Renderer import Renderer
 
 class NavlibClient(pynav.NavlibNavigationModel, Tool):
