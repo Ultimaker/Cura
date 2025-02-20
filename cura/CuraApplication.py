@@ -36,7 +36,6 @@ from UM.Operations.SetTransformOperation import SetTransformOperation
 from UM.OutputDevice.ProjectOutputDevice import ProjectOutputDevice
 from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
-from UM.PluginObject import PluginObject
 from UM.Preferences import Preferences
 from UM.Qt.Bindings.FileProviderModel import FileProviderModel
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
