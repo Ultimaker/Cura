@@ -10,9 +10,15 @@ from UM.Logger import Logger
 from .OverlayNode import OverlayNode
 import pynavlib.pynavlib_interface as pynav
 
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from typing import Optional
+    from UM.Scene import Scene
+    from UM.View.Renderer import Renderer
+
 class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
 
-    def __init__(self, scene, renderer) -> None:
+    def __init__(self, scene: Scene, renderer: Renderer) -> None:
         pynav.NavlibNavigationModel.__init__(self, False, pynav.NavlibOptions.RowMajorOrder)
         PluginObject.__init__(self)
         self._scene = scene
@@ -25,7 +31,7 @@ class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
         self.put_profile_hint("UltiMaker Cura")
         self.enable_navigation(True)
 
-    def pick(self, x, y, check_selection = False, radius = 0.):
+    def pick(self, x: float, y: float, check_selection: bool = False, radius: float = 0.) -> Optional[Vector]:
 
         if self._picking_pass is None or radius < 0.:
             return None
@@ -196,7 +202,7 @@ class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
     def is_user_pivot(self) -> bool:
         return False
 
-    def set_camera_matrix(self, matrix : "pynav.NavlibMatrix"):
+    def set_camera_matrix(self, matrix : "pynav.NavlibMatrix") -> None:
 
         # !!!!!!
         # Hit testing in Orthographic view is not reliable
@@ -239,15 +245,15 @@ class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
 
         self._pivot_node.scale(scale)
 
-    def set_view_extents(self, extents: "pynav.NavlibBox"):
+    def set_view_extents(self, extents: "pynav.NavlibBox") -> None:
         view_width = self._scene.getActiveCamera().getViewportWidth()
         new_zoom = (extents._min._x + view_width / 2.) / - view_width
         self._scene.getActiveCamera().setZoomFactor(new_zoom)
 
-    def set_hit_selection_only(self, onlySelection : bool):
+    def set_hit_selection_only(self, onlySelection : bool) -> None:
         self._hit_selection_only = onlySelection
 
-    def set_motion_flag(self, motion : bool):
+    def set_motion_flag(self, motion : bool) -> None:
         if motion:
             width = self._scene.getActiveCamera().getViewportWidth()
             height = self._scene.getActiveCamera().getViewportHeight()
@@ -257,10 +263,10 @@ class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
             self._was_pick = False
             self._renderer.removeRenderPass(self._picking_pass)
 
-    def set_pivot_position(self, position):
+    def set_pivot_position(self, position) -> None:
         self._pivot_node._target_node.setPosition(position=Vector(position._x, position._y, position._z), transform_space = SceneNode.TransformSpace.World)
 
-    def set_pivot_visible(self, visible):
+    def set_pivot_visible(self, visible) -> None:
         if visible:
             self._scene.getRoot().addChild(self._pivot_node)
         else:
