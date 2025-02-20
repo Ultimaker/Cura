@@ -59,6 +59,8 @@
             "zyyx_pro_",
             "octofiber_",
             "fiberlogy_",
+            "ultimaker_pc-abs",
+            "ultimaker_pc-abs-fr",
             "ultimaker_metallic_pla_175"
         ],
         "has_machine_materials": true,
