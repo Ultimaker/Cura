@@ -331,7 +331,7 @@ class CuraConan(ConanFile):
 
         self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 
-        with open(os.path.join(location, "CuraVersion.py"), "w") as f:
+        with open(os.path.join(location, "CuraVersion.py"), "wb") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
