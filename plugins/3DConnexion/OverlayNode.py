@@ -1,5 +1,5 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Cura is released under the terms of the AGPLv3 or higher.
+# Copyright (c) 2025 3Dconnexion, UltiMaker
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Scene.SceneNode import SceneNode
 from UM.View.GL.OpenGL import OpenGL

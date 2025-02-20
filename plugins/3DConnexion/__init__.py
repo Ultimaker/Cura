@@ -1,4 +1,4 @@
-# Copyright (c) 2025 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
@@ -18,5 +18,5 @@ def register(app: "Application") -> Dict[str, Any]:
         from .NavlibClient import NavlibClient
         return { "view_manipulator": NavlibClient(app.getController().getScene(), app.getRenderer()) }
     except BaseException as exception:
-        Logger.warning(f"Unable to load 3DConnexion library: {exception}")
+        Logger.warning(f"Unable to load 3Dconnexion library: {exception}")
         return { }

@@ -1,3 +1,6 @@
+# Copyright (c) 2025 3Dconnexion, UltiMaker
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
