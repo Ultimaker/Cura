@@ -8,7 +8,7 @@ from cura.PickingPass import PickingPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
-from UM.PluginObject import PluginObject
+from UM.Tool import Tool
 from UM.Logger import Logger
 from .OverlayNode import OverlayNode
 import pynavlib.pynavlib_interface as pynav
@@ -19,11 +19,11 @@ if TYPE_CHECKING:
     from UM.Scene import Scene
     from UM.View.Renderer import Renderer
 
-class NavlibClient(pynav.NavlibNavigationModel, PluginObject):
+class NavlibClient(pynav.NavlibNavigationModel, Tool):
 
     def __init__(self, scene: Scene, renderer: Renderer) -> None:
         pynav.NavlibNavigationModel.__init__(self, False, pynav.NavlibOptions.RowMajorOrder)
-        PluginObject.__init__(self)
+        Tool.__init__(self)
         self._scene = scene
         self._renderer = renderer
         self._pointer_pick = None

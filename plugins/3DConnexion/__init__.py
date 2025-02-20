@@ -10,13 +10,17 @@ if TYPE_CHECKING:
 
 
 def getMetaData() -> Dict[str, Any]:
-    return {}
+    return {
+        "tool": {
+            "visible": False
+        }
+    }
 
 
 def register(app: "Application") -> Dict[str, Any]:
     try:
         from .NavlibClient import NavlibClient
-        return { "view_manipulator": NavlibClient(app.getController().getScene(), app.getRenderer()) }
+        return { "tool": NavlibClient(app.getController().getScene(), app.getRenderer()) }
     except BaseException as exception:
         Logger.warning(f"Unable to load 3Dconnexion library: {exception}")
         return { }
