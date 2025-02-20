@@ -347,7 +347,7 @@ class CuraConan(ConanFile):
                 cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
                 conan_installs=self._conan_installs(),
                 python_installs=self._python_installs(),
-                dependencies_description=self._dependencies_description().decode("utf-8"),
+                dependencies_description=self._dependencies_description(),
             ).encode("utf-8"))
 
     def _delete_unwanted_binaries(self, root):
