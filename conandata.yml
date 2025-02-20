@@ -5,9 +5,9 @@ requirements:
   - "curaengine/5.10.0-alpha.0@ultimaker/testing"
   - "cura_binary_data/5.10.0-alpha.0@ultimaker/testing"
   - "fdm_materials/5.10.0-alpha.0@ultimaker/testing"
-  - "dulcificum/0.3.0@ultimaker/stable"
-  - "pysavitar/5.4.0-alpha.0@ultimaker/stable"
-  - "pynest2d/5.4.0-alpha.0@ultimaker/stable"
+  - "dulcificum/5.10.0@ultimaker/stable"
+  - "pysavitar/5.10.0@ultimaker/stable"
+  - "pynest2d/5.10.0@ultimaker/stable"
 requirements_internal:
   - "fdm_materials/5.10.0-alpha.0@internal/testing"
   - "cura_private_data/5.10.0-alpha.0@internal/testing"
