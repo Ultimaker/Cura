@@ -1,24 +1,20 @@
 # Copyright (c) 2025 3Dconnexion, UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from cura.PickingPass import PickingPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Scene import Scene
 from UM.Resources import Resources
 from UM.Tool import Tool
-from UM.Logger import Logger
+from UM.View.Renderer import Renderer
 from .OverlayNode import OverlayNode
 import pynavlib.pynavlib_interface as pynav
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Optional
-    from UM.Scene.Scene import Scene
-    from UM.View.Renderer import Renderer
 
 class NavlibClient(pynav.NavlibNavigationModel, Tool):
 
