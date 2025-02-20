@@ -625,3 +625,10 @@ python_translation_source_folders:
 qml_translation_source_folders:
   - resources/qml
   - plugins
+
+extra_dependencies:
+  conan:
+    version: "2.7.1"
+    sources_url: https://github.com/conan-io/conan
+    license: MIT
+    summary: Conan C/C++ package manager
