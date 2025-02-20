@@ -3,7 +3,7 @@ from UM.Math.Vector import Vector
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from cura.PickingPass import PickingPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene import SceneNode
+from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.PluginObject import PluginObject
 from UM.Logger import Logger
