@@ -167,7 +167,7 @@ class CuraConan(ConanFile):
                         sources_archive.extract(source_file, temp_dir)
 
                         license_file_path = os.path.join(temp_dir, source_file)
-                        with open(license_file_path, 'r') as file:
+                        with open(license_file_path, 'r', encoding='utf8') as file:
                             dependency_description["license_full"] = file.read()
 
     def _make_pip_dependency_description(self, package, version, dependencies):
@@ -250,7 +250,7 @@ class CuraConan(ConanFile):
                 for file_name in files:
                     license_file = os.path.join(clone_dir, file_name)
                     if os.path.exists(license_file):
-                        with open(license_file, 'r') as file:
+                        with open(license_file, 'r', encoding='utf8') as file:
                             return file.read()
 
                 break
