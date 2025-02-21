@@ -407,8 +407,7 @@ class CuraConan(ConanFile):
             except Exception as ex:
                 print(f"WARNING: Attempt to delete folder {dir_} results in: {str(ex)}")
 
-    def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file,
-                                   cura_source_folder):
+    def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file, cura_source_folder):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
@@ -658,7 +657,7 @@ class CuraConan(ConanFile):
         self._delete_unwanted_binaries(self._share_dir)
 
         entitlements_file = "'{}'".format(Path(self.deploy_folder, "packaging", "MacOS", "cura.entitlements"))
-        self._generate_pyinstaller_spec(location=self.deploy_folder,
+        self._generate_pyinstaller_spec(location = self.deploy_folder,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
                                         entitlements_file = entitlements_file if self.settings.os == "Macos" else "None",
