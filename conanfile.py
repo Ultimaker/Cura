@@ -687,4 +687,4 @@ class CuraConan(ConanFile):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
 
     def package_id(self):
-        self.info.options.rm_safe("enable_i18n")
+        self.info.options.rm_safe("i18n_extract")
