@@ -196,7 +196,7 @@ class DigitalFactoryApiClient:
         url = "{}/projects/{}/files".format(self.CURA_API_ROOT, library_project_id)
         self._http.get(url,
                        scope = self._scope,
-                       callback=self._parseCallback(on_finished, DigitalFactoryFileResponse, failed, default_values={'username': ''}),
+                       callback = self._parseCallback(on_finished, DigitalFactoryFileResponse, failed, default_values = {'username': ''}),
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
