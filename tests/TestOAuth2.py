@@ -109,7 +109,7 @@ def test__parseJWTNoRefreshToken(http_request_manager):
 
     mock_callback = Mock()  # To log the final profile response.
 
-    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value=http_request_manager)):
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_request_manager)):
         authorization_service._parseJWT(mock_callback)
     mock_callback.assert_called_once()
     profile_reply = mock_callback.call_args_list[0][0][0]
@@ -195,7 +195,8 @@ def test_refreshAccessTokenFailed():
     http_mock.post = lambda url, data, headers_dict, callback, error_callback, urgent, timeout: callback(mock_reply)
 
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.readJSON", Mock(return_value = {"error_description": "Mock a failed request!"})):
-        with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)): authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+        with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+            authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
             with patch("cura.OAuth2.AuthorizationHelpers.AuthorizationHelpers.getAccessTokenUsingRefreshToken", side_effect=lambda refresh_token, callback: callback(FAILED_AUTH_RESPONSE)):
                 authorization_service.refreshAccessToken()
                 authorization_service.onAuthStateChanged.emit.assert_called_with(logged_in = False)
