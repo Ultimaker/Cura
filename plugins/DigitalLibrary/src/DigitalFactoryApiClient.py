@@ -196,8 +196,7 @@ class DigitalFactoryApiClient:
         url = "{}/projects/{}/files".format(self.CURA_API_ROOT, library_project_id)
         self._http.get(url,
                        scope = self._scope,
-                       callback=self._parseCallback(on_finished, DigitalFactoryFileResponse, failed,
-                                                    default_values={'username': ''}),
+                       callback=self._parseCallback(on_finished, DigitalFactoryFileResponse, failed, default_values={'username': ''}),
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
@@ -236,8 +235,7 @@ class DigitalFactoryApiClient:
             if status_code >= 300 and on_error is not None:
                 on_error()
             else:
-                self._parseModels(response, on_finished, model, pagination_manager=pagination_manager,
-                                  default_values=default_values)
+                self._parseModels(response, on_finished, model, pagination_manager = pagination_manager, default_values = default_values)
 
         self._anti_gc_callbacks.append(parse)
         return parse

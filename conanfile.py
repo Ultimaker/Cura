@@ -133,7 +133,7 @@ class CuraConan(ConanFile):
         save(self, collect_python_installs, code)
 
         buffer = StringIO()
-        self.run(f"""python {collect_python_installs}""", env="virtual_python_env", stdout=buffer)
+        self.run(f"""python {collect_python_installs}""", env = "virtual_python_env", stdout = buffer)
         rm(self, collect_python_installs, ".")
 
         packages = str(buffer.getvalue()).strip('\r\n').split(";")
@@ -336,8 +336,8 @@ class CuraConan(ConanFile):
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
                 cura_version = cura_version,
-                cura_version_full=self.version,
-                cura_build_type="Enterprise" if self.options.enterprise else "",
+                cura_version_full = self.version,
+                cura_build_type = "Enterprise" if self.options.enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
                 cura_cloud_api_root = self.conan_data["urls"][self._urls]["cloud_api_root"],
                 cura_cloud_api_version = self.options.cloud_api_version,
@@ -428,15 +428,13 @@ class CuraConan(ConanFile):
 
                     package_folder = self.dependencies[data['package']].package_folder
                     if package_folder is None:
-                        raise ConanException(
-                            f"Unable to find package_folder for {data['package']}, check that it has not been skipped")
+                        raise ConanException(f"Unable to find package_folder for {data['package']}, check that it has not been skipped")
 
                     src_path = os.path.join(self.dependencies[data["package"]].package_folder, data["src"])
             elif "root" in data:  # get the paths relative from the install folder
                 src_path = os.path.join(self.install_folder, data["root"], data["src"])
             else:
-                raise ConanException(
-                    "Misformatted conan data for pyinstaller datas, expected either package or root option")
+                raise ConanException("Misformatted conan data for pyinstaller datas, expected either package or root option")
 
             if not Path(src_path).exists():
                 raise ConanException(f"Missing folder {src_path} for pyinstaller data {data}")
@@ -452,8 +450,7 @@ class CuraConan(ConanFile):
                 if self.settings.os == "Windows":
                     src_path = src_path.replace("\\", "\\\\")
             else:
-                raise ConanException(
-                    "Misformatted conan data for pyinstaller binaries, expected either package or root option")
+                raise ConanException("Misformatted conan data for pyinstaller binaries, expected either package or root option")
 
             if not Path(src_path).exists():
                 raise ConanException(f"Missing folder {src_path} for pyinstaller binary {binary}")
@@ -486,8 +483,7 @@ class CuraConan(ConanFile):
 
         # filter all binary files in binaries on the blacklist
         blacklist = pyinstaller_metadata["blacklist"]
-        filtered_binaries = [b for b in binaries if
-                             not any([all([(part in b[0].lower()) for part in parts]) for parts in blacklist])]
+        filtered_binaries = [b for b in binaries if not any([all([(part in b[0].lower()) for part in parts]) for parts in blacklist])]
 
         # In case the installer isn't actually pyinstaller (Windows at the moment), outright remove the offending files:
         specifically_delete = set(binaries) - set(filtered_binaries)
@@ -511,10 +507,10 @@ class CuraConan(ConanFile):
                 display_name = self._app_name,
                 entrypoint = entrypoint_location,
                 datas = datas,
-                binaries=filtered_binaries,
+                binaries = filtered_binaries,
                 venv_script_path = str(self._script_dir),
-                hiddenimports=hiddenimports,
-                collect_all=collect_all,
+                hiddenimports = hiddenimports,
+                collect_all = collect_all,
                 icon = icon_path,
                 entitlements_file = entitlements_file,
                 osx_bundle_identifier = "'nl.ultimaker.cura'" if self.settings.os == "Macos" else "None",
@@ -539,8 +535,7 @@ class CuraConan(ConanFile):
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
 
     def validate(self):
-        if self.options.i18n_extract and self.settings.os == "Windows" and not self.conf.get(
-                "tools.microsoft.bash:path", check_type=str):
+        if self.options.i18n_extract and self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
             raise ConanInvalidConfiguration("Unable to extract translations on Windows without Bash installed")
 
     def requirements(self):
@@ -572,17 +567,17 @@ class CuraConan(ConanFile):
 
         # Copy CuraEngine.exe to bindirs of Virtual Python Environment
         curaengine = self.dependencies["curaengine"].cpp_info
-        copy(self, "CuraEngine.exe", curaengine.bindirs[0], self.source_folder, keep_path=False)
-        copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path=False)
+        copy(self, "CuraEngine.exe", curaengine.bindirs[0], self.source_folder, keep_path = False)
+        copy(self, "CuraEngine", curaengine.bindirs[0], self.source_folder, keep_path = False)
 
         # Copy the external plugins that we want to bundle with Cura
         if self.options.enterprise:
             rmdir(self, str(Path(self.source_folder, "plugins", "NativeCADplugin")))
             native_cad_plugin = self.dependencies["native_cad_plugin"].cpp_info
             copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")),
-                 keep_path=True)
+                 keep_path = True)
             copy(self, "bundled_*.json", native_cad_plugin.resdirs[1],
-                 str(Path(self.source_folder, "resources", "bundled_packages")), keep_path=False)
+                 str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
@@ -666,8 +661,8 @@ class CuraConan(ConanFile):
         self._generate_pyinstaller_spec(location=self.deploy_folder,
                                         entrypoint_location = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.bindirs[0], self.conan_data["pyinstaller"]["runinfo"]["entrypoint"])).replace("\\", "\\\\"),
                                         icon_path = "'{}'".format(os.path.join(self.package_folder, self.cpp_info.resdirs[2], self.conan_data["pyinstaller"]["icon"][str(self.settings.os)])).replace("\\", "\\\\"),
-                                        entitlements_file=entitlements_file if self.settings.os == "Macos" else "None",
-                                        cura_source_folder=self.package_folder)
+                                        entitlements_file = entitlements_file if self.settings.os == "Macos" else "None",
+                                        cura_source_folder = self.package_folder)
 
     def package(self):
         copy(self, "cura_app.py", src = self.source_folder, dst = os.path.join(self.package_folder, self.cpp.package.bindirs[0]))

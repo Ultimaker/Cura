@@ -124,8 +124,7 @@ class SliceInfo(QObject, Extension):
 
         return list(sorted(user_modified_setting_keys))
 
-    def _flattenData(self, data: Any, result: dict, current_flat_key: Optional[str] = None,
-                     lift_list: bool = False) -> None:
+    def _flattenData(self, data: Any, result: dict, current_flat_key: Optional[str] = None, lift_list: bool = False) -> None:
         if isinstance(data, dict):
             for key, value in data.items():
                 total_flat_key = key if current_flat_key is None else f"{current_flat_key}_{key}"

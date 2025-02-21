@@ -36,15 +36,15 @@ pyinstaller:
             src: "plugins"
             dst: "share/cura/plugins"
         native_cad_plugin:
-          package: "native_cad_plugin"
-          src: "res/plugins/NativeCADplugin"
-          dst: "share/cura/plugins/NativeCADplugin"
-          enterprise_only: true
+            package: "native_cad_plugin"
+            src: "res/plugins/NativeCADplugin"
+            dst: "share/cura/plugins/NativeCADplugin"
+            enterprise_only: true
         native_cad_plugin_bundled:
-          package: "native_cad_plugin"
-          src: "res/bundled_packages"
-          dst: "share/cura/resources/bundled_packages"
-          enterprise_only: true
+            package: "native_cad_plugin"
+            src: "res/bundled_packages"
+            dst: "share/cura/resources/bundled_packages"
+            enterprise_only: true
         cura_resources:
             package: "cura"
             src: "resources"
@@ -111,8 +111,8 @@ pyinstaller:
         - "win32timezone"
         - "pkgutil"
     hiddenimports_WINDOWS_ONLY:
-      - "PyQt6.Qt"
-      - "PyQt6.Qt6"
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     collect_all:
         - "cura"
         - "UM"
@@ -127,8 +127,8 @@ pyinstaller:
         - "keyrings.alt"
         - "pynavlib"
     collect_all_WINDOWS_ONLY:
-      - "PyQt6.Qt"
-      - "PyQt6.Qt6"
+        - "PyQt6.Qt"
+        - "PyQt6.Qt6"
     icon:
         Windows: "./icons/Cura.ico"
         Macos: "./icons/cura.icns"
@@ -609,15 +609,15 @@ pip_requirements_core:
 
 pip_requirements_dev:
   any_os:
-    pytest: { }
-    pyyaml: { }
+    pytest: {}
+    pyyaml: {}
     sip: { version: "6.5.1" }
-    jinja2: { }
+    jinja2: {}
 
 pip_requirements_installer:
   any_os:
     pyinstaller: { version: "6.11.1" }
-    pyinstaller-hooks-contrib: { }
+    pyinstaller-hooks-contrib: {}
 
 python_translation_source_folders:
   - cura
