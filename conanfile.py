@@ -411,7 +411,8 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
-            if (not self.options.internal and data.get("internal", False)) or (not self.options.enterprise and data.get("enterprise_only", False)):
+            if (not self.options.internal and data.get("internal", False)) or (
+                    not self.options.enterprise and data.get("enterprise_only", False)):
                 continue
 
             if "oses" in data and self.settings.os not in data["oses"]:
@@ -572,8 +573,10 @@ class CuraConan(ConanFile):
         if self.options.enterprise:
             rmdir(self, str(Path(self.source_folder, "plugins", "NativeCADplugin")))
             native_cad_plugin = self.dependencies["native_cad_plugin"].cpp_info
-            copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")), keep_path = True)
-            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1], str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
+            copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")),
+                 keep_path = True)
+            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1],
+                 str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
@@ -611,7 +614,8 @@ class CuraConan(ConanFile):
 
     def build(self):
         if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
-            self.output.warning("Skipping generation of binary translation files because Bash could not be found and is required")
+            self.output.warning(
+                "Skipping generation of binary translation files because Bash could not be found and is required")
             return
 
         for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
@@ -624,7 +628,8 @@ class CuraConan(ConanFile):
         ''' Note: this deploy step is actually used to prepare for building a Cura distribution with pyinstaller, which is not
             the original purpose in the Conan philosophy '''
 
-        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.deploy_folder, "packaging"), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]),
+             os.path.join(self.deploy_folder, "packaging"), keep_path=True)
 
         # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)

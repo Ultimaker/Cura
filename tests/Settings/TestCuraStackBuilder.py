@@ -51,7 +51,8 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
     application.getContainerRegistry = MagicMock(return_value=container_registry)
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         mocked_config_error = MagicMock()
-        with patch("UM.ConfigurationErrorMessage.ConfigurationErrorMessage.getInstance", MagicMock(return_value=mocked_config_error)):
+        with patch("UM.ConfigurationErrorMessage.ConfigurationErrorMessage.getInstance",
+                   MagicMock(return_value=mocked_config_error)):
             assert CuraStackBuilder.createMachine("Whatever", "NOPE") is None
             mocked_config_error.addFaultyContainers.assert_called_once_with("NOPE")
 
