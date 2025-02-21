@@ -1,6 +1,6 @@
 version: "5.10.0-alpha.0"
 requirements:
-  - "cura_resources/5.10.0-alpha.0@ultimaker/cura_12261"
+  - "cura_resources/5.10.0-alpha.0@ultimaker/testing"
   - "uranium/5.10.0-alpha.0@ultimaker/testing"
   - "curaengine/5.10.0-alpha.0@ultimaker/testing"
   - "cura_binary_data/5.10.0-alpha.0@ultimaker/testing"
