@@ -1,0 +1,8 @@
+{
+    "name": "3DConnexion mouses",
+    "author": "3DConnexion",
+    "version": "1.0.0",
+    "description": "Allows working with 3D mouses inside Cura.",
+    "api": 8,
+    "i18n-catalog": "cura"
+}

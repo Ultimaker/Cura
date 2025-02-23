@@ -298,8 +298,14 @@ class FlavorParser:
             position.e.extend([0] * (self._extruder_number - len(position.e) + 1))
         return position
 
-    def processMCode(self, M: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> Position:
-        pass
+    def processMCode(self, M: int, line: str, position: Position, path: List[List[Union[float, int]]]) -> None:
+        # Set extrusion mode
+        if M == 82:
+            # Set absolute extrusion mode
+            self._is_absolute_extrusion = True
+        elif M == 83:
+            # Set relative extrusion mode
+            self._is_absolute_extrusion = False
 
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"

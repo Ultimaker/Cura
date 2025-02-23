@@ -167,7 +167,12 @@
         "travel_avoid_supports": { "value": "True" },
         "wall_line_width": { "value": "machine_nozzle_size" },
         "wall_overhang_angle": { "value": "75" },
-        "wall_overhang_speed_factor": { "value": "50" },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                50
+            ]
+        },
         "zig_zaggify_infill": { "value": "True" }
     }
 }

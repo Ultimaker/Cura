@@ -133,7 +133,7 @@ Control
                         text = catalog.i18nc("@button", "Waiting for new printers")
                         busy = true;
                         enabled = false;
-                        Cura.API.account.login();
+                        Cura.API.account.isLoggedIn? Cura.API.account.sync():Cura.API.account.login();
                     }
                 }
             }

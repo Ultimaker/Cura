@@ -1,0 +1,55 @@
+{
+    "version": 2,
+    "name": "Creality K1 Max",
+    "inherits": "creality_base",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Itay Grudev",
+        "manufacturer": "Creality3D",
+        "file_formats": "text/x-gcode",
+        "first_start_actions": [ "MachineSettingsAction" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains": { "0": "creality_k1max_extruder_0" },
+        "preferred_material": "generic_pla",
+        "preferred_quality_type": "standard",
+        "preferred_variant_name": "0.4mm Nozzle",
+        "quality_definition": "creality_base",
+        "variants_name": "Nozzle Size"
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 45 },
+        "machine_depth": { "default_value": 300 },
+        "machine_end_gcode": { "default_value": "END_PRINT" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-50, 40],
+                [-50, -62],
+                [25, 40],
+                [25, -62]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 300 },
+        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_max_acceleration_x": { "value": 20000.0 },
+        "machine_max_acceleration_y": { "value": 20000.0 },
+        "machine_max_acceleration_z": { "value": 500.0 },
+        "machine_max_feedrate_e": { "value": 100 },
+        "machine_max_feedrate_x": { "value": 800 },
+        "machine_max_feedrate_y": { "value": 800 },
+        "machine_max_feedrate_z": { "value": 30 },
+        "machine_max_jerk_e": { "value": 2.5 },
+        "machine_max_jerk_xy": { "value": 9 },
+        "machine_max_jerk_z": { "value": 2 },
+        "machine_name": { "default_value": "Creality K1 Max" },
+        "machine_start_gcode": { "default_value": "M140 S0\nM104 S0 \nSTART_PRINT EXTRUDER_TEMP={material_print_temperature_layer_0} BED_TEMP={material_bed_temperature_layer_0}\n" },
+        "machine_width": { "default_value": 300 },
+        "retraction_amount": { "default_value": 0.5 },
+        "retraction_speed": { "default_value": 40 }
+    }
+}

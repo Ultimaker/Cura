@@ -17,6 +17,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Scene.SceneNodeSettings import SceneNodeSettings
+from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -131,6 +132,7 @@ class ThreeMFReader(MeshReader):
         vertices = numpy.resize(data, (int(data.size / 3), 3))
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
+        mesh_builder.setMeshId(node_id)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
@@ -182,7 +184,7 @@ class ThreeMFReader(MeshReader):
                     um_node.printOrder = int(setting_value)
                     continue
                 if key =="drop_to_buildplate":
-                    um_node.setSetting(SceneNodeSettings.AutoDropDown, eval(setting_value))
+                    um_node.setSetting(SceneNodeSettings.AutoDropDown, parseBool(setting_value))
                     continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)

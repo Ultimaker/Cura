@@ -13,8 +13,11 @@ class Definition(Linter):
     def __init__(self, file: Path, settings: dict) -> None:
         super().__init__(file, settings)
         self._definitions = {}
+        self._definition_name = None
+        self._experimental_settings = []
         self._loadDefinitionFiles(file)
         self._content = self._file.read_text()
+        self._loadExperimentalSettings()
         self._loadBasePrinterSettings()
 
     @property
@@ -28,6 +31,14 @@ class Definition(Linter):
             for check in self.checkRedefineOverride():
                 yield check
 
+        if self._settings["checks"].get("diagnostic-material-temperature-defined", False):
+            for check in self.checkMaterialTemperature():
+                yield check
+
+        if self._settings["checks"].get("diagnostic-definition-experimental-setting", False):
+            for check in self.checkExperimentalSetting():
+                yield check
+
         # Add other which will yield Diagnostic's
         # TODO: A check to determine if the user set value is with the min and max value defined in the parent and doesn't trigger a warning
         # TODO: A check if the key exist in the first place
@@ -37,11 +48,10 @@ class Definition(Linter):
 
     def checkRedefineOverride(self) -> Iterator[Diagnostic]:
         """ Checks if definition file overrides its parents settings with the same value. """
-        definition_name = list(self._definitions.keys())[0]
-        definition = self._definitions[definition_name]
-        if "overrides" in definition and definition_name not in ("fdmprinter", "fdmextruder"):
+        definition = self._definitions[self._definition_name]
+        if "overrides" in definition and self._definition_name not in ("fdmprinter", "fdmextruder"):
             for key, value_dict in definition["overrides"].items():
-                is_redefined, child_key, child_value, parent = self._isDefinedInParent(key, value_dict, definition['inherits'])
+                is_redefined, child_key, child_value, parent, inherited_by= self._isDefinedInParent(key, value_dict, definition['inherits'])
                 if is_redefined:
                     redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
                     found = redefined.search(self._content)
@@ -59,10 +69,53 @@ class Definition(Linter):
                     yield Diagnostic(
                         file = self._file,
                         diagnostic_name = "diagnostic-definition-redundant-override",
-                        message = f"Overriding {key} with the same value ({child_key}: {child_value}) as defined in parent definition: {definition['inherits']}",
+                        message = f"Overriding {key} with the same value ({child_key}: {child_value}) as defined in parent definition: {inherited_by}",
                         level = "Warning",
                         offset = found.span(0)[0],
                         replacements = replacements
+                    )
+
+    def checkMaterialTemperature(self) -> Iterator[Diagnostic]:
+        """Checks if definition file has material tremperature defined within them"""
+        definition = self._definitions[self._definition_name]
+        if "overrides" in definition and self._definition_name not in ("fdmprinter", "fdmextruder"):
+            for key, value_dict in definition["overrides"].items():
+                if "temperature" in key and "material" in key:
+
+                    redefined = re.compile(r'.*(\"' + key + r'\"[\s\:\S]*?)\{[\s\S]*?\},?')
+                    found = redefined.search(self._content)
+                    if len(found.group().splitlines()) > 1:
+                        replacements = []
+                    else:
+                        replacements = [Replacement(
+                            file=self._file,
+                            offset=found.span(1)[0],
+                            length=len(found.group()),
+                            replacement_text="")]
+
+                    yield Diagnostic(
+                        file=self._file,
+                        diagnostic_name="diagnostic-material-temperature-defined",
+                        message=f"Overriding {key} as it belongs to material temperature catagory and shouldn't be placed in machine definitions",
+                        level="Warning",
+                        offset=found.span(0)[0],
+                        replacements=replacements
+                    )
+
+    def checkExperimentalSetting(self) -> Iterator[Diagnostic]:
+        """Checks if definition uses experimental settings"""
+        definition = self._definitions[self._definition_name]
+        if "overrides" in definition and self._definition_name not in ("fdmprinter", "fdmextruder"):
+            for setting in definition["overrides"]:
+                if setting in self._experimental_settings:
+                    redefined = re.compile(setting)
+                    found = redefined.search(self._content)
+                    yield Diagnostic(
+                        file=self._file,
+                        diagnostic_name="diagnostic-definition-experimental-setting",
+                        message=f"Setting {setting} is still experimental and should not be used in default profiles",
+                        level="Warning",
+                        offset=found.span(0)[0]
                     )
 
     def _loadDefinitionFiles(self, definition_file) -> None:
@@ -71,6 +124,9 @@ class Definition(Linter):
 
         if not definition_file.exists() or definition_name in self._definitions:
             return
+
+        if self._definition_name is None:
+            self._definition_name = definition_name
 
         # Load definition file into dictionary
         self._definitions[definition_name] = json.loads(definition_file.read_text())
@@ -85,7 +141,7 @@ class Definition(Linter):
 
     def _isDefinedInParent(self, key, value_dict, inherits_from):
         if self._ignore(key, "diagnostic-definition-redundant-override"):
-            return False, None, None, None
+            return False, None, None, None, None
         if "overrides" not in self._definitions[inherits_from]:
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
@@ -114,11 +170,17 @@ class Definition(Linter):
                         v = child_value
                         cv = check_value
                     if v == cv:
-                        return True, child_key, child_value, parent
+                        return True, child_key, child_value, parent, inherits_from
 
                 if "inherits" in parent:
                     return self._isDefinedInParent(key, value_dict, parent["inherits"])
-        return False, None, None, None
+        return False, None, None, None, None
+
+    def _loadExperimentalSettings(self):
+        try:
+            self._experimental_settings = self._definitions[self.base_def]["settings"]["experimental"]["children"].keys()
+        except:
+            pass
 
     def _loadBasePrinterSettings(self):
         settings = {}

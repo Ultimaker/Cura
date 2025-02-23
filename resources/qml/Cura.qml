@@ -702,32 +702,23 @@ UM.MainWindow
             if (hasProjectFile)
             {
                 var projectFile = projectFileUrlList[0]
-                var is_ucp = CuraApplication.isProjectUcp(projectFile);
-                if (is_ucp)
+                // check preference
+                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                if (choice == "open_as_project")
                 {
-                    askOpenAsProjectOrUcpOrImportModelsDialog.fileUrl = projectFile;
-                    askOpenAsProjectOrUcpOrImportModelsDialog.addToRecent = true;
-                    askOpenAsProjectOrUcpOrImportModelsDialog.show();
+                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
                 }
-                else
+                else if (choice == "open_as_model")
                 {
-                    // check preference
-                    var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                    if (choice == "open_as_project")
-                    {
-                        openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
-                    }
-                    else if (choice == "open_as_model")
-                    {
-                        openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
-                    }
-                    else    // always ask
-                    {
-                        // ask whether to open as project or as models
-                        askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                        askOpenAsProjectOrModelsDialog.addToRecent = true;
-                        askOpenAsProjectOrModelsDialog.show();
-                    }
+                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
+                }
+                else    // always ask
+                {
+                    // ask whether to open as project or as models
+                    askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(projectFile);
+                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
+                    askOpenAsProjectOrModelsDialog.addToRecent = true;
+                    askOpenAsProjectOrModelsDialog.show();
                 }
             }
             else
@@ -778,30 +769,15 @@ UM.MainWindow
         id: askOpenAsProjectOrModelsDialog
     }
 
-    AskOpenAsProjectOrUcpOrImportModel
-    {
-        id: askOpenAsProjectOrUcpOrImportModelsDialog
-    }
-
     Connections
     {
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
-            var is_ucp = CuraApplication.isProjectUcp(project_file);
-            if (is_ucp)
-            {
-
-                askOpenAsProjectOrUcpOrImportModelsDialog.fileUrl = project_file;
-                askOpenAsProjectOrUcpOrImportModelsDialog.addToRecent = add_to_recent_files;
-                askOpenAsProjectOrUcpOrImportModelsDialog.show();
-            }
-            else
-            {
-                askOpenAsProjectOrModelsDialog.fileUrl = project_file;
-                askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
-                askOpenAsProjectOrModelsDialog.show();
-            }
+            askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(project_file);
+            askOpenAsProjectOrModelsDialog.fileUrl = project_file;
+            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
+            askOpenAsProjectOrModelsDialog.show();
         }
     }
 
@@ -864,6 +840,7 @@ UM.MainWindow
                 if(!visible)
                 {
                     wizardDialog = null
+                    Cura.API.account.startSyncing()
                 }
             }
         }
@@ -891,6 +868,7 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
+            Cura.API.account.stopSyncing()
             wizardDialog = addMachineDialogLoader.createObject()
             wizardDialog.show()
         }

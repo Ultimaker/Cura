@@ -10,7 +10,7 @@ import Cura 1.0 as Cura
 
 
 // This element contains all the elements the user needs to visualize the data
-// that is gather after the slicing process, such as printint time, material usage, ...
+// that is gather after the slicing process, such as printing time, material usage, ...
 // There are also two buttons: one to previsualize the output layers, and the other to
 // select what to do with it (such as print over network, save to file, ...)
 Column

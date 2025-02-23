@@ -6,13 +6,15 @@ from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class SettingExport(QObject):
 
-    def __init__(self, id, name, value, selectable):
+    def __init__(self, id, name, value, value_name, selectable, show):
         super().__init__()
         self.id = id
         self._name = name
         self._value = value
+        self._value_name = value_name
         self._selected = selectable
         self._selectable = selectable
+        self._show_in_menu = show
 
     @pyqtProperty(str, constant=True)
     def name(self):
@@ -21,6 +23,10 @@ class SettingExport(QObject):
     @pyqtProperty(str, constant=True)
     def value(self):
         return self._value
+
+    @pyqtProperty(str, constant=True)
+    def valuename(self):
+        return str(self._value_name)
 
     selectedChanged = pyqtSignal(bool)
 
@@ -36,3 +42,7 @@ class SettingExport(QObject):
     @pyqtProperty(bool, constant=True)
     def selectable(self):
         return self._selectable
+
+    @pyqtProperty(bool, constant=True)
+    def isVisible(self):
+        return self._show_in_menu

@@ -67,13 +67,13 @@
         "layer_height_0": { "value": "round(machine_nozzle_size / 1.5, 2)" },
         "layer_start_x":
         {
-            "default_value": 105.0,
-            "enabled": false
+            "enabled": false,
+            "value": 105.0
         },
         "layer_start_y":
         {
-            "default_value": 27.0,
-            "enabled": false
+            "enabled": false,
+            "value": 27.0
         },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
         "machine_acceleration": { "default_value": 3000 },
@@ -130,7 +130,6 @@
         "machine_min_cool_heat_time_window": { "default_value": 15.0 },
         "machine_name": { "default_value": "Mark2_for_Ultimaker2" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.5 },
-        "machine_nozzle_head_distance": { "default_value": 5 },
         "machine_nozzle_heat_up_speed": { "default_value": 3.5 },
         "machine_nozzle_size": { "default_value": 0.4 },
         "machine_show_variants": { "default_value": true },

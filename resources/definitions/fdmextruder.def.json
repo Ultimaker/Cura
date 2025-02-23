@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "manufacturer": "Unknown",
         "position": "0",
-        "setting_version": 22,
+        "setting_version": 24,
         "type": "extruder"
     },
     "settings":
@@ -38,6 +38,18 @@
                     "settable_per_mesh": false,
                     "type": "float",
                     "unit": "mm"
+                },
+                "machine_extruder_change_duration":
+                {
+                    "default_value": 0,
+                    "description": "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur.",
+                    "label": "Extruder Change duration",
+                    "minimum_value": "0",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float"
                 },
                 "machine_extruder_cooling_fan_number":
                 {
@@ -109,6 +121,17 @@
                     "type": "float",
                     "unit": "mm"
                 },
+                "machine_extruder_prestart_code":
+                {
+                    "default_value": "",
+                    "description": "Prestart g-code to execute before switching to this extruder.",
+                    "label": "Extruder Prestart G-Code",
+                    "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "str"
+                },
                 "machine_extruder_start_code":
                 {
                     "default_value": "",
@@ -161,6 +184,17 @@
                     "description": "The y-coordinate of the starting position when turning the extruder on.",
                     "label": "Extruder Start Position Y",
                     "settable_globally": false,
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "float",
+                    "unit": "mm"
+                },
+                "machine_nozzle_head_distance":
+                {
+                    "default_value": 3,
+                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "label": "Nozzle Length",
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
                     "settable_per_meshgroup": false,

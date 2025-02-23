@@ -62,7 +62,6 @@ Item
 
     property alias showProfileFolder: showProfileFolderAction
     property alias documentation: documentationAction
-    property alias showTroubleshooting: showTroubleShootingAction
     property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
     property alias whatsNew: whatsNewAction
@@ -78,6 +77,7 @@ Item
     property alias paste: pasteAction
     property alias copy: copyAction
     property alias cut: cutAction
+    property alias exportProjectForSupport: exportProjectForSupportAction
 
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
@@ -85,14 +85,6 @@ Item
     }
 
     UM.I18nCatalog{id: catalog; name: "cura"}
-
-
-    Action
-    {
-        id: showTroubleShootingAction
-        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting?utm_source=cura&utm_medium=software&utm_campaign=dropdown-troubleshooting")
-        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting")
-    }
 
     Action
     {
@@ -557,5 +549,26 @@ Item
         id: browsePackagesAction
         text: "&Marketplace"
         icon.name: "plugins_browse"
+    }
+
+    Action
+    {
+        id: exportProjectForSupportAction
+        text: catalog.i18nc("@action:inmenu menubar:help", "Export Package For Technical Support")
+        onTriggered:
+        {
+            var exportName = Qt.formatDateTime(new Date(), "'export-'yyyyMMdd-HHmmss")
+            var args = {
+                "filter_by_machine": false,
+                "file_type": "workspace",
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+                "silent_save": true,
+                "writer_args": {
+                    "include_log": true
+                }
+            };
+            UM.OutputDeviceManager.requestWriteToDevice("local_file", exportName, args)
+        }
     }
 }

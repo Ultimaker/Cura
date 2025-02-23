@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "name": "Extruder Right",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "weedo_x40v3",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_extruder_cooling_fan_number": { "default_value": 1 },
+        "machine_extruder_end_code": { "default_value": "M605 S0 ;Disable auto-park\nG91 ; Relative positioning\nG1 E-8 1680\nG90\nG0 X353.7 F3000\n" },
+        "machine_extruder_start_code": { "default_value": "G91 ; Relative positioning\nG1 E14 F300\nG1 E-5 F1800\nG90\nG92 E-4.5" },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

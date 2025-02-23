@@ -24,29 +24,34 @@ UM.Dialog
     {
         height: childrenRect.height + 2 * UM.Theme.getSize("default_margin").height
         color: UM.Theme.getColor("main_background")
-
-        UM.Label
+        ColumnLayout
         {
-            id: titleLabel
-            text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
-            font: UM.Theme.getFont("large")
+            id: headerColumn
+
             anchors.top: parent.top
             anchors.left: parent.left
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.leftMargin: UM.Theme.getSize("default_margin").height
-        }
-
-        Cura.TertiaryButton
-        {
-            id: learnMoreButton
-            visible: manager.isUcp
             anchors.right: parent.right
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.rightMargin: UM.Theme.getSize("default_margin").height
-            text: catalog.i18nc("@button", "Learn more")
-            iconSource: UM.Theme.getIcon("LinkExternal")
-            isIconOnRightSide: true
-            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.rightMargin: anchors.leftMargin
+            RowLayout
+            {
+                UM.Label
+                {
+                    id: titleLabel
+                    text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
+                    font: UM.Theme.getFont("large")
+                }
+                Cura.TertiaryButton
+                {
+                    id: learnMoreButton
+                    visible: manager.isUcp
+                    text: catalog.i18nc("@button", "Learn more")
+                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    isIconOnRightSide: true
+                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
+                }
+            }
         }
     }
 
@@ -184,8 +189,9 @@ UM.Dialog
 
                         WorkspaceRow
                         {
+                            id: numberOfOverrides
                             leftLabelText: catalog.i18nc("@action:label", "Settings Loaded from UCP file")
-                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModel.rowCount()).arg(manager.exportedSettingModel.rowCount())
+                            rightLabelText: catalog.i18ncp("@action:label", "%1 override", "%1 overrides", manager.exportedSettingModelRowCount).arg(manager.exportedSettingModelRowCount)
                             buttonText: tableViewSpecificSettings.shouldBeVisible ? catalog.i18nc("@action:button", "Hide settings") : catalog.i18nc("@action:button", "Show settings")
                             onButtonClicked: tableViewSpecificSettings.shouldBeVisible = !tableViewSpecificSettings.shouldBeVisible
                         }
@@ -208,15 +214,18 @@ UM.Dialog
                             {
                                 id: tableModel
                                 headers: ["category", "label", "value"]
-                                rows: manager.exportedSettingModel.items
+                                rows: manager.exportedSettingModelItems
                             }
-                        }
 
-                        property var modelRows: manager.exportedSettingModel.items
-                        onModelRowsChanged:
-                        {
-                            tableModel.clear()
-                            tableModel.rows = modelRows
+                            Connections
+                            {
+                                target: manager
+                                function onExportedSettingModelChanged()
+                                {
+                                    tableModel.clear()
+                                    tableModel.rows = manager.exportedSettingModelItems
+                                }
+                            }
                         }
                     }
 

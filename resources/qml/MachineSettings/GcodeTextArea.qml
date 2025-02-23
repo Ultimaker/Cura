@@ -12,19 +12,15 @@ import Cura 1.1 as Cura
 //
 // TextArea widget for editing Gcode in the Machine Settings dialog.
 //
-UM.TooltipArea
+Item
 {
     id: control
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    text: tooltip
-
     property alias containerStackId: propertyProvider.containerStackId
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
-
-    property string tooltip: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     property alias labelText: titleLabel.text
     property alias labelFont: titleLabel.font
