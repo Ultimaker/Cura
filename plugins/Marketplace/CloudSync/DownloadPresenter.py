@@ -49,10 +49,10 @@ class DownloadPresenter:
         for item in model.items:
             package_id = item["package_id"]
 
-            def finishedCallback(reply: QNetworkReply, pid = package_id) -> None:
+            def finishedCallback(reply: QNetworkReply, pid=package_id) -> None:
                 self._onFinished(pid, reply)
 
-            def progressCallback(rx: int, rt: int, pid = package_id) -> None:
+            def progressCallback(rx: int, rt: int, pid=package_id) -> None:
                 self._onProgress(pid, rx, rt)
 
             def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, pid = package_id) -> None:
@@ -60,10 +60,10 @@ class DownloadPresenter:
 
             request_data = manager.get(
                 item["download_url"],
-                callback = finishedCallback,
-                download_progress_callback = progressCallback,
-                error_callback = errorCallback,
-                scope = self._scope)
+                callback=finishedCallback,
+                download_progress_callback=progressCallback,
+                error_callback=errorCallback,
+                scope=self._scope)
 
             self._progress[package_id] = {
                 "received": 0,
@@ -89,16 +89,16 @@ class DownloadPresenter:
 
     def _createProgressMessage(self) -> Message:
         return Message(i18n_catalog.i18nc("@info:generic", "Syncing..."),
-            lifetime = 0,
-            use_inactivity_timer = False,
-            progress = 0.0,
-            title = i18n_catalog.i18nc("@info:title", "Changes detected from your UltiMaker account"))
+            lifetime=0,
+            use_inactivity_timer=False,
+            progress=0.0,
+            title=i18n_catalog.i18nc("@info:title", "Changes detected from your UltiMaker account"))
 
     def _onFinished(self, package_id: str, reply: QNetworkReply) -> None:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
 
         try:
-            with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
+            with tempfile.NamedTemporaryFile(mode="wb+", suffix=".curapackage", delete=False) as temp_file:
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
                     temp_file.write(bytes_read)

@@ -58,7 +58,7 @@ class NetworkMJPGImage(QQuickPaintedItem):
         return self._source_url
 
     sourceURLChanged = pyqtSignal()
-    source = pyqtProperty(QUrl, fget = getSourceURL, fset = setSourceURL, notify = sourceURLChanged)
+    source = pyqtProperty(QUrl, fget=getSourceURL, fset=setSourceURL, notify=sourceURLChanged)
 
     def setMirror(self, mirror: bool) -> None:
         if mirror == self._mirror:
@@ -71,15 +71,15 @@ class NetworkMJPGImage(QQuickPaintedItem):
         return self._mirror
 
     mirrorChanged = pyqtSignal()
-    mirror = pyqtProperty(bool, fget = getMirror, fset = setMirror, notify = mirrorChanged)
+    mirror = pyqtProperty(bool, fget=getMirror, fset=setMirror, notify=mirrorChanged)
 
     imageSizeChanged = pyqtSignal()
 
-    @pyqtProperty(int, notify = imageSizeChanged)
+    @pyqtProperty(int, notify=imageSizeChanged)
     def imageWidth(self) -> int:
         return self._image.width()
 
-    @pyqtProperty(int, notify = imageSizeChanged)
+    @pyqtProperty(int, notify=imageSizeChanged)
     def imageHeight(self) -> int:
         return self._image.height()
 

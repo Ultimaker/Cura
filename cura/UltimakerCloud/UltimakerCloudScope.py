@@ -27,7 +27,7 @@ class UltimakerCloudScope(DefaultUserAgentScope):
         super().requestHook(request)
         token = self._account.accessToken
         if not self._account.isLoggedIn or token is None:
-            Logger.debug("User is not logged in for Cloud API request to {url}".format(url = request.url().toDisplayString()))
+            Logger.debug("User is not logged in for Cloud API request to {url}".format(url=request.url().toDisplayString()))
             return
 
         header_dict = {

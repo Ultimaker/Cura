@@ -44,18 +44,18 @@ class FirstStartMachineActionsModel(ListModel):
     currentActionIndexChanged = pyqtSignal()
     allFinished = pyqtSignal()  # Emitted when all actions have been finished.
 
-    @pyqtProperty(int, notify = currentActionIndexChanged)
+    @pyqtProperty(int, notify=currentActionIndexChanged)
     def currentActionIndex(self) -> int:
         return self._current_action_index
 
-    @pyqtProperty("QVariantMap", notify = currentActionIndexChanged)
+    @pyqtProperty("QVariantMap", notify=currentActionIndexChanged)
     def currentItem(self) -> Optional[Dict[str, Any]]:
         if self._current_action_index >= self.count:
             return dict()
         else:
             return self.getItem(self._current_action_index)
 
-    @pyqtProperty(bool, notify = currentActionIndexChanged)
+    @pyqtProperty(bool, notify=currentActionIndexChanged)
     def hasMoreActions(self) -> bool:
         return self._current_action_index < self.count - 1
 

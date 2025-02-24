@@ -121,7 +121,7 @@ class SupportEraser(Tool):
         # First add node to the scene at the correct position/scale, before parenting, so the eraser mesh does not get scaled with the parent
         op.addOperation(AddSceneNodeOperation(node, self._controller.getScene().getRoot()))
         op.addOperation(SetParentOperation(node, parent))
-        op.addOperation(TranslateOperation(node, position, set_position = True))
+        op.addOperation(TranslateOperation(node, position, set_position=True))
         op.push()
 
         CuraApplication.getInstance().getController().getScene().sceneChanged.emit(node)

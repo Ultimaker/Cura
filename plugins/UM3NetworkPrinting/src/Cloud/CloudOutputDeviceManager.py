@@ -115,7 +115,7 @@ class CloudOutputDeviceManager:
 
         self._um_cloud_printers = {m.getMetaDataEntry(self.META_CLUSTER_ID): m for m in
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
-                                       type = "machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
+                                       type="machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
         new_clusters = []
         all_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters}
         online_clusters: Dict[str, CloudClusterResponse] = {c.cluster_id: c for c in clusters if c.is_online}
@@ -219,7 +219,7 @@ class CloudOutputDeviceManager:
                 if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != output_device.key:
                     # If the retrieved device has a different cluster_id than the existing machine, bring the existing
                     # machine up-to-date.
-                    self._updateOutdatedMachine(outdated_machine = machine, new_cloud_output_device = output_device)
+                    self._updateOutdatedMachine(outdated_machine=machine, new_cloud_output_device=output_device)
 
             # Create a machine if we don't already have it. Do not make it the active machine.
             # We only need to add it if it wasn't already added by "local" network or by cloud.
@@ -254,9 +254,9 @@ class CloudOutputDeviceManager:
         # Since the first device might be activated in case there is no active printer yet,
         # it would be nice to prioritize online devices
         online_cluster_names = {c.friendly_name.lower() for c in discovered_clusters if c.is_online and not c.friendly_name is None}
-        new_output_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
+        new_output_devices.sort(key=lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
-        message = NewPrinterDetectedMessage(num_printers_found = len(new_output_devices))
+        message = NewPrinterDetectedMessage(num_printers_found=len(new_output_devices))
         message.show()
 
         new_devices_added = []
@@ -269,7 +269,7 @@ class CloudOutputDeviceManager:
             # If there is no active machine, activate the first available cloud printer
             activate = not CuraApplication.getInstance().getMachineManager().activeMachine
 
-            if self._createMachineFromDiscoveredDevice(output_device.getId(), activate = activate):
+            if self._createMachineFromDiscoveredDevice(output_device.getId(), activate=activate):
                 new_devices_added.append(output_device)
 
         message.finalize(new_devices_added, new_output_devices)
@@ -280,7 +280,7 @@ class CloudOutputDeviceManager:
         Update the metadata of the printers to store whether they are online or not.
         :param printer_responses: The responses received from the API about the printer statuses.
         """
-        for container_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "machine"):
+        for container_stack in CuraContainerRegistry.getInstance().findContainerStacks(type="machine"):
             cluster_id = container_stack.getMetaDataEntry("um_cloud_cluster_id", "")
             if cluster_id in printer_responses:
                 container_stack.setMetaDataEntry("is_online", printer_responses[cluster_id].is_online)
@@ -477,7 +477,7 @@ class CloudOutputDeviceManager:
         elif action == "remove_printers_action":
             machine_manager = CuraApplication.getInstance().getMachineManager()
             remove_printers_ids = {self._um_cloud_printers[i].getId() for i in self.reported_device_ids}
-            all_ids = {m.getId() for m in CuraApplication.getInstance().getContainerRegistry().findContainerStacks(type = "machine")}
+            all_ids = {m.getId() for m in CuraApplication.getInstance().getContainerRegistry().findContainerStacks(type="machine")}
 
             question_title = self.i18n_catalog.i18nc("@title:window", "Remove printers?")
             question_content = self.i18n_catalog.i18ncp(

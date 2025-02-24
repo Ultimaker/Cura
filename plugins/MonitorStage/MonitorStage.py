@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os.path
 from UM.Application import Application
 from cura.Stages.CuraStage import CuraStage
@@ -8,7 +9,7 @@ from cura.Stages.CuraStage import CuraStage
 class MonitorStage(CuraStage):
     """Stage for monitoring a 3D printing while it's printing."""
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         # Wait until QML engine is created, otherwise creating the new QML components will fail
