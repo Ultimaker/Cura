@@ -203,3 +203,19 @@ msgstr "Püskürtme Memesi Uzunluğu"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "Püskürtme memesinin ucu ile yazıcı kafasının en alt kısmı arasındaki yükseklik farkı."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Ekstruder Değişim süresi"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Ekstruder Ön Başlatma G Kodu"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Bu ekstrudere geçmeden önce çalıştırılacak g kodunu önden başlatır."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Çoklu alet kurulumu kullanıldığında bu değer, saniye cinsinden alet değiştirme süresidir. Bu değer, meydana gelen değişiklik sayısına bağlı olarak tahmini süreye eklenecektir."

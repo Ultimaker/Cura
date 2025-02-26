@@ -122,7 +122,7 @@ jobs:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     needs: [parse-version, create-packages]
     with:
-      cura_conan_version: cura/${{ inputs.cura_version }}@ultimaker/stable
+      cura_conan_version: cura/${{ inputs.cura_version }}
       conan_args: "-c user.sentry:environment=production"
     secrets: inherit
 

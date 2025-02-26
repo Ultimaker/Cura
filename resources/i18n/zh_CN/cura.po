@@ -2752,10 +2752,6 @@ msgid "Nozzle offset Y"
 msgstr "喷嘴偏移 Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "喷嘴孔径"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "喷嘴孔径"
 
@@ -5634,3 +5630,59 @@ msgstr "将配置从 Cura 5.8 升级到 Cura 5.9。"
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "版本升级 5.8 到 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion鼠标"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "允许在Cura中使用3D鼠标。"
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "挤出机更换时间"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "挤出机预启动G代码"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "翻转模型的工具手柄Y轴（需要重启）"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "%1 %2的许可证"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ 打印文件"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "是否应翻转平移工具手柄的Y轴？这只会影响模型的Y坐标,其他设置（如机器打印头设置）不受影响,仍按之前的方式运行。"
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "启动G代码必须放在首位"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "此配置不可用,因为核心类型%1存在不匹配问题或其他问题。请访问<a href='%2'>支持页面</a>以查看此打印机类型在新切片方面支持哪些核心。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "将配置从Cura 5.9升级到Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "版本升级 5.9 到 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y轴最大值（\"+\"朝前）"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y轴最小值（\"-\"朝后）"

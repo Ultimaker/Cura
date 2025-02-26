@@ -2758,10 +2758,6 @@ msgid "Nozzle offset Y"
 msgstr "Desvio Y do Nozzle"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Tamanho do nozzle"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Tamanho do nozzle"
 
@@ -5646,3 +5642,59 @@ msgstr "Atualiza configurações de Cura 5.8 para Cura 5.9."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "Atualização da versão 5.8 para 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "Ratos 3DConnexion"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Permite trabalhar com ratos 3D no Cura."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Duração da mudança da extrusora"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Código G de pré-arranque da extrusora"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Inverter o eixo Y da ferramenta de manipulação do modelo (é necessário reiniciar)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Licença para %1 %2"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Ficheiro de impressão Makerbot Replicator+"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Deverá o eixo Y da ferramenta de manipulação traduzida ser invertido? Isto só afetará a coordenada Y do modelo. Todas as outras definições, como as definições da cabeça de impressão da máquina, não são afetadas e continuam a comportar-se como antes."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "O GCode inicial deve estar primeiro"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Esta configuração não está disponível porque existe uma incompatibilidade ou outro problema com o tipo de núcleo %1. Visite a <a href='%2'>página de suporte</a> para verificar que núcleos deste tipo de impressora suportam novas fatias w.r.t."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Atualiza as configurações do Cura 5.9 para o Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Atualização da versão 5.9 para 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Máx. Y (\"+\" para a frente)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Mín. Y (\"-\" para trás)"
