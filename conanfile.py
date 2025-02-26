@@ -613,11 +613,6 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
-            self.output.warning(
-                "Skipping generation of binary translation files because Bash could not be found and is required")
-            return
-
         for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
             mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
             mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,10 +36,6 @@ msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Ekstrüder"
 
-msgctxt "machine_extruder_change_duration label"
-msgid "Extruder Change duration"
-msgstr ""
-
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Ekstruder G-Code'u Sonlandırma"
@@ -59,10 +55,6 @@ msgstr "Ekstruderin X Bitiş Konumu"
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Ekstruderin Y Bitiş Konumu"
-
-msgctxt "machine_extruder_prestart_code label"
-msgid "Extruder Prestart G-Code"
-msgstr ""
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -132,10 +124,6 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "Nozül Kimliği"
 
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Püskürtme Memesi Uzunluğu"
-
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
 msgstr "Nozül NX Ofseti"
@@ -143,10 +131,6 @@ msgstr "Nozül NX Ofseti"
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
 msgstr "Nozül Y Ofseti"
-
-msgctxt "machine_extruder_prestart_code description"
-msgid "Prestart g-code to execute before switching to this extruder."
-msgstr ""
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
@@ -167,10 +151,6 @@ msgstr "Nozül yazdırma işlemini başlatmaya hazırlandığında konumun Z koo
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Yazdırma için kullanılan ekstruder dişli çark. Çoklu ekstrüzyon işlemi için kullanılır."
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "Püskürtme memesinin ucu ile yazıcı kafasının en alt kısmı arasındaki yükseklik farkı."
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -216,6 +196,26 @@ msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Ekstruder açılırken başlangıç konumunun Y koordinatı."
 
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Püskürtme Memesi Uzunluğu"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "Püskürtme memesinin ucu ile yazıcı kafasının en alt kısmı arasındaki yükseklik farkı."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Ekstruder Değişim süresi"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Ekstruder Ön Başlatma G Kodu"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Bu ekstrudere geçmeden önce çalıştırılacak g kodunu önden başlatır."
+
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
-msgstr ""
+msgstr "Çoklu alet kurulumu kullanıldığında bu değer, saniye cinsinden alet değiştirme süresidir. Bu değer, meydana gelen değişiklik sayısına bağlı olarak tahmini süreye eklenecektir."

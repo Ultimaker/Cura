@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 15:37+0100\n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,11 +12,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-msgctxt "@title:label"
-msgid " "
-msgstr ""
-
-#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -146,11 +141,10 @@ msgid "*You will need to restart the application for these changes to have effec
 msgstr "*U moet de toepassing opnieuw starten voordat deze wijzigingen van kracht worden."
 
 msgctxt "@text"
-msgid ""
-"- Add material profiles and plug-ins from the Marketplace\n"
-"- Back-up and sync your material profiles and plug-ins\n"
-"- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- Voeg materiaalprofielen en plug-ins toe uit de Marktplaats- Maak back-ups van uw materiaalprofielen en plug-ins en synchroniseer deze- Deel ideeën met 48.000+ gebruikers in de Ultimaker-community of vraag hen om ondersteuning"
+msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgstr "- Voeg materiaalprofielen en plug-ins toe uit de Marktplaats"
+"- Maak back-ups van uw materiaalprofielen en plug-ins en synchroniseer deze"
+"- Deel ideeën met 48.000+ gebruikers in de Ultimaker-community of vraag hen om ondersteuning"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -171,10 +165,6 @@ msgstr "3D-weergave"
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "3D-weergave"
-
-msgctxt "name"
-msgid "3DConnexion mouses"
-msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -208,45 +198,38 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>Alleen door de gebruiker gewijzigde instellingen worden opgeslagen in het aangepast profiel. </b><br/>Voor materialen die dit ondersteunen, neemt het nieuwe aangepaste profiel eigenschappen over van <b>%1</b> ."
 
-#, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL-renderer: {renderer}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL-leverancier: {vendor}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL-versie: {version}</li>"
 
 msgctxt "@label crash message"
-msgid ""
-"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
-"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
+msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
+msgstr "<p><b>Er is een fatale fout opgetreden in Cura. Stuur ons het crashrapport om het probleem op te lossen</p></b>"
+"            <p>Druk op de knop &quot;Rapport verzenden&quot; om het foutenrapport automatisch naar onze servers te verzenden</p>"
 "        "
-msgstr "<p><b>Er is een fatale fout opgetreden in Cura. Stuur ons het crashrapport om het probleem op te lossen</p></b>            <p>Druk op de knop &quot;Rapport verzenden&quot; om het foutenrapport automatisch naar onze servers te verzenden</p>        "
 
 msgctxt "@label crash message"
-msgid ""
-"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
-"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
-"                    <p>Backups can be found in the configuration folder.</p>\n"
-"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
+msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
+msgstr "<p><b>Oeps, UltiMaker Cura heeft een probleem gedetecteerd.</p></b>"
+"                    <p>Tijdens het opstarten is een onherstelbare fout opgetreden. Deze fout is mogelijk veroorzaakt door enkele onjuiste configuratiebestanden. Het wordt aanbevolen een back-up te maken en de standaardinstelling van uw configuratie te herstellen.</p>"
+"                    <p>Back-ups bevinden zich in de configuratiemap.</p>"
+"                    <p>Stuur ons dit crashrapport om het probleem op te lossen.</p>"
 "                "
-msgstr "<p><b>Oeps, UltiMaker Cura heeft een probleem gedetecteerd.</p></b>                    <p>Tijdens het opstarten is een onherstelbare fout opgetreden. Deze fout is mogelijk veroorzaakt door enkele onjuiste configuratiebestanden. Het wordt aanbevolen een back-up te maken en de standaardinstelling van uw configuratie te herstellen.</p>                    <p>Back-ups bevinden zich in de configuratiemap.</p>                    <p>Stuur ons dit crashrapport om het probleem op te lossen.</p>                "
 
-#, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Een of meer 3D-modellen worden mogelijk niet optimaal geprint vanwege het modelformaat en de materiaalconfiguratie:</p><p>{model_names}</p><p>Ontdek hoe u de best mogelijke printkwaliteit en betrouwbaarheid verkrijgt.</p><p><a href=”https://ultimaker.com/3D-model-assistant”>Handleiding printkwaliteit bekijken</a></p>"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr "<p>Een of meer 3D-modellen worden mogelijk niet optimaal geprint vanwege het modelformaat en de materiaalconfiguratie:</p>"
+"<p>{model_names}</p>"
+"<p>Ontdek hoe u de best mogelijke printkwaliteit en betrouwbaarheid verkrijgt.</p>"
+"<p><a href=”https://ultimaker.com/3D-model-assistant”>Handleiding printkwaliteit bekijken</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -406,7 +389,6 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Printer handmatig toevoegen"
 
-#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "Printer {name} ({model}) toevoegen vanaf uw account"
@@ -447,7 +429,6 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Alle Bestanden (*)"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Alle Ondersteunde Typen ({0})"
@@ -459,10 +440,6 @@ msgstr "Verzenden van anonieme gegevens toestaan"
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "Hiermee kunt u G-code-bestanden laden en weergeven."
-
-msgctxt "description"
-msgid "Allows working with 3D mouses inside Cura."
-msgstr ""
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -504,6 +481,10 @@ msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr "Anonieme crashrapporten"
 
+msgctxt "@label Description for application component"
+msgid "Application framework"
+msgstr "Toepassingskader"
+
 msgctxt "@title:column"
 msgid "Applies on"
 msgstr "Van toepassing op"
@@ -540,7 +521,6 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "Weet u zeker dat u %1 bovenaan de wachtrij wilt plaatsen?"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "Weet u zeker dat u {printer_name} tijdelijk wilt verwijderen?"
@@ -553,7 +533,6 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Weet u zeker dat u %1 wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
 
-#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Weet u zeker dat u {0} wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
@@ -682,6 +661,10 @@ msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr "Door"
 
+msgctxt "@label Description for application dependency"
+msgid "C/C++ Binding library"
+msgstr "Bindingenbibliotheek C/C++"
+
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr "COLLADA Digital Asset Exchange"
@@ -714,12 +697,10 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "Kunt u geen verbinding maken met uw UltiMaker-printer?"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename> voordat een printer toegevoegd is."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Kan geen ander bestand openen als G-code wordt geladen. Het importeren van {0} is overgeslagen"
@@ -801,12 +782,7 @@ msgid "Checks models and print configuration for possible printing issues and gi
 msgstr "Via deze optie controleert u de modellen en de printconfiguratie op mogelijke printproblemen en ontvangt u suggesties."
 
 msgctxt "@label"
-msgid ""
-"Chooses between the techniques available to generate support. \n"
-"\n"
-"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
-"\n"
-"\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "Kiest tussen de beschikbare technieken om support te genereren. \"Normale\" support creert een supportstructuur direct onder de overhangende delen en laat die gebieden recht naar beneden vallen. \"Boom\"-support creert takken naar de overhangende gebieden die het model op de toppen van die takken ondersteunen, en laat de takken rond het model kruipen om het zoveel mogelijk vanaf het platform te ondersteunen."
 
 msgctxt "@action:inmenu menubar:edit"
@@ -845,10 +821,6 @@ msgctxt "@label"
 msgid "Color scheme"
 msgstr "Kleurenschema"
 
-msgctxt "@label"
-msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
-msgstr "Combinatie niet aanbevolen. Laad BB-kern in sleuf 1 (links) voor meer betrouwbaarheid."
-
 msgctxt "@info"
 msgid "Compare and save."
 msgstr "Vergelijken en opslaan."
@@ -856,6 +828,10 @@ msgstr "Vergelijken en opslaan."
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "Compatibiliteitsmodus"
+
+msgctxt "@label Description for application dependency"
+msgid "Compatibility between Python 2 and 3"
+msgstr "Compatibiliteit tussen Python 2 en 3"
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -1009,7 +985,6 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Kan geen archief maken van gegevensmap van gebruiker: {}"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Kan geen bestandsnaam vinden tijdens het schrijven naar {device}."
@@ -1038,12 +1013,10 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "Kan materiaalarchief niet opslaan op {}:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Kan niet opslaan als <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Kan niet opslaan op verwisselbaar station {0}: {1}"
@@ -1052,26 +1025,18 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Kan de gegevens niet uploaden naar de printer."
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid ""
-"Couldn't start EnginePlugin: {self._plugin_id}\n"
-"No permission to execute process."
+msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
 msgstr "EnginePlugin kon niet gestart worden: {self._plugin_id}}Geen toestemming om proces uit te voeren."
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid ""
-"Couldn't start EnginePlugin: {self._plugin_id}\n"
-"Operating system is blocking it (antivirus?)"
+msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
 msgstr "EnginePlugin kon niet gestart worden: {self._plugin_id}}Het wordt door het besturingssysteem geblokkeerd (antivirus?)"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid ""
-"Couldn't start EnginePlugin: {self._plugin_id}\n"
-"Resource is temporarily unavailable"
-msgstr "EnginePlugin kon niet gestart worden: {self._plugin_id}Resource is tijdelijk niet beschikbaar"
+msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
+msgstr "EnginePlugin kon niet gestart worden: {self._plugin_id}"
+"Resource is tijdelijk niet beschikbaar"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1157,16 +1122,14 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura kan niet worden gestart"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura heeft materiaalprofielen gedetecteerd die nog niet op de hostprinter van groep {0} zijn geïnstalleerd."
 
 msgctxt "@info:credit"
-msgid ""
-"Cura is developed by UltiMaker in cooperation with the community.\n"
-"Cura proudly uses the following open source projects:"
-msgstr "Cura is ontwikkeld door UltiMaker in samenwerking met de community.Cura maakt met trots gebruik van de volgende opensourceprojecten:"
+msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
+msgstr "Cura is ontwikkeld door UltiMaker in samenwerking met de community."
+"Cura maakt met trots gebruik van de volgende opensourceprojecten:"
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1179,6 +1142,14 @@ msgstr "Cura-versie"
 msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "CuraEngine-back-end"
+
+msgctxt "description"
+msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+msgstr "CuraEngine-plugin voor het geleidelijk afvlakken van de flow om grote sprongen in de flow te beperken"
+
+msgctxt "name"
+msgid "CuraEngineGradualFlow"
+msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1240,6 +1211,10 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Gegevens verzonden"
 
+msgctxt "@label Description for application dependency"
+msgid "Data interchange format"
+msgstr "Indeling voor gegevensuitwisseling"
+
 msgctxt "@button"
 msgid "Decline"
 msgstr "Nee, ik ga niet akkoord"
@@ -1299,6 +1274,10 @@ msgstr "Printtaak verwijderen"
 msgctxt "@label"
 msgid "Density"
 msgstr "Dichtheid"
+
+msgctxt "@label Description for development tool"
+msgid "Dependency and package manager"
+msgstr "Afhankelijkheden- en pakketbeheer"
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
@@ -1428,12 +1407,10 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "Uitwerpen"
 
-#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Verwisselbaar station {0} uitwerpen"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "{0} is uitgeworpen. U kunt het station nu veilig verwijderen."
@@ -1522,10 +1499,6 @@ msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Materiaal Exporteren"
 
-msgctxt "@action:inmenu menubar:help"
-msgid "Export Package For Technical Support"
-msgstr "Exportpakket voor technische ondersteuning"
-
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Profiel Exporteren"
@@ -1546,7 +1519,6 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "De export is voltooid"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Het profiel is geëxporteerd als <filename>{0}</filename>"
@@ -1567,10 +1539,6 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extruder %1"
 
-msgctxt "@label"
-msgid "Extruder Change duration"
-msgstr ""
-
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Eind-G-code van extruder"
@@ -1580,10 +1548,6 @@ msgid "Extruder End G-code duration"
 msgstr "Duur einde G-code extruder"
 
 msgctxt "@title:label"
-msgid "Extruder Prestart G-code"
-msgstr ""
-
-msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "Start-G-code van extruder"
 
@@ -1591,7 +1555,6 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr "Duur start G-code extruder"
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr "Extruder {0}"
@@ -1616,7 +1579,6 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Kan geen materiaalarchief maken voor synchronisatie met printers."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Uitwerpen van {0} is niet gelukt. Mogelijk wordt het station door een ander programma gebruikt."
@@ -1625,27 +1587,22 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Exporteren van materiaal naar <filename>%1</filename> is mislukt: <message>%2</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: Plug-in voor de schrijver heeft een fout gerapporteerd."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>: {1}"
@@ -1662,7 +1619,6 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Opslaan materiaalarchief mislukt"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr "Schrijven naar specifieke cloudprinter mislukt: {0} niet in clusters op afstand."
@@ -1691,7 +1647,6 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Bestand opgeslagen"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Het bestand {0} bevat geen geldig profiel."
@@ -1772,10 +1727,6 @@ msgctxt "@label"
 msgid "First available"
 msgstr "Eerst beschikbaar"
 
-msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
-msgstr ""
-
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "Doorvoer"
@@ -1791,6 +1742,10 @@ msgstr "Volg de procedure om een nieuwe printer toe te voegen"
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr "Met een paar simpele stappen kunt u al uw materiaalprofielen synchroniseren met uw printers."
+
+msgctxt "@label"
+msgid "Font"
+msgstr "Lettertype"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
@@ -1847,6 +1802,10 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr "Versie G-code"
 
+msgctxt "@label Description for application component"
+msgid "G-code generator"
+msgstr "G-code-generator"
+
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter ondersteunt geen tekstmodus."
@@ -1859,6 +1818,14 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF-afbeelding"
 
+msgctxt "@label Description for application dependency"
+msgid "GUI framework"
+msgstr "GUI-kader"
+
+msgctxt "@label Description for application dependency"
+msgid "GUI framework bindings"
+msgstr "Bindingen met GUI-kader"
+
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Rijbrughoogte"
@@ -1870,6 +1837,10 @@ msgstr "Algemeen"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "Genereer structuren om delen van het model met overhang te ondersteunen. Zonder deze structuren zakken dergelijke delen in tijdens het printen."
+
+msgctxt "@label Description for development tool"
+msgid "Generating Windows installers"
+msgstr "Windows-installatieprogramma's genereren"
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1891,11 +1862,14 @@ msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Algemene Instellingen"
 
+msgctxt "@label Description for application component"
+msgid "Graphical user interface"
+msgstr "Grafische gebruikersinterface (GUI)"
+
 msgctxt "@label"
 msgid "Grid Placement"
 msgstr "Rasterplaatsing"
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Groepsnummer #{group_nr}"
@@ -2136,6 +2110,10 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "Interface"
 
+msgctxt "@label Description for application component"
+msgid "Interprocess communication library"
+msgstr "InterProcess Communication-bibliotheek"
+
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Ongeldig IP-adres"
@@ -2163,6 +2141,10 @@ msgstr "JPEG-afbeelding"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG-afbeelding"
+
+msgctxt "@label Description for application dependency"
+msgid "JSON parser"
+msgstr "JSON-parser"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2264,10 +2246,6 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "Platform kalibreren"
 
-msgctxt "@title:window The argument is a package name, and the second is the version."
-msgid "License for %1 %2"
-msgstr ""
-
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "Lichter is hoger"
@@ -2283,6 +2261,10 @@ msgstr "Lijnbreedte"
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "Lineair"
+
+msgctxt "@label Description for development tool"
+msgid "Linux cross-distribution application deployment"
+msgstr "Implementatie van Linux-toepassing voor kruisdistributie"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2371,14 +2353,6 @@ msgstr "Makerbot Printbestand"
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
 msgstr "Makerbot Printbestandschrijver"
-
-msgctxt "@item:inlistbox"
-msgid "Makerbot Replicator+ Printfile"
-msgstr ""
-
-msgctxt "@item:inlistbox"
-msgid "Makerbot Sketch Printfile"
-msgstr "Makerbot Sketch Printfile"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
@@ -2622,7 +2596,6 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "Netwerkfout"
 
-#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "Nieuwe stabiele firmware voor %s beschikbaar"
@@ -2635,7 +2608,6 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Nieuwe UltiMaker printers kunnen toegevoegd worden aan Digital Factory om van afstand beheerd te worden"
 
-#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "Er zijn mogelijk nieuwe functies of foutoplossingen beschikbaar voor uw {machine_name}. Als u dit nog niet hebt gedaan, is het raadzaam om de firmware op uw printer bij te werken naar versie {latest_version}."
@@ -2682,7 +2654,6 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Geen kostenraming beschikbaar"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Er is geen aangepast profiel om in het bestand <filename>{0}</filename> te importeren"
@@ -2819,7 +2790,6 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Alleen bovenlagen weergegeven"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Er kan slechts één G-code-bestand tegelijkertijd worden geladen. Het importeren van {0} is overgeslagen"
@@ -2957,6 +2927,10 @@ msgctxt "@header"
 msgid "Package details"
 msgstr "Pakketgegevens"
 
+msgctxt "@label Description for development tool"
+msgid "Packaging Python-applications"
+msgstr "Verpakking Python-toepassingen"
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-code parseren"
@@ -3029,12 +3003,11 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "Verleen de vereiste toestemmingen toe bij het autoriseren van deze toepassing."
 
 msgctxt "@info"
-msgid ""
-"Please make sure your printer has a connection:\n"
-"- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network.\n"
-"- Check if you are signed in to discover cloud-connected printers."
-msgstr "Controleer of de printer verbonden is:- Controleer of de printer ingeschakeld is.- Controleer of de printer verbonden is met het netwerk.- Controleer of u bent aangemeld om met de cloud verbonden printers te detecteren."
+msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
+msgstr "Controleer of de printer verbonden is:"
+"- Controleer of de printer ingeschakeld is."
+"- Controleer of de printer verbonden is met het netwerk."
+"- Controleer of u bent aangemeld om met de cloud verbonden printers te detecteren."
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -3061,12 +3034,11 @@ msgid "Please remove the print"
 msgstr "Verwijder de print"
 
 msgctxt "@info:status"
-msgid ""
-"Please review settings and check if your models:\n"
-"- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
-"- Are not all set as modifier meshes"
-msgstr "Controleer de instellingen en zorg ervoor dat uw modellen:- binnen het werkvolume passen- zijn toegewezen aan een ingeschakelde extruder- niet allemaal zijn ingesteld als modificatierasters"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgstr "Controleer de instellingen en zorg ervoor dat uw modellen:"
+"- binnen het werkvolume passen"
+"- zijn toegewezen aan een ingeschakelde extruder"
+"- niet allemaal zijn ingesteld als modificatierasters"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -3107,6 +3079,14 @@ msgstr "Plug-ins"
 msgctxt "@button"
 msgid "Plugins"
 msgstr "Plug-ins"
+
+msgctxt "@label Description for application dependency"
+msgid "Polygon clipping library"
+msgstr "Bibliotheek met veelhoeken"
+
+msgctxt "@label Description for application component"
+msgid "Polygon packing library, developed by Prusa Research"
+msgstr "Verpakkingsbibliotheek met veelhoeken, ontwikkeld door Prusa Research"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -3360,7 +3340,6 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Profielinstellingen"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Het profiel {0} heeft een onbekend bestandstype of is beschadigd."
@@ -3381,22 +3360,22 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "Profielen die compatibel zijn met actieve printer:"
 
-#, python-brace-format
+msgctxt "@label Description for application dependency"
+msgid "Programming language"
+msgstr "Programmeertaal"
+
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projectbestand <filename>{0}</filename> bevat een onbekend type machine <message>{1}</message>. Kan de machine niet importeren. In plaats daarvan worden er modellen geïmporteerd."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Projectbestand <filename>{0}</filename> is corrupt: <message>{1}</message>."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Projectbestand <filename>{0}</filename> wordt gemaakt met behulp van profielen die onbekend zijn bij deze versie van UltiMaker Cura."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Projectbestand <filename>{0}</filename> is plotseling ontoegankelijk: <message>{1}</message>."
@@ -3509,11 +3488,22 @@ msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt version"
 
+msgctxt "@Label Description for application dependency"
+msgid "Python Error tracking library"
+msgstr "Python fouttraceringsbibliotheek"
+
+msgctxt "@label Description for application dependency"
+msgid "Python bindings for Clipper"
+msgstr "Pythonbindingen voor Clipper"
+
+msgctxt "@label Description for application component"
+msgid "Python bindings for libnest2d"
+msgstr "Pythonbindingen voor libnest2d"
+
 msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt version"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "Kwaliteitstype '{0}' is niet compatibel met de huidige actieve machinedefinitie '{1}'."
@@ -3690,6 +3680,10 @@ msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "Rechteraanzicht"
 
+msgctxt "@label Description for application dependency"
+msgid "Root Certificates for validating SSL trustworthiness"
+msgstr "Rootcertificaten voor het valideren van SSL-betrouwbaarheid"
+
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
 msgstr "Hardware veilig verwijderen"
@@ -3750,12 +3744,10 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Opslaan op verwisselbaar station"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Opslaan op Verwisselbaar Station {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Opgeslagen op Verwisselbaar Station {0} als {1}"
@@ -3764,7 +3756,6 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Opslaan"
 
-#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Opslaan op Verwisselbaar Station <filename>{0}</filename>"
@@ -3780,10 +3771,6 @@ msgstr "Grote modellen schalen"
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "Zoeken"
-
-msgctxt "@label:textbox"
-msgid "Search Printer"
-msgstr "Zoek printer"
 
 msgctxt "@info"
 msgid "Search in the browser"
@@ -3876,6 +3863,10 @@ msgstr "De materialen worden naar de printer verzonden"
 msgctxt "name"
 msgid "Sentry Logger"
 msgstr "Sentrylogger"
+
+msgctxt "@label Description for application dependency"
+msgid "Serial communication library"
+msgstr "Seriële-communicatiebibliotheek"
 
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
@@ -3986,10 +3977,6 @@ msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no m
 msgstr "Moeten slicing-crashes automatisch gemeld worden aan Ultimaker? Let erop dat er geen modellen, IP-adressen of andere persoonlijk identificeerbare gegevens worden verzonden of opgeslagen, tenzij u hier expliciet toestemming voor geeft."
 
 msgctxt "@info:tooltip"
-msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
-msgstr ""
-
-msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "Moet het platform worden leeggemaakt voordat u een nieuw model laadt in de dezelfde instantie van Cura?"
 
@@ -4016,6 +4003,10 @@ msgstr "Aangepast"
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Online &Documentatie Weergeven"
+
+msgctxt "@action:inmenu"
+msgid "Show Online Troubleshooting"
+msgstr "Online probleemoplossing weergeven"
 
 msgctxt "@label:checkbox"
 msgid "Show all"
@@ -4142,11 +4133,9 @@ msgid "Solid view"
 msgstr "Solide weergave"
 
 msgctxt "@label"
-msgid ""
-"Some hidden settings use values different from their normal calculated value.\n"
-"\n"
-"Click to make these settings visible."
-msgstr "Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.Klik om deze instellingen zichtbaar te maken."
+msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
+msgstr "Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde."
+"Klik om deze instellingen zichtbaar te maken."
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -4161,11 +4150,9 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "Sommige instelwaarden gedefinieerd in <b>%1</b> zijn overschreven."
 
 msgctxt "@tooltip"
-msgid ""
-"Some setting/override values are different from the values stored in the profile.\n"
-"\n"
-"Click to open the profile manager."
-msgstr "Sommige waarden of aanpassingen van instellingen zijn anders dan de waarden die in het profiel zijn opgeslagen.Klik om het profielbeheer te openen."
+msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
+msgstr "Sommige waarden of aanpassingen van instellingen zijn anders dan de waarden die in het profiel zijn opgeslagen."
+"Klik om het profielbeheer te openen."
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -4220,10 +4207,6 @@ msgid "Start G-code"
 msgstr "Start G-code"
 
 msgctxt "@label"
-msgid "Start GCode must be first"
-msgstr ""
-
-msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Het sliceproces starten"
 
@@ -4251,7 +4234,6 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Materiaal <filename>%1</filename> is geïmporteerd"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Het profiel {0} is geïmporteerd."
@@ -4303,6 +4285,34 @@ msgstr "Verbindingsstructuur"
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr "Support Type"
+
+msgctxt "@label Description for application dependency"
+msgid "Support library for faster math"
+msgstr "Ondersteuningsbibliotheek voor snellere berekeningen"
+
+msgctxt "@label Description for application component"
+msgid "Support library for file metadata and streaming"
+msgstr "Ondersteuningsbibliotheek voor bestandsmetadata en streaming"
+
+msgctxt "@label Description for application component"
+msgid "Support library for handling 3MF files"
+msgstr "Ondersteuningsbibliotheek voor het verwerken van 3MF-bestanden"
+
+msgctxt "@label Description for application dependency"
+msgid "Support library for handling STL files"
+msgstr "Ondersteuningsbibliotheek voor het verwerken van STL-bestanden"
+
+msgctxt "@label Description for application dependency"
+msgid "Support library for handling triangular meshes"
+msgstr "Ondersteuningsbibliotheek voor het verwerken van driehoekig rasters"
+
+msgctxt "@label Description for application dependency"
+msgid "Support library for scientific computing"
+msgstr "Ondersteuningsbibliotheek voor wetenschappelijke berekeningen"
+
+msgctxt "@label Description for application dependency"
+msgid "Support library for system keyring access"
+msgstr "Ondersteuningsbibliotheek voor toegang tot systeemkeyring"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4430,7 +4440,6 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "De extruder train die wordt gebruikt voor het printen van de supportstructuur. Deze optie wordt gebruikt in meervoudige doorvoer."
 
-#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Het bestand <filename>{0}</filename> bestaat al. Weet u zeker dat u dit bestand wilt overschrijven?"
@@ -4494,15 +4503,11 @@ msgid "The nozzle inserted in this extruder."
 msgstr "De nozzle die in deze extruder geplaatst is."
 
 msgctxt "@label"
-msgid ""
-"The pattern of the infill material of the print:\n"
-"\n"
-"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
-"\n"
-"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
-"\n"
-"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Het patroon van het invulmateriaal van de print:Voor snelle prints van een niet-functioneel model kiest u een lijn-, zigzag- of lichtvulling.Voor functionele onderdelen die niet aan veel spanning worden blootgesteld, raden we raster of driehoek of tri-zeshoek aan.Gebruik kubieke, kubieke onderverdeling, kwartkubiek, octet en gyrod voor functionele 3D-prints die in meerdere richtingen een hoge sterkte vereisen."
+msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "Het patroon van het invulmateriaal van de print:"
+"Voor snelle prints van een niet-functioneel model kiest u een lijn-, zigzag- of lichtvulling."
+"Voor functionele onderdelen die niet aan veel spanning worden blootgesteld, raden we raster of driehoek of tri-zeshoek aan."
+"Gebruik kubieke, kubieke onderverdeling, kwartkubiek, octet en gyrod voor functionele 3D-prints die in meerdere richtingen een hoge sterkte vereisen."
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
@@ -4620,13 +4625,9 @@ msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "Deze configuratie is niet beschikbaar omdat %1 niet wordt herkend. Ga naar %2 om het juiste materiaalprofiel te downloaden."
 
-msgctxt "@label"
-msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
-msgstr ""
-
 msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
-msgstr "Dit is een Cura Universal-projectbestand. Wilt u het openen als Cura Universal Project of de modellen ervan importeren?"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+msgstr "Dit is een Cura Universal Projectbestand. Wilt u het als Cura project of Cura Universal Project openen of de modellen ervan importeren?"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4662,7 +4663,6 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Deze printer is de host voor een groep van %1 printers."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Dit profiel <filename>{0}</filename> bevat incorrecte gegevens. Kan het profiel niet importeren."
@@ -4676,11 +4676,9 @@ msgid "This project contains materials or plugins that are currently not install
 msgstr "Dit project bevat materialen of plugins die momenteel niet geïnstalleerd zijn in Cura.<br/>Installeer de ontbrekende pakketten en open het project opnieuw."
 
 msgctxt "@label"
-msgid ""
-"This setting has a value that is different from the profile.\n"
-"\n"
-"Click to restore the value of the profile."
-msgstr "Deze instelling heeft een andere waarde dan in het profiel.Klik om de waarde van het profiel te herstellen."
+msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
+msgstr "Deze instelling heeft een andere waarde dan in het profiel."
+"Klik om de waarde van het profiel te herstellen."
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4697,11 +4695,9 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "Deze instelling wordt altijd door alle extruders gedeeld. Als u hier de instelling wijzigt, wordt de waarde voor alle extruders gewijzigd."
 
 msgctxt "@label"
-msgid ""
-"This setting is normally calculated, but it currently has an absolute value set.\n"
-"\n"
-"Click to restore the calculated value."
-msgstr "Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde.Klik om de berekende waarde te herstellen."
+msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
+msgstr "Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde."
+"Klik om de berekende waarde te herstellen."
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4735,7 +4731,6 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Om de materiaalprofielen automatisch te synchroniseren met alle printers die op Digital Factory zijn aangesloten, moet u zich aanmelden bij Cura."
 
-#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Ga naar {website_link} om een verbinding tot stand te brengen"
@@ -4748,7 +4743,6 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken om G-code-bestanden naar de printer over te zetten."
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "Bezoek {digital_factory_link} om {printer_name} permanent te verwijderen"
@@ -4893,16 +4887,12 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Kan binnen het werkvolume niet voor alle objecten een locatie vinden"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "Kan lokaal EnginePlugin-serveruitvoerbestand niet vinden voor: {self._plugin_id}"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
-msgid ""
-"Unable to kill running EnginePlugin: {self._plugin_id}\n"
-"Access is denied."
+msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
 msgstr "Kan lopende EnginePlugin niet stoppen: {self._plugin_id}}Toegang is geweigerd."
 
 msgctxt "@info"
@@ -4912,14 +4902,6 @@ msgstr "Kan de UltiMaker-accountserver niet bereiken."
 msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "Kan het voorbeeldgegevensbestand niet lezen."
-
-msgctxt "@info:status"
-msgid "Unable to send the model data to the engine. Please try again, or contact support."
-msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer het opnieuw of neem contact op met ondersteuning."
-
-msgctxt "@info:status"
-msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
-msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer een minder gedetailleerd model te gebruiken of verminder het aantal instanties."
 
 msgctxt "@info:title"
 msgid "Unable to slice"
@@ -4933,12 +4915,10 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Slicen is niet mogelijk omdat de terugduwpijler of terugduwpositie(s) ongeldig zijn."
 
-#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Slicen is niet mogelijk omdat er objecten gekoppeld zijn aan uitgeschakelde Extruder %s."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Slicing is niet mogelijk vanwege enkele instellingen per model. De volgende instellingen bevatten fouten voor een of meer modellen: {error_labels}"
@@ -4947,7 +4927,6 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Met het huidige materiaal is slicen niet mogelijk, omdat het materiaal niet compatibel is met de geselecteerde machine of configuratie."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Met de huidige instellingen is slicing niet mogelijk. De volgende instellingen bevatten fouten: {0}"
@@ -4956,7 +4935,6 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Er kan geen nieuw aanmeldingsproces worden gestart. Controleer of een andere aanmeldingspoging nog actief is."
 
-#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr "Er kan niet worden geschreven naar bestand: {0}"
@@ -4989,6 +4967,10 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr "Universal Cura Project-bestanden kunnen worden geprint op verschillende 3D printers met behoud van positiegegevens en geselecteerde instellingen. Bij het exporteren worden alle modellen die aanwezig zijn op de bouwplaat meegenomen, samen met hun huidige positie, oriëntatie en schaal. U kunt ook selecteren welke instellingen per extruder of per model moeten worden meegenomen om er zeker van te zijn dat de print correct wordt uitgevoerd."
 
+msgctxt "@label Description for development tool"
+msgid "Universal build system configuration"
+msgstr "Universele configuratie bouwsysteem"
+
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Onbekend"
@@ -5005,7 +4987,6 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "Onbekend pakket"
 
-#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "Onbekende foutcode bij uploaden printtaak: {0}"
@@ -5178,14 +5159,6 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr "Upgrades van configuraties van Cura 5.6 naar Cura 5.7."
 
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
-msgstr "Upgrades van configuraties van Cura 5.8 naar Cura 5.9."
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
-msgstr ""
-
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Aangepaste Firmware Uploaden"
@@ -5209,6 +5182,14 @@ msgstr "Gebruik lijm bij deze combinatie van materialen voor een betere hechting
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "Gebruikersovereenkomst"
+
+msgctxt "@label Description for application dependency"
+msgid "Utility functions, including an image loader"
+msgstr "Gebruiksfuncties, waaronder een afbeeldinglader"
+
+msgctxt "@label Description for application dependency"
+msgid "Utility library, including Voronoi generation"
+msgstr "Gebruiksbibliotheek, waaronder Voronoi-generatie"
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5322,14 +5303,6 @@ msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
 msgstr "Versie-upgrade van 5.6 naar 5.7"
 
-msgctxt "name"
-msgid "Version Upgrade 5.8 to 5.9"
-msgstr "Versie-upgrade 5.8 naar 5.9"
-
-msgctxt "name"
-msgid "Version Upgrade 5.9 to 5.10"
-msgstr ""
-
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "Printers weergeven in Digital Factory"
@@ -5382,7 +5355,6 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "Waarschuwing: het profiel is niet zichtbaar omdat het kwaliteitstype '{0}' van het profiel niet beschikbaar is voor de huidige configuratie. Schakel naar een materiaal-nozzle-combinatie waarvoor dit kwaliteitstype geschikt is."
@@ -5492,43 +5464,32 @@ msgid "Y (Depth)"
 msgstr "Y (Diepte)"
 
 msgctxt "@label"
-msgid "Y max ( '+' towards front)"
-msgstr ""
+msgid "Y max"
+msgstr "Y max"
 
 msgctxt "@label"
-msgid "Y min ( '-' towards back)"
-msgstr ""
+msgid "Y min"
+msgstr "Y min"
 
 msgctxt "@info"
 msgid "Yes"
 msgstr "Ja"
 
 msgctxt "@label"
-msgid ""
-"You are about to remove all printers from Cura. This action cannot be undone.\n"
-"Are you sure you want to continue?"
-msgstr "U staat op het punt om alle printers uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.Weet u zeker dat u door wilt gaan?"
+msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
+msgstr "U staat op het punt om alle printers uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt."
+"Weet u zeker dat u door wilt gaan?"
 
-#, python-brace-format
 msgctxt "@label"
-msgid ""
-"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
-"Are you sure you want to continue?"
-msgid_plural ""
-"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
-"Are you sure you want to continue?"
-msgstr[0] ""
-"U staat op het punt om {0} printer uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\n"
-"Weet u zeker dat u door wilt gaan?"
-msgstr[1] ""
-"U staat op het punt om {0} printers uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\n"
-"Weet u zeker dat u door wilt gaan?"
+msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
+msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
+msgstr[0] "U staat op het punt om {0} printer uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\nWeet u zeker dat u door wilt gaan?"
+msgstr[1] "U staat op het punt om {0} printers uit Cura te verwijderen. Deze actie kan niet ongedaan worden gemaakt.\nWeet u zeker dat u door wilt gaan?"
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "U probeert verbinding te maken met een printer waarop UltiMaker Connect niet wordt uitgevoerd. Werk de printer bij naar de nieuwste firmware."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "U probeert verbinding te maken met {0}, maar deze is niet de host van een groep. U kunt de webpagina bezoeken om deze als groephost te configureren."
@@ -5539,7 +5500,9 @@ msgstr "U hebt momenteel geen back-ups. Gebruik de knop 'Nu back-up maken' om ee
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr "U hebt enkele profielinstellingen aangepast.Wilt u deze gewijzigde instellingen behouden na het verwisselen van profielen?U kunt de wijzigingen ook verwijderen om de standaardinstellingen van '%1' te laden."
+msgstr "U hebt enkele profielinstellingen aangepast."
+"Wilt u deze gewijzigde instellingen behouden na het verwisselen van profielen?"
+"U kunt de wijzigingen ook verwijderen om de standaardinstellingen van '%1' te laden."
 
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
@@ -5569,12 +5532,10 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "Uw nieuwe printer wordt automatisch weergegeven in Cura"
 
-#, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Your printer <b>{printer_name}</b> could be connected via cloud.\n"
-" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "U kunt uw printer <b>{printer_name}</b> via de cloud verbinden. Beheer uw printerwachtrij en controleer uw prints vanaf elke plek door uw printer te verbinden met Digital Factory"
+msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "U kunt uw printer <b>{printer_name}</b> via de cloud verbinden."
+" Beheer uw printerwachtrij en controleer uw prints vanaf elke plek door uw printer te verbinden met Digital Factory"
 
 msgctxt "@label"
 msgid "Z"
@@ -5583,6 +5544,10 @@ msgstr "Z"
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Hoogte)"
+
+msgctxt "@label Description for application dependency"
+msgid "ZeroConf discovery library"
+msgstr "ZeroConf-detectiebibliotheek"
 
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
@@ -5632,7 +5597,6 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "versie: %1"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "{printer_name} wordt verwijderd tot de volgende accountsynchronisatie."
@@ -5641,166 +5605,94 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} plug-ins zijn niet gedownload"
 
-#~ msgctxt "@label Description for application component"
-#~ msgid "Application framework"
-#~ msgstr "Toepassingskader"
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "Combinatie niet aanbevolen. Laad BB-kern in sleuf 1 (links) voor meer betrouwbaarheid."
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "C/C++ Binding library"
-#~ msgstr "Bindingenbibliotheek C/C++"
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "Makerbot Sketch Printfile"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Compatibility between Python 2 and 3"
-#~ msgstr "Compatibiliteit tussen Python 2 en 3"
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "Zoek printer"
 
-#~ msgctxt "description"
-#~ msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-#~ msgstr "CuraEngine-plugin voor het geleidelijk afvlakken van de flow om grote sprongen in de flow te beperken"
+msgctxt "@text:window"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "Dit is een Cura Universal-projectbestand. Wilt u het openen als Cura Universal Project of de modellen ervan importeren?"
 
-#~ msgctxt "name"
-#~ msgid "CuraEngineGradualFlow"
-#~ msgstr "CuraEngineGradualFlow"
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "Exportpakket voor technische ondersteuning"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Data interchange format"
-#~ msgstr "Indeling voor gegevensuitwisseling"
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer het opnieuw of neem contact op met ondersteuning."
 
-#~ msgctxt "@label Description for development tool"
-#~ msgid "Dependency and package manager"
-#~ msgstr "Afhankelijkheden- en pakketbeheer"
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "De modelgegevens kunnen niet naar de motor worden verzonden. Probeer een minder gedetailleerd model te gebruiken of verminder het aantal instanties."
 
-#~ msgctxt "@label"
-#~ msgid "Font"
-#~ msgstr "Lettertype"
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "Upgrades van configuraties van Cura 5.8 naar Cura 5.9."
 
-#~ msgctxt "@label Description for application component"
-#~ msgid "G-code generator"
-#~ msgstr "G-code-generator"
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "Versie-upgrade 5.8 naar 5.9"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "GUI framework"
-#~ msgstr "GUI-kader"
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion muizen"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "GUI framework bindings"
-#~ msgstr "Bindingen met GUI-kader"
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Maakt werken met 3D-muizen mogelijk in Cura."
 
-#~ msgctxt "@label Description for development tool"
-#~ msgid "Generating Windows installers"
-#~ msgstr "Windows-installatieprogramma's genereren"
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Duur extruderwissel"
 
-#~ msgctxt "@label Description for application component"
-#~ msgid "Graphical user interface"
-#~ msgstr "Grafische gebruikersinterface (GUI)"
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Extruder Prestart G-code"
 
-#~ msgctxt "@label Description for application component"
-#~ msgid "Interprocess communication library"
-#~ msgstr "InterProcess Communication-bibliotheek"
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Y-as toolhandle model omkeren (herstarten vereist)"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "JSON parser"
-#~ msgstr "JSON-parser"
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Licentie voor %1 %2"
 
-#~ msgctxt "@label Description for development tool"
-#~ msgid "Linux cross-distribution application deployment"
-#~ msgstr "Implementatie van Linux-toepassing voor kruisdistributie"
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ Printfile"
 
-#~ msgctxt "@label"
-#~ msgid "Nozzle Size"
-#~ msgstr "Maat nozzle"
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Moet de Y-as van de translate toolhandle worden omgekeerd? Dit heeft alleen invloed op de Y-coördinaat van het model. Alle andere instellingen, zoals de printkopinstellingen van de machine, worden niet beïnvloed en gedragen zich als voorheen."
 
-#~ msgctxt "@label Description for development tool"
-#~ msgid "Packaging Python-applications"
-#~ msgstr "Verpakking Python-toepassingen"
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "Start GCode moet eerst zijn"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Polygon clipping library"
-#~ msgstr "Bibliotheek met veelhoeken"
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Deze instelling is niet beschikbaar omdat er een mismatch of een ander probleem is met het core-type %1. Ga naar <a href='%2'> de supportpagina</a> om te zien welke cores dit printertype ondersteunt wat betreft nieuwe slices."
 
-#~ msgctxt "@label Description for application component"
-#~ msgid "Polygon packing library, developed by Prusa Research"
-#~ msgstr "Verpakkingsbibliotheek met veelhoeken, ontwikkeld door Prusa Research"
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Werkt instellingen bij van Cura 5.9 naar Cura 5.10"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Programming language"
-#~ msgstr "Programmeertaal"
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Versie-upgrade 5.9 naar 5.10"
 
-#~ msgctxt "@Label Description for application dependency"
-#~ msgid "Python Error tracking library"
-#~ msgstr "Python fouttraceringsbibliotheek"
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y max ( '+' richting voorzijde)"
 
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Python bindings for Clipper"
-#~ msgstr "Pythonbindingen voor Clipper"
-
-#~ msgctxt "@label Description for application component"
-#~ msgid "Python bindings for libnest2d"
-#~ msgstr "Pythonbindingen voor libnest2d"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Root Certificates for validating SSL trustworthiness"
-#~ msgstr "Rootcertificaten voor het valideren van SSL-betrouwbaarheid"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Serial communication library"
-#~ msgstr "Seriële-communicatiebibliotheek"
-
-#~ msgctxt "@action:inmenu"
-#~ msgid "Show Online Troubleshooting"
-#~ msgstr "Online probleemoplossing weergeven"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Support library for faster math"
-#~ msgstr "Ondersteuningsbibliotheek voor snellere berekeningen"
-
-#~ msgctxt "@label Description for application component"
-#~ msgid "Support library for file metadata and streaming"
-#~ msgstr "Ondersteuningsbibliotheek voor bestandsmetadata en streaming"
-
-#~ msgctxt "@label Description for application component"
-#~ msgid "Support library for handling 3MF files"
-#~ msgstr "Ondersteuningsbibliotheek voor het verwerken van 3MF-bestanden"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Support library for handling STL files"
-#~ msgstr "Ondersteuningsbibliotheek voor het verwerken van STL-bestanden"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Support library for handling triangular meshes"
-#~ msgstr "Ondersteuningsbibliotheek voor het verwerken van driehoekig rasters"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Support library for scientific computing"
-#~ msgstr "Ondersteuningsbibliotheek voor wetenschappelijke berekeningen"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Support library for system keyring access"
-#~ msgstr "Ondersteuningsbibliotheek voor toegang tot systeemkeyring"
-
-#~ msgctxt "@text:window"
-#~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-#~ msgstr "Dit is een Cura Universal Projectbestand. Wilt u het als Cura project of Cura Universal Project openen of de modellen ervan importeren?"
-
-#~ msgctxt "@label Description for development tool"
-#~ msgid "Universal build system configuration"
-#~ msgstr "Universele configuratie bouwsysteem"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Utility functions, including an image loader"
-#~ msgstr "Gebruiksfuncties, waaronder een afbeeldinglader"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "Utility library, including Voronoi generation"
-#~ msgstr "Gebruiksbibliotheek, waaronder Voronoi-generatie"
-
-#~ msgctxt "@label"
-#~ msgid "Y max"
-#~ msgstr "Y max"
-
-#~ msgctxt "@label"
-#~ msgid "Y min"
-#~ msgstr "Y min"
-
-#~ msgctxt "@label Description for application dependency"
-#~ msgid "ZeroConf discovery library"
-#~ msgstr "ZeroConf-detectiebibliotheek"
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y min ( '-' richting achterzijde)"
