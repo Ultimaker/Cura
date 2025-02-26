@@ -33,7 +33,7 @@ class CuraConan(ConanFile):
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
 
-    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
+    python_requires = "translationextractor/[>=2.2.0]"
 
     options = {
         "enterprise": [True, False],
