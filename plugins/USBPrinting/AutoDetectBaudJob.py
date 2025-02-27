@@ -40,7 +40,7 @@ class AutoDetectBaudJob(Job):
 
                 if serial is None:
                     try:
-                        serial = Serial(str(self._serial_port), baud_rate, timeout = read_timeout, writeTimeout = write_timeout)
+                        serial = Serial(str(self._serial_port), baud_rate, timeout=read_timeout, writeTimeout=write_timeout)
                     except SerialException:
                         Logger.warning(f"Unable to create serial connection to {serial} with baud rate {baud_rate}")
                         continue
@@ -64,12 +64,12 @@ class AutoDetectBaudJob(Job):
                     # If baudrate is wrong, then readline() might never
                     # return, even with timeouts set. Using read_until
                     # with size limit seems to fix this.
-                    line = serial.read_until(size = 100)
+                    line = serial.read_until(size=100)
                     if b"ok" in line and b"T:" in line:
                         self.setResult(baud_rate)
                         Logger.log("d", "Detected baud rate {baud_rate} on serial {serial} on retry {retry} with after {time_elapsed:0.2f} seconds.".format(
-                            serial = self._serial_port, baud_rate = baud_rate, retry = retry, time_elapsed = time() - start_timeout_time))
-                        serial.close() # close serial port so it can be opened by the USBPrinterOutputDevice
+                            serial=self._serial_port, baud_rate=baud_rate, retry=retry, time_elapsed=time() - start_timeout_time))
+                        serial.close()  # close serial port so it can be opened by the USBPrinterOutputDevice
                         return
 
                     serial.write(b"M105\n")

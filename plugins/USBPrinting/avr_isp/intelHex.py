@@ -13,7 +13,7 @@ def readHex(filename):
     """
     data = []
     extra_addr = 0
-    f = io.open(filename, "r", encoding = "utf-8")
+    f = io.open(filename, "r", encoding="utf-8")
     for line in f:
         line = line.strip()
         if len(line) < 1:
@@ -32,14 +32,14 @@ def readHex(filename):
         if check_sum != 0:
             raise Exception("Checksum error in hex file: " + line)
 
-        if rec_type == 0:#Data record
+        if rec_type == 0:  # Data record
             while len(data) < addr + rec_len:
                 data.append(0)
             for i in range(0, rec_len):
                 data[addr + i] = int(line[i*2+9:i*2+11], 16)
-        elif rec_type == 1:	#End Of File record
+        elif rec_type == 1:	 # End Of File record
             pass
-        elif rec_type == 2:	#Extended Segment Address Record
+        elif rec_type == 2:	 # Extended Segment Address Record
             extra_addr = int(line[9:13], 16) * 16
         else:
             Logger.log("d", "%s, %s, %s, %s, %s", rec_type, rec_len, addr, check_sum, line)

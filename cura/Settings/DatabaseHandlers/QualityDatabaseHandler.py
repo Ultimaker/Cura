@@ -10,8 +10,8 @@ class QualityDatabaseHandler(DatabaseMetadataContainerController):
     """The Database handler for Quality containers"""
 
     def __init__(self):
-        super().__init__(SQLQueryFactory(table = "quality",
-                                         fields = {
+        super().__init__(SQLQueryFactory(table="quality",
+                                         fields={
                                              "id": "text",
                                              "name": "text",
                                              "quality_type": "text",

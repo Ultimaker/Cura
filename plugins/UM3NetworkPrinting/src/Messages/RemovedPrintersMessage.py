@@ -34,7 +34,7 @@ class RemovedPrintersMessage(Message):
                                                         "A cloud connection is not available for some printers",
                                                         len(self._removed_devices)),
                          message_type=Message.MessageType.WARNING,
-                         text = message_text)
+                         text=message_text)
 
         self.addAction("keep_printer_configurations_action",
                                                  name=self.i18n_catalog.i18nc("@action:button",
@@ -48,6 +48,3 @@ class RemovedPrintersMessage(Message):
                                                  description="Remove cloud printer(s) which aren't linked to your account.",
                                                  button_style=Message.ActionButtonStyle.SECONDARY,
                                                  button_align=Message.ActionButtonAlignment.ALIGN_LEFT)
-
-
-

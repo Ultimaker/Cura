@@ -69,11 +69,11 @@ class WelcomePagesModel(ListModel):
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
 
-    @pyqtProperty(int, notify = currentPageIndexChanged)
+    @pyqtProperty(int, notify=currentPageIndexChanged)
     def currentPageIndex(self) -> int:
         return self._current_page_index
 
-    @pyqtProperty(float, notify = currentPageIndexChanged)
+    @pyqtProperty(float, notify=currentPageIndexChanged)
     def currentProgress(self) -> float:
         """
         Returns a float number in [0, 1] which indicates the current progress.
@@ -83,7 +83,7 @@ class WelcomePagesModel(ListModel):
         else:
             return self._current_page_index / len(self._items)
 
-    @pyqtProperty(bool, notify = currentPageIndexChanged)
+    @pyqtProperty(bool, notify=currentPageIndexChanged)
     def isCurrentPageLast(self) -> bool:
         """
         Indicates if the current page is the last page.
@@ -175,7 +175,7 @@ class WelcomePagesModel(ListModel):
             self._setCurrentPageIndex(page_index)
         else:
             # Find the next page to show starting from the "page_index"
-            self.goToNextPage(from_index = page_index)
+            self.goToNextPage(from_index=page_index)
 
     def _shouldPageBeShown(self, page_index: int) -> bool:
         """
@@ -200,7 +200,7 @@ class WelcomePagesModel(ListModel):
 
     shouldShowWelcomeFlowChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = shouldShowWelcomeFlowChanged)
+    @pyqtProperty(bool, notify=shouldShowWelcomeFlowChanged)
     def shouldShowWelcomeFlow(self) -> bool:
         return self._should_show_welcome_flow
 
@@ -223,7 +223,7 @@ class WelcomePagesModel(ListModel):
     # FIXME: HACKs for optimization that we don't update the model every time the active machine gets changed.
     def _onActiveMachineChanged(self) -> None:
         self._application.getMachineManager().globalContainerChanged.disconnect(self._onActiveMachineChanged)
-        self._initialize(update_should_show_flag = False)
+        self._initialize(update_should_show_flag=False)
 
     def initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._onActiveMachineChanged)

@@ -34,7 +34,7 @@ class ContainerNode:
         :return: The metadata of the container in this node.
         """
 
-        return ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)[0]
+        return ContainerRegistry.getInstance().findContainersMetadata(id=self.container_id)[0]
 
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
         """Get an entry from the metadata of the container that this node contains.
@@ -48,7 +48,7 @@ class ContainerNode:
         :return: The value of the metadata entry, or the default if it was not present.
         """
 
-        container_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)
+        container_metadata = ContainerRegistry.getInstance().findContainersMetadata(id=self.container_id)
         if len(container_metadata) == 0:
             return default
         return container_metadata[0].get(entry, default)
@@ -63,9 +63,9 @@ class ContainerNode:
         """
 
         if not self._container:
-            container_list = ContainerRegistry.getInstance().findInstanceContainers(id = self.container_id)
+            container_list = ContainerRegistry.getInstance().findInstanceContainers(id=self.container_id)
             if len(container_list) == 0:
-                Logger.log("e", "Failed to lazy-load container [{container_id}]. Cannot find it.".format(container_id = self.container_id))
+                Logger.log("e", "Failed to lazy-load container [{container_id}]. Cannot find it.".format(container_id=self.container_id))
                 error_message = ConfigurationErrorMessage.getInstance()
                 error_message.addFaultyContainers(self.container_id)
                 return None

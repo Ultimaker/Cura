@@ -20,4 +20,4 @@ class IntentNode(ContainerNode):
     def __init__(self, container_id: str, quality: "QualityNode") -> None:
         super().__init__(container_id)
         self.quality = quality
-        self.intent_category = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0].get("intent_category", "default")
+        self.intent_category = ContainerRegistry.getInstance().findContainersMetadata(id=container_id)[0].get("intent_category", "default")

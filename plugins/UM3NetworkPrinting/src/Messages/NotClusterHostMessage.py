@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import QUrl
@@ -24,13 +25,13 @@ class NotClusterHostMessage(Message):
 
     def __init__(self, device: "UltimakerNetworkedPrinterOutputDevice") -> None:
         super().__init__(
-            text = I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to {0} but it is not "
+            text=I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to {0} but it is not "
                                                       "the host of a group. You can visit the web page to configure "
                                                       "it as a group host.", device.name),
-            title = I18N_CATALOG.i18nc("@info:title", "Not a group host"),
-            lifetime = 0,
-            dismissable = True,
-            message_type = Message.MessageType.ERROR
+            title=I18N_CATALOG.i18nc("@info:title", "Not a group host"),
+            lifetime=0,
+            dismissable=True,
+            message_type=Message.MessageType.ERROR
         )
         self._address = device.address
         self.addAction("", I18N_CATALOG.i18nc("@action", "Configure group"), "", "")
