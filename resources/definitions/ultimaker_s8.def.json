@@ -69,8 +69,8 @@
         "acceleration_wall_0_roofing": { "value": "acceleration_wall_0" },
         "acceleration_wall_x": { "value": "acceleration_print" },
         "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
-        "adhesion_type": { "value": "'skirt'" },
-        "bottom_thickness": { "value": "3*layer_height if top_layers==4 else top_bottom_thickness" },
+        "adhesion_type": { "value": "'brim' if support_enable and support_structure=='tree' else 'skirt'" },
+        "bottom_thickness": { "value": "3*layer_height if top_layers==4 and not support_enable else top_bottom_thickness" },
         "bridge_skin_material_flow": { "value": 200 },
         "bridge_skin_speed":
         {
@@ -94,6 +94,7 @@
         "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
         "gradual_flow_enabled": { "value": false },
         "hole_xy_offset": { "value": 0.075 },
+        "infill_material_flow": { "value": "1.1*material_flow" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
         "infill_sparse_density": { "value": 15 },
@@ -319,7 +320,7 @@
         "speed_support":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall_0"
+            "value": "speed_print"
         },
         "speed_support_bottom":
         {
@@ -334,7 +335,7 @@
         "speed_support_interface":
         {
             "maximum_value_warning": 300,
-            "value": 50
+            "value": 80
         },
         "speed_support_roof":
         {
@@ -381,14 +382,22 @@
             "maximum_value_warning": 300,
             "value": "speed_wall"
         },
-        "support_brim_line_count": { "value": 5 },
-        "support_infill_rate": { "value": "80 if gradual_support_infill_steps != 0 else 15" },
+        "support_angle": { "value": 60 },
+        "support_bottom_offset": { "value": 0 },
+        "support_brim_width": { "value": 10 },
         "support_interface_enable": { "value": true },
+        "support_interface_offset": { "value": "support_offset" },
+        "support_offset": { "value": "1.2 if support_structure == 'tree' else 0.8" },
         "support_pattern": { "value": "'gyroid' if support_structure == 'tree' else 'lines'" },
         "support_structure": { "value": "'normal'" },
+        "support_tree_bp_diameter": { "value": 15 },
+        "support_tree_tip_diameter": { "value": 1.0 },
+        "support_tree_top_rate": { "value": 20 },
+        "support_xy_distance_overhang": { "value": "machine_nozzle_size" },
         "support_z_distance": { "value": "0.4*material_shrinkage_percentage_z/100.0" },
         "top_bottom_thickness": { "value": "round(4*layer_height, 2)" },
         "travel_avoid_other_parts": { "value": true },
+        "travel_avoid_supports": { "value": true },
         "wall_0_acceleration": { "value": 1000 },
         "wall_0_deceleration": { "value": 1000 },
         "wall_0_end_speed_ratio": { "value": 100 },
