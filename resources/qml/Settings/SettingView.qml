@@ -15,6 +15,7 @@ Item
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property bool findingSettings
+    property bool loseFocusOnScrollPositionChange: true
 
     Item
     {
@@ -195,7 +196,7 @@ Item
             onPositionChanged: {
                 // This removes focus from items when scrolling.
                 // This fixes comboboxes staying open and scrolling container
-                if (!activeFocus && !filter.activeFocus) {
+                if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange) {
                     forceActiveFocus();
                 }
             }
@@ -377,6 +378,10 @@ Item
                             contents.currentItem.item.focusItem.forceActiveFocus()
                         }
                     }
+                }
+                function onSetScrollPositionChangeLoseFocus(lose_focus)
+                {
+                    loseFocusOnScrollPositionChange = lose_focus;
                 }
             }
         }
