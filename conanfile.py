@@ -219,6 +219,9 @@ class CuraConan(ConanFile):
 
     @staticmethod
     def _get_license_from_repository(sources_url, version, license_file_name = None):
+        if sources_url.startswith("https://github.com/Ultimaker/") and "private" in sources_url:
+            return None
+
         git_url = sources_url
         if git_url.endswith('/'):
             git_url = git_url[:-1]
