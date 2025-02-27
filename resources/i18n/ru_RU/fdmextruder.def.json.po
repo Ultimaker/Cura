@@ -203,3 +203,19 @@ msgstr "Длина сопла"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "Разница высот между кончиком сопла и самой нижней частью печатающей головки."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Продолжительность смены экструдера"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "G-код для предстартовой рутины экструдера"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "G-код для выполнения до переключения на этот экструдер."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "При использовании нескольких инструментов это значение представляет собой время смены инструмента в секундах. Оно будет прибавлено к расчетному времени с учетом количества смен инструментов."

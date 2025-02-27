@@ -154,7 +154,7 @@ if __name__ == "__main__":
     parser.add_argument("--app_name", required = True, type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
-    cura_version = args.cura_conan_version.replace("+","-") # + is not allowed for bundle identifier
+    cura_version = args.cura_conan_version.replace("+", "-")  # + is not allowed for bundle identifier
 
     app_name = f"{args.app_name}.app"
 

@@ -39,6 +39,8 @@
 [![Button Settings]][Settings]   
 [![Button Localize]][Localize]
 
+[![Button Libraries]][Libraries]
+
 <br>
 <br>
 
@@ -75,6 +77,7 @@
 [Report]: docs/Report.md
 [Logo]: resources/images/cura-icon.png
 [#]: #
+[Libraries]: https://github.com/Ultimaker/Cura/blob/main/licenses_thirdparty
 
 
 <!---------------------------------[ Badges ]---------------------------------->
@@ -90,6 +93,7 @@
 [Badge Downloads]: https://img.shields.io/github/downloads-pre/Ultimaker/Cura/latest/total?style=for-the-badge
 
 
+
 <!---------------------------------[ Buttons ]--------------------------------->
 
 [Button Localize]: https://img.shields.io/badge/Help_Localize-e2467d?style=for-the-badge&logoColor=white&logo=GoogleTranslate
@@ -98,5 +102,6 @@
 [Button Building]: https://img.shields.io/badge/Building_Cura-blue?style=for-the-badge&logoColor=white&logo=GitBook
 [Button Plugins]: https://img.shields.io/badge/Plugin_Usage-569A31?style=for-the-badge&logoColor=white&logo=ROS
 [Button Report]: https://img.shields.io/badge/Report_Issues-C9284D?style=for-the-badge&logoColor=white&logo=Cliqz
+[Button Libraries]: https://img.shields.io/badge/third--party_libraries-b928c9?style=for-the-badge
 
 
