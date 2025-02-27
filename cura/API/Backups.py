@@ -30,14 +30,14 @@ class Backups:
 
         return self.manager.createBackup(available_remote_plugins)
 
-    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, Any]) -> None:
+    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, Any], auto_close: bool = True) -> None:
         """Restore a back-up using the BackupsManager.
 
         :param zip_file: A ZIP file containing the actual back-up data.
         :param meta_data: Some metadata needed for restoring a back-up, like the Cura version number.
         """
 
-        return self.manager.restoreBackup(zip_file, meta_data)
+        return self.manager.restoreBackup(zip_file, meta_data, auto_close=auto_close)
 
     def shouldReinstallDownloadablePlugins(self) -> bool:
         return self.manager.shouldReinstallDownloadablePlugins()

@@ -118,12 +118,16 @@ class CreateBackupJob(Job):
                                        }
                               }).encode()
 
+        CuraApplication.getInstance().processEvents()  # Needed??
+
         HttpRequestManager.getInstance().put(
             self._api_backup_url,
             data = payload,
             callback = self._onUploadSlotCompleted,
             error_callback = self._onUploadSlotCompleted,
             scope = self._json_cloud_scope)
+
+        CuraApplication.getInstance().processEvents()  # Needed??
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if HttpRequestManager.safeHttpStatus(reply) >= 300:

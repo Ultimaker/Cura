@@ -1,8 +1,12 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import tempfile
+
+import json
 
 import base64
 import hashlib
+import os
 import threading
 from tempfile import NamedTemporaryFile
 from typing import Optional, Any, Dict
@@ -12,9 +16,16 @@ from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.PackageManager import catalog
+from UM.Resources import Resources
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
-from cura.CuraApplication import CuraApplication
+from UM.Version import Version
 
+from cura.ApplicationMetadata import CuraSDKVersion
+from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
+import cura.UltimakerCloud.UltimakerCloudConstants as UltimakerCloudConstants
+
+PACKAGES_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}/packages"
 
 class RestoreBackupJob(Job):
     """Downloads a backup and overwrites local configuration with the backup.
@@ -60,8 +71,8 @@ class RestoreBackupJob(Job):
 
         # We store the file in a temporary path fist to ensure integrity.
         try:
-            temporary_backup_file = NamedTemporaryFile(delete = False)
-            with open(temporary_backup_file.name, "wb") as write_backup:
+            self._temporary_backup_file = NamedTemporaryFile(delete = False)
+            with open(self._temporary_backup_file.name, "wb") as write_backup:
                 app = CuraApplication.getInstance()
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
@@ -74,18 +85,75 @@ class RestoreBackupJob(Job):
             self._job_done.set()
             return
 
-        if not self._verifyMd5Hash(temporary_backup_file.name, self._backup.get("md5_hash", "")):
+        if not self._verifyMd5Hash(self._temporary_backup_file.name, self._backup.get("md5_hash", "")):
             # Don't restore the backup if the MD5 hashes do not match.
             # This can happen if the download was interrupted.
             Logger.log("w", "Remote and local MD5 hashes do not match, not restoring backup.")
             self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
 
         # Tell Cura to place the backup back in the user data folder.
-        with open(temporary_backup_file.name, "rb") as read_backup:
+        metadata = self._backup.get("metadata", {})
+        with open(self._temporary_backup_file.name, "rb") as read_backup:
             cura_api = CuraApplication.getInstance().getCuraAPI()
-            cura_api.backups.restoreBackup(read_backup.read(), self._backup.get("metadata", {}))
+            cura_api.backups.restoreBackup(read_backup.read(), metadata, auto_close=False)
 
-        self._job_done.set()
+        # Read packages data-file, to get the 'to_install' plugin-ids.
+        version_to_restore = Version(metadata.get("cura_release", "dev"))
+        version_str = f"{version_to_restore.getMajor()}.{version_to_restore.getMinor()}"
+        packages_path = os.path.abspath(os.path.join(os.path.abspath(
+            Resources.getConfigStoragePath()), "..", version_str, "packages.json"))
+        if not os.path.exists(packages_path):
+            self._job_done.set()
+            return
+
+        to_install = set()
+        try:
+            with open(packages_path, "r") as packages_file:
+                packages_json = json.load(packages_file)
+                if "to_install" in packages_json and "package_id" in packages_json["to_install"]:
+                    to_install.add(packages_json["to_install"]["package_id"])
+        except IOError as ex:
+            pass  # TODO! (log + message)
+
+        if len(to_install) < 1:
+            self._job_done.set()
+            return
+
+        # Download all re-installable plugins packages, so they can be put back on start-up.
+        redownload_errors = []
+        def packageDownloadCallback(package_id: str, msg: "QNetworkReply", err: "QNetworkReply.NetworkError" = None) -> None:
+            if err is not None or HttpRequestManager.safeHttpStatus(msg) != 200:
+                redownload_errors.append(err)
+            to_install.remove(package_id)
+
+            try:
+                with tempfile.NamedTemporaryFile(mode="wb+", suffix=".curapackage") as temp_file:
+                    bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                    while bytes_read:
+                        temp_file.write(bytes_read)
+                        bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                        # self._app.processEvents()
+                    # self._progress[package_id]["file_written"] = temp_file.name
+                    if not CuraApplication.getInstance().getPackageManager().installPackage(temp_file.name):
+                        redownload_errors.append(f"Couldn't install package '{package_id}'.")
+            except IOError as ex:
+                redownload_errors.append(f"Couldn't read package '{package_id}' because '{ex}'.")
+
+            if len(to_install) < 1:
+                if len(redownload_errors) == 0:
+                    self._job_done.set()
+                else:
+                    print("|".join(redownload_errors))  # TODO: Message / Log instead.
+                    self._job_done.set()  # NOTE: Set job probably not the right call here... (depends on wether or not that in the end closes the app or not...)
+
+        self._package_download_scope = UltimakerCloudScope(CuraApplication.getInstance())
+        for package_id in to_install:
+            HttpRequestManager.getInstance().get(
+                f"{PACKAGES_URL}/{package_id}/download",
+                scope=self._package_download_scope,
+                callback=lambda msg: packageDownloadCallback(package_id, msg),
+                error_callback=lambda msg, err: packageDownloadCallback(package_id, msg, err)
+            )
 
     @staticmethod
     def _verifyMd5Hash(file_path: str, known_hash: str) -> bool:
