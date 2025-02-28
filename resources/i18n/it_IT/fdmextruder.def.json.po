@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Codice G fine estrusore"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "Durata del G-code di fine dell'estrusore"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -78,7 +78,7 @@ msgstr "Codice G avvio estrusore"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "Durata del G-code di inizio dell'estrusore"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +166,11 @@ msgstr "Il numero di ventole di raffreddamento stampa abbinate a questo estrusor
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "Il tempo necessario per eseguire il G-code di fine, quando ci si allontana da questo estrusore."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "Il tempo necessario per eseguire il G-code di inizio, quando si passa a questo estrusore."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
@@ -195,3 +195,27 @@ msgstr "La coordinata y dell’offset dell’ugello."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "La coordinata y della posizione di partenza all’accensione dell’estrusore."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Lunghezza ugello"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "La differenza di altezza tra la punta dell'ugello e la parte più bassa della testina di stampa."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Durata cambio estrusore"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Codice G della fase preparatoria dell'estrusore"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Codice G della fase preparatoria da eseguire prima di passare a questo estrusore."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Quando si utilizza una configurazione multi-utensile, questo valore rappresenta il tempo di cambio utensile in secondi. Questo valore verrà aggiunto al tempo stimato in base al numero di cambi che si verificano."

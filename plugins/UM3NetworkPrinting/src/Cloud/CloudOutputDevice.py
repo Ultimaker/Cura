@@ -331,7 +331,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return False
 
         [printer, *_] = self._printers
-        return printer.type in ("MakerBot Method X", "MakerBot Method XL")
+        return printer.type in ("MakerBot Method", "MakerBot Method X", "MakerBot Method XL", "MakerBot Sketch", "MakerBot Sketch Large", "MakerBot Sketch Sprint")
 
     @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:

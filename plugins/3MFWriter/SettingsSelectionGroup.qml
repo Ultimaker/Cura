@@ -71,8 +71,8 @@ ColumnLayout
         Layout.fillWidth: true
         Layout.preferredHeight: contentHeight
         spacing: 0
-        model: modelData.settings
-        visible: modelData.settings.length > 0
+        model: modelData.visibleSettings
+        visible: modelData.visibleSettings.length > 0
 
         delegate: SettingSelection { }
     }
@@ -80,8 +80,7 @@ ColumnLayout
     UM.Label
     {
         UM.I18nCatalog { id: catalog; name: "cura" }
-
         text: catalog.i18nc("@label", "No specific value has been set")
-        visible: modelData.settings.length === 0
+        visible: modelData.visibleSettings.length === 0
     }
 }

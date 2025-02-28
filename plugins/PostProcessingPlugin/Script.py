@@ -122,7 +122,7 @@ class Script:
         if not key in line or (';' in line and line.find(key) > line.find(';')):
             return default
         sub_part = line[line.find(key) + 1:]
-        m = re.search('^-?[0-9]+\.?[0-9]*', sub_part)
+        m = re.search(r'^-?[0-9]+\.?[0-9]*', sub_part)
         if m is None:
             return default
         try:

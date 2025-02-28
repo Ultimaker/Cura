@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "Ekstruder G-Code'u Sonlandırma"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "Ekstruder Bitiş G Kodu Süresi"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -78,7 +78,7 @@ msgstr "Ekstruder G-Code'u Başlatma"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "Ekstruder Başlangıç ​​G Kodu Süresi"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +166,11 @@ msgstr "Bu ekstrüdere bağlı yazıcı soğutma fanı sayısı. Yalnızca her b
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "Bu ekstruderden ayrılırken son g kodunun uygulanması için gereken süre."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "Bu ekstrudere geçiş sırasında başlangıç ​​g kodunun uygulanması için gereken süre."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
@@ -195,3 +195,27 @@ msgstr "Nozül ofsetinin y koordinatı."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Ekstruder açılırken başlangıç konumunun Y koordinatı."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Püskürtme Memesi Uzunluğu"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "Püskürtme memesinin ucu ile yazıcı kafasının en alt kısmı arasındaki yükseklik farkı."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Ekstruder Değişim süresi"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Ekstruder Ön Başlatma G Kodu"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Bu ekstrudere geçmeden önce çalıştırılacak g kodunu önden başlatır."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Çoklu alet kurulumu kullanıldığında bu değer, saniye cinsinden alet değiştirme süresidir. Bu değer, meydana gelen değişiklik sayısına bağlı olarak tahmini süreye eklenecektir."

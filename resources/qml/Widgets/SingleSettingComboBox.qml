@@ -28,7 +28,7 @@ Cura.ComboBox {
         id: comboboxModel
 
         // The propertyProvider has not loaded the setting when this components onComplete triggers. Populating the model
-        // is defered until propertyProvider signals "onIsValueUsedChanged". The defered upate is triggered with this function.
+        // is deferred until propertyProvider signals "onIsValueUsedChanged". The deferred update is triggered with this function.
         function updateModel()
         {
             clear()
@@ -68,7 +68,8 @@ Cura.ComboBox {
     {
         id: propertyProvider
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
-        watchedProperties: ["value" , "options"]
+        removeUnusedValue: false
+        watchedProperties: ["value", "validationState",  "resolve", "options"]
     }
 
     Connections

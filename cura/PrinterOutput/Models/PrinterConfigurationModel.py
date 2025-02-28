@@ -1,8 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
 from typing import List
+
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.DefinitionContainer import DefinitionContainer
 
 MYPY = False
 if MYPY:
@@ -67,6 +70,15 @@ class PrinterConfigurationModel(QObject):
             if configuration.activeMaterial and configuration.activeMaterial.type != "empty":
                 return True
         return False
+
+    @pyqtProperty("QStringList", constant=True)
+    def validCoresForPrinterType(self) -> List[str]:
+        printers = ContainerRegistry.getInstance().findContainersMetadata(
+            ignore_case=True, type="machine", name=self._printer_type, container_type=DefinitionContainer)
+        id = printers[0]["id"] if len(printers) > 0 and "id" in printers[0] else ""
+        definitions = ContainerRegistry.getInstance().findContainersMetadata(
+            ignore_case=True, type="variant", definition=id+"*")
+        return [x["name"] for x in definitions]
 
     def __str__(self):
         message_chunks = []

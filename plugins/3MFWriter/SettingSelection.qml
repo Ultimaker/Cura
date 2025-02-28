@@ -24,7 +24,7 @@ RowLayout
 
     UM.Label
     {
-        text: modelData.value
+        text: modelData.valuename
     }
 
     UM.HelpIcon

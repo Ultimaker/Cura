@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-03-11 11:28+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,7 @@ msgstr "익스트루더 엔드 G 코드"
 
 msgctxt "machine_extruder_end_code_duration label"
 msgid "Extruder End G-Code Duration"
-msgstr ""
+msgstr "압출기 종료 G-코드 지속 시간"
 
 msgctxt "machine_extruder_end_pos_abs label"
 msgid "Extruder End Position Absolute"
@@ -78,7 +78,7 @@ msgstr "익스트루더 스타트 G 코드"
 
 msgctxt "machine_extruder_start_code_duration label"
 msgid "Extruder Start G-Code Duration"
-msgstr ""
+msgstr "압출기 시작 G-코드 지속 시간"
 
 msgctxt "machine_extruder_start_pos_abs label"
 msgid "Extruder Start Position Absolute"
@@ -166,11 +166,11 @@ msgstr "이 익스트루더와 관련된 프린팅 냉각 팬의 개수. 각 익
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
-msgstr ""
+msgstr "이 압출기에서 전환할 때 종료 G-코드를 실행하는 데 걸리는 시간입니다."
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr ""
+msgstr "이 압출기로 전환할 때 시작 G-코드를 실행하는 데 걸리는 시간입니다."
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."
@@ -195,3 +195,27 @@ msgstr "노즐 오프셋의 y 좌표."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "익스트루더를 켤 때 시작 위치의 y 좌표."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "노즐 길이"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "노즐 끝과 프린트 헤드의 가장 낮은 부분 사이의 높이 차이입니다."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "압출기 변경 시간"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "압출기 사전 시작 G-코드"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "이 압출기로 전환하기 전에 실행할 사전 시작 g-코드입니다."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "멀티 도구 설정을 사용할 경우, 해당 값은 도구 변경에 걸리는 시간(초 단위)입니다. 이 값은 발생하는 변경 횟수에 따라 예상 시간에 추가됩니다."

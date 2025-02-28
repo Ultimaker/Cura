@@ -1,6 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import math
 import sys
 
 from PyQt6.QtCore import Qt
@@ -217,16 +218,16 @@ class SimulationView(CuraView):
                 Logger.warn(
                     f"Binary search error (out of bounds): index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
 
-            fractional_value = (self._current_time - left_value) / (right_value - left_value)
+            segment_duration = right_value - left_value
+            fractional_value = 0.0 if segment_duration == 0.0 else (self._current_time - left_value) / segment_duration
 
             self.setPath(i + fractional_value)
 
-    def advanceTime(self, time_increase: float) -> bool:
+    def advanceTime(self, time_increase: float) -> None:
         """
         Advance the time by the given amount.
 
         :param time_increase: The amount of time to advance (in seconds).
-        :return: True if the time was advanced, False if the end of the simulation was reached.
         """
         total_duration = 0.0
         if len(self.cumulativeLineDuration()) > 0:
@@ -236,15 +237,13 @@ class SimulationView(CuraView):
             # If we have reached the end of the simulation, go to the next layer.
             if self.getCurrentLayer() == self.getMaxLayers():
                 # If we are already at the last layer, go to the first layer.
-                self.setTime(total_duration)
-                return False
-
-            # advance to the next layer, and reset the time
-            self.setLayer(self.getCurrentLayer() + 1)
+                self.setLayer(0)
+            else:
+                # advance to the next layer, and reset the time
+                self.setLayer(self.getCurrentLayer() + 1)
             self.setTime(0.0)
         else:
             self.setTime(self._current_time + time_increase)
-        return True
 
     def cumulativeLineDuration(self) -> List[float]:
         # Make sure _cumulative_line_duration is initialized properly
@@ -255,9 +254,19 @@ class SimulationView(CuraView):
             polylines = self.getLayerData()
             if polylines is not None:
                 for polyline in polylines.polygons:
-                    for line_duration in list((polyline.lineLengths / polyline.lineFeedrates)[0]):
+                    for line_index in range(len(polyline.lineLengths)):
+                        line_length = polyline.lineLengths[line_index]
+                        line_feedrate = polyline.lineFeedrates[line_index][0]
+
+                        if line_feedrate > 0.0:
+                            line_duration = line_length / line_feedrate
+                        else:
+                            # Something is wrong with this line, set an arbitrary non-null duration
+                            line_duration = 0.1
+
                         total_duration += line_duration / SimulationView.SIMULATION_FACTOR
                         self._cumulative_line_duration.append(total_duration)
+
                     # for tool change we add an extra tool path
                     self._cumulative_line_duration.append(total_duration)
             # set current cached layer
@@ -582,7 +591,7 @@ class SimulationView(CuraView):
         self._max_thickness = sys.float_info.min
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration = {}
+        self._cumulative_line_duration = []
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
