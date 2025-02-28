@@ -92,6 +92,7 @@
         "cool_min_temperature": { "value": "material_print_temperature-15" },
         "default_material_print_temperature": { "maximum_value_warning": 320 },
         "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
+        "flooring_layer_count": { "value": "1" },
         "gradual_flow_enabled": { "value": false },
         "hole_xy_offset": { "value": 0.075 },
         "infill_material_flow": { "value": "1.1*material_flow" },
@@ -100,6 +101,12 @@
         "infill_sparse_density": { "value": 15 },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
         "initial_bottom_layers": { "value": 2 },
+        "jerk_flooring":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_roofing"
+        },
         "jerk_infill":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
@@ -203,6 +210,12 @@
             "unit": "m/s\u00b3",
             "value": "jerk_wall"
         },
+        "jerk_wall_0_flooring":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_wall_0_roofing"
+        },
         "jerk_wall_0_roofing":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
@@ -214,6 +227,12 @@
             "maximum_value_warning": "machine_max_jerk_xy / 2",
             "unit": "m/s\u00b3",
             "value": "jerk_print"
+        },
+        "jerk_wall_x_flooring":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_wall_x_roofing"
         },
         "jerk_wall_x_roofing":
         {
@@ -282,6 +301,11 @@
         "skirt_line_count": { "value": 5 },
         "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": 4 },
+        "speed_flooring":
+        {
+            "maximum_value_warning": 300,
+            "value": "speed_roofing"
+        },
         "speed_infill":
         {
             "maximum_value_warning": 300,
@@ -367,6 +391,11 @@
             "maximum_value_warning": 300,
             "value": "speed_wall"
         },
+        "speed_wall_0_flooring":
+        {
+            "maximum_value_warning": 300,
+            "value": "speed_wall_0_roofing"
+        },
         "speed_wall_0_roofing":
         {
             "maximum_value_warning": 300,
@@ -376,6 +405,11 @@
         {
             "maximum_value_warning": 300,
             "value": "speed_print"
+        },
+        "speed_wall_x_flooring":
+        {
+            "maximum_value_warning": 300,
+            "value": "speed_wall_x_roofing"
         },
         "speed_wall_x_roofing":
         {
@@ -393,6 +427,7 @@
         "support_tree_bp_diameter": { "value": 15 },
         "support_tree_tip_diameter": { "value": 1.0 },
         "support_tree_top_rate": { "value": 20 },
+        "support_wall_count": { "value": 2 },
         "support_xy_distance_overhang": { "value": "machine_nozzle_size" },
         "support_z_distance": { "value": "0.4*material_shrinkage_percentage_z/100.0" },
         "top_bottom_thickness": { "value": "round(4*layer_height, 2)" },
