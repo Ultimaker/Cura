@@ -491,6 +491,15 @@ class PurgeLinesAndUnload(Script):
 
         def calculate_purge_volume(line_width, purge_length, volume_per_mm):
             return round((line_width * 0.3 * purge_length) * 1.25 / volume_per_mm, 5)
+        
+        def adjust_for_prime_blob_gcode(retract_speed, retract_distance):
+            """Generates G-code lines for prime blob adjustment."""
+            gcode_lines = [
+                f"G1 F{retract_speed} E{retract_distance} ; Unretract",
+                "G92 E0 ; Reset extruder"
+            ]
+            return "\n".join(gcode_lines)
+
 
         purge_location = self.getSettingValueByKey("purge_line_location")
         purge_extrusion_full = True if self.getSettingValueByKey("purge_line_length") == "purge_full" else False
@@ -507,8 +516,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{self.machine_left + self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{y_stop} ; Move over\n"
@@ -529,8 +537,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} ; Move\nG0 Y{self.machine_back - 10} ; Move\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{self.machine_right - self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{y_stop} ; Move over\n"
@@ -552,8 +559,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Y{self.machine_front + self.border_distance} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front + self.border_distance} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{x_stop} Y{self.machine_front + 3 + self.border_distance} ; Move over\n"
@@ -576,8 +582,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 X{self.machine_right - 10} ; Ortho move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back - self.border_distance} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{x_stop} Y{self.machine_back - 3 - self.border_distance} ; Move over\n"
@@ -600,8 +605,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{self.machine_left + self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{y_stop} ; Move over\n"
@@ -622,8 +626,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} Z2 ; Move\nG0 Y{self.machine_back - 10} Z2 ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{self.machine_right - self.border_distance} Y{y_stop} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{y_stop} ; Move over\n"
@@ -644,8 +647,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Z2 ; Move\nG0 Y{self.machine_front + self.border_distance} Z2 ; Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_front + self.border_distance} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{x_stop} Y{self.machine_front + 3 + self.border_distance} ; Move over\n"
@@ -667,8 +669,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G0 X{self.machine_right - 10} Z2 ; Ortho Move to start\n"
                 purge_str += f"G0 F600 Z0.3 ; Move down\n"
                 if self.prime_blob_enable:
-                    purge_str += f"G1 F{self.retract_speed} E{self.retract_dist} ; Unretract\n"
-                    purge_str += "G92 E0 ; Reset extruder\n"
+                    purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
                 purge_str += f"G1 F{self.print_speed} X{x_stop} Y{self.machine_back - self.border_distance} E{purge_volume} ; First line\n"
                 purge_str += f"G0 X{x_stop} Y{self.machine_back - 3 - self.border_distance} ; Move over\n"
