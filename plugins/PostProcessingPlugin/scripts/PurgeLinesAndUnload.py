@@ -500,7 +500,6 @@ class PurgeLinesAndUnload(Script):
             ]
             return "\n".join(gcode_lines)
 
-
         purge_location = self.getSettingValueByKey("purge_line_location")
         purge_extrusion_full = True if self.getSettingValueByKey("purge_line_length") == "purge_full" else False
         purge_str = ";TYPE:CUSTOM----------[Purge Lines]\nG0 F600 Z2 ; Move up\nG92 E0 ; Reset extruder\n"
