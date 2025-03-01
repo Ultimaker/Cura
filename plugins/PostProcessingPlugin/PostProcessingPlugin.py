@@ -7,6 +7,7 @@ import io  # To allow configparser to write to a string.
 import os.path
 import pkgutil
 import sys
+import re
 from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
 
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -98,10 +99,19 @@ class PostProcessingPlugin(QObject, Extension):
                 for pp_name in pp_name_list.split("\n"):
                     pp_name = pp_name.split("]")
                     gcode_list[0] += ";  " + str(pp_name[0]) + "]\n"
+                post_processor_setting_str = self.getPostProcessorSettings(pp_name_list)
+                gcode_list[len(gcode_list)-1] += post_processor_setting_str
             gcode_dict[active_build_plate_id] = gcode_list
             setattr(scene, "gcode_dict", gcode_dict)
         else:
             Logger.log("e", "Already post processed")
+
+    def getPostProcessorSettings(self, pp_name_list: str) -> str:
+        setting_str = ";...Post Processor Settings (all settings)\n"
+        for script_str in pp_name_list.split("\n"):
+            script_str = script_str.replace(r"\\\n", "\n;  ").replace("\n;  \n;  ", "\n")
+            setting_str += ";" + str(script_str)
+        return setting_str
 
     @pyqtSlot(int)
     def setSelectedScriptIndex(self, index: int) -> None:
