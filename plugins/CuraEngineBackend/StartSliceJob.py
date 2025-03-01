@@ -177,6 +177,28 @@ class GcodeStartEndFormatter:
                     self._condition_state = GcodeConditionState.OutsideCondition
 
         if instruction >= GcodeInstruction.Evaluate and extruder_nr_expr is not None:
+            # Parse the string and manually split on commas outside braces
+            brace_depth = 0
+            for char in expression:
+                if char == "(":
+                    brace_depth += 1
+                elif char == ")":
+                    brace_depth -= 1
+
+            if brace_depth > 0:
+                count_chars_to_move = 0
+                for char in extruder_nr_expr:
+                    if char == "(":
+                        brace_depth += 1
+                    elif char == ")":
+                        brace_depth -= 1
+                    elif char == ",":
+                        if brace_depth == 0:
+                            expression = expression + ", " + extruder_nr_expr[:count_chars_to_move]
+                            extruder_nr_expr = extruder_nr_expr[count_chars_to_move:] 
+                            break
+                    count_chars_to_move += 1
+
             extruder_nr_function = SettingFunction(extruder_nr_expr)
             container_stack = self._cura_application.getGlobalContainerStack()
 
