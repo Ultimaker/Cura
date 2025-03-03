@@ -2755,10 +2755,6 @@ msgid "Nozzle offset Y"
 msgstr "Décalage buse Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Taille de la buse"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Taille de la buse"
 
@@ -5645,3 +5641,59 @@ msgstr "Met à jour les configurations de Cura 5.8 vers Cura 5.9."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "Mise à jour de la version 5.8 à 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "Souris 3DConnexion"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Permet de travailler avec des souris 3D dans Cura."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Durée du changement de l’extrudeuse"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Prestart G-code de l’extrudeuse"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Retourner l’axe Y du manche de l’outil du modèle (redémarrage nécessaire)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Licence de %1 %2"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ Fichier d'impression"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "L’axe Y de la poignée de translation doit-il être retourné ? Une telle action n’affecte que la coordonnée Y du modèle. Tous les autres paramètres, tels que les paramètres de la tête d’impression de la machine, ne sont pas affectés et se comportent comme d'habitude."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "Il faut commencer par le Start GCode"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Cette configuration n’est pas disponible en raison d’une incompatibilité ou d’un autre problème avec le type de noyau %1. Veuillez consulter <a href='%2'>la page d'assistance</a> pour vérifier quels sont les noyaux pris en charge par ce type d’imprimante en ce qui concerne les nouvelles tranches."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Mise à jour des configurations de Cura 5.9 vers Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Mise à jour de la version 5.9 vers 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y max ('+' vers l’avant)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y min ('-' vers l’arrière)"

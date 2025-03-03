@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 14:27+0200\n"
+"POT-Creation-Date: 2025-02-21 15:37+0100\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.0\n"
+
+msgctxt "@title:label"
+msgid " "
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -174,6 +178,10 @@ msgstr "立體圖"
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "立體圖"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -470,6 +478,10 @@ msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "允許載入和顯示 G-code 檔案。"
 
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "總是詢問"
@@ -509,10 +521,6 @@ msgstr "匿名"
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr "應用框架"
 
 msgctxt "@title:column"
 msgid "Applies on"
@@ -692,10 +700,6 @@ msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr "C / C++ 綁定庫"
-
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr "COLLADA Digital Asset Exchange"
@@ -870,10 +874,6 @@ msgstr ""
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "相容模式"
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
-msgstr ""
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -1260,10 +1260,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "資料傳送"
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr "資料交換格式"
-
 msgctxt "@button"
 msgid "Decline"
 msgstr "拒絕"
@@ -1323,10 +1319,6 @@ msgstr "刪除列印作業"
 msgctxt "@label"
 msgid "Density"
 msgstr "密度"
-
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
@@ -1595,12 +1587,20 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "擠出機 %1"
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "擠出機結束 G-code"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
+msgstr ""
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1792,6 +1792,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr "可用的第一個"
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr ""
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "流動"
@@ -1807,10 +1811,6 @@ msgstr ""
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr "依照下述簡單的步驟。您將同步線材設定檔至您的印表機."
-
-msgctxt "@label"
-msgid "Font"
-msgstr "字體"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
@@ -1867,10 +1867,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-code 類型"
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr "G-code 產生器"
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "G-code GZ 寫入器不支援非文字模式。"
@@ -1883,14 +1879,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF 圖片"
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr "GUI 框架"
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr "GUI 框架綁定"
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "吊車高度"
@@ -1902,10 +1890,6 @@ msgstr "基本"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "在模型的突出部分產生支撐結構。若不這樣做，這些部分在列印時將倒塌。"
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
-msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1926,10 +1910,6 @@ msgstr ""
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "全局設定"
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
-msgstr "圖形用戶介面"
 
 msgctxt "@label"
 msgid "Grid Placement"
@@ -2176,10 +2156,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "介面"
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr "進程間通訊交互使用庫"
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "無效的 IP 位址"
@@ -2207,10 +2183,6 @@ msgstr "JPEG 圖片"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG 圖片"
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
-msgstr ""
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2313,6 +2285,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "調整列印平台水平"
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "顏色越淺高度越高"
@@ -2328,10 +2304,6 @@ msgstr "線寬"
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "線性"
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
-msgstr "Linux cross-distribution 應用程式部署"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2419,6 +2391,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -2827,10 +2803,6 @@ msgid "Nozzle offset Y"
 msgstr "噴頭偏移 Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "噴頭孔徑"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "噴頭孔徑"
 
@@ -3003,10 +2975,6 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr ""
-
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "正在解析 G-code"
@@ -3165,14 +3133,6 @@ msgstr "外掛"
 msgctxt "@button"
 msgid "Plugins"
 msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr "多邊形剪輯函式庫"
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
-msgstr "多邊形包裝函式庫，由 Prusa Research 開發"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -3445,10 +3405,6 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr "編程語言"
-
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3576,18 +3532,6 @@ msgstr ""
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt 版本"
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
-msgstr ""
 
 msgctxt "@label"
 msgid "Qt version"
@@ -3769,10 +3713,6 @@ msgstr "右視圖"
 msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "右視圖"
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
-msgstr ""
 
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
@@ -3961,10 +3901,6 @@ msgctxt "name"
 msgid "Sentry Logger"
 msgstr "哨兵記錄器"
 
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr "串口通訊函式庫"
-
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "設為主要擠出機"
@@ -4071,6 +4007,10 @@ msgstr "從桌面或外部程式開啟檔案時，使用同一 Cura 視窗嗎？
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4310,6 +4250,10 @@ msgid "Start G-code"
 msgstr "起始 G-code"
 
 msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "開始切片程序"
 
@@ -4389,34 +4333,6 @@ msgstr "支撐介面"
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr "高速運算函式庫"
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr "用於檔案 metadata 和串流的函式庫"
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr "用於處理 3MF 檔案的函式庫"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr "用於處理 STL 檔案的函式庫"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr "用於處理三角形網格的函式庫"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr "科學計算函式庫"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
-msgstr "存取系統金鑰函式庫"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4731,6 +4647,10 @@ msgstr "上傳你的備份時發生錯誤。"
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "由於無法識別 %1，因此無法使用此設定。 請連上 %2 下載正確的線材參數設定。"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr ""
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
@@ -5101,10 +5021,6 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr ""
-
 msgctxt "@label"
 msgid "Unknown"
 msgstr "未知"
@@ -5298,6 +5214,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上傳自訂韌體"
@@ -5321,14 +5241,6 @@ msgstr "在此線材組合下，使用膠水以獲得較佳的附著。"
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "使用者授權"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
-msgstr ""
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5444,6 +5356,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
 msgstr ""
 
 msgctxt "@button"
@@ -5608,12 +5524,12 @@ msgid "Y (Depth)"
 msgstr "Y (深度)"
 
 msgctxt "@label"
-msgid "Y max"
-msgstr "Y 最大值"
+msgid "Y max ( '+' towards front)"
+msgstr ""
 
 msgctxt "@label"
-msgid "Y min"
-msgstr "Y 最小值"
+msgid "Y min ( '-' towards back)"
+msgstr ""
 
 msgctxt "@info"
 msgid "Yes"
@@ -5700,10 +5616,6 @@ msgstr "Z"
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (高度)"
-
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr "ZeroConf 發現函式庫"
 
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
@@ -6120,6 +6032,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Always use Fine quality"
 #~ msgstr "總是使用精細品質"
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Application framework"
+#~ msgstr "應用框架"
+
 #~ msgctxt "@label"
 #~ msgid "Are you sure you want to exit Cura?"
 #~ msgstr "你確定要結束 Cura 嗎？"
@@ -6255,6 +6171,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@info:tooltip"
 #~ msgid "By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh."
 #~ msgstr "預設情況下，白色像素表示網格上的高點，黑色像素表示網格上的低點。更改此選項將以相反方式呈現，黑色像素表示網格上的高點，白色像素表示網格上的低點。"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "C/C++ Binding library"
+#~ msgstr "C / C++ 綁定庫"
 
 #~ msgctxt "@label"
 #~ msgid "COM service found"
@@ -6555,6 +6475,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@text"
 #~ msgid "Data collected by UltiMaker Cura will not contain any personal information."
 #~ msgstr "UltiMaker Cura 收集的資料不包含任何個人資訊。"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Data interchange format"
+#~ msgstr "資料交換格式"
 
 #~ msgctxt "@info:status"
 #~ msgid ""
@@ -6906,6 +6830,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Flatten active settings"
 #~ msgstr "合併有效設定"
 
+#~ msgctxt "@label"
+#~ msgid "Font"
+#~ msgstr "字體"
+
 #~ msgctxt "@info:status"
 #~ msgid ""
 #~ "Found more than one part or assembly inside your drawing. We currently only support drawings with exactly one part or assembly inside.\n"
@@ -6958,6 +6886,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "G-code commands to be executed at the very start."
 #~ msgstr "開始時最先執行的 G-code 命令。"
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "G-code generator"
+#~ msgstr "G-code 產生器"
+
 #~ msgctxt "@item:inlistbox"
 #~ msgid "GCode File"
 #~ msgstr "GCode 檔案"
@@ -6973,6 +6905,14 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@label"
 #~ msgid "GCode generator"
 #~ msgstr "GCode 產生器"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework"
+#~ msgstr "GUI 框架"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework bindings"
+#~ msgstr "GUI 框架綁定"
 
 #~ msgctxt "@label"
 #~ msgid "Gantry height"
@@ -7049,6 +6989,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@label"
 #~ msgid "Gradual infill will gradually increase the amount of infill towards the top."
 #~ msgstr "漸近式填充將隨著列印高度的提升而逐漸加大填充密度。"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Graphical user interface"
+#~ msgstr "圖形用戶介面"
 
 #~ msgctxt "@option:check"
 #~ msgid "Heated bed"
@@ -7160,6 +7104,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Instructions:"
 #~ msgstr "操作說明："
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Interprocess communication library"
+#~ msgstr "進程間通訊交互使用庫"
+
 #~ msgctxt "@action:button"
 #~ msgid "Keep"
 #~ msgstr "保留"
@@ -7199,6 +7147,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@label"
 #~ msgid "Light (20%) infill will give your model an average strength."
 #~ msgstr "輕度（20%）填充將使列印模型處於中等強度。"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Linux cross-distribution application deployment"
+#~ msgstr "Linux cross-distribution 應用程式部署"
 
 #~ msgctxt "name"
 #~ msgid "Live scripting tool"
@@ -7420,6 +7372,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Nozzle Settings"
 #~ msgstr "噴頭設定"
 
+#~ msgctxt "@label"
+#~ msgid "Nozzle Size"
+#~ msgstr "噴頭孔徑"
+
 #~ msgctxt "@text"
 #~ msgid "Number of slices"
 #~ msgstr "切片次數"
@@ -7581,6 +7537,14 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@title:tab"
 #~ msgid "Plugins"
 #~ msgstr "外掛"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Polygon clipping library"
+#~ msgstr "多邊形剪輯函式庫"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Polygon packing library, developed by Prusa Research"
+#~ msgstr "多邊形包裝函式庫，由 Prusa Research 開發"
 
 #~ msgctxt "@label"
 #~ msgid "Pre-sliced file {0}"
@@ -7810,6 +7774,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Profiles"
 #~ msgstr "參數"
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Programming language"
+#~ msgstr "編程語言"
+
 #~ msgctxt "@label"
 #~ msgid "Protected profiles"
 #~ msgstr "受保護的列印參數"
@@ -8032,6 +8000,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Sent {file_name} to group {cluster_name}."
 #~ msgstr "{file_name} 已傳送到群組 {cluster_name}。"
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Serial communication library"
+#~ msgstr "串口通訊函式庫"
+
 #~ msgctxt "name"
 #~ msgid "Settings Guide"
 #~ msgstr "設定指南"
@@ -8241,9 +8213,37 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "Support library for analysis of complex networks"
 #~ msgstr "用於分析複雜網路的函式庫"
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for faster math"
+#~ msgstr "高速運算函式庫"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for file metadata and streaming"
+#~ msgstr "用於檔案 metadata 和串流的函式庫"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for handling 3MF files"
+#~ msgstr "用於處理 3MF 檔案的函式庫"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling STL files"
+#~ msgstr "用於處理 STL 檔案的函式庫"
+
 #~ msgctxt "@label"
 #~ msgid "Support library for handling planar objects"
 #~ msgstr "用於處理平面物件的函式庫"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling triangular meshes"
+#~ msgstr "用於處理三角形網格的函式庫"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for scientific computing"
+#~ msgstr "科學計算函式庫"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for system keyring access"
+#~ msgstr "存取系統金鑰函式庫"
 
 #~ msgctxt "@action:button"
 #~ msgid "Sync materials with printers"
@@ -8810,6 +8810,14 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "X3g File"
 #~ msgstr "X3g 檔案"
 
+#~ msgctxt "@label"
+#~ msgid "Y max"
+#~ msgstr "Y 最大值"
+
+#~ msgctxt "@label"
+#~ msgid "Y min"
+#~ msgstr "Y 最小值"
+
 #~ msgctxt "@label:extruder label"
 #~ msgid "Yes"
 #~ msgstr "是"
@@ -8901,6 +8909,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@label"
 #~ msgid "Your rating"
 #~ msgstr "你的評分"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "ZeroConf discovery library"
+#~ msgstr "ZeroConf 發現函式庫"
 
 #~ msgctxt "@info:tooltip"
 #~ msgid "Zooming towards the mouse is not supported in the orthogonal perspective."

@@ -1,6 +1,12 @@
 import os
+import requests
+import yaml
+import tempfile
+import tarfile
 from io import StringIO
 from pathlib import Path
+from git import Repo
+from git.exc import GitCommandError
 
 from jinja2 import Template
 
@@ -11,7 +17,7 @@ from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
 from conan.tools.scm import Version
 from conan.errors import ConanInvalidConfiguration, ConanException
 
-required_conan_version = ">=2.7.0"
+required_conan_version = ">=2.7.0" # When changing the version, also change the one in conandata.yml/extra_dependencies
 
 
 class CuraConan(ConanFile):
@@ -27,7 +33,7 @@ class CuraConan(ConanFile):
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
 
-    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
+    python_requires = "translationextractor/[>=2.2.0]"
 
     options = {
         "enterprise": [True, False],
@@ -37,6 +43,7 @@ class CuraConan(ConanFile):
         "cura_debug_mode": [True, False],  # FIXME: Use profiles
         "internal": [True, False],
         "i18n_extract": [True, False],
+        "skip_licenses_download": [True, False],
     }
     default_options = {
         "enterprise": False,
@@ -46,6 +53,7 @@ class CuraConan(ConanFile):
         "cura_debug_mode": False,  # Not yet implemented
         "internal": False,
         "i18n_extract": False,
+        "skip_licenses_download": False,
     }
 
     def set_version(self):
@@ -135,6 +143,183 @@ class CuraConan(ConanFile):
 
         return python_installs
 
+    @staticmethod
+    def _is_repository_url(url):
+        # That will not work for ALL open-source projects, but should already get a large majority of them
+        return (url.startswith("https://github.com/") or url.startswith("https://gitlab.com/")) and "conan-center-index" not in url
+
+    def _retrieve_pip_license(self, package, sources_url, dependency_description):
+        # Download the sources to get the license file inside
+        self.output.info(f"Retrieving license for {package}")
+        response = requests.get(sources_url)
+        response.raise_for_status()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            sources_path = os.path.join(temp_dir, "sources.tar.gz")
+            with open(sources_path, 'wb') as sources_file:
+                sources_file.write(response.content)
+
+            with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                license_file = "LICENSE"
+
+                for source_file in sources_archive.getnames():
+                    if Path(source_file).name == license_file:
+                        sources_archive.extract(source_file, temp_dir)
+
+                        license_file_path = os.path.join(temp_dir, source_file)
+                        with open(license_file_path, 'r', encoding='utf8') as file:
+                            dependency_description["license_full"] = file.read()
+
+    def _make_pip_dependency_description(self, package, version, dependencies):
+        url = ["https://pypi.org/pypi", package]
+        if version is not None:
+            url.append(version)
+        url.append("json")
+
+        data = requests.get("/".join(url)).json()
+
+        dependency_description = {
+            "summary": data["info"]["summary"],
+            "version": data["info"]["version"],
+            "license": data["info"]["license"]
+        }
+
+        for url_data in data["urls"]:
+            if url_data["packagetype"] == "sdist":
+                sources_url = url_data["url"]
+                dependency_description["sources_url"] = sources_url
+
+                if not self.options.skip_licenses_download:
+                    self._retrieve_pip_license(package, sources_url, dependency_description)
+
+        for source_url, check_source in [("source", False),
+                                         ("Source", False),
+                                         ("Source Code", False),
+                                         ("Repository", False),
+                                         ("Code", False),
+                                         ("homepage", True),
+                                         ("Homepage", True)]:
+            try:
+                url = data["info"]["project_urls"][source_url]
+                if check_source and not self._is_repository_url(url):
+                    # That will not work for ALL open-source projects, but should already get a large majority of them
+                    self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
+                    continue
+                dependency_description["sources_url"] = url
+                break
+            except KeyError:
+                pass
+
+        if dependency_description["license"] is not None and len(dependency_description["license"]) > 32:
+            # Some packages have their full license in this field
+            dependency_description["license_full"] = dependency_description["license"]
+            dependency_description["license"] = data["info"]["name"]
+
+        dependencies[data["info"]["name"]] = dependency_description
+
+    @staticmethod
+    def _get_license_from_repository(sources_url, version, license_file_name = None):
+        if sources_url.startswith("https://github.com/Ultimaker/") and "private" in sources_url:
+            return None
+
+        git_url = sources_url
+        if git_url.endswith('/'):
+            git_url = git_url[:-1]
+        if not git_url.endswith(".git"):
+            git_url = f"{git_url}.git"
+        git_url = git_url.replace("/cgit/", "/")
+
+        tags = [f"v{version}", version]
+        files = ["LICENSE", "LICENSE.txt", "LICENSE.md", "COPYRIGHT", "COPYING", "COPYING.LIB"] if license_file_name is None else [license_file_name]
+
+        with tempfile.TemporaryDirectory() as clone_dir:
+            repo = Repo.clone_from(git_url, clone_dir, depth=1, no_checkout=True)
+
+            for tag in tags:
+                try:
+                    repo.git.fetch('--depth', '1', 'origin', 'tag', tag)
+                except GitCommandError:
+                    continue
+
+                repo.git.sparse_checkout('init', '--cone')
+                for file_name in files:
+                    repo.git.sparse_checkout('add', file_name)
+
+                try:
+                    repo.git.checkout(tag)
+                except GitCommandError:
+                    pass
+
+                for file_name in files:
+                    license_file = os.path.join(clone_dir, file_name)
+                    if os.path.exists(license_file):
+                        with open(license_file, 'r', encoding='utf8') as file:
+                            return file.read()
+
+                break
+
+    def _make_conan_dependency_description(self, dependency, dependencies):
+        dependency_description = {
+            "summary": dependency.description,
+            "version": str(dependency.ref.version),
+            "license": ', '.join(dependency.license) if (isinstance(dependency.license, list) or isinstance(dependency.license, tuple)) else dependency.license,
+        }
+
+        for source_url, check_source in [(dependency.homepage, True),
+                                         (dependency.url, True),
+                                         (dependency.homepage, False),
+                                         (dependency.url, False)]:
+            if source_url is None:
+                continue
+
+            is_repository_source = self._is_repository_url(source_url)
+            if not check_source or is_repository_source:
+                dependency_description["sources_url"] = source_url
+
+                if is_repository_source and not self.options.skip_licenses_download:
+                    self.output.info(f"Retrieving license for {dependency.ref.name}")
+                    dependency_description["license_full"] = self._get_license_from_repository(source_url, str(dependency.ref.version))
+
+                break
+
+        dependencies[dependency.ref.name] = dependency_description
+
+    def _make_extra_dependency_description(self, dependency_name, dependency_data, dependencies):
+        sources_url = dependency_data["sources_url"]
+        version = dependency_data["version"]
+        home_url = dependency_data["home_url"] if "home_url" in dependency_data else sources_url
+
+        dependency_description = {
+            "summary": dependency_data["summary"],
+            "version": version,
+            "license": dependency_data["license"],
+            "sources_url": home_url,
+        }
+
+        if not self.options.skip_licenses_download:
+            self.output.info(f"Retrieving license for {dependency_name}")
+            license_file = dependency_data["license_file"] if "license_file" in dependency_data else None
+            dependency_description["license_full"] = self._get_license_from_repository(sources_url, version, license_file)
+
+        dependencies[dependency_name] = dependency_description
+
+    def _dependencies_description(self):
+        dependencies = {}
+
+        for dependency in [self] + list(self.dependencies.values()):
+            self._make_conan_dependency_description(dependency, dependencies)
+
+            if "extra_dependencies" in dependency.conan_data:
+                for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
+                    self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
+
+        pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
+        with open(pip_requirements_summary, 'r') as file:
+            for package_name, package_version in yaml.safe_load(file).items():
+                self._make_pip_dependency_description(package_name, package_version, dependencies)
+
+        return dependencies
+
     def _generate_cura_version(self, location):
         with open(os.path.join(self.recipe_folder, "CuraVersion.py.jinja"), "r") as f:
             cura_version_py = Template(f.read())
@@ -149,7 +334,7 @@ class CuraConan(ConanFile):
 
         self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 
-        with open(os.path.join(location, "CuraVersion.py"), "w") as f:
+        with open(os.path.join(location, "CuraVersion.py"), "wb") as f:
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
@@ -165,7 +350,8 @@ class CuraConan(ConanFile):
                 cura_latest_url=self.conan_data["urls"][self._urls]["cura_latest_url"],
                 conan_installs=self._conan_installs(),
                 python_installs=self._python_installs(),
-            ))
+                dependencies_description=self._dependencies_description(),
+            ).encode("utf-8"))
 
     def _delete_unwanted_binaries(self, root):
         dynamic_binary_file_exts = [".so", ".dylib", ".dll", ".pyd", ".pyi"]
@@ -228,7 +414,8 @@ class CuraConan(ConanFile):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
         for data in pyinstaller_metadata["datas"].values():
-            if (not self.options.internal and data.get("internal", False)) or (not self.options.enterprise and data.get("enterprise_only", False)):
+            if (not self.options.internal and data.get("internal", False)) or (
+                    not self.options.enterprise and data.get("enterprise_only", False)):
                 continue
 
             if "oses" in data and self.settings.os not in data["oses"]:
@@ -344,7 +531,7 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
         copy(self, "*", os.path.join(self.recipe_folder, "resources"), os.path.join(self.export_sources_folder, "resources"), excludes = "*.mo")
         copy(self, "*", os.path.join(self.recipe_folder, "tests"), os.path.join(self.export_sources_folder, "tests"))
-        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"))
         copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
         copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
@@ -389,8 +576,10 @@ class CuraConan(ConanFile):
         if self.options.enterprise:
             rmdir(self, str(Path(self.source_folder, "plugins", "NativeCADplugin")))
             native_cad_plugin = self.dependencies["native_cad_plugin"].cpp_info
-            copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")), keep_path = True)
-            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1], str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
+            copy(self, "*", native_cad_plugin.resdirs[0], str(Path(self.source_folder, "plugins", "NativeCADplugin")),
+                 keep_path = True)
+            copy(self, "bundled_*.json", native_cad_plugin.resdirs[1],
+                 str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
@@ -427,10 +616,6 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
-            self.output.warning("Skipping generation of binary translation files because Bash could not be found and is required")
-            return
-
         for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
             mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
             mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
@@ -441,7 +626,8 @@ class CuraConan(ConanFile):
         ''' Note: this deploy step is actually used to prepare for building a Cura distribution with pyinstaller, which is not
             the original purpose in the Conan philosophy '''
 
-        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]), os.path.join(self.deploy_folder, "packaging"), keep_path = True)
+        copy(self, "*", os.path.join(self.package_folder, self.cpp.package.resdirs[2]),
+             os.path.join(self.deploy_folder, "packaging"), keep_path=True)
 
         # Copy resources of Cura (keep folder structure) needed by pyinstaller to determine the module structure
         copy(self, "*", os.path.join(self.package_folder, self.cpp_info.bindirs[0]), str(self._base_dir), keep_path = False)
@@ -460,8 +646,6 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
         copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
-
-        self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
         self._delete_unwanted_binaries(self._site_packages)
         self._delete_unwanted_binaries(self.package_folder)
@@ -483,6 +667,7 @@ class CuraConan(ConanFile):
         copy(self, "*", src = os.path.join(self.source_folder, "plugins"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[1]))
         copy(self, "*", src = os.path.join(self.source_folder, "packaging"), dst = os.path.join(self.package_folder, self.cpp.package.resdirs[2]))
         copy(self, "pip_requirements_*.txt", src = self.generators_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
+        copy(self, "pip_requirements_summary.yml", src = self.generators_folder, dst = os.path.join(self.package_folder, self.cpp.package.resdirs[-1]))
 
         # Remove the fdm_materials from the package
         rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], "materials"))
@@ -498,4 +683,4 @@ class CuraConan(ConanFile):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
 
     def package_id(self):
-        self.info.options.rm_safe("enable_i18n")
+        self.info.options.rm_safe("i18n_extract")

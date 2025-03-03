@@ -2767,10 +2767,6 @@ msgid "Nozzle offset Y"
 msgstr "Смещение сопла по оси Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Диаметр сопла"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Диаметр сопла"
 
@@ -5672,3 +5668,59 @@ msgstr "Обновляет конфигурации с Cura 5.8 до Cura 5.9."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "Обновление версии 5.8 до 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "Мыши 3Dconnexion"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Позволяет работать в Cura, используя 3D-мыши."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Продолжительность смены экструдера"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "G-код для предстартовой рутины экструдера"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Инвертировать ось Y для toolhandle модели (требуется перезапуск)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Лицензия для %1 %2"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Файл для печати Makerbot Replicator+"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Следует ли инвертировать ось Y для трансляции toolhandle модели? Данная настройка изменяет только ось Y модели, все остальные параметры, включая настройки печатающей головки, остаются неизменными и будут работать по-старому."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "Стартовый GCode должен идти первый"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Эта конфигурация недоступна из-за несоответствия или другой проблемы с core-type %1. Зайдите на <a href='%2'>страницу поддержки</a>, чтобы узнать, какие ядра поддерживают данный тип принтера, включая новые срезы."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Обновляет конфигурацию с Cura версии 5.9 до Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Обновить версию с 5.9 до 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Макс. Y ( '+' к передней части)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Мин. Y ( '-' к задней части)"
