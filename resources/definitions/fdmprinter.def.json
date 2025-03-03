@@ -4995,6 +4995,7 @@
                     "value": "cool_min_layer_time",
                     "minimum_value": "0",
                     "maximum_value_warning": "600",
+                    "enabled": "wall_overhang_angle < 90",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5007,6 +5008,7 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "maximum_value_warning": "500",
+                    "enabled": "wall_overhang_angle < 90",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -8719,6 +8721,7 @@
                     "unit": "%",
                     "type": "[int]",
                     "default_value": "[100]",
+                    "enabled": "wall_overhang_angle < 90",
                     "settable_per_mesh": true
                 },
                 "bridge_settings_enabled":
