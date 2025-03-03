@@ -4985,33 +4985,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "cool_min_layer_time_overhang":
-                {
-                    "label": "Minimum Layer Time with Overhang",
-                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
-                    "unit": "s",
-                    "type": "float",
-                    "default_value": 5,
-                    "value": "cool_min_layer_time",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "600",
-                    "enabled": "wall_overhang_angle < 90",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_min_layer_time_overhang_min_segment_length":
-                {
-                    "label": "Minimum Overhang Segment Length",
-                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 5,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "500",
-                    "enabled": "wall_overhang_angle < 90",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "cool_min_speed":
                 {
                     "label": "Minimum Speed",
@@ -8700,6 +8673,33 @@
                     "maximum_value": "90",
                     "default_value": 90,
                     "settable_per_mesh": true
+                },
+                "cool_min_layer_time_overhang":
+                {
+                    "label": "Minimum Layer Time with Overhang",
+                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 5,
+                    "value": "cool_min_layer_time",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "600",
+                    "enabled": "wall_overhang_angle < 90",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang_min_segment_length":
+                {
+                    "label": "Minimum Overhang Segment Length",
+                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "500",
+                    "enabled": "wall_overhang_angle < 90",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "seam_overhang_angle":
                 {
