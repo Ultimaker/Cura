@@ -321,7 +321,7 @@ Item
 
                 containerStackId: contents.activeMachineId
                 key: model.key
-                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
+                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve", "unit" ]
                 storeIndex: 0
                 removeUnusedValue: model.resolve === undefined
             }
