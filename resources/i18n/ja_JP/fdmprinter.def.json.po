@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2025-02-21 15:37+0000\n"
-"PO-Revision-Date: 2024-10-30 02:17+0000\n"
+"PO-Revision-Date: 2025-03-02 04:31+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -34,7 +34,7 @@ msgstr "フィーダーとノズルチャンバーの間でフィラメントが
 
 msgctxt "flooring_angles description"
 msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr ""
+msgstr "底面の表面レイヤーがジグザグパターンの場合に使用する、ラインの角度を示す整数のリストです。リストの要素はレイヤーが進むごとに順番に使用され、最後に到達すると次は最初からとなります。リスト項目はカンマ区切りで、リストの全体は四角かっこで囲います。既定は空のリストで、この場合は従来の角度（45度と135度）を用います。"
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
@@ -306,71 +306,71 @@ msgstr "底面除去幅"
 
 msgctxt "acceleration_wall_x_flooring label"
 msgid "Bottom Surface Inner Wall Acceleration"
-msgstr ""
+msgstr "底面内側ウォールの加速度"
 
 msgctxt "jerk_wall_x_flooring label"
 msgid "Bottom Surface Inner Wall Jerk"
-msgstr ""
+msgstr "底面内側ウォールのジャーク"
 
 msgctxt "speed_wall_x_flooring label"
 msgid "Bottom Surface Inner Wall Speed"
-msgstr ""
+msgstr "底面内側ウォールの速度"
 
 msgctxt "wall_x_material_flow_flooring label"
 msgid "Bottom Surface Inner Wall(s) Flow"
-msgstr ""
+msgstr "底面内側ウォールのフロー"
 
 msgctxt "acceleration_wall_0_flooring label"
 msgid "Bottom Surface Outer Wall Acceleration"
-msgstr ""
+msgstr "底面外側ウォールの加速度"
 
 msgctxt "wall_0_material_flow_flooring label"
 msgid "Bottom Surface Outer Wall Flow"
-msgstr ""
+msgstr "底面外側ウォールのフロー"
 
 msgctxt "jerk_wall_0_flooring label"
 msgid "Bottom Surface Outer Wall Jerk"
-msgstr ""
+msgstr "底面外側ウォールのジャーク"
 
 msgctxt "speed_wall_0_flooring label"
 msgid "Bottom Surface Outer Wall Speed"
-msgstr ""
+msgstr "底面外側ウォールの速度"
 
 msgctxt "acceleration_flooring label"
 msgid "Bottom Surface Skin Acceleration"
-msgstr ""
+msgstr "底面スキンの加速度"
 
 msgctxt "flooring_extruder_nr label"
 msgid "Bottom Surface Skin Extruder"
-msgstr ""
+msgstr "底面スキン用エクストルーダー"
 
 msgctxt "flooring_material_flow label"
 msgid "Bottom Surface Skin Flow"
-msgstr ""
+msgstr "底面スキンのフロー"
 
 msgctxt "jerk_flooring label"
 msgid "Bottom Surface Skin Jerk"
-msgstr ""
+msgstr "底面スキンのジャーク"
 
 msgctxt "flooring_layer_count label"
 msgid "Bottom Surface Skin Layers"
-msgstr ""
+msgstr "底面スキンのレイヤー数"
 
 msgctxt "flooring_angles label"
 msgid "Bottom Surface Skin Line Directions"
-msgstr ""
+msgstr "底面ライン方向"
 
 msgctxt "flooring_line_width label"
 msgid "Bottom Surface Skin Line Width"
-msgstr ""
+msgstr "底面スキンのライン幅"
 
 msgctxt "flooring_pattern label"
 msgid "Bottom Surface Skin Pattern"
-msgstr ""
+msgstr "底面スキンのパターン"
 
 msgctxt "speed_flooring label"
 msgid "Bottom Surface Skin Speed"
-msgstr ""
+msgstr "底面スキンの速度"
 
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
@@ -610,7 +610,7 @@ msgstr "コマンドライン設定"
 
 msgctxt "flooring_pattern option concentric"
 msgid "Concentric"
-msgstr ""
+msgstr "同心円"
 
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
@@ -1122,7 +1122,7 @@ msgstr "ノズル切替え後のプライムに必要な余剰材料。"
 
 msgctxt "variant_name"
 msgid "Extruder"
-msgstr ""
+msgstr "エクストルーダー"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -1222,7 +1222,7 @@ msgstr "最初のレイヤーの底面ラインのフロー補正"
 
 msgctxt "wall_x_material_flow_flooring description"
 msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
-msgstr ""
+msgstr "最も外側を除いた底面ウォールのすべてのラインにフロー補正を行います。"
 
 msgctxt "infill_material_flow description"
 msgid "Flow compensation on infill lines."
@@ -1234,7 +1234,7 @@ msgstr "支持材の天井面または床面のフロー補正。"
 
 msgctxt "flooring_material_flow description"
 msgid "Flow compensation on lines of the areas at the bottom of the print."
-msgstr ""
+msgstr "造形物の底におけるラインにフロー補正を行います。"
 
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
@@ -1262,7 +1262,7 @@ msgstr "支持材のフロー補正。"
 
 msgctxt "wall_0_material_flow_flooring description"
 msgid "Flow compensation on the bottom surface outermost wall line."
-msgstr ""
+msgstr "最も外側の底面ウォールのラインにフロー補正を行います。"
 
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
@@ -1482,7 +1482,7 @@ msgstr "Griffin"
 
 msgctxt "machine_gcode_flavor option Cheetah"
 msgid "Griffin+Cheetah"
-msgstr ""
+msgstr "Griffin+Cheetah"
 
 msgctxt "group_outer_walls label"
 msgid "Group Outer Walls"
@@ -1890,7 +1890,7 @@ msgstr "内側から外側へ"
 
 msgctxt "retraction_combing_avoid_distance label"
 msgid "Inside Travel Avoid Distance"
-msgstr ""
+msgstr "内側の移動経路回避距離"
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
@@ -2082,7 +2082,7 @@ msgstr "ライン幅"
 
 msgctxt "flooring_pattern option lines"
 msgid "Lines"
-msgstr ""
+msgstr "ライン"
 
 msgctxt "infill_pattern option lines"
 msgid "Lines"
@@ -2414,7 +2414,7 @@ msgstr "最小レイヤー時間"
 
 msgctxt "cool_min_layer_time_overhang label"
 msgid "Minimum Layer Time with Overhang"
-msgstr ""
+msgstr "オーバーハングするレイヤーの最小時間"
 
 msgctxt "min_odd_wall_line_width label"
 msgid "Minimum Odd Wall Line Width"
@@ -2422,7 +2422,7 @@ msgstr "最小奇数ウォールライン幅"
 
 msgctxt "cool_min_layer_time_overhang_min_segment_length label"
 msgid "Minimum Overhang Segment Length"
-msgstr ""
+msgstr "オーバーハングセグメントの最小距離"
 
 msgctxt "minimum_polygon_circumference label"
 msgid "Minimum Polygon Circumference"
@@ -2510,7 +2510,7 @@ msgstr "型ルーフ高さ"
 
 msgctxt "flooring_monotonic label"
 msgid "Monotonic Bottom Surface Order"
-msgstr ""
+msgstr "底面方向の一貫性"
 
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
@@ -2734,7 +2734,7 @@ msgstr "外側ウォール加速度"
 
 msgctxt "wall_0_deceleration label"
 msgid "Outer Wall End Deceleration"
-msgstr ""
+msgstr "外側ウォールの終了時減速度"
 
 msgctxt "wall_0_end_speed_ratio label"
 msgid "Outer Wall End Speed Ratio"
@@ -2770,7 +2770,7 @@ msgstr "外側ウォールでの速度スプリットの距離"
 
 msgctxt "wall_0_acceleration label"
 msgid "Outer Wall Start Acceleration"
-msgstr ""
+msgstr "外側ウォール開始時加速度"
 
 msgctxt "wall_0_start_speed_ratio label"
 msgid "Outer Wall Start Speed Ratio"
@@ -2798,11 +2798,11 @@ msgstr "オーバーハングウォール角"
 
 msgctxt "wall_overhang_speed_factors label"
 msgid "Overhanging Wall Speeds"
-msgstr ""
+msgstr "オーバーハングウォール速度"
 
 msgctxt "wall_overhang_speed_factors description"
 msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
-msgstr ""
+msgstr "オーバーハングするウォールは、通常のプリント速度に対し設定したパーセントの速度でプリントされます。複数の値を指定でき、オーバーハングしたウォールが増えるごとに遅くすることができます。設定例：[75, 50, 25]"
 
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
@@ -2838,7 +2838,7 @@ msgstr "希望枝角度"
 
 msgctxt "material_pressure_advance_factor label"
 msgid "Pressure advance factor"
-msgstr ""
+msgstr "圧力推進係数"
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
@@ -2918,7 +2918,7 @@ msgstr "印刷加速度"
 
 msgctxt "variant_name"
 msgid "Print Core"
-msgstr ""
+msgstr "プリントコア"
 
 msgctxt "jerk_print label"
 msgid "Print Jerk"
@@ -2950,7 +2950,7 @@ msgstr "印刷物の隣に、ノズルを切り替えた後の材料でタワー
 
 msgctxt "flooring_monotonic description"
 msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr ""
+msgstr "底面のラインを一方向に揃えることで、隣接するラインと常に重なり合います。これによりわずかに印刷時間がかかりますが、平面がより一貫した見た目になります。"
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -3670,7 +3670,7 @@ msgstr "開始G-Code"
 
 msgctxt "machine_start_gcode_first label"
 msgid "Start GCode must be first"
-msgstr ""
+msgstr "開始G-Codeを必ず最初に実行"
 
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
@@ -4094,7 +4094,7 @@ msgstr "内側のウォールがが出力される際のスピード。"
 
 msgctxt "acceleration_flooring description"
 msgid "The acceleration with which bottom surface skin layers are printed."
-msgstr ""
+msgstr "底面レイヤーが印刷される際の加速度。"
 
 msgctxt "acceleration_infill description"
 msgid "The acceleration with which infill is printed."
@@ -4114,11 +4114,11 @@ msgstr "ラフトの底面印刷時の加速度。"
 
 msgctxt "acceleration_wall_x_flooring description"
 msgid "The acceleration with which the bottom surface inner walls are printed."
-msgstr ""
+msgstr "底面内側ウォールが印刷される際の加速度。"
 
 msgctxt "acceleration_wall_0_flooring description"
 msgid "The acceleration with which the bottom surface outermost walls are printed."
-msgstr ""
+msgstr "底面の最も外側のウォールが印刷される際の加速度。"
 
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
@@ -4338,7 +4338,7 @@ msgstr "次のレイヤーの高さを前のレイヤーの高さと比べた差
 
 msgctxt "machine_head_with_fans_polygon description"
 msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
-msgstr ""
+msgstr "一度にプリントする場合の「モデルとの安全距離」に使用される、プリントヘッドの座標です。これらの数値は最初のエクストルーダーノズルの中心線との相対値になります。ノズルの左側がX軸の最小値で、必ず負の値になります。ノズルの後方がY軸の最小値で、必ず負の値になります。X軸最大値（右側）とY軸最大値（前方）は正の値になります。ガントリーの高さはビルドプレートからガントリーの梁（はり）との距離になります。"
 
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
@@ -4350,7 +4350,7 @@ msgstr "Z軸シームにおける、モデルとそのサポート構造との�
 
 msgctxt "retraction_combing_avoid_distance description"
 msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
-msgstr ""
+msgstr "モデルの内側を移動する際の、ノズルとプリント済みの外側ウォールとの距離。"
 
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
@@ -4462,7 +4462,7 @@ msgstr "インフィル造形時に使われるエクストルーダー。デュ
 
 msgctxt "flooring_extruder_nr description"
 msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
-msgstr ""
+msgstr "最低面のスキンを印刷時に使用するエクストルーダー列。複数のエクストルーダーがある場合に使用されます。"
 
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
@@ -4714,7 +4714,7 @@ msgstr "内側のウォールがプリントされれう際の最大瞬間速度
 
 msgctxt "jerk_flooring description"
 msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
-msgstr ""
+msgstr "底面スキンレイヤーをプリントする際の最大瞬間速度変化です。"
 
 msgctxt "jerk_infill description"
 msgid "The maximum instantaneous velocity change with which infill is printed."
@@ -4722,11 +4722,11 @@ msgstr "インフィルの印刷時の瞬間速度の変更。"
 
 msgctxt "jerk_wall_x_flooring description"
 msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
-msgstr ""
+msgstr "底面内側ウォールをプリントする際の最大瞬間速度変化です。"
 
 msgctxt "jerk_wall_0_flooring description"
 msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
-msgstr ""
+msgstr "底面の最も外側のウォールをプリントする際の最大瞬間速度変化です。"
 
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
@@ -4870,7 +4870,7 @@ msgstr "プライムタワーシェルの最小の厚さ。厚くすることで
 
 msgctxt "cool_min_layer_time_overhang description"
 msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr ""
+msgstr "オーバーハングになる押し出しを含むレイヤーでの最小時間です。これは1つのレイヤーに最低限かける時間までプリンターを強制的に遅くします。これにより、次のレイヤーを印刷する前にプリントされた材料が適切に冷却されるようになります。ヘッド持ち上げが無効かつ最低速度を下回ってしまう場合は、レイヤーの印刷時間は最小レイヤー印刷時間より短くなります。"
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
@@ -4906,7 +4906,7 @@ msgstr "最底面のレイヤー数。下の厚さで計算すると、この値
 
 msgctxt "flooring_layer_count description"
 msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
-msgstr ""
+msgstr "最低面レイヤーの数です。通常、最低面はより良い品質の底面にするのに1レイヤーで十分です。"
 
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
@@ -4990,7 +4990,7 @@ msgstr "ノズルの外径。"
 
 msgctxt "flooring_pattern description"
 msgid "The pattern of the bottom most layers."
-msgstr ""
+msgstr "最低面レイヤーのパターンです。"
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
@@ -5074,7 +5074,7 @@ msgstr "内側のウォールをプリントする速度。外側より内側の
 
 msgctxt "speed_flooring description"
 msgid "The speed at which bottom surface skin layers are printed."
-msgstr ""
+msgstr "底面レイヤーをプリントする際の速度です。"
 
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
@@ -5094,11 +5094,11 @@ msgstr "ベースラフト層が印刷される速度。ノズルから出てく
 
 msgctxt "speed_wall_x_flooring description"
 msgid "The speed at which the bottom surface inner walls are printed."
-msgstr ""
+msgstr "底面内側ウォールをプリントする際の速度です。"
 
 msgctxt "speed_wall_0_flooring description"
 msgid "The speed at which the bottom surface outermost wall is printed."
-msgstr ""
+msgstr "底面の最も外側のウォールをプリントする際の速度です。"
 
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
@@ -5422,7 +5422,7 @@ msgstr "この設定は、ラフト上層部の輪郭の内側の角をどの程
 
 msgctxt "machine_start_gcode_first description"
 msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
-msgstr ""
+msgstr "この設定は開始G-Codeが必ず最初のG-Codeとなるよう制御します。この設定が無効の場合、T0といった他のG-Codeが開始G-Codeの前に挿入される場合があります。"
 
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
@@ -5658,7 +5658,7 @@ msgstr "ウォールのシームがこの角度以上にオーバーハングし
 
 msgctxt "material_pressure_advance_factor description"
 msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
-msgstr ""
+msgstr "吐出と動作を同期するための、圧力推進を調整する係数です。"
 
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
@@ -5874,7 +5874,7 @@ msgstr "部品が薄くなるにつれて異なる数のウォール間を移行
 
 msgctxt "cool_min_layer_time_overhang_min_segment_length description"
 msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
-msgstr ""
+msgstr "オーバーハングするレイヤーに最小時間を適用する際、少なくとも1つの連続したオーバーハング移動がこの値より長くなるよう適用されます。"
 
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
@@ -5926,7 +5926,7 @@ msgstr "オブジェクトが保存された座標系を使用する代わりに
 
 msgctxt "machine_nozzle_temp_enabled description"
 msgid "Whether to control temperature from Cura. Turn this off to control nozzle temperature from outside of Cura."
-msgstr "Curaから温度を制御するかどうか。これをオフにして、Cura外からノズル温度を制御することで無効化。"
+msgstr "Curaから温度を制御するかどうか。これをオフにすることで、Cura外からノズル温度を制御します。"
 
 msgctxt "material_bed_temp_prepend description"
 msgid "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting."
@@ -5974,7 +5974,7 @@ msgstr "サポートのルーフ、フロアのライン幅。"
 
 msgctxt "flooring_line_width description"
 msgid "Width of a single line of the areas at the bottom of the print."
-msgstr ""
+msgstr "プリントの底面領域における1本のラインの幅です。"
 
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
@@ -6178,7 +6178,7 @@ msgstr "ZがX/Yを上書き"
 
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
-msgstr ""
+msgstr "ジグザグ"
 
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
