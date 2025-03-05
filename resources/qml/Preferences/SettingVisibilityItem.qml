@@ -11,7 +11,7 @@ Item
     // Use the depth of the model to move the item, but also leave space for the visibility / enabled exclamation mark.
 
     // Align checkbox with SettingVisibilityCategory icon with + 5
-    x: definition ? definition.depth * UM.Theme.getSize("narrow_margin").width : UM.Theme.getSize("default_margin").width
+    x: definition ? definition.depth * UM.Theme.getSize("wide_margin").width : UM.Theme.getSize("default_margin").width
 
     UM.TooltipArea
     {
