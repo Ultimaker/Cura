@@ -92,7 +92,7 @@ SettingItem
 
         UM.Label
         {
-            id: unitlabel
+            id: unitLabel
 
             anchors
             {
@@ -111,7 +111,7 @@ SettingItem
 
             Binding
             {
-                target: unitlabel
+                target: unitLabel
                 property: "text"
                 value:
                 {
