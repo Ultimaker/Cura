@@ -164,6 +164,7 @@ UM.PreferencesPage
                 expanded: ["*"]
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
+            cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
             property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
