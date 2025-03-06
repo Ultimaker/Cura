@@ -47,7 +47,7 @@ class ExtruderOutputModel(QObject):
             return self._printer.canPreHeatHotends
         return False
 
-    @pyqtProperty(QObject, notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, notify=extruderConfigurationChanged)
     def activeMaterial(self) -> Optional["MaterialOutputModel"]:
         return self._extruder_configuration.activeMaterial
 
@@ -73,22 +73,22 @@ class ExtruderOutputModel(QObject):
         self._printer.getController().setTargetHotendTemperature(self._printer, self, temperature)
         self.updateTargetHotendTemperature(temperature)
 
-    @pyqtProperty(float, notify = targetHotendTemperatureChanged)
+    @pyqtProperty(float, notify=targetHotendTemperatureChanged)
     def targetHotendTemperature(self) -> float:
         return self._target_hotend_temperature
 
-    @pyqtProperty(float, notify = hotendTemperatureChanged)
+    @pyqtProperty(float, notify=hotendTemperatureChanged)
     def hotendTemperature(self) -> float:
         return self._hotend_temperature
 
-    @pyqtProperty(str, notify = extruderConfigurationChanged)
+    @pyqtProperty(str, notify=extruderConfigurationChanged)
     def hotendID(self) -> str:
         return self._extruder_configuration.hotendID
 
     def updateHotendID(self, hotend_id: str) -> None:
         self._extruder_configuration.setHotendID(hotend_id)
 
-    @pyqtProperty(QObject, notify = extruderConfigurationChanged)
+    @pyqtProperty(QObject, notify=extruderConfigurationChanged)
     def extruderConfiguration(self) -> Optional[ExtruderConfigurationModel]:
         if self._extruder_configuration.isValid():
             return self._extruder_configuration
@@ -99,7 +99,7 @@ class ExtruderOutputModel(QObject):
             self._is_preheating = pre_heating
             self.isPreheatingChanged.emit()
 
-    @pyqtProperty(bool, notify = isPreheatingChanged)
+    @pyqtProperty(bool, notify=isPreheatingChanged)
     def isPreheating(self) -> bool:
         return self._is_preheating
 

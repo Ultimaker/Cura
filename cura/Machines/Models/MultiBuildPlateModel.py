@@ -19,7 +19,7 @@ class MultiBuildPlateModel(ListModel):
     activeBuildPlateChanged = pyqtSignal()
     selectionChanged = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self._update_timer = QTimer()
@@ -39,7 +39,7 @@ class MultiBuildPlateModel(ListModel):
             self._max_build_plate = max_build_plate
             self.maxBuildPlateChanged.emit()
 
-    @pyqtProperty(int, notify = maxBuildPlateChanged)
+    @pyqtProperty(int, notify=maxBuildPlateChanged)
     def maxBuildPlate(self):
         """Return the highest build plate number"""
 
@@ -50,7 +50,7 @@ class MultiBuildPlateModel(ListModel):
             self._active_build_plate = nr
             self.activeBuildPlateChanged.emit()
 
-    @pyqtProperty(int, notify = activeBuildPlateChanged)
+    @pyqtProperty(int, notify=activeBuildPlateChanged)
     def activeBuildPlate(self):
         return self._active_build_plate
 
@@ -65,6 +65,6 @@ class MultiBuildPlateModel(ListModel):
         self._selection_build_plates = list(result)
         self.selectionChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = selectionChanged)
+    @pyqtProperty("QVariantList", notify=selectionChanged)
     def selectionBuildPlates(self):
         return self._selection_build_plates

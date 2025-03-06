@@ -82,10 +82,10 @@ class MachineListModel(ListModel):
         self._change_timer.start()
 
     def _getMachineStacks(self) -> List[ContainerStack]:
-        return CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
+        return CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
 
     def _getAbstractMachineStacks(self) -> List[ContainerStack]:
-        return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine = "True")
+        return CuraContainerRegistry.getInstance().findContainerStacks(is_abstract_machine="True")
 
     def set_machines_filter(self, machines_filter: Optional[List[GlobalStack]]) -> None:
         self._machines_filter = machines_filter
@@ -98,10 +98,10 @@ class MachineListModel(ListModel):
         machines_manager = CuraApplication.getInstance().getMachineManager()
 
         other_machine_stacks = self._getMachineStacks()
-        other_machine_stacks.sort(key = lambda machine: machine.getName().upper())
+        other_machine_stacks.sort(key=lambda machine: machine.getName().upper())
 
         abstract_machine_stacks = self._getAbstractMachineStacks()
-        abstract_machine_stacks.sort(key = lambda machine: machine.getName().upper(), reverse = True)
+        abstract_machine_stacks.sort(key=lambda machine: machine.getName().upper(), reverse=True)
 
         if self._machines_filter is not None:
             filter_ids = [machine_filter.id for machine_filter in self._machines_filter]
@@ -110,7 +110,7 @@ class MachineListModel(ListModel):
 
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
-            connected_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = False)
+            connected_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only=False)
 
             connected_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), connected_machine_stacks))
             connected_machine_stacks.sort(key=lambda machine: machine.getName().upper())

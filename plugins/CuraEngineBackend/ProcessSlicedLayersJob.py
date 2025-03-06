@@ -86,7 +86,7 @@ class ProcessSlicedLayersJob(Job):
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
         # The no_setting_override is here because adding the SettingOverrideDecorator will trigger a reslice
-        new_node = CuraSceneNode(no_setting_override = True)
+        new_node = CuraSceneNode(no_setting_override=True)
         new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
         # Force garbage collection.
@@ -140,23 +140,23 @@ class ProcessSlicedLayersJob(Job):
 
                 extruder = polygon.extruder
 
-                line_types = numpy.fromstring(polygon.line_type, dtype = "u1")  # Convert bytearray to numpy array
+                line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
 
                 line_types = line_types.reshape((-1,1))
 
-                points = numpy.fromstring(polygon.points, dtype = "f4")  # Convert bytearray to numpy array
+                points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
                 if polygon.point_type == 0: # Point2D
                     points = points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
                 else:  # Point3D
                     points = points.reshape((-1,3))
 
-                line_widths = numpy.fromstring(polygon.line_width, dtype = "f4")  # Convert bytearray to numpy array
+                line_widths = numpy.fromstring(polygon.line_width, dtype="f4")  # Convert bytearray to numpy array
                 line_widths = line_widths.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
-                line_thicknesses = numpy.fromstring(polygon.line_thickness, dtype = "f4")  # Convert bytearray to numpy array
+                line_thicknesses = numpy.fromstring(polygon.line_thickness, dtype="f4")  # Convert bytearray to numpy array
                 line_thicknesses = line_thicknesses.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
-                line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype = "f4")  # Convert bytearray to numpy array
+                line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype="f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
@@ -198,9 +198,9 @@ class ProcessSlicedLayersJob(Job):
         manager = ExtruderManager.getInstance()
         extruders = manager.getActiveExtruderStacks()
         if extruders:
-            material_color_map = numpy.zeros((len(extruders), 4), dtype = numpy.float32)
+            material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
-                position = int(extruder.getMetaDataEntry("position", default = "0"))
+                position = int(extruder.getMetaDataEntry("position", default="0"))
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
                 except IndexError:
@@ -210,8 +210,8 @@ class ProcessSlicedLayersJob(Job):
                 material_color_map[position, :] = color
         else:
             # Single extruder via global stack.
-            material_color_map = numpy.zeros((1, 4), dtype = numpy.float32)
-            color_code = global_container_stack.material.getMetaDataEntry("color_code", default = "#e0e000")
+            material_color_map = numpy.zeros((1, 4), dtype=numpy.float32)
+            color_code = global_container_stack.material.getMetaDataEntry("color_code", default="#e0e000")
             color = colorCodeToRGBA(color_code)
             material_color_map[0, :] = color
 

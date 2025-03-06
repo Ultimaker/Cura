@@ -101,7 +101,7 @@ class ContainerTree:
             :return: Whether or not a printer definition exists with that name.
             """
 
-            return len(ContainerRegistry.getInstance().findContainersMetadata(id = definition_id)) > 0
+            return len(ContainerRegistry.getInstance().findContainersMetadata(id=definition_id)) > 0
 
         def __getitem__(self, definition_id: str) -> MachineNode:
             """Returns a machine node for the specified definition ID.
@@ -117,7 +117,7 @@ class ContainerTree:
                 start_time = time.time()
                 self._machines[definition_id] = MachineNode(definition_id)
                 self._machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
-                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id=definition_id, duration=time.time() - start_time))
             return self._machines[definition_id]
 
         def get(self, definition_id: str, default: Optional[MachineNode] = None) -> Optional[MachineNode]:
