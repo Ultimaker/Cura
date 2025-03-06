@@ -84,6 +84,7 @@ class MultiplyObjectsJob(Job):
                 arranger = Nest2DArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor=1000)
 
             group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene=True)
+            found_solution_for_all = not_fit_count == 0
 
         if nodes_to_add_without_arrange:
             for nested_node in nodes_to_add_without_arrange:
