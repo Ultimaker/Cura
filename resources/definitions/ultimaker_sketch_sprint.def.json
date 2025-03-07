@@ -395,10 +395,7 @@
         "xy_offset": { "value": 0 },
         "xy_offset_layer_0": { "value": -0.1 },
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
-        "z_seam_position": { "value": "'backleft'" },
         "z_seam_type": { "value": "'sharpest_corner'" },
-        "z_seam_x": { "value": 150 },
-        "z_seam_y": { "value": 180 },
         "zig_zaggify_infill": { "value": true }
     }
 }
