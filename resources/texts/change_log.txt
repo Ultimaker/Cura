@@ -21,7 +21,7 @@
 * New settings:
 - Overhanging Wall Speeds, now gives you the ability to tune multiple values. Don’t forget to adjust the Overhanging Wall Angle to start using the setting. 
 - Minimum Layer Time with Overhang and Minimum Overhang Segment Length: Fine-tune the minimum layer time for overhangs.
-- Distance to Walls: Finetune combing movements.
+- Inside Travel Avoid Distance: Finetune combing movements.
 - Pressure Advance Factor Setting: New setting for machine definitions.
 - You can now tune the Bottom Surface Skin, like you can tune the Top Surface Skin! You can now tune Extruder, Layers, Line Width, Pattern, Line Directions, Outer Wall Flow, Inner Wall(s) Flow, Flow, Outer Wall Speed, Inner Wall Speed, Skin Speed, Inner Wall Acceleration, Skin Acceleration, Outer Wall Jerk, Inner Wall Jerk, Skin Jerk, and Monotonic Bottom Surface Order
 - Enable/Disable USB Printing: A hidden preference setting to indicate that you are using the printer over USB functionality. This setting lays the groundwork for automatically disabling USB printing in the next release when it’s not being used.
@@ -36,7 +36,7 @@
 - Updated UltiMaker printer logos to align with the current style.
 - The number of decimal places displayed for layer height in the top bar has been reduced.
 - Fixed a bug that caused incorrect retracting and hopping on printers with more than 2 extruders.
-- Improved how fast the settings are loaded in the Settings Visibility window
+- Improved how fast the settings are loaded in the Settings Visibility window when scrolling
 - Improved how disallowed areas are taken into account when arranging models on the buildplate
 
 
