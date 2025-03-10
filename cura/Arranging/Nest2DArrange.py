@@ -102,8 +102,7 @@ class Nest2DArrange(Arranger):
                       NfpConfig.Alignment.BOTTOM_LEFT,
                       NfpConfig.Alignment.BOTTOM_RIGHT,
                       NfpConfig.Alignment.TOP_LEFT,
-                      NfpConfig.Alignment.TOP_RIGHT,
-                      NfpConfig.Alignment.DONT_ALIGN]
+                      NfpConfig.Alignment.TOP_RIGHT]
         found_solution_for_all = False
         while not found_solution_for_all and len(strategies) > 0:
 
@@ -124,7 +123,7 @@ class Nest2DArrange(Arranger):
 
             config = NfpConfig()
             config.accuracy = 1.0
-            config.alignment = NfpConfig.Alignment.CENTER
+            config.alignment = NfpConfig.Alignment.DONT_ALIGN
             config.starting_point = strategies[0]
             strategies = strategies[1:]
 
