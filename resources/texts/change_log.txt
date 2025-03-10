@@ -3,7 +3,7 @@
 * New features and improvements:
 - UltiMaker S8 Support: Added compatibility for the UltiMaker S8 printer.
 - Cheetah Gcode Flavor: Introduced a new Marlin-like Gcode flavor called Cheetah.
-- SpaceMouse support: Interact with your object in 3D thanks to a collaboration with 3Dconnexion
+- SpaceMouse support: Navigate the view seamlessly with a 3D mouse, thanks to a collaboration with 3Dconnexion.
 - Cloud Printing for Sketch Sprint: Enabled printing over cloud with Digital Factory for Sketch Sprint users.
 - Interlocking Settings: Moved Interlocking settings out of experimental into expert
 - Build System Upgrade: Upgraded the build system from Conan 1 to Conan 2. Updated documentation is available.
@@ -22,10 +22,9 @@
 - Overhanging Wall Speeds, now gives you the ability to tune multiple values. Don’t forget to adjust the Overhanging Wall Angle to start using the setting. 
 - Minimum Layer Time with Overhang and Minimum Overhang Segment Length: Fine-tune the minimum layer time for overhangs.
 - Distance to Walls: Finetune combing movements.
-- Overhanging Wall Speeds: Fine-tune speeds based on different overhang percentages.
 - Pressure Advance Factor Setting: New setting for machine definitions.
 - You can now tune the Bottom Surface Skin, like you can tune the Top Surface Skin! You can now tune Extruder, Layers, Line Width, Pattern, Line Directions, Outer Wall Flow, Inner Wall(s) Flow, Flow, Outer Wall Speed, Inner Wall Speed, Skin Speed, Inner Wall Acceleration, Skin Acceleration, Outer Wall Jerk, Inner Wall Jerk, Skin Jerk, and Monotonic Bottom Surface Order
-- Enable/Disable USB Printing: A preference setting to indicate that you are using the printer over USB functionality. This setting lays the groundwork for automatically disabling USB printing in the next release when it’s not being used.
+- Enable/Disable USB Printing: A hidden preference setting to indicate that you are using the printer over USB functionality. This setting lays the groundwork for automatically disabling USB printing in the next release when it’s not being used.
 
 * Bug fixes:
 - Resolved a crash that occurred when switching materials on Sovol printers.
@@ -53,7 +52,7 @@
 - Updated Voron2 printers to include TPU ASA and PVA, contributed by @WCEngineer
 - Enabled Relative extrusion (M82 and M83 commands) for Marlin-flavored GCode, contributed by @EmJay276
 
-Cura 5.10 supports Mac OSX 12 Monterey or higher. This is because the tools that we use to create Cura builds no longer support these versions of Mac OSX.
+Cura 5.10 supports Mac OSX 12 Monterey or higher. This is because the tools that we use to create Cura builds no longer support previous versions of Mac OSX.
 
 [5.9.1]
 
