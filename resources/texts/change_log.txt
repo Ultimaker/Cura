@@ -37,8 +37,8 @@
 - The number of decimal places displayed for layer height in the top bar has been reduced.
 - Fixed a bug that caused incorrect retracting and hopping on printers with more than 2 extruders.
 - Improved how fast the settings are loaded in the Settings Visibility window when scrolling
-- Improved how disallowed areas are taken into account when arranging models on the buildplate
-
+- Improved how disallowed areas and other models are taken into account when arranging models on the buildplate
+- Infill lines are now always hidden in the preview if they are disabled
 
 * Printer definitions, profiles, and materials:
 - Introduced Visual Intents for the Sketch Sprint
