@@ -38,7 +38,7 @@
 - Fixed a bug that caused incorrect retracting and hopping on printers with more than 2 extruders.
 - Improved how fast the settings are loaded in the Settings Visibility window when scrolling
 - Improved how disallowed areas and other models are taken into account when arranging models on the buildplate
-- Infill lines are now always hidden in the preview if they are disabled
+- Preview playback now only shows visible parts. Infill lines, shell, and helpers are always hidden if disabled in preview's color scheme
 
 * Printer definitions, profiles, and materials:
 - Introduced Visual Intents for the Sketch Sprint
