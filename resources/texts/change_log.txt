@@ -52,7 +52,7 @@
 - Updated Voron2 printers to include TPU ASA and PVA, contributed by @WCEngineer
 - Enabled Relative extrusion (M82 and M83 commands) for Marlin-flavored GCode, contributed by @EmJay276
 
-Cura 5.10 supports Mac OSX 12 Monterey or higher. This is because the tools that we use to create Cura builds no longer support previous versions of Mac OSX.
+Cura 5.10 supports macOS 12 Monterey or higher. This is because the tools that we use to create Cura builds no longer support previous versions of macOS.
 
 [5.9.1]
 
