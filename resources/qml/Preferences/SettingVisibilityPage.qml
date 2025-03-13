@@ -1,8 +1,8 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 2.15
+import QtQuick
+import QtQuick.Controls
 
 import UM 1.5 as UM
 
@@ -27,10 +27,7 @@ UM.PreferencesPage
     ]
 
     signal scrollToSection( string key )
-    onScrollToSection:
-    {
-        settingsListView.positionViewAtIndex(definitionsModel.getIndex(key), ListView.Beginning)
-    }
+    onScrollToSection: settingsListView.positionViewAtIndex(definitionsModel.getIndex(key), ListView.Beginning)
 
     function reset()
     {
@@ -101,7 +98,13 @@ UM.PreferencesPage
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
-            onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
+            onTextChanged: {
+                if (text !== lastFilterText) {
+                    lastFilterText = text;
+                    definitionsModel.filter = {"i18n_label|i18n_description": "*" + text};
+                }
+            }
+            property string lastFilterText: ""
         }
 
         Cura.ComboBox
@@ -118,30 +121,14 @@ UM.PreferencesPage
             model: settingVisibilityPresetsModel.items
             textRole: "name"
 
-            currentIndex:
-            {
-                var idx = -1;
-                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
-                {
-                    if(settingVisibilityPresetsModel.items[i].presetId === settingVisibilityPresetsModel.activePreset)
-                    {
-                        idx = i;
-                        break;
-                    }
-                }
-                return idx;
-            }
-
-            onActivated:
-            {
-                var preset_id = settingVisibilityPresetsModel.items[index].presetId
-                settingVisibilityPresetsModel.setActivePreset(preset_id)
-            }
+            currentIndex: settingVisibilityPresetsModel.items.findIndex(i => i.presetId === settingVisibilityPresetsModel.activePreset)
+            onActivated: settingVisibilityPresetsModel.setActivePreset(settingVisibilityPresetsModel.items[index].presetId)
         }
 
         ListView
         {
             id: settingsListView
+            reuseItems: true
             anchors
             {
                 top: filter.bottom
@@ -164,34 +151,24 @@ UM.PreferencesPage
                 expanded: ["*"]
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
-            cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
             property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
 
-            delegate: Loader
-            {
-                id: loader
+            delegate: Component {
+                Loader {
+                    id: loader
+                    width: settingsListView.width - scrollBar.width
+                    height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
 
-                width: settingsListView.width - scrollBar.width
-                height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
+                    property var definition: model
+                    property var settingDefinitionsModel: definitionsModel
 
-                property var definition: model
-                property var settingDefinitionsModel: definitionsModel
-
-                asynchronous: true
-                active: model.type !== undefined
-                sourceComponent:
-                {
-                    switch (model.type)
-                    {
-                        case "category":
-                            return settingsListView.settingVisibilityCategory
-                        default:
-                            return settingsListView.settingVisibilityItem
-                    }
+                    asynchronous: false
+                    active: model.type !== undefined
+                    sourceComponent: model.type === "category" ? settingsListView.settingVisibilityCategory : settingsListView.settingVisibilityItem
                 }
-            }
+			}
         }
     }
 }
