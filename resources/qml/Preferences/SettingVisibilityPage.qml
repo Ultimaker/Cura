@@ -168,7 +168,7 @@ UM.PreferencesPage
                     active: model.type !== undefined
                     sourceComponent: model.type === "category" ? settingsListView.settingVisibilityCategory : settingsListView.settingVisibilityItem
                 }
-			}
+	    }
         }
     }
 }
