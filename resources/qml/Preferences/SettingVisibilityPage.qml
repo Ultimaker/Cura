@@ -98,8 +98,10 @@ UM.PreferencesPage
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
-            onTextChanged: {
-                if (text !== lastFilterText) {
+            onTextChanged:
+            {
+                if (text !== lastFilterText)
+                {
                     lastFilterText = text;
                     definitionsModel.filter = {"i18n_label|i18n_description": "*" + text};
                 }
@@ -155,8 +157,10 @@ UM.PreferencesPage
             property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
             property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
 
-            delegate: Component {
-                Loader {
+            delegate: Component
+	    {
+                Loader
+                {
                     id: loader
                     width: settingsListView.width - scrollBar.width
                     height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
