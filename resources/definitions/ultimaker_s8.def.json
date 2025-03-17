@@ -51,140 +51,140 @@
         "acceleration_flooring":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_roofing"
         },
         "acceleration_infill":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print"
         },
         "acceleration_layer_0":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": 2000
         },
         "acceleration_prime_tower":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print"
         },
         "acceleration_print":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": 20000
         },
         "acceleration_print_layer_0":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_layer_0"
         },
         "acceleration_roofing":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall_0"
         },
         "acceleration_skirt_brim":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_layer_0"
         },
         "acceleration_support":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print"
         },
         "acceleration_support_bottom":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_support_interface"
         },
         "acceleration_support_infill":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_support"
         },
         "acceleration_support_interface":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_support"
         },
         "acceleration_support_roof":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_support_interface"
         },
         "acceleration_topbottom":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print"
         },
         "acceleration_travel":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": 10000
         },
         "acceleration_travel_enabled": { "value": true },
         "acceleration_travel_layer_0":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_layer_0"
         },
         "acceleration_wall":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print/8"
         },
         "acceleration_wall_0":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall"
         },
         "acceleration_wall_0_flooring":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall_0_roofing"
         },
         "acceleration_wall_0_roofing":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall_0"
         },
         "acceleration_wall_x":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_print"
         },
         "acceleration_wall_x_flooring":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall_x_roofing"
         },
         "acceleration_wall_x_roofing":
         {
             "maximum_value": "machine_max_acceleration_x",
-            "maximum_value_warning": "machine_max_acceleration_x",
+            "maximum_value_warning": "machine_max_acceleration_x*0.8",
             "value": "acceleration_wall"
         },
         "adhesion_type": { "value": "'brim' if support_enable and support_structure=='tree' else 'skirt'" },
@@ -500,13 +500,13 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 500,
+            "maximum_value_warning": 400,
             "value": 400
         },
         "speed_travel_layer_0":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 500,
+            "maximum_value_warning": 400,
             "value": 150
         },
         "speed_wall":
