@@ -98,15 +98,7 @@ UM.PreferencesPage
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
-            onTextChanged:
-            {
-                if (text !== lastFilterText)
-                {
-                    lastFilterText = text;
-                    definitionsModel.filter = {"i18n_label|i18n_description": "*" + text};
-                }
-            }
-            property string lastFilterText: ""
+            onTextChanged: definitionsModel.filter = {"i18n_label|i18n_description": "*" + text}
         }
 
         Cura.ComboBox
