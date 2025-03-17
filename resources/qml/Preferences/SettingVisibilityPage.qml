@@ -154,25 +154,31 @@ UM.PreferencesPage
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
 
-            property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
-            property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
+            Component
+            {
+                id: settingVisibilityCategory
+                Cura.SettingVisibilityCategory {}
+            }
 
-            delegate: Component
-	    {
-                Loader
-                {
-                    id: loader
-                    width: settingsListView.width - scrollBar.width
-                    height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
+            Component
+            {
+                id: settingVisibilityItem
+                Cura.SettingVisibilityItem {}
+            }
 
-                    property var definition: model
-                    property var settingDefinitionsModel: definitionsModel
+            delegate: Loader
+            {
+                id: loader
+                width: settingsListView.width - scrollBar.width
+                height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
 
-                    asynchronous: false
-                    active: model.type !== undefined
-                    sourceComponent: model.type === "category" ? settingsListView.settingVisibilityCategory : settingsListView.settingVisibilityItem
-                }
-	    }
+                property var definition: model
+                property var settingDefinitionsModel: definitionsModel
+
+                asynchronous: false
+                active: model.type !== undefined
+                sourceComponent: model.type === "category" ? settingVisibilityCategory : settingVisibilityItem
+            }
         }
     }
 }
