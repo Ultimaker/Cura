@@ -67,8 +67,8 @@ Item
                         right: parent.right
                         top: parent.top
                         bottom: parent.bottom
+                        rightMargin: -width / 2
                     }
-                    anchors.rightMargin: -width / 2
                     width: UM.Theme.getSize("wide_lining").width * 2
                     enabled: index < headerRepeater.count - 1
                     acceptedButtons: Qt.LeftButton
@@ -76,9 +76,9 @@ Item
 
                     property var dragLastPos
 
-                    onPressed: (mouse) => { dragLastPos = mapToItem(parent, mouse.x, mouse.y) }
+                    onPressed: function(mouse) { dragLastPos = mapToItem(parent, mouse.x, mouse.y) }
 
-                    onPositionChanged: (mouse) =>
+                    onPositionChanged: function(mouse)
                     {
                         let global_pos = mapToItem(parent, mouse.x, mouse.y)
                         let delta = global_pos.x - dragLastPos.x
