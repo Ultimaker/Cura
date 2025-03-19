@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 24,
+        "setting_version": 25,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -3021,6 +3021,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3035,6 +3036,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3049,6 +3051,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3063,6 +3066,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -3464,6 +3468,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
                                     "value": "speed_wall_0",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3478,6 +3483,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
                                     "value": "speed_wall_x",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3492,6 +3498,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
                                     "value": "speed_wall_0",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3506,6 +3513,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
                                     "value": "speed_wall_x",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -3878,7 +3886,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_0",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3893,7 +3901,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_x",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3908,7 +3916,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_0",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3923,7 +3931,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_x",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -4251,7 +4259,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_0",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4265,7 +4273,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_x",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4279,7 +4287,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_0",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4293,7 +4301,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_x",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -4982,31 +4990,6 @@
                     "default_value": 5,
                     "minimum_value": "0",
                     "maximum_value_warning": "600",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_min_layer_time_overhang":
-                {
-                    "label": "Minimum Layer Time with Overhang",
-                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
-                    "unit": "s",
-                    "type": "float",
-                    "default_value": 5,
-                    "value": "cool_min_layer_time",
-                    "minimum_value": "0",
-                    "maximum_value_warning": "600",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "cool_min_layer_time_overhang_min_segment_length":
-                {
-                    "label": "Minimum Overhang Segment Length",
-                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 5,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "500",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -8699,6 +8682,33 @@
                     "default_value": 90,
                     "settable_per_mesh": true
                 },
+                "cool_min_layer_time_overhang":
+                {
+                    "label": "Minimum Layer Time with Overhang",
+                    "description": "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 5,
+                    "value": "cool_min_layer_time",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "600",
+                    "enabled": "wall_overhang_angle < 90",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "cool_min_layer_time_overhang_min_segment_length":
+                {
+                    "label": "Minimum Overhang Segment Length",
+                    "description": "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "500",
+                    "enabled": "wall_overhang_angle < 90",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "seam_overhang_angle":
                 {
                     "label": "Seam Overhanging Wall Angle",
@@ -8719,6 +8729,7 @@
                     "unit": "%",
                     "type": "[int]",
                     "default_value": "[100]",
+                    "enabled": "wall_overhang_angle < 90",
                     "settable_per_mesh": true
                 },
                 "bridge_settings_enabled":
