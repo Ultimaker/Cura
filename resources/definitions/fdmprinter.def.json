@@ -3021,6 +3021,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3035,6 +3036,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3049,6 +3051,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3063,6 +3066,7 @@
                                     "minimum_value": "0.0001",
                                     "minimum_value_warning": "50",
                                     "maximum_value_warning": "150",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -3464,6 +3468,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
                                     "value": "speed_wall_0",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3478,6 +3483,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
                                     "value": "speed_wall_x",
+                                    "enabled": "roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3492,6 +3498,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 30,
                                     "value": "speed_wall_0",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3506,6 +3513,7 @@
                                     "maximum_value_warning": "150",
                                     "default_value": 60,
                                     "value": "speed_wall_x",
+                                    "enabled": "flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -3878,7 +3886,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_0",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3893,7 +3901,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_x",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3908,7 +3916,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_0",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -3923,7 +3931,7 @@
                                     "maximum_value_warning": "10000",
                                     "default_value": 3000,
                                     "value": "acceleration_wall_x",
-                                    "enabled": "resolveOrValue('acceleration_enabled')",
+                                    "enabled": "resolveOrValue('acceleration_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -4251,7 +4259,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_0",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4265,7 +4273,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_x",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and roofing_layer_count > 0 and top_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4279,7 +4287,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_0",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4293,7 +4301,7 @@
                                     "maximum_value_warning": "50",
                                     "default_value": 20,
                                     "value": "jerk_wall_x",
-                                    "enabled": "resolveOrValue('jerk_enabled')",
+                                    "enabled": "resolveOrValue('jerk_enabled') and flooring_layer_count > 0 and bottom_layers > 0",
                                     "limit_to_extruder": "wall_x_extruder_nr",
                                     "settable_per_mesh": true
                                 }
