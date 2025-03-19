@@ -1,8 +1,10 @@
+import json
 import os
 import requests
 import yaml
 import tempfile
 import tarfile
+from datetime import datetime
 from io import StringIO
 from pathlib import Path
 from git import Repo
@@ -562,6 +564,25 @@ class CuraConan(ConanFile):
         self.cpp.package.bindirs = ["bin"]
         self.cpp.package.resdirs = ["resources", "plugins", "packaging"]
 
+    def _make_internal_distinct(self):
+        test_colors_path = Path(self.source_folder, "resources", "themes", "daily_test_colors.json")
+        if self.options.internal:
+            biweekly_day = (datetime.now() - datetime(2025, 3, 14)).days
+            with test_colors_path.open("r") as test_colors_file:
+                test_colors = json.load(test_colors_file)
+            for theme_dir in Path(self.source_folder, "resources", "themes").iterdir():
+                if theme_dir.is_dir():
+                    theme_path = Path(theme_dir, "theme.json")
+                    if theme_path.exists():
+                        with theme_path.open("r") as theme_file:
+                            theme = json.load(theme_file)
+                            if theme["colors"]:
+                                theme["colors"]["main_window_header_background"] = test_colors[biweekly_day]
+                        with theme_path.open("w") as theme_file:
+                            json.dump(theme, theme_file)
+        elif test_colors_path.exists():
+            test_colors_path.unlink()
+
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
 
@@ -580,6 +601,9 @@ class CuraConan(ConanFile):
                  keep_path = True)
             copy(self, "bundled_*.json", native_cad_plugin.resdirs[1],
                  str(Path(self.source_folder, "resources", "bundled_packages")), keep_path = False)
+
+        # Make internal versions built on different days distinct, so people don't get confused while testing.
+        self._make_internal_distinct()
 
         # Copy resources of cura_binary_data
         cura_binary_data = self.dependencies["cura_binary_data"].cpp_info
