@@ -566,7 +566,7 @@ class CuraConan(ConanFile):
 
     def _make_internal_distinct(self):
         test_colors_path = Path(self.source_folder, "resources", "themes", "daily_test_colors.json")
-        if self.options.internal:
+        if "alpha" in self.version:
             biweekly_day = (datetime.now() - datetime(2025, 3, 14)).days
             with test_colors_path.open("r") as test_colors_file:
                 test_colors = json.load(test_colors_file)
