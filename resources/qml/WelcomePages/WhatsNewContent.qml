@@ -114,7 +114,7 @@ Item
                         textArea.font: UM.Theme.getFont("default")
                         textArea.onLinkActivated: Qt.openUrlExternally(link)
                         textArea.leftPadding: 0
-                        textArea.rightPadding: 0
+                        textArea.rightPadding: 15
                     }
                 }
             }
