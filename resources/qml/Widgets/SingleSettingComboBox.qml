@@ -12,7 +12,8 @@ import Cura 1.7 as Cura
 // All of the setting updating logic is handled by this component.
 // This uses the "options" value of a setting to populate the drop down. This will only work for settings with "options"
 // If the setting is limited to a single extruder or is settable with different values per extruder use "updateAllExtruders: true"
-Cura.ComboBox {
+Cura.ComboBox
+{
     textRole: "text"
     property alias settingName: propertyProvider.key
     property alias propertyRemoveUnusedValue: propertyProvider.removeUnusedValue
@@ -22,6 +23,8 @@ Cura.ComboBox {
     property bool updateAllExtruders: false
     // This is only used if updateAllExtruders == true
     property int defaultExtruderIndex: Cura.ExtruderManager.activeExtruderIndex
+
+    UM.I18nCatalog { id: settings_catalog; name: "fdmprinter.def.json" }
 
     model:  ListModel
     {
@@ -42,6 +45,7 @@ Cura.ComboBox {
             {
                 var key = propertyProvider.properties["options"].keys()[i]
                 var value = propertyProvider.properties["options"][key]
+                value = settings_catalog.i18nc(settingName + " option " + key, value)
                 comboboxModel.append({ text: value, code: key})
 
                 if (propertyProvider.properties.value === key)
