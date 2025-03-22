@@ -389,17 +389,17 @@ class AddCoolingProfile(Script):
         # Exit if the gcode has been previously post-processed.
         if ";POSTPROCESSED" in data[0]:
             return data
-        #Initialize variables that are buried in if statements.
+        # Initialize variables that are buried in if statements.
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
-        #Get some information from Cura
+        # Get some information from Cura
         extruder = self.global_stack.extruderList
         extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
 
-        #This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
+        # This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
         fan_mode = True
-        #For 4.x versions that don't have the 0-1 option
+        # For 4.x versions that don't have the 0-1 option
         try:
             fan_mode = not bool(extruder[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
         except:
@@ -407,7 +407,7 @@ class AddCoolingProfile(Script):
         bed_adhesion = (extruder[0].getProperty("adhesion_type", "value"))
         print_sequence = str(self.global_stack.getProperty("print_sequence", "value"))
 
-        #Assign the fan numbers to the tools
+        # Assign the fan numbers to the tools
         if extruder_count == 1:
             is_multi_fan = False
             is_multi_extr_print = False
@@ -417,7 +417,7 @@ class AddCoolingProfile(Script):
         # No P parameter if there is a single fan circuit
                 t0_fan = ""
 
-        #Get the cooling fan numbers for each extruder if the printer has multiple extruders
+        # Get the cooling fan numbers for each extruder if the printer has multiple extruders
         elif extruder_count > 1:
             is_multi_fan = True
             t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
@@ -426,13 +426,13 @@ class AddCoolingProfile(Script):
             if extruder_count > 2: t2_fan = " P" + str((extruder[2].getProperty("machine_extruder_cooling_fan_number", "value")))
             if extruder_count > 3: t3_fan = " P" + str((extruder[3].getProperty("machine_extruder_cooling_fan_number", "value")))
 
-        #Initialize the fan_list with defaults
+        # Initialize the fan_list with defaults
         fan_list = ["z"] * 16
         for num in range(0,15,2):
             fan_list[num] = len(data)
             fan_list[num + 1] = "M106 S0"
 
-        #Assign the variable values if "By Layer"
+        # Assign the variable values if "By Layer"
         by_layer_or_feature = self.getSettingValueByKey("fan_layer_or_feature")
         if  by_layer_or_feature == "by_layer":
             # By layer doesn't do any feature search so there is no need to look for combing moves
@@ -653,11 +653,11 @@ class AddCoolingProfile(Script):
         if by_layer_or_feature == "by_layer" and is_multi_fan:
             return self._multi_fan_by_layer(data, layer_0_index, fan_list, t0_fan, t1_fan, t2_fan, t3_fan, fan_mode, off_fan_speed)
 
-        #Single Fan "By Feature"
+        # Single Fan "By Feature"
         if by_layer_or_feature == "by_feature" and (not is_multi_fan or not is_multi_extr_print):
             return self._single_fan_by_feature(data, layer_0_index, the_start_layer, the_end_layer, the_end_is_enabled, fan_list, t0_fan, feature_speed_list, feature_name_list, feature_fan_combing)
 
-        #Multi Fan "By Feature"
+        # Multi Fan "By Feature"
         if by_layer_or_feature == "by_feature" and is_multi_fan:
             return self._multi_fan_by_feature(data, layer_0_index, the_start_layer, the_end_layer, the_end_is_enabled, fan_list, t0_fan, t1_fan, t2_fan, t3_fan, feature_speed_list, feature_name_list, feature_fan_combing, fan_mode, off_fan_speed)
 
@@ -871,7 +871,7 @@ class AddCoolingProfile(Script):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
-    #Try to catch layer input errors, set the minimum speed to 12%, and put the strings together
+    # Try to catch layer input errors, set the minimum speed to 12%, and put the strings together
     def _layer_checker(self, fan_string: str, ty_pe: str, fan_mode: bool) -> str:
         fan_string_l = str(fan_string.split("/")[0])
         try:
