@@ -33,7 +33,7 @@ class CuraConan(ConanFile):
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
 
-    python_requires = "translationextractor/[>=2.2.0]@ultimaker/stable"
+    python_requires = "translationextractor/[>=2.2.0]"
 
     options = {
         "enterprise": [True, False],
@@ -219,6 +219,9 @@ class CuraConan(ConanFile):
 
     @staticmethod
     def _get_license_from_repository(sources_url, version, license_file_name = None):
+        if sources_url.startswith("https://github.com/Ultimaker/") and "private" in sources_url:
+            return None
+
         git_url = sources_url
         if git_url.endswith('/'):
             git_url = git_url[:-1]
@@ -528,7 +531,7 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))
         copy(self, "*", os.path.join(self.recipe_folder, "resources"), os.path.join(self.export_sources_folder, "resources"), excludes = "*.mo")
         copy(self, "*", os.path.join(self.recipe_folder, "tests"), os.path.join(self.export_sources_folder, "tests"))
-        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"), excludes="CuraVersion.py")
+        copy(self, "*", os.path.join(self.recipe_folder, "cura"), os.path.join(self.export_sources_folder, "cura"))
         copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
         copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
@@ -613,11 +616,6 @@ class CuraConan(ConanFile):
             pot.generate()
 
     def build(self):
-        if self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
-            self.output.warning(
-                "Skipping generation of binary translation files because Bash could not be found and is required")
-            return
-
         for po_file in Path(self.source_folder, "resources", "i18n").glob("**/*.po"):
             mo_file = Path(self.build_folder, po_file.with_suffix('.mo').relative_to(self.source_folder))
             mo_file = mo_file.parent.joinpath("LC_MESSAGES", mo_file.name)
@@ -648,8 +646,6 @@ class CuraConan(ConanFile):
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
         copy(self, "*", uranium.resdirs[1], str(self._share_dir.joinpath("uranium", "plugins")), keep_path = True)
         copy(self, "*", uranium.libdirs[0], str(self._site_packages.joinpath("UM")), keep_path = True)
-
-        self._generate_cura_version(os.path.join(self._site_packages, "cura"))
 
         self._delete_unwanted_binaries(self._site_packages)
         self._delete_unwanted_binaries(self.package_folder)
@@ -687,4 +683,4 @@ class CuraConan(ConanFile):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "plugins"))
 
     def package_id(self):
-        self.info.options.rm_safe("enable_i18n")
+        self.info.options.rm_safe("i18n_extract")

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 14:27+0200\n"
+"POT-Creation-Date: 2025-02-21 15:37+0100\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.1.1\n"
+
+msgctxt "@title:label"
+msgid " "
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -172,6 +176,10 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "3D View"
+msgstr ""
+
+msgctxt "name"
+msgid "3DConnexion mouses"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -458,6 +466,10 @@ msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "Mahdollistaa GCode-tiedostojen lataamisen ja näyttämisen."
 
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Kysy aina"
@@ -497,10 +509,6 @@ msgstr ""
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr "Sovelluskehys"
 
 msgctxt "@title:column"
 msgid "Applies on"
@@ -680,10 +688,6 @@ msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr "C/C++ -sidontakirjasto"
-
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr ""
@@ -858,10 +862,6 @@ msgstr ""
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "Yhteensopivuustila"
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
-msgstr ""
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -1248,10 +1248,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr "Data Interchange Format"
-
 msgctxt "@button"
 msgid "Decline"
 msgstr ""
@@ -1311,10 +1307,6 @@ msgstr ""
 msgctxt "@label"
 msgid "Density"
 msgstr "Tiheys"
-
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
@@ -1583,12 +1575,20 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Suulake %1"
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr ""
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
+msgstr ""
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1780,6 +1780,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr ""
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr ""
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr ""
@@ -1795,10 +1799,6 @@ msgstr ""
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr ""
-
-msgctxt "@label"
-msgid "Font"
-msgstr "Fontti"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
@@ -1855,10 +1855,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr ""
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr ""
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr ""
@@ -1871,14 +1867,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF-kuva"
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr "GUI-kehys"
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr "GUI-kehyksen sidonnat"
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr ""
@@ -1890,10 +1878,6 @@ msgstr "Yleiset"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "Muodosta rakenteita, jotka tukevat mallin ulokkeita sisältäviä osia. Ilman tukirakenteita kyseiset osat luhistuvat tulostuksen aikana."
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
-msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1914,10 +1898,6 @@ msgstr ""
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Yleiset asetukset"
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
-msgstr "Graafinen käyttöliittymä"
 
 msgctxt "@label"
 msgid "Grid Placement"
@@ -2164,10 +2144,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "Käyttöliittymä"
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr "Prosessien välinen tietoliikennekirjasto"
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr ""
@@ -2195,10 +2171,6 @@ msgstr "JPEG-kuva"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG-kuva"
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
-msgstr ""
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2300,6 +2272,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "Tasaa alusta"
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "Vaaleampi on korkeampi"
@@ -2314,10 +2290,6 @@ msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "Linear"
-msgstr ""
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
 msgstr ""
 
 msgctxt "@label"
@@ -2406,6 +2378,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -2816,10 +2792,6 @@ msgid "Nozzle offset Y"
 msgstr "Suuttimen Y-siirtymä"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Suuttimen koko"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Suuttimen koko"
 
@@ -2993,10 +2965,6 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr ""
-
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-coden jäsennys"
@@ -3146,14 +3114,6 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr "Monikulmion leikkauskirjasto"
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
 msgstr ""
 
 msgctxt "@item:inmenu"
@@ -3429,10 +3389,6 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr "Ohjelmointikieli"
-
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3559,18 +3515,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "PyQt version"
-msgstr ""
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
 msgstr ""
 
 msgctxt "@label"
@@ -3752,10 +3696,6 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "Right View"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
 msgstr ""
 
 msgctxt "@info:title"
@@ -3945,10 +3885,6 @@ msgctxt "name"
 msgid "Sentry Logger"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr "Sarjatietoliikennekirjasto"
-
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Aseta aktiiviseksi suulakepuristimeksi"
@@ -4055,6 +3991,10 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4294,6 +4234,10 @@ msgid "Start G-code"
 msgstr ""
 
 msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "@label"
 msgid "Start the slicing process"
 msgstr ""
 
@@ -4372,34 +4316,6 @@ msgstr "Tukiliittymä"
 
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr "Nopeamman laskennan tukikirjasto"
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr "Tukikirjasto 3MF-tiedostojen käsittelyyn"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr "STL-tiedostojen käsittelyn tukikirjasto"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr "Tieteellisen laskennan tukikirjasto"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4716,6 +4632,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
+msgstr ""
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
 msgstr ""
 
 msgctxt "@text:window"
@@ -5089,10 +5009,6 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr ""
-
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Tuntematon"
@@ -5286,6 +5202,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Lataa mukautettu laiteohjelmisto"
@@ -5308,14 +5228,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "User Agreement"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
 msgstr ""
 
 msgctxt "@title:column"
@@ -5432,6 +5344,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
 msgstr ""
 
 msgctxt "@button"
@@ -5596,12 +5512,12 @@ msgid "Y (Depth)"
 msgstr "Y (syvyys)"
 
 msgctxt "@label"
-msgid "Y max"
-msgstr "Y enint"
+msgid "Y max ( '+' towards front)"
+msgstr ""
 
 msgctxt "@label"
-msgid "Y min"
-msgstr "Y väh"
+msgid "Y min ( '-' towards back)"
+msgstr ""
 
 msgctxt "@info"
 msgid "Yes"
@@ -5684,10 +5600,6 @@ msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (korkeus)"
 
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr "ZeroConf-etsintäkirjasto"
-
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Zoomaa hiiren suuntaan"
@@ -5745,10 +5657,86 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr ""
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Application framework"
+#~ msgstr "Sovelluskehys"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "C/C++ Binding library"
+#~ msgstr "C/C++ -sidontakirjasto"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Data interchange format"
+#~ msgstr "Data Interchange Format"
+
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 #~ msgstr "Ota reunuksen tai pohjaristikon tulostus käyttöön. Tämä lisää kappaleen ympärille tai alle tasaisen alueen, joka on helppo leikata pois myöhemmin."
 
+#~ msgctxt "@label"
+#~ msgid "Font"
+#~ msgstr "Fontti"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework"
+#~ msgstr "GUI-kehys"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework bindings"
+#~ msgstr "GUI-kehyksen sidonnat"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Graphical user interface"
+#~ msgstr "Graafinen käyttöliittymä"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Interprocess communication library"
+#~ msgstr "Prosessien välinen tietoliikennekirjasto"
+
+#~ msgctxt "@label"
+#~ msgid "Nozzle Size"
+#~ msgstr "Suuttimen koko"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Polygon clipping library"
+#~ msgstr "Monikulmion leikkauskirjasto"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Programming language"
+#~ msgstr "Ohjelmointikieli"
+
 #~ msgctxt "description"
 #~ msgid "Provides support for writing 3MF files."
 #~ msgstr "Tukee 3MF-tiedostojen kirjoittamista."
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Serial communication library"
+#~ msgstr "Sarjatietoliikennekirjasto"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for faster math"
+#~ msgstr "Nopeamman laskennan tukikirjasto"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for handling 3MF files"
+#~ msgstr "Tukikirjasto 3MF-tiedostojen käsittelyyn"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling STL files"
+#~ msgstr "STL-tiedostojen käsittelyn tukikirjasto"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for scientific computing"
+#~ msgstr "Tieteellisen laskennan tukikirjasto"
+
+#~ msgctxt "@label"
+#~ msgid "Y max"
+#~ msgstr "Y enint"
+
+#~ msgctxt "@label"
+#~ msgid "Y min"
+#~ msgstr "Y väh"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "ZeroConf discovery library"
+#~ msgstr "ZeroConf-etsintäkirjasto"

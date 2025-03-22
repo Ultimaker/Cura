@@ -40,7 +40,7 @@ class ArrangeObjectsJob(Job):
 
         found_solution_for_all = False
         try:
-            found_solution_for_all = arranger.arrange()
+            found_solution_for_all = arranger.arrange(only_if_full_success = True)
         except:  # If the thread crashes, the message should still close
             Logger.logException("e",
                                 "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")

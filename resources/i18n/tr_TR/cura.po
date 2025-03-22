@@ -2757,10 +2757,6 @@ msgid "Nozzle offset Y"
 msgstr "Nozül Y ofseti"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Nozzle boyutu"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Nozzle boyutu"
 
@@ -5647,3 +5643,59 @@ msgstr "Yapılandırmaları Cura 5.8'den Cura 5.9'a yükseltir."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "5.8'den 5.9'a Sürüm Yükseltmesi"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion fareleri"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Cura içerisinde 3D farelerle çalışma imkânı sağlar."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Ekstruder Değişim süresi"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Ekstruder Ön Başlangıç G kodu"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Model alet sapı Y eksenini çevirir (yeniden başlatma gerekir)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "%1 %2 için lisans"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ Printfile"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Öteleme araç sapının Y ekseni çevrilmeli mi? Bu, sadece modelin Y koordinatını etkileyecektir, makinenin Baskı Başlığı ayarları gibi diğer tüm ayarlar etkilenmeyecek ve hâlâ eskisi gibi davranacaktır."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "GCode'u Başlat, ilk olmalıdır"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Bu yapılandırma, %1 çekirdek türü ile uyumsuzluk veya başka bir sorun olduğu için kullanılamaz. Bu yazıcı tipinin yeni dilimlere göre hangi çekirdekleri desteklediğini kontrol etmek için lütfen <a href='%2'>destek sayfasını</a> ziyaret edin."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Yapılandırmaları Cura 5.9'dan Cura 5.10'a yükseltir"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "5.9'dan 5.10'a Sürüm Yükseltmesi"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y max ( '+' öne doğru)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y min ('-' arkaya doğru)"
