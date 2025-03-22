@@ -1,18 +1,22 @@
-# Designed in January 2023 by GregValiant (Greg Foresi)
-#   My design intent was to make this as full featured and "industrial strength" as I could.  People printing exotic materials on large custom printers may want to turn the fans off for certain layers, and then back on again later in the print.  This script allows that.
-#    Functions:
-#    Remove all fan speed lines from the file (optional).  This should be enabled for the first instance of the script.  It is disabled by default in any following instances.
-#    "By Layer" allows the user to adjust the fan speed up, or down, or off, within the print.  "By Feature" allows different fan speeds for different features (;TYPE:WALL-OUTER, etc.).
-#    If 'By Feature' then a Start Layer and/or an End Layer can be defined.
-#    Fan speeds are scaled PWM (0 - 255) or RepRap (0.0 - 1.0) depending on {machine_scale_fan_speed_zero_to_one}.
-#    A minimum fan speed of 12% is enforced.  It is the slowest speed that my cooling fan will turn on so that's what I used.  'M106 S14' (as Cura might insert) was pretty useless.
-#    If multiple extruders have separate fan circuits the speeds are set at tool changes and conform to the layer or feature setting.  There is support for up to 4 layer cooling fan circuits.
-#    My thanks to @5axes(@CUQ), @fieldOfView(@AHoeben), @Ghostkeeper, and @Torgeir.  A special thanks to @RBurema for his patience in reviewing my 'non-pythonic' script.
-#    09/14/23  (GV) Added support for One-at-a-Time print sequence.
-#    12/15/23  (GV) Split off 'Single Fan By Layer', 'Multi-fan By Layer', 'Single Fan By Feature', and 'Multi-fan By Feature' from the main 'execute' script.
-#    01/05/24  (GV) Revised the regex replacements.
-#    12/11/24  (GV) Added 'off_fan_speed' for the idle nozzle layer cooling fan.  It does not have to go to 0%.
-#    01/01/25  (GV) Added 'Build Volume' fan control
+"""
+Designed in January 2023 by GregValiant (Greg Foresi)
+    My design intent was to make this as full featured and "industrial strength" as I could.  People printing exotic materials on large custom printers may want to turn the fans off for certain layers, and then back on again later in the print.  This script allows that.
+    Functions:
+        Remove all fan speed lines from the file (optional).  This should be enabled for the first instance of the script.  It is disabled by default in any following instances.
+        "By Layer" allows the user to adjust the fan speed up, or down, or off, within the print.  "By Feature" allows different fan speeds for different features (;TYPE:WALL-OUTER, etc.).
+        If 'By Feature' then a Start Layer and/or an End Layer can be defined.
+        Fan speeds are scaled PWM (0 - 255) or RepRap (0.0 - 1.0) depending on {machine_scale_fan_speed_zero_to_one}.
+        A minimum fan speed of 12% is enforced.  It is the slowest speed that my cooling fan will turn on so that's what I used.  'M106 S14' (as Cura might insert) was pretty useless.
+        If multiple extruders have separate fan circuits the speeds are set at tool changes and conform to the layer or feature setting.  There is support for up to 4 layer cooling fan circuits.
+        My thanks to @5axes(@CUQ), @fieldOfView(@AHoeben), @Ghostkeeper, and @Torgeir.  A special thanks to @RBurema for his patience in reviewing my 'non-pythonic' script.
+    Changes:
+        09/14/23  (GV) Added support for One-at-a-Time print sequence.
+        12/15/23  (GV) Split off 'Single Fan By Layer', 'Multi-fan By Layer', 'Single Fan By Feature', and 'Multi-fan By Feature' from the main 'execute' script.
+        01/05/24  (GV) Revised the regex replacements.
+        12/11/24  (GV) Added 'off_fan_speed' for the idle nozzle layer cooling fan.  It does not have to go to 0%.
+        01/01/25  (GV) Added 'Build Volume' fan control
+        03/15/25  (GV) Added 'Chamber Cooling Fan' control
+"""
 
 from ..Script import Script
 from UM.Application import Application
@@ -45,7 +49,8 @@ class AddCoolingProfile(Script):
                     "type": "bool",
                     "enabled": true,
                     "value": true,
-                    "default_value": true
+                    "default_value": true,
+                    "read_only": true
                 },
                 "feature_fan_start_layer":
                 {
@@ -305,16 +310,26 @@ class AddCoolingProfile(Script):
                 },
                 "bv_fan_speed_control_enable":
                 {
-                    "label": "Enable 'Chamber Fan' control",
-                    "description": "Available if the 'Build Volume Fan Number' > 0 in 'Printer Settings'.  Provides: On layer, off layer, and PWM speed control of the Chamber fan.",
+                    "label": "Enable 'Chamber/Aux Fan' control",
+                    "description": "Controls the 'Build Volume Fan' or an 'Auxiliary Fan' on printers with that hardware.  Provides: 'On' layer, 'Off' layer, and PWM speed control of a secondary fan.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "enable_bv_fan"
                 },
+                "bv_fan_nr":
+                {
+                    "label": "    Chamber/Aux Fan Number",
+                    "description": "The mainboard circuit number of the Chamber or Auxiliary Fan.",
+                    "type": "int",
+                    "unit": "#    ",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
+                },
                 "bv_fan_speed":
                 {
-                    "label": "    Chamber fan speed %",
-                    "description": "The speed of the Chamber Fan.  This will be converted to PWM Duty Cycle (0-255) or (RepRap 0-1 if that is enabled in Cura).",
+                    "label": "    Chamber/Aux Fan Speed %",
+                    "description": "The speed of the Chamber or Auxiliary Fan.  This will be converted to PWM Duty Cycle (0-255) or (RepRap 0-1 if that is enabled in Cura).  If your specified fan does not operate on variable speeds then set this to '100'.",
                     "type": "int",
                     "unit": "%    ",
                     "default_value": 50,
@@ -324,18 +339,20 @@ class AddCoolingProfile(Script):
                 },
                 "bv_fan_start_layer":
                 {
-                    "label": "        Start Layer",
-                    "description": "The layer number for Chamber Fan start.  Use the Cura preview layer number.  If you are using a raft the chanber fan will start when the raft finishes.",
+                    "label": "    Chamber/Aux Fan Start Layer",
+                    "description": "The layer to start the Chamber or Auxiliary Fan.  Use the Cura preview layer number and the fan will start at the beginning of the layer.",
                     "type": "int",
+                    "unit": "Layer#    ",
                     "default_value": 1,
                     "minimum_value": 1,
                     "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
                 },
                 "bv_fan_end_layer":
                 {
-                    "label": "        End Layer",
-                    "description": "The layer number for Chamber Fan to turn off.  Use the Cura preview layer number or '-1' to indicate the end of the print.",
+                    "label": "    Chamber/Aux Fan End Layer",
+                    "description": "The layer number for Chamber or Auxiliary Fan to turn off.  Use the Cura preview layer number or '-1' to indicate the end of the print.  The fan will run until the end of the layer",
                     "type": "int",
+                    "unit": "Layer#    ",
                     "default_value": -1,
                     "minimum_value": -1,
                     "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
@@ -343,7 +360,7 @@ class AddCoolingProfile(Script):
                 "enable_bv_fan":
                 {
                     "label": "Hidden setting",
-                    "description": "For printers with heated chambers and chamber fans, this enables 'bv_fan_speed_control_enable'.",
+                    "description": "This is enabled when machine_heated_bed is true, and in turn this enables 'bv_fan_speed_control_enable'.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": false
@@ -364,18 +381,10 @@ class AddCoolingProfile(Script):
                 self._instance.setProperty("delete_existing_m106", "value", False)
         if extruder_count > 1:
             if extruder[0].getProperty("machine_extruder_cooling_fan_number", "value") != extruder[1].getProperty("machine_extruder_cooling_fan_number", "value"):
-                self._instance.setProperty("enable_off_fan_speed_enable", "value", True)
-        
-        self.has_bv_fan = False
-        self.bv_fan_nr = 0        
-        try:
-            self.has_bv_fan = bool(global_stack.getProperty("build_volume_fan_nr", "value"))
-            self.bv_fan_nr = int(global_stack.getProperty("build_volume_fan_nr", "value"))
-        except:
-            pass
-        if self.has_bv_fan:
+                self._instance.setProperty("enable_off_fan_speed_enable", "value", True)                
+        if bool(global_stack.getProperty("machine_heated_bed", "value")):
             self._instance.setProperty("enable_bv_fan", "value", True)
-
+ 
     def execute(self, data):
         # Exit if the gcode has been previously post-processed.
         if ";POSTPROCESSED" in data[0]:
@@ -384,7 +393,7 @@ class AddCoolingProfile(Script):
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
-        #Get some information from Cura-----------------------------------
+        #Get some information from Cura
         extruder = self.global_stack.extruderList
         extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
 
@@ -398,14 +407,14 @@ class AddCoolingProfile(Script):
         bed_adhesion = (extruder[0].getProperty("adhesion_type", "value"))
         print_sequence = str(self.global_stack.getProperty("print_sequence", "value"))
 
-        #Assign the fan numbers to the tools------------------------------
+        #Assign the fan numbers to the tools
         if extruder_count == 1:
             is_multi_fan = False
             is_multi_extr_print = False
             if int((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
                 t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
             else:
-        #No P parameter if there is a single fan circuit------------------
+        # No P parameter if there is a single fan circuit
                 t0_fan = ""
 
         #Get the cooling fan numbers for each extruder if the printer has multiple extruders
@@ -417,13 +426,13 @@ class AddCoolingProfile(Script):
             if extruder_count > 2: t2_fan = " P" + str((extruder[2].getProperty("machine_extruder_cooling_fan_number", "value")))
             if extruder_count > 3: t3_fan = " P" + str((extruder[3].getProperty("machine_extruder_cooling_fan_number", "value")))
 
-        #Initialize the fan_list with defaults----------------------------
+        #Initialize the fan_list with defaults
         fan_list = ["z"] * 16
         for num in range(0,15,2):
             fan_list[num] = len(data)
             fan_list[num + 1] = "M106 S0"
 
-        #Assign the variable values if "By Layer"-------------------------
+        #Assign the variable values if "By Layer"
         by_layer_or_feature = self.getSettingValueByKey("fan_layer_or_feature")
         if  by_layer_or_feature == "by_layer":
             # By layer doesn't do any feature search so there is no need to look for combing moves
@@ -554,7 +563,7 @@ class AddCoolingProfile(Script):
         else:
             fan_sp_raft = "M106 S0"
 
-        # Start to alter the data-----------------------------------------
+        # Start to alter the data
         # Strip the existing M106 lines from the file up to the end of the last layer.  If a user wants to use more than one instance of this plugin then they won't want to erase the M106 lines that the preceding plugins inserted so 'delete_existing_m106' is an option.
         delete_existing_m106 = self.getSettingValueByKey("delete_existing_m106")
         if delete_existing_m106:
@@ -633,28 +642,26 @@ class AddCoolingProfile(Script):
                 data[layer_num] = re.sub(";MESH:NOMESH", ";MESH:NONMESH", layer)
             data = self._add_travel_comment(data, layer_0_index)
         
-        # If there is a build volume fan
-        if self.has_bv_fan:
-            if self.getSettingValueByKey("bv_fan_speed_control_enable"):
-                data = self._control_bv_fan(data)
+        if bool(self.getSettingValueByKey("bv_fan_speed_control_enable")):
+            data = self._control_bv_fan(data)
         
-        # Single Fan "By Layer"--------------------------------------------
+        # Single Fan "By Layer"
         if by_layer_or_feature == "by_layer" and not is_multi_fan:
             return self._single_fan_by_layer(data, layer_0_index, fan_list, t0_fan)
 
-        # Multi-Fan "By Layer"---------------------------------------------
+        # Multi-Fan "By Layer"
         if by_layer_or_feature == "by_layer" and is_multi_fan:
             return self._multi_fan_by_layer(data, layer_0_index, fan_list, t0_fan, t1_fan, t2_fan, t3_fan, fan_mode, off_fan_speed)
 
-        #Single Fan "By Feature"------------------------------------------
+        #Single Fan "By Feature"
         if by_layer_or_feature == "by_feature" and (not is_multi_fan or not is_multi_extr_print):
             return self._single_fan_by_feature(data, layer_0_index, the_start_layer, the_end_layer, the_end_is_enabled, fan_list, t0_fan, feature_speed_list, feature_name_list, feature_fan_combing)
 
-        #Multi Fan "By Feature"-------------------------------------------
+        #Multi Fan "By Feature"
         if by_layer_or_feature == "by_feature" and is_multi_fan:
             return self._multi_fan_by_feature(data, layer_0_index, the_start_layer, the_end_layer, the_end_is_enabled, fan_list, t0_fan, t1_fan, t2_fan, t3_fan, feature_speed_list, feature_name_list, feature_fan_combing, fan_mode, off_fan_speed)
 
-    # The Single Fan "By Layer"----------------------------------------
+    # The Single Fan "By Layer"
     def _single_fan_by_layer(self, data: str, layer_0_index: int, fan_list: str, t0_fan: str)->str:
         layer_number = "0"
         single_fan_data = data
@@ -671,7 +678,7 @@ class AddCoolingProfile(Script):
                             single_fan_data[l_index] = layer
         return single_fan_data
 
-    # Multi-Fan "By Layer"-----------------------------------------
+    # Multi-Fan "By Layer"
     def _multi_fan_by_layer(self, data: str, layer_0_index: int, fan_list: str, t0_fan: str, t1_fan: str, t2_fan: str, t3_fan: str, fan_mode: bool, off_fan_speed: str)->str:
         multi_fan_data = data
         layer_number = "0"
@@ -737,7 +744,7 @@ class AddCoolingProfile(Script):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
-    # Single fan by feature-----------------------------------------------
+    # Single fan by feature
     def _single_fan_by_feature(self, data: str, layer_0_index: int, the_start_layer: str, the_end_layer: str, the_end_is_enabled: str, fan_list: str, t0_fan: str, feature_speed_list: str, feature_name_list: str, feature_fan_combing: bool)->str:
         single_fan_data = data
         layer_number = "0"
@@ -769,7 +776,7 @@ class AddCoolingProfile(Script):
             single_fan_data[l_index] = modified_data
         return single_fan_data
 
-    # Multi-fan by feature------------------------------------------------
+    # Multi-fan by feature
     def _multi_fan_by_feature(self, data: str, layer_0_index: int, the_start_layer: str, the_end_layer: str, the_end_is_enabled: str, fan_list: str, t0_fan: str, t1_fan: str, t2_fan: str, t3_fan: str, feature_speed_list: str, feature_name_list: str, feature_fan_combing: bool, fan_mode: bool, off_fan_speed: str)->str:
         multi_fan_data = data
         layer_number = "0"
@@ -812,7 +819,7 @@ class AddCoolingProfile(Script):
                     if line == "T3": this_fan = t3_fan
                     prev_fan = this_fan
 
-        # Start to make insertions-------------------------------------
+        # Start to make insertions
         for l_index in range(start_index+1,len(multi_fan_data)-1,1):
             layer = multi_fan_data[l_index]
             lines = layer.split("\n")
@@ -930,7 +937,7 @@ class AddCoolingProfile(Script):
                     if g0_index == -1:
                         g0_index = lines.index(line)
                 elif not line.startswith("G0 ") and not is_travel:
-                # Add additional 'NONMESH' lines to shut the fan off during long combing moves--------
+                # Add additional 'NONMESH' lines to shut the fan off during long combing moves
                     if g0_count > 5:
                         if not is_travel:
                             new_data.insert(g0_index + insert_index, ";MESH:NONMESH")
@@ -952,6 +959,7 @@ class AddCoolingProfile(Script):
         # Control the chamber fan
         bv_start_layer = self.getSettingValueByKey("bv_fan_start_layer") - 1
         bv_end_layer = self.getSettingValueByKey("bv_fan_end_layer")
+        bv_fan_nr = self.getSettingValueByKey("bv_fan_nr")
         if bv_end_layer != -1:
             bv_end_layer -= 1
         # Get the PWM speed or if RepRap then the 0-1 speed
@@ -962,18 +970,18 @@ class AddCoolingProfile(Script):
         # Turn the chamber fan on
         for index, layer in enumerate(bv_data):
             if ";LAYER:" + str(bv_start_layer) + "\n" in layer:
-                bv_data[index] = re.sub(f";LAYER:{bv_start_layer}", f";LAYER:{bv_start_layer}\nM106 S{bv_fan_speed} P{self.bv_fan_nr}",layer)
+                bv_data[index] = re.sub(f";LAYER:{bv_start_layer}", f";LAYER:{bv_start_layer}\nM106 S{bv_fan_speed} P{bv_fan_nr}",layer)
                 break
         # Turn the chamber fan off
         if bv_end_layer == -1:
-            bv_data[len(bv_data)-2] += f"M106 S0 P{self.bv_fan_nr}\n"
+            bv_data[len(bv_data)-2] += f"M106 S0 P{bv_fan_nr}\n"
         else:
             for index, layer in enumerate(bv_data):
                 if ";LAYER:" + str(bv_end_layer) + "\n" in layer:
                     lines = layer.split("\n")
                     for fdex, line in enumerate(lines):
                         if ";TIME_ELAPSED:" in line:
-                            lines[fdex] = f"M106 S0 P{self.bv_fan_nr}\n" + line
+                            lines[fdex] = f"M106 S0 P{bv_fan_nr}\n" + line
                     bv_data[index] = "\n".join(lines)
                     break
         return bv_data
