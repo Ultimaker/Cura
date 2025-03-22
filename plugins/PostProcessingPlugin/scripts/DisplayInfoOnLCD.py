@@ -488,8 +488,8 @@ class DisplayInfoOnLCD(Script):
             data[layer_index] = "\n".join(lines)
 
         # If enabled then change the ET to TP for 'Time To Pause'
+        time_list = []
         if bool(self.getSettingValueByKey("countdown_to_pause")):
-            time_list = []
             time_list.append("0")
             time_list.append("0")
             this_time = 0
@@ -528,11 +528,11 @@ class DisplayInfoOnLCD(Script):
                         continue
                 data[num] = layer
         if bool(self.getSettingValueByKey("enable_end_message")):
-            message_str = self._message_to_user(speed_factor)
+            message_str = self._message_to_user(data, speed_factor, pause_cmd)
             Message(title = "[Display Info on LCD] - Estimated Finish Time", text = message_str[0] + "\n\n" + message_str[1] + "\n" + message_str[2] + "\n" + message_str[3]).show()
         return data
 
-    def _message_to_user(self, speed_factor: float):
+    def _message_to_user(self, data: str, speed_factor: float, pause_cmd: str) -> str:
         # Message the user of the projected finish time of the print
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
         print_start_time = self.getSettingValueByKey("print_start_time")
@@ -596,6 +596,15 @@ class DisplayInfoOnLCD(Script):
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
         finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
+
+        # If there are pauses and if countdown is enabled, then add the time-to-pause to the message.
+        if bool(self.getSettingValueByKey("countdown_to_pause")):
+            num = 1
+            for layer in data:
+                for p_cmd in pause_cmd:
+                    if p_cmd in layer or "Do the actual pause" in layer:
+                        adjusted_str += "\n" + self._get_time_to_go(layer.split("TIME_ELAPSED:")[1].split("\n")[0]) + " ET from start to pause #"   + str(num)
+                        num += 1
         return finish_str, estimate_str, adjusted_str, print_start_str
 
     def _get_time_to_go(self, time_str: str):
@@ -623,7 +632,7 @@ class DisplayInfoOnLCD(Script):
                     model_name = line.split(":")[1]
                     if not model_name in model_list:
                         model_list.append(model_name)
-        # Add the Initial Layer Height just below Layer Height in data[0]model_list = []
+        # Add some settings to data[0]
         extruder_count = global_stack.getProperty("machine_extruder_count", "value")
         init_layer_hgt_line = ";Initial Layer Height: " + str(global_stack.getProperty("layer_height_0", "value"))
         nozzle_size_line = ";Nozzle Size (T0): " + str(global_stack.extruderList[0].getProperty("machine_nozzle_size", "value"))
