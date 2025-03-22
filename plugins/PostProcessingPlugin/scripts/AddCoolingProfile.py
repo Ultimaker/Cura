@@ -14,8 +14,7 @@ Designed in January 2023 by GregValiant (Greg Foresi)
         12/15/23  (GV) Split off 'Single Fan By Layer', 'Multi-fan By Layer', 'Single Fan By Feature', and 'Multi-fan By Feature' from the main 'execute' script.
         01/05/24  (GV) Revised the regex replacements.
         12/11/24  (GV) Added 'off_fan_speed' for the idle nozzle layer cooling fan.  It does not have to go to 0%.
-        01/01/25  (GV) Added 'Build Volume' fan control
-        03/15/25  (GV) Added 'Chamber Cooling Fan' control
+        03/22/25  (GV) Added 'Chamber Cooling Fan / Auxiliary Fan' control.
 """
 
 from ..Script import Script
@@ -370,19 +369,19 @@ class AddCoolingProfile(Script):
 
     def initialize(self) -> None:
         super().initialize()
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        extruder = global_stack.extruderList
-        extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        scripts = global_stack.getMetaDataEntry("post_processing_scripts")
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
+        self.extruder_list = self.global_stack.extruderList
+        self.extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
+        scripts = self.global_stack.getMetaDataEntry("post_processing_scripts")
         if scripts != None:
             script_count = scripts.count("AddCoolingProfile")
             if script_count > 0:
                 # Set 'Remove M106 lines' to "false" if there is already an instance of this script running.
                 self._instance.setProperty("delete_existing_m106", "value", False)
-        if extruder_count > 1:
-            if extruder[0].getProperty("machine_extruder_cooling_fan_number", "value") != extruder[1].getProperty("machine_extruder_cooling_fan_number", "value"):
+        if self.extruder_count > 1:
+            if self.extruder_list[0].getProperty("machine_extruder_cooling_fan_number", "value") != self.extruder_list[1].getProperty("machine_extruder_cooling_fan_number", "value"):
                 self._instance.setProperty("enable_off_fan_speed_enable", "value", True)                
-        if bool(global_stack.getProperty("machine_heated_bed", "value")):
+        if bool(self.global_stack.getProperty("machine_heated_bed", "value")):
             self._instance.setProperty("enable_bv_fan", "value", True)
  
     def execute(self, data):
@@ -390,41 +389,36 @@ class AddCoolingProfile(Script):
         if ";POSTPROCESSED" in data[0]:
             return data
         # Initialize variables that are buried in if statements.
-        self.global_stack = Application.getInstance().getGlobalContainerStack()
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
-
-        # Get some information from Cura
-        extruder = self.global_stack.extruderList
-        extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
 
         # This will be true when fan scale is 0-255pwm and false when it's RepRap 0-1 (Cura 5.x)
         fan_mode = True
         # For 4.x versions that don't have the 0-1 option
         try:
-            fan_mode = not bool(extruder[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
+            fan_mode = not bool(self.extruder_list[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
         except:
             pass
-        bed_adhesion = (extruder[0].getProperty("adhesion_type", "value"))
+        bed_adhesion = (self.extruder_list[0].getProperty("adhesion_type", "value"))
         print_sequence = str(self.global_stack.getProperty("print_sequence", "value"))
 
         # Assign the fan numbers to the tools
-        if extruder_count == 1:
+        if self.extruder_count == 1:
             is_multi_fan = False
             is_multi_extr_print = False
-            if int((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
-                t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if int((self.extruder_list[0].getProperty("machine_extruder_cooling_fan_number", "value"))) > 0:
+                t0_fan = " P" + str((self.extruder_list[0].getProperty("machine_extruder_cooling_fan_number", "value")))
             else:
         # No P parameter if there is a single fan circuit
                 t0_fan = ""
 
         # Get the cooling fan numbers for each extruder if the printer has multiple extruders
-        elif extruder_count > 1:
+        elif self.extruder_count > 1:
             is_multi_fan = True
-            t0_fan = " P" + str((extruder[0].getProperty("machine_extruder_cooling_fan_number", "value")))
+            t0_fan = " P" + str((self.extruder_list[0].getProperty("machine_extruder_cooling_fan_number", "value")))
         if is_multi_fan:
-            if extruder_count > 1: t1_fan = " P" + str((extruder[1].getProperty("machine_extruder_cooling_fan_number", "value")))
-            if extruder_count > 2: t2_fan = " P" + str((extruder[2].getProperty("machine_extruder_cooling_fan_number", "value")))
-            if extruder_count > 3: t3_fan = " P" + str((extruder[3].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if self.extruder_count > 1: t1_fan = " P" + str((self.extruder_list[1].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if self.extruder_count > 2: t2_fan = " P" + str((self.extruder_list[2].getProperty("machine_extruder_cooling_fan_number", "value")))
+            if self.extruder_count > 3: t3_fan = " P" + str((self.extruder_list[3].getProperty("machine_extruder_cooling_fan_number", "value")))
 
         # Initialize the fan_list with defaults
         fan_list = ["z"] * 16
@@ -488,7 +482,7 @@ class AddCoolingProfile(Script):
 
         # For multi-extruder printers with separate fans the 'idle' nozzle fan can be left on for ooze control
         off_fan_speed = 0
-        if extruder_count > 1:
+        if self.extruder_count > 1:
             if self.getSettingValueByKey("enable_off_fan_speed"):
                 if fan_mode:
                     off_fan_speed = round(int(self.getSettingValueByKey("off_fan_speed")) * 2.55)
@@ -629,9 +623,9 @@ class AddCoolingProfile(Script):
         temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t0_fan))
         # If there are multiple cooling fans shut them all off
         if is_multi_fan:
-            if extruder_count > 1 and t1_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t1_fan))
-            if extruder_count > 2 and t2_fan != t1_fan and t2_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t2_fan))
-            if extruder_count > 3 and t3_fan != t2_fan and t3_fan != t1_fan and t3_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t3_fan))
+            if self.extruder_count > 1 and t1_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t1_fan))
+            if self.extruder_count > 2 and t2_fan != t1_fan and t2_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t2_fan))
+            if self.extruder_count > 3 and t3_fan != t2_fan and t3_fan != t1_fan and t3_fan != t0_fan: temp_startup.insert(len(temp_startup)-2,"M106 S0" + str(t3_fan))
         data[1] = "\n".join(temp_startup)
 
         # If 'feature_fan_combing' is True then add additional 'MESH:NONMESH' lines for travel moves over 5 lines long
@@ -740,7 +734,7 @@ class AddCoolingProfile(Script):
             if modified_data.endswith("\n"): modified_data = modified_data[0:-1]
             multi_fan_data[l_index] = modified_data
         # Insure the fans get shut off if 'off_fan_speed' was enabled
-        if self.global_stack.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
+        if self.extruder_count > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
@@ -867,7 +861,7 @@ class AddCoolingProfile(Script):
             multi_fan_data[l_index] = modified_data
             modified_data = ""
         # Insure the fans get shut off if 'off_fan_speed' was enabled
-        if self.global_stack.getProperty("machine_extruder_count", "value") > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
+        if self.extruder_count > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
         return multi_fan_data
 
@@ -963,13 +957,13 @@ class AddCoolingProfile(Script):
         if bv_end_layer != -1:
             bv_end_layer -= 1
         # Get the PWM speed or if RepRap then the 0-1 speed
-        if self.global_stack.extruderList[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"):
+        if self.extruder_list[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"):
             bv_fan_speed = round(self.getSettingValueByKey("bv_fan_speed") * .01, 1)
         else:
             bv_fan_speed = int(self.getSettingValueByKey("bv_fan_speed") * 2.55)
         # Turn the chamber fan on
         for index, layer in enumerate(bv_data):
-            if ";LAYER:" + str(bv_start_layer) + "\n" in layer:
+            if f";LAYER:{bv_start_layer}\n" in layer:
                 bv_data[index] = re.sub(f";LAYER:{bv_start_layer}", f";LAYER:{bv_start_layer}\nM106 S{bv_fan_speed} P{bv_fan_nr}",layer)
                 break
         # Turn the chamber fan off
@@ -977,7 +971,7 @@ class AddCoolingProfile(Script):
             bv_data[len(bv_data)-2] += f"M106 S0 P{bv_fan_nr}\n"
         else:
             for index, layer in enumerate(bv_data):
-                if ";LAYER:" + str(bv_end_layer) + "\n" in layer:
+                if f";LAYER:{bv_end_layer}\n" in layer:
                     lines = layer.split("\n")
                     for fdex, line in enumerate(lines):
                         if ";TIME_ELAPSED:" in line:
