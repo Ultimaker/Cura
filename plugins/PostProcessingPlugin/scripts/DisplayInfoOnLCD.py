@@ -241,7 +241,6 @@ class DisplayInfoOnLCD(Script):
         self.add_m118_line = self.getSettingValueByKey("add_m118_line")
         self.add_m118_a1 = self.getSettingValueByKey("add_m118_a1")
         self.add_m118_p0 = self.getSettingValueByKey("add_m118_p0")
-        self.m118_str = "M118 "
         self.m118_text = "M118 "
         self.add_m73_line = self.getSettingValueByKey("add_m73_line")
         self.add_m73_time = self.getSettingValueByKey("add_m73_time")
@@ -302,15 +301,11 @@ class DisplayInfoOnLCD(Script):
                     if self.add_m117_line:
                         lines.insert(line_index + 1, display_text)
                     if self.add_m118_line:
-                        if not (self.add_m118_p0 and self.add_m118_a1):
-                            self.m118_str = self.m118_text
-                        if self.add_m118_a1 and not self.add_m118_p0:
-                            self.m118_str = self.m118_text.replace("M118 ","M118 A1 ")
-                        if self.add_m118_p0 and not self.add_m118_a1:
-                            self.m118_str = self.m118_text.replace("M118 ","M118 P0 ")
-                        if self.add_m118_p0 and self.add_m118_a1:
-                            self.m118_str = self.m118_text.replace("M118 ","M118 A1 P0 ")
-                        lines.insert(line_index + 2, self.m118_str)
+                        if self.add_m118_a1:
+                            self.m118_text = self.m118_text.replace("M118 ","M118 A1 ")
+                        if self.add_m118_p0:
+                            self.m118_text = self.m118_text.replace("M118 ","M118 P0 ")
+                        lines.insert(line_index + 2, self.m118_text)
                     i += 1
             final_lines = "\n".join(lines)
             data[layer_index] = final_lines
@@ -466,13 +461,12 @@ class DisplayInfoOnLCD(Script):
                     if self.add_m117_line:
                         lines[l_index] += "\nM117 " + display_text
                     if self.add_m118_line:
-                        a1_str = ""
-                        p0_str = ""
+                        m118_str = "\nM118 "
                         if self.add_m118_a1:
-                            a1_str = "A1 "
+                            m118_str += "A1 "
                         if self.add_m118_p0:
-                            p0_str = "P0 "
-                        lines[l_index] += "\nM118 " + a1_str + p0_str + display_text
+                            m118_str += "P0 "
+                        lines[l_index] += m118_str + display_text
                     # add M73 line
                     if display_remaining_time:
                         mins = int(60 * h + m)
