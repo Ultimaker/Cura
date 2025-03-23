@@ -38,7 +38,6 @@ import time
 import datetime
 import math
 from UM.Message import Message
-import re
 
 class DisplayInfoOnLCD(Script):
 
@@ -48,7 +47,11 @@ class DisplayInfoOnLCD(Script):
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
                 enable_countdown = True
                 self._instance.setProperty("enable_countdown", "value", enable_countdown)
-        except:
+        except AttributeError:
+            # Handle cases where the global container stack or its properties are not accessible
+            pass
+        except KeyError:
+            # Handle cases where the "print_sequence" property is missing
             pass
 
     def getSettingDataString(self):
@@ -461,12 +464,12 @@ class DisplayInfoOnLCD(Script):
                     if self.add_m117_line:
                         lines[l_index] += "\nM117 " + display_text
                     if self.add_m118_line:
-                        m118_str = "\nM118 "
+                        m118_text = "\nM118 "
                         if self.add_m118_a1:
-                            m118_str += "A1 "
+                            m118_text += "A1 "
                         if self.add_m118_p0:
-                            m118_str += "P0 "
-                        lines[l_index] += m118_str + display_text
+                            m118_text += "P0 "
+                        lines[l_index] += m118_text + display_text
                     # add M73 line
                     if display_remaining_time:
                         mins = int(60 * h + m)
@@ -589,7 +592,7 @@ class DisplayInfoOnLCD(Script):
             print_start_str = "Print Start Time.................Now"
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         adjusted_str = "Adjusted Time Estimate..." + str(time_change)
-        finish_str = week_day + " " + str(mo_str) + " " + str(new_time.strftime("%d")) + ", " + str(new_time.strftime("%Y")) + " at " + str(show_hr) + str(new_time.strftime("%M")) + str(show_ampm)
+        finish_str = f"{week_day} {mo_str} {new_time.strftime('%d')}, {new_time.strftime('%Y')} at {show_hr}{new_time.strftime('%M')}{show_ampm}"
 
         # If there are pauses and if countdown is enabled, then add the time-to-pause to the message.
         if bool(self.getSettingValueByKey("countdown_to_pause")):
@@ -602,17 +605,20 @@ class DisplayInfoOnLCD(Script):
         return finish_str, estimate_str, adjusted_str, print_start_str
 
     def _get_time_to_go(self, time_str: str):
+        """
+        Converts a time string in seconds to a human-readable format (e.g., "2h30m").
+        :param time_str: The time string in seconds.
+        :return: A formatted string representing the time.
+        """
         alt_time = time_str[:-1]
-        hhh = int(float(alt_time) / 3600)
-        if hhh > 0:
-            hhr = str(hhh) + "h"
-        else:
-            hhr = ""
-        mmm = ((float(alt_time) / 3600) - (int(float(alt_time) / 3600))) * 60
-        sss = int((mmm - int(mmm)) * 60)
-        mmm = str(round(mmm)) + "m"
-        time_to_go = str(hhr) + str(mmm)
-        if hhr == "": time_to_go = time_to_go + str(sss) + "s"
+        total_seconds = float(alt_time)
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        seconds = int(total_seconds % 60)
+        time_to_go = f"{hours}h" if hours > 0 else ""
+        time_to_go += f"{minutes}m"
+        if hours == 0:
+            time_to_go += f"{seconds}s"
         return time_to_go
 
     def _add_stats(self, data: str) -> str:
