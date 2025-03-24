@@ -5,12 +5,13 @@
 - Cheetah Gcode Flavor: Introduced a new Marlin-like Gcode flavor called Cheetah.
 - SpaceMouse support: Navigate the view seamlessly with a 3D mouse, thanks to a collaboration with 3Dconnexion.
 - Cloud Printing for Sketch Sprint: Enabled printing over cloud with Digital Factory for Sketch Sprint users.
-- Interlocking Settings: Moved Interlocking settings out of experimental into expert
+- Interlocking Settings: Moved Interlocking settings from "Experimental" to "Dual Extrusion" category and placed under "Expert" setting visibility preset.
 - Build System Upgrade: Upgraded the build system from Conan 1 to Conan 2. Updated documentation is available.
 - Preview Looping: When the last layer is played in the preview, the first layer will now play again instead of stopping.
 - Updated About Page: The About Page now shows the used sources, their licenses, and their versions in a clearer way
 - Flip Y-axis Translate Tool Handle: Added an option to flip the Y-axis translate tool handle in preferences contributed by @GregValiant.
 - Rotation by Input & Snap Angle Input: Introduced rotation by input & snap angle input contributed by @HellAholic and @GregValiant.
+- Improved the speed when interacting with the Settings Visiblity window contributed by @HellAholic
 - Purge Lines And Unload Filament Post Processing Script: Added a Purge Lines and Unload Filament Post Processing Script contributed by @GregValiant and @HellAholic
 - Thingiverse "Open in Cura" Button Linux Support: Enabled the "Open in Cura" button from Thingiverse to open files in Linux contributed by @hadess.
 - Multitool Printer Configuration Options: Introduced 3 new configuration options in machine settings for multitool printers contributed by @TheSin-.
@@ -21,10 +22,12 @@
 * New settings:
 - Overhanging Wall Speeds, now gives you the ability to tune multiple values. Don’t forget to adjust the Overhanging Wall Angle to start using the setting. 
 - Minimum Layer Time with Overhang and Minimum Overhang Segment Length: Fine-tune the minimum layer time for overhangs.
+Try it for yourself <a href="https://www.thingiverse.com/thing:6975650?utm_source=changelog&utm_medium=cura&utm_campaign=510">with this Overhanging Wall Angle Test</a>.
 - Inside Travel Avoid Distance: Finetune combing movements.
 - Pressure Advance Factor Setting: New setting for machine definitions.
 - You can now tune the Bottom Surface Skin, like you can tune the Top Surface Skin! You can now tune Extruder, Layers, Line Width, Pattern, Line Directions, Outer Wall Flow, Inner Wall(s) Flow, Flow, Outer Wall Speed, Inner Wall Speed, Skin Speed, Inner Wall Acceleration, Skin Acceleration, Outer Wall Jerk, Inner Wall Jerk, Skin Jerk, and Monotonic Bottom Surface Order
 - Enable/Disable USB Printing: A hidden preference setting to indicate that you are using the printer over USB functionality. This setting lays the groundwork for automatically disabling USB printing in the next release when it’s not being used.
+
 
 * Bug fixes:
 - Resolved a crash that occurred when switching materials on Sovol printers.
@@ -37,14 +40,27 @@
 - The number of decimal places displayed for layer height in the top bar has been reduced.
 - Fixed a bug that caused incorrect retracting and hopping on printers with more than 2 extruders.
 - Improved how fast the settings are loaded in the Settings Visibility window when scrolling
-- Improved how disallowed areas and other models are taken into account when arranging models on the buildplate
+- Improved how disallowed areas and other models are taken into account when arranging models on the buildplate, including other models
 - Preview playback now only shows visible parts. Infill lines, shell, and helpers are always hidden if disabled in preview's color scheme
+
+
+* Bugs resolved since the Beta release
+- Fixed a bug where the inner wall was bridging incorrectly
+- Fixed a bug where support meshes were not printing if they had nothing to support
+- Fixed a bug where project names would get mixed up when switching between projects
+- Improved the UltiMaker S8 profiles to boost reliability and quality
+- Updated Nylon CF Slide settings to reduce under extrusion
+- Reduced the chance of a filament jam on Method series printers with dual extrusion prints with small layertimes
+- The Bottom Surface Skin settings introduced in this release are now only enabled if 'Bottom Surface Skin layers' is more than zero
+- Fixed the translations for the drop-downs in the Print Setting recommended view
+- Columns in the Profile Description Screen can now be resized so long setting names can be read
+- Two non-critical security fixes were implemented to align with security best practices in OAuth2 and the printer-linter
+- Resolved top reported crashes coming in via the analyzing tool Sentry
 
 * Printer definitions, profiles, and materials:
 - Introduced Visual Intents for the Sketch Sprint
 - Introduced new Extra Fast and Draft profiles for the Sketch Sprint
 - Introduced profiles for Sketch printers for Metallic PLA with improved surface quality (matte vs shiny)
-- Introduce High Speed and High Speed Solid intents for Method, Method X, and Method XL
 - Introduced PC ABS and PC ABS FR materials for Method X and Method XL
 - Introduced Nylon Slide for UltiMaker S Series Printers
 - Updated the Breakaway Build Volume Temperature for UltiMaker Factor 4
