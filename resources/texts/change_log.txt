@@ -11,6 +11,7 @@
 - Updated About Page: The About Page now shows the used sources, their licenses, and their versions in a clearer way
 - Flip Y-axis Translate Tool Handle: Added an option to flip the Y-axis translate tool handle in preferences contributed by @GregValiant.
 - Rotation by Input & Snap Angle Input: Introduced rotation by input & snap angle input contributed by @HellAholic and @GregValiant.
+- Improved the speed when interacting with the Settings Visiblity window contributed by @HellAholic
 - Purge Lines And Unload Filament Post Processing Script: Added a Purge Lines and Unload Filament Post Processing Script contributed by @GregValiant and @HellAholic
 - Thingiverse "Open in Cura" Button Linux Support: Enabled the "Open in Cura" button from Thingiverse to open files in Linux contributed by @hadess.
 - Multitool Printer Configuration Options: Introduced 3 new configuration options in machine settings for multitool printers contributed by @TheSin-.
@@ -47,11 +48,11 @@ Try it for yourself <a href="https://www.thingiverse.com/thing:6975650?utm_sourc
 - Fixed a bug where the inner wall was bridging incorrectly
 - Fixed a bug where support meshes were not printing if they had nothing to support
 - Fixed a bug where project names would get mixed up when switching between projects
-- Improved the UltiMaker S8 profiles for improved reliability and quality
+- Improved the UltiMaker S8 profiles to boost reliability and quality
 - Updated Nylon CF Slide settings to reduce under extrusion
 - Reduced the chance of a filament jam on Method series printers with dual extrusion prints with small layertimes
 - The Bottom Surface Skin settings introduced in this release are now only enabled if 'Bottom Surface Skin layers' is more than zero
-- Improved the speed when interacting with the Settings Visiblity window
+- Fixed the translations for the drop-downs in the Print Setting recommended view
 - Columns in the Profile Description Screen can now be resized so long setting names can be read
 - Two non-critical security fixes were implemented to align with security best practices in OAuth2 and the printer-linter
 - Resolved top reported crashes coming in via the analyzing tool Sentry
