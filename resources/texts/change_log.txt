@@ -5,7 +5,7 @@
 - Cheetah Gcode Flavor: Introduced a new Marlin-like Gcode flavor called Cheetah.
 - SpaceMouse support: Navigate the view seamlessly with a 3D mouse, thanks to a collaboration with 3Dconnexion.
 - Cloud Printing for Sketch Sprint: Enabled printing over cloud with Digital Factory for Sketch Sprint users.
-- Interlocking Settings: Moved Interlocking settings out of experimental into expert
+- Interlocking Settings: Moved Interlocking settings from "Experimental" to "Dual Extrusion" category and placed under "Expert" setting visibility preset.
 - Build System Upgrade: Upgraded the build system from Conan 1 to Conan 2. Updated documentation is available.
 - Preview Looping: When the last layer is played in the preview, the first layer will now play again instead of stopping.
 - Updated About Page: The About Page now shows the used sources, their licenses, and their versions in a clearer way
