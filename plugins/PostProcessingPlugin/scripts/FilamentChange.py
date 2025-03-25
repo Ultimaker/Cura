@@ -92,7 +92,7 @@ class FilamentChange(Script):
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": 0,
-                    "enabled": "enabled"
+                    "enabled": "enabled and not firmware_config"
                 },
                 "retract_method":
                 {
