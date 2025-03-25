@@ -566,22 +566,27 @@ class CuraConan(ConanFile):
 
     def _make_internal_distinct(self):
         test_colors_path = Path(self.source_folder, "resources", "themes", "daily_test_colors.json")
+        if not test_colors_path.exists():
+            print(f"Could not find '{str(test_colors_path)}'. Won't generate rotating colors for alpha builds.")
+            return
         if "alpha" in self.version:
             biweekly_day = (datetime.now() - datetime(2025, 3, 14)).days
             with test_colors_path.open("r") as test_colors_file:
                 test_colors = json.load(test_colors_file)
             for theme_dir in Path(self.source_folder, "resources", "themes").iterdir():
-                if theme_dir.is_dir():
-                    theme_path = Path(theme_dir, "theme.json")
-                    if theme_path.exists():
-                        with theme_path.open("r") as theme_file:
-                            theme = json.load(theme_file)
-                            if theme["colors"]:
-                                theme["colors"]["main_window_header_background"] = test_colors[biweekly_day]
-                        with theme_path.open("w") as theme_file:
-                            json.dump(theme, theme_file)
-        elif test_colors_path.exists():
-            test_colors_path.unlink()
+                if not theme_dir.is_dir():
+                    continue
+                theme_path = Path(theme_dir, "theme.json")
+                if not theme_path.exists():
+                    print(f"('Colorize-by-day' alpha builds): Skipping {str(theme_path)}, could not find file.")
+                    continue
+                with theme_path.open("r") as theme_file:
+                    theme = json.load(theme_file)
+                    if theme["colors"]:
+                        theme["colors"]["main_window_header_background"] = test_colors[biweekly_day]
+                with theme_path.open("w") as theme_file:
+                    json.dump(theme, theme_file)
+        test_colors_path.unlink()
 
     def generate(self):
         copy(self, "cura_app.py", self.source_folder, str(self._script_dir))
