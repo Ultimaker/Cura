@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S8",
+    "name": "UltiMaker S8",
     "inherits": "ultimaker_s7",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s7_platform.obj",
@@ -500,13 +500,13 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 400,
-            "value": 400
+            "maximum_value_warning": 300,
+            "value": 300
         },
         "speed_travel_layer_0":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 400,
+            "maximum_value_warning": 300,
             "value": 150
         },
         "speed_wall":

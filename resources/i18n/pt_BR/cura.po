@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 15:37+0100\n"
-"PO-Revision-Date: 2024-10-28 04:18+0100\n"
+"PO-Revision-Date: 2025-03-23 17:45+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
 msgctxt "@title:label"
 msgid " "
@@ -183,7 +183,7 @@ msgstr "Visão 3D"
 
 msgctxt "name"
 msgid "3DConnexion mouses"
-msgstr ""
+msgstr "Mouses 3DConnexion"
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -483,7 +483,7 @@ msgstr "Permite carregar e exibir arquivos G-Code."
 
 msgctxt "description"
 msgid "Allows working with 3D mouses inside Cura."
-msgstr ""
+msgstr "Permite trabalhar com mouses 3D dentro do Cura."
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -1603,7 +1603,7 @@ msgstr "Extrusor %1"
 
 msgctxt "@label"
 msgid "Extruder Change duration"
-msgstr ""
+msgstr "Duração de Mudança do Extrusor"
 
 msgctxt "@title:label"
 msgid "Extruder End G-code"
@@ -1615,7 +1615,7 @@ msgstr "Duração do G-code Final do Extrusor"
 
 msgctxt "@title:label"
 msgid "Extruder Prestart G-code"
-msgstr ""
+msgstr "G-Code de Pré-Início do Extrusor"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
@@ -1808,7 +1808,7 @@ msgstr "Primeira disponível"
 
 msgctxt "@option:check"
 msgid "Flip model's toolhandle Y axis (restart required)"
-msgstr ""
+msgstr "Trocar o eixo Y da ferramenta do modelo (reinício requerido)"
 
 msgctxt "@label:listbox"
 msgid "Flow"
@@ -2300,7 +2300,7 @@ msgstr "Nivelar mesa"
 
 msgctxt "@title:window The argument is a package name, and the second is the version."
 msgid "License for %1 %2"
-msgstr ""
+msgstr "Licença para %1 %2"
 
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
@@ -2408,7 +2408,7 @@ msgstr "Gerador de Makerbot Printfile"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Replicator+ Printfile"
-msgstr ""
+msgstr "Makerbot Replicator+ Arquivo de Impressão"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Sketch Printfile"
@@ -4029,7 +4029,7 @@ msgstr "Devem falhas de fatiamento serem automaticamente relatadas à Ultimaker?
 
 msgctxt "@info:tooltip"
 msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
-msgstr ""
+msgstr "Deverá o eixo Y de translação da ferramenta trocar de orientação? Isto afetará apenas a coordenada Y do modelo, todos os outros ajustes tais como ajustes de Cabeça de Impressão não serão afetados e ainda funcionarão como antes."
 
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
@@ -4269,7 +4269,7 @@ msgstr "G-Code Inicial"
 
 msgctxt "@label"
 msgid "Start GCode must be first"
-msgstr ""
+msgstr "O GCode de Início deve ser o primeiro"
 
 msgctxt "@label"
 msgid "Start the slicing process"
@@ -4677,7 +4677,7 @@ msgstr "Esta configuração não está disponível porque %1 não foi reconhecid
 
 msgctxt "@label"
 msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
-msgstr ""
+msgstr "Esta configuração não está disponível porque há uma incompatibilidade ou outro problema com o core-type %1. Por favor visite a <a href='%2'>página de suporte</a> para verificar que núcleos este tipo de impressora suporta de acordo com as novas fatias."
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
@@ -5247,7 +5247,7 @@ msgstr "Atualiza configurações do Cura 5.8 para o Cura 5.9."
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
-msgstr ""
+msgstr "Atualiza configurações do Cura 5.9 para o Cura 5.10"
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5391,7 +5391,7 @@ msgstr "Atualização de Versão de 5.8 para 5.9"
 
 msgctxt "name"
 msgid "Version Upgrade 5.9 to 5.10"
-msgstr ""
+msgstr "Atualização de Versão de 5.9 para 5.10"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5556,11 +5556,11 @@ msgstr "Y (Profundidade)"
 
 msgctxt "@label"
 msgid "Y max ( '+' towards front)"
-msgstr ""
+msgstr "Y máximo ('+' indo para a frente)"
 
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
-msgstr ""
+msgstr "Y mínimo ('-' indo para trás)"
 
 msgctxt "@info"
 msgid "Yes"
