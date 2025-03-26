@@ -1,9 +1,8 @@
-# Copyright (c) 2022 UltiMaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura's build system is released under the terms of the AGPLv3 or higher.
 
 !define APP_NAME "{{ app_name }}"
 !define COMP_NAME "{{ company }}"
-!define WEB_SITE "{{ web_site }}"
 !define VERSION "{{ version }}"
 !define VIVERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.0"
 !define COPYRIGHT "Copyright (c) {{ year }} {{ company }}"
@@ -107,20 +106,11 @@ WriteUninstaller "$INSTDIR\uninstall.exe"
 !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
 
-!ifdef WEB_SITE
-WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
-CreateShortCut "$SMPROGRAMS\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
-!endif
 !insertmacro MUI_STARTMENU_WRITE_END
 !endif
 
 !ifndef REG_START_MENU
 CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-
-!ifdef WEB_SITE
-WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
-CreateShortCut "$SMPROGRAMS\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
-!endif
 !endif
 
 WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
@@ -131,9 +121,6 @@ WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
 
-!ifdef WEB_SITE
-WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "URLInfoAbout" "${WEB_SITE}"
-!endif
 SectionEnd
 
 ######################################################################
@@ -170,26 +157,17 @@ RmDir "$INSTDIR\share\uranium"
 RmDir "$INSTDIR\share"
 
 Delete "$INSTDIR\uninstall.exe"
-!ifdef WEB_SITE
-Delete "$INSTDIR\${APP_NAME} website.url"
-!endif
 
 RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
-!ifdef WEB_SITE
-Delete "$SMPROGRAMS\UltiMaker Cura website.lnk"
-!endif
 !endif
 
 !ifndef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
-!ifdef WEB_SITE
-Delete "$SMPROGRAMS\UltiMaker Cura website.lnk"
-!endif
 !endif
 
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
