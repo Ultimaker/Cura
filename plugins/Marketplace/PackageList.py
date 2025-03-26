@@ -1,5 +1,6 @@
 #  Copyright (c) 2021 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
+
 import tempfile
 import json
 import os.path
@@ -88,7 +89,7 @@ class PackageList(ListModel):
             self._is_loading = value
             self.isLoadingChanged.emit()
 
-    @pyqtProperty(bool, fset = setIsLoading, notify = isLoadingChanged)
+    @pyqtProperty(bool, fset=setIsLoading, notify=isLoadingChanged)
     def isLoading(self) -> bool:
         """ Indicating if the the packages are loading
         :return" ``True`` if the list is being obtained, otherwise ``False``
@@ -102,7 +103,7 @@ class PackageList(ListModel):
             self._has_more = value
             self.hasMoreChanged.emit()
 
-    @pyqtProperty(bool, fset = setHasMore, notify = hasMoreChanged)
+    @pyqtProperty(bool, fset=setHasMore, notify=hasMoreChanged)
     def hasMore(self) -> bool:
         """ Indicating if there are more packages available to load.
         :return: ``True`` if there are more packages to load, or ``False``.
@@ -116,7 +117,7 @@ class PackageList(ListModel):
             self._error_message = error_message
             self.errorMessageChanged.emit()
 
-    @pyqtProperty(str, notify = errorMessageChanged, fset = setErrorMessage)
+    @pyqtProperty(str, notify=errorMessageChanged, fset=setErrorMessage)
     def errorMessage(self) -> str:
         """ If an error occurred getting the list of packages, an error message will be held here.
 
@@ -125,7 +126,7 @@ class PackageList(ListModel):
         """
         return self._error_message
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def hasFooter(self) -> bool:
         """ Indicating if the PackageList should have a Footer visible. For paginated PackageLists
         :return: ``True`` if a Footer should be displayed in the ListView, e.q.: paginated lists, ``False`` Otherwise"""
@@ -215,13 +216,13 @@ class PackageList(ListModel):
 
         self._ongoing_requests["download_package"] = HttpRequestManager.getInstance().get(
             url,
-            scope = self._scope,
-            callback = downloadFinished,
-            error_callback = downloadError
+            scope=self._scope,
+            callback=downloadFinished,
+            error_callback=downloadError
         )
 
     def _downloadFinished(self, package_id: str, reply: "QNetworkReply", update: bool = False) -> None:
-        with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
+        with tempfile.NamedTemporaryFile(mode="wb+", suffix=".curapackage", delete=False) as temp_file:
             try:
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
@@ -259,9 +260,9 @@ class PackageList(ListModel):
          """
         if self._account.isLoggedIn:
             HttpRequestManager.getInstance().put(
-                url = USER_PACKAGES_URL,
-                data = json.dumps({"data": {"package_id": package_id, "sdk_version": sdk_version}}).encode(),
-                scope = self._scope
+                url=USER_PACKAGES_URL,
+                data=json.dumps({"data": {"package_id": package_id, "sdk_version": sdk_version}}).encode(),
+                scope=self._scope
             )
 
     def unsunscribeUserFromPackage(self, package_id: str) -> None:
@@ -270,7 +271,7 @@ class PackageList(ListModel):
          :param package_id: the package identification string
          """
         if self._account.isLoggedIn:
-            HttpRequestManager.getInstance().delete(url = f"{USER_PACKAGES_URL}/{package_id}", scope = self._scope)
+            HttpRequestManager.getInstance().delete(url=f"{USER_PACKAGES_URL}/{package_id}", scope=self._scope)
 
     # --- Handle the manage package buttons ---
 
@@ -304,5 +305,5 @@ class PackageList(ListModel):
 
         :param package_id: the package identification string
         """
-        self._package_manager.removePackage(package_id, force_add = not self._package_manager.isBundledPackage(package_id))
+        self._package_manager.removePackage(package_id, force_add=not self._package_manager.isBundledPackage(package_id))
         self.download(package_id, url, True)

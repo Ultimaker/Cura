@@ -69,9 +69,9 @@ class CuraContainerRegistry(ContainerRegistry):
         if isinstance(container, InstanceContainer) and type(container) != type(self.getEmptyInstanceContainer()):
             # Check against setting version of the definition.
             required_setting_version = cura.CuraApplication.CuraApplication.SettingVersion
-            actual_setting_version = int(container.getMetaDataEntry("setting_version", default = 0))
+            actual_setting_version = int(container.getMetaDataEntry("setting_version", default=0))
             if required_setting_version != actual_setting_version:
-                Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id = container.getId(), actual_setting_version = actual_setting_version, required_setting_version = required_setting_version))
+                Logger.log("w", "Instance container {container_id} is outdated. Its setting version is {actual_setting_version} but it should be {required_setting_version}.".format(container_id=container.getId(), actual_setting_version=actual_setting_version, required_setting_version=required_setting_version))
                 return False  # Don't add.
 
         return super().addContainer(container)
@@ -110,8 +110,8 @@ class CuraContainerRegistry(ContainerRegistry):
         """
         container_class = ContainerStack if "machine" in container_type else InstanceContainer
 
-        return self.findContainersMetadata(container_type = container_class, id = container_name, type = container_type, ignore_case = True) or \
-                self.findContainersMetadata(container_type = container_class, name = container_name, type = container_type)
+        return self.findContainersMetadata(container_type=container_class, id=container_name, type=container_type, ignore_case=True) or \
+                self.findContainersMetadata(container_type=container_class, name=container_name, type=container_type)
 
     def exportQualityProfile(self, container_list: List[InstanceContainer], file_name: str, file_type: str) -> bool:
         """Exports an profile to a file
@@ -152,9 +152,9 @@ class CuraContainerRegistry(ContainerRegistry):
             m = Message(catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
                                       "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>",
                                       file_name, str(e)),
-                        lifetime = 0,
-                        title = catalog.i18nc("@info:title", "Error"),
-                        message_type = Message.MessageType.ERROR)
+                        lifetime=0,
+                        title=catalog.i18nc("@info:title", "Error"),
+                        message_type=Message.MessageType.ERROR)
             m.show()
             return False
         if not success:
@@ -162,16 +162,16 @@ class CuraContainerRegistry(ContainerRegistry):
             m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
                                       "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.",
                                       file_name),
-                        lifetime = 0,
-                        title = catalog.i18nc("@info:title", "Error"),
-                        message_type = Message.MessageType.ERROR)
+                        lifetime=0,
+                        title=catalog.i18nc("@info:title", "Error"),
+                        message_type=Message.MessageType.ERROR)
             m.show()
             return False
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!",
                                   "Exported profile to <filename>{0}</filename>",
                                   file_name),
-                    title = catalog.i18nc("@info:title", "Export succeeded"),
-                    message_type = Message.MessageType.POSITIVE)
+                    title=catalog.i18nc("@info:title", "Export succeeded"),
+                    message_type=Message.MessageType.POSITIVE)
         m.show()
         return True
 
@@ -243,7 +243,7 @@ class CuraContainerRegistry(ContainerRegistry):
                             global_profile = profile
                         else:
                             extruder_profiles.append(profile)
-                extruder_profiles = sorted(extruder_profiles, key = lambda x: int(x.getMetaDataEntry("position", default = "0")))
+                extruder_profiles = sorted(extruder_profiles, key=lambda x: int(x.getMetaDataEntry("position", default="0")))
                 profile_or_list = [global_profile] + extruder_profiles
 
                 if not global_profile:
@@ -255,7 +255,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Make sure we have a profile_definition in the file:
                 if profile_definition is None:
                     break
-                machine_definitions = self.findContainers(id = profile_definition)
+                machine_definitions = self.findContainers(id=profile_definition)
                 if not machine_definitions:
                     Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
                     return {"status": "error",
@@ -271,7 +271,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # And check if the profile_definition matches either one (showing error if not):
                 if profile_definition != expected_machine_definition:
-                    Logger.log("d", "Profile {file_name} is for machine {profile_definition}, but the current active machine is {expected_machine_definition}. Changing profile's definition.".format(file_name = file_name, profile_definition = profile_definition, expected_machine_definition = expected_machine_definition))
+                    Logger.log("d", "Profile {file_name} is for machine {profile_definition}, but the current active machine is {expected_machine_definition}. Changing profile's definition.".format(file_name=file_name, profile_definition=profile_definition, expected_machine_definition=expected_machine_definition))
                     global_profile.setMetaDataEntry("definition", expected_machine_definition)
                     for extruder_profile in extruder_profiles:
                         extruder_profile.setMetaDataEntry("definition", expected_machine_definition)
@@ -314,7 +314,7 @@ class CuraContainerRegistry(ContainerRegistry):
                                         profile.addInstance(new_instance)
                                         profile.setDirty(True)
 
-                                    global_profile.removeInstance(qc_setting_key, postpone_emit = True)
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
                         extruder_profiles.append(profile)
 
                     for profile in extruder_profiles:
@@ -534,7 +534,7 @@ class CuraContainerRegistry(ContainerRegistry):
             # It is not an extruder or machine, so do nothing with the stack
             return container
 
-        Logger.log("d", "Converting ContainerStack {stack} to {type}", stack = container.getId(), type = container_type)
+        Logger.log("d", "Converting ContainerStack {stack} to {type}", stack=container.getId(), type=container_type)
 
         if container_type == "extruder_train":
             new_stack = ExtruderStack.ExtruderStack(container.getId())
@@ -551,9 +551,9 @@ class CuraContainerRegistry(ContainerRegistry):
         return new_stack
 
     def _registerSingleExtrusionMachinesExtruderStacks(self) -> None:
-        machines = self.findContainerStacks(type = "machine", machine_extruder_trains = {"0": "fdmextruder"})
+        machines = self.findContainerStacks(type="machine", machine_extruder_trains={"0": "fdmextruder"})
         for machine in machines:
-            extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = machine.getId())
+            extruder_stacks = self.findContainerStacks(type="extruder_train", machine=machine.getId())
             if not extruder_stacks:
                 self.addExtruderStackForSingleExtrusionMachine(machine, "fdmextruder")
 
@@ -568,7 +568,7 @@ class CuraContainerRegistry(ContainerRegistry):
         if machine_extruder_trains is not None and machine_extruder_trains != {"0": "fdmextruder"}:
             return
 
-        extruder_stacks = self.findContainerStacks(type = "extruder_train", machine = container.getId())
+        extruder_stacks = self.findContainerStacks(type="extruder_train", machine=container.getId())
         if not extruder_stacks:
             self.addExtruderStackForSingleExtrusionMachine(container, "fdmextruder")
 
@@ -584,7 +584,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
         application = cura.CuraApplication.CuraApplication.getInstance()
 
-        extruder_definitions = self.findDefinitionContainers(id = new_extruder_id)
+        extruder_definitions = self.findDefinitionContainers(id=new_extruder_id)
         if not extruder_definitions:
             Logger.log("w", "Could not find definition containers for extruder %s", new_extruder_id)
             return
@@ -600,7 +600,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # create a new definition_changes container for the extruder stack
         definition_changes_id = self.uniqueName(extruder_stack.getId() + "_settings") if create_new_ids else extruder_stack.getId() + "_settings"
         definition_changes_name = definition_changes_id
-        definition_changes = InstanceContainer(definition_changes_id, parent = application)
+        definition_changes = InstanceContainer(definition_changes_id, parent=application)
         definition_changes.setName(definition_changes_name)
         definition_changes.setMetaDataEntry("setting_version", application.SettingVersion)
         definition_changes.setMetaDataEntry("type", "definition_changes")
@@ -619,7 +619,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     definition_changes.addInstance(new_instance)
                     definition_changes.setDirty(True)
 
-                    machine.definitionChanges.removeInstance(setting_key, postpone_emit = True)
+                    machine.definitionChanges.removeInstance(setting_key, postpone_emit=True)
 
         self.addContainer(definition_changes)
         extruder_stack.setDefinitionChanges(definition_changes)
@@ -627,7 +627,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # create empty user changes container otherwise
         user_container_id = self.uniqueName(extruder_stack.getId() + "_user") if create_new_ids else extruder_stack.getId() + "_user"
         user_container_name = user_container_id
-        user_container = InstanceContainer(user_container_id, parent = application)
+        user_container = InstanceContainer(user_container_id, parent=application)
         user_container.setName(user_container_name)
         user_container.setMetaDataEntry("type", "user")
         user_container.setMetaDataEntry("machine", machine.getId())
@@ -650,7 +650,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     user_container.addInstance(new_instance)
                     user_container.setDirty(True)
 
-                    machine.userChanges.removeInstance(user_setting_key, postpone_emit = True)
+                    machine.userChanges.removeInstance(user_setting_key, postpone_emit=True)
 
         self.addContainer(user_container)
         extruder_stack.setUserChanges(user_container)
@@ -682,12 +682,12 @@ class CuraContainerRegistry(ContainerRegistry):
             machine_quality_changes = new_global_quality_changes
 
         if machine_quality_changes.getId() not in ("empty", "empty_quality_changes"):
-            extruder_quality_changes_container = self.findInstanceContainers(name = machine_quality_changes.getName(), extruder = extruder_id)
+            extruder_quality_changes_container = self.findInstanceContainers(name=machine_quality_changes.getName(), extruder=extruder_id)
             if extruder_quality_changes_container:
                 extruder_quality_changes_container = extruder_quality_changes_container[0]
 
                 quality_changes_id = extruder_quality_changes_container.getId()
-                extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
+                extruder_stack.qualityChanges = self.findInstanceContainers(id=quality_changes_id)[0]
             else:
                 # Some extruder quality_changes containers can be created at runtime as files in the qualities
                 # folder. Those files won't be loaded in the registry immediately. So we also need to search
@@ -696,12 +696,12 @@ class CuraContainerRegistry(ContainerRegistry):
                 if extruder_quality_changes_container:
                     quality_changes_id = extruder_quality_changes_container.getId()
                     extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
-                    extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
+                    extruder_stack.qualityChanges = self.findInstanceContainers(id=quality_changes_id)[0]
                 else:
                     # If we still cannot find a quality changes container for the extruder, create a new one
                     container_name = machine_quality_changes.getName()
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
-                    extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
+                    extruder_quality_changes_container = InstanceContainer(container_id, parent=application)
                     extruder_quality_changes_container.setName(container_name)
                     extruder_quality_changes_container.setMetaDataEntry("type", "quality_changes")
                     extruder_quality_changes_container.setMetaDataEntry("setting_version", application.SettingVersion)
@@ -732,7 +732,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                         machine_quality_changes.removeInstance(qc_setting_key, postpone_emit=True)
         else:
-            extruder_stack.qualityChanges = self.findInstanceContainers(id = "empty_quality_changes")[0]
+            extruder_stack.qualityChanges = self.findInstanceContainers(id="empty_quality_changes")[0]
 
         self.addContainer(extruder_stack)
 
@@ -745,13 +745,13 @@ class CuraContainerRegistry(ContainerRegistry):
             machine_entry = machine.definition.getMetaDataEntry("machine")
             if machine_entry is not None:
                 container_registry = ContainerRegistry.getInstance()
-                whole_machine_definition = container_registry.findDefinitionContainers(id = machine_entry)[0]
+                whole_machine_definition = container_registry.findDefinitionContainers(id=machine_entry)[0]
 
             quality_changes_machine_definition_id = "fdmprinter"
             if whole_machine_definition.getMetaDataEntry("has_machine_quality"):
                 quality_changes_machine_definition_id = machine.definition.getMetaDataEntry("quality_definition",
                                                                                             whole_machine_definition.getId())
-        qcs = self.findInstanceContainers(type = "quality_changes", definition = quality_changes_machine_definition_id)
+        qcs = self.findInstanceContainers(type="quality_changes", definition=quality_changes_machine_definition_id)
         qc_groups = {}  # map of qc names -> qc containers
         for qc in qcs:
             qc_name = qc.getName()
@@ -802,7 +802,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if not os.path.isfile(file_path):
                 continue
 
-            parser = configparser.ConfigParser(interpolation = None)
+            parser = configparser.ConfigParser(interpolation=None)
             try:
                 parser.read([file_path])
             except Exception:
@@ -815,12 +815,12 @@ class CuraContainerRegistry(ContainerRegistry):
             if parser["general"]["name"] == name:
                 # Load the container
                 container_id = os.path.basename(file_path).replace(".inst.cfg", "")
-                if self.findInstanceContainers(id = container_id):
+                if self.findInstanceContainers(id=container_id):
                     # This container is already in the registry, skip it
                     continue
 
                 instance_container = InstanceContainer(container_id)
-                with open(file_path, "r", encoding = "utf-8") as f:
+                with open(file_path, "r", encoding="utf-8") as f:
                     serialized = f.read()
                 try:
                     instance_container.deserialize(serialized, file_path)
@@ -838,17 +838,17 @@ class CuraContainerRegistry(ContainerRegistry):
     # set after upgrading, because the proper global stack was not yet loaded. This method
     # makes sure those extruders also get the right stack set.
     def _connectUpgradedExtruderStacksToMachines(self) -> None:
-        extruder_stacks = self.findContainers(container_type = ExtruderStack.ExtruderStack)
+        extruder_stacks = self.findContainers(container_type=ExtruderStack.ExtruderStack)
         for extruder_stack in extruder_stacks:
             if extruder_stack.getNextStack():
                 # Has the right next stack, so ignore it.
                 continue
 
-            machines = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack.getMetaDataEntry("machine", ""))
+            machines = ContainerRegistry.getInstance().findContainerStacks(id=extruder_stack.getMetaDataEntry("machine", ""))
             if machines:
                 extruder_stack.setNextStack(machines[0])
             else:
-                Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
+                Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine=extruder_stack.getMetaDataEntry("machine"), extruder=extruder_stack.getId())
 
     # Override just for the type.
     @classmethod

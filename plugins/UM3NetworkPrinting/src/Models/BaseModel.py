@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from datetime import datetime, timezone
 from typing import TypeVar, Dict, List, Any, Type, Union
 

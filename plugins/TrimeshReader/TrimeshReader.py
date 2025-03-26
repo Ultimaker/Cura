@@ -32,23 +32,23 @@ class TrimeshReader(MeshReader):
         self._supported_extensions = [".dae", ".gltf", ".glb", ".ply", ".zae"]
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "model/vnd.collada+xml",
-                comment = "COLLADA Digital Asset Exchange",
-                suffixes = ["dae"]
+                name="model/vnd.collada+xml",
+                comment="COLLADA Digital Asset Exchange",
+                suffixes=["dae"]
             )
         )
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "model/gltf-binary",
-                comment = "glTF Binary",
-                suffixes = ["glb"]
+                name="model/gltf-binary",
+                comment="glTF Binary",
+                suffixes=["glb"]
             )
         )
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "model/gltf+json",
-                comment = "glTF Embedded JSON",
-                suffixes = ["gltf"]
+                name="model/gltf+json",
+                comment="glTF Embedded JSON",
+                suffixes=["gltf"]
             )
         )
         # Trimesh seems to have a bug when reading .off files.
@@ -61,16 +61,16 @@ class TrimeshReader(MeshReader):
         #)
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-ply",  # Wikipedia lists the MIME type as "text/plain" but that won't do as it's not unique to PLY files.
-                comment = "Stanford Triangle Format",
-                suffixes = ["ply"]
+                name="application/x-ply",  # Wikipedia lists the MIME type as "text/plain" but that won't do as it's not unique to PLY files.
+                comment="Stanford Triangle Format",
+                suffixes=["ply"]
             )
         )
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "model/vnd.collada+xml+zip",
-                comment = "Compressed COLLADA Digital Asset Exchange",
-                suffixes = ["zae"]
+                name="model/vnd.collada+xml+zip",
+                comment="Compressed COLLADA Digital Asset Exchange",
+                suffixes=["zae"]
             )
         )
 
@@ -87,7 +87,7 @@ class TrimeshReader(MeshReader):
         # doesn't like it. For some reason, this seems to happen with 3.5.7, but not 3.7.1. Below is a workaround to
         # pass a file object that has been opened with "r" instead "rb" to load a GLTF file.
         if file_name.lower().endswith(".gltf"):
-            mesh_or_scene = trimesh.load(open(file_name, "r", encoding = "utf-8"), file_type = "gltf")
+            mesh_or_scene = trimesh.load(open(file_name, "r", encoding="utf-8"), file_type="gltf")
         else:
             mesh_or_scene = trimesh.load(file_name)
 
@@ -111,7 +111,7 @@ class TrimeshReader(MeshReader):
             new_node = CuraSceneNode()
             new_node.setMeshData(mesh_data)
             new_node.setSelectable(True)
-            new_node.setName(file_base_name if len(meshes) == 1 else "{file_base_name} {counter}".format(file_base_name = file_base_name, counter = str(len(nodes) + 1)))
+            new_node.setName(file_base_name if len(meshes) == 1 else "{file_base_name} {counter}".format(file_base_name=file_base_name, counter=str(len(nodes) + 1)))
             new_node.addDecorator(BuildPlateDecorator(active_build_plate))
             new_node.addDecorator(SliceableObjectDecorator())
             nodes.append(new_node)
@@ -152,9 +152,9 @@ class TrimeshReader(MeshReader):
             indices_list.append(face)
             face_count += 1
 
-        vertices = numpy.asarray(vertices_list, dtype = numpy.float32)
-        indices = numpy.asarray(indices_list, dtype = numpy.int32)
+        vertices = numpy.asarray(vertices_list, dtype=numpy.float32)
+        indices = numpy.asarray(indices_list, dtype=numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
-        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals, file_name = file_name)
+        mesh_data = MeshData(vertices=vertices, indices=indices, normals=normals, file_name=file_name)
         return mesh_data

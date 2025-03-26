@@ -98,9 +98,9 @@ class RemovableDriveOutputDevice(OutputDevice):
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
             if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
-                self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
+                self._stream = open(file_name, "wt", buffering=1, encoding="utf-8")
             else: #Binary mode.
-                self._stream = open(file_name, "wb", buffering = 1)
+                self._stream = open(file_name, "wb", buffering=1)
             job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"])
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
@@ -189,10 +189,10 @@ class RemovableDriveOutputDevice(OutputDevice):
                 message.hide()
                 eject_message = Message(catalog.i18nc("@info:status",
                                                       "Ejected {0}. You can now safely remove the drive.").format(self.getName()),
-                                        title = catalog.i18nc("@info:title", "Safely Remove Hardware"))
+                                        title=catalog.i18nc("@info:title", "Safely Remove Hardware"))
             else:
                 eject_message = Message(catalog.i18nc("@info:status",
                                                       "Failed to eject {0}. Another program may be using the drive.").format(self.getName()),
-                                        title = catalog.i18nc("@info:title", "Warning"),
-                                        message_type = Message.MessageType.ERROR)
+                                        title=catalog.i18nc("@info:title", "Warning"),
+                                        message_type=Message.MessageType.ERROR)
             eject_message.show()

@@ -49,7 +49,7 @@ class MachineSettingsAction(MachineAction):
         self._application.globalContainerStackChanged.connect(self._updateHasMaterialsInContainerTree)
 
     # Which container index in a stack to store machine setting changes.
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def storeContainerIndex(self) -> int:
         return self._store_container_index
 
@@ -135,7 +135,7 @@ class MachineSettingsAction(MachineAction):
         # set materials
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for position, extruder in enumerate(global_stack.extruderList):
-            #Find out what material we need to default to.
+            # Find out what material we need to default to.
             approximate_diameter = round(extruder.getProperty("material_diameter", "value"))
             material_node = machine_node.variants[extruder.variant.getName()].preferredMaterial(approximate_diameter)
             machine_manager.setMaterial(str(position), material_node)

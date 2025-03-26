@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Tuple, Optional, TYPE_CHECKING, Dict, Any
 
 from cura.Backups.BackupsManager import BackupsManager

@@ -3,6 +3,7 @@
 
 # This AMF parser is based on the AMF parser in legacy cura:
 # https://github.com/daid/LegacyCura/blob/ad7641e059048c7dcb25da1f47c0a7e95e7f4f7c/Cura/util/meshLoaders/amf.py
+
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from cura.CuraApplication import CuraApplication
 from UM.Logger import Logger
@@ -39,9 +40,9 @@ class AMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name = "application/x-amf",
-                comment = "AMF",
-                suffixes = ["amf"]
+                name="application/x-amf",
+                comment="AMF",
+                suffixes=["amf"]
             )
         )
 
@@ -114,7 +115,7 @@ class AMFReader(MeshReader):
                                 f[2] = int(t.text)
                         indices.append(f)
 
-                    mesh = trimesh.base.Trimesh(vertices = numpy.array(amf_mesh_vertices, dtype = numpy.float32), faces = numpy.array(indices, dtype = numpy.int32))
+                    mesh = trimesh.base.Trimesh(vertices=numpy.array(amf_mesh_vertices, dtype=numpy.float32), faces=numpy.array(indices, dtype=numpy.int32))
                     mesh.merge_vertices()
                     mesh.remove_unreferenced_vertices()
                     mesh.fix_normals()
@@ -171,9 +172,9 @@ class AMFReader(MeshReader):
             indices_list.append(face)
             face_count += 1
 
-        vertices = numpy.asarray(vertices_list, dtype = numpy.float32)
-        indices = numpy.asarray(indices_list, dtype = numpy.int32)
+        vertices = numpy.asarray(vertices_list, dtype=numpy.float32)
+        indices = numpy.asarray(indices_list, dtype=numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
-        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals,file_name = file_name)
+        mesh_data = MeshData(vertices=vertices, indices=indices, normals=normals,file_name=file_name)
         return mesh_data

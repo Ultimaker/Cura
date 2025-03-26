@@ -1,17 +1,19 @@
+# Copyright (c) 2021 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 from src.DigitalFactoryProjectModel import DigitalFactoryProjectModel
 from src.DigitalFactoryProjectResponse import DigitalFactoryProjectResponse
 
 
-project_1 = DigitalFactoryProjectResponse(library_project_id = "omg",
-                                              display_name = "zomg",
-                                              username = "nope",
-                                              organization_shared = True)
+project_1 = DigitalFactoryProjectResponse(library_project_id="omg",
+                                              display_name="zomg",
+                                              username="nope",
+                                              organization_shared=True)
 
-project_2 = DigitalFactoryProjectResponse(library_project_id = "omg2",
-                                              display_name = "zomg2",
-                                              username = "nope",
-                                              organization_shared = False)
+project_2 = DigitalFactoryProjectResponse(library_project_id="omg2",
+                                              display_name="zomg2",
+                                              username="nope",
+                                              organization_shared=False)
 
 
 def test_setProjects():

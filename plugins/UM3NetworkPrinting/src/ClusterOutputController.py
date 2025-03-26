@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice

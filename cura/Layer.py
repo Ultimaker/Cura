@@ -72,7 +72,7 @@ class Layer:
         return self.createMeshOrJumps(False)
 
     # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
-    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
+    __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype=numpy.int32)
 
     def createMeshOrJumps(self, make_mesh: bool) -> MeshData:
         builder = MeshBuilder()
