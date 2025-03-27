@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
@@ -40,7 +40,6 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         version_minor=str(parsed_version.minor),
         version_patch=str(parsed_version.patch),
         company="UltiMaker",
-        web_site="https://ultimaker.com",
         year=datetime.now().year,
         upgrade_code=str(uuid.uuid5(uuid.NAMESPACE_DNS, app_name)),
         cura_license_file=str(source_loc.joinpath("packaging", "msi", "cura_license.rtf")),

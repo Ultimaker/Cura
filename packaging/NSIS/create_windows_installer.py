@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
@@ -51,7 +51,6 @@ def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
         version_minor = str(parsed_version.minor),
         version_patch = str(parsed_version.patch),
         company = "UltiMaker",
-        web_site = "https://ultimaker.com",
         year = datetime.now().year,
         cura_license_file = str(source_loc.joinpath("packaging", "cura_license.txt")),
         compression_method = "LZMA",  # ZLIB, BZIP2 or LZMA
