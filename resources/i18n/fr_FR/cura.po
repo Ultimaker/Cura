@@ -4284,7 +4284,7 @@ msgstr "Interface du support"
 
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr "Type de prise en charge"
+msgstr "Structure du support"
 
 msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"

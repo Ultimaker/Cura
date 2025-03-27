@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-21 15:37+0100\n"
-"PO-Revision-Date: 2024-10-30 02:53+0000\n"
+"PO-Revision-Date: 2025-03-02 04:30+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -175,7 +175,7 @@ msgstr "3Dビュー"
 
 msgctxt "name"
 msgid "3DConnexion mouses"
-msgstr ""
+msgstr "3DConnexionマウス"
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -474,7 +474,7 @@ msgstr "G-codeファイルの読み込み、表示を許可する。"
 
 msgctxt "description"
 msgid "Allows working with 3D mouses inside Cura."
-msgstr ""
+msgstr "Curaで3Dマウスの利用を許可します。"
 
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
@@ -1063,7 +1063,7 @@ msgstr "<filename>{0}</filename>を保存できませんでした: <message>{1}<
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
-msgstr "リムーバブルドライブ{0}に保存することができませんでした: {1}"
+msgstr "リムーバブルドライブ{0}に保存できませんでした: {1}"
 
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
@@ -1461,7 +1461,7 @@ msgstr "リムーバブルデバイス{0}を取り出す"
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
-msgstr "{0}取り出し完了。デバイスを安全に取り外せます。"
+msgstr "{0}を取り出しました。デバイスを安全に取り外せます。"
 
 msgctxt "@label"
 msgid "Empty"
@@ -1477,7 +1477,7 @@ msgstr "エクストルーダーを有効にする"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
-msgstr "縁またはラフトの印刷を有効にできます。これにより、オブジェクトの周囲または下に平らな部分が追加され、後で簡単に切り取ることができます。無効にすると、デフォルトでオブジェクトの周囲にスカートが形成されます。"
+msgstr "ブリムまたはラフトの印刷を有効にできます。これにより、オブジェクトの周囲または下に平らな部分が追加され、後で簡単に切り取ることができます。無効にすると、デフォルトでオブジェクトの周囲にスカートが形成されます。"
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1594,7 +1594,7 @@ msgstr "エクストルーダー%1"
 
 msgctxt "@label"
 msgid "Extruder Change duration"
-msgstr ""
+msgstr "エクストルーダー切り替え時間"
 
 msgctxt "@title:label"
 msgid "Extruder End G-code"
@@ -1606,7 +1606,7 @@ msgstr "エクストルーダー終了Gコードの時間"
 
 msgctxt "@title:label"
 msgid "Extruder Prestart G-code"
-msgstr ""
+msgstr "エクストルーダー開始前G-Code"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
@@ -1767,7 +1767,7 @@ msgstr "プリンターと接続されていないため、ファームウェア
 
 msgctxt "@label"
 msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
-msgstr "ファームウェアとは直接お持ちの3Dプリンターを動かすソフトウェアです。このファームウェアはステップモーターを操作し、温度を管理し、プリンターとして成すべき点を補います。"
+msgstr "ファームウェアとは直接お持ちの3Dプリンターを動かすソフトウェアです。このファームウェアはステップモーターを操作し、温度を管理し、プリンターを動作できるようにします。"
 
 msgctxt "@label"
 msgid "Firmware update completed."
@@ -1799,7 +1799,7 @@ msgstr "次の空き"
 
 msgctxt "@option:check"
 msgid "Flip model's toolhandle Y axis (restart required)"
-msgstr ""
+msgstr "モデルツールハンドルのY軸を反転（再起動が必要）"
 
 msgctxt "@label:listbox"
 msgid "Flow"
@@ -1894,7 +1894,7 @@ msgstr "一般"
 
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr "オーバーハングがあるモデルにサポートを生成します。このサポート構造なしでは、プリント中にオーバーハングのパーツが崩壊してしまいます。"
+msgstr "オーバーハングがあるモデルにサポートを生成します。このサポート構造なしでは、プリント中にオーバーハングのパーツが崩れてしまいます。"
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -2023,7 +2023,7 @@ msgstr "モデルを取り込む"
 
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
-msgstr "メンテナンス。プリンターをチェックしてください"
+msgstr "メンテナンス中です。プリンターをチェックしてください"
 
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
@@ -2291,7 +2291,7 @@ msgstr "ビルドプレートを調整する"
 
 msgctxt "@title:window The argument is a package name, and the second is the version."
 msgid "License for %1 %2"
-msgstr ""
+msgstr "%1 %2のライセンス"
 
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
@@ -2399,7 +2399,7 @@ msgstr "Makerbotプリントファイルライター"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Replicator+ Printfile"
-msgstr ""
+msgstr "Makerbot Replicator+ プリントファイル"
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Sketch Printfile"
@@ -2459,7 +2459,7 @@ msgstr "プリンター管理"
 
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
-msgstr "UltiMaker Curaのプラグインと材料プロファイルはここで管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
+msgstr "ここでUltiMaker Curaのプラグインと材料プロファイルを管理します。プラグインを常に最新の状態に保ち、セットアップのバックアップを定期的に取るようにしてください。"
 
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
@@ -2467,7 +2467,7 @@ msgstr "アプリケーションの拡張機能を管理し、UltiMakerウェブ
 
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
-msgstr "Ultimakerのネットワーク接属できるプリンターのネットワーク接続を管理します。"
+msgstr "ネットワーク対応Ultimakerプリンターのネットワーク接続を管理します。"
 
 msgctxt "@label"
 msgid "Manufacturer"
@@ -4015,7 +4015,7 @@ msgstr "スライスのクラッシュを自動的にUltimakerに報告するか
 
 msgctxt "@info:tooltip"
 msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
-msgstr ""
+msgstr "ツールハンドルのY軸移動を反転するかどうか。これはモデルのY軸方向のみに影響し、プリントヘッド設定など他の設定は影響せず、従前と変わらず動作します。"
 
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
@@ -4255,7 +4255,7 @@ msgstr "開始G-Code"
 
 msgctxt "@label"
 msgid "Start GCode must be first"
-msgstr ""
+msgstr "開始G-Codeを必ず最初に実行"
 
 msgctxt "@label"
 msgid "Start the slicing process"
@@ -4267,7 +4267,7 @@ msgstr "開始"
 
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
-msgstr "素晴らしいユーザーコミュニティから提供されるプラグインを活用して、ワークフローを合理化し、UltiMaker Cura体験をカスタマイズすることができます。"
+msgstr "素晴らしいユーザーコミュニティから提供されるプラグインを活用して、ワークフローを合理化し、UltiMaker Cura体験をカスタマイズできます。"
 
 msgctxt "@label"
 msgid "Strength"
@@ -4405,7 +4405,7 @@ msgstr "バックアップが最大ファイルサイズを超えています。
 
 msgctxt "@text"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
-msgstr "バランスのとれたプロファイルは、生産性、表面品質、機械的特性、寸法精度のバランスを取るために設計されています。"
+msgstr "バランスプロファイルは、生産性、表面品質、機械的特性、寸法精度のバランスを取るために設計されています。"
 
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
@@ -4470,7 +4470,7 @@ msgstr "<filename>{0}</filename> は既に存在します。ファイルを上�
 
 msgctxt "@label"
 msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
-msgstr "配達時のファームウェアで動かすことはできますが、新しいバージョンの方がより改善され、便利なフィーチャーがついてきます。"
+msgstr "出荷時のファームウェアは動作しますが、新しいバージョンの方がより改善され、便利な機能があります。"
 
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
@@ -4593,7 +4593,7 @@ msgstr "Digital Factoryからの応答に重要な情報がありません。"
 
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
-msgstr "ヒーティッドベッドの目標温度。ベッドはこの温度に向けて上がったり下がったりします。これが0の場合、ベッドの加熱はオフになっています。"
+msgstr "ヒーテッドベッドの目標温度。ベッドはこの温度に向けて上がったり下がったりします。これが0の場合、ベッドの加熱はオフになっています。"
 
 msgctxt "@tooltip"
 msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
@@ -4601,11 +4601,11 @@ msgstr "ホットエンドの目標温度。ホットエンドはこの温度に
 
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
-msgstr "ベッドのプリヒート温度。"
+msgstr "ベッドのプレヒート温度。"
 
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
-msgstr "ホットエンドをプリヒートする温度です。"
+msgstr "ホットエンドをプレヒートする温度です。"
 
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
@@ -4633,7 +4633,7 @@ msgstr "このエクストルーダーの構成に一致するプロファイル
 
 msgctxt "@info:status"
 msgid "There is no active printer yet."
-msgstr "アクティブなプリンターはありません。"
+msgstr "アクティブなプリンターがありません。"
 
 msgctxt "@label"
 msgid "There is no printer found over your network."
@@ -4661,7 +4661,7 @@ msgstr "%1 が認識されていないためこの構成は利用できません
 
 msgctxt "@label"
 msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
-msgstr ""
+msgstr "この設定は不整合あるいはコアタイプ%1による他の問題により無効化されました。<a href='%2'>サポートページ</a>をご覧いただくか、このプリンター機種のどのコアが新しいスライスをサポートしているか確認してください。"
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
@@ -4669,7 +4669,7 @@ msgstr "これはCura Universal Projectファイルです。Cura Universal Proje
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
-msgstr "これはCuraのプロジェクトファイルです。プロジェクトとしてあけますか、それともモデルのみ取り込みますか？"
+msgstr "これはCuraのプロジェクトファイルです。プロジェクトとして開きますか、それともモデルのみ取り込みますか？"
 
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
@@ -4789,7 +4789,7 @@ msgstr "プリントの成功率を上げるために、ビルドプレートを
 
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "印刷ジョブをネットワーク上のプリンターに直接送信するため、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターをWiFiネットワークに接続されていることを確認してください。Curaをプリンタに接続していない場合でも、USBドライブを使用してg-codeファイルをプリンターに転送することができます。"
+msgstr "印刷ジョブをネットワーク上のプリンターに直接送信するため、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターをWiFiネットワークに接続されていることを確認してください。Curaをプリンタに接続していない場合でも、USBドライブを使用してg-codeファイルをプリンターに転送できます。"
 
 #, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
@@ -5032,7 +5032,7 @@ msgstr "Universal Cura Project"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンタで印刷することができます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択することもできます。"
+msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンタで印刷できます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択できます。"
 
 msgctxt "@label"
 msgid "Unknown"
@@ -5229,7 +5229,7 @@ msgstr "Cura 5.8から Cura 5.9に構成をアップグレードします。"
 
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
-msgstr ""
+msgstr "Cura 5.9からCura 5.10に構成をアップグレードします。"
 
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
@@ -5373,7 +5373,7 @@ msgstr "バージョン5.8から5.9へのアップグレード"
 
 msgctxt "name"
 msgid "Version Upgrade 5.9 to 5.10"
-msgstr ""
+msgstr "バージョン5.9から5.10へのアップグレード"
 
 msgctxt "@button"
 msgid "View printers in Digital Factory"
@@ -5538,11 +5538,11 @@ msgstr "Y（奥行き）"
 
 msgctxt "@label"
 msgid "Y max ( '+' towards front)"
-msgstr ""
+msgstr "Y座標最大値（'+' で前方へ）"
 
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
-msgstr ""
+msgstr "Y座標最小値（'-' で後方へ）"
 
 msgctxt "@info"
 msgid "Yes"

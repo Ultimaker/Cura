@@ -10,7 +10,7 @@ requirements:
   - "pynest2d/5.10.0"
 requirements_internal:
   - "fdm_materials/5.11.0-alpha.0@ultimaker/testing"
-  - "cura_private_data/5.10.0-alpha.0@internal/testing"
+  - "cura_private_data/5.11.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
 urls:
@@ -265,6 +265,10 @@ pycharm_targets:
     module_name: Cura
     name: pytest in TestSettingVisibilityPresets.py
     script_name: tests/Settings/TestSettingVisibilityPresets.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestStartEndGCode.py
+    script_name: tests/Machines/TestStartEndGCode.py
 
 pip_requirements_core:
   any_os:

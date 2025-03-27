@@ -30,3 +30,13 @@ jobs:
       platform_mac: false
       install_system_dependencies: false
     secrets: inherit
+
+  signal-curator:
+    needs: conan-package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger Curator Workflow
+      run: |
+        gh workflow run --repo ultimaker/curator -r main package.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.CURATOR_TRIGGER_PAT_C3PO }}
