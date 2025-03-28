@@ -360,17 +360,6 @@ UM.PreferencesPage
                 }
             }
 
-            UM.Label
-            {
-                id: languageCaption
-
-                //: Language change warning
-                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
-                wrapMode: Text.WordWrap
-                font.italic: true
-
-            }
-
             Item
             {
                 //: Spacer
@@ -705,7 +694,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura")
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura *")
 
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
@@ -1101,14 +1090,24 @@ UM.PreferencesPage
                 }
             }
 
-
-            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
             {
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
                 width: UM.Theme.getSize("default_margin").height
             }
+
+            UM.Label
+            {
+                id: languageCaption
+
+                //: Language change warning
+                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                wrapMode: Text.WordWrap
+                font.italic: true
+            }
+
+            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
 
             Label
             {
