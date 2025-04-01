@@ -1,11 +1,8 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-import tempfile
-
-import json
-
 import base64
 import hashlib
+import json
 import os
 import threading
 from tempfile import NamedTemporaryFile
@@ -49,7 +46,6 @@ class RestoreBackupJob(Job):
         self.restore_backup_error_message = ""
 
     def run(self) -> None:
-
         url = self._backup.get("download_url")
         assert url is not None
 
@@ -59,7 +55,11 @@ class RestoreBackupJob(Job):
             error_callback = self._onRestoreRequestCompleted
         )
 
-        self._job_done.wait()  # A job is considered finished when the run function completes
+        # Note: Just to be sure, use the same structure here as in CreateBackupJob.
+        active_done_check = False
+        while not active_done_check:
+            CuraApplication.getInstance().processEvents()
+            active_done_check = self._job_done.wait(0.02)
 
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
@@ -80,7 +80,7 @@ class RestoreBackupJob(Job):
                     bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                     app.processEvents()
         except EnvironmentError as e:
-            Logger.log("e", f"Unable to save backed up files due to computer limitations: {str(e)}")
+            Logger.error(f"Unable to save backed up files due to computer limitations: {str(e)}")
             self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
             self._job_done.set()
             return
@@ -88,8 +88,10 @@ class RestoreBackupJob(Job):
         if not self._verifyMd5Hash(self._temporary_backup_file.name, self._backup.get("md5_hash", "")):
             # Don't restore the backup if the MD5 hashes do not match.
             # This can happen if the download was interrupted.
-            Logger.log("w", "Remote and local MD5 hashes do not match, not restoring backup.")
+            Logger.error("Remote and local MD5 hashes do not match, not restoring backup.")
             self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
+            self._job_done.set()
+            return
 
         # Tell Cura to place the backup back in the user data folder.
         metadata = self._backup.get("metadata", {})
@@ -103,6 +105,8 @@ class RestoreBackupJob(Job):
         packages_path = os.path.abspath(os.path.join(os.path.abspath(
             Resources.getConfigStoragePath()), "..", version_str, "packages.json"))
         if not os.path.exists(packages_path):
+            Logger.error(f"Can't find path '{packages_path}' to tell what packages should be redownloaded.")
+            self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
             self._job_done.set()
             return
 
@@ -113,9 +117,13 @@ class RestoreBackupJob(Job):
                 if "to_install" in packages_json and "package_id" in packages_json["to_install"]:
                     to_install.add(packages_json["to_install"]["package_id"])
         except IOError as ex:
-            pass  # TODO! (log + message)
+            Logger.error(f"Couldn't open '{packages_path}' because '{str(ex)}' to get packages to re-install.")
+            self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
+            self._job_done.set()
+            return
 
         if len(to_install) < 1:
+            Logger.info("No packages to reinstall, early out.")
             self._job_done.set()
             return
 
@@ -127,24 +135,26 @@ class RestoreBackupJob(Job):
             to_install.remove(package_id)
 
             try:
-                with tempfile.NamedTemporaryFile(mode="wb+", suffix=".curapackage") as temp_file:
+                with NamedTemporaryFile(mode="wb+", suffix=".curapackage") as temp_file:
                     bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                     while bytes_read:
                         temp_file.write(bytes_read)
                         bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
-                        # self._app.processEvents()
-                    # self._progress[package_id]["file_written"] = temp_file.name
+                        CuraApplication.getInstance().processEvents()
                     if not CuraApplication.getInstance().getPackageManager().installPackage(temp_file.name):
                         redownload_errors.append(f"Couldn't install package '{package_id}'.")
             except IOError as ex:
-                redownload_errors.append(f"Couldn't read package '{package_id}' because '{ex}'.")
+                redownload_errors.append(f"Couldn't process package '{package_id}' because '{ex}'.")
 
             if len(to_install) < 1:
                 if len(redownload_errors) == 0:
+                    Logger.info("All packages redownloaded!")
                     self._job_done.set()
                 else:
-                    print("|".join(redownload_errors))  # TODO: Message / Log instead.
-                    self._job_done.set()  # NOTE: Set job probably not the right call here... (depends on wether or not that in the end closes the app or not...)
+                    msgs = "\n - ".join(redownload_errors)
+                    Logger.error(f"Couldn't re-install at least one package(s) because: {msgs}")
+                    self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
+                    self._job_done.set()
 
         self._package_download_scope = UltimakerCloudScope(CuraApplication.getInstance())
         for package_id in to_install:
