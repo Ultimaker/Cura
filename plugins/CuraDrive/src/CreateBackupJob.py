@@ -98,7 +98,12 @@ class CreateBackupJob(Job):
         backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
         self._requestUploadSlot(backup_meta_data, len(self._backup_zip))
 
-        self._job_done.wait()
+        # Note: One 'process events' call wasn't enough with the changed situation somehow.
+        active_done_check = False
+        while not active_done_check:
+            CuraApplication.getInstance().processEvents()
+            active_done_check = self._job_done.wait(0.02)
+
         if self.backup_upload_error_message == "":
             self._upload_message.setText(catalog.i18nc("@info:backup_status", "Your backup has finished uploading."))
             self._upload_message.setProgress(None)  # Hide progress bar
@@ -117,17 +122,12 @@ class CreateBackupJob(Job):
                                        "metadata": backup_metadata
                                        }
                               }).encode()
-
-        CuraApplication.getInstance().processEvents()  # Needed??
-
         HttpRequestManager.getInstance().put(
             self._api_backup_url,
             data = payload,
             callback = self._onUploadSlotCompleted,
             error_callback = self._onUploadSlotCompleted,
             scope = self._json_cloud_scope)
-
-        CuraApplication.getInstance().processEvents()  # Needed??
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if HttpRequestManager.safeHttpStatus(reply) >= 300:
