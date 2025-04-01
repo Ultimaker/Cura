@@ -570,9 +570,9 @@ class CuraConan(ConanFile):
             print(f"Could not find '{str(test_colors_path)}'. Won't generate rotating colors for alpha builds.")
             return
         if "alpha" in self.version:
-            biweekly_day = (datetime.now() - datetime(2025, 3, 14)).days
             with test_colors_path.open("r") as test_colors_file:
                 test_colors = json.load(test_colors_file)
+            biweekly_day = (datetime.now() - datetime(2025, 3, 14)).days % len(test_colors)
             for theme_dir in Path(self.source_folder, "resources", "themes").iterdir():
                 if not theme_dir.is_dir():
                     continue
