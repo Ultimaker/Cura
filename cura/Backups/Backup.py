@@ -95,7 +95,7 @@ class Backup:
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
-    def _fillToInstallsJson(self, file_path: str, reinstall_on_restore: frozenset[str], add_to_archive: Callable[[str], None]) -> Optional[str]:
+    def _fillToInstallsJson(self, file_path: str, reinstall_on_restore: frozenset[str], add_to_archive: Callable[[str, str], None]) -> Optional[str]:
         """ Moves all plugin-data (in a config-file) for plugins that could be (re)installed from the Marketplace from
             'installed' to 'to_installs' before adding that file to the archive.
 
@@ -104,7 +104,7 @@ class Backup:
 
         :param file_path: Absolute path to the packages-file.
         :param reinstall_on_restore: A set of plugins that _can_ be reinstalled from the Marketplace.
-        :param add_to_archive: A function/lambda that takes a filename and adds it to the archive.
+        :param add_to_archive: A function/lambda that takes a filename and adds it to the archive (as the 2nd name).
         """
         with open(file_path, "r") as file:
             data = json.load(file)
@@ -117,7 +117,7 @@ class Backup:
             tmpfile = tempfile.NamedTemporaryFile(delete=False)
             with open(tmpfile.name, "w") as outfile:
                 json.dump(data, outfile)
-            add_to_archive(tmpfile.name)
+            add_to_archive(tmpfile.name, file_path)
             return tmpfile.name
         return None
 
@@ -144,18 +144,17 @@ class Backup:
         tmpfiles = []
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
-            add_path_to_archive = lambda path: archive.write(path, path[len(root_path) + len(os.sep):])
+            add_path_to_archive = lambda path, alt_path: archive.write(path, alt_path[len(root_path) + len(os.sep):])
             for root, folders, files in os.walk(root_path, topdown=True):
-                folders[:] = [f for f in folders if f not in reinstall_instead_paths]
                 for item_name in folders + files:
                     absolute_path = os.path.join(root, item_name)
-                    if ignore_string.search(absolute_path):
+                    if ignore_string.search(absolute_path) or any([absolute_path.startswith(x) for x in reinstall_instead_paths]):
                         continue
                     if item_name == "packages.json":
                         tmpfiles.append(
                             self._fillToInstallsJson(absolute_path, reinstall_instead_ids, add_path_to_archive))
                     else:
-                        add_path_to_archive(absolute_path)
+                        add_path_to_archive(absolute_path, absolute_path)
             archive.close()
             for tmpfile_path in tmpfiles:
                 try:
