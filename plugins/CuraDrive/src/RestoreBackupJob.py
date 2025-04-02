@@ -140,14 +140,15 @@ class RestoreBackupJob(Job):
             del to_install[package_id]
 
             try:
-                with NamedTemporaryFile(mode="wb+", suffix=".curapackage") as temp_file:
-                    bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                with NamedTemporaryFile(mode="wb", suffix=".curapackage", delete=False) as temp_file:
+                    bytes_read = msg.read(self.DISK_WRITE_BUFFER_SIZE)
                     while bytes_read:
                         temp_file.write(bytes_read)
-                        bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
+                        bytes_read = msg.read(self.DISK_WRITE_BUFFER_SIZE)
                         CuraApplication.getInstance().processEvents()
-                    if not CuraApplication.getInstance().getPackageManager().installPackage(temp_file.name):
-                        redownload_errors.append(f"Couldn't install package '{package_id}'.")
+                temp_file.close()
+                if not CuraApplication.getInstance().getPackageManager().installPackage(temp_file.name):
+                    redownload_errors.append(f"Couldn't install package '{package_id}'.")
             except IOError as ex:
                 redownload_errors.append(f"Couldn't process package '{package_id}' because '{ex}'.")
 
