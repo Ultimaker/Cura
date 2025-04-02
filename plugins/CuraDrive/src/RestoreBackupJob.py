@@ -110,12 +110,17 @@ class RestoreBackupJob(Job):
             self._job_done.set()
             return
 
-        to_install = set()
+        to_install = {}
         try:
             with open(packages_path, "r") as packages_file:
                 packages_json = json.load(packages_file)
-                if "to_install" in packages_json and "package_id" in packages_json["to_install"]:
-                    to_install.add(packages_json["to_install"]["package_id"])
+                if "to_install" in packages_json:
+                    for package_data in packages_json["to_install"].values():
+                        if "package_info" not in package_data:
+                            continue
+                        package_info = package_data["package_info"]
+                        if "package_id" in package_info and "sdk_version_semver" in package_info:
+                            to_install[package_info["package_id"]] = package_info["sdk_version_semver"]
         except IOError as ex:
             Logger.error(f"Couldn't open '{packages_path}' because '{str(ex)}' to get packages to re-install.")
             self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
@@ -132,7 +137,7 @@ class RestoreBackupJob(Job):
         def packageDownloadCallback(package_id: str, msg: "QNetworkReply", err: "QNetworkReply.NetworkError" = None) -> None:
             if err is not None or HttpRequestManager.safeHttpStatus(msg) != 200:
                 redownload_errors.append(err)
-            to_install.remove(package_id)
+            del to_install[package_id]
 
             try:
                 with NamedTemporaryFile(mode="wb+", suffix=".curapackage") as temp_file:
