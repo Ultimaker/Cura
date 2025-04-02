@@ -22,7 +22,7 @@ from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 import cura.UltimakerCloud.UltimakerCloudConstants as UltimakerCloudConstants
 
-PACKAGES_URL = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{CuraSDKVersion}/packages"
+PACKAGES_URL_TEMPLATE = f"{UltimakerCloudConstants.CuraCloudAPIRoot}/cura-packages/v{UltimakerCloudConstants.CuraCloudAPIVersion}/cura/v{{0}}/packages/{{1}}/download"
 
 class RestoreBackupJob(Job):
     """Downloads a backup and overwrites local configuration with the backup.
@@ -163,13 +163,15 @@ class RestoreBackupJob(Job):
                     self._job_done.set()
 
         self._package_download_scope = UltimakerCloudScope(CuraApplication.getInstance())
-        for package_id in to_install:
-            HttpRequestManager.getInstance().get(
-                f"{PACKAGES_URL}/{package_id}/download",
-                scope=self._package_download_scope,
-                callback=lambda msg: packageDownloadCallback(package_id, msg),
-                error_callback=lambda msg, err: packageDownloadCallback(package_id, msg, err)
-            )
+        for package_id, package_api_version in to_install.items():
+            def handlePackageId(package_id: str = package_id):
+                HttpRequestManager.getInstance().get(
+                    PACKAGES_URL_TEMPLATE.format(package_api_version, package_id),
+                    scope=self._package_download_scope,
+                    callback=lambda msg: packageDownloadCallback(package_id, msg),
+                    error_callback=lambda msg, err: packageDownloadCallback(package_id, msg, err)
+                )
+            handlePackageId(package_id)
 
     @staticmethod
     def _verifyMd5Hash(file_path: str, known_hash: str) -> bool:
