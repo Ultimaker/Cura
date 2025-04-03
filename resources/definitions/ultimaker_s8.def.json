@@ -500,8 +500,8 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 300,
-            "value": 300
+            "maximum_value_warning": 500,
+            "value": 500
         },
         "speed_travel_layer_0":
         {
