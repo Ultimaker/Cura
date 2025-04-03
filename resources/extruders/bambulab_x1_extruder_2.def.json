@@ -4,12 +4,12 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "bambulabs_x1",
-        "position": "1"
+        "machine": "bambulab_x1",
+        "position": "2"
     },
     "overrides":
     {
-        "extruder_nr": { "default_value": 1 },
+        "extruder_nr": { "default_value": 2 },
         "machine_extruder_change_duration": { "default_value": 29 },
         "material_diameter": { "default_value": 1.75 }
     }

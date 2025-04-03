@@ -1,14 +1,14 @@
 {
     "version": 2,
-    "name": "BambuLabs X1",
+    "name": "BambuLab X1",
     "inherits": "fdmprinter",
     "metadata":
     {
         "visible": true,
         "author": "Mariska",
-        "manufacturer": "BambuLabs",
+        "manufacturer": "BambuLab",
         "file_formats": "text/x-gcode",
-        "platform": "bambulabs-3dp-X1.obj",
+        "platform": "bambulab_x1.obj",
         "has_machine_quality": true,
         "has_material": true,
         "has_textured_buildplate": true,
@@ -16,17 +16,17 @@
         "has_variants": true,
         "machine_extruder_trains":
         {
-            "0": "bambulabs_x1_extruder_0",
-            "1": "bambulabs_x1_extruder_1",
-            "2": "bambulabs_x1_extruder_2",
-            "3": "bambulabs_x1_extruder_3"
+            "0": "bambulab_x1_extruder_0",
+            "1": "bambulab_x1_extruder_1",
+            "2": "bambulab_x1_extruder_2",
+            "3": "bambulab_x1_extruder_3"
         },
         "platform_offset": [
             -130,
             0,
             130
         ],
-        "platform_texture": "bambulabs-3dp-logo.png",
+        "platform_texture": "bambulab-buildplate.png",
         "preferred_variant_name": "X1C 0.4mm",
         "weight": 3
     },
