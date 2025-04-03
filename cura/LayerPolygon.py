@@ -23,11 +23,12 @@ class LayerPolygon:
     MoveRetractionType = 9
     SupportInterfaceType = 10
     PrimeTowerType = 11
-    __number_of_types = 12
+    MoveUnretractionType = 12
+    __number_of_types = 13
 
-    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType,
-                                                   numpy.arange(__number_of_types) == MoveCombingType),
-                                                   numpy.arange(__number_of_types) == MoveRetractionType)
+    __jump_map = numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType)
+    __jump_map = numpy.logical_or(__jump_map, numpy.arange(__number_of_types) == MoveRetractionType)
+    __jump_map = numpy.logical_or(__jump_map, numpy.arange(__number_of_types) == MoveUnretractionType)
 
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
                  line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
@@ -272,7 +273,8 @@ class LayerPolygon:
                 theme.getColor("layerview_move_combing").getRgbF(),  # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(),  # MoveRetractionType
                 theme.getColor("layerview_support_interface").getRgbF(),   # SupportInterfaceType
-                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
+                theme.getColor("layerview_prime_tower").getRgbF(),   # PrimeTowerType
+                theme.getColor("layerview_move_unretraction").getRgbF(),  # MoveUnretractionType
             ])
 
         return cls.__color_map
