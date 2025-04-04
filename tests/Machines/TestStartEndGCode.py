@@ -7,12 +7,6 @@ from unittest.mock import MagicMock
 from plugins.CuraEngineBackend.StartSliceJob import GcodeStartEndFormatter
 
 
-# def createMockedInstanceContainer(container_id):
-#     result = MagicMock()
-#     result.getId = MagicMock(return_value=container_id)
-#     result.getMetaDataEntry = MagicMock(side_effect=getMetadataEntrySideEffect)
-#     return result
-
 class MockValueProvider:
     ##  Creates a mock value provider.
     #
@@ -259,7 +253,7 @@ Q2000
         ''
     ),
 
-(
+    (
         'Unexpected end character',
         None,
 '''{if material_temperature > 200, 0}}
@@ -269,6 +263,20 @@ S2000
 {endif}''',
 '''S2000
 '''
+    ),
+
+    (
+        'Multiple replaces on single line',
+        None,
+'''BT={bed_temperature} IE={initial_extruder}''',
+'''BT=50.0 IE=0'''
+    ),
+
+    (
+        'Multiple extruder replaces on single line',
+        None,
+'''MT0={material_temperature, 0} MT1={material_temperature, 1}''',
+'''MT0=190.0 MT1=210.0'''
     ),
 ]
 

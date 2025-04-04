@@ -16,6 +16,7 @@
             "chromatik_",
             "3D-Fuel_",
             "bestfilament_",
+            "eazao_",
             "emotiontech_",
             "eryone_",
             "eSUN_",
@@ -58,6 +59,8 @@
             "zyyx_pro_",
             "octofiber_",
             "fiberlogy_",
+            "ultimaker_pc-abs",
+            "ultimaker_pc-abs-fr",
             "ultimaker_metallic_pla_175"
         ],
         "has_machine_materials": true,
@@ -82,6 +85,7 @@
         "supports_usb_connection": false,
         "variant_definition": "ultimaker_method",
         "variants_name": "Extruder",
+        "variants_name_has_translation": true,
         "weight": -1
     },
     "overrides":

@@ -203,3 +203,19 @@ msgstr "Comprimento do bocal"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "A diferença de altura entre a extremidade do bocal e a parte mais baixa da cabeça da impressão."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Duração da mudança de extrusora"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Código-G do pré-arranque da extrusora"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "O código-G de pré-arranque a executar antes de mudar para esta extrusora."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Quando é utilizada uma configuração com ferramentas múltiplas, este valor é o tempo da mudança de ferramenta em segundos.  Este valor será adicionado ao tempo estimado com base no número de mudanças que ocorrerem."

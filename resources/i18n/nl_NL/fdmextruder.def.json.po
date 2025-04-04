@@ -203,3 +203,19 @@ msgstr "Lengte spuitmond"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "Het hoogteverschil tussen de punt van de spuitmond en het laagste deel van de printkop."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Duur extruderwissel"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Extruder Prestart G-Code"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Prestart g-code die moet worden uitgevoerd voordat wordt overgeschakeld naar deze extruder."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Bij gebruik van een multitoolsetup is deze waarde de toolwisseltijd in seconden. Deze waarde wordt opgeteld bij de geschatte tijd op basis van het aantal wissels dat plaatsvindt."
