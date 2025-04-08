@@ -1,16 +1,16 @@
-version: "5.10.0-alpha.0"
+version: "5.11.0-alpha.0"
 requirements:
-  - "cura_resources/5.10.0-alpha.0@ultimaker/testing"
-  - "uranium/5.10.0-alpha.0@ultimaker/testing"
-  - "curaengine/5.10.0-alpha.0@ultimaker/testing"
-  - "cura_binary_data/5.10.0-alpha.0@ultimaker/testing"
-  - "fdm_materials/5.10.0-alpha.0@ultimaker/testing"
-  - "dulcificum/5.10.0@ultimaker/stable"
-  - "pysavitar/5.10.0@ultimaker/stable"
-  - "pynest2d/5.10.0@ultimaker/stable"
+  - "cura_resources/5.11.0-alpha.0@ultimaker/testing"
+  - "uranium/5.11.0-alpha.0@ultimaker/testing"
+  - "curaengine/5.11.0-alpha.0@ultimaker/testing"
+  - "cura_binary_data/5.11.0-alpha.0@ultimaker/testing"
+  - "fdm_materials/5.11.0-alpha.0@ultimaker/testing"
+  - "dulcificum/5.10.0"
+  - "pysavitar/5.10.0"
+  - "pynest2d/5.10.0"
 requirements_internal:
-  - "fdm_materials/5.10.0-alpha.0@internal/testing"
-  - "cura_private_data/5.10.0-alpha.0@internal/testing"
+  - "fdm_materials/5.11.0-alpha.0@ultimaker/testing"
+  - "cura_private_data/5.11.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
 urls:
@@ -125,6 +125,7 @@ pyinstaller:
         - "PyQt6.sip"
         - "stl"
         - "keyrings.alt"
+        - "pynavlib"
     collect_all_WINDOWS_ONLY:
         - "PyQt6.Qt"
         - "PyQt6.Qt6"
@@ -264,6 +265,10 @@ pycharm_targets:
     module_name: Cura
     name: pytest in TestSettingVisibilityPresets.py
     script_name: tests/Settings/TestSettingVisibilityPresets.py
+  - jinja_path: .run_templates/pycharm_cura_test.run.xml.jinja
+    module_name: Cura
+    name: pytest in TestStartEndGCode.py
+    script_name: tests/Machines/TestStartEndGCode.py
 
 pip_requirements_core:
   any_os:
@@ -567,6 +572,7 @@ pip_requirements_core:
       hashes:
         - sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5
         - sha256:575e708016ff3a5e3681541cb9d79312c416835686d054a23accb873b254f413
+
   Windows:
     twisted-iocpsupport:
       version: "1.0.2"
@@ -588,6 +594,22 @@ pip_requirements_core:
       hashes:
         - sha256:8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8
         - sha256:d162dc04946d704503b2edc4d55f3dba5c1d539ead017afa00142c38b9885755
+    pynavlib:
+      version: "0.9.4"
+      hashes:
+        - sha256:fdd5ab5b6e0a2c9bbcebb154ac7303daf845865a1649be04e1bd8e8e5889401f
+        - sha256:493c4b3cacc939b021a694d99723106dbd7ee5515ad4dfc1c7fc8219ef20cf3a
+        - sha256:332831553a70be05fe58c43a08109b42970cfedc6086ffb4306859142a0e9210
+        - sha256:9173f61ad83172c306b92bbe38f949889c158cd6dfdc924db01f257a437bf2a6
+
+  Macos:
+    pynavlib:
+      version: "0.9.4"
+      hashes:
+        - sha256:567efd0af97f9014326898b209eea94d9f5cc58e9f589ccf8354584568fcb87d
+        - sha256:f0d7ce426e816788aa96b419fd7da263eafb99aca46ce3b6e5dbaf2bbf6b614a
+        - sha256:33962a322033a78db05a8c2cc3d59e057fbea5b04879c3c54e2fe3041d691a12
+        - sha256:d06d94b1dee4ba024b4a121869e572f571673a3b8c15b4055f52236d43c19a02
 
 pip_requirements_dev:
   any_os:
@@ -607,3 +629,10 @@ python_translation_source_folders:
 qml_translation_source_folders:
   - resources/qml
   - plugins
+
+extra_dependencies:
+  conan:
+    version: "2.7.1"
+    sources_url: https://github.com/conan-io/conan
+    license: MIT
+    summary: Conan C/C++ package manager
