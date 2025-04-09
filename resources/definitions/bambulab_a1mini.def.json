@@ -124,10 +124,16 @@
         "machine_use_extruder_offset_to_offset_coords": { "value": false },
         "machine_width": { "value": 180 },
         "material_diameter": { "value": 1.75 },
+        "material_flush_purge_length":
+        {
+            "default_value": 100,
+            "enabled": true
+        },
         "material_flush_purge_speed": { "default_value": 500 },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
         "min_infill_area": { "default_value": 10 },
+        "switch_extruder_retraction_amount": { "value": 5 },
         "optimize_wall_printing_order": { "value": false },
         "prime_tower_min_volume": { "default_value": 100 },
         "relative_extrusion": { "value": true },
