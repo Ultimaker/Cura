@@ -385,7 +385,7 @@
             "unit": "m/s\u00b3",
             "value": "20000 if machine_gcode_flavor == 'Cheetah' else 100"
         },
-        "machine_name": { "default_value": "Ultimaker S8" },
+        "machine_name": { "default_value": "UltiMaker S8" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.3 },
         "machine_nozzle_heat_up_speed": { "default_value": 0.6 },
         "machine_start_gcode": { "default_value": "M213 U0.1 ;undercut 0.1mm" },
