@@ -348,7 +348,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def supportsPrintJobQueue(self) -> bool:
         """Gets whether the printer supports a queue"""
 
@@ -384,14 +384,14 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     permissionsChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = permissionsChanged)
+    @pyqtProperty(bool, notify=permissionsChanged)
     def canReadPrintJobs(self) -> bool:
         """
         Whether this user can read the list of print jobs and their properties.
         """
         return "digital-factory.print-job.read" in self._account.permissions
 
-    @pyqtProperty(bool, notify = permissionsChanged)
+    @pyqtProperty(bool, notify=permissionsChanged)
     def canWriteOthersPrintJobs(self) -> bool:
         """
         Whether this user can change things about print jobs made by other
@@ -399,14 +399,14 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         """
         return "digital-factory.print-job.write" in self._account.permissions
 
-    @pyqtProperty(bool, notify = permissionsChanged)
+    @pyqtProperty(bool, notify=permissionsChanged)
     def canWriteOwnPrintJobs(self) -> bool:
         """
         Whether this user can change things about print jobs made by them.
         """
         return "digital-factory.print-job.write.own" in self._account.permissions
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def canReadPrinterDetails(self) -> bool:
         """
         Whether this user can read the status of the printer.

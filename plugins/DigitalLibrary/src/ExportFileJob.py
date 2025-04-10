@@ -28,7 +28,7 @@ class ExportFileJob(WriteFileJob):
             if file_type["extension"] == extension:
                 file_writer = file_handler.getWriter(file_type["id"])
                 mode = file_type.get("mode")
-        super().__init__(file_writer, self.createStream(mode = mode), nodes, mode)
+        super().__init__(file_writer, self.createStream(mode=mode), nodes, mode)
 
         # Determine the filename.
         self.setFileName("{}.{}".format(job_name, extension))

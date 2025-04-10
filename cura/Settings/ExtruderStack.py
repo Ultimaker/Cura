@@ -48,7 +48,7 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def position(self) -> int:
         return int(self.getMetaDataEntry("position"))
 
@@ -58,7 +58,7 @@ class ExtruderStack(CuraContainerStack):
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
-    @pyqtProperty(bool, notify = enabledChanged)
+    @pyqtProperty(bool, notify=enabledChanged)
     def isEnabled(self) -> bool:
         return parseBool(self.getMetaDataEntry("enabled", "True"))
 
@@ -78,7 +78,7 @@ class ExtruderStack(CuraContainerStack):
         context = PropertyEvaluationContext(self)
         context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
-        return float(self.getProperty("material_diameter", "value", context = context))
+        return float(self.getProperty("material_diameter", "value", context=context))
 
     def setCompatibleMaterialDiameter(self, value: float) -> None:
         old_approximate_diameter = self.getApproximateMaterialDiameter()
@@ -91,9 +91,9 @@ class ExtruderStack(CuraContainerStack):
             if old_approximate_diameter != self.getApproximateMaterialDiameter():
                 self.approximateMaterialDiameterChanged.emit()
 
-    compatibleMaterialDiameter = pyqtProperty(float, fset = setCompatibleMaterialDiameter,
-                                              fget = getCompatibleMaterialDiameter,
-                                              notify = compatibleMaterialDiameterChanged)
+    compatibleMaterialDiameter = pyqtProperty(float, fset=setCompatibleMaterialDiameter,
+                                              fget=getCompatibleMaterialDiameter,
+                                              notify=compatibleMaterialDiameterChanged)
 
     approximateMaterialDiameterChanged = pyqtSignal()
 
@@ -110,8 +110,8 @@ class ExtruderStack(CuraContainerStack):
 
         return round(self.getCompatibleMaterialDiameter())
 
-    approximateMaterialDiameter = pyqtProperty(float, fget = getApproximateMaterialDiameter,
-                                               notify = approximateMaterialDiameterChanged)
+    approximateMaterialDiameter = pyqtProperty(float, fget=getApproximateMaterialDiameter,
+                                               notify=approximateMaterialDiameterChanged)
 
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
@@ -127,7 +127,7 @@ class ExtruderStack(CuraContainerStack):
         """
 
         if not self._next_stack:
-            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
+            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id=self.id))
 
         if context:
             context.pushContainer(self)
@@ -164,7 +164,7 @@ class ExtruderStack(CuraContainerStack):
     @override(CuraContainerStack)
     def _getMachineDefinition(self) -> ContainerInterface:
         if not self.getNextStack():
-            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
+            raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id=self.id))
 
         return self.getNextStack()._getMachineDefinition()
 
@@ -180,7 +180,7 @@ class ExtruderStack(CuraContainerStack):
         # something changed for those settings.
         if not self.getNextStack():
             return #There are no global settings to depend on.
-        definitions = self.getNextStack().definition.findDefinitions(key = key)
+        definitions = self.getNextStack().definition.findDefinitions(key=key)
         if definitions:
             has_global_dependencies = False
             for relation in definitions[0].relations:
@@ -193,9 +193,9 @@ class ExtruderStack(CuraContainerStack):
 
 
 extruder_stack_mime = MimeType(
-    name = "application/x-cura-extruderstack",
-    comment = "Cura Extruder Stack",
-    suffixes = ["extruder.cfg"]
+    name="application/x-cura-extruderstack",
+    comment="Cura Extruder Stack",
+    suffixes=["extruder.cfg"]
 )
 
 MimeTypeDatabase.addMimeType(extruder_stack_mime)

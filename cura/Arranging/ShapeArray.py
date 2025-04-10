@@ -88,12 +88,12 @@ class ShapeArray:
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
         offset_points[:, 0] = numpy.add(offset_points[:, 0], -transform_x)
         offset_points[:, 1] = numpy.add(offset_points[:, 1], -transform_y)
-        offset_shape_arr = ShapeArray.fromPolygon(offset_points, scale = scale)
+        offset_shape_arr = ShapeArray.fromPolygon(offset_points, scale=scale)
 
         hull_points = copy.deepcopy(hull_verts._points)
         hull_points[:, 0] = numpy.add(hull_points[:, 0], -transform_x)
         hull_points[:, 1] = numpy.add(hull_points[:, 1], -transform_y)
-        hull_shape_arr = ShapeArray.fromPolygon(hull_points, scale = scale)  # x, y
+        hull_shape_arr = ShapeArray.fromPolygon(hull_points, scale=scale)  # x, y
 
         return offset_shape_arr, hull_shape_arr
 
@@ -110,7 +110,7 @@ class ShapeArray:
         :return: numpy array with dimensions defined by shape
         """
 
-        base_array = numpy.zeros(shape, dtype = numpy.int32)  # type: ignore # Initialize your array of zeros
+        base_array = numpy.zeros(shape, dtype=numpy.int32)  # type: ignore # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
 

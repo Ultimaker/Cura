@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List
 
 from UM.Application import Application
@@ -26,10 +27,10 @@ class ArrangeObjectsJob(Job):
     def run(self):
         found_solution_for_all = False
         status_message = Message(i18n_catalog.i18nc("@info:status", "Finding new location for objects"),
-                                 lifetime = 0,
-                                 dismissable = False,
-                                 progress = 0,
-                                 title = i18n_catalog.i18nc("@info:title", "Finding Location"))
+                                 lifetime=0,
+                                 dismissable=False,
+                                 progress=0,
+                                 title=i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
 
         if self._grid_arrange:
@@ -51,8 +52,8 @@ class ArrangeObjectsJob(Job):
             no_full_solution_message = Message(
                     i18n_catalog.i18nc("@info:status",
                                        "Unable to find a location within the build volume for all objects"),
-                    title = i18n_catalog.i18nc("@info:title", "Can't Find Location"),
-                    message_type = Message.MessageType.ERROR)
+                    title=i18n_catalog.i18nc("@info:title", "Can't Find Location"),
+                    message_type=Message.MessageType.ERROR)
             no_full_solution_message.show()
 
         self.finished.emit(self)

@@ -8,4 +8,4 @@ def getMetaData():
     return {}
 
 def register(app):
-    return { "extension": SliceInfo.SliceInfo()}
+    return {"extension": SliceInfo.SliceInfo()}

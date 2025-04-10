@@ -30,7 +30,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
             self._update()
 
     def _update(self) -> None:
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name=self.__class__.__name__))
 
         active_global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
         if active_global_stack is None:
@@ -41,7 +41,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
         quality_changes_list = ContainerTree.getInstance().getCurrentQualityChangesGroups()
 
         item_list = []
-        for quality_changes_group in sorted(quality_changes_list, key = lambda qgc: qgc.name.lower()):
+        for quality_changes_group in sorted(quality_changes_list, key=lambda qgc: qgc.name.lower()):
             item = {"name": quality_changes_group.name,
                     "layer_height": "",
                     "layer_height_without_unit": "",

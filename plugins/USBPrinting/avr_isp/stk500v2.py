@@ -3,6 +3,7 @@ STK500v2 protocol implementation for programming AVR chips.
 The STK500v2 protocol is used by the ArduinoMega2560 and a few other Arduino platforms to load firmware.
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
+
 import struct
 import sys
 import time
@@ -62,8 +63,8 @@ class Stk500v2(ispBase.IspBase):
             self.serial.close()
             self.serial = None
 
-    #Leave ISP does not reset the serial port, only resets the device, and returns the serial port after disconnecting it from the programming interface.
-    #	This allows you to use the serial port without opening it again.
+    # Leave ISP does not reset the serial port, only resets the device, and returns the serial port after disconnecting it from the programming interface.
+    # This allows you to use the serial port without opening it again.
     def leaveISP(self):
         if self.serial is not None:
             if self.sendMessage([0x11]) != [0x11, 0x00]:
@@ -84,7 +85,7 @@ class Stk500v2(ispBase.IspBase):
         return recv[2:6]
 
     def writeFlash(self, flash_data):
-        #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
+        # Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
         page_size = self.chip["pageSize"] * 2
         flash_size = page_size * self.chip["pageCount"]
         Logger.log("d", "Writing flash")
@@ -113,7 +114,7 @@ class Stk500v2(ispBase.IspBase):
             if hex(checksum) != hex(checksum_recv):
                 raise ispBase.IspError("Verify checksum mismatch: 0x%x != 0x%x" % (checksum & 0xFFFF, checksum_recv))
         else:
-            #Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
+            # Set load addr to 0, in case we have more then 64k flash we need to enable the address extension
             flash_size = self.chip["pageSize"] * 2 * self.chip["pageCount"]
             if flash_size > 0xFFFF:
                 self.sendMessage([0x06, 0x80, 0x00, 0x00, 0x00])
@@ -185,22 +186,23 @@ class Stk500v2(ispBase.IspBase):
 def portList():
     ret = []
     import _winreg  # type: ignore
-    key=_winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM") #@UndefinedVariable
-    i=0
+    key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE,"HARDWARE\\DEVICEMAP\\SERIALCOMM")  # @UndefinedVariable
+    i = 0
     while True:
         try:
-            values = _winreg.EnumValue(key, i) #@UndefinedVariable
+            values = _winreg.EnumValue(key, i)  # @UndefinedVariable
         except:
             return ret
         if "USBSER" in values[0]:
             ret.append(values[1])
-        i+=1
+        i += 1
     return ret
+
 
 def runProgrammer(port, filename):
     """ Run an STK500v2 program on serial port 'port' and write 'filename' into flash. """
     programmer = Stk500v2()
-    programmer.connect(port = port)
+    programmer.connect(port=port)
     programmer.programChip(intelHex.readHex(filename))
     programmer.close()
 
@@ -210,11 +212,11 @@ def main():
     if sys.argv[1] == "AUTO":
         Logger.log("d", "portList(): ", repr(portList()))
         for port in portList():
-            threading.Thread(target=runProgrammer, args=(port,sys.argv[2])).start()
+            threading.Thread(target=runProgrammer, args=(port, sys.argv[2])).start()
             time.sleep(5)
     else:
         programmer = Stk500v2()
-        programmer.connect(port = sys.argv[1])
+        programmer.connect(port=sys.argv[1])
         programmer.programChip(intelHex.readHex(sys.argv[2]))
         sys.exit(1)
 
