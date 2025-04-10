@@ -47,7 +47,7 @@
                 {
                     "label": "Machine Type",
                     "description": "The name of your 3D printer model.",
-                    "default_value": "Unknown",
+                    "default_value": "Custom FFF Printer",
                     "type": "str",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -1243,7 +1243,7 @@
                             "description": "The minimum line width for normal polygonal walls. This setting determines at which model thickness we switch from printing a single thin wall line, to printing two wall lines. A higher Minimum Even Wall Line Width leads to a higher maximum odd wall line width. The maximum even wall line width is calculated as Outer Wall Line Width + 0.5 * Minimum Odd Wall Line Width.",
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
-                            "minimum_value": ".4 * machine_nozzle_size",
+							"minimum_value": ".4 * machine_nozzle_size",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
@@ -1257,7 +1257,7 @@
                             "unit": "mm",
                             "minimum_value_warning": ".5 * max(wall_line_width_0, wall_line_width_x)",
                             "maximum_value_warning": "min(wall_line_width_0, wall_line_width_x)",
-                            "minimum_value": ".4 * machine_nozzle_size",
+							"minimum_value": ".4 * machine_nozzle_size",
                             "default_value": 0.3,
                             "value": "min_wall_line_width",
                             "type": "float",
@@ -1383,16 +1383,16 @@
                     "description": "The position near where to start printing each part in a layer.",
                     "type": "enum",
                     "options":
-                    {
+                    {                        
                         "frontleft": "Front Left",
                         "left": "Left",
-                        "backleft": "Back Left",
+						"backleft": "Back Left",
                         "back": "Back",
                         "backright": "Back Right",
                         "right": "Right",
                         "frontright": "Front Right",
                         "front": "Front",
-                        "middle": "Middle"
+						"middle": "Middle"
                     },
                     "enabled": "z_seam_type == 'back'",
                     "default_value": "back",
@@ -8427,7 +8427,7 @@
                     "unit": "mm\u00b3",
                     "type": "float",
                     "default_value": 0.064,
-                    "minimum_value": "0",
+                    "minimum_value": "0.001",
                     "maximum_value_warning": "machine_nozzle_size * 5",
                     "enabled": "coasting_enable",
                     "settable_per_mesh": false,
