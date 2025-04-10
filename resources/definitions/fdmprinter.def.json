@@ -4553,7 +4553,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_speed":
@@ -4643,7 +4643,7 @@
                     "maximum_value": 999999999,
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_extrusion_window":
@@ -4657,7 +4657,7 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_combing":
