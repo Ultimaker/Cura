@@ -319,7 +319,7 @@ class DisplayInfoOnLCD(Script):
 
     # This is from 'Show Progress on LCD'
     def _display_progress(self, data: str) -> str:
-        # Add some print settings to the start of the gcode
+        # Add some common print settings to the start of the gcode
         data[0] = self._add_stats(data)
         # Get settings
         print_sequence = Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value")
@@ -344,6 +344,7 @@ class DisplayInfoOnLCD(Script):
         # If at least one of the settings is disabled, there is enough room on the display to display "layer"
         first_section = data[0]
         lines = first_section.split("\n")
+        pause_cmd = []
         for line in lines:
             if line.startswith(";TIME:"):
                 tindex = lines.index(line)
@@ -530,7 +531,9 @@ class DisplayInfoOnLCD(Script):
         return data
 
     def _message_to_user(self, data: str, speed_factor: float, pause_cmd: str) -> str:
-        # Message the user of the projected finish time of the print
+        """
+        Message the user of the projected finish time of the print and when any pauses might occur
+        """
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
         print_start_time = self.getSettingValueByKey("print_start_time")
         # If the user entered a print start time make sure it is in the correct format or ignore it.
@@ -623,7 +626,10 @@ class DisplayInfoOnLCD(Script):
 
     def _add_stats(self, data: str) -> str:
         global_stack = Application.getInstance().getGlobalContainerStack()
-        # Create a list of the models in the file
+        """
+        Make a list of the models in the file.
+        Add some of the filament stats to the first section of the gcode.
+        """
         model_list = []
         for mdex, layer in enumerate(data):
             layer = data[mdex].split("\n")
@@ -632,22 +638,34 @@ class DisplayInfoOnLCD(Script):
                     model_name = line.split(":")[1]
                     if not model_name in model_list:
                         model_list.append(model_name)
-        # Add some settings to data[0]
+        # Filament stats
         extruder_count = global_stack.getProperty("machine_extruder_count", "value")
         init_layer_hgt_line = ";Initial Layer Height: " + str(global_stack.getProperty("layer_height_0", "value"))
-        nozzle_size_line = ";Nozzle Size (T0): " + str(global_stack.extruderList[0].getProperty("machine_nozzle_size", "value"))
-        filament_type = "\n;Filament Type (T0): " + str(global_stack.extruderList[0].material.getMetaDataEntry("material", ""))
-        print_temperature_line = ";Print Temperature (T0): " + str(global_stack.extruderList[0].getProperty("material_print_temperature", "value"))
+        filament_line_t0 = ";Extruder 1 (T0)\n"
+        filament_amount = Application.getInstance().getPrintInformation().materialLengths
+        filament_line_t0 += f";  Filament used: {filament_amount[0]}m\n"
+        filament_line_t0 += f";  Filament Type: {global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
+        filament_line_t0 += f";  Filament Dia.: {global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
+        filament_line_t0 += f";  Nozzle Size  : {global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
+        filament_line_t0 += f";  Print Temp.  : {global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°"
+        
+        # if there is more than one extruder then get the stats for the second one.
+        filament_line_t1 = ""
         if extruder_count > 1:
-            nozzle_size_line += "\n;Nozzle Size (T1): " + str(global_stack.extruderList[1].getProperty("machine_nozzle_size", "value"))
-            filament_type += "\n;Filament type (T1): " + str(global_stack.extruderList[1].material.getMetaDataEntry("material", ""))
-            print_temperature_line += "\n;Print Temperature (T1): " + str(global_stack.extruderList[1].getProperty("material_print_temperature", "value"))
+            filament_line_t1 = "\n;Extruder 2 (T1)\n"
+            filament_line_t1 += f";  Filament used: {filament_amount[1]}m\n"
+            filament_line_t1 += f";  Filament Type: {global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
+            filament_line_t1 += f";  Filament Dia.: {global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
+            filament_line_t1 += f";  Nozzle Size  : {global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
+            filament_line_t1 += f";  Print Temp.  : {global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
+        
+        # Add the stats to the gcode file
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
             if line.startswith(";Layer height:"):
-                lines[index] += "\n" + init_layer_hgt_line + "\n" + nozzle_size_line + "\n" + print_temperature_line
+                lines[index] += "\n" + init_layer_hgt_line
             if line.startswith(";Filament used"):
-                lines[index] += filament_type
+                lines[index] = filament_line_t0 + filament_line_t1
             if "MINX" in line or "MIN.X" in line:
                 # Add the model list
                 lines[index - 1] += f"\n;Model List: {str(model_list)}"
