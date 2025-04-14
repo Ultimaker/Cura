@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 14:27+0200\n"
+"POT-Creation-Date: 2025-02-21 15:37+0100\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2.4\n"
+
+msgctxt "@title:label"
+msgid " "
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -172,6 +176,10 @@ msgstr "3D nézet"
 
 msgctxt "@info:tooltip"
 msgid "3D View"
+msgstr ""
+
+msgctxt "name"
+msgid "3DConnexion mouses"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -470,6 +478,10 @@ msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "Lehetővé teszi a G-kód fájlok betöltését és megjelenítését."
 
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Mindig kérdezz"
@@ -509,10 +521,6 @@ msgstr "Névtelen"
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr "Alkalmazás keretrendszer"
 
 msgctxt "@title:column"
 msgid "Applies on"
@@ -692,10 +700,6 @@ msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr "C/C++ függőségek könyvtár"
-
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr "COLLADA digitális eszközcsere"
@@ -870,10 +874,6 @@ msgstr ""
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "Kompatibilis mód"
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
-msgstr ""
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -1258,10 +1258,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Adatok elküldve"
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr "Adat csere formátum"
-
 msgctxt "@button"
 msgid "Decline"
 msgstr ""
@@ -1321,10 +1317,6 @@ msgstr "Nyomtatási feladat törlés"
 msgctxt "@label"
 msgid "Density"
 msgstr "Sűrűség"
-
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
@@ -1593,12 +1585,20 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extruder %1"
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Extruder G-kód zárás"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
+msgstr ""
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1790,6 +1790,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr "Az első elérhető"
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr ""
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr ""
@@ -1805,10 +1809,6 @@ msgstr ""
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr ""
-
-msgctxt "@label"
-msgid "Font"
-msgstr "Betűtípus"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
@@ -1865,10 +1865,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-kód illesztés"
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr "G-kód generátor"
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "A GCodeGzWriter nem támogatja a nem szöveges módot."
@@ -1881,14 +1877,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF kép"
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr "GUI keretrendszer"
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr "GUI keretrendszer függőségek"
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Szán magasság"
@@ -1900,10 +1888,6 @@ msgstr "Általános"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "A támasz létrehozása segíti a modell kinyúló részeinek hibátlan nyomatását. Támasz nélkül, ezek a részek összeomlanak, és nem lehetséges a hibátlan nyomtatás."
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
-msgstr ""
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1924,10 +1908,6 @@ msgstr ""
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Általános beállítások"
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
-msgstr "Grafikai felhasználói interfész"
 
 msgctxt "@label"
 msgid "Grid Placement"
@@ -2174,10 +2154,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "Interfész"
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr "Folyamatközi kommunikációs könyvtár"
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Hibás IP cím"
@@ -2205,10 +2181,6 @@ msgstr "JPEG kép"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG kép"
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
-msgstr ""
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2310,6 +2282,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "Tárgyasztal szint"
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "A világosabb a magasabb"
@@ -2325,10 +2301,6 @@ msgstr ""
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr ""
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
-msgstr "Linux kereszt-disztribúciós alkalmazás telepítése"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2416,6 +2388,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -2826,10 +2802,6 @@ msgid "Nozzle offset Y"
 msgstr "Fúvóka Y eltolás"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Fúvóka méret"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Fúvóka méret"
 
@@ -3003,10 +2975,6 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr ""
-
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-kód elemzés"
@@ -3160,14 +3128,6 @@ msgstr "Beépülők"
 
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr "Poligon daraboló könyvtár"
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
 msgstr ""
 
 msgctxt "@item:inmenu"
@@ -3443,10 +3403,6 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr "Programozási nyelv"
-
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3574,18 +3530,6 @@ msgstr ""
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt verzió"
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
-msgstr ""
 
 msgctxt "@label"
 msgid "Qt version"
@@ -3766,10 +3710,6 @@ msgstr "Jobb oldalnézet"
 
 msgctxt "@info:tooltip"
 msgid "Right View"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
 msgstr ""
 
 msgctxt "@info:title"
@@ -3959,10 +3899,6 @@ msgctxt "name"
 msgid "Sentry Logger"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr "Soros kommunikációs könyvtár"
-
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Beállítva aktív extruderként"
@@ -4069,6 +4005,10 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4308,6 +4248,10 @@ msgid "Start G-code"
 msgstr "G-kód kezdés"
 
 msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Szeletelés indítása"
 
@@ -4386,34 +4330,6 @@ msgstr "Támasz interface"
 
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr "Támogató könyvtár a gyorsabb matematikához"
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr "Támogató könyvtár a fájl metaadatokhoz és továbbításához"
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr "Támogató könyvtár a 3MF fájlok kezeléséhez"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr "Támogató könyvtár az STL fájlok kezeléséhez"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr "Támogató könyvtár a háromszög hálók kezeléséhez"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr "Támogató könyvtár a tudományos számítások számára"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4731,6 +4647,10 @@ msgstr "Hiba történt a biztonsági mentés feltöltése közben."
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "Ez a konfiguráció nem érhető el, mert a(z) %1 nem azonosítható. Kérjük, látogasson el a %2 webhelyre a megfelelő anyagprofil letöltéséhez."
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr ""
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
@@ -5103,10 +5023,6 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr ""
-
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Ismeretlen"
@@ -5300,6 +5216,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Egyedi firmware feltöltése"
@@ -5323,14 +5243,6 @@ msgstr "Használj ragasztót a jobb tapadás érdekében, ennél az alapanyag ko
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "Felhasználói Szerződés"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
-msgstr ""
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5446,6 +5358,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
 msgstr ""
 
 msgctxt "@button"
@@ -5610,12 +5526,12 @@ msgid "Y (Depth)"
 msgstr "Y (Mélység)"
 
 msgctxt "@label"
-msgid "Y max"
-msgstr "Y max"
+msgid "Y max ( '+' towards front)"
+msgstr ""
 
 msgctxt "@label"
-msgid "Y min"
-msgstr "Y min"
+msgid "Y min ( '-' towards back)"
+msgstr ""
 
 msgctxt "@info"
 msgid "Yes"
@@ -5698,10 +5614,6 @@ msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Magasság)"
 
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr "ZeroConf felderítő könyvtár"
-
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Nagyítás az egér mozgás irányában"
@@ -5759,6 +5671,18 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr ""
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Application framework"
+#~ msgstr "Alkalmazás keretrendszer"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "C/C++ Binding library"
+#~ msgstr "C/C++ függőségek könyvtár"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Data interchange format"
+#~ msgstr "Adat csere formátum"
+
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 #~ msgstr "Engedélyezze a peremet, vagy az aláúsztatást. Ez létre fog hozni a test szélén illetve az alján egy olyan részt, ami segíti a letapadást, viszont nyomtatás után ezek könnyen eltávolíthatóak a testről."
@@ -5767,10 +5691,90 @@ msgstr ""
 #~ msgid "Error writing 3mf file."
 #~ msgstr "Hiba a 3mf fájl írásakor."
 
+#~ msgctxt "@label"
+#~ msgid "Font"
+#~ msgstr "Betűtípus"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "G-code generator"
+#~ msgstr "G-kód generátor"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework"
+#~ msgstr "GUI keretrendszer"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework bindings"
+#~ msgstr "GUI keretrendszer függőségek"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Graphical user interface"
+#~ msgstr "Grafikai felhasználói interfész"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Interprocess communication library"
+#~ msgstr "Folyamatközi kommunikációs könyvtár"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Linux cross-distribution application deployment"
+#~ msgstr "Linux kereszt-disztribúciós alkalmazás telepítése"
+
+#~ msgctxt "@label"
+#~ msgid "Nozzle Size"
+#~ msgstr "Fúvóka méret"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Polygon clipping library"
+#~ msgstr "Poligon daraboló könyvtár"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Programming language"
+#~ msgstr "Programozási nyelv"
+
 #~ msgctxt "description"
 #~ msgid "Provides support for writing 3MF files."
 #~ msgstr "Támogatást nyújt a 3MF fájlok írásához."
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Serial communication library"
+#~ msgstr "Soros kommunikációs könyvtár"
+
 #~ msgctxt "@info:title"
 #~ msgid "Simulation View"
 #~ msgstr "Szimuláció nézet"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for faster math"
+#~ msgstr "Támogató könyvtár a gyorsabb matematikához"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for file metadata and streaming"
+#~ msgstr "Támogató könyvtár a fájl metaadatokhoz és továbbításához"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for handling 3MF files"
+#~ msgstr "Támogató könyvtár a 3MF fájlok kezeléséhez"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling STL files"
+#~ msgstr "Támogató könyvtár az STL fájlok kezeléséhez"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling triangular meshes"
+#~ msgstr "Támogató könyvtár a háromszög hálók kezeléséhez"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for scientific computing"
+#~ msgstr "Támogató könyvtár a tudományos számítások számára"
+
+#~ msgctxt "@label"
+#~ msgid "Y max"
+#~ msgstr "Y max"
+
+#~ msgctxt "@label"
+#~ msgid "Y min"
+#~ msgstr "Y min"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "ZeroConf discovery library"
+#~ msgstr "ZeroConf felderítő könyvtár"
