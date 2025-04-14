@@ -496,7 +496,7 @@ class PurgeLinesAndUnload(Script):
             """Generates G-code lines for prime blob adjustment."""
             gcode_lines = [
                 f"G1 F{retract_speed} E{retract_distance} ; Unretract",
-                "G92 E0 ; Reset extruder"
+                "G92 E0 ; Reset extruder\n"
             ]
             return "\n".join(gcode_lines)
 
