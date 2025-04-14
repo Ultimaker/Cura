@@ -22,7 +22,7 @@ class CuraSceneNode(SceneNode):
     Note that many other nodes can just be UM SceneNode objects.
     """
     def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_setting_override: bool = False) -> None:
-        super().__init__(parent = parent, visible = visible, name = name)
+        super().__init__(parent=parent, visible=visible, name=name)
         if not no_setting_override:
             self.addDecorator(SettingOverrideDecorator())  # Now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
@@ -85,7 +85,7 @@ class CuraSceneNode(SceneNode):
                     return extruder
             else:  # If the id is unknown, then return the extruder in the position 0
                 try:
-                    if extruder.getMetaDataEntry("position", default = "0") == "0":  # Check if the position is zero
+                    if extruder.getMetaDataEntry("position", default="0") == "0":  # Check if the position is zero
                         return extruder
                 except ValueError:
                     continue
@@ -100,7 +100,7 @@ class CuraSceneNode(SceneNode):
 
         material_color = "#808080"  # Fallback color
         if printing_extruder is not None and printing_extruder.material:
-            material_color = printing_extruder.material.getMetaDataEntry("color_code", default = material_color)
+            material_color = printing_extruder.material.getMetaDataEntry("color_code", default=material_color)
 
         # Colors are passed as rgb hex strings (eg "#ffffff"), and the shader needs
         # an rgba list of floats (eg [1.0, 1.0, 1.0, 1.0])
@@ -132,7 +132,7 @@ class CuraSceneNode(SceneNode):
 
         self._aabb = None
         if self._mesh_data:
-            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy = False))
+            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation(copy=False))
 
         for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
@@ -149,13 +149,13 @@ class CuraSceneNode(SceneNode):
 
         if self._aabb is None:  # No children that should be included? Just use your own position then, but it's an invalid AABB.
             position = self.getWorldPosition()
-            self._aabb = AxisAlignedBox(minimum = position, maximum = position)
+            self._aabb = AxisAlignedBox(minimum=position, maximum=position)
 
     def __deepcopy__(self, memo: Dict[int, object]) -> "CuraSceneNode":
         """Taken from SceneNode, but replaced SceneNode with CuraSceneNode"""
 
-        copy = CuraSceneNode(no_setting_override = True)  # Setting override will be added later
-        copy.setTransformation(self.getLocalTransformation(copy= False))
+        copy = CuraSceneNode(no_setting_override=True)  # Setting override will be added later
+        copy.setTransformation(self.getLocalTransformation(copy=False))
         copy.setMeshData(self._mesh_data)
         copy.setVisible(cast(bool, deepcopy(self._visible, memo)))
         copy.source_mime_type = cast(str, deepcopy(self.source_mime_type, memo))
@@ -173,4 +173,4 @@ class CuraSceneNode(SceneNode):
         self._transformChanged()
 
     def __repr__(self) -> str:
-        return "{print_order}. {name}".format(print_order = self._print_order, name = self.getName())
+        return "{print_order}. {name}".format(print_order=self._print_order, name=self.getName())

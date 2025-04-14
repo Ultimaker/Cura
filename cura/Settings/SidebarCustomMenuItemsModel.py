@@ -21,7 +21,7 @@ class SidebarCustomMenuItemsModel(ListModel):
         self.addRoleName(self.menu_item_icon_name_role, "icon_name")
         self._updateExtensionList()
 
-    def _updateExtensionList(self)-> None:
+    def _updateExtensionList(self) -> None:
         from cura.CuraApplication import CuraApplication
         for menu_item in CuraApplication.getInstance().getSidebarCustomMenuItems():
 

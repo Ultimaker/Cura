@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import threading
 from datetime import datetime
@@ -44,8 +45,8 @@ class CreateBackupJob(Job):
 
     def run(self) -> None:
         upload_message = Message(catalog.i18nc("@info:backup_status", "Creating your backup..."),
-                                 title = self.MESSAGE_TITLE,
-                                 progress = -1)
+                                 title=self.MESSAGE_TITLE,
+                                 progress=-1)
         upload_message.show()
         CuraApplication.getInstance().processEvents()
         cura_api = CuraApplication.getInstance().getCuraAPI()
@@ -86,10 +87,10 @@ class CreateBackupJob(Job):
 
         HttpRequestManager.getInstance().put(
             self._api_backup_url,
-            data = payload,
-            callback = self._onUploadSlotCompleted,
-            error_callback = self._onUploadSlotCompleted,
-            scope = self._json_cloud_scope)
+            data=payload,
+            callback=self._onUploadSlotCompleted,
+            error_callback=self._onUploadSlotCompleted,
+            scope=self._json_cloud_scope)
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if HttpRequestManager.safeHttpStatus(reply) >= 300:

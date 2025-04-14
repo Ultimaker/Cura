@@ -29,9 +29,9 @@ class QualityChangesGroup(QObject):
             self._name = name
             self.nameChanged.emit()
 
-    @pyqtProperty(str, fset = setName, notify = nameChanged)
+    @pyqtProperty(str, fset=setName, notify=nameChanged)
     def name(self) -> str:
         return self._name
 
     def __str__(self) -> str:
-        return "{class_name}[{name}, available = {is_available}]".format(class_name = self.__class__.__name__, name = self.name, is_available = self.is_available)
+        return "{class_name}[{name}, available = {is_available}]".format(class_name=self.__class__.__name__, name=self.name, is_available=self.is_available)
