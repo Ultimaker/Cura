@@ -66,15 +66,69 @@
                 -45
             ]
         },
-        "support_interface_density": { "value": 70 },
-        "support_interface_enable": { "value": true },
-        "support_interface_height": { "value": 0.5 },
-        "support_interface_pattern": { "default_value": "lines" },
-        "support_pattern": { "default_value": "lines" },
-        "support_xy_distance": { "value": 0.5 },
-        "support_z_distance": { "value": 0.3 },
-        "top_bottom_thickness": { "value": 1.5 },
-        "wall_line_count": { "value": 3 },
-        "wall_thickness": { "value": 1.2 }
+        "gantry_height": {"value": "70"},
+
+        
+	
+        "machine_start_gcode": {"default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\n; M140 S{material_bed_temperature}   ; set bed temp\n;M190 S{material_bed_temperature}   ; wait for bed temp\n;M104 S{material_print_temperature} ; set extruder temp\n;M109 S{material_print_temperature} ; wait for extruder temp\n;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\n;Put printing message on LCD screen\nM117 Printing..."},
+        "machine_end_gcode": {"value": "'M104 S0 ;extruder heater off' + ('\\nM140 S0 ;heated bed heater off' if machine_heated_bed else '') + '\\nG91 ;relative positioning\\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\\nM84 ;steppers off\\nG90 ;absolute positioning\\nM107 ; Fans off'"},
+	
+	"layer_height": { "default_value": 0.15 },
+	"layer_height_0": { "default_value": 0.2 },
+
+	"wall_line_count":{ "value": 3 },
+	"wall_thickness": { "value": "wall_line_count*line_width" },
+ 	"top_bottom_thickness": {"value": 1.5},
+ 	"optimize_wall_printing_order": {"value": true},
+
+	"xy_offset": {"value": "-machine_nozzle_size/2"},
+	"infill_sparse_density": {"value":15},
+ 	"infill_overlap": {"value": 0},
+
+	"speed_print": { "value": 45 },
+	"speed_infill": { "value": 45 },
+	"speed_travel": { "value": 75 },
+ 	"speed_topbottom": {"value": 40 },
+	"speed_wall": { "value": 35 },
+	"speed_wall_x": { "value": 40 },
+	"speed_equalize_flow_max": { "value": 70 },
+
+ 	
+	"retraction_amount": { "default_value": 4 },
+        "retraction_speed": { "default_value": 70},
+ 	"retraction_min_travel": {"value":5 },
+	"retraction_count_max": {"default_value":10 },
+	"retraction_extrusion_window": {"value":4 },
+ 	"retraction_hop": {"default_value":0.2},
+	"retraction_hop_enabled": {"value":true},
+	"speed_z_hop": {"value":2.5 },
+	"retraction_combing": {"value":"off"},
+	"cool_min_layer_time": {"default_value":30},
+
+ 	
+ 	"cool_fan_full_at_height": {"value":0.4},
+ 	"cool_fan_full_layer": {"value":2},
+ 	"cool_min_speed": {"value":30},
+
+	"support_enable": {"value":true},
+ 	"support_angle": {"default_value": 50},
+ 	"support_brim_enable": {"value":true},
+ 	"support_infill_angles": {"value":[-45]},
+
+
+
+
+
+ 	"support_xy_distance": {"value": "machine_nozzle_size"},
+	"support_xy_distance_overhang": {"value": "machine_nozzle_size*0.95"},
+ 	"support_z_distance": {"value": "layer_height*2"},
+	"minimum_support_area": {"value": 30},
+	"support_angle": {"value": 40},
+	"wall_overhang_angle": {"value": 40},
+	"wall_overhang_speed_factor": {"value": 40},
+
+ 	"adhesion_type": {"default_value":"skirt"}
+
+
     }
 }
