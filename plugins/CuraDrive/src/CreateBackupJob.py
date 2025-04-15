@@ -99,10 +99,10 @@ class CreateBackupJob(Job):
         self._requestUploadSlot(backup_meta_data, len(self._backup_zip))
 
         # Note: One 'process events' call wasn't enough with the changed situation somehow.
-        active_done_check = False
-        while not active_done_check:
+        for _ in range(5000):
             CuraApplication.getInstance().processEvents()
-            active_done_check = self._job_done.wait(0.02)
+            if self._job_done.wait(0.02):
+                break
 
         if self.backup_upload_error_message == "":
             self._upload_message.setText(catalog.i18nc("@info:backup_status", "Your backup has finished uploading."))

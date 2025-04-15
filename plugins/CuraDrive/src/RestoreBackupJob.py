@@ -56,10 +56,10 @@ class RestoreBackupJob(Job):
         )
 
         # Note: Just to be sure, use the same structure here as in CreateBackupJob.
-        active_done_check = False
-        while not active_done_check:
+        for _ in range(5000):
             CuraApplication.getInstance().processEvents()
-            active_done_check = self._job_done.wait(0.02)
+            if self._job_done.wait(0.02):
+                break
 
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
@@ -71,7 +71,7 @@ class RestoreBackupJob(Job):
 
         # We store the file in a temporary path fist to ensure integrity.
         try:
-            self._temporary_backup_file = NamedTemporaryFile(delete = False)
+            self._temporary_backup_file = NamedTemporaryFile(delete_on_close = False)
             with open(self._temporary_backup_file.name, "wb") as write_backup:
                 app = CuraApplication.getInstance()
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)

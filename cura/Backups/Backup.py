@@ -114,7 +114,7 @@ class Backup:
             data["installed"] = keep_in
             data["to_install"].update(reinstall)
         if data is not None:
-            tmpfile = tempfile.NamedTemporaryFile(delete=False)
+            tmpfile = tempfile.NamedTemporaryFile(delete_on_close=False)
             with open(tmpfile.name, "w") as outfile:
                 json.dump(data, outfile)
             add_to_archive(tmpfile.name, file_path)
