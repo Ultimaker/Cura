@@ -115,7 +115,7 @@
         "machine_max_jerk_e": { "default_value": 100 },
         "machine_max_jerk_xy": { "default_value": 5000 },
         "machine_max_jerk_z": { "default_value": 100 },
-        "machine_name": { "default_value": "BambuLabs Bambu A1 mini" },
+        "machine_name": { "default_value": "BambuLab Bambu A1 mini" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.3 },
         "machine_nozzle_heat_up_speed": { "default_value": 1.9 },
         "machine_nozzle_size": { "value": 0.4 },
