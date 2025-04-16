@@ -1,11 +1,11 @@
 {
     "version": 2,
-    "name": "Ultimaker S8",
+    "name": "UltiMaker S8",
     "inherits": "ultimaker_s7",
     "metadata":
     {
         "visible": true,
-        "author": "Ultimaker",
+        "author": "UltiMaker",
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s7_platform.obj",
@@ -385,7 +385,7 @@
             "unit": "m/s\u00b3",
             "value": "20000 if machine_gcode_flavor == 'Cheetah' else 100"
         },
-        "machine_name": { "default_value": "Ultimaker S8" },
+        "machine_name": { "default_value": "UltiMaker S8" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.3 },
         "machine_nozzle_heat_up_speed": { "default_value": 0.6 },
         "machine_start_gcode": { "default_value": "M213 U0.1 ;undercut 0.1mm" },
@@ -412,7 +412,7 @@
         "retraction_hop": { "value": 1 },
         "retraction_hop_after_extruder_switch_height": { "value": 2 },
         "retraction_hop_enabled": { "value": true },
-        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2" },
+        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2.5" },
         "retraction_prime_speed": { "value": 15 },
         "skin_edge_support_thickness": { "value": 0 },
         "skin_material_flow": { "value": 95 },
@@ -500,13 +500,13 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 400,
-            "value": 400
+            "maximum_value_warning": 300,
+            "value": 300
         },
         "speed_travel_layer_0":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 400,
+            "maximum_value_warning": 300,
             "value": 150
         },
         "speed_wall":
