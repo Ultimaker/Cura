@@ -1,11 +1,16 @@
 #  Copyright (c) 2015-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
+import hashlib
+
+from io import StringIO
+
 import json
 import re
 import threading
 
 from typing import Optional, cast, List, Dict, Pattern, Set
 
+from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
@@ -50,8 +55,12 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 THUMBNAIL_PATH = "Metadata/thumbnail.png"
+THUMBNAIL_PATH_MULTIPLATE = "Metadata/plate_1.png"
+THUMBNAIL_PATH_MULTIPLATE_SMALL = "Metadata/plate_1_small.png"
 MODEL_PATH = "3D/3dmodel.model"
 PACKAGE_METADATA_PATH = "Cura/packages.json"
+GCODE_PATH = "Metadata/Plate_1.gcode"
+GCODE_MD5_PATH = f"{GCODE_PATH}.md5"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -201,9 +210,10 @@ class ThreeMFWriter(MeshWriter):
 
         painter.end()
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None, **kwargs) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
+        add_extra_data = kwargs.get("mime_type", "") == "application/vnd.bambulab-package.3dmanufacturing-3dmodel+xml"
         try:
             model_file = zipfile.ZipInfo(MODEL_PATH)
             # Because zipfile is stupid and ignores archive-level compression settings when writing with ZipInfo.
@@ -222,6 +232,9 @@ class ThreeMFWriter(MeshWriter):
             relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
             model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + MODEL_PATH, Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
 
+            if add_extra_data:
+                self._storeGCode(archive)
+
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()
             if snapshot:
@@ -236,6 +249,15 @@ class ThreeMFWriter(MeshWriter):
                 thumbnail_file = zipfile.ZipInfo(THUMBNAIL_PATH)
                 # Don't try to compress snapshot file, because the PNG is pretty much as compact as it will get
                 archive.writestr(thumbnail_file, thumbnail_buffer.data())
+
+                if add_extra_data:
+                    archive.writestr(zipfile.ZipInfo(THUMBNAIL_PATH_MULTIPLATE), thumbnail_buffer.data())
+
+                    small_snapshot = snapshot.scaled(128, 128, transformMode = Qt.TransformationMode.SmoothTransformation)
+                    small_thumbnail_buffer = QBuffer()
+                    small_thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+                    small_snapshot.save(small_thumbnail_buffer, "PNG")
+                    archive.writestr(zipfile.ZipInfo(THUMBNAIL_PATH_MULTIPLATE_SMALL), small_thumbnail_buffer.data())
 
                 # Add PNG to content types file
                 thumbnail_type = ET.SubElement(content_types, "Default", Extension="png", ContentType="image/png")
@@ -318,6 +340,25 @@ class ThreeMFWriter(MeshWriter):
                 self._archive = archive
 
         return True
+
+    def _storeGCode(self, archive):
+        gcode_textio = StringIO()  # We have to convert the g-code into bytes.
+        gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
+        success = gcode_writer.write(gcode_textio, None)
+
+        if success:
+            gcode_data = gcode_textio.getvalue().encode("UTF-8")
+            archive.writestr(zipfile.ZipInfo(GCODE_PATH), gcode_data)
+
+            # Calculate and store the MD5 sum of the gcode data
+            md5_hash = hashlib.md5(gcode_data).hexdigest()
+            archive.writestr(zipfile.ZipInfo(GCODE_MD5_PATH), md5_hash.encode("UTF-8"))
+            return True
+        else:
+            error_msg = catalog.i18nc("@info:error", "Can't write GCode to 3MF file")
+            self.setInformation(error_msg)
+            Logger.error(error_msg)
+            return False
 
     @staticmethod
     def _storeMetadataJson(metadata: Dict[str, List[Dict[str, str]]], archive: zipfile.ZipFile, path: str) -> None:

@@ -7,7 +7,7 @@
         "visible": true,
         "author": "Mariska",
         "manufacturer": "BambuLab",
-        "file_formats": "text/x-gcode",
+        "file_formats": "application/vnd.bambulab-package.3dmanufacturing-3dmodel+xml",
         "platform": "bambulab_a1mini.obj",
         "has_machine_quality": true,
         "has_material": true,
