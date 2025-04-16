@@ -776,7 +776,6 @@ class AddCoolingProfile(Script):
             for line in lines:
                 if ";LAYER:" in line:
                     layer_number = str(line.split(":")[1])
-                    continue
                 if int(layer_number) >= int(the_start_layer) and int(layer_number) < int(the_end_layer)-1:
                     temp = line.split(" ")[0]
                     try:
@@ -789,6 +788,7 @@ class AddCoolingProfile(Script):
                         if feature_fan_combing == True:
                             modified_data += "M106 S0" + t0_fan + "\n"
                 modified_data += line + "\n"
+                
                 # If an End Layer is defined and is less than the last layer then insert the Final Speed
                 if line == ";LAYER:" + str(the_end_layer) and the_end_is_enabled == True:
                     modified_data += feature_speed_list[len(feature_speed_list) - 1] + t0_fan + "\n"
