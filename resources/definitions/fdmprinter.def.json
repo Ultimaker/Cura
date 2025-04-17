@@ -214,8 +214,8 @@
                 },
                 "machine_buildplate_type":
                 {
-                    "label": "Build Plate Material",
-                    "description": "The material of the build plate installed on the printer.",
+                    "label": "Build Plate Type",
+                    "description": "The type of build plate installed on the printer.",
                     "default_value": "glass",
                     "type": "enum",
                     "options":

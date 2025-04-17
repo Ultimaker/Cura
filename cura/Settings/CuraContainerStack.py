@@ -402,6 +402,9 @@ class CuraContainerStack(ContainerStack):
 
         return super().getProperty(key, property_name, context)
 
+    def getValue(self, key: str, context = None) -> Any:
+        return self.getProperty(key, "value", context)
+
 
 class _ContainerIndexes:
     """Private helper class to keep track of container positions and their types."""
