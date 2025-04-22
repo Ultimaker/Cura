@@ -4,6 +4,7 @@
     "inherits": "bambulab_base",
     "metadata":
     {
+        "visible": true,
         "platform": "bambulab_x1.obj",
         "has_machine_quality": true,
         "has_material": true,
@@ -24,7 +25,6 @@
         ],
         "platform_texture": "bambulab-buildplate.png",
         "preferred_variant_name": "0.4mm",
-        "visible": true,
         "weight": 3
     },
     "overrides":
