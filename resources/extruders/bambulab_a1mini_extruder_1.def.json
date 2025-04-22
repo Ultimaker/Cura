@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "bambulabs_a1mini",
+        "machine": "bambulab_a1mini",
         "position": "1"
     },
     "overrides":

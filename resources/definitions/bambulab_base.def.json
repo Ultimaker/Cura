@@ -1,34 +1,13 @@
 {
     "version": 2,
-    "name": "BambuLab X1",
+    "name": "BambuLab base definition",
     "inherits": "fdmprinter",
     "metadata":
     {
-        "visible": true,
+        "visible": false,
         "author": "UltiMaker",
         "manufacturer": "BambuLab",
-        "file_formats": "text/x-gcode",
-        "platform": "bambulab_x1.obj",
-        "has_machine_quality": true,
-        "has_material": true,
-        "has_textured_buildplate": true,
-        "has_variant_buildplates": false,
-        "has_variants": true,
-        "machine_extruder_trains":
-        {
-            "0": "bambulab_x1_extruder_0",
-            "1": "bambulab_x1_extruder_1",
-            "2": "bambulab_x1_extruder_2",
-            "3": "bambulab_x1_extruder_3"
-        },
-        "platform_offset": [
-            -130,
-            0,
-            130
-        ],
-        "platform_texture": "bambulab-buildplate.png",
-        "preferred_variant_name": "X1C 0.4mm",
-        "weight": 3
+        "file_formats": "application/vnd.bambulab-package.3dmanufacturing-3dmodel+xml"
     },
     "overrides":
     {
@@ -101,12 +80,20 @@
         "jerk_wall_x_roofing": { "value": "jerk_wall_0" },
         "line_width": { "value": 0.42 },
         "machine_acceleration": { "value": 10000 },
-        "machine_center_is_zero": { "value": false },
-        "machine_depth": { "value": 256 },
-        "machine_end_gcode": { "default_value": "M400 ; wait for buffer to clear\nG92 E0 ; zero the extruder\nG1 E-0.8 F1800 ; retract\nG1 Z{machine_height + 0.5} F900 ; lower z a little\nG1 X65 Y245 F12000 ; move to safe pos \nG1 Y265 F3000\n\nG1 X65 Y245 F12000\nG1 Y265 F3000\nM140 S0 ; turn off bed\nM106 S0 ; turn off fan\nM106 P2 S0 ; turn off remote part cooling fan\nM106 P3 S0 ; turn off chamber cooling fan\n\nG1 X100 F12000 ; wipe\n; pull back filament to AMS\nM620 S255\nG1 X20 Y50 F12000\nG1 Y-3\nT255\nG1 X65 F12000\nG1 Y265\nG1 X100 F12000 ; wipe\nM621 S255\nM104 S0 ; turn off hotend\n\nM622.1 S1 ; for prev firware, default turned on\nM1002 judge_flag timelapse_record_flag\nM622 J1\n    M400 ; wait all motion done\n    M991 S0 P-1 ;end smooth timelapse at safe pos\n    M400 S3 ;wait for last picture to be taken\nM623; end of \"timelapse_record_flag\"\n\nM400 ; wait all motion done\nM17 S\nM17 Z0.4 ; lower z motor current to reduce impact if there is something in the bottom\n{if (machine_height + 100.0) < 25}\n    G1 Z{machine_height + 100.0} F600\n    G1 Z{machine_height +98.0}\n{else}\n    G1 Z250 F600\n    G1 Z248\n{endif}\nM400 P100\nM17 R ; restore z current\n\nG90\nG1 X128 Y250 F3600\n\nM220 S100  ; Reset feedrate magnitude\nM201.2 K1.0 ; Reset acc magnitude\nM73.2   R1.0 ;Reset left time magnitude\nM1002 set_gcode_claim_speed_level : 0\n\nM17 X0.8 Y0.8 Z0.5 ; lower motor current to 45% power\n" },
-        "machine_extruder_count": { "value": 4 },
-        "machine_heated_bed": { "value": true },
-        "machine_height": { "value": 251 },
+        "machine_buildplate_type":
+        {
+            "default_value": "textured_pei_plate",
+            "options":
+            {
+                "cool_plate": "Cool Plate",
+                "engineering_plate": "Engineering Plate",
+                "high_temp_plate": "High Temp Plate",
+                "textured_pei_plate": "Textured PEI Plate"
+            }
+        },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_gcode_flavor": { "default_value": "BambuLab" },
+        "machine_heated_bed": { "default_value": true },
         "machine_max_feedrate_e": { "value": 150 },
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
@@ -114,19 +101,30 @@
         "machine_max_jerk_e": { "default_value": 100 },
         "machine_max_jerk_xy": { "default_value": 5000 },
         "machine_max_jerk_z": { "default_value": 100 },
-        "machine_name": { "default_value": "BambuLab Bambu X1" },
         "machine_nozzle_cool_down_speed": { "default_value": 1.3 },
         "machine_nozzle_heat_up_speed": { "default_value": 1.9 },
-        "machine_nozzle_size": { "value": 0.4 },
+        "machine_nozzle_size": { "default_value": 0.4 },
         "machine_show_variants": { "value": true },
-        "machine_start_gcode": { "default_value": "" },
         "machine_use_extruder_offset_to_offset_coords": { "value": false },
-        "machine_width": { "value": 256 },
-        "material_diameter": { "value": 1.75 },
+        "material_diameter": { "default_value": 1.75 },
+        "material_flush_purge_length":
+        {
+            "default_value": 80,
+            "enabled": "not prime_tower_enable"
+        },
+        "material_flush_purge_speed":
+        {
+            "default_value": 500,
+            "enabled": "not prime_tower_enable"
+        },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
         "min_infill_area": { "default_value": 10 },
         "optimize_wall_printing_order": { "value": false },
+        "prime_tower_enable": { "default_value": true },
+        "prime_tower_line_width": { "value": "1.5 * line_width" },
+        "prime_tower_min_volume": { "default_value": 250 },
+        "prime_tower_size": { "default_value": 40 },
         "relative_extrusion": { "value": true },
         "retraction_amount": { "value": 0.5 },
         "retraction_combing_max_distance": { "value": 100 },
@@ -157,7 +155,7 @@
         "speed_layer_0":
         {
             "maximum_value_warning": 500,
-            "value": "speed_wall"
+            "value": "speed_print/6"
         },
         "speed_prime_tower":
         {
@@ -254,6 +252,7 @@
         "support_infill_rate": { "value": "80 if gradual_support_infill_steps != 0 else 15" },
         "support_pattern": { "value": "'gyroid'" },
         "support_structure": { "value": "'tree'" },
+        "switch_extruder_retraction_amount": { "value": 5 },
         "travel_avoid_other_parts": { "value": false },
         "wall_0_acceleration": { "value": 1000 },
         "wall_0_deceleration": { "value": 1000 },
@@ -262,8 +261,8 @@
         "wall_0_start_speed_ratio": { "value": 100 },
         "wall_0_wipe_dist": { "value": 0 },
         "wall_material_flow": { "value": 95 },
-        "wall_overhang_angle": { "value": 45 },
-        "wall_overhang_speed_factor": { "value": 50 },
+        "wall_overhang_angle": { "value": 10 },
+        "wall_overhang_speed_factors": { "default_value": "[25,15,5,5]" },
         "wall_x_material_flow": { "value": 100 },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backright'" },
@@ -288,42 +287,6 @@
                     "type": "float",
                     "unit": "mm\u00b3/s",
                     "value": "16"
-                }
-            }
-        },
-        "platform_adhesion":
-        {
-            "children":
-            {
-                "machine_buildplate":
-                {
-                    "default_value": "textured_pei_plate",
-                    "description": "The type of the build plate installed on the printer.",
-                    "enabled": true,
-                    "label": "Build Plate Type",
-                    "options":
-                    {
-                        "cool_plate": "Cool Plate",
-                        "engineering_plate": "Engineering Plate",
-                        "high_temp_plate": "High Temp Plate",
-                        "textured_pei_plate": "Textured PEI Plate"
-                    },
-                    "settable_per_extruder": false,
-                    "settable_per_mesh": false,
-                    "settable_per_meshgroup": false,
-                    "type": "enum"
-                },
-                "machine_scan_first_layer":
-                {
-                    "default_value": true,
-                    "description": "Whether to scan the first layer for layer adhesion problems.",
-                    "enabled": true,
-                    "label": "Scan the first layer",
-                    "settable_per_extruder": false,
-                    "settable_per_mesh": false,
-                    "settable_per_meshgroup": false,
-                    "type": "bool",
-                    "value": "machine_buildplate!='textured_pei_plate'"
                 }
             }
         }
