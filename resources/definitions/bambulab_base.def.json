@@ -54,7 +54,7 @@
         "gradual_flow_enabled": { "value": false },
         "hole_xy_offset": { "value": 0.075 },
         "infill_overlap": { "value": 10 },
-        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'gyroid'" },
         "infill_sparse_density": { "value": 15 },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
         "jerk_infill": { "value": "jerk_print" },
