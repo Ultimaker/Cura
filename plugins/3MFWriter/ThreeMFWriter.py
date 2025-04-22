@@ -8,10 +8,12 @@ import json
 import re
 import threading
 
-from typing import Optional, cast, List, Dict, Pattern, Set
+from typing import Optional, cast, List, Dict, Set, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from Settings.ExtruderStack import ExtruderStack
 
 from Machines.Models.ExtrudersModel import ExtrudersModel
-from Settings.ExtruderStack import ExtruderStack
 from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -461,7 +463,7 @@ class ThreeMFWriter(MeshWriter):
         return ET.Element("Relationships", xmlns=self._namespaces["relationships"])
 
     @staticmethod
-    def _getMaterialColor(extruder: ExtruderStack) -> str:
+    def _getMaterialColor(extruder: "ExtruderStack") -> str:
         position = int(extruder.getMetaDataEntry("position", default="0"))
         try:
             default_color = ExtrudersModel.defaultColors[position]
