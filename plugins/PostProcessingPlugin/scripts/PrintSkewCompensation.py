@@ -65,7 +65,8 @@ class PrintSkewCompensation(Script):
                     "unit": "radian",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": 0.0001,
+                    "minimum_value": -0.05,
+                    "maximum_value": 0.05,
                     "enabled": "enable_print_skew_comp and xy_calc_type == 'xytype_tan'"
                 },
                 "yz_calc_type":
@@ -105,7 +106,8 @@ class PrintSkewCompensation(Script):
                     "unit": "radian",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": 0.0001,
+                    "minimum_value": -0.05,
+                    "maximum_value": 0.05,
                     "enabled": "yz_calc_type == 'yztype_tan'"
                 },
 
@@ -146,7 +148,8 @@ class PrintSkewCompensation(Script):
                     "unit": "radian",
                     "type": "float",
                     "default_value": 0.0,
-                    "minimum_value": 0.0001,
+                    "minimum_value": -0.05,
+                    "maximum_value": 0.05,
                     "enabled": "enable_print_skew_comp and xz_calc_type == 'xztype_tan'"
                 }
             }
@@ -176,7 +179,7 @@ class PrintSkewCompensation(Script):
 
         # Exit if the post processor is not enabled
         if not bool(self.getSettingValueByKey("enable_print_skew_comp")):
-            data[0] += ";    [Print Skew Compensation] not enabled\n"
+            data[0] += ";  [Print Skew Compensation] not enabled\n"
             return data
 
         # Exit if the gcode has already been post-processed
@@ -219,7 +222,12 @@ class PrintSkewCompensation(Script):
             xz_tangent = xz_x_error/xz_z_hgt
         else:
             xz_tangent = self.getSettingValueByKey("xz_tangent")
-
+        
+        # Exit if there are no error values entered
+        if not (xy_tangent + yz_tangent + xz_tangent):
+            data[0] += ";  [Print Skew Compensation] did not run (no errors entered)\n"
+            return data
+            
         # z_input is cummulative
         z_input = 0
         for layer_index, layer in enumerate(data):
