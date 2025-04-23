@@ -10,8 +10,6 @@ import threading
 
 from typing import Optional, cast, List, Dict, Pattern, Set
 
-from Machines.Models.ExtrudersModel import ExtrudersModel
-from Settings.ExtruderStack import ExtruderStack
 from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -26,7 +24,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from cura.Settings import CuraContainerStack
+from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
