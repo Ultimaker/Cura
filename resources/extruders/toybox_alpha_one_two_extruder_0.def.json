@@ -4,7 +4,7 @@
     "inherits": "fdmextruder",
     "metadata":
     {
-        "machine": "toybox_alpha_one",
+        "machine": "toybox_alpha_one_two",
         "position": "0"
     },
     "overrides":
