@@ -108,7 +108,7 @@ class PrintSkewCompensation(Script):
                     "default_value": 0.0,
                     "minimum_value": -0.05,
                     "maximum_value": 0.05,
-                    "enabled": "yz_calc_type == 'yztype_tan'"
+                    "enabled": "enable_print_skew_comp and yz_calc_type == 'yztype_tan'"
                 },
 
                 "xz_calc_type":
