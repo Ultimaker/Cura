@@ -33,7 +33,7 @@
     {
         "acceleration_enabled":
         {
-            "enabled": false,
+            "enabled": true,
             "value": true
         },
         "acceleration_infill":
