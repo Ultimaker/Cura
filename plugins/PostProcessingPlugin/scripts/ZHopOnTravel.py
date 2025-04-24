@@ -28,7 +28,9 @@ import math
 from UM.Logger import Logger
 
 class ZHopOnTravel(Script):
-
+    def __init__(self):
+        super().__init__()
+        
     def getSettingDataString(self):
         return """{
             "name": "Z-Hop on Travel",
@@ -170,7 +172,6 @@ class ZHopOnTravel(Script):
         extra_prime_vol = extruder[0].getProperty("retraction_extra_prime_amount", "value")
         extra_prime_dist = extra_prime_vol / (math.pi * (filament_dia / 2)**2)
         self._add_retract = self.getSettingValueByKey("add_retract")
-        min_travel_dist = self.getSettingValueByKey("min_travel_dist")
         hop_height = round(self.getSettingValueByKey("hop_height"),2)
         list_or_range = self.getSettingValueByKey("list_or_range")
         infill_only = self.getSettingValueByKey("infill_only")
@@ -187,7 +188,6 @@ class ZHopOnTravel(Script):
                     if ";LAYER:" + str(int(layer) - 1) + "\n" in data[num]:
                         index_list.append(num)
             start_index = index_list[0]
-            end_index = index_list[len(index_list) - 1]
 
         elif list_or_range == "range_of_layers":
             start_layer = self.getSettingValueByKey("start_layer")
@@ -307,7 +307,7 @@ class ZHopOnTravel(Script):
                             lines[index] = lines[index].replace("G0", f"G0 F{speed_travel}")
                         if "X" in lines[index - 1] and "Y" in lines[index - 1] and "E" in lines[index - 1]:
                             self._is_retracted = False
-                        hop_up_lines = self.get_hop_up_lines(retraction_amount, speed_zhop, retract_speed, prime_speed, extra_prime_dist, firmware_retract, relative_extrusion, hop_height)
+                        hop_up_lines = self.get_hop_up_lines(retraction_amount, speed_zhop, retract_speed, extra_prime_dist, firmware_retract, relative_extrusion, hop_height)
                         lines[index] = hop_up_lines + lines[index]
 
                 # Make the 'Zhop down' insertion at the correct index location (or as soon as practicable after it)
@@ -320,7 +320,7 @@ class ZHopOnTravel(Script):
                     self._is_retracted = False
                     hop_end = 0
                     hop_start = 0
-                    hop_down = ""
+                    hop_down_lines = ""
                 if line.startswith(";"):
                     continue
                 self._prev_e = self._cur_e
@@ -341,7 +341,7 @@ class ZHopOnTravel(Script):
             pass
         return data
 
-    def _total_travel_length(self, l_index: int, lines: str) -> float:
+    def _total_travel_length(self, l_index: int, lines: str) -> int:
         """
         This function gets the cummulative total travel distance of each individual travel move.
         :parameters:
@@ -363,9 +363,9 @@ class ZHopOnTravel(Script):
             if g_num == len(lines):
                 break
         if travel_total > self.getSettingValueByKey("min_travel_dist"):
-            return l_index, g_num
+            return [l_index, g_num]
         else:
-            return 0, 0
+            return [0, 0]
 
     def _get_distance(self) -> float:
         """
@@ -377,7 +377,7 @@ class ZHopOnTravel(Script):
             return 0
         return dist
 
-    def get_hop_up_lines(self, retraction_amount: float, speed_zhop: str, retract_speed: str, prime_speed: str, extra_prime_dist: float, firmware_retract: bool, relative_extrusion: bool, hop_height: str) -> str:
+    def get_hop_up_lines(self, retraction_amount: float, speed_zhop: str, retract_speed: str, extra_prime_dist: float, firmware_retract: bool, relative_extrusion: bool, hop_height: str) -> str:
         """
         Determine if the hop will require a retraction
         :parameters:
@@ -401,13 +401,11 @@ class ZHopOnTravel(Script):
         if reset_type in [1, 9] and hop_retraction: # add retract only when necessary
             up_lines = f"G1 F{retract_speed} E{round(self._cur_e - retraction_amount, 5)} ; Retract\n" + up_lines
             self._cur_e = round(self._cur_e - retraction_amount, 5)
-        if reset_type in [3, 7] and hop_retraction: # add retract and firmware retract
+        if reset_type in [3, 7, 11, 15] and hop_retraction: # add retract and firmware retract
             up_lines = "G10 ; Retract\n" + up_lines
         if reset_type in [5, 13] and hop_retraction: # add retract and relative extrusion
             up_lines = f"G1 F{retract_speed} E-{retraction_amount} ; Retract\n" + up_lines
             self._cur_e = 0
-        if reset_type in [11, 15] and hop_retraction: # add retract, firmware retraction, extra prime
-            up_lines = "G10 ; Retract\n" + up_lines
 
         # Format the added lines for readability
         if "\n" in up_lines: # for lines that include a retraction
@@ -458,15 +456,12 @@ class ZHopOnTravel(Script):
         # Add retract 1
         if reset_type == 1 and hop_retraction:
             dn_lines += f"\nG1 F{prime_speed} E{round(self._prev_e + retraction_amount, 5)} ; Unretract"
-        # Add retract 1 + firmware retract 2
-        if reset_type == 3 and hop_retraction:
+        # Add retract 1 + firmware retract 2 and Add retract 1 + firmware retraction 2 + relative extrusion 4
+        if reset_type in [3, 7] and hop_retraction:
             dn_lines += "\nG11 ; UnRetract"
         # Add retract 1 + relative extrusion 4
         if reset_type == 5 and hop_retraction:
             dn_lines += f"\nG1 F{prime_speed} E{retraction_amount} ; UnRetract"
-        # Add retract 1 + firmware retraction 2 + relative extrusion 4
-        if reset_type == 7 and hop_retraction:
-            dn_lines += f"\nG11 ; Unretract"
         # Add retract 1 + extra prime 8
         if reset_type == 9 and hop_retraction:
             dn_lines += f"\nG92 E{round(self._prev_e - extra_prime_dist,5)} ; Extra prime adjustment"
@@ -502,7 +497,7 @@ class ZHopOnTravel(Script):
         self._is_retracted = False
         return dn_lines
 
-    def _track_all_axes(self, data: str, cmd_list: int, start_index: int, relative_extrusion: bool) -> str:
+    def _track_all_axes(self, data: str, cmd_list: str, start_index: int, relative_extrusion: bool) -> str:
         """
         This function tracks the XYZE locations prior to the beginning of the first 'layer-of-interest'
 
@@ -541,4 +536,4 @@ class ZHopOnTravel(Script):
                         self._is_retracted = False
                         self._cur_e = 0
         self._prev_e = self._cur_e
-        return
+        return None
