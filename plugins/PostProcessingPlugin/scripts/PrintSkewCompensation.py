@@ -40,7 +40,11 @@ class PrintSkewCompensation(Script):
                 "xy_x_error":
                 {
                     "label": "    XY Plane 'X' Error",
+<<<<<<< Updated upstream
                     "description": "Error on the X axis in the XY plane (in mm).  This error is visible when looking straight down on the print (the Top View).  With the bottom edge of the print square to the front edge of the build plate - this is the adjustment required to make a parallelogram a rectangle.  A negative value will move the top of the shape to the right (CW) and a positive value will move the top of the shape to the left (CCW).",
+=======
+                    "description": "Error on the X axis in the XY plane (in mm).  This error is visible when looking straight down on the print (the Top View).  With the bottom edge of the print square to the front edge of the build plate - this is the adjustment required to make a parallelogram a rectangle.  A positive value will move the top of the shape to the Left (CCW) and a negative value will move the top of the shape to the right (CW).",
+>>>>>>> Stashed changes
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -55,7 +59,12 @@ class PrintSkewCompensation(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 100.0,
+<<<<<<< Updated upstream
                     "minimum_value": 0.0,
+=======
+                    "minimum_value": 1,
+                    "minimum_value_warning": 25,
+>>>>>>> Stashed changes
                     "enabled": "enable_print_skew_comp and xy_calc_type == 'xytype_len'"
                 },
                 "xy_tangent":
@@ -81,7 +90,11 @@ class PrintSkewCompensation(Script):
                 "yz_y_error":
                 {
                     "label": "    YZ Plane 'Y' Error",
+<<<<<<< Updated upstream
                     "description": "Error on the Y axis for the YZ plane in mm.  This error is visible in the 'Side View' of the print.  This is the adjustment required to make a parallelogram into a rectangle.  A negative value will move the top of the shape to the right (CW) and a positive value will move the top of the shape to the left (CCW).",
+=======
+                    "description": "Error on the Y axis for the YZ plane in mm.  This error is visible in the 'Side View' of the print.  This is the adjustment required to make a parallelogram into a rectangle.  A positive value will move the top of the shape to the Left (CCW) and a negative value will move the top of the shape to the Right (CW).",
+>>>>>>> Stashed changes
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -96,7 +109,12 @@ class PrintSkewCompensation(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 100,
+<<<<<<< Updated upstream
                     "minimum_value": 0.0,
+=======
+                    "minimum_value": 1,
+                    "minimum_value_warning": 25,
+>>>>>>> Stashed changes
                     "enabled": "enable_print_skew_comp and yz_calc_type == 'yztype_len'"
                 },
                 "yz_tangent":
@@ -123,7 +141,11 @@ class PrintSkewCompensation(Script):
                 "xz_x_error":
                 {
                     "label": "    XZ Plane 'X' Error",
+<<<<<<< Updated upstream
                     "description": "Error on the 'X' axis on the XZ plane in mm.  This error is visible in the 'Front View' of the print.  This is the adjustment required to make a parallelogram into a rectangle.  A negative value will move the top of the shape to the right (CW) and a positive value will move the top of the shape to the left (CCW).",
+=======
+                    "description": "Error on the 'X' axis on the XZ plane in mm.  This error is visible in the 'Front View' of the print.  This is the adjustment required to make a parallelogram into a rectangle.  A positive value will move the top of the shape to the Left (CCW) and a negative value will move the top of the shape to the Right (CW).",
+>>>>>>> Stashed changes
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
@@ -138,7 +160,12 @@ class PrintSkewCompensation(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 100,
+<<<<<<< Updated upstream
                     "minimum_value": 0.0,
+=======
+                    "minimum_value": 1,
+                    "minimum_value_warning": 25,
+>>>>>>> Stashed changes
                     "enabled": "enable_print_skew_comp and xz_calc_type == 'xztype_len'"
                 },
                 "xz_tangent":
@@ -151,6 +178,17 @@ class PrintSkewCompensation(Script):
                     "minimum_value": -0.05,
                     "maximum_value": 0.05,
                     "enabled": "enable_print_skew_comp and xz_calc_type == 'xztype_tan'"
+<<<<<<< Updated upstream
+=======
+                },
+                "add_settings_to_gcode":
+                {
+                    "label": "Add settings to the gcode",
+                    "description": "Whether to make a record of these settings in the gcode file.  They go in at the end of the file.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "enable_print_skew_comp"
+>>>>>>> Stashed changes
                 }
             }
         }"""
@@ -163,6 +201,7 @@ class PrintSkewCompensation(Script):
             xy_calc_type:   by error or by tangent
             xy_x_error:     the amount of skew in the X
             xy_y_length:    the Y base line length where the X skew was measured
+<<<<<<< Updated upstream
             xy_tangent:     the user calculated tanget of 'X Error/Y Base Length'
             yz_calc_type:   by error or by tangent
             yz_y_error:     the amount of skew in the Y
@@ -172,6 +211,17 @@ class PrintSkewCompensation(Script):
             xz_x_error:     the amount of skew in the X
             xz_z_hgt:       the Z base line height where the X skew was measured
             xz_tangent:     the user calculated tanget of 'X Error/Z Base Height'
+=======
+            xy_tangent:     the user calculated tangent of 'X Error/Y Base Length'
+            yz_calc_type:   by error or by tangent
+            yz_y_error:     the amount of skew in the Y
+            yz_z_hgt:       the Z base line height where the Y skew was measured
+            yz_tangent:     the user calculated tangent of 'Y Error/Z Base Height'
+            xz_calc_type:   by error or by tangent
+            xz_x_error:     the amount of skew in the X
+            xz_z_hgt:       the Z base line height where the X skew was measured
+            xz_tangent:     the user calculated tangent of 'X Error/Z Base Height'
+>>>>>>> Stashed changes
             cur_x, cur_y, cur_z:  the current axis values from the gcode
             x_input, y_input, z_input: values used when X, Y, Z are != None
             x_out, Y_out, z_out: the replacement values to fix the skew
@@ -190,12 +240,21 @@ class PrintSkewCompensation(Script):
         scripts = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
         scripts = scripts.replace("\\", "")
         script_list = scripts.split("\n")
+<<<<<<< Updated upstream
         for ndex, script in enumerate(script_list):
             script_list[ndex] = script.split("]")[0]
             script_list[ndex] = script_list[ndex].replace("[", "")
         for ndex, script in enumerate(script_list):
             if "PrintSkewCompensation" in script and ndex < len(script_list) - 1:
                 Message(title = "[Print Skew Compensation]", text = "Should usually be last in the Post-Processor list (in case some other script adds moves to the gcode).").show()
+=======
+        for s_index, script in enumerate(script_list):
+            script_list[s_index] = script.split("]")[0]
+            script_list[s_index] = script_list[s_index].replace("[", "")
+        for s_index, script in enumerate(script_list):
+            if "PrintSkewCompensation" in script and s_index != 0:
+                Message(title = "[Print Skew Compensation]", text = "Should be first in the Post-Processor list.  It will run but any following post-processors should act on the changes made by PrintSkewCompensation.").show()
+>>>>>>> Stashed changes
                 break
 
         xy_calc_type = self.getSettingValueByKey("xy_calc_type")
@@ -222,12 +281,21 @@ class PrintSkewCompensation(Script):
             xz_tangent = xz_x_error/xz_z_hgt
         else:
             xz_tangent = self.getSettingValueByKey("xz_tangent")
+<<<<<<< Updated upstream
         
         # Exit if there are no error values entered
         if not (xy_tangent + yz_tangent + xz_tangent):
             data[0] += ";  [Print Skew Compensation] did not run (no errors entered)\n"
             return data
             
+=======
+
+        # Exit if there are no error values entered
+        if xy_tangent == 0 and yz_tangent == 0 and xz_tangent == 0:
+            data[0] += ";  [Print Skew Compensation] did not run (no errors entered)\n"
+            return data
+
+>>>>>>> Stashed changes
         # z_input is cummulative
         z_input = 0
         for layer_index, layer in enumerate(data):
@@ -251,10 +319,16 @@ class PrintSkewCompensation(Script):
                         z_input = cur_z
 
                     # Calculate the skew compensation
+<<<<<<< Updated upstream
                     x_out = round(x_input-y_input*xy_tangent,3)
                     x_out = round(x_out-z_input*xz_tangent,3)
                     y_out = round(y_input-z_input*yz_tangent,3)
                     z_out = z_input
+=======
+                    x_out = round(x_input - y_input * xy_tangent, 3)
+                    x_out = round(x_out - z_input * xz_tangent, 3)
+                    y_out = round(y_input - z_input * yz_tangent, 3)
+>>>>>>> Stashed changes
 
                     # If the first layer hasn't started then jump out
                     if layer_index < 2:
@@ -265,8 +339,28 @@ class PrintSkewCompensation(Script):
                         lines[index] = lines[index].replace(f"X{cur_x}", f"X{x_out}")
                     if cur_y != None:
                         lines[index] = lines[index].replace(f"Y{cur_y}", f"Y{y_out}")
+<<<<<<< Updated upstream
                     if cur_z != None:
                         lines[index] = lines[index].replace(f"Z{cur_z}", f"Z{z_out}")
 
             data[layer_index] = "\n".join(lines)
+=======
+
+            data[layer_index] = "\n".join(lines)
+        if self.getSettingValueByKey("add_settings_to_gcode"):
+            setting_string = ";  Print Skew Compensation Settings:\n;  'Tangent' is what was used whether entered, or calculated from the axis error.\n"
+            setting_string += ";    xy_calc_type:  " + ("Lengths" if xy_calc_type == "xytype_len" else "Tangent") + "\n"
+            setting_string += f";      xy_x_error:    {xy_x_error}\n"
+            setting_string += f";      xy_y_length:   {xy_y_length}\n"
+            setting_string += f";      xy_tangent:    {xy_tangent}\n"
+            setting_string += f";    yz_calc_type:  " + ("Lengths" if yz_calc_type == "yztype_len" else "Tangent") + "\n"
+            setting_string += f";      yz_y_error:    {yz_y_error}\n"
+            setting_string += f";      yz_z_hgt:      {yz_z_hgt}\n"
+            setting_string += f";      yz_tangent:    {yz_tangent}\n"
+            setting_string += f";    xz_calc_type:  " + ("Lengths" if xz_calc_type == "xztype_len" else "Tangent") + "\n"
+            setting_string += f";      xz_x_error:    {xz_x_error}\n"
+            setting_string += f";      xz_z_hgt:      {xz_z_hgt}\n"
+            setting_string += f";      xz_tangent:    {xz_tangent}\n"
+            data[len(data) - 1] += setting_string
+>>>>>>> Stashed changes
         return data
