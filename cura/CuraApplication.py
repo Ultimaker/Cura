@@ -728,9 +728,16 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot()
     def showPreferences(self) -> None:
-        """Show the preferences window"""
-
-        self.showPreferencesWindow.emit()
+        """Show the preferences window. If already open, bring it to the front."""
+        preferences_window = self.getController().getPreferencesWindow()
+    
+        if preferences_window is not None and preferences_window.isVisible():
+            # Bring the preferences window to the front if it is already visible
+            preferences_window.raise_()
+            preferences_window.activateWindow()
+        else:
+            # Emit the signal to open the preferences window
+            self.showPreferencesWindow.emit()
 
     # This is called by drag-and-dropping curapackage files.
     @pyqtSlot(QUrl)
