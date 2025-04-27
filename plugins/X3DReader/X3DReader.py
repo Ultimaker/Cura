@@ -24,7 +24,7 @@ except ImportError:
 # TODO: preserve the structure of scenes that contain several objects
 # Use CADPart, for example, to distinguish between separate objects
 
-DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
+DEFAULT_SUBDIV = 16  # Default subdivision factor for spheres, cones, and cylinders
 EPSILON = 0.000001
 
 
@@ -43,7 +43,7 @@ class X3DReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".x3d"]
-        self._namespaces = {}   # type: Dict[str, str]
+        self._namespaces = {}  # type: Dict[str, str]
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None
@@ -58,7 +58,7 @@ class X3DReader(MeshReader):
             if xml_root.tag != "X3D":
                 return None
 
-            scale = 1000 # Default X3D unit it one meter, while Cura's is one millimeters
+            scale = 1000  # Default X3D unit it one meter, while Cura's is one millimeters
             if xml_root[0].tag == "head":
                 for head_node in xml_root[0]:
                     if head_node.tag == "unit" and head_node.attrib.get("category") == "length":
@@ -107,7 +107,7 @@ class X3DReader(MeshReader):
     # ------------------------- XML tree traversal
 
     def processNode(self, xml_node):
-        xml_node =  self.resolveDefUse(xml_node)
+        xml_node = self.resolveDefUse(xml_node)
         if xml_node is None:
             return
 
@@ -115,14 +115,13 @@ class X3DReader(MeshReader):
         if tag in ("Group", "StaticGroup", "CADAssembly", "CADFace", "CADLayer", "Collision"):
             self.processChildNodes(xml_node)
         if tag == "CADPart":
-            self.processTransform(xml_node) # TODO: split the parts
+            self.processTransform(xml_node)  # TODO: split the parts
         elif tag == "LOD":
             self.processNode(xml_node[0])
         elif tag == "Transform":
             self.processTransform(xml_node)
         elif tag == "Shape":
             self.processShape(xml_node)
-
 
     def processShape(self, xml_node):
         # Find the geometry and the appearance inside the Shape
@@ -136,7 +135,7 @@ class X3DReader(MeshReader):
         # TODO: appearance is completely ignored. At least apply the material color...
         if geometry is not None:
             try:
-                self.verts = self.faces = [] # Safeguard
+                self.verts = self.faces = []  # Safeguard
                 self.geometry_importers[geometry.tag](self, geometry)
                 m = self.transform.getData()
                 verts = m.dot(self.verts)[:3].transpose()
@@ -180,7 +179,7 @@ class X3DReader(MeshReader):
         scale_orient = readRotation(node, "scaleOrientation", (0, 0, 1, 0)) # (angle, axisVactor) tuple
 
         # Store the previous transform; in Cura, the default matrix multiplication is in place
-        prev = Matrix(self.transform.getData()) # It's deep copy, I've checked
+        prev = Matrix(self.transform.getData())  # It's deep copy, I've checked
 
         # The rest of transform manipulation will be applied in place
         got_center = (center.x != 0 or center.y != 0 or center.z != 0)
@@ -402,7 +401,6 @@ class X3DReader(MeshReader):
             scale = [numpy.array(((scale[i], 0, 0), (0, 1, 0), (0, 0, scale[i+1])))
                      if scale[i] != 1 or scale[i+1] != 1 else None for i in range(0, len(scale), 2)]
 
-
         # Special treatment for the closed spine and cross section.
         # Let's save some memory by not creating identical but distinct vertices;
         # later we'll introduce conditional logic to link the last vertex with
@@ -487,7 +485,7 @@ class X3DReader(MeshReader):
 
             z = z.normalized()
             y = y.normalized()
-            x = y.cross(z) # Already normalized
+            x = y.cross(z)  # Already normalized
             m = numpy.array(((x.x, y.x, z.x), (x.y, y.y, z.y), (x.z, y.z, z.z)))
 
             # Columns are the unit vectors for the xz plane for the cross-section
@@ -540,7 +538,7 @@ class X3DReader(MeshReader):
     # num_faces can be a function, in case the face count is a function of vertex count
     def startCoordMesh(self, node, num_faces):
         ccw = readBoolean(node, "ccw", True)
-        self.readVertices(node) # This will allocate and fill the vertex array
+        self.readVertices(node)  # This will allocate and fill the vertex array
         if hasattr(num_faces, "__call__"):
             num_faces = num_faces(self.getVertexCount())
         self.reserveFaceCount(num_faces)
@@ -767,7 +765,6 @@ class X3DReader(MeshReader):
             self.addTri(a, c, b)
             self.addTri(c, a, d)
 
-
     # Arbitrary polygon triangulation.
     # Doesn't assume convexity and doesn't check the "convex" flag in the file.
     # Works by the "cutting of ears" algorithm:
@@ -782,15 +779,15 @@ class X3DReader(MeshReader):
         # Need a normal to the plane so that we can know which vertices form inner angles
         normal = findOuterNormal(face)
 
-        if not normal: # Couldn't find an outer edge, non-planar polygon maybe?
+        if not normal:  # Couldn't find an outer edge, non-planar polygon maybe?
             return
 
         # Find the vertex with the smallest inner angle and no points inside, cut off. Repeat until done
         n = len(face)
-        vi = [i for i in range(n)] # We'll be using this to kick vertices from the face
+        vi = [i for i in range(n)]  # We'll be using this to kick vertices from the face
         while n > 3:
-            max_cos = EPSILON # We don't want to check anything on Pi angles
-            i_min = 0 # max cos corresponds to min angle
+            max_cos = EPSILON  # We don't want to check anything on Pi angles
+            i_min = 0  # max cos corresponds to min angle
             for i in range(n):
                 inext = (i + 1) % n
                 iprev = (i + n - 1) % n
@@ -798,7 +795,7 @@ class X3DReader(MeshReader):
                 next = face[vi[inext]] - v
                 prev = face[vi[iprev]] - v
                 nextXprev = next.cross(prev)
-                if nextXprev.dot(normal) > EPSILON: # If it's an inner angle
+                if nextXprev.dot(normal) > EPSILON:  # If it's an inner angle
                     cos = next.dot(prev) / (next.length() * prev.length())
                     if cos > max_cos:
                         # Check if there are vertices inside the triangle
@@ -893,13 +890,13 @@ def findOuterNormal(face):
                         pt = face[k] - face[i]
                         pte = pt.dot(edge)
                         rejection = pt - edge*pte
-                        if rejection.dot(prev_rejection) < -EPSILON: # points on both sides of the edge - not an outer one
+                        if rejection.dot(prev_rejection) < -EPSILON:  # points on both sides of the edge - not an outer one
                             is_outer = False
                             break
-                        elif rejection.length() > prev_rejection.length(): # Pick a greater rejection for numeric stability
+                        elif rejection.length() > prev_rejection.length():  # Pick a greater rejection for numeric stability
                             prev_rejection = rejection
 
-                if is_outer: # Found an outer edge, prev_rejection is the rejection inside the face. Generate a normal.
+                if is_outer:  # Found an outer edge, prev_rejection is the rejection inside the face. Generate a normal.
                     return edge.cross(prev_rejection)
 
     return False
@@ -925,4 +922,3 @@ def pointInsideTriangle(vx, next, prev, nextXprev):
     vxXnext = vx.cross(next)
     s = -ratio(vxXnext, nextXprev)
     return s > 0 and (s + r) < 1
-

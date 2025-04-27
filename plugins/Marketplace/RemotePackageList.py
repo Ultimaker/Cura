@@ -48,9 +48,9 @@ class RemotePackageList(PackageList):
 
         self._ongoing_requests["get_packages"] = HttpRequestManager.getInstance().get(
             self._request_url,
-            scope = self._scope,
-            callback = self._parseResponse,
-            error_callback = self._onError
+            scope=self._scope,
+            callback=self._parseResponse,
+            error_callback=self._onError
         )
 
     def reset(self) -> None:
@@ -70,7 +70,7 @@ class RemotePackageList(PackageList):
         self._requested_search_string = new_search
         self._onLoadingChanged()
 
-    @pyqtProperty(str, fset = setPackageTypeFilter, notify = packageTypeFilterChanged)
+    @pyqtProperty(str, fset=setPackageTypeFilter, notify=packageTypeFilterChanged)
     def packageTypeFilter(self) -> str:
         """
         Get the package type this package list is filtering on, like ``plugin`` or ``material``.
@@ -78,7 +78,7 @@ class RemotePackageList(PackageList):
         """
         return self._package_type_filter
 
-    @pyqtProperty(str, fset = setSearchString, notify = searchStringChanged)
+    @pyqtProperty(str, fset=setSearchString, notify=searchStringChanged)
     def searchString(self) -> str:
         """
         Get the string the user is currently searching for (as in: the list is updating) within the packages,
@@ -123,7 +123,7 @@ class RemotePackageList(PackageList):
 
         for package_data in response_data["data"]:
             try:
-                package = PackageModel(package_data, parent = self)
+                package = PackageModel(package_data, parent=self)
                 self._connectManageButtonSignals(package)
                 self.appendItem({"package": package})  # Add it to this list model.
             except RuntimeError:

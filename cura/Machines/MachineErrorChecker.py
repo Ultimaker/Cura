@@ -97,11 +97,11 @@ class MachineErrorChecker(QObject):
     needToWaitForResultChanged = pyqtSignal()
     errorCheckFinished = pyqtSignal()
 
-    @pyqtProperty(bool, notify = hasErrorUpdated)
+    @pyqtProperty(bool, notify=hasErrorUpdated)
     def hasError(self) -> bool:
         return self._has_errors
 
-    @pyqtProperty(bool, notify = needToWaitForResultChanged)
+    @pyqtProperty(bool, notify=needToWaitForResultChanged)
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
 
@@ -201,13 +201,13 @@ class MachineErrorChecker(QObject):
                 # next check.
                 keys_to_recheck = {setting_key for stack, setting_key in self._stacks_and_keys_to_check}
                 keys_to_recheck.add(key)
-                self._setResult(True, keys_to_recheck = keys_to_recheck)
+                self._setResult(True, keys_to_recheck=keys_to_recheck)
                 return
 
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
 
-    def _setResult(self, result: bool, keys_to_recheck = None) -> None:
+    def _setResult(self, result: bool, keys_to_recheck=None) -> None:
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()

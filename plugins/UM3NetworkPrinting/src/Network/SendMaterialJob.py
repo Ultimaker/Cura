@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 from typing import Dict, TYPE_CHECKING, Set, List
 from PyQt6.QtNetwork import QNetworkReply, QNetworkRequest
@@ -30,7 +31,7 @@ class SendMaterialJob(Job):
         super().__init__()
         self.device = device  # type: LocalClusterOutputDevice
 
-        self._send_material_thread = threading.Thread(target = self._sendMissingMaterials)
+        self._send_material_thread = threading.Thread(target=self._sendMissingMaterials)
         self._send_material_thread.setDaemon(True)
 
         self._remote_materials = {}  # type: Dict[str, ClusterMaterial]
@@ -38,7 +39,7 @@ class SendMaterialJob(Job):
     def run(self) -> None:
         """Send the request to the printer and register a callback"""
 
-        self.device.getMaterials(on_finished = self._onGetMaterials)
+        self.device.getMaterials(on_finished=self._onGetMaterials)
 
     def _onGetMaterials(self, materials: List[ClusterMaterial]) -> None:
         """Callback for when the remote materials were returned."""
@@ -93,7 +94,7 @@ class SendMaterialJob(Job):
         """
 
         container_registry = CuraApplication.getInstance().getContainerRegistry()
-        all_materials = container_registry.findInstanceContainersMetadata(type = "material")
+        all_materials = container_registry.findInstanceContainersMetadata(type="material")
         all_base_files = {material["base_file"] for material in all_materials if "base_file" in material}  # Filters out uniques by making it a set. Don't include files without base file (i.e. empty material).
         if "empty_material" in all_base_files:
             all_base_files.remove("empty_material")  # Don't send the empty material.
@@ -129,9 +130,9 @@ class SendMaterialJob(Job):
         try:
             with open(file_path, "rb") as f:
                 parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
-                                                        .format(file_name = file_name), f.read()))
+                                                        .format(file_name=file_name), f.read()))
         except FileNotFoundError:
-            Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id = material_id))
+            Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id=material_id))
             return
         except EnvironmentError as e:
             Logger.error(f"Unable to send material {material_id}. We can't open that file for reading: {str(e)}")
@@ -143,11 +144,11 @@ class SendMaterialJob(Job):
             signature_file_name = os.path.basename(signature_file_path)
             with open(signature_file_path, "rb") as f:
                 parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
-                                                        .format(file_name = signature_file_name), f.read()))
+                                                        .format(file_name=signature_file_name), f.read()))
 
         # FIXME: move form posting to API client
-        self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
-                                      on_finished = self._sendingFinished)
+        self.device.postFormWithParts(target="/cluster-api/v1/materials/", parts=parts,
+                                      on_finished=self._sendingFinished)
 
     def _sendingFinished(self, reply: QNetworkReply) -> None:
         """Check a reply from an upload to the printer and log an error when the call failed"""
@@ -172,7 +173,7 @@ class SendMaterialJob(Job):
         """
 
         result = {}  # type: Dict[str, LocalMaterial]
-        all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type = "material")
+        all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type="material")
         all_base_files = [material for material in all_materials if material["id"] == material.get("base_file") and material.get("visible", True)]  # Don't send materials without base_file: The empty material doesn't need to be sent.
 
         # Find the latest version of all material containers in the registry.

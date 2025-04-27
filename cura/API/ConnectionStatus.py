@@ -1,3 +1,6 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional
 
 from PyQt6.QtCore import QObject, pyqtSignal, pyqtProperty
@@ -30,7 +33,7 @@ class ConnectionStatus(QObject):
         self._is_internet_reachable = manager.isInternetReachable  # type: bool
         manager.internetReachableChanged.connect(self._onInternetReachableChanged)
 
-    @pyqtProperty(bool, notify = internetReachableChanged)
+    @pyqtProperty(bool, notify=internetReachableChanged)
     def isInternetReachable(self) -> bool:
         return self._is_internet_reachable
 
@@ -38,4 +41,3 @@ class ConnectionStatus(QObject):
         if reachable != self._is_internet_reachable:
             self._is_internet_reachable = reachable
             self.internetReachableChanged.emit()
-

@@ -71,7 +71,7 @@ class IntentSelectionModel(ListModel):
         self._update_timer.start()
 
     def _update(self) -> None:
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name=self.__class__.__name__))
         cura_application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = cura_application.getGlobalContainerStack()
         if global_stack is None:
@@ -133,5 +133,3 @@ class IntentSelectionModel(ListModel):
         result.sort(key=lambda k: k["weight"])
 
         self.setItems(result)
-
-

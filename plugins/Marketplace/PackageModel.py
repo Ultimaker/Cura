@@ -189,11 +189,11 @@ class PackageModel(QObject):
 
         container_registry = CuraContainerRegistry.getInstance()
         try:
-            pva_name = container_registry.findContainersMetadata(id = "ultimaker_pva")[0].get("name", "Ultimaker PVA")
+            pva_name = container_registry.findContainersMetadata(id="ultimaker_pva")[0].get("name", "Ultimaker PVA")
         except IndexError:
             pva_name = "Ultimaker PVA"
         try:
-            breakaway_name = container_registry.findContainersMetadata(id = "ultimaker_bam")[0].get("name", "Ultimaker Breakaway")
+            breakaway_name = container_registry.findContainersMetadata(id="ultimaker_bam")[0].get("name", "Ultimaker Breakaway")
         except IndexError:
             breakaway_name = "Ultimaker Breakaway"
 
@@ -229,91 +229,91 @@ class PackageModel(QObject):
                     return True
         return False
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def packageId(self) -> str:
         return self._package_id
 
     @pyqtProperty(str, constant=True)
-    def marketplaceURL(self)-> str:
+    def marketplaceURL(self) -> str:
         return self._marketplace_url
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def packageType(self) -> str:
         return self._package_type
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def iconUrl(self) -> str:
         return self._icon_url
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def displayName(self) -> str:
         return self._display_name
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def isCheckedByUltimaker(self):
         return self._is_checked_by_ultimaker
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def packageVersion(self) -> str:
         return self._package_version
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def packageInfoUrl(self) -> str:
         return self._package_info_url
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def downloadCount(self) -> str:
         return self._download_count
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def description(self) -> str:
         return self._description
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def formattedDescription(self) -> str:
         return self._formatted_description
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def authorName(self) -> str:
         return self._author_name
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def authorInfoUrl(self) -> str:
         return self._author_info_url
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def sectionTitle(self) -> Optional[str]:
         return self._section_title
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def technicalDataSheet(self) -> str:
         return self._technical_data_sheet
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def safetyDataSheet(self) -> str:
         return self._safety_data_sheet
 
-    @pyqtProperty(str, constant = True)
+    @pyqtProperty(str, constant=True)
     def whereToBuy(self) -> str:
         return self._where_to_buy
 
-    @pyqtProperty("QStringList", constant = True)
+    @pyqtProperty("QStringList", constant=True)
     def compatiblePrinters(self) -> List[str]:
         return self._compatible_printers
 
-    @pyqtProperty("QStringList", constant = True)
+    @pyqtProperty("QStringList", constant=True)
     def compatibleSupportMaterials(self) -> List[str]:
         return self._compatible_support_materials
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def isCompatibleMaterialStation(self) -> bool:
         return self._is_compatible_material_station
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def isCompatibleAirManager(self) -> bool:
         return self._is_compatible_air_manager
 
-    @pyqtProperty(bool, constant = True)
+    @pyqtProperty(bool, constant=True)
     def isBundled(self) -> bool:
         return self._is_bundled
 
@@ -350,7 +350,7 @@ class PackageModel(QObject):
     def uninstall(self):
         self.uninstallPackageTriggered.emit(self.packageId)
 
-    @pyqtProperty(bool, notify= busyChanged)
+    @pyqtProperty(bool, notify=busyChanged)
     def busy(self):
         """
         Property indicating that some kind of upgrade is active.
@@ -382,19 +382,19 @@ class PackageModel(QObject):
         except RuntimeError:
             pass
 
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, notify=stateManageButtonChanged)
     def isInstalled(self) -> bool:
         return self._package_id in self._package_manager.getAllInstalledPackageIDs()
 
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, notify=stateManageButtonChanged)
     def isToBeInstalled(self) -> bool:
         return self._package_id in self._package_manager.getPackagesToInstall()
 
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, notify=stateManageButtonChanged)
     def isActive(self) -> bool:
         return not self._package_id in self._plugin_registry.getDisabledPlugins()
 
-    @pyqtProperty(bool, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, notify=stateManageButtonChanged)
     def canDowngrade(self) -> bool:
         """Flag if the installed package can be downgraded to a bundled version"""
         return self._package_manager.canDowngrade(self._package_id)
@@ -403,7 +403,7 @@ class PackageModel(QObject):
         self._can_update = value
         self.stateManageButtonChanged.emit()
 
-    @pyqtProperty(bool, fset = setCanUpdate, notify = stateManageButtonChanged)
+    @pyqtProperty(bool, fset=setCanUpdate, notify=stateManageButtonChanged)
     def canUpdate(self) -> bool:
         """Flag indicating if the package can be updated"""
         return self._can_update

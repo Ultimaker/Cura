@@ -22,7 +22,7 @@ class TextManager(QObject):
 
         self._change_log_text = ""
 
-    @pyqtSlot(result = str)
+    @pyqtSlot(result=str)
     def getChangeLogText(self) -> str:
         if not self._change_log_text:
             self._change_log_text = self._loadChangeLogText()
@@ -37,7 +37,7 @@ class TextManager(QObject):
             return catalog.i18nc("@text:window", "The release notes could not be opened.") + "<br>" + str(e)
         change_logs_dict = {}  # type: Dict[Version, Dict[str, List[str]]]
         try:
-            with open(file_path, "r", encoding = "utf-8") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 open_version = None  # type: Optional[Version]
                 open_header = ""  # Initialise to an empty header in case there is no "*" in the first line of the changelog
                 for line in f:
@@ -64,7 +64,7 @@ class TextManager(QObject):
 
         # Format changelog text
         content = ""
-        for version in sorted(change_logs_dict.keys(), reverse = True):
+        for version in sorted(change_logs_dict.keys(), reverse=True):
             text_version = version
             if version < Version([1, 0, 0]):  # Bit of a hack: We released the 15.x.x versions before 2.x
                 text_version = Version([15, version.getMinor(), version.getRevision(), version.getPostfixVersion()])

@@ -108,7 +108,7 @@ class AuthorizationService:
                 if callback is not None:
                     callback(None)
 
-        self._parseJWT(callback = store_profile)
+        self._parseJWT(callback=store_profile)
 
     def _parseJWT(self, callback: Callable[[Optional["UserProfile"]], None]) -> None:
         """
@@ -162,7 +162,7 @@ class AuthorizationService:
         # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
         received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
             if self._auth_data.received_at else datetime(2000, 1, 1)
-        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0) - 60)
+        expiry_date = received_at + timedelta(seconds=float(self._auth_data.expires_in or 0) - 60)
         if datetime.now() > expiry_date:
             self.refreshAccessToken()
 
@@ -182,13 +182,13 @@ class AuthorizationService:
                 self._refresh_token_retries = 0
                 self._storeAuthData(response)
                 HttpRequestManager.getInstance().setDelayRequests(False)
-                self.onAuthStateChanged.emit(logged_in = True)
+                self.onAuthStateChanged.emit(logged_in=True)
             else:
                 if self._refresh_token_retries >= REFRESH_TOKEN_MAX_RETRIES:
                     self._refresh_token_retries = 0
                     Logger.warning("Failed to get a new access token from the server, giving up.")
                     HttpRequestManager.getInstance().setDelayRequests(False)
-                    self.onAuthStateChanged.emit(logged_in = False)
+                    self.onAuthStateChanged.emit(logged_in=False)
                 else:
                     # Retry a bit later, network may be offline right now and will hopefully be back soon
                     Logger.warning("Failed to get a new access token from the server, retrying later.")
@@ -207,7 +207,7 @@ class AuthorizationService:
 
         if self._auth_data is not None:
             self._storeAuthData()
-            self.onAuthStateChanged.emit(logged_in = False)
+            self.onAuthStateChanged.emit(logged_in=False)
 
     def startAuthorizationFlow(self, force_browser_logout: bool = False) -> None:
         """Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login."""
@@ -241,7 +241,7 @@ class AuthorizationService:
             Message(i18n_catalog.i18nc("@info",
                                        "Unable to start a new sign in process. Check if another sign in attempt is still active."),
                     title=i18n_catalog.i18nc("@info:title", "Warning"),
-                    message_type = Message.MessageType.WARNING).show()
+                    message_type=Message.MessageType.WARNING).show()
             return
 
         auth_url = self._generate_auth_url(query_parameters_dict, force_browser_logout)
@@ -273,10 +273,10 @@ class AuthorizationService:
         if auth_response.success:
             Logger.log("d", "Got callback from Authorization state. The user should now be logged in!")
             self._storeAuthData(auth_response)
-            self.onAuthStateChanged.emit(logged_in = True)
+            self.onAuthStateChanged.emit(logged_in=True)
         else:
             Logger.log("d", "Got callback from Authorization state. Something went wrong: [%s]", auth_response.err_message)
-            self.onAuthenticationError.emit(logged_in = False, error_message = auth_response.err_message)
+            self.onAuthenticationError.emit(logged_in=False, error_message=auth_response.err_message)
         self._server.stop()  # Stop the web server at all times.
 
     def loadAuthDataFromPreferences(self) -> None:
@@ -293,7 +293,7 @@ class AuthorizationService:
                 # Also check if we can actually get the user profile information.
                 def callback(profile: Optional["UserProfile"]) -> None:
                     if profile is not None:
-                        self.onAuthStateChanged.emit(logged_in = True)
+                        self.onAuthStateChanged.emit(logged_in=True)
                         Logger.debug("Auth data was successfully loaded")
                     else:
                         if self._unable_to_get_data_message is not None:
@@ -301,8 +301,8 @@ class AuthorizationService:
                         else:
                             self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info",
                                                                                           "Unable to reach the UltiMaker account server."),
-                                                                       title = i18n_catalog.i18nc("@info:title", "Log-in failed"),
-                                                                       message_type = Message.MessageType.ERROR)
+                                                                       title=i18n_catalog.i18nc("@info:title", "Log-in failed"),
+                                                                       message_type=Message.MessageType.ERROR)
                             Logger.warning("Unable to get user profile using auth data from preferences.")
                             self._unable_to_get_data_message.show()
                 if self._get_user_profile:

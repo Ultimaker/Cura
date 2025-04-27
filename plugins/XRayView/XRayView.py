@@ -26,7 +26,7 @@ class XRayView(CuraView):
     """View used to display a see-through version of objects with errors highlighted."""
 
     def __init__(self):
-        super().__init__(parent = None, use_empty_menu_placeholder = True)
+        super().__init__(parent=None, use_empty_menu_placeholder=True)
 
         self._xray_shader = None
         self._xray_pass = None
@@ -51,12 +51,12 @@ class XRayView(CuraView):
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node,
-                                       shader = self._xray_shader,
-                                       type = RenderBatch.RenderType.Solid,
-                                       blend_mode = RenderBatch.BlendMode.Additive,
-                                       sort = -10,
-                                       state_setup_callback = lambda gl: gl.glDepthFunc(gl.GL_ALWAYS),
-                                       state_teardown_callback = lambda gl: gl.glDepthFunc(gl.GL_LESS)
+                                       shader=self._xray_shader,
+                                       type=RenderBatch.RenderType.Solid,
+                                       blend_mode=RenderBatch.BlendMode.Additive,
+                                       sort=-10,
+                                       state_setup_callback=lambda gl: gl.glDepthFunc(gl.GL_ALWAYS),
+                                       state_teardown_callback=lambda gl: gl.glDepthFunc(gl.GL_LESS)
                     )
 
     def endRendering(self):
@@ -78,7 +78,7 @@ class XRayView(CuraView):
             if Platform.isOSX():
                 if QOpenGLContext.currentContext() is None:
                     Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
-                    CuraApplication.getInstance().callLater(lambda e = event: self.event(e))
+                    CuraApplication.getInstance().callLater(lambda e=event: self.event(e))
                     return
 
             if not self._xray_pass:

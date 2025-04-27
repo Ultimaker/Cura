@@ -21,11 +21,11 @@ class SettingVisibilityPresetsModel(QObject):
 
     Version = 2
 
-    def __init__(self, preferences: Preferences, parent = None) -> None:
+    def __init__(self, preferences: Preferences, parent=None) -> None:
         super().__init__(parent)
 
         self._items = []  # type: List[SettingVisibilityPreset]
-        self._custom_preset = SettingVisibilityPreset(preset_id = "custom", name = "Custom selection", weight = -100)
+        self._custom_preset = SettingVisibilityPreset(preset_id="custom", name="Custom selection", weight=-100)
 
         self._populate()
 
@@ -80,15 +80,15 @@ class SettingVisibilityPresetsModel(QObject):
             items.append(setting_visibility_preset)
 
         # Add the "all" visibility:
-        all_setting_visibility_preset = SettingVisibilityPreset(preset_id = "all", name = "All", weight = 9001)
+        all_setting_visibility_preset = SettingVisibilityPreset(preset_id="all", name="All", weight=9001)
         all_setting_visibility_preset.setSettings(list(CuraApplication.getInstance().getMachineManager().getAllSettingKeys()))
         items.append(all_setting_visibility_preset)
         # Sort them on weight (and if that fails, use ID)
-        items.sort(key = lambda k: (int(k.weight), k.presetId))
+        items.sort(key=lambda k: (int(k.weight), k.presetId))
 
         self.setItems(items)
 
-    @pyqtProperty("QVariantList", notify = onItemsChanged)
+    @pyqtProperty("QVariantList", notify=onItemsChanged)
     def items(self) -> List[SettingVisibilityPreset]:
         return self._items
 
@@ -127,7 +127,7 @@ class SettingVisibilityPresetsModel(QObject):
         self._active_preset_item = preset_item
         self.activePresetChanged.emit()
 
-    @pyqtProperty(str, notify = activePresetChanged)
+    @pyqtProperty(str, notify=activePresetChanged)
     def activePreset(self) -> str:
         if self._active_preset_item is not None:
             return self._active_preset_item.presetId

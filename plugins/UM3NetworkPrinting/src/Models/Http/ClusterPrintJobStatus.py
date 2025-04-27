@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
@@ -150,8 +151,8 @@ class ClusterPrintJobStatus(BaseModel):
 
         model.updateConfigurationChanges(
             [ConfigurationChangeModel(
-                type_of_change = change.type_of_change,
-                index = change.index if change.index else 0,
-                target_name = change.target_name if change.target_name else "",
-                origin_name = change.origin_name if change.origin_name else "")
+                type_of_change=change.type_of_change,
+                index=change.index if change.index else 0,
+                target_name=change.target_name if change.target_name else "",
+                origin_name=change.origin_name if change.origin_name else "")
                 for change in self.configuration_changes_required])

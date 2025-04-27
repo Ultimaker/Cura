@@ -1,3 +1,6 @@
+# Copyright (c) 2017 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import patch, MagicMock
 
 from UM.Qt.QtApplication import QtApplication  # QtApplication import is required, even though it isn't used.
@@ -20,10 +23,10 @@ def test_setName():
     material_2.getMetaData()["base_file"] = "herpderp"
 
     container_registry = MagicMock()
-    container_registry.isReadOnly = MagicMock(return_value = False)
-    container_registry.findInstanceContainers = MagicMock(return_value = [material_1, material_2])
+    container_registry.isReadOnly = MagicMock(return_value=False)
+    container_registry.findInstanceContainers = MagicMock(return_value=[material_1, material_2])
 
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         material_1.setName("beep!")
 
     assert material_1.getName() == "beep!"
