@@ -610,6 +610,7 @@ class SimulationView(CuraView):
         if self.getShowTravelMoves():
             visible_line_types.append(LayerPolygon.MoveCombingType)
             visible_line_types.append(LayerPolygon.MoveRetractionType)
+            visible_line_types.append(LayerPolygon.MoveUnretractionType)
 
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             layer_data = node.callDecoration("getLayerData")
