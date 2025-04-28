@@ -91,7 +91,7 @@ class MakerbotWriter(MeshWriter):
 
         return None
 
-    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
+    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode, **kwargs) -> bool:
         metadata, file_format  = self._getMeta(nodes)
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "MakerbotWriter does not support text mode.")
