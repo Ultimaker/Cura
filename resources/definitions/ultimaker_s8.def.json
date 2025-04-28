@@ -203,6 +203,7 @@
             "unit": "mm/s",
             "value": 50
         },
+        "cool_during_extruder_switch": { "value": "'all_fans'" },
         "cool_min_layer_time": { "value": 5 },
         "cool_min_layer_time_overhang": { "value": 9 },
         "cool_min_layer_time_overhang_min_segment_length": { "value": 2 },
@@ -397,6 +398,7 @@
             "enabled": true,
             "value": 0.5
         },
+        "material_print_temperature": { "maximum_value_warning": 320 },
         "material_print_temperature_layer_0": { "maximum_value_warning": 320 },
         "max_flow_acceleration": { "value": 8.0 },
         "max_skin_angle_for_expansion": { "value": 45 },
@@ -445,7 +447,7 @@
         "speed_layer_0":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "min(speed_wall,50)"
         },
         "speed_prime_tower":
         {
@@ -500,13 +502,13 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 300,
-            "value": 300
+            "maximum_value_warning": 500,
+            "value": 500
         },
         "speed_travel_layer_0":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 300,
+            "maximum_value_warning": 500,
             "value": 150
         },
         "speed_wall":
@@ -573,6 +575,7 @@
         "wall_material_flow": { "value": 95 },
         "wall_overhang_angle": { "value": 45 },
         "wall_x_material_flow": { "value": 100 },
+        "xy_offset": { "value": 0.05 },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backright'" },
         "z_seam_type": { "value": "'sharpest_corner'" }
