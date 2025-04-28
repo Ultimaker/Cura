@@ -1,0 +1,60 @@
+{
+    "version": 2,
+    "name": "Geeetech M1",
+    "inherits": "Geeetech_Base_Single_Extruder",
+    "metadata":
+    {
+        "visible": true,
+        "machine_extruder_trains": { "0": "Geeetech_Single_Extruder" }
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "machine_depth": { "default_value": 105 },
+        "machine_end_gcode": { "default_value": "G91 ;Switch to relative positioning\nG1 E-2.5 F2700 ;Retract filament\nG1 E-1.5 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Move away\nG1 Z10 ;lift print head\nG90 ;Switch to absolute positioning\nG28 X Y ;homing XY\nM106 S0 ;off Fan\nM104 S0 ;Cooldown hotend\nM140 S0 ;Cooldown bed\nM84 X Y E ;Disable steppers" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-31, 31],
+                [34, 31],
+                [34, -40],
+                [-31, -40]
+            ]
+        },
+        "machine_height": { "default_value": 95 },
+        "machine_name": { "default_value": "Geeetech M1" },
+        "machine_start_gcode": { "default_value": ";Geeetech M1 official wiki URL:https://www.geeetech.com/wiki/index.php/Geeetech_M1_3D_printer \nM104 S{material_print_temperature_layer_0} ; Set Hotend Temperature\nM140 S{material_bed_temperature_layer_0} ; Set Bed Temperature\n;M190 S{material_bed_temperature_layer_0} ; Wait for Bed Temperature\nM109 S{material_print_temperature_layer_0} ; Wait for Hotend Temperature\nG92 E0 ; Reset Extruder\nG28 ; Home all axes\nM107 ;Off Fan\nM300 S2500 P1000 ;Play a short tune\nG1 Z0.28 ;Move Z Axis up little to prevent scratching of Heat Bed\nG92 E0 ;Reset Extruder\nG1 Y3 F2400 ;Move to start position\nG1 X75 E40 F500 ;Draw a filament line\nG92 E0 ;Reset Extruder\n;G1 E-0.2 F3000 ;Retract a little\nG1 Z2.0 F3000 ;Move Z Axis up little to prevent scratching of Heat Bed\nG1 X70 Y3 Z0.27 F3000 ;Quickly wipe away from the filament line\nG92 E0 ;Reset Extruder" },
+        "machine_width": { "default_value": 105 },
+        "material_print_temperature":
+        {
+            "maximum_value": "230",
+            "value": "205 if speed_infill <=100 else 215 if speed_infill <= 150 else 220 if speed_infill <= 200 else 230"
+        },
+        "retraction_amount": { "value": 1 },
+        "speed_print":
+        {
+            "maximum_value_warning": "200",
+            "value": 120
+        },
+        "speed_topbottom":
+        {
+            "maximum_value_warning": "200",
+            "value": 60
+        },
+        "speed_wall":
+        {
+            "maximum_value_warning": "200",
+            "value": 80
+        },
+        "speed_wall_0":
+        {
+            "maximum_value_warning": "200",
+            "value": 50
+        },
+        "speed_wall_x":
+        {
+            "maximum_value_warning": "200",
+            "value": 80
+        }
+    }
+}
