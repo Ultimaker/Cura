@@ -13,7 +13,7 @@ from .ThreeMFVariant import ThreeMFVariant
 METADATA_PATH = "Metadata"
 THUMBNAIL_PATH = f"{METADATA_PATH}/thumbnail.png"
 
-class DefaultVariant(ThreeMFVariant):
+class Cura3mfVariant(ThreeMFVariant):
     """Default implementation of the 3MF format."""
     
     @property

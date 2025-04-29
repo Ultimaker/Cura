@@ -50,7 +50,7 @@ import UM.Application
 from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
 from .ThreeMFVariant import ThreeMFVariant
-from .DefaultVariant import DefaultVariant
+from .Cura3mfVariant import Cura3mfVariant
 from .BambuLabVariant import BambuLabVariant
 
 from UM.i18n import i18nCatalog
@@ -76,7 +76,7 @@ class ThreeMFWriter(MeshWriter):
 
         # Register available variants
         self._variants = {
-            DefaultVariant(self).mime_type: DefaultVariant,
+            Cura3mfVariant(self).mime_type: Cura3mfVariant,
             BambuLabVariant(self).mime_type: BambuLabVariant
         }
 
@@ -219,7 +219,7 @@ class ThreeMFWriter(MeshWriter):
         :param mime_type: The MIME type to get the variant for
         :return: An instance of the variant for the given MIME type
         """
-        variant_class = self._variants.get(mime_type, DefaultVariant)
+        variant_class = self._variants.get(mime_type, Cura3mfVariant)
         return variant_class(self)
 
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None, **kwargs) -> bool:
@@ -227,7 +227,7 @@ class ThreeMFWriter(MeshWriter):
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
 
         # Determine which variant to use based on mime type in kwargs
-        mime_type = kwargs.get("mime_type", DefaultVariant(self).mime_type)
+        mime_type = kwargs.get("mime_type", Cura3mfVariant(self).mime_type)
         variant = self._getVariant(mime_type)
 
         try:
