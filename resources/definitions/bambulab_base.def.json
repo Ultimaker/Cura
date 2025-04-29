@@ -177,11 +177,7 @@
             "maximum_value_warning": 500,
             "value": "speed_wall"
         },
-        "speed_skirt_brim":
-        {
-            "maximum_value_warning": 500,
-            "value": "speed_layer_0"
-        },
+        "skirt_brim_speed": { "maximum_value_warning": 500 },
         "speed_support":
         {
             "maximum_value_warning": 500,
@@ -248,7 +244,6 @@
             "value": "speed_wall"
         },
         "support_brim_line_count": { "value": 5 },
-        "support_density": { "value": 15 },
         "support_infill_rate": { "value": "80 if gradual_support_infill_steps != 0 else 15" },
         "support_pattern": { "value": "'gyroid'" },
         "support_structure": { "value": "'tree'" },
