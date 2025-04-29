@@ -4884,6 +4884,36 @@
                         }
                     }
                 },
+                "build_volume_fan_speed_0":
+                {
+                    "label": "Initial Layers Build Volume Fan Speed",
+                    "description": "Build-volume fan speed until 'Build Volume Fan Speed at Layer'.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "value": "0.0",
+                    "enabled": "build_volume_fan_nr != 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "build_volume_fan_speed":
+                {
+                    "label": "Build Volume Fan Speed",
+                    "description": "Build-volume fan speed starting from 'Build Volume Fan Speed at Layer'.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "value": "100.0",
+                    "enabled": "build_volume_fan_nr != 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "cool_fan_speed":
                 {
                     "label": "Fan Speed",
