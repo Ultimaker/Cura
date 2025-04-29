@@ -117,6 +117,7 @@
             "default_value": 500,
             "enabled": "not prime_tower_enable"
         },
+        "material_max_flowrate": { "enabled": true },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
         "min_infill_area": { "default_value": 10 },
@@ -262,28 +263,5 @@
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backright'" },
         "z_seam_type": { "value": "'sharpest_corner'" }
-    },
-    "settings":
-    {
-        "material":
-        {
-            "children":
-            {
-                "material_max_flowrate":
-                {
-                    "default_value": 16,
-                    "description": "Maximum flowrate that the printer can extrude for the material",
-                    "enabled": true,
-                    "label": "Material Maximum Flowrate",
-                    "maximum_value": "machine_max_feedrate_e * (material_diameter/2)**2 * math.pi",
-                    "minimum_value": "0",
-                    "settable_per_extruder": true,
-                    "settable_per_mesh": false,
-                    "type": "float",
-                    "unit": "mm\u00b3/s",
-                    "value": "16"
-                }
-            }
-        }
     }
 }

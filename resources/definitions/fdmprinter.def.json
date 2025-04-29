@@ -3377,6 +3377,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
+                },
+                "material_max_flowrate":
+                {
+                    "default_value": 16,
+                    "description": "Maximum flow rate that the printer can extrude for the material",
+                    "enabled": false,
+                    "label": "Material Maximum Flow Rate",
+                    "maximum_value": "machine_max_feedrate_e * (material_diameter/2)**2 * math.pi",
+                    "minimum_value": "0",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "mm\u00b3/s",
+                    "value": "16"
                 }
             }
         },
@@ -7466,6 +7480,17 @@
                             "limit_to_extruder": "raft_surface_extruder_nr"
                         }
                     }
+                },
+                "machine_scan_first_layer":
+                {
+                    "default_value": false,
+                    "description": "Whether to scan the first layer for layer adhesion problems.",
+                    "enabled": false,
+                    "label": "Scan the first layer",
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
                 }
             }
         },
