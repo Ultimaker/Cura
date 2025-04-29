@@ -1,19 +1,12 @@
-#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Copyright (c) 2015-2025 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
-import hashlib
-
-from io import StringIO
 
 import json
 import re
 import threading
 
-from typing import Optional, cast, List, Dict, Set, TYPE_CHECKING
+from typing import Optional, cast, List, Dict, Set
 
-if TYPE_CHECKING:
-    from Settings.ExtruderStack import ExtruderStack
-
-from Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -28,7 +21,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from cura.Settings import CuraContainerStack
+from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
@@ -54,21 +49,15 @@ import UM.Application
 
 from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
+from .ThreeMFVariant import ThreeMFVariant
+from .Cura3mfVariant import Cura3mfVariant
+from .BambuLabVariant import BambuLabVariant
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 MODEL_PATH = "3D/3dmodel.model"
 PACKAGE_METADATA_PATH = "Cura/packages.json"
-METADATA_PATH = "Metadata"
-THUMBNAIL_PATH = f"{METADATA_PATH}/thumbnail.png"
-THUMBNAIL_PATH_MULTIPLATE = f"{METADATA_PATH}/plate_1.png"
-THUMBNAIL_PATH_MULTIPLATE_SMALL = f"{METADATA_PATH}/plate_1_small.png"
-GCODE_PATH = f"{METADATA_PATH}/plate_1.gcode"
-GCODE_MD5_PATH = f"{GCODE_PATH}.md5"
-MODEL_SETTINGS_PATH = f"{METADATA_PATH}/model_settings.config"
-PLATE_DESC_PATH = f"{METADATA_PATH}/plate_1.json"
-SLICE_INFO_PATH = f"{METADATA_PATH}/slice_info.config"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -84,6 +73,12 @@ class ThreeMFWriter(MeshWriter):
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
         self._lock = threading.Lock()
+
+        # Register available variants
+        self._variants = {
+            Cura3mfVariant(self).mime_type: Cura3mfVariant,
+            BambuLabVariant(self).mime_type: BambuLabVariant
+        }
 
     @staticmethod
     def _convertMatrixToString(matrix):
@@ -218,10 +213,23 @@ class ThreeMFWriter(MeshWriter):
 
         painter.end()
 
+    def _getVariant(self, mime_type: str) -> ThreeMFVariant:
+        """Get the appropriate variant for the given MIME type.
+
+        :param mime_type: The MIME type to get the variant for
+        :return: An instance of the variant for the given MIME type
+        """
+        variant_class = self._variants.get(mime_type, Cura3mfVariant)
+        return variant_class(self)
+
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None, **kwargs) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
-        add_extra_data = kwargs.get("mime_type", "") == "application/vnd.bambulab-package.3dmanufacturing-3dmodel+xml"
+
+        # Determine which variant to use based on mime type in kwargs
+        mime_type = kwargs.get("mime_type", Cura3mfVariant(self).mime_type)
+        variant = self._getVariant(mime_type)
+
         try:
             model_file = zipfile.ZipInfo(MODEL_PATH)
             # Because zipfile is stupid and ignores archive-level compression settings when writing with ZipInfo.
@@ -241,11 +249,12 @@ class ThreeMFWriter(MeshWriter):
             # Create Metadata/_rels/model_settings.config.rels
             metadata_relations_element = self._makeRelationsTree()
 
-            if add_extra_data:
-                self._storeGCode(archive, metadata_relations_element)
-                self._storeModelSettings(archive)
-                self._storePlateDesc(archive)
-                self._storeSliceInfo(archive)
+            # Let the variant add its specific files
+            variant.add_extra_files(archive, metadata_relations_element)
+
+            # Let the variant prepare content types and relations
+            variant.prepare_content_types(content_types)
+            variant.prepare_relations(relations_element)
 
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()
@@ -261,32 +270,8 @@ class ThreeMFWriter(MeshWriter):
                 # Add PNG to content types file
                 thumbnail_type = ET.SubElement(content_types, "Default", Extension="png", ContentType="image/png")
 
-                if add_extra_data:
-                    archive.writestr(zipfile.ZipInfo(THUMBNAIL_PATH_MULTIPLATE), thumbnail_buffer.data())
-                    extra_thumbnail_relation_element = ET.SubElement(relations_element, "Relationship",
-                                                           Target="/" + THUMBNAIL_PATH_MULTIPLATE, Id="rel-2",
-                                                           Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
-                    extra_thumbnail_relation_element_duplicate = ET.SubElement(relations_element, "Relationship",
-                                                                     Target="/" + THUMBNAIL_PATH_MULTIPLATE, Id="rel-4",
-                                                                     Type="http://schemas.bambulab.com/package/2021/cover-thumbnail-middle")
-
-                    small_snapshot = snapshot.scaled(128, 128, transformMode = Qt.TransformationMode.SmoothTransformation)
-                    small_thumbnail_buffer = QBuffer()
-                    small_thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
-                    small_snapshot.save(small_thumbnail_buffer, "PNG")
-                    archive.writestr(zipfile.ZipInfo(THUMBNAIL_PATH_MULTIPLATE_SMALL), small_thumbnail_buffer.data())
-                    thumbnail_small_relation_element = ET.SubElement(relations_element, "Relationship",
-                                                                     Target="/" + THUMBNAIL_PATH_MULTIPLATE_SMALL, Id="rel-5",
-                                                                     Type="http://schemas.bambulab.com/package/2021/cover-thumbnail-small")
-                else:
-                    thumbnail_file = zipfile.ZipInfo(THUMBNAIL_PATH)
-                    # Don't try to compress snapshot file, because the PNG is pretty much as compact as it will get
-                    archive.writestr(thumbnail_file, thumbnail_buffer.data())
-
-                    # Add thumbnail relation to _rels/.rels file
-                    thumbnail_relation_element = ET.SubElement(relations_element, "Relationship",
-                                                               Target="/" + THUMBNAIL_PATH, Id="rel1",
-                                                               Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+                # Let the variant process the thumbnail
+                variant.process_thumbnail(snapshot, thumbnail_buffer, archive, relations_element)
 
             # Write material metadata
             packages_metadata = self._getMaterialPackageMetadata() + self._getPluginPackageMetadata()
@@ -370,94 +355,6 @@ class ThreeMFWriter(MeshWriter):
         file = zipfile.ZipInfo(file_path)
         file.compress_type = zipfile.ZIP_DEFLATED
         archive.writestr(file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(root_element))
-
-    def _storeGCode(self, archive: zipfile.ZipFile, metadata_relations_element: ET.Element):
-        gcode_textio = StringIO()  # We have to convert the g-code into bytes.
-        gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
-        success = gcode_writer.write(gcode_textio, None)
-
-        if not success:
-            error_msg = catalog.i18nc("@info:error", "Can't write GCode to 3MF file")
-            self.setInformation(error_msg)
-            Logger.error(error_msg)
-            raise Exception(error_msg)
-
-        gcode_data = gcode_textio.getvalue().encode("UTF-8")
-        archive.writestr(zipfile.ZipInfo(GCODE_PATH), gcode_data)
-
-        gcode_relation_element = ET.SubElement(metadata_relations_element, "Relationship",
-                                               Target=f"/{GCODE_PATH}", Id="rel-1",
-                                               Type="http://schemas.bambulab.com/package/2021/gcode")
-
-        # Calculate and store the MD5 sum of the gcode data
-        md5_hash = hashlib.md5(gcode_data).hexdigest()
-        archive.writestr(zipfile.ZipInfo(GCODE_MD5_PATH), md5_hash.encode("UTF-8"))
-
-    def _storeModelSettings(self, archive: zipfile.ZipFile):
-        config = ET.Element("config")
-        plate = ET.SubElement(config, "plate")
-        plater_id = ET.SubElement(plate, "metadata", key="plater_id", value="1")
-        plater_id = ET.SubElement(plate, "metadata", key="plater_name", value="")
-        plater_id = ET.SubElement(plate, "metadata", key="locked", value="false")
-        plater_id = ET.SubElement(plate, "metadata", key="filament_map_mode", value="Auto For Flush")
-        extruders_count = len(CuraApplication.getInstance().getExtruderManager().extruderIds)
-        plater_id = ET.SubElement(plate, "metadata", key="filament_maps", value=" ".join("1" for _ in range(extruders_count)))
-        plater_id = ET.SubElement(plate, "metadata", key="gcode_file", value=GCODE_PATH)
-        plater_id = ET.SubElement(plate, "metadata", key="thumbnail_file", value=THUMBNAIL_PATH_MULTIPLATE)
-        plater_id = ET.SubElement(plate, "metadata", key="pattern_bbox_file", value=PLATE_DESC_PATH)
-
-        self._storeElementTree(archive, MODEL_SETTINGS_PATH, config)
-
-    def _storePlateDesc(self, archive: zipfile.ZipFile):
-        plate_desc = {}
-
-        filament_ids = []
-        filament_colors = []
-
-        for extruder in CuraApplication.getInstance().getExtruderManager().getUsedExtruderStacks():
-            filament_ids.append(extruder.getValue("extruder_nr"))
-            filament_colors.append(self._getMaterialColor(extruder))
-
-        plate_desc["filament_ids"] = filament_ids
-        plate_desc["filament_colors"] = filament_colors
-        plate_desc["first_extruder"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
-        plate_desc["is_seq_print"] = Application.getInstance().getGlobalContainerStack().getValue("print_sequence") == "one_at_a_time"
-        plate_desc["nozzle_diameter"] = CuraApplication.getInstance().getExtruderManager().getActiveExtruderStack().getValue("machine_nozzle_size")
-        plate_desc["version"] = 2
-
-        file = zipfile.ZipInfo(PLATE_DESC_PATH)
-        file.compress_type = zipfile.ZIP_DEFLATED
-        archive.writestr(file, json.dumps(plate_desc).encode("UTF-8"))
-
-    def _storeSliceInfo(self, archive: zipfile.ZipFile):
-        config = ET.Element("config")
-
-        header = ET.SubElement(config, "header")
-        header_type = ET.SubElement(header, "header_item", key="X-BBL-Client-Type", value="slicer")
-        header_version = ET.SubElement(header, "header_item", key="X-BBL-Client-Version", value="02.00.01.50")
-
-        plate = ET.SubElement(config, "plate")
-        index = ET.SubElement(plate, "metadata", key="index", value="1")
-        nozzle_diameter = ET.SubElement(plate,
-                                        "metadata",
-                                        key="nozzle_diameters",
-                                        value=str(CuraApplication.getInstance().getExtruderManager().getActiveExtruderStack().getValue("machine_nozzle_size")))
-
-        print_information = CuraApplication.getInstance().getPrintInformation()
-        for index, extruder in enumerate(Application.getInstance().getGlobalContainerStack().extruderList):
-            used_m = print_information.materialLengths[index]
-            used_g = print_information.materialWeights[index]
-            if used_m > 0.0 and used_g > 0.0:
-                filament = ET.SubElement(plate,
-                                         "filament",
-                                         id=str(extruder.getValue("extruder_nr") + 1),
-                                         tray_info_idx="GFA00",
-                                         type=extruder.material.getMetaDataEntry("material", ""),
-                                         color=self._getMaterialColor(extruder),
-                                         used_m=str(used_m),
-                                         used_g=str(used_g))
-
-        self._storeElementTree(archive, SLICE_INFO_PATH, config)
 
     def _makeRelationsTree(self):
         return ET.Element("Relationships", xmlns=self._namespaces["relationships"])
