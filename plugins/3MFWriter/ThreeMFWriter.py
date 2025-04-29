@@ -360,7 +360,7 @@ class ThreeMFWriter(MeshWriter):
         return ET.Element("Relationships", xmlns=self._namespaces["relationships"])
 
     @staticmethod
-    def _getMaterialColor(extruder: ExtruderStack) -> str:
+    def _getMaterialColor(extruder: "ExtruderStack") -> str:
         position = int(extruder.getMetaDataEntry("position", default="0"))
         try:
             default_color = ExtrudersModel.defaultColors[position]
