@@ -140,6 +140,7 @@
         "skin_material_flow": { "value": 95 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
+        "skirt_brim_speed": { "maximum_value_warning": 500 },
         "skirt_line_count": { "value": 5 },
         "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": 4 },
@@ -178,7 +179,6 @@
             "maximum_value_warning": 500,
             "value": "speed_wall"
         },
-        "skirt_brim_speed": { "maximum_value_warning": 500 },
         "speed_support":
         {
             "maximum_value_warning": 500,
