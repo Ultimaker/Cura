@@ -31,6 +31,7 @@ GCODE_MD5_PATH = f"{GCODE_PATH}.md5"
 MODEL_SETTINGS_PATH = f"{METADATA_PATH}/model_settings.config"
 PLATE_DESC_PATH = f"{METADATA_PATH}/plate_1.json"
 SLICE_INFO_PATH = f"{METADATA_PATH}/slice_info.config"
+PROJECT_SETTINGS_PATH = f"{METADATA_PATH}/project_settings.config"
 
 class BambuLabVariant(ThreeMFVariant):
     """BambuLab specific implementation of the 3MF format."""
@@ -48,7 +49,7 @@ class BambuLabVariant(ThreeMFVariant):
         # Add relations elements for thumbnails
         ET.SubElement(relations_element, "Relationship",
                       Target="/" + THUMBNAIL_PATH_MULTIPLATE, Id="rel-2",
-                      Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+                pe="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
         
         ET.SubElement(relations_element, "Relationship",
                       Target="/" + THUMBNAIL_PATH_MULTIPLATE, Id="rel-4",
@@ -74,6 +75,7 @@ class BambuLabVariant(ThreeMFVariant):
         self._storeModelSettings(archive)
         self._storePlateDesc(archive)
         self._storeSliceInfo(archive)
+        self._storeProjectSettings(archive)
 
     def _storeGCode(self, archive: zipfile.ZipFile, metadata_relations_element: ET.Element):
         """Store GCode data in the archive."""
@@ -166,3 +168,9 @@ class BambuLabVariant(ThreeMFVariant):
                              used_g=str(used_g))
 
         self._writer._storeElementTree(archive, SLICE_INFO_PATH, config)
+
+    def _storeProjectSettings(self, archive: zipfile.ZipFile):
+        api = CuraApplication.getInstance().getCuraAPI()
+        file = zipfile.ZipInfo(PROJECT_SETTINGS_PATH)
+        json_string = json.dumps(api.interface.settings.getAllGlobalSettings(), separators=(", ", ": "), indent=4)
+        archive.writestr(file, json_string.encode("UTF-8"))
