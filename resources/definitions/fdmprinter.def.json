@@ -4887,13 +4887,12 @@
                 "build_volume_fan_speed_0":
                 {
                     "label": "Initial Layers Build Volume Fan Speed",
-                    "description": "Build-volume fan speed until 'Build Volume Fan Speed at Layer'.",
+                    "description": "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one).",
                     "unit": "%",
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
                     "default_value": 0,
-                    "value": "0.0",
                     "enabled": "build_volume_fan_nr != 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -4902,13 +4901,12 @@
                 "build_volume_fan_speed":
                 {
                     "label": "Build Volume Fan Speed",
-                    "description": "Build-volume fan speed starting from 'Build Volume Fan Speed at Layer'.",
+                    "description": "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead.",
                     "unit": "%",
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
                     "default_value": 100,
-                    "value": "100.0",
                     "enabled": "build_volume_fan_nr != 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
