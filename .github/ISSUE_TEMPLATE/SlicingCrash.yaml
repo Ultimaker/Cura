@@ -8,7 +8,8 @@ body:
        ### ✨Are you stuck? Have you tried these two things? ✨
        1- Are you on a Cura version lower than Cura 5.7? We really recommend updating because it resolves a lot of slicing crashes!
        2- Have you tried fixing the model with software that repairs 3d files and makes them watertight? 
-       Are you seeing spots and dots on your model? That is Cura indicating that your model is not watertight.  
+          Are you seeing spots and dots on your model? That is Cura indicating that your model is not watertight.  
+          You can try doing a quick [Mesh Fix with the Meshtools Plugin](https://marketplace.ultimaker.com/app/cura/plugins/fieldofview/MeshTools) or other mesh editing software. 
        
        If you still encounter a crash you are welcome to report the issue so we can use your model as a test case. 
        You can find instructions on how to share your model in a Package for Technical Support below.        
