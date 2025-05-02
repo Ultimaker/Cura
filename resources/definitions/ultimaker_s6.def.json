@@ -48,6 +48,6 @@
     "overrides":
     {
         "adhesion_type": { "value": "'brim'" },
-        "machine_name": { "default_value": "UltiMaker S6" }
+        "machine_name": { "default_value": "Ultimaker S6" }
     }
 }
