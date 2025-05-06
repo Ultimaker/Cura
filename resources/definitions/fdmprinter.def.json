@@ -1845,8 +1845,8 @@
                 },
                 "wall_line_count_skin":
                 {
-                    "label": "Total Wall Line Count In Skin",
-                    "description": "The number of walls in the top- and bottom-most skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air'.",
+                    "label": "Wall Line Count Top/Initial",
+                    "description": "The number of walls in the top-skin and initial-layer-skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air' (except for bottom parts higher up in the model).",
                     "default_value": 1,
                     "value": "wall_line_count",
                     "minimum_value": "0",
@@ -1858,10 +1858,10 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "wall_line_count_bottom":
+                        "wall_line_count_0":
                         {
-                            "label": "Total Wall Line Count In Bottom Skin",
-                            "description": "The number of walls in the bottom-most skin parts, 'exposed to air'.",
+                            "label": "Wall Line Count Initial Layer",
+                            "description": "The number of walls in the initial layer.",
                             "default_value": 1,
                             "value": "wall_line_count_skin",
                             "minimum_value": "0",
@@ -1874,7 +1874,7 @@
                         },
                         "wall_line_count_top":
                         {
-                            "label": "Total Wall Line Count In Top Skin",
+                            "label": "Wall Line Count Top",
                             "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
                             "default_value": 1,
                             "value": "wall_line_count_skin",
