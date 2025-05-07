@@ -1858,7 +1858,7 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                       "wall_line_count_flooring":
+                        "wall_line_count_flooring":
                         {
                             "label": "Wall Line Count Initial Layer",
                             "description": "The number of walls in the initial layer.",
@@ -1872,7 +1872,7 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
-                       "wall_line_count_roofing":
+                        "wall_line_count_roofing":
                         {
                             "label": "Wall Line Count Top",
                             "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
