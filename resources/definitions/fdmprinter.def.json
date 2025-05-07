@@ -1858,7 +1858,7 @@
                     "settable_per_mesh": true,
                     "children":
                     {
-                        "wall_line_count_flooring":
+                        "wall_line_count_layer_0":
                         {
                             "label": "Wall Line Count Initial Layer",
                             "description": "The number of walls in the initial layer.",
