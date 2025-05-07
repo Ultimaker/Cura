@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "E2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "zonestar_m2_base",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 1 },
+        "machine_extruder_end_code": { "default_value": ";End G-code of E2\n" },
+        "machine_extruder_start_code": { "default_value": ";Start G-code of E2\nM163 S0 P0\nM163 S1 P100\nM164 S1\n" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
