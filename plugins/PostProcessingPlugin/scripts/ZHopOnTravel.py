@@ -397,7 +397,7 @@ class ZHopOnTravel(Script):
             reset_type += 4
         if extra_prime_dist > 0 and hop_retraction:
             reset_type += 8
-        up_lines = f"G0 F{speed_zhop} Z{round(self._cur_z + hop_height,2)} ; Hop Up"
+        up_lines = f"G1 F{speed_zhop} Z{round(self._cur_z + hop_height,2)} ; Hop Up"
         if reset_type in [1, 9] and hop_retraction: # add retract only when necessary
             up_lines = f"G1 F{retract_speed} E{round(self._cur_e - retraction_amount, 5)} ; Retract\n" + up_lines
             self._cur_e = round(self._cur_e - retraction_amount, 5)
@@ -444,7 +444,7 @@ class ZHopOnTravel(Script):
             reset_type += 4
         if extra_prime_dist > 0.0 and hop_retraction:
             reset_type += 8
-        dn_lines = f"G0 F{speed_zhop} Z{self._cur_z} ; Hop Down"
+        dn_lines = f"G1 F{speed_zhop} Z{self._cur_z} ; Hop Down"
         # Format the line and return if the retraction option is unchecked
         if "G11" in next_line or re.search("G1 F(\d+\.\d+|\d+) E(-?\d+\.\d+|-?\d+)", next_line) and reset_type == 0:
             front_txt = dn_lines.split(";")[0]
