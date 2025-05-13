@@ -9311,6 +9311,32 @@
                     "default_value": true,
                     "settable_per_mesh": true
                 },
+                "retraction_during_travel_ratio":
+                {
+                    "label": "Retraction During Travel Move",
+                    "description": "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_during_travel_ratio":
+                {
+                    "label": "Prime During Travel Move",
+                    "description": "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "scarf_joint_seam_length":
                 {
                     "label": "Scarf Seam Length",
