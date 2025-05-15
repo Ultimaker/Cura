@@ -12,6 +12,17 @@
         "bom_numbers": [
             10600
         ],
+        "exclude_materials": [
+            "generic_hips",
+            "generic_flexible",
+            "generic_cffpps",
+            "generic_cffpa",
+            "generic_cffcpe",
+            "generic_gffpa",
+            "generic_gffcpe",
+            "structur3d_",
+            "ultimaker_ppscf"
+        ],
         "firmware_update_info":
         {
             "check_urls": [ "https://software.ultimaker.com/releases/firmware/10600/stable/um-update.swu.version" ],
