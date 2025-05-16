@@ -472,12 +472,12 @@
         "speed_layer_0":
         {
             "maximum_value_warning": 300,
-            "value": "min(speed_wall,50)"
+            "value": "min(speed_wall, 50)"
         },
         "speed_prime_tower":
         {
             "maximum_value_warning": 300,
-            "value": "min(speed_wall,50)"
+            "value": "min(speed_wall, 50)"
         },
         "speed_print":
         {
