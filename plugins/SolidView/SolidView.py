@@ -1,13 +1,12 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt6.QtGui import QOpenGLContext, QDesktopServices, QImage
-from PyQt6.QtCore import QSize, QUrl
+from PyQt6.QtGui import QDesktopServices, QImage
+from PyQt6.QtCore import QUrl
 
 import numpy as np
 import time
@@ -36,16 +35,20 @@ class SolidView(View):
     """Standard view for mesh models."""
 
     _show_xray_warning_preference = "view/show_xray_warning"
+    _show_overhang_preference = "view/show_overhang"
+    _paint_active_preference = "view/paint_active"
 
     def __init__(self):
         super().__init__()
         application = Application.getInstance()
-        application.getPreferences().addPreference("view/show_overhang", True)
+        application.getPreferences().addPreference(self._show_overhang_preference, True)
+        application.getPreferences().addPreference(self._paint_active_preference, False)
         application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._enabled_shader = None
         self._disabled_shader = None
         self._non_printing_shader = None
         self._support_mesh_shader = None
+        self._paint_shader = None
 
         self._xray_shader = None
         self._xray_pass = None
@@ -139,6 +142,11 @@ class SolidView(View):
             min_height = max(min_height, init_layer_height)
         return min_height
 
+    def _setPaintTexture(self):
+        self._paint_texture = OpenGL.getInstance().createTexture(256, 256)
+        if self._paint_shader:
+            self._paint_shader.setTexture(0, self._paint_texture)
+
     def _checkSetup(self):
         if not self._extruders_model:
             self._extruders_model = Application.getInstance().getExtrudersModel()
@@ -166,6 +174,10 @@ class SolidView(View):
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
+
+        if not self._paint_shader:
+            self._paint_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "paint.shader"))
+            self._setPaintTexture()
 
         if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
             self._xray_shader = None
@@ -204,6 +216,9 @@ class SolidView(View):
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
+    def setUvPixel(self, x, y, color):
+        self._paint_texture.setPixel(x, y, color)
+
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
@@ -212,7 +227,7 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            if Application.getInstance().getPreferences().getValue("view/show_overhang"):
+            if Application.getInstance().getPreferences().getValue(self._show_overhang_preference):
                 # Make sure the overhang angle is valid before passing it to the shader
                 if self._support_angle >= 0 and self._support_angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
@@ -221,7 +236,7 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
         self._enabled_shader.setUniformValue("u_lowestPrintableHeight", self._lowest_printable_height)
-        disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
+        disabled_batch = renderer.createRenderBatch(shader = self._paint_shader)   #### TODO: put back to 'self._disabled_shader'
         normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
         renderer.addRenderBatch(normal_object_batch)
