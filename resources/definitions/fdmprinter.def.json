@@ -214,8 +214,8 @@
                 },
                 "machine_buildplate_type":
                 {
-                    "label": "Build Plate Material",
-                    "description": "The material of the build plate installed on the printer.",
+                    "label": "Build Plate Type",
+                    "description": "The type of build plate installed on the printer.",
                     "default_value": "glass",
                     "type": "enum",
                     "options":
@@ -388,7 +388,8 @@
                         "Makerbot": "Makerbot",
                         "BFB": "Bits from Bytes",
                         "MACH3": "Mach3",
-                        "Repetier": "Repetier"
+                        "Repetier": "Repetier",
+                        "BambuLab": "BambuLab"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
                     "settable_per_mesh": false,
@@ -3376,6 +3377,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
+                },
+                "material_max_flowrate":
+                {
+                    "default_value": 16,
+                    "description": "Maximum flow rate that the printer can extrude for the material",
+                    "enabled": false,
+                    "label": "Material Maximum Flow Rate",
+                    "maximum_value": "machine_max_feedrate_e * (material_diameter/2)**2 * math.pi",
+                    "minimum_value": "0",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "mm\u00b3/s",
+                    "value": "16"
                 }
             }
         },
@@ -4855,7 +4870,7 @@
                 },
                 "build_fan_full_at_height":
                 {
-                    "label": "Build Fan Speed at Height",
+                    "label": "Build Volume Fan Speed at Height",
                     "description": "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed.",
                     "unit": "mm",
                     "type": "float",
@@ -4870,8 +4885,8 @@
                     {
                         "build_fan_full_layer":
                         {
-                            "label": "Build Fan Speed at Layer",
-                            "description": "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number.",
+                            "label": "Build Volume Fan Speed at Layer",
+                            "description": "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number.",
                             "type": "int",
                             "default_value": 0,
                             "minimum_value": "0",
@@ -4883,6 +4898,34 @@
                             "settable_per_meshgroup": false
                         }
                     }
+                },
+                "build_volume_fan_speed_0":
+                {
+                    "label": "Initial Layers Build Volume Fan Speed",
+                    "description": "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one).",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "enabled": "build_volume_fan_nr != 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "build_volume_fan_speed":
+                {
+                    "label": "Build Volume Fan Speed",
+                    "description": "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead.",
+                    "unit": "%",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "enabled": "build_volume_fan_nr != 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 },
                 "cool_fan_speed":
                 {
@@ -7465,6 +7508,17 @@
                             "limit_to_extruder": "raft_surface_extruder_nr"
                         }
                     }
+                },
+                "machine_scan_first_layer":
+                {
+                    "default_value": false,
+                    "description": "Whether to scan the first layer for layer adhesion problems.",
+                    "enabled": false,
+                    "label": "Scan the first layer",
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "settable_per_meshgroup": false,
+                    "type": "bool"
                 }
             }
         },
