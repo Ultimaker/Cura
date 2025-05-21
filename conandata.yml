@@ -1,15 +1,15 @@
-version: "5.10.0"
+version: "5.10.1"
 requirements:
-  - "cura_resources/5.10.0"
-  - "uranium/5.10.0"
-  - "curaengine/5.10.0"
-  - "cura_binary_data/5.10.0"
-  - "fdm_materials/5.10.0"
+  - "cura_resources/5.10.1"
+  - "uranium/5.10.1"
+  - "curaengine/5.10.1"
+  - "cura_binary_data/5.10.1"
+  - "fdm_materials/5.10.1"
   - "dulcificum/5.10.0"
   - "pysavitar/5.10.0"
   - "pynest2d/5.10.0"
 requirements_internal:
-  - "fdm_materials/5.10.0"
+  - "fdm_materials/5.10.1"
   - "cura_private_data/5.10.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
