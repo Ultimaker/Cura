@@ -502,7 +502,7 @@ class ZHopOnTravel(Script):
         This function tracks the XYZE locations prior to the beginning of the first 'layer-of-interest'
 
         """
-        for num in range(2, start_index - 1):
+        for num in range(2, start_index):
             lines = data[num].split("\n")
             for line in lines:
                 # Get the XYZ values from movement commands
