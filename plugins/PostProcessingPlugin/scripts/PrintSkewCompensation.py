@@ -243,7 +243,21 @@ class PrintSkewCompensation(Script):
 
         # Add the script settings to the gcode if requested
         if self.getSettingValueByKey("add_settings_to_gcode"):
-            setting_string = f";  Print Skew Compensation Settings:\n;    xy_ac_measurement: {self.xy_ac_dist}\n;    xy_bd_measurement: {self.xy_bd_dist}\n;    xy_ad_measurement: {self.xy_ad_dist}\n;       XY skew factor: {round(self.xy_skew_factor,8)}\n;    xz_ac_measurement: {self.xz_ac_dist}\n;    xz_bd_measurement: {self.xz_bd_dist}\n;    xz_ad_measurement: {self.xz_ad_dist}\n;       XZ skew factor: {round(self.xz_skew_factor,8)}\n;    yz_ac_measurement: {self.yz_ac_dist}\n;    yz_bd_measurement: {self.yz_bd_dist}\n;    yz_ad_measurement: {self.yz_ad_dist}\n;       YZ skew factor: {round(self.yz_skew_factor,8)}\n"
+            setting_string = (
+                f";  Print Skew Compensation Settings:\n"
+                f";    xy_ac_measurement: {self.xy_ac_dist}\n"
+                f";    xy_bd_measurement: {self.xy_bd_dist}\n"
+                f";    xy_ad_measurement: {self.xy_ad_dist}\n"
+                f";        XY skew factor:    {round(self.xy_skew_factor, 8)}\n"
+                f";    xz_ac_measurement: {self.xz_ac_dist}\n"
+                f";    xz_bd_measurement: {self.xz_bd_dist}\n"
+                f";    xz_ad_measurement: {self.xz_ad_dist}\n"
+                f";        XZ skew factor:    {round(self.xz_skew_factor, 8)}\n"
+                f";    yz_ac_measurement: {self.yz_ac_dist}\n"
+                f";    yz_bd_measurement: {self.yz_bd_dist}\n"
+                f";    yz_ad_measurement: {self.yz_ad_dist}\n"
+                f";        YZ skew factor:    {round(self.yz_skew_factor, 8)}\n"
+            )
             data[len(data) - 1] += setting_string
 
         # Write the settings to the log file
@@ -388,7 +402,23 @@ class PrintSkewCompensation(Script):
     def _write_log_file(self, log_file_name: str):
         # Write the log file
         skew_log_file = open(log_file_name, "w")
-        the_line = f"active_printer:{self.active_printer}\ncompensation_method:{self.compensation_method}\nxy_ac_dist:{self.xy_ac_dist}\nxy_bd_dist:{self.xy_bd_dist}\nxy_ad_dist:{self.xy_ad_dist}\nxz_ac_dist:{self.xz_ac_dist}\nxz_bd_dist:{self.xz_bd_dist}\nxz_ad_dist:{self.xz_ad_dist}\nyz_ac_dist:{self.yz_ac_dist}\nyz_bd_dist:{self.yz_bd_dist}\nyz_ad_dist:{self.yz_ad_dist}\nxy_skew_factor:{round(self.xy_skew_factor,8)}\nxz_skew_factor:{round(self.xz_skew_factor,8)}\nyz_skew_factor:{round(self.yz_skew_factor,8)}\nadd_settings_to_gcode:{str(self.add_settings_to_gcode)}"
+        the_line = (
+            f"active_printer:{self.active_printer}\n"
+            f"compensation_method:{self.compensation_method}\n"
+            f"xy_ac_dist:{self.xy_ac_dist}\n"
+            f"xy_bd_dist:{self.xy_bd_dist}\n"
+            f"xy_ad_dist:{self.xy_ad_dist}\n"
+            f"xz_ac_dist:{self.xz_ac_dist}\n"
+            f"xz_bd_dist:{self.xz_bd_dist}\n"
+            f"xz_ad_dist:{self.xz_ad_dist}\n"
+            f"yz_ac_dist:{self.yz_ac_dist}\n"
+            f"yz_bd_dist:{self.yz_bd_dist}\n"
+            f"yz_ad_dist:{self.yz_ad_dist}\n"
+            f"xy_skew_factor:{round(self.xy_skew_factor, 8)}\n"
+            f"xz_skew_factor:{round(self.xz_skew_factor, 8)}\n"
+            f"yz_skew_factor:{round(self.yz_skew_factor, 8)}\n"
+            f"add_settings_to_gcode:{str(self.add_settings_to_gcode)}"
+        )
         skew_log_file.write(the_line)
         skew_log_file.close()
         return None
