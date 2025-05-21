@@ -43,6 +43,8 @@ class PrintSkewCompensation(Script):
             # Use 'with' statement for safer file handling (ensures file is closed).
             with open(log_file_name, "r") as skew_settings_file:
                 set_lines = skew_settings_file.readlines()
+                # If there is a log file then load it and set the script settings to the values in the file.
+                self._getSettings(set_lines)
         except FileNotFoundError:
             # This is an expected case if the log file doesn't exist yet.
             Logger.log("i", f"Log file {log_file_name} not found. Default settings will be used and a new log file created upon saving.")
@@ -52,8 +54,6 @@ class PrintSkewCompensation(Script):
             Logger.log("w", f"Error reading log file {log_file_name}: {e}. Default settings will be used.")
             # set_lines remains None.
 
-        # If there is a log file then load it and set the script settings to the values in the file.
-        self._getSettings(set_lines)
         if set_lines != None:
             self._instance.setProperty("xy_ac_measurement", "value", self.xy_ac_temp)
             self._instance.setProperty("xy_bd_measurement", "value", self.xy_bd_temp)
