@@ -24,7 +24,7 @@ class PrintSkewCompensation(Script):
         super().initialize()
         """ Get the "Printer Name.skew.log" file and parse it for the settings.  If there isn't a log file, then create it for the active printer and use the default values.  The log file gets updated to the current settings every time the script runs.  When the user activates a different printer the script will re-initialize"""
         set_lines = None
-        active_printer = Application.getInstance().getGlobalContainerStack().getName
+        active_printer = Application.getInstance().getGlobalContainerStack().getName()
         try:
             # The path to the config folder
             config_path = Resources.getConfigStoragePath()
@@ -378,7 +378,7 @@ class PrintSkewCompensation(Script):
             self.add_settings_to_gcode = bool(lines[14].split(":")[1])
         else:
             # Set the defaults
-            self.active_printer = Application.getInstance().getGlobalContainerStack().getName
+            self.active_printer = Application.getInstance().getGlobalContainerStack().getName()
             self.compensation_method = "method_cura"
             # XY plane measurements
             self.xy_ac_temp = 141.42
