@@ -8,6 +8,7 @@ from PyQt6.QtCore import Qt
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
+from UM.Scene.Selection import Selection
 from UM.Tool import Tool
 from cura.PickingPass import PickingPass
 
@@ -21,10 +22,9 @@ class PaintTool(Tool):
 
         self._shortcut_key = Qt.Key.Key_P
 
-        """
-        # CURA-5966 Make sure to render whenever objects get selected/deselected.
-        Selection.selectionChanged.connect(self.propertyChanged)
-        """
+        self._node_cache = None
+        self._mesh_transformed_cache = None
+        self._cache_dirty = True
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a, pt, b, c):
@@ -48,6 +48,9 @@ class PaintTool(Tool):
         # get the ratio
         intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
         return numpy.linalg.norm(pt - intersect) / numpy.linalg.norm(a - intersect)
+
+    def _nodeTransformChanged(self, *args) -> None:
+        self._cache_dirty = True
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -78,32 +81,33 @@ class PaintTool(Tool):
             if not camera:
                 return False
 
-            evt = cast(MouseEvent, event)
-
-            ppass = PickingPass(self._selection_pass._width, self._selection_pass._height)
-            ppass.render()
-            pt = ppass.getPickedPosition(evt.x, evt.y).getData()
-
-            self._selection_pass._renderObjectsMode()  # TODO: <- Fix this!
-
-            node_id = self._selection_pass.getIdAtPosition(evt.x, evt.y)
-            if node_id is None:
-                return False
-            node = Application.getInstance().getController().getScene().findObject(node_id)
+            node = Selection.getAllSelectedObjects()[0]
             if node is None:
                 return False
 
-            self._selection_pass._renderFacesMode()  # TODO: <- Fix this!
+            if node != self._node_cache:
+                if self._node_cache is not None:
+                    self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
+                self._node_cache = node
+                self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
+            if self._cache_dirty:
+                self._cache_dirty = False
+                self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
+            if not self._mesh_transformed_cache:
+                return False
 
+            evt = cast(MouseEvent, event)
+
+            self._selection_pass.renderFacesMode()
             face_id = self._selection_pass.getFaceIdAtPosition(evt.x, evt.y)
             if face_id < 0:
                 return False
 
-            meshdata = node.getMeshDataTransformed()  # TODO: <- don't forget to optimize, if the mesh hasn't changed (transforms) then it should be reused!
-            if not meshdata:
-                return False
+            ppass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
+            ppass.render()
+            pt = ppass.getPickedPosition(evt.x, evt.y).getData()
 
-            va, vb, vc = meshdata.getFaceNodes(face_id)
+            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
             ta, tb, tc = node.getMeshData().getFaceUvCoords(face_id)
 
             # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
@@ -120,7 +124,6 @@ class PaintTool(Tool):
             solidview = Application.getInstance().getController().getActiveView()
             if solidview.getPluginId() != "SolidView":
                 return False
-
             solidview.setUvPixel(texcoords[0], texcoords[1], [255, 128, 0, 255])
 
             return True
