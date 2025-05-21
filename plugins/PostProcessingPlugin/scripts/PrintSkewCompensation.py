@@ -1,0 +1,405 @@
+"""
+By GregValiant (Greg Foresi) in April of 2025.
+Print Skew Compensation is designed to use either Cura post processing, Marlin M852, or Klipper SET_SKEW to compensate for hardware skewing of prints.
+
+The measurements for skew are different for each printer.  A log file will be created within the configuration folder 'scripts' sub-folder and will be based on the printer name (Ex: Ender-3Pro.skew.log).  When you change printers a new log file will be created but it is up to the user to make sure the settings are correct for that specific printer.
+
+Skew Calibration model files are available on my Git page at:
+https://github.com/GregValiant/GV-PostProcessors/tree/StartPoint/Skew%20Calibration%20Models
+
+"""
+
+from UM.Application import Application
+from ..Script import Script
+from UM.Message import Message
+from UM.Logger import Logger
+import re
+import math
+import os.path
+from UM.Resources import Resources
+import os
+
+class PrintSkewCompensation(Script):
+    def initialize(self) -> None:
+        super().initialize()
+
+        # Get the "Printer Name.skew.log" file and parse it for the settings.  If there isn't a log file, then create it.  The log file gets updated to the current settings every time the script runs.
+        set_lines = None
+        active_printer = Application.getInstance().getGlobalContainerStack().getProperty("machine_name", "value")
+        try:
+            config_path = Resources.getConfigStoragePath()
+            
+            pp_path = config_path + "\\scripts\\"
+            if not os.path.exists(pp_path):
+                os.makedirs(pp_path)
+            
+            log_file_name = pp_path + active_printer + ".skew.log"
+            skew_settings_file = open(log_file_name, "r")
+            set_lines = skew_settings_file.readlines()
+            skew_settings_file.close()
+        except:
+            pass
+        # If there is a log file then load it and set the script settings to the values in the file.
+        self._getSettings(set_lines)
+        if set_lines != None:
+            self._instance.setProperty("xy_ac_measurement", "value", self.xy_ac_temp)
+            self._instance.setProperty("xy_bd_measurement", "value", self.xy_bd_temp)
+            self._instance.setProperty("xy_ad_measurement", "value", self.xy_ad_temp)
+            self._instance.setProperty("xz_ac_measurement", "value", self.xz_ac_temp)
+            self._instance.setProperty("xz_bd_measurement", "value", self.xz_bd_temp)
+            self._instance.setProperty("xz_ad_measurement", "value", self.xz_ad_temp)
+            self._instance.setProperty("yz_ac_measurement", "value", self.yz_ac_temp)
+            self._instance.setProperty("yz_bd_measurement", "value", self.yz_bd_temp)
+            self._instance.setProperty("yz_ad_measurement", "value", self.yz_ad_temp)
+
+    def getSettingDataString(self):
+        return """{
+            "name":"Print Skew Compensation",
+            "key": "PrintSkewCompensation",
+            "metadata": {},
+            "version": 2,
+            "settings":
+            {
+                "enable_print_skew_comp":
+                {
+                    "label": "Enable Print Skew Comp",
+                    "description": "Enable the script",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": true
+                },
+                "compensation_method":
+                {
+                    "label": "Compensation Method",
+                    "description": "Select 'Cura' to post-process the gcode.  Select 'Marlin' to insert an M852 line into the StartUp section of the Gcode.  Select 'Klipper' to insert a 'SET_SKEW' line into the StartUp section of the Gcode.  Both 'Marlin' and 'Klipper' require that the commands are enabled in the firmware.",
+                    "type": "enum",
+                    "options": {
+                        "method_cura": "Cura",
+                        "method_marlin": "Marlin",
+                        "method_klipper": "Klipper"
+                        },
+                    "default_value": "method_cura",
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xy_ac_measurement":
+                {
+                    "label": " XY - A to C diagonal",
+                    "description": "The distance measured across the A to C diagonal of the XY calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "maximum_value": 150.0,
+                    "minimum_value": 130,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xy_bd_measurement":
+                {
+                    "label": " XY - B to D diagonal",
+                    "description": "The distance measured across the B to D diagonal of the XY calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "minimum_value": 130,
+                    "maximum_value": 150,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xy_ad_measurement":
+                {
+                    "label": " XY - A to D width",
+                    "description": "The distance measured across the A to D width of the XY calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.00,
+                    "minimum_value": 1.00,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xz_ac_measurement":
+                {
+                    "label": "    XZ - A to C diagonal",
+                    "description": "The distance measured across the A to C diagonal of the XZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "maximum_value": 150.0,
+                    "minimum_value": 130,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xz_bd_measurement":
+                {
+                    "label": "    XZ - B to D diagonal",
+                    "description": "The distance measured across the B to D diagonal of the XZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "maximum_value": 150.0,
+                    "minimum_value": 130,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "xz_ad_measurement":
+                {
+                    "label": "    XZ - A to D width",
+                    "description": "The distance measured across the A to D width of the XZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.00,
+                    "minimum_value": 1,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "yz_ac_measurement":
+                {
+                    "label": " YZ - A to C diagonal",
+                    "description": "The distance measured across the A to C diagonal of the YZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "maximum_value": 150.0,
+                    "minimum_value": 130.0,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "yz_bd_measurement":
+                {
+                    "label": " YZ - B to D diagonal",
+                    "description": "The distance measured across the B to D diagonal of the YZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 141.42,
+                    "maximum_value": 150.0,
+                    "minimum_value": 130,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "yz_ad_measurement":
+                {
+                    "label": " YZ - A to D width",
+                    "description": "The distance measured across the A to D width of the YZ calibration print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 100.00,
+                    "minimum_value": 1,
+                    "enabled": "enable_print_skew_comp"
+                },
+                "add_settings_to_gcode":
+                {
+                    "label": "Add settings to the gcode",
+                    "description": "Whether to make a record of these settings in the gcode file.  They go in at the end of the file.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "enable_print_skew_comp"
+                }
+            }
+        }"""
+
+    def execute(self, data: list):
+        active_printer = Application.getInstance().getGlobalContainerStack().getProperty("machine_name", "value")
+        config_path = Resources.getConfigStoragePath()
+        log_file_name = config_path + "\\scripts\\" + active_printer + ".skew.log"
+        
+        # Exit if the post processor is not enabled
+        if not bool(self.getSettingValueByKey("enable_print_skew_comp")):
+            data[0] += ";  [Print Skew Compensation] not enabled\n"
+            return data
+
+        # Exit if the gcode has already been post-processed
+        if ";POSTPROCESSED" in data[0]:
+            return
+        
+        # Notify the user that this script should run first
+        scripts = Application.getInstance().getGlobalContainerStack().getMetaDataEntry("post_processing_scripts")
+        scripts = scripts.replace("\\", "")
+        script_list = scripts.split("\n")
+        for s_index, script in enumerate(script_list):
+            script_list[s_index] = script.split("]")[0]
+            script_list[s_index] = script_list[s_index].replace("[", "")
+        for s_index, script in enumerate(script_list):
+            if "PrintSkewCompensation" in script and s_index != 0:
+                Message(
+                    title = "[Print Skew Compensation]", 
+                    text = "Should be first in the Post-Processor list.  It will run if it isn't first, but any following post-processors should act on the changes made by 'Print Skew Compensation'.").show()
+                break
+
+        self.compensation_method = self.getSettingValueByKey("compensation_method")
+        self.xy_ac_dist = self.getSettingValueByKey("xy_ac_measurement")
+        self.xy_bd_dist = self.getSettingValueByKey("xy_bd_measurement")
+        self.xy_ad_dist = self.getSettingValueByKey("xy_ad_measurement")
+        self.xz_ac_dist = self.getSettingValueByKey("xz_ac_measurement")
+        self.xz_bd_dist = self.getSettingValueByKey("xz_bd_measurement")
+        self.xz_ad_dist = self.getSettingValueByKey("xz_ad_measurement")
+        self.yz_ac_dist = self.getSettingValueByKey("yz_ac_measurement")
+        self.yz_bd_dist = self.getSettingValueByKey("yz_bd_measurement")
+        self.yz_ad_dist = self.getSettingValueByKey("yz_ad_measurement")
+
+        # Skew Factors
+        self.xy_skew_factor = self.calculate_skew_factor(self.xy_ac_dist, self.xy_bd_dist, self.xy_ad_dist)
+        self.xz_skew_factor = self.calculate_skew_factor(self.xz_ac_dist, self.xz_bd_dist, self.xz_ad_dist)
+        self.yz_skew_factor = self.calculate_skew_factor(self.yz_ac_dist, self.yz_bd_dist, self.yz_ad_dist)
+
+        if self.compensation_method == "method_cura":
+            data = self.cura_compensation(data)
+        elif self.compensation_method == "method_marlin":
+            data = self.marlin_compensation(data)
+        elif self.compensation_method == "method_klipper":
+            data = self.klipper_compensation(data)
+
+        if self.getSettingValueByKey("add_settings_to_gcode"):
+            setting_string = ";  Print Skew Compensation Settings:\n"
+            setting_string += f";    xy_ac_measurement: {self.xy_ac_dist}\n"
+            setting_string += f";    xy_bd_measurement: {self.xy_bd_dist}\n"
+            setting_string += f";    xy_ad_measurement: {self.xy_ad_dist}\n"
+            setting_string += f";       XY skew factor: {round(self.xy_skew_factor,8)}\n"
+            setting_string += f";    xz_ac_measurement: {self.xz_ac_dist}\n"
+            setting_string += f";    xz_bd_measurement: {self.xz_bd_dist}\n"
+            setting_string += f";    xz_ad_measurement: {self.xz_ad_dist}\n"
+            setting_string += f";       XZ skew factor: {round(self.xz_skew_factor,8)}\n"
+            setting_string += f";    yz_ac_measurement: {self.yz_ac_dist}\n"
+            setting_string += f";    yz_bd_measurement: {self.yz_bd_dist}\n"
+            setting_string += f";    yz_ad_measurement: {self.yz_ad_dist}\n"
+            setting_string += f";       YZ skew factor: {round(self.yz_skew_factor,8)}\n"
+            data[len(data) - 1] += setting_string
+
+        self._write_log_file(log_file_name)
+        return data
+
+    def cura_compensation(self, cura_data: str) -> str:
+        # z_input is cummulative
+        z_input = 0
+        cur_x = 0
+        cur_y = 0
+        cur_z = 0
+        for layer_index, layer in enumerate(cura_data):
+            lines = layer.split("\n")
+            # Get the X, Y, Z locations
+            for index, line in enumerate(lines):
+                if line.startswith(("G0", "G1")):
+                    cur_x = self.getValue(line, "X", None)
+                    cur_y = self.getValue(line, "Y", None)
+                    cur_z = self.getValue(line, "Z", None)
+
+                    # Reset x_input and y_input every time through
+                    x_input = 0
+                    y_input = 0
+
+                    if cur_x != None:
+                        x_input = cur_x
+                    if cur_y != None:
+                        y_input = cur_y
+                    if cur_z != None:
+                        z_input = cur_z
+
+                    # Calculate the skew compensation
+                    x_out = round(x_input - y_input * self.xy_skew_factor, 3)
+                    x_out = round(x_out - z_input * self.xz_skew_factor, 3)
+                    y_out = round(y_input - z_input * self.yz_skew_factor, 3)
+
+                    # If the first layer hasn't started then jump out (after tracking the XYZ).
+                    if layer_index < 2:
+                        continue
+                    # Alter the current line
+                    if cur_x != None:
+                        lines[index] = lines[index].replace(f"X{cur_x}", f"X{x_out}")
+                    if cur_y != None:
+                        lines[index] = lines[index].replace(f"Y{cur_y}", f"Y{y_out}")
+            cura_data[layer_index] = "\n".join(lines)
+        return cura_data
+
+    def marlin_compensation(self, cura_data: str) -> str:
+        # If the skew_factors are zero then return
+        if self.xy_skew_factor == 0 and self.xz_skew_factor == 0 and self.yz_skew_factor == 0:
+            cmd_line = ";No Skew Compensation Required"
+        else:
+            cmd_line = "M852"
+        # If only the XY skew factor is > 0 the use the "S" parameter
+        if self.xy_skew_factor and (self.xz_skew_factor == 0 and self.yz_skew_factor == 0):
+            cmd_line += f" S{round(self.xy_skew_factor, 8)}"
+        elif self.xy_skew_factor and (self.xz_skew_factor != 0 or self.yz_skew_factor != 0):
+            cmd_line += f" I{round(self.xy_skew_factor,8)}"
+        if self.xz_skew_factor != 0:
+            cmd_line += f" J{round(self.xz_skew_factor,8)}"
+        if self.yz_skew_factor != 0:
+            cmd_line += f" K{round(self.yz_skew_factor,8)}"
+        startup = cura_data[1].split("\n")
+        startup.insert(1, cmd_line)
+        cura_data[1] = "\n".join(startup)
+        return cura_data
+
+    def klipper_compensation(self, cura_data: str) -> str:
+        # z_input is cummulative
+        if self.xy_skew_factor == 0 and self.xz_skew_factor == 0 and self.yz_skew_factor == 0:
+            cmd_line = ";No Skew Compensation Required"
+        else:
+            cmd_line = "SET_SKEW"
+        if self.xy_skew_factor != 0:
+            cmd_line += f" XY={self.xy_ac_dist},{self.xy_bd_dist},{self.xy_ad_dist}"
+        if self.xz_skew_factor != 0:
+            cmd_line += f" XZ={self.xz_ac_dist},{self.xz_bd_dist},{self.xz_ad_dist}"
+        if self.yz_skew_factor != 0:
+            cmd_line += f" YZ={self.yz_ac_dist},{self.yz_bd_dist},{self.yz_ad_dist}"
+        if cmd_line == "SET_SKEW":
+            cmd_line = ";No Skew Compensation Required"
+        startup = cura_data[1].split("\n")
+        startup.insert(1, cmd_line)
+        cura_data[1] = "\n".join(startup)
+        return cura_data
+
+    def calculate_skew_factor(self, ac: float, bd: float, ad:float) -> str:
+        ab = math.sqrt(2*ac*ac+2*bd*bd-4*ad*ad)/2
+        skew_comp = math.tan(math.pi/2-math.acos((ac*ac-ab*ab-ad*ad)/(2*ab*ad)))
+        return skew_comp
+
+    def _getSettings(self, lines: str) -> str:
+        if lines != None:
+            self.printer_name = lines[0].split(":")[1]
+            self.compensation_method = lines[1].split(":")[1]
+            self.xy_ac_temp = float(lines[2].split(":")[1])
+            self.xy_bd_temp = float(lines[3].split(":")[1])
+            self.xy_ad_temp = float(lines[4].split(":")[1])
+            self.xz_ac_temp = float(lines[5].split(":")[1])
+            self.xz_bd_temp = float(lines[6].split(":")[1])
+            self.xz_ad_temp = float(lines[7].split(":")[1])
+            self.yz_ac_temp = float(lines[8].split(":")[1])
+            self.yz_bd_temp = float(lines[9].split(":")[1])
+            self.yz_ad_temp = float(lines[10].split(":")[1])
+            self.xy_skew_factor = float(lines[11].split(":")[1])
+            self.xz_skew_factor = float(lines[12].split(":")[1])
+            self.yz_skew_factor = float(lines[13].split(":")[1])
+            self.add_settings_to_gcode = bool(lines[14].split(":")[1])
+        else:
+            # Set the defaults
+            self.printer_name = Application.getInstance().getGlobalContainerStack().getProperty("machine_name", "value")
+            self.compensation_method = "method_cura"
+            # XY plane measurements
+            self.xy_ac_temp = 141.42
+            self.xy_bd_temp = 141.42
+            self.xy_ad_temp = 100.00
+            # XZ plane measurements
+            self.xz_ac_temp = 141.42
+            self.xz_bd_temp = 141.42
+            self.xz_ad_temp = 100.00
+            # YZ plane measurements
+            self.yz_ac_temp = 141.42
+            self.yz_bd_temp = 141.42
+            self.yz_ad_temp = 100.00
+            # Skew Factors
+            self.xy_skew_factor = 0.00
+            self.xz_skew_factor = 0.00
+            self.yz_skew_factor = 0.00
+            self.add_settings_to_gcode = False
+        return None
+
+    def _write_log_file(self, log_file_name: str):
+        skew_log_file = open(log_file_name, "w+")
+        skew_log_file.write('"printer_name":' + str(self.printer_name).strip() + "\n")
+        skew_log_file.write('"compensation_method":' + str(self.compensation_method).strip() + "\n")
+        skew_log_file.write('"xy_ac_dist":' + str(self.xy_ac_dist) + "\n")
+        skew_log_file.write('"xy_bd_dist":' + str(self.xy_bd_dist) + "\n")
+        skew_log_file.write('"xy_ad_dist":' + str(self.xy_ad_dist) + "\n")
+        skew_log_file.write('"xz_ac_dist":' + str(self.xz_ac_dist) + "\n")
+        skew_log_file.write('"xz_bd_dist":' + str(self.xz_bd_dist) + "\n")
+        skew_log_file.write('"xz_ad_dist":' + str(self.xz_ad_dist) + "\n")
+        skew_log_file.write('"yz_ac_dist":' + str(self.yz_ac_dist) + "\n")
+        skew_log_file.write('"yz_bd_dist":' + str(self.yz_bd_dist) + "\n")
+        skew_log_file.write('"yz_ad_dist":' + str(self.yz_ad_dist) + "\n")
+        skew_log_file.write('"xy_skew_factor":' + str(round(self.xy_skew_factor,8)) + "\n")
+        skew_log_file.write('"xz_skew_factor":' + str(round(self.xz_skew_factor,8)) + "\n")
+        skew_log_file.write('"yz_skew_factor":' + str(round(self.yz_skew_factor,8)) + "\n")
+        skew_log_file.write('"add_settings_to_gcode":' + str(self.add_settings_to_gcode))
+        skew_log_file.close()
+        return None
