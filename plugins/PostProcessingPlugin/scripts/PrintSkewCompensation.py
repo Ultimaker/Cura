@@ -25,21 +25,32 @@ class PrintSkewCompensation(Script):
         """ Get the "Printer Name.skew.log" file and parse it for the settings.  If there isn't a log file, then create it for the active printer and use the default values.  The log file gets updated to the current settings every time the script runs.  When the user activates a different printer the script will re-initialize"""
         set_lines = None
         active_printer = Application.getInstance().getGlobalContainerStack().getName()
+        config_path = Resources.getConfigStoragePath()
+        scripts_dir_path = os.path.join(config_path, "scripts")
+
         try:
-            # The path to the config folder
-            config_path = Resources.getConfigStoragePath()
-            # Check for the "scripts" folder
-            pp_path = os.path.join(config_path, "scripts")
-            # If there is no scripts folder then create it
-            if not os.path.exists(pp_path):
-                os.makedirs(pp_path)
-            # Use the printer name and either create the log file or read it if it already exists
-            log_file_name = os.path.join(pp_path, active_printer + ".skew.log")
-            skew_settings_file = open(log_file_name, "r")
-            set_lines = skew_settings_file.readlines()
-            skew_settings_file.close()
-        except:
-            Logger.log("w", "Unable to create the skew.log file")
+            # Ensure the 'scripts' directory exists.
+            # exist_ok=True prevents an error if the directory already exists.
+            os.makedirs(scripts_dir_path, exist_ok=True)
+        except OSError as e:
+            Logger.log("e", f"Failed to create scripts directory {scripts_dir_path}: {e}")
+            # If directory creation fails, set_lines will remain None,
+            # and default settings will be used by _getSettings.
+
+        log_file_name = os.path.join(scripts_dir_path, f"{active_printer}.skew.log")
+
+        try:
+            # Use 'with' statement for safer file handling (ensures file is closed).
+            with open(log_file_name, "r") as skew_settings_file:
+                set_lines = skew_settings_file.readlines()
+        except FileNotFoundError:
+            # This is an expected case if the log file doesn't exist yet.
+            Logger.log("i", f"Log file {log_file_name} not found. Default settings will be used and a new log file created upon saving.")
+            # set_lines remains None.
+        except IOError as e:
+            # Handles other I/O errors during reading (e.g., permission issues).
+            Logger.log("w", f"Error reading log file {log_file_name}: {e}. Default settings will be used.")
+            # set_lines remains None.
 
         # If there is a log file then load it and set the script settings to the values in the file.
         self._getSettings(set_lines)
@@ -399,9 +410,8 @@ class PrintSkewCompensation(Script):
             self.add_settings_to_gcode = False
         return None
 
-    def _write_log_file(self, log_file_name: str):
+    def _write_log_file(self, log_file_name: str) -> None:
         # Write the log file
-        skew_log_file = open(log_file_name, "w")
         the_line = (
             f"active_printer:{self.active_printer}\n"
             f"compensation_method:{self.compensation_method}\n"
@@ -419,6 +429,9 @@ class PrintSkewCompensation(Script):
             f"yz_skew_factor:{round(self.yz_skew_factor, 8)}\n"
             f"add_settings_to_gcode:{str(self.add_settings_to_gcode)}"
         )
-        skew_log_file.write(the_line)
-        skew_log_file.close()
+        try:
+            with open(log_file_name, "w") as skew_log_file:
+                skew_log_file.write(the_line)
+        except IOError as e:
+            Logger.log("e", f"Failed to write to log file {log_file_name}: {e}")
         return None
