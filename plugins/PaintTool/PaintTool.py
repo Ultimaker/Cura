@@ -27,7 +27,7 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     @staticmethod
-    def _get_intersect_ratio_via_pt(a, pt, b, c):
+    def _get_intersect_ratio_via_pt(a, pt, b, c) -> float:
         # compute the intersection of (param) A - pt with (param) B - (param) C
 
         # compute unit vectors of directions of lines A and B
@@ -61,12 +61,18 @@ class PaintTool(Tool):
         """
         super().event(event)
 
+        controller = Application.getInstance().getController()
+
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
-            return False
+            controller.setActiveStage("PrepareStage")
+            controller.setActiveView("PaintTool")  # Because that's the plugin-name, and the view is registered to it.
+            return True
 
         if event.type == Event.ToolDeactivateEvent:
-            return False
+            controller.setActiveStage("PrepareStage")
+            controller.setActiveView("SolidView")
+            return True
 
         if event.type == Event.KeyPressEvent and cast(KeyEvent, event).key == KeyEvent.ShiftKey:
             return False
@@ -121,10 +127,10 @@ class PaintTool(Tool):
             wc /= wt
             texcoords = wa * ta + wb * tb + wc * tc
 
-            solidview = Application.getInstance().getController().getActiveView()
-            if solidview.getPluginId() != "SolidView":
+            paintview = controller.getActiveView()
+            if paintview.getPluginId() != "PaintTool":
                 return False
-            solidview.setUvPixel(texcoords[0], texcoords[1], [255, 128, 0, 255])
+            paintview.setUvPixel(texcoords[0], texcoords[1], [255, 128, 0, 255])
 
             return True
 

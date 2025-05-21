@@ -42,13 +42,11 @@ class SolidView(View):
         super().__init__()
         application = Application.getInstance()
         application.getPreferences().addPreference(self._show_overhang_preference, True)
-        application.getPreferences().addPreference(self._paint_active_preference, False)
         application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._enabled_shader = None
         self._disabled_shader = None
         self._non_printing_shader = None
         self._support_mesh_shader = None
-        self._paint_shader = None
 
         self._xray_shader = None
         self._xray_pass = None
@@ -142,11 +140,6 @@ class SolidView(View):
             min_height = max(min_height, init_layer_height)
         return min_height
 
-    def _setPaintTexture(self):
-        self._paint_texture = OpenGL.getInstance().createTexture(256, 256)
-        if self._paint_shader:
-            self._paint_shader.setTexture(0, self._paint_texture)
-
     def _checkSetup(self):
         if not self._extruders_model:
             self._extruders_model = Application.getInstance().getExtrudersModel()
@@ -174,10 +167,6 @@ class SolidView(View):
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
-
-        if not self._paint_shader:
-            self._paint_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "paint.shader"))
-            self._setPaintTexture()
 
         if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
             self._xray_shader = None
@@ -216,9 +205,6 @@ class SolidView(View):
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
-    def setUvPixel(self, x, y, color):
-        self._paint_texture.setPixel(x, y, color)
-
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
@@ -236,7 +222,7 @@ class SolidView(View):
             else:
                 self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0)))
         self._enabled_shader.setUniformValue("u_lowestPrintableHeight", self._lowest_printable_height)
-        disabled_batch = renderer.createRenderBatch(shader = self._paint_shader)   #### TODO: put back to 'self._disabled_shader'
+        disabled_batch = renderer.createRenderBatch(shader = self._disabled_shader)
         normal_object_batch = renderer.createRenderBatch(shader = self._enabled_shader)
         renderer.addRenderBatch(disabled_batch)
         renderer.addRenderBatch(normal_object_batch)

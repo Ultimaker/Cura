@@ -1,0 +1,42 @@
+# Copyright (c) 2025 UltiMaker
+# Cura is released under the terms of the LGPLv3 or higher.
+import os
+
+from UM.PluginRegistry import PluginRegistry
+from UM.View.View import View
+from UM.Scene.Selection import Selection
+from UM.View.GL.OpenGL import OpenGL
+from UM.i18n import i18nCatalog
+
+catalog = i18nCatalog("cura")
+
+
+class PaintView(View):
+    """View for model-painting."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._paint_shader = None
+        self._paint_texture = None
+
+    def _checkSetup(self):
+        if not self._paint_shader:
+            shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
+            self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
+        if not self._paint_texture:
+            self._paint_texture = OpenGL.getInstance().createTexture(256, 256)
+            self._paint_shader.setTexture(0, self._paint_texture)
+
+    def setUvPixel(self, x, y, color) -> None:
+        self._paint_texture.setPixel(x, y, color)
+
+    def beginRendering(self) -> None:
+        renderer = self.getRenderer()
+        self._checkSetup()
+        paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
+        renderer.addRenderBatch(paint_batch)
+
+        node = Selection.getAllSelectedObjects()[0]
+        if node is None:
+            return
+        paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
