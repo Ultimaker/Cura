@@ -647,7 +647,8 @@ class DisplayInfoOnLCD(Script):
         filament_line_t0 += f";  Filament Type: {global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
         filament_line_t0 += f";  Filament Dia.: {global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
         filament_line_t0 += f";  Nozzle Size  : {global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
-        filament_line_t0 += f";  Print Temp.  : {global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°"
+        filament_line_t0 += f";  Print Temp.  : {global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°\n"
+        filament_line_t0 += f";  Bed Temp.    : {global_stack.extruderList[0].getProperty("material_bed_temperature", "value")}°"
 
         # if there is more than one extruder then get the stats for the second one.
         filament_line_t1 = ""
@@ -668,6 +669,11 @@ class DisplayInfoOnLCD(Script):
                 lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
             if line.startswith(";Filament used"):
                 lines[index] = filament_line_t0 + filament_line_t1
+            # The target machine "machine_name" is actually the printer model.  This adds the user defined printer name to the "TARGET_MACHINE" line.
+            if line.startswith(";TARGET_MACHINE"):
+                machine_model = str(global_stack.getProperty("machine_name", "value"))
+                machine_name = str(global_stack.getName())
+                lines[index] += f" / {machine_name}"
             if "MINX" in line or "MIN.X" in line:
                 # Add the Object List
                 lines[index - 1] += f"\n;Model List: {str(model_list)}"
