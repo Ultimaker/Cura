@@ -5,9 +5,11 @@ from typing import cast, Optional
 
 import numpy
 from PyQt6.QtCore import Qt
+from typing import List, Tuple
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
+from UM.Logger import Logger
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
 from cura.PickingPass import PickingPass
@@ -25,6 +27,31 @@ class PaintTool(Tool):
         self._node_cache = None
         self._mesh_transformed_cache = None
         self._cache_dirty = True
+
+        self._color_str_to_rgba = {
+            "A": [192, 0, 192, 255],
+            "B": [232, 128, 0, 255],
+            "C": [0, 255, 0, 255],
+            "D": [255, 255, 255, 255],
+        }
+
+        self._brush_size = 10
+        self._brush_color = "A"
+        self._brush_shape = "A"
+
+    def setPaintType(self, paint_type: str) -> None:
+        Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
+        pass
+
+    def setBrushSize(self, brush_size: float) -> None:
+        self._brush_size = int(brush_size)
+        print(self._brush_size)
+
+    def setBrushColor(self, brush_color: str) -> None:
+        self._brush_color = brush_color
+
+    def setBrushShape(self, brush_shape: str) -> None:
+        self._brush_shape = brush_shape
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a, pt, b, c) -> float:
@@ -51,6 +78,20 @@ class PaintTool(Tool):
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
+
+    def _getBrushPixels(self, mid_x: float, mid_y: float, w: float, h: float) -> List[Tuple[float, float]]:
+        res = []
+        include = False
+        for y in range(-self._brush_size, self._brush_size + 1):
+            for x in range(-self._brush_size, self._brush_size + 1):
+                match self._brush_shape:
+                    case "A":
+                        include = True
+                    case "B":
+                        include = x * x + y * y <= self._brush_size * self._brush_size
+                if include:
+                    res.append((mid_x + (x / w), mid_y + (y / h)))
+        return res
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -128,9 +169,12 @@ class PaintTool(Tool):
             texcoords = wa * ta + wb * tb + wc * tc
 
             paintview = controller.getActiveView()
-            if paintview.getPluginId() != "PaintTool":
+            if paintview is None or paintview.getPluginId() != "PaintTool":
                 return False
-            paintview.setUvPixel(texcoords[0], texcoords[1], [255, 128, 0, 255])
+            color = self._color_str_to_rgba[self._brush_color]
+            w, h = paintview.getUvTexDimensions()
+            for (x, y) in self._getBrushPixels(texcoords[0], texcoords[1], float(w), float(h)):
+                paintview.setUvPixel(x, y, color)
 
             return True
 

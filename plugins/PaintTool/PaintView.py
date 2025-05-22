@@ -18,17 +18,22 @@ class PaintView(View):
         super().__init__()
         self._paint_shader = None
         self._paint_texture = None
+        self._tex_width = 256
+        self._tex_height = 256
 
     def _checkSetup(self):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
         if not self._paint_texture:
-            self._paint_texture = OpenGL.getInstance().createTexture(256, 256)
+            self._paint_texture = OpenGL.getInstance().createTexture(self._tex_width, self._tex_height)
             self._paint_shader.setTexture(0, self._paint_texture)
 
     def setUvPixel(self, x, y, color) -> None:
         self._paint_texture.setPixel(x, y, color)
+
+    def getUvTexDimensions(self):
+        return self._tex_width, self._tex_height
 
     def beginRendering(self) -> None:
         renderer = self.getRenderer()
