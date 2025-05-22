@@ -33,9 +33,11 @@ class PrintSkewCompensation(Script):
             # exist_ok=True prevents an error if the directory already exists.
             os.makedirs(scripts_dir_path, exist_ok=True)
         except OSError as e:
-            Logger.log("e", f"Failed to create scripts directory {scripts_dir_path}: {e}")
-            # If directory creation fails, set_lines will remain None,
-            # and default settings will be used by _getSettings.
+            Logger.log("e", f"Unable to create the 'scripts' folder in the Configuration folder {scripts_dir_path}: {e}")
+            Message(
+                title = "[Print Skew Compensation]",
+                text = f"Unable to create the 'scripts' folder in the Configurations. Your settings cannot be recalled or saved.").show()
+            # If directory creation fails, set_lines will remain None
 
         log_file_name = os.path.join(scripts_dir_path, f"{active_printer}.skew.log")
 
@@ -49,7 +51,9 @@ class PrintSkewCompensation(Script):
             # set_lines remains None.
         except IOError as e:
             # Handles other I/O errors during reading (e.g., permission issues).
-            Logger.log("w", f"Error reading log file {log_file_name}: {e}. Default settings will be used.")
+            Message(
+                title = "[Print Skew Compensation]",
+                text = f"The log file {log_file_name} could not be opened.  Your settings cannot be recalled or saved.").show()
             # set_lines remains None.
 
         # If there is a log file then load it and set the script settings to the values in the file.
