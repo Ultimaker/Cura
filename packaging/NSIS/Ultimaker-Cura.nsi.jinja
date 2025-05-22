@@ -1,9 +1,8 @@
-# Copyright (c) 2022 UltiMaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura's build system is released under the terms of the AGPLv3 or higher.
 
 !define APP_NAME "{{ app_name }}"
 !define COMP_NAME "{{ company }}"
-!define WEB_SITE "{{ web_site }}"
 !define VERSION "{{ version }}"
 !define VIVERSION "{{ version_major }}.{{ version_minor }}.{{ version_patch }}.0"
 !define COPYRIGHT "Copyright (c) {{ year }} {{ company }}"
@@ -16,12 +15,10 @@
 !define REG_APP_PATH "Software\Microsoft\Windows\CurrentVersion\App Paths\${APP_NAME}-${VERSION}"
 !define UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}-${VERSION}"
 
-!define REG_START_MENU "Start Menu Folder"
+!define REG_START_MENU "Start Menu Shortcut"
 
 ;Require administrator access
 RequestExecutionLevel admin
-
-var SM_Folder
 
 ######################################################################
 
@@ -64,11 +61,9 @@ InstallDir "$PROGRAMFILES64\${APP_NAME}"
 
 !ifdef REG_START_MENU
 !define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "UltiMaker Cura"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${REG_ROOT}"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${UNINSTALL_PATH}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${REG_START_MENU}"
-!insertmacro MUI_PAGE_STARTMENU Application $SM_Folder
 !endif
 
 !insertmacro MUI_PAGE_INSTFILES
@@ -107,27 +102,11 @@ SetOutPath "$INSTDIR"
 WriteUninstaller "$INSTDIR\uninstall.exe"
 
 !ifdef REG_START_MENU
-!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-CreateDirectory "$SMPROGRAMS\$SM_Folder"
-CreateShortCut "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$SMPROGRAMS\$SM_Folder\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
-
-!ifdef WEB_SITE
-WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
-CreateShortCut "$SMPROGRAMS\$SM_Folder\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
-!endif
-!insertmacro MUI_STARTMENU_WRITE_END
+CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
 !endif
 
 !ifndef REG_START_MENU
-CreateDirectory "$SMPROGRAMS\{{ app_name }}"
-CreateShortCut "$SMPROGRAMS\{{ app_name }}\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
-CreateShortCut "$SMPROGRAMS\{{ app_name }}\Uninstall ${APP_NAME}.lnk" "$INSTDIR\uninstall.exe"
-
-!ifdef WEB_SITE
-WriteIniStr "$INSTDIR\UltiMaker Cura website.url" "InternetShortcut" "URL" "${WEB_SITE}"
-CreateShortCut "$SMPROGRAMS\{{ app_name }}\UltiMaker Cura website.lnk" "$INSTDIR\UltiMaker Cura website.url"
-!endif
+CreateShortCut "$SMPROGRAMS\${APP_NAME}.lnk" "$INSTDIR\${MAIN_APP_EXE}"
 !endif
 
 WriteRegStr ${REG_ROOT} "${REG_APP_PATH}" "" "$INSTDIR\${MAIN_APP_EXE}"
@@ -138,9 +117,6 @@ WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
 
-!ifdef WEB_SITE
-WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "URLInfoAbout" "${WEB_SITE}"
-!endif
 SectionEnd
 
 ######################################################################
@@ -177,29 +153,17 @@ RmDir "$INSTDIR\share\uranium"
 RmDir "$INSTDIR\share"
 
 Delete "$INSTDIR\uninstall.exe"
-!ifdef WEB_SITE
-Delete "$INSTDIR\${APP_NAME} website.url"
-!endif
 
 RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
-!insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
-Delete "$SMPROGRAMS\$SM_Folder\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\$SM_Folder\Uninstall ${APP_NAME}.lnk"
-!ifdef WEB_SITE
-Delete "$SMPROGRAMS\$SM_Folder\UltiMaker Cura website.lnk"
-!endif
-RmDir "$SMPROGRAMS\$SM_Folder"
+Delete "$SMPROGRAMS\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
 !endif
 
 !ifndef REG_START_MENU
-Delete "$SMPROGRAMS\{{ app_name }}\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\{{ app_name }}\Uninstall ${APP_NAME}.lnk"
-!ifdef WEB_SITE
-Delete "$SMPROGRAMS\{{ app_name }}\UltiMaker Cura website.lnk"
-!endif
-RmDir "$SMPROGRAMS\{{ app_name }}"
+Delete "$SMPROGRAMS\${APP_NAME}.lnk"
+Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
 !endif
 
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
