@@ -53,17 +53,21 @@ class PrintSkewCompensation(Script):
             # set_lines remains None.
 
         # If there is a log file then load it and set the script settings to the values in the file.
-        self._getSettings(set_lines)
         if set_lines != None:
-            self._instance.setProperty("xy_ac_measurement", "value", self.xy_ac_temp)
-            self._instance.setProperty("xy_bd_measurement", "value", self.xy_bd_temp)
-            self._instance.setProperty("xy_ad_measurement", "value", self.xy_ad_temp)
-            self._instance.setProperty("xz_ac_measurement", "value", self.xz_ac_temp)
-            self._instance.setProperty("xz_bd_measurement", "value", self.xz_bd_temp)
-            self._instance.setProperty("xz_ad_measurement", "value", self.xz_ad_temp)
-            self._instance.setProperty("yz_ac_measurement", "value", self.yz_ac_temp)
-            self._instance.setProperty("yz_bd_measurement", "value", self.yz_bd_temp)
-            self._instance.setProperty("yz_ad_measurement", "value", self.yz_ad_temp)
+            self._getSettings(set_lines)
+        else:
+            self._setDefaults()
+
+        # Enter the settings values as either the log file values, or the defaults.
+        self._instance.setProperty("xy_ac_measurement", "value", self.xy_ac_temp)
+        self._instance.setProperty("xy_bd_measurement", "value", self.xy_bd_temp)
+        self._instance.setProperty("xy_ad_measurement", "value", self.xy_ad_temp)
+        self._instance.setProperty("xz_ac_measurement", "value", self.xz_ac_temp)
+        self._instance.setProperty("xz_bd_measurement", "value", self.xz_bd_temp)
+        self._instance.setProperty("xz_ad_measurement", "value", self.xz_ad_temp)
+        self._instance.setProperty("yz_ac_measurement", "value", self.yz_ac_temp)
+        self._instance.setProperty("yz_bd_measurement", "value", self.yz_bd_temp)
+        self._instance.setProperty("yz_ad_measurement", "value", self.yz_ad_temp)
 
     def getSettingDataString(self):
         return """{
@@ -203,7 +207,7 @@ class PrintSkewCompensation(Script):
 
     def execute(self, data: list):
 
-        # Set up to open the log file
+        # Open the log file
         self.active_printer = Application.getInstance().getGlobalContainerStack().getName()
         config_path = Resources.getConfigStoragePath()
         pp_path = os.path.join(config_path, "scripts")
@@ -368,46 +372,53 @@ class PrintSkewCompensation(Script):
         skew_comp = math.tan(math.pi/2-math.acos((ac*ac-ab*ab-ad*ad)/(2*ab*ad)))
         return skew_comp
 
-    def _getSettings(self, lines: str) -> str:
-
+    def _getSettings(self, set_lines: str) -> str:
         # Parse the log file for the settings
-        if lines != None:
-            self.active_printer = lines[0].split(":")[1]
-            self.compensation_method = lines[1].split(":")[1]
-            self.xy_ac_temp = float(lines[2].split(":")[1])
-            self.xy_bd_temp = float(lines[3].split(":")[1])
-            self.xy_ad_temp = float(lines[4].split(":")[1])
-            self.xz_ac_temp = float(lines[5].split(":")[1])
-            self.xz_bd_temp = float(lines[6].split(":")[1])
-            self.xz_ad_temp = float(lines[7].split(":")[1])
-            self.yz_ac_temp = float(lines[8].split(":")[1])
-            self.yz_bd_temp = float(lines[9].split(":")[1])
-            self.yz_ad_temp = float(lines[10].split(":")[1])
-            self.xy_skew_factor = float(lines[11].split(":")[1])
-            self.xz_skew_factor = float(lines[12].split(":")[1])
-            self.yz_skew_factor = float(lines[13].split(":")[1])
-            self.add_settings_to_gcode = bool(lines[14].split(":")[1])
-        else:
-            # Set the defaults
-            self.active_printer = Application.getInstance().getGlobalContainerStack().getName()
-            self.compensation_method = "method_cura"
-            # XY plane measurements
-            self.xy_ac_temp = 141.42
-            self.xy_bd_temp = 141.42
-            self.xy_ad_temp = 100.00
-            # XZ plane measurements
-            self.xz_ac_temp = 141.42
-            self.xz_bd_temp = 141.42
-            self.xz_ad_temp = 100.00
-            # YZ plane measurements
-            self.yz_ac_temp = 141.42
-            self.yz_bd_temp = 141.42
-            self.yz_ad_temp = 100.00
-            # Skew Factors
-            self.xy_skew_factor = 0.00
-            self.xz_skew_factor = 0.00
-            self.yz_skew_factor = 0.00
-            self.add_settings_to_gcode = False
+        try:
+            self.active_printer = set_lines[0].split(":")[1]
+            self.compensation_method = set_lines[1].split(":")[1]
+            self.xy_ac_temp = float(set_lines[2].split(":")[1])
+            self.xy_bd_temp = float(set_lines[3].split(":")[1])
+            self.xy_ad_temp = float(set_lines[4].split(":")[1])
+            self.xz_ac_temp = float(set_lines[5].split(":")[1])
+            self.xz_bd_temp = float(set_lines[6].split(":")[1])
+            self.xz_ad_temp = float(set_lines[7].split(":")[1])
+            self.yz_ac_temp = float(set_lines[8].split(":")[1])
+            self.yz_bd_temp = float(set_lines[9].split(":")[1])
+            self.yz_ad_temp = float(set_lines[10].split(":")[1])
+            self.xy_skew_factor = float(set_lines[11].split(":")[1])
+            self.xz_skew_factor = float(set_lines[12].split(":")[1])
+            self.yz_skew_factor = float(set_lines[13].split(":")[1])
+            self.add_settings_to_gcode = bool(set_lines[14].split(":")[1])
+        except ValueError:
+            Logger.log("w", "Print Skew could not read the settings from the log file.  The defaults will be entered.")
+            Message(
+                title = "[Print Skew Compensation]",
+                text = "The script could not read the settings from the log file.  The 100mm calibration model defaults will be entered.").show()
+            self._setDefaults()
+        return None
+
+    def _setDefaults(self):
+        # Set the defaults
+        self.active_printer = Application.getInstance().getGlobalContainerStack().getName()
+        self.compensation_method = "method_cura"
+        # XY plane measurements
+        self.xy_ac_temp = 141.42
+        self.xy_bd_temp = 141.42
+        self.xy_ad_temp = 100.00
+        # XZ plane measurements
+        self.xz_ac_temp = 141.42
+        self.xz_bd_temp = 141.42
+        self.xz_ad_temp = 100.00
+        # YZ plane measurements
+        self.yz_ac_temp = 141.42
+        self.yz_bd_temp = 141.42
+        self.yz_ad_temp = 100.00
+        # Skew Factors
+        self.xy_skew_factor = 0.00
+        self.xz_skew_factor = 0.00
+        self.yz_skew_factor = 0.00
+        self.add_settings_to_gcode = False
         return None
 
     def _write_log_file(self, log_file_name: str) -> None:
