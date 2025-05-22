@@ -449,4 +449,7 @@ class PrintSkewCompensation(Script):
                 skew_log_file.write(the_line)
         except IOError as e:
             Logger.log("e", f"Failed to write to log file {log_file_name}: {e}")
+            Message(
+                title = "[Print Skew Compensation]",
+                text = "The log file could not be created.  Your settings cannot be saved and so cannot be recalled later.").show()
         return None
