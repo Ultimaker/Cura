@@ -5,13 +5,15 @@ from typing import cast, Optional
 
 import numpy
 from PyQt6.QtCore import Qt
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
+from UM.View.View import View
 from cura.PickingPass import PickingPass
 
 
@@ -22,22 +24,27 @@ class PaintTool(Tool):
     def __init__(self) -> None:
         super().__init__()
 
-        self._shortcut_key = Qt.Key.Key_P
+        self._picking_pass: Optional[PickingPass] = None
 
-        self._node_cache = None
+        self._shortcut_key: Qt.Key = Qt.Key.Key_P
+
+        self._node_cache: Optional[SceneNode] = None
         self._mesh_transformed_cache = None
-        self._cache_dirty = True
+        self._cache_dirty: bool = True
 
-        self._color_str_to_rgba = {
+        self._color_str_to_rgba: Dict[str, List[int]] = {
             "A": [192, 0, 192, 255],
             "B": [232, 128, 0, 255],
             "C": [0, 255, 0, 255],
             "D": [255, 255, 255, 255],
         }
 
-        self._brush_size = 10
-        self._brush_color = "A"
-        self._brush_shape = "A"
+        self._brush_size: int = 10
+        self._brush_color: str = "A"
+        self._brush_shape: str = "A"
+
+        self._mouse_held: bool = False
+        self._mouse_drags: List[Tuple[int, int]] = []
 
     def setPaintType(self, paint_type: str) -> None:
         Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
@@ -54,7 +61,7 @@ class PaintTool(Tool):
         self._brush_shape = brush_shape
 
     @staticmethod
-    def _get_intersect_ratio_via_pt(a, pt, b, c) -> float:
+    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
         # compute the intersection of (param) A - pt with (param) B - (param) C
 
         # compute unit vectors of directions of lines A and B
@@ -90,8 +97,40 @@ class PaintTool(Tool):
                     case "B":
                         include = x * x + y * y <= self._brush_size * self._brush_size
                 if include:
-                    res.append((mid_x + (x / w), mid_y + (y / h)))
+                    xx = mid_x + (x / w)
+                    yy = mid_y + (y / h)
+                    if xx < 0 or xx > 1 or yy < 0 or yy > 1:
+                        continue
+                    res.append((xx, yy))
         return res
+
+    def _handleMouseAction(self, node: SceneNode, paintview: View, x: int, y: int) -> bool:
+        face_id = self._selection_pass.getFaceIdAtPosition(x, y)
+        if face_id < 0:
+            return False
+
+        pt = self._picking_pass.getPickedPosition(x, y).getData()
+
+        va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
+        ta, tb, tc = node.getMeshData().getFaceUvCoords(face_id)
+
+        # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
+        # See (also) https://mathworld.wolfram.com/BarycentricCoordinates.html
+        wa = PaintTool._get_intersect_ratio_via_pt(va, pt, vb, vc)
+        wb = PaintTool._get_intersect_ratio_via_pt(vb, pt, vc, va)
+        wc = PaintTool._get_intersect_ratio_via_pt(vc, pt, va, vb)
+        wt = wa + wb + wc
+        wa /= wt
+        wb /= wt
+        wc /= wt
+        texcoords = wa * ta + wb * tb + wc * tc
+
+        color = self._color_str_to_rgba[self._brush_color]
+        w, h = paintview.getUvTexDimensions()
+        for (x, y) in self._getBrushPixels(texcoords[0], texcoords[1], float(w), float(h)):
+            paintview.setUvPixel(x, y, color)
+
+        return True
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -118,9 +157,18 @@ class PaintTool(Tool):
         if event.type == Event.KeyPressEvent and cast(KeyEvent, event).key == KeyEvent.ShiftKey:
             return False
 
-        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+        if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
+
+            self._mouse_held = False
+            drags = self._mouse_drags.copy()
+            self._mouse_drags.clear()
+
+            paintview = controller.getActiveView()
+            if paintview is None or paintview.getPluginId() != "PaintTool":
+                return False
+
             if not self._selection_pass:
                 return False
 
@@ -144,45 +192,30 @@ class PaintTool(Tool):
                 return False
 
             evt = cast(MouseEvent, event)
+            drags.append((evt.x, evt.y))
+
+            if not self._picking_pass:
+                self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
+            self._picking_pass.render()
 
             self._selection_pass.renderFacesMode()
-            face_id = self._selection_pass.getFaceIdAtPosition(evt.x, evt.y)
-            if face_id < 0:
+
+            res = False
+            for (x, y) in drags:
+                res |= self._handleMouseAction(node, paintview, x, y)
+            return res
+
+        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
+            if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
-
-            ppass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
-            ppass.render()
-            pt = ppass.getPickedPosition(evt.x, evt.y).getData()
-
-            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
-            ta, tb, tc = node.getMeshData().getFaceUvCoords(face_id)
-
-            # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
-            # See (also) https://mathworld.wolfram.com/BarycentricCoordinates.html
-            wa = PaintTool._get_intersect_ratio_via_pt(va, pt, vb, vc)
-            wb = PaintTool._get_intersect_ratio_via_pt(vb, pt, vc, va)
-            wc = PaintTool._get_intersect_ratio_via_pt(vc, pt, va, vb)
-            wt = wa + wb + wc
-            wa /= wt
-            wb /= wt
-            wc /= wt
-            texcoords = wa * ta + wb * tb + wc * tc
-
-            paintview = controller.getActiveView()
-            if paintview is None or paintview.getPluginId() != "PaintTool":
-                return False
-            color = self._color_str_to_rgba[self._brush_color]
-            w, h = paintview.getUvTexDimensions()
-            for (x, y) in self._getBrushPixels(texcoords[0], texcoords[1], float(w), float(h)):
-                paintview.setUvPixel(x, y, color)
-
+            self._mouse_held = True
             return True
 
         if event.type == Event.MouseMoveEvent:
+            if not self._mouse_held:
+                return False
             evt = cast(MouseEvent, event)
-            return False #True
-
-        if event.type == Event.MouseReleaseEvent:
-            return False #True
+            self._mouse_drags.append((evt.x, evt.y))
+            return True
 
         return False
