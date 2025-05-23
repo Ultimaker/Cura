@@ -942,21 +942,4 @@ UM.MainWindow
         okButtonText: catalog.i18nc("@button", "Save new profile")
         onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
     }
-
-    /**
-     * Function to check whether a QML object has a certain type.
-     * Taken from StackOverflow: https://stackoverflow.com/a/28384228 and
-     * adapted to our code style.
-     * Licensed under CC BY-SA 3.0.
-     * \param obj The QtObject to get the name of.
-     * \param class_name (str) The name of the class to check against. Has to be
-     * the QtObject class name, not the QML entity name.
-     */
-    function qmlTypeOf(obj, class_name)
-    {
-        //className plus "(" is the class instance without modification.
-        //className plus "_QML" is the class instance with user-defined properties.
-        var str = obj.toString();
-        return str.indexOf(class_name + "(") == 0 || str.indexOf(class_name + "_QML") == 0;
-    }
 }
