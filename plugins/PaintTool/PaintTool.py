@@ -1,11 +1,10 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from typing import cast, Optional
+from copy import deepcopy
 
 import numpy
 from PyQt6.QtCore import Qt
-from typing import Dict, List, Tuple
+from typing import cast, Dict, List, Optional, Tuple
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
@@ -14,6 +13,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
 from UM.View.View import View
+
 from cura.PickingPass import PickingPass
 
 
@@ -44,7 +44,7 @@ class PaintTool(Tool):
         self._brush_shape: str = "A"
 
         self._mouse_held: bool = False
-        self._mouse_drags: List[Tuple[int, int]] = []
+        self._last_mouse_drag: Optional[Tuple[int, int]] = None
 
     def setPaintType(self, paint_type: str) -> None:
         Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
@@ -52,7 +52,6 @@ class PaintTool(Tool):
 
     def setBrushSize(self, brush_size: float) -> None:
         self._brush_size = int(brush_size)
-        print(self._brush_size)
 
     def setBrushColor(self, brush_color: str) -> None:
         self._brush_color = brush_color
@@ -89,8 +88,8 @@ class PaintTool(Tool):
     def _getBrushPixels(self, mid_x: float, mid_y: float, w: float, h: float) -> List[Tuple[float, float]]:
         res = []
         include = False
-        for y in range(-self._brush_size, self._brush_size + 1):
-            for x in range(-self._brush_size, self._brush_size + 1):
+        for y in range(-self._brush_size//2, (self._brush_size + 1)//2):
+            for x in range(-self._brush_size//2, (self._brush_size + 1)//2):
                 match self._brush_shape:
                     case "A":
                         include = True
@@ -160,10 +159,24 @@ class PaintTool(Tool):
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
-
             self._mouse_held = False
-            drags = self._mouse_drags.copy()
-            self._mouse_drags.clear()
+            self._last_mouse_drag = None
+            return True
+
+        is_moved = event.type == Event.MouseMoveEvent
+        is_pressed = event.type == Event.MousePressEvent
+        if (is_moved or is_pressed) and self._controller.getToolsEnabled():
+            if is_moved and not self._mouse_held:
+                return False
+
+            evt = cast(MouseEvent, event)
+            if is_pressed:
+                if MouseEvent.LeftButton not in evt.buttons:
+                    return False
+                else:
+                    self._mouse_held = True
+            drags = ([self._last_mouse_drag] if self._last_mouse_drag else []) + [(evt.x, evt.y)]
+            self._last_mouse_drag = (evt.x, evt.y)
 
             paintview = controller.getActiveView()
             if paintview is None or paintview.getPluginId() != "PaintTool":
@@ -203,19 +216,8 @@ class PaintTool(Tool):
             res = False
             for (x, y) in drags:
                 res |= self._handleMouseAction(node, paintview, x, y)
+            if res:
+                Application.getInstance().getController().getScene().sceneChanged.emit(node)
             return res
-
-        if event.type == Event.MousePressEvent and self._controller.getToolsEnabled():
-            if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
-                return False
-            self._mouse_held = True
-            return True
-
-        if event.type == Event.MouseMoveEvent:
-            if not self._mouse_held:
-                return False
-            evt = cast(MouseEvent, event)
-            self._mouse_drags.append((evt.x, evt.y))
-            return True
 
         return False

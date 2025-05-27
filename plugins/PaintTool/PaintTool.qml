@@ -164,7 +164,7 @@ Item
                 id: shapeSizeSlider
 
                 from: 1
-                to: 50
+                to: 40
                 value: 10
 
                 onPressedChanged: function(pressed)
