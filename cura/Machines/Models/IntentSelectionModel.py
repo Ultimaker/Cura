@@ -127,7 +127,7 @@ class IntentSelectionModel(ListModel):
                     "custom_icon": icon,
                     "icon": None,
                     "intent_category": category,
-                    "weight": 5,
+                    "weight": len(_default_intent_categories),
                 })
 
         result.sort(key=lambda k: k["weight"])
