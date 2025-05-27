@@ -1,7 +1,7 @@
 // Copyright (c) 2022 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
+import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
@@ -27,10 +27,7 @@ UM.PreferencesPage
     ]
 
     signal scrollToSection( string key )
-    onScrollToSection:
-    {
-        settingsListView.positionViewAtIndex(definitionsModel.getIndex(key), ListView.Beginning)
-    }
+    onScrollToSection: settingsListView.positionViewAtIndex(definitionsModel.getIndex(key), ListView.Beginning)
 
     function reset()
     {
@@ -118,30 +115,14 @@ UM.PreferencesPage
             model: settingVisibilityPresetsModel.items
             textRole: "name"
 
-            currentIndex:
-            {
-                var idx = -1;
-                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
-                {
-                    if(settingVisibilityPresetsModel.items[i].presetId === settingVisibilityPresetsModel.activePreset)
-                    {
-                        idx = i;
-                        break;
-                    }
-                }
-                return idx;
-            }
-
-            onActivated:
-            {
-                var preset_id = settingVisibilityPresetsModel.items[index].presetId
-                settingVisibilityPresetsModel.setActivePreset(preset_id)
-            }
+            currentIndex: settingVisibilityPresetsModel.items.findIndex(i => i.presetId === settingVisibilityPresetsModel.activePreset)
+            onActivated: settingVisibilityPresetsModel.setActivePreset(settingVisibilityPresetsModel.items[index].presetId)
         }
 
         ListView
         {
             id: settingsListView
+            reuseItems: true
             anchors
             {
                 top: filter.bottom
@@ -165,31 +146,30 @@ UM.PreferencesPage
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
             }
 
-            property Component settingVisibilityCategory: Cura.SettingVisibilityCategory {}
-            property Component settingVisibilityItem: Cura.SettingVisibilityItem {}
+            Component
+            {
+                id: settingVisibilityCategory
+                Cura.SettingVisibilityCategory {}
+            }
+
+            Component
+            {
+                id: settingVisibilityItem
+                Cura.SettingVisibilityItem {}
+            }
 
             delegate: Loader
             {
                 id: loader
-
                 width: settingsListView.width - scrollBar.width
                 height: model.type !== undefined ? UM.Theme.getSize("section").height : 0
 
                 property var definition: model
                 property var settingDefinitionsModel: definitionsModel
 
-                asynchronous: true
+                asynchronous: false
                 active: model.type !== undefined
-                sourceComponent:
-                {
-                    switch (model.type)
-                    {
-                        case "category":
-                            return settingsListView.settingVisibilityCategory
-                        default:
-                            return settingsListView.settingVisibilityItem
-                    }
-                }
+                sourceComponent: model.type === "category" ? settingVisibilityCategory : settingVisibilityItem
             }
         }
     }
