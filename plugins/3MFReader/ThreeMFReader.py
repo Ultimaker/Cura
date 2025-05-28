@@ -94,7 +94,7 @@ class ThreeMFReader(MeshReader):
         return temp_mat
 
     @staticmethod
-    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "", archive: zipfile.ZipFile = None) -> Optional[SceneNode]:
+    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "", archive: zipfile.ZipFile = None, scene: Savitar.Scene = None) -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
         :returns: Scene node.
@@ -131,12 +131,19 @@ class ThreeMFReader(MeshReader):
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
 
-        data = numpy.fromstring(savitar_node.getMeshData().getFlatVerticesAsBytes(), dtype=numpy.float32)
+        mesh_data = savitar_node.getMeshData()
 
-        vertices = numpy.resize(data, (int(data.size / 3), 3))
+        vertices_data = numpy.fromstring(mesh_data.getFlatVerticesAsBytes(), dtype=numpy.float32)
+        vertices = numpy.resize(vertices_data, (int(vertices_data.size / 3), 3))
+
+        texture_path = mesh_data.getTexturePath(scene)
+        uv_data = numpy.fromstring(mesh_data.getUVCoordinatesPerVertexAsBytes(scene), dtype=numpy.float32)
+        uv_coordinates = numpy.resize(uv_data, (int(uv_data.size / 2), 2))
+
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
         mesh_builder.setMeshId(node_id)
+        mesh_builder.setUVCoordinates(uv_coordinates)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
@@ -147,7 +154,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive, scene=scene)
             if child_node:
                 um_node.addChild(child_node)
 
@@ -236,7 +243,7 @@ class ThreeMFReader(MeshReader):
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 
             for node in scene_3mf.getSceneNodes():
-                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name, archive)
+                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name, archive, scene_3mf)
                 if um_node is None:
                     continue
 
@@ -336,7 +343,7 @@ class ThreeMFReader(MeshReader):
         # Convert the scene to scene nodes
         nodes = []
         for savitar_node in scene.getSceneNodes():
-            scene_node = ThreeMFReader._convertSavitarNodeToUMNode(savitar_node, "file_name")
+            scene_node = ThreeMFReader._convertSavitarNodeToUMNode(savitar_node, "file_name", scene=scene)
             if scene_node is None:
                 continue
             nodes.append(scene_node)
