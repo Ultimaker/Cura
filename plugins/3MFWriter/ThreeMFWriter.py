@@ -109,7 +109,8 @@ class ThreeMFWriter(MeshWriter):
     def _convertUMNodeToSavitarNode(um_node,
                                     transformation = Matrix(),
                                     exported_settings: Optional[Dict[str, Set[str]]] = None,
-                                    center_mesh = False):
+                                    center_mesh = False,
+                                    scene: Savitar.Scene = None):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -150,7 +151,11 @@ class ThreeMFWriter(MeshWriter):
             if indices_array is not None:
                 savitar_node.getMeshData().setFacesFromBytes(indices_array)
             else:
-                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tostring())
+                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
+
+            uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
+            if uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
+                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, scene)
 
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")
@@ -187,7 +192,8 @@ class ThreeMFWriter(MeshWriter):
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
             savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
-                                                                           exported_settings = exported_settings)
+                                                                           exported_settings = exported_settings,
+                                                                           scene = scene)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -320,13 +326,15 @@ class ThreeMFWriter(MeshWriter):
                         savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child,
                                                                                  transformation_matrix,
                                                                                  exported_model_settings,
-                                                                                 center_mesh = True)
+                                                                                 center_mesh = True,
+                                                                                 scene = savitar_scene)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
                     savitar_node = self._convertUMNodeToSavitarNode(node,
                                                                     transformation_matrix,
-                                                                    exported_model_settings)
+                                                                    exported_model_settings,
+                                                                    scene = savitar_scene)
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
@@ -500,7 +508,7 @@ class ThreeMFWriter(MeshWriter):
     def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
         savitar_scene = Savitar.Scene()
         for scene_node in scene_nodes:
-            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True)
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True, scene = savitar_scene)
             savitar_scene.addSceneNode(savitar_node)
         parser = Savitar.ThreeMFParser()
         scene_string = parser.sceneToString(savitar_scene)
