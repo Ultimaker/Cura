@@ -203,3 +203,19 @@ msgstr "喷嘴长度"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "喷嘴尖端与打印头最低部分之间的高度差。"
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "挤出机更换时间"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "挤出机预启动G代码"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "在切换到此挤出机之前执行的预启动G代码。"
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "当使用多工具设置时,此值为工具更换时间（以秒为单位）。此值将根据发生的更换次数添加到估计时间中。"

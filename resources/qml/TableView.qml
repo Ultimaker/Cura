@@ -25,8 +25,10 @@ Item
     property var onDoubleClicked: function(row) {} //Something to execute when double clicked. Accepts one argument: The index of the row that was clicked on.
     property bool allowSelection: true //Whether to allow the user to select items.
     property string sectionRole: ""
+    property int minimumColumnWidth: 50 //The minimum width of a column while resizing.
 
     property alias flickableDirection: tableView.flickableDirection
+
     Row
     {
         id: headerBar
@@ -50,49 +52,97 @@ Item
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+                    anchors.verticalCenter: parent.verticalCenter
                     wrapMode: Text.NoWrap
                     text: modelData
                     font: UM.Theme.getFont("medium_bold")
                     elide: Text.ElideRight
                 }
-                Item
+
+                MouseArea
                 {
-                    //Resize handle.
+                    // Resize handle
                     anchors
                     {
                         right: parent.right
                         top: parent.top
                         bottom: parent.bottom
+                        rightMargin: -width / 2
                     }
-                    width: UM.Theme.getSize("default_lining").width
+                    width: UM.Theme.getSize("wide_lining").width * 2
+                    enabled: index < headerRepeater.count - 1
+                    acceptedButtons: Qt.LeftButton
+                    cursorShape: enabled ? Qt.SizeHorCursor : Qt.ArrowCursor
 
-                    MouseArea
+                    property var dragLastPos
+
+                    onPressed: function(mouse) { dragLastPos = mapToItem(parent, mouse.x, mouse.y) }
+
+                    onPositionChanged: function(mouse)
                     {
-                        anchors.fill: parent
+                        let global_pos = mapToItem(parent, mouse.x, mouse.y)
+                        let delta = global_pos.x - dragLastPos.x
+                        dragLastPos = global_pos
 
-                        cursorShape: Qt.SizeHorCursor
-                        drag
+                        let new_widths = []
+                        for(let i = 0; i < headerRepeater.count; ++i)
                         {
-                            target: parent
-                            axis: Drag.XAxis
+                            new_widths[i] = headerRepeater.itemAt(i).width;
                         }
-                        onMouseXChanged:
+
+                        // Reduce the delta if needed, depending on how much available space we have on the sides
+                        if(delta > 0)
                         {
-                            if(drag.active)
+                            let available_extra_width = 0
+                            for(let i = index + 1; i < headerRepeater.count; ++i)
                             {
-                                let new_width = parent.parent.width + mouseX;
-                                let sum_widths = mouseX;
-                                for(let i = 0; i < headerBar.children.length; ++i)
-                                {
-                                    sum_widths += headerBar.children[i].width;
-                                }
-                                if(sum_widths > tableBase.width)
-                                {
-                                    new_width -= sum_widths - tableBase.width; //Limit the total width to not exceed the view.
-                                }
-                                let width_fraction = new_width / tableBase.width; //Scale with the same fraction along with the total width, if the table is resized.
-                                parent.parent.width = Qt.binding(function() { return Math.max(10, Math.round(tableBase.width * width_fraction)) });
+                                available_extra_width += headerRepeater.itemAt(i).width - minimumColumnWidth
                             }
+
+                            delta = Math.min(delta, available_extra_width)
+                        }
+                        else if(delta < 0)
+                        {
+                            let available_substracted_width = 0
+                            for(let i = index ; i >= 0 ; --i)
+                            {
+                                available_substracted_width -= headerRepeater.itemAt(i).width - minimumColumnWidth
+                            }
+
+                            delta = Math.max(delta, available_substracted_width)
+                        }
+
+                        if(delta > 0)
+                        {
+                            // Enlarge the current element
+                            new_widths[index] += delta
+
+                            // Now reduce elements on the right
+                            for (let i = index + 1; delta > 0 && i < headerRepeater.count; ++i)
+                            {
+                                let substract_width = Math.min(delta, headerRepeater.itemAt(i).width - minimumColumnWidth)
+                                new_widths[i] -= substract_width
+                                delta -= substract_width
+                            }
+                        }
+                        else if(delta < 0)
+                        {
+                            // Enlarge the element on the right
+                            new_widths[index + 1] -= delta
+
+                            // Now reduce elements on the left
+                            for (let i = index; delta < 0 && i >= 0; --i)
+                            {
+                                let substract_width = Math.max(delta, -(headerRepeater.itemAt(i).width - minimumColumnWidth))
+                                new_widths[i] += substract_width
+                                delta -= substract_width
+                            }
+                        }
+
+                        // Apply the calculated widths
+                        for(let i = 0; i < headerRepeater.count; ++i)
+                        {
+                            headerRepeater.itemAt(i).width = new_widths[i];
                         }
                     }
                 }
@@ -101,6 +151,7 @@ Item
             }
         }
     }
+
     Rectangle
     {
         color: UM.Theme.getColor("main_background")
@@ -198,6 +249,24 @@ Item
             {
                 tableView.contentY = 0; //When the number of rows is reduced, make sure to scroll back to the start.
             }
+        }
+    }
+
+    onWidthChanged:
+    {
+        // Get the previous width but summing the width of actual columns
+        let previous_width = 0
+        for(let i = 0; i < headerRepeater.count; ++i)
+        {
+            previous_width += headerRepeater.itemAt(i).width;
+        }
+
+        // Now resize the columns while keeping their previous ratios
+        for(let i = 0; i < headerRepeater.count; ++i)
+        {
+            let item = headerRepeater.itemAt(i)
+            let item_width_ratio = item.width / previous_width;
+            item.width = item_width_ratio * tableBase.width
         }
     }
 

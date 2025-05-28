@@ -53,6 +53,7 @@ Item
     signal showTooltip(string text)
     signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
+    signal setScrollPositionChangeLoseFocus(bool lose_focus)
 
     function createTooltipText()
     {

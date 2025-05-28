@@ -1,4 +1,4 @@
-# Copyright (c) 2022 UltiMaker
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
@@ -51,7 +51,6 @@ def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
         version_minor = str(parsed_version.minor),
         version_patch = str(parsed_version.patch),
         company = "UltiMaker",
-        web_site = "https://ultimaker.com",
         year = datetime.now().year,
         cura_license_file = str(source_loc.joinpath("packaging", "cura_license.txt")),
         compression_method = "LZMA",  # ZLIB, BZIP2 or LZMA
@@ -78,7 +77,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create Windows exe installer of Cura.")
     parser.add_argument("--source_path", type=str, help="Path to Conan install Cura folder.")
     parser.add_argument("--dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("--filename", type = str, help = "Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
+    parser.add_argument("--filename", type=str, help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
     parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
     args = parser.parse_args()
     generate_nsi(args.source_path, args.dist_path, args.filename, args.version)
