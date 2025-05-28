@@ -75,7 +75,10 @@ class PaintTool(Tool):
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
         painter.setPen(self._brush_pen)
-        painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
+        if xdiff == 0 and ydiff == 0:
+            painter.drawPoint(int(x0 - start_x), int(y0 - start_y))
+        else:
+            painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
         painter.end()
 
         return stroke_image, (start_x, start_y)
