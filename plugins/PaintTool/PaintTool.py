@@ -1,9 +1,9 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-from copy import deepcopy
 
 import numpy
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QImage, QPainter, QColor, QBrush
 from typing import cast, Dict, List, Optional, Tuple
 
 from UM.Application import Application
@@ -12,9 +12,9 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
-from UM.View.View import View
 
 from cura.PickingPass import PickingPass
+from .PaintView import PaintView
 
 
 class PaintTool(Tool):
@@ -42,22 +42,82 @@ class PaintTool(Tool):
         self._brush_size: int = 10
         self._brush_color: str = "A"
         self._brush_shape: str = "A"
+        self._brush_image = self._createBrushImage()
 
         self._mouse_held: bool = False
-        self._last_mouse_drag: Optional[Tuple[int, int]] = None
+        self._last_text_coords: Optional[Tuple[int, int]] = None
+
+    def _createBrushImage(self) -> QImage:
+        brush_image = QImage(self._brush_size, self._brush_size, QImage.Format.Format_RGBA8888)
+        brush_image.fill(QColor(255,255,255,0))
+
+        color = self._color_str_to_rgba[self._brush_color]
+        qcolor = QColor(color[0], color[1], color[2], color[3])
+
+        painter = QPainter(brush_image)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.setBrush(QBrush(qcolor))
+        match self._brush_shape:
+            case "A":  # Square brush
+                painter.drawRect(0, 0, self._brush_size, self._brush_size)
+            case "B":  # Circle brush
+                painter.drawEllipse(0, 0, self._brush_size, self._brush_size)
+            case _:
+                painter.drawRect(0, 0, self._brush_size, self._brush_size)
+        painter.end()
+
+        return brush_image
+
+    def _createStrokeImage(self, x0: float, y0: float, x1: float, y1: float) -> Tuple[QImage, Tuple[int, int]]:
+        distance = numpy.hypot(x1 - x0, y1 - y0)
+        angle = numpy.arctan2(y1 - y0, x1 - x0)
+        stroke_width = self._brush_size
+        stroke_height = int(distance) + self._brush_size
+
+        half_brush_size = self._brush_size // 2
+        start_x = int(x0 - half_brush_size)
+        start_y = int(y0 - half_brush_size)
+
+        stroke_image = QImage(stroke_height, stroke_width, QImage.Format.Format_RGBA8888)
+        stroke_image.fill(QColor(255,255,255,0))
+
+        painter = QPainter(stroke_image)
+        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+
+        # rotate the brush-image to follow the stroke-direction
+        transform = painter.transform()
+        transform.translate(0, stroke_width / 2)  # translate to match the brush-alignment
+        transform.rotate(-numpy.degrees(angle))
+        painter.setTransform(transform)
+
+        # tile the brush along the stroke-length
+        brush_stride = max(1, half_brush_size)
+        for i in range(0, int(distance) + brush_stride, brush_stride):
+            painter.drawImage(i, -stroke_width, self._brush_image)
+        painter.end()
+
+        return stroke_image, (start_x, start_y)
 
     def setPaintType(self, paint_type: str) -> None:
         Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
-        pass
+        pass  # FIXME: ... and also please call `self._stroke_image = self._createBrushStrokeImage()` (see other funcs).
 
     def setBrushSize(self, brush_size: float) -> None:
-        self._brush_size = int(brush_size)
+        if brush_size != self._brush_size:
+            self._brush_size = int(brush_size)
+            self._brush_image = self._createBrushImage()
 
     def setBrushColor(self, brush_color: str) -> None:
-        self._brush_color = brush_color
+        if brush_color != self._brush_color:
+            self._brush_color = brush_color
+            self._brush_image = self._createBrushImage()
 
     def setBrushShape(self, brush_shape: str) -> None:
-        self._brush_shape = brush_shape
+        if brush_shape != self._brush_shape:
+            self._brush_shape = brush_shape
+            self._brush_image = self._createBrushImage()
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -85,28 +145,10 @@ class PaintTool(Tool):
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getBrushPixels(self, mid_x: float, mid_y: float, w: float, h: float) -> List[Tuple[float, float]]:
-        res = []
-        include = False
-        for y in range(-self._brush_size//2, (self._brush_size + 1)//2):
-            for x in range(-self._brush_size//2, (self._brush_size + 1)//2):
-                match self._brush_shape:
-                    case "A":
-                        include = True
-                    case "B":
-                        include = x * x + y * y <= self._brush_size * self._brush_size
-                if include:
-                    xx = mid_x + (x / w)
-                    yy = mid_y + (y / h)
-                    if xx < 0 or xx > 1 or yy < 0 or yy > 1:
-                        continue
-                    res.append((xx, yy))
-        return res
-
-    def _handleMouseAction(self, node: SceneNode, paintview: View, x: int, y: int) -> bool:
+    def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Optional[Tuple[float, float]]:
         face_id = self._selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0:
-            return False
+            return None
 
         pt = self._picking_pass.getPickedPosition(x, y).getData()
 
@@ -123,13 +165,7 @@ class PaintTool(Tool):
         wb /= wt
         wc /= wt
         texcoords = wa * ta + wb * tb + wc * tc
-
-        color = self._color_str_to_rgba[self._brush_color]
-        w, h = paintview.getUvTexDimensions()
-        for (x, y) in self._getBrushPixels(texcoords[0], texcoords[1], float(w), float(h)):
-            paintview.setUvPixel(x, y, color)
-
-        return True
+        return texcoords
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -160,7 +196,7 @@ class PaintTool(Tool):
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
             self._mouse_held = False
-            self._last_mouse_drag = None
+            self._last_text_coords = None
             return True
 
         is_moved = event.type == Event.MouseMoveEvent
@@ -175,12 +211,11 @@ class PaintTool(Tool):
                     return False
                 else:
                     self._mouse_held = True
-            drags = ([self._last_mouse_drag] if self._last_mouse_drag else []) + [(evt.x, evt.y)]
-            self._last_mouse_drag = (evt.x, evt.y)
 
             paintview = controller.getActiveView()
             if paintview is None or paintview.getPluginId() != "PaintTool":
                 return False
+            paintview = cast(PaintView, paintview)
 
             if not self._selection_pass:
                 return False
@@ -205,7 +240,6 @@ class PaintTool(Tool):
                 return False
 
             evt = cast(MouseEvent, event)
-            drags.append((evt.x, evt.y))
 
             if not self._picking_pass:
                 self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
@@ -213,11 +247,23 @@ class PaintTool(Tool):
 
             self._selection_pass.renderFacesMode()
 
-            res = False
-            for (x, y) in drags:
-                res |= self._handleMouseAction(node, paintview, x, y)
-            if res:
-                Application.getInstance().getController().getScene().sceneChanged.emit(node)
-            return res
+            texcoords = self._getTexCoordsFromClick(node, evt.x, evt.y)
+            if texcoords is None:
+                return False
+            if self._last_text_coords is None:
+                self._last_text_coords = texcoords
+
+            w, h = paintview.getUvTexDimensions()
+            sub_image, (start_x, start_y) = self._createStrokeImage(
+                self._last_text_coords[0] * w,
+                self._last_text_coords[1] * h,
+                texcoords[0] * w,
+                texcoords[1] * h
+            )
+            paintview.addStroke(sub_image, start_x, start_y)
+
+            self._last_text_coords = texcoords
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            return True
 
         return False

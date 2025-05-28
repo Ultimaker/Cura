@@ -1,6 +1,8 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os
+from PyQt6.QtGui import QImage
 
 from UM.PluginRegistry import PluginRegistry
 from UM.View.View import View
@@ -18,8 +20,10 @@ class PaintView(View):
         super().__init__()
         self._paint_shader = None
         self._paint_texture = None
-        self._tex_width = 256
-        self._tex_height = 256
+
+        # FIXME: When the texture UV-unwrapping is done, these two values will need to be set to a proper value (suggest 4096 for both).
+        self._tex_width = 512
+        self._tex_height = 512
 
     def _checkSetup(self):
         if not self._paint_shader:
@@ -29,8 +33,8 @@ class PaintView(View):
             self._paint_texture = OpenGL.getInstance().createTexture(self._tex_width, self._tex_height)
             self._paint_shader.setTexture(0, self._paint_texture)
 
-    def setUvPixel(self, x, y, color) -> None:
-        self._paint_texture.setPixel(x, y, color)
+    def addStroke(self, stroke_image: QImage, start_x: int, start_y: int) -> None:
+        self._paint_texture.setSubImage(stroke_image, start_x, start_y)
 
     def getUvTexDimensions(self):
         return self._tex_width, self._tex_height
