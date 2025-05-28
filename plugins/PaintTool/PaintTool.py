@@ -3,7 +3,7 @@
 
 import numpy
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QImage, QPainter, QColor, QBrush
+from PyQt6.QtGui import QImage, QPainter, QColor, QBrush, QPen
 from typing import cast, Dict, List, Optional, Tuple
 
 from UM.Application import Application
@@ -18,8 +18,7 @@ from .PaintView import PaintView
 
 
 class PaintTool(Tool):
-    """Provides the tool to paint meshes.
-    """
+    """Provides the tool to paint meshes."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -42,82 +41,60 @@ class PaintTool(Tool):
         self._brush_size: int = 10
         self._brush_color: str = "A"
         self._brush_shape: str = "A"
-        self._brush_image = self._createBrushImage()
+        self._brush_pen: Optional[QPen] = None
 
         self._mouse_held: bool = False
         self._last_text_coords: Optional[Tuple[int, int]] = None
 
-    def _createBrushImage(self) -> QImage:
-        brush_image = QImage(self._brush_size, self._brush_size, QImage.Format.Format_RGBA8888)
-        brush_image.fill(QColor(255,255,255,0))
-
+    def _createBrushPen(self) -> QPen:
+        pen = QPen()
+        pen.setWidth(self._brush_size)
         color = self._color_str_to_rgba[self._brush_color]
-        qcolor = QColor(color[0], color[1], color[2], color[3])
-
-        painter = QPainter(brush_image)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setPen(Qt.PenStyle.NoPen)
-        painter.setBrush(QBrush(qcolor))
+        pen.setColor(QColor(color[0], color[1], color[2], color[3]))
         match self._brush_shape:
-            case "A":  # Square brush
-                painter.drawRect(0, 0, self._brush_size, self._brush_size)
-            case "B":  # Circle brush
-                painter.drawEllipse(0, 0, self._brush_size, self._brush_size)
-            case _:
-                painter.drawRect(0, 0, self._brush_size, self._brush_size)
-        painter.end()
-
-        return brush_image
+            case "A":
+                pen.setCapStyle(Qt.PenCapStyle.SquareCap)
+            case "B":
+                pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+        return pen
 
     def _createStrokeImage(self, x0: float, y0: float, x1: float, y1: float) -> Tuple[QImage, Tuple[int, int]]:
-        distance = numpy.hypot(x1 - x0, y1 - y0)
-        angle = numpy.arctan2(y1 - y0, x1 - x0)
-        stroke_width = self._brush_size
-        stroke_height = int(distance) + self._brush_size
+        xdiff = int(x1 - x0)
+        ydiff = int(y1 - y0)
 
         half_brush_size = self._brush_size // 2
-        start_x = int(x0 - half_brush_size)
-        start_y = int(y0 - half_brush_size)
+        start_x = int(min(x0, x1) - half_brush_size)
+        start_y = int(min(y0, y1) - half_brush_size)
 
-        stroke_image = QImage(stroke_height, stroke_width, QImage.Format.Format_RGBA8888)
-        stroke_image.fill(QColor(255,255,255,0))
+        stroke_image = QImage(abs(xdiff) + self._brush_size, abs(ydiff) + self._brush_size, QImage.Format.Format_RGBA8888)
+        stroke_image.fill(QColor(0,0,0,0))
 
         painter = QPainter(stroke_image)
-        painter.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-
-        # rotate the brush-image to follow the stroke-direction
-        transform = painter.transform()
-        transform.translate(0, stroke_width / 2)  # translate to match the brush-alignment
-        transform.rotate(-numpy.degrees(angle))
-        painter.setTransform(transform)
-
-        # tile the brush along the stroke-length
-        brush_stride = max(1, half_brush_size)
-        for i in range(0, int(distance) + brush_stride, brush_stride):
-            painter.drawImage(i, -stroke_width, self._brush_image)
+        painter.setPen(self._brush_pen)
+        painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
         painter.end()
 
         return stroke_image, (start_x, start_y)
 
     def setPaintType(self, paint_type: str) -> None:
         Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
-        pass  # FIXME: ... and also please call `self._stroke_image = self._createBrushStrokeImage()` (see other funcs).
+        pass  # FIXME: ... and also please call `self._brush_pen = self._createBrushPen()` (see other funcs).
 
     def setBrushSize(self, brush_size: float) -> None:
         if brush_size != self._brush_size:
             self._brush_size = int(brush_size)
-            self._brush_image = self._createBrushImage()
+            self._brush_pen = self._createBrushPen()
 
     def setBrushColor(self, brush_color: str) -> None:
         if brush_color != self._brush_color:
             self._brush_color = brush_color
-            self._brush_image = self._createBrushImage()
+            self._brush_pen = self._createBrushPen()
 
     def setBrushShape(self, brush_shape: str) -> None:
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
-            self._brush_image = self._createBrushImage()
+            self._brush_pen = self._createBrushPen()
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -147,7 +124,7 @@ class PaintTool(Tool):
 
     def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Optional[Tuple[float, float]]:
         face_id = self._selection_pass.getFaceIdAtPosition(x, y)
-        if face_id < 0:
+        if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
             return None
 
         pt = self._picking_pass.getPickedPosition(x, y).getData()
