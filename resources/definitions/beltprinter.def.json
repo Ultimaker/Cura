@@ -1,0 +1,630 @@
+{
+    "name": "FDM Printer Base Description",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": false,
+        "author": "fieldOfView"
+    },
+
+    "settings": {
+        "blackbelt_settings": {
+            "label": "BlackBelt",
+            "type": "category",
+            "description": "BlackBelt specific settings",
+            "icon": "category_blackbelt",
+            "children":
+            {
+                "blackbelt_raft":
+                {
+                    "label": "Print Raft",
+                    "description": "Adds a thick layer below the model to help the adhesion to the belt and to improve stability during printing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_margin":
+                {
+                    "label": "Raft Extra Margin",
+                    "description": "If the raft is enabled, this is the extra raft area around the model which is also given a raft. Increasing this margin will create a stronger raft while using more material and leaving less area for your print.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "20",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_thickness":
+                {
+                    "label": "Raft Thickness",
+                    "description": "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.8,
+                    "value": "2 * line_width",
+                    "minimum_value": "line_width",
+                    "minimum_value_warning": "2 * line_width",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_gap":
+                {
+                    "label": "Raft Air Gap",
+                    "description": "The gap between the raft and the bottom wall of the model. Makes it easier to peel off the raft.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.3,
+                    "value": "0.75 * line_width",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "1.5 * min(extruderValues('machine_nozzle_size'))",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_speed":
+                {
+                    "label": "Raft Speed",
+                    "description": "The speed at which the raft is printed. Printing the raft at a lower speed improves adhesion.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "minimum_value": "0.1",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "150",
+                    "default_value": 30,
+                    "value": "speed_wall_0 * 0.6",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_raft_flow":
+                {
+                    "label": "Raft Flow",
+                    "description": "The extrusion multiplier for the raft.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "default_value": 100,
+                    "value": "material_flow",
+                    "resolve": "extruderValue(0, 'blackbelt_raft_flow')",
+                    "enabled": "blackbelt_raft",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_belt_wall_enabled":
+                {
+                    "label": "Adjust Belt Wall",
+                    "description": "Adjust settings for the wall touching the belt.",
+                    "type": "bool",
+                    "default_value": false,
+                    "resolve": "extruderValue(0, 'blackbelt_belt_wall_enabled')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_belt_wall_speed":
+                {
+                    "label": "Belt Wall Speed",
+                    "description": "The speed at which the walls touching the belt are printed. Printing the belt layer at a lower speed improves adhesion.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "minimum_value": "0.1",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "150",
+                    "default_value": 30,
+                    "value": "10 if blackbelt_belt_wall_enabled else 0",
+                    "resolve": "min(extruderValues('blackbelt_belt_wall_speed'))",
+                    "enabled": "blackbelt_belt_wall_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_belt_wall_flow":
+                {
+                    "label": "Belt Wall Flow",
+                    "description": "The extrusion multiplier for the walls touching the belt. This multiplier acts on top of the Material Flow multiplier.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "default_value": 100,
+                    "resolve": "min(extruderValues('blackbelt_belt_wall_flow'))",
+                    "enabled": "blackbelt_belt_wall_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                }
+            }
+        },
+        "support":
+        {
+            "children":
+            {
+                "blackbelt_support_gantry_angle_bias":
+                {
+                    "label": "Support Gantry Angle Bias",
+                    "description": "Favor placement of support structures towards the front of the print, for use with belt-style printers.",
+                    "enabled": "support_enable",
+                    "type": "int",
+                    "unit": "°",
+                    "default_value": 45,
+                    "value": "int(blackbelt_gantry_angle)",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
+                "blackbelt_support_minimum_island_area":
+                {
+                    "label": "Minimum Support Area",
+                    "description": "Minimum area in the X/Y directions of a small area which will be supported. This prevents very small support towers which could fall over.",
+                    "enabled": "support_enable",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 3.0,
+                    "minimum_value": "0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                }
+            }
+        },
+        "machine_settings": {
+            "children":
+            {
+                "blackbelt_gantry_angle":
+                {
+                    "label": "Gantry Angle",
+                    "description": "The angle of the gantry relative to the build plate. Match this setting with the current printer configuration.",
+                    "unit": "°",
+                    "type": "enum",
+                    "options":
+                    {
+                        "15": "15°",
+                        "25": "25°",
+                        "35": "35°",
+                        "45": "45°"
+                    },
+                    "default_value": "45",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+
+                "blackbelt_repetitions_gcode":
+                {
+                    "label": "Repetitions GCode",
+                    "description": "Gcode commands to be executed between repetitions - separated by \\n.",
+                    "type": "str",
+                    "default_value": "\nG92 E0   ; Set Extruder to zero\nG1 E-4 F3900  ; Retract 4mm at 65mm/s\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance}   ; Advance belt between repetitions\nG92 Z0   ; Set Belt to zero again\n\n;˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄ - repetition - ˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄˄\n\nM107    ; Start with the fan off\nG0 X170 ; Move X to the center\nG1 Y1   ; Move y to the belt\nG1 E0   ; Move extruder back to 0\nG92 E-5 ; Add 5mm restart distance\n\n",
+                    "enabled": "blackbelt_repetitions > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                }
+            }
+        }
+    },
+
+    "overrides": {
+
+        "support_enable": {
+            "default_value": false,
+            "settable_per_mesh": true
+        },
+        "support_type": {
+            "enabled": false
+        },
+        "support_tree_enable": {
+            "enabled": false,
+            "settable_per_mesh": false
+        },
+        "support_tree_branch_distance": {
+            "enabled": false,
+            "settable_per_mesh": false
+        },
+        "remove_empty_first_layers": {
+            "enabled": false
+        },
+        "support_mesh_drop_down": {
+            "enabled": false,
+            "default_value": false
+        },
+        "anti_overhang_mesh": {
+            "enabled": false
+        },
+        "adhesion_type": {
+            "enabled": false,
+            "value": "'raft' if blackbelt_raft else 'none'"
+        },
+        "raft_margin": {
+            "default_value": 0,
+            "enabled": false
+        },
+        "raft_surface_layers": {
+            "default_value": 0,
+            "enabled": false
+        },
+        "layer_0_z_overlap": {
+            "default_value": 0,
+            "enabled": false
+        },
+        "raft_base_thickness": {
+            "value": "blackbelt_raft_thickness",
+            "enabled": false
+        },
+        "raft_airgap": {
+            "value": "blackbelt_raft_gap",
+            "enabled": false
+        },
+
+        "raft_smoothing": {
+            "enabled": false
+        },
+        "raft_surface_thickness": {
+            "enabled": false
+        },
+        "raft_surface_line_width": {
+            "enabled": false
+        },
+        "raft_surface_line_spacing": {
+            "enabled": false
+        },
+        "raft_interface_thickness": {
+            "enabled": false
+        },
+        "raft_interface_line_width": {
+            "enabled": false
+        },
+        "raft_interface_line_spacing": {
+            "enabled": false
+        },
+        "raft_base_line_width": {
+            "enabled": false
+        },
+        "raft_base_line_spacing": {
+            "enabled": false
+        },
+        "raft_speed": {
+            "enabled": false
+        },
+        "raft_surface_speed": {
+            "enabled": false
+        },
+        "raft_interface_speed": {
+            "enabled": false
+        },
+        "raft_base_speed": {
+            "enabled": false
+        },
+        "raft_acceleration": {
+            "enabled": false
+        },
+        "raft_surface_acceleration": {
+            "enabled": false
+        },
+        "raft_interface_acceleration": {
+            "enabled": false
+        },
+        "raft_base_acceleration": {
+            "enabled": false
+        },
+        "raft_jerk": {
+            "enabled": false
+        },
+        "raft_surface_jerk": {
+            "enabled": false
+        },
+        "raft_interface_jerk": {
+            "enabled": false
+        },
+        "raft_base_jerk": {
+            "enabled": false
+        },
+        "raft_fan_speed": {
+            "enabled": false
+        },
+        "raft_surface_fan_speed": {
+            "enabled": false
+        },
+        "raft_interface_fan_speed": {
+            "enabled": false
+        },
+        "raft_base_fan_speed": {
+            "enabled": false
+        },
+
+        "z_offset_layer_0": {
+            "enabled": false
+        },
+        "print_sequence": {
+            "enabled": false
+        },
+        "top_bottom_pattern_0": {
+            "enabled": false
+        },
+        "infill_pattern": {
+            "options":
+            {
+                "grid": "Grid",
+                "lines": "Lines",
+                "triangles": "Triangles",
+                "cubic": "Cubic",
+                "tetrahedral": "Octet",
+                "zigzag": "Zig Zag",
+                "gyroid": "Gyroid"
+            }
+        },
+        "infill_angles": {
+            "value": "'[' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ',-' + str(round(45 * math.sin(math.radians(float(blackbelt_gantry_angle))))) + ']' if infill_pattern == 'lines' else ('[26,205,-26,155]' if infill_pattern == 'zigzag' else '[]')"
+        },
+        "infill_line_distance": {
+            "minimum_value_warning": "0 if infill_sparse_density == 0 else infill_line_width"
+        },
+        "travel_avoid_other_parts": {
+            "default_value": false
+        },
+        "max_feedrate_z_override": {
+            "enabled": false
+        },
+        "ooze_shield_enabled": {
+            "enabled": false
+        },
+        "draft_shield_enabled": {
+            "enabled": false
+        },
+        "conical_overhang_enabled": {
+            "enabled": false
+        },
+        "support_conical_enabled": {
+            "settable_per_mesh": false
+        },
+        "support_conical_angle": {
+            "settable_per_mesh": false
+        },
+        "support_conical_min_width": {
+            "settable_per_mesh": false
+        },
+        "switch_extruder_retraction_amount": {
+            "enabled": false
+        },
+        "switch_extruder_retraction_speeds": {
+            "enabled": false
+        },
+        "mold_enabled": {
+            "enabled": false
+        },
+        "magic_fuzzy_skin_enabled": {
+            "enabled": false
+        },
+        "wireframe_enabled": {
+            "enabled": false
+        },
+
+        "layer_height_0": {
+            "enabled": false
+        },
+        "xy_offset_layer_0": {
+            "enabled": false
+        },
+        "initial_layer_line_width_factor": {
+            "enabled": false
+        },
+        "adaptive_layer_height_enabled": {
+            "enabled": false
+        },
+        "carve_multiple_volumes": {
+            "enabled": false,
+            "value": "True"
+        },
+
+
+
+        "support_line_width": {
+            "enabled": "True"
+        },
+        "support_interface_line_width": {
+            "enabled": "support_interface_enable"
+        },
+        "support_roof_line_width": {
+            "enabled": "support_roof_enable"
+        },
+        "support_bottom_line_width": {
+            "enabled": "support_bottom_enable"
+        },
+
+        "limit_support_retractions": {
+            "enabled": "retraction_enable"
+        },
+        "speed_support": {
+            "enabled": "True"
+        },
+        "speed_support_infill": {
+            "enabled": "True"
+        },
+        "speed_support_interface": {
+            "enabled": "support_interface_enable"
+        },
+        "speed_support_roof": {
+            "enabled": "support_roof_enable"
+        },
+        "speed_support_bottom": {
+            "enabled": "support_bottom_enable"
+        },
+
+        "acceleration_support": {
+            "enabled": "resolveOrValue('acceleration_enabled')"
+        },
+        "acceleration_support_infill": {
+            "enabled": "resolveOrValue('acceleration_enabled')"
+        },
+        "acceleration_support_interface": {
+            "enabled": "resolveOrValue('acceleration_enabled') and support_interface_enable"
+        },
+        "acceleration_support_roof": {
+            "enabled": "acceleration_enabled and support_roof_enable"
+        },
+        "acceleration_support_bottom": {
+            "enabled": "acceleration_enabled and support_bottom_enable"
+        },
+        "jerk_support": {
+            "enabled": "resolveOrValue('jerk_enabled')"
+        },
+        "jerk_support_infill": {
+            "enabled": "resolveOrValue('jerk_enabled')"
+        },
+        "jerk_support_interface": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_interface_enable"
+        },
+        "jerk_support_roof": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_roof_enable"
+        },
+        "jerk_support_bottom": {
+            "enabled": "resolveOrValue('jerk_enabled') and support_bottom_enable"
+        },
+
+
+        "support_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_infill_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_extruder_nr_layer_0": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_interface_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_roof_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_bottom_extruder_nr": {
+            "enabled": "extruders_enabled_count > 1"
+        },
+        "support_pattern": {
+            "enabled": "True"
+        },
+        "support_wall_count": {
+            "enabled": "True"
+        },
+        "support_connect_zigzags": {
+            "enabled": "support_pattern == 'zigzag'"
+        },
+        "support_infill_rate": {
+            "enabled": "True"
+        },
+        "support_line_distance": {
+            "enabled": "True"
+        },
+        "support_initial_layer_line_distance": {
+            "enabled": "True"
+        },
+        "support_infill_angle": {
+            "enabled": "support_pattern != 'concentric' and support_infill_rate > 0"
+        },
+        "support_z_distance": {
+            "enabled": "True"
+        },
+        "support_top_distance": {
+            "enabled": "True"
+        },
+        "support_bottom_distance": {
+            "enabled": "resolveOrValue('support_type') == 'everywhere'"
+        },
+        "support_xy_distance": {
+            "enabled": "True"
+        },
+        "support_xy_overrides_z": {
+            "enabled": "True"
+        },
+        "support_xy_distance_overhang": {
+            "enabled": "support_xy_overrides_z == 'z_overrides_xy'"
+        },
+        "support_bottom_stair_step_height": {
+            "enabled": "True"
+        },
+        "support_bottom_stair_step_width": {
+            "enabled": "True"
+        },
+        "support_join_distance": {
+            "enabled": "True"
+        },
+        "support_offset": {
+            "enabled": "True"
+        },
+        "support_infill_sparse_thickness": {
+            "enabled": "support_infill_rate > 0"
+        },
+        "gradual_support_infill_steps": {
+            "enabled": "support_infill_rate > 0"
+        },
+        "gradual_support_infill_step_height": {
+            "enabled": "support_infill_rate > 0 and gradual_support_infill_steps > 0"
+        },
+        "support_interface_enable": {
+            "enabled": "True"
+        },
+        "support_roof_enable": {
+            "enabled": "True"
+        },
+        "support_bottom_enable": {
+            "enabled": "True"
+        },
+        "support_interface_height": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_height": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_height": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_interface_skip_height": {
+            "enabled": "support_interface_enable"
+        },
+        "support_interface_density": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_density": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_roof_line_distance": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_density": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_bottom_line_distance": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_interface_pattern": {
+            "enabled": "support_interface_enable and True"
+        },
+        "support_roof_pattern": {
+            "enabled": "support_roof_enable and True"
+        },
+        "support_bottom_pattern": {
+            "enabled": "support_bottom_enable and True"
+        },
+        "support_fan_enable": {
+            "enabled": "True"
+        },
+        "support_supported_skin_fan_speed": {
+            "enabled": "support_fan_enable"
+        },
+        "support_use_towers": {
+            "enabled": "False"
+        },
+
+        "support_skip_some_zags": {
+            "enabled": "(support_pattern == 'zigzag')"
+        },
+        "support_skip_zag_per_mm": {
+            "enabled": "(support_pattern == 'zigzag') and support_skip_some_zags"
+        },
+        "support_zag_skip_count": {
+            "enabled": "(support_pattern == 'zigzag') and support_skip_some_zags"
+        }
+    }
+}

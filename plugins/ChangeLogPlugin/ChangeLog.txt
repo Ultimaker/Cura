@@ -1,4 +1,19 @@
+[3.6.2]
+*BlackBelt changes
+- New varioDrive setup added as seperate printer
+- Updated logos and icons
+- Updated material profiles
+- Updated start Gcode motor current
+
 [3.6.0]
+*BlackBelt changes
+- Added automatic support generation
+- Fixed display of loaded gcode
+- Optimised start and end gcode snippets
+- Updated firmware to Marlin 1.1.9, with support for homing the Y axis and parking the nozzle on pause
+- Fixed multiplying models on the belt
+- Fixed layer view for objects that are cut off below the belt
+
 *Gyroid infill
 New infill pattern with enhanced strength properties. Gyroid infill is one of the strongest infill types for a given weight, has isotropic properties, and prints relatively fast with reduced material use and a fully connected part interior. Note: Slicing time can increase up to 40 seconds or more, depending on the model. Contributed by smartavionics.
 
@@ -173,7 +188,24 @@ This plugin adds the Dremel printer to Ultimaker Cura. Contributed by Kriechi.
 - Deltacomb (update)
 - Dacoma (update)
 
+[3.4.2]
+*BlackBelt changes
+- Fixed underextrusion when setting flow
+- Fixed an issue in Layer View when using Print as Support
+
 [3.4.1]
+*BlackBelt changes
+- Improved adjustments to walls touching the belt
+- Experimental raft to help keep prints attached to the belt while printing
+- Add gantry angle, nozzle size and material to gcode filename
+- Arrange loaded models in a row
+- Overview of settings added to the top of the gcode file
+- BlackBelt PET-G material
+- BlackBelt Cura theme
+- Rear fan is more adjustable
+- BlackBelt 3D firmware update
+- Profile tweaks
+
 *Bug fixes
 - Fixed an issue that would occasionally cause an unnecessary extra skin wall to be printed, which increased print time.
 - Fixed an issue in which supports were not generated on the initial layer, because the engine expected a brim to be in place.
