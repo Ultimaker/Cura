@@ -7,6 +7,7 @@ from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import pySavitar as Savitar
 import numpy
+from PyQt6.QtGui import QImage
 
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
@@ -18,6 +19,8 @@ from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from UM.Util import parseBool
+from UM.View.GL.OpenGL import OpenGL
+from UM.View.GL.Texture import Texture
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -101,7 +104,7 @@ class ThreeMFReader(MeshReader):
         """
         try:
             node_name = savitar_node.getName()
-            node_id = savitar_node.getId()
+            node_id = str(savitar_node.getId())
         except AttributeError:
             Logger.log("e", "Outdated version of libSavitar detected! Please update to the newest version!")
             node_name = ""
@@ -226,6 +229,14 @@ class ThreeMFReader(MeshReader):
             # affects (auto) slicing
             sliceable_decorator = SliceableObjectDecorator()
             um_node.addDecorator(sliceable_decorator)
+
+            if texture_path != "" and archive is not None:
+                texture_data = archive.open(texture_path).read()
+                texture_image = QImage.fromData(texture_data, "PNG")
+                texture = Texture(OpenGL.getInstance())
+                texture.setImage(texture_image)
+                sliceable_decorator.setPaintTexture(texture)
+
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
