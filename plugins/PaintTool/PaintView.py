@@ -19,25 +19,21 @@ class PaintView(View):
     def __init__(self) -> None:
         super().__init__()
         self._paint_shader = None
-        self._paint_texture = None
-
-        # FIXME: When the texture UV-unwrapping is done, these two values will need to be set to a proper value (suggest 4096 for both).
-        self._tex_width = 512
-        self._tex_height = 512
+        self._current_paint_texture = None
 
     def _checkSetup(self):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
-        if not self._paint_texture:
-            self._paint_texture = OpenGL.getInstance().createTexture(self._tex_width, self._tex_height)
-            self._paint_shader.setTexture(0, self._paint_texture)
 
     def addStroke(self, stroke_image: QImage, start_x: int, start_y: int) -> None:
-        self._paint_texture.setSubImage(stroke_image, start_x, start_y)
+        if self._current_paint_texture is not None:
+            self._current_paint_texture.setSubImage(stroke_image, start_x, start_y)
 
     def getUvTexDimensions(self):
-        return self._tex_width, self._tex_height
+        if self._current_paint_texture is not None:
+            return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
+        return 0, 0
 
     def beginRendering(self) -> None:
         renderer = self.getRenderer()
@@ -48,4 +44,7 @@ class PaintView(View):
         node = Selection.getAllSelectedObjects()[0]
         if node is None:
             return
+
+        self._current_paint_texture = node.callDecoration("getPaintTexture")
+        self._paint_shader.setTexture(0, self._current_paint_texture)
         paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
