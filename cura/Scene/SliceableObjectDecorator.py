@@ -29,4 +29,6 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         self._paint_texture = texture
 
     def __deepcopy__(self, memo) -> "SliceableObjectDecorator":
-        return type(self)()
+        copied_decorator = SliceableObjectDecorator()
+        copied_decorator.setPaintTexture(copy.deepcopy(self.getPaintTexture()))
+        return copied_decorator
