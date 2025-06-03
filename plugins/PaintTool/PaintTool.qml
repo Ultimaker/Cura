@@ -176,5 +176,40 @@ Item
                 }
             }
         }
+
+        RowLayout
+        {
+            UM.ToolbarButton
+            {
+                id: undoButton
+
+                text: catalog.i18nc("@action:button", "Undo Stroke")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("ArrowReset")
+                }
+                property bool needBorder: true
+
+                z: 2
+
+                onClicked: UM.Controller.triggerActionWithData("undoStackAction", false)
+            }
+
+            UM.ToolbarButton
+            {
+                id: redoButton
+
+                text: catalog.i18nc("@action:button", "Redo Stroke")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                }
+                property bool needBorder: true
+
+                z: 2
+
+                onClicked: UM.Controller.triggerActionWithData("undoStackAction", true)
+            }
+        }
     }
 }

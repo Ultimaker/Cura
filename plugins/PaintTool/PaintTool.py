@@ -41,9 +41,12 @@ class PaintTool(Tool):
         self._brush_size: int = 10
         self._brush_color: str = "A"
         self._brush_shape: str = "A"
-        self._brush_pen: Optional[QPen] = None
+        self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
+        self._ctrl_held: bool = False
+        self._shift_held: bool = False
+
         self._last_text_coords: Optional[Tuple[int, int]] = None
 
     def _createBrushPen(self) -> QPen:
@@ -72,7 +75,10 @@ class PaintTool(Tool):
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
         painter.setPen(self._brush_pen)
-        painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
+        if xdiff == 0 and ydiff == 0:
+            painter.drawPoint(int(x0 - start_x), int(y0 - start_y))
+        else:
+            painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
         painter.end()
 
         return stroke_image, (start_x, start_y)
@@ -95,6 +101,20 @@ class PaintTool(Tool):
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
             self._brush_pen = self._createBrushPen()
+
+    def undoStackAction(self, redo_instead: bool) -> bool:
+        paintview = Application.getInstance().getController().getActiveView()
+        if paintview is None or paintview.getPluginId() != "PaintTool":
+            return False
+        paintview = cast(PaintView, paintview)
+        if redo_instead:
+            paintview.redoStroke()
+        else:
+            paintview.undoStroke()
+        nodes = Selection.getAllSelectedObjects()
+        if len(nodes) > 0:
+            Application.getInstance().getController().getScene().sceneChanged.emit(nodes[0])
+        return True
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -154,6 +174,10 @@ class PaintTool(Tool):
         super().event(event)
 
         controller = Application.getInstance().getController()
+        nodes = Selection.getAllSelectedObjects()
+        if len(nodes) <= 0:
+            return False
+        node = nodes[0]
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
@@ -166,7 +190,27 @@ class PaintTool(Tool):
             controller.setActiveView("SolidView")
             return True
 
-        if event.type == Event.KeyPressEvent and cast(KeyEvent, event).key == KeyEvent.ShiftKey:
+        if event.type == Event.KeyPressEvent:
+            evt = cast(KeyEvent, event)
+            if evt.key == KeyEvent.ControlKey:
+                self._ctrl_held = True
+                return True
+            if evt.key == KeyEvent.ShiftKey:
+                self._shift_held = True
+                return True
+            return False
+
+        if event.type == Event.KeyReleaseEvent:
+            evt = cast(KeyEvent, event)
+            if evt.key == KeyEvent.ControlKey:
+                self._ctrl_held = False
+                return True
+            if evt.key == KeyEvent.ShiftKey:
+                self._shift_held = False
+                return True
+            if evt.key == Qt.Key.Key_L and self._ctrl_held:
+                # NOTE: Ctrl-L is used here instead of Ctrl-Z, as the latter is the application-wide one that takes precedence.
+                return self.undoStackAction(self._shift_held)
             return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
@@ -199,10 +243,6 @@ class PaintTool(Tool):
 
             camera = self._controller.getScene().getActiveCamera()
             if not camera:
-                return False
-
-            node = Selection.getAllSelectedObjects()[0]
-            if node is None:
                 return False
 
             if node != self._node_cache:
