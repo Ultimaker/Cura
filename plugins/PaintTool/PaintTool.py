@@ -111,9 +111,9 @@ class PaintTool(Tool):
             paintview.redoStroke()
         else:
             paintview.undoStroke()
-        nodes = Selection.getAllSelectedObjects()
-        if len(nodes) > 0:
-            Application.getInstance().getController().getScene().sceneChanged.emit(nodes[0])
+        node = Selection.getSelectedObject(0)
+        if node is not None:
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
         return True
 
     @staticmethod
@@ -174,10 +174,9 @@ class PaintTool(Tool):
         super().event(event)
 
         controller = Application.getInstance().getController()
-        nodes = Selection.getAllSelectedObjects()
-        if len(nodes) <= 0:
+        node = Selection.getSelectedObject(0)
+        if node is None:
             return False
-        node = nodes[0]
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
