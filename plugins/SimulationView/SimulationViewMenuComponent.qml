@@ -339,7 +339,7 @@ Cura.ExpandableComponent
 
                                         height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                                         width: UM.Theme.getSize("layerview_menu_size").width
-                                        color: UM.Theme.getColor("setting_control_text")
+                                        color: UM.Theme.getColor("tooltip_text")
                                         Rectangle
                                         {
                                             anchors.verticalCenter: parent.verticalCenter
