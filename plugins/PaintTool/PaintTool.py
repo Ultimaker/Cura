@@ -119,6 +119,8 @@ class PaintTool(Tool):
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
         # compute the intersection of (param) A - pt with (param) B - (param) C
+        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
+            return 1.0
 
         # compute unit vectors of directions of lines A and B
         udir_a = a - pt

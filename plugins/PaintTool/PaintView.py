@@ -27,9 +27,8 @@ class PaintView(View):
         self._paint_shader: Optional[ShaderProgram] = None
         self._paint_texture: Optional[Texture] = None
 
-        # FIXME: When the texture UV-unwrapping is done, these two values will need to be set to a proper value (suggest 4096 for both).
-        self._tex_width = 512
-        self._tex_height = 512
+        self._tex_width = 2048
+        self._tex_height = 2048
 
         self._stroke_undo_stack: List[Tuple[QImage, int, int]] = []
         self._stroke_redo_stack: List[Tuple[QImage, int, int]] = []
