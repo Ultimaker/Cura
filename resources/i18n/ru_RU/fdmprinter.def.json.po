@@ -6012,3 +6012,231 @@ msgstr "Стенки и линии"
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr "Стены, которые нависают больше, чем на этот угол, будут напечатаны с использованием настроек для нависающих стен. Если значение равно 90, ни одна стенка не будет считаться нависающей. Нависание, поддерживаемое опорой, также не будет считаться нависанием. Кроме того, любая линия, которая нависает меньше, чем на половину, также не будет считаться нависанием."
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "Список целочисленных значений направлений линий, которые следует использовать при печати прямыми или зигзагом внешних слоев нижней поверхности. Элементы списка используются последовательно по мере печати слоев, и когда достигается конец списка, цикл повторяется. Элементы списка перечисляются внутри квадратных скобок и разделяются запятыми. По умолчанию используется пустой список, соответствующий стандартным углам (45 и 135 градусов)."
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr "Ускорение для внутренней стенки нижней поверхности"
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr "Рывок (jerk) для внутренней стенки нижней поверхности"
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr "Скорость для внутренней стенки нижней поверхности"
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr "Скорость подачи материала для внутренней стенки нижней поверхности"
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr "Ускорение для внешней стенки нижней поверхности"
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr "Скорость подачи материала для внешней стенки нижней поверхности"
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr "Рывок (jerk) для внутренней стенки нижней поверхности"
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr "Скорость для внешней стенки нижней поверхности"
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr "Ускорение для внешних слоев нижней поверхности"
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr "Экструдер для внешних слоев нижней поверхности"
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr "Скорость подачи материала для внешних слоев нижней поверхности"
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr "Рывок (jerk) для внешних слоев нижней поверхности"
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr "Количество внешних слоев нижней поверхности"
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr "Направления линий печати внешних слоев нижней поверхности"
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr "Ширина линий печати внешних слоев нижней поверхности"
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr "Паттерн печати внешних слоев нижней поверхности"
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr "Скорость печати внешних слоев нижней поверхности"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr "Концентрические окружности"
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr "Экструдер"
+
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr "Компенсация скорости подачи материала по линиям стенок, кроме самой внешней."
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr "Компенсация скорости подачи материала в линиях нижних поверхностей модели."
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr "Компенсация скорости подачи материала для самой внешней стенки нижней поверхности."
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr "Griffin+Cheetah"
+
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr "Запрещенное расстояние при печати внутри модели"
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr "Линии"
+
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr "Минимальное время укладки слоя при печати навесом"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr "Минимальная длина нависающего сегмента"
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr "Монотонный порядок печати нижней поверхности"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr "Отрицательное ускорение в конце наружной стенки"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr "Ускорение в начале наружной стенки"
+
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
+msgstr "Скорость печати нависающих стенок"
+
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr "Скорость печати нависающих стенок указывается в процентах от скорости печати обычных. Вы можете указать несколько значений, чтобы еще более нависающие стенки печатались еще медленнее, например [75, 50, 25]."
+
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr "Коэффициент увеличения давления"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr "Print Core"
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Печатать линии нижней поверхности так, чтобы они всегда перекрывали соседние линии в одном направлении. Печать в таком режиме занимает немного больше времени, но готовые плоские поверхности будут выглядеть более однородно."
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr "Первым должен быть стартовый GCode"
+
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr "Ускорение, с которым будут печататься внешние слои нижней поверхности."
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr "Ускорение, с которым будут печататься внутренние стенки нижней поверхности."
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr "Ускорение, с которым будут печататься самые внешние стенки нижней поверхности."
+
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr "Размеры печатающей головки для определения 'Безопасного расстояния до модели' при печати 'По одной'. Значения указываются относительно центра первого сопла экструдера. Расстояние от сопла до левого края называется 'Мин. X' и должно быть отрицательным. Расстояние от сопла до заднего края называется 'Мин. Y' и должно быть отрицательным. Макс. X (до правого края) и Макс. Y (до переднего края) должны иметь положительные значения. Высота портала — это расстояние от печатной поверхности до поперечной балки портала оси X."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr "Расстояние между соплом и уже напечатанными стенками модели при перемещении внутри нее."
+
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr "Головка экструдера для печати внешних слоев нижней поверхности. Используется при наличии нескольких экструдеров."
+
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr "Максимальное мгновенное изменение скорости, с которой печатаются внешние слои нижней поверхности."
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr "Максимальное мгновенное изменение скорости, с которой печатаются внутренние стенки нижней поверхности."
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr "Максимальное мгновенное изменение скорости, с которой печатаются самые внешние стенки нижней поверхности."
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr "Минимальное время, затрачиваемое на печать слоя с наличием навеса. Замедляет работу принтера на одном слое минимум на указанное время. Это позволяет материалу хорошо остыть перед нанесением следующего слоя. Время укладки слоев все равно может быть меньше установленного минимального, если отключена функция подъема головки или если будет нарушена настройка минимальной скорости печати."
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr "Количество внешних слоев нижней поверхности. Обычно для получения качественных поверхностей низа модели достаточно только одного самого нижнего слоя."
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr "Паттерн самых нижних слоев нижней части модели."
+
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr "Скорость, с которой будут печататься внешние слои нижней поверхности."
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr "Скорость, с которой будут печататься внутренние стенки нижней поверхности."
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr "Скорость, с которой будет печататься самая внешняя стенка нижней поверхности."
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
+msgstr "Эта функция определяет, должен ли начальный g-код всегда быть самым первым. Если она отключена, то перед начальным g-кодом может быть вставлен другой, например T0."
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr "Коэффициент повышения давления, предназначенный для синхронизации подачи материала со скоростью движения"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr "Если указать минимальное время печати слоя с навесом, то оно будет применено только в том случае, если есть хотя бы одно движение экструдера на слое с навесом, время выполнения которого превышает указанное."
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr "Ширина одной линии на нижних поверхностях модели."
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Зигзаг"

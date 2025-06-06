@@ -1,4 +1,21 @@
 {
+    "3DConnexion": {
+        "package_info": {
+            "package_id": "3DConnexion",
+            "package_type": "plugin",
+            "display_name": "3DConnexion mouses",
+            "description": "Allows working with 3D mouses inside Cura.\nOnly available on Windows and MacOS.",
+            "package_version": "1.0.0",
+            "sdk_version": "8.6.0",
+            "website": "https://3dconnexion.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "3DConnexion",
+                "email": "plugins@ultimaker.com",
+                "website": "https://3dconnexion.com"
+            }
+        }
+    },
     "3MFReader": {
         "package_info": {
             "package_id": "3MFReader",

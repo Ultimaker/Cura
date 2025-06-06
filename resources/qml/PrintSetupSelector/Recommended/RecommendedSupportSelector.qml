@@ -46,7 +46,7 @@ RecommendedSettingSection
     contents: [
         RecommendedSettingItem
         {
-            settingName: catalog.i18nc("@action:label", "Support Type")
+            settingName: catalog.i18nc("@action:label", "Support Structure")
             tooltipText: catalog.i18nc("@label", "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible.")
             isCompressed: enableSupportRow.isCompressed
 
@@ -57,7 +57,9 @@ RecommendedSettingSection
                 settingName: "support_structure"
                 propertyRemoveUnusedValue: false
                 updateAllExtruders: false
-                defaultExtruderIndex: supportExtruderProvider.properties.value
+                defaultExtruderIndex: supportExtruderProvider.properties.value != undefined ?
+                    supportExtruderProvider.properties.value :
+                    Cura.ExtruderManager.activeExtruderIndex
             }
         },
         RecommendedSettingItem
@@ -92,7 +94,9 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "support_type"
                 updateAllExtruders: true
-                defaultExtruderIndex: supportExtruderProvider.properties.value
+                defaultExtruderIndex: supportExtruderProvider.properties.value != undefined ?
+                    supportExtruderProvider.properties.value :
+                    Cura.ExtruderManager.activeExtruderIndex
             }
         }
     ]
