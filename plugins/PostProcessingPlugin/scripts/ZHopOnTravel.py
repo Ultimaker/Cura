@@ -249,15 +249,18 @@ class ZHopOnTravel(Script):
 
         # Make the insertions
         in_the_infill = False
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         for num in range(start_index, len(data)-1):
+            # Leave if the num > highest index number to speed up the script.
+            if num > index_list[len(index_list)-1]:
+                break
+            # If the num is not an "index of interest" then just track the Z through the layer
             if num not in index_list:
                 lines = data[num].splitlines()
                 for line in lines:
                     if " Z" in line and self.getValue(line, "Z"):
                         self._cur_z = self.getValue(line, "Z")
                         continue
+            # If the num is in the index_list then make changes
             elif num in index_list:
                 lines = data[num].splitlines()
                 for index, line in enumerate(lines):
@@ -336,91 +339,6 @@ class ZHopOnTravel(Script):
                         continue
                     self._prev_e = self._cur_e
                 data[num] = "\n".join(lines) + "\n"
-=======
-=======
->>>>>>> Stashed changes
-        for num in index_list:
-            lines = data[num].splitlines()
-            for index, line in enumerate(lines):
-                if num == 2:
-                    if line.startswith(";TYPE"):
-                        start_here = True
-                if line.startswith(";") and in_the_infill == True:
-                    in_the_infill = False
-                if line.startswith(";TYPE:FILL"):
-                    in_the_infill = True
-                if line.startswith("G92") and " E" in line:
-                    self._cur_e = self.getValue(line, "E")
-                    self._prev_e = self._cur_e
-                    continue
-                # Get the XYZ values from movement commands
-                if line[0:3] in cmd_list:
-                    if " X" in line and self.getValue(line, "X"):
-                        self._prev_x = self._cur_x
-                        self._cur_x = self.getValue(line, "X")
-                    if " Y" in line and self.getValue(line, "Y"):
-                        self._prev_y = self._cur_y
-                        self._cur_y = self.getValue(line, "Y")
-                    if " Z" in line and self.getValue(line, "Z"):
-                        self._cur_z = self.getValue(line, "Z")
-
-                # Check whether retractions have occured
-                if line[0:3] in ["G1 ", "G2 ", "G3 "] and "X" in line and "Y" in line and "E" in line:
-                    self._is_retracted = False
-                    self._cur_e = self.getValue(line, "E")
-                elif (line.startswith("G1") and "F" in line and "E" in line and not "X" in line or not "Y" in line) or "G10" in line:
-                    if self.getValue(line, "E"):
-                        self._cur_e = self.getValue(line, "E")
-                    if not relative_extrusion:
-                        if self._cur_e < self._prev_e or "G10" in line:
-                            self._is_retracted = True
-                    elif relative_extrusion:
-                        if self._cur_e < 0 or "G10" in line:
-                            self._is_retracted = True
-                if line.startswith(";TYPE"):
-                    start_here = True
-                if not start_here:
-                    continue
-
-                # All travels are checked for their cumulative length
-                if line.startswith("G0 ") and hop_start == 0:
-                    hop_indexes = self._total_travel_length(index, lines)
-                    hop_start = int(hop_indexes[0])
-                    hop_end = int(hop_indexes[1])
-                    if infill_only and not in_the_infill:
-                        hop_start = 0
-                        hop_end = 0
-                    if hop_start > 0:
-                        # For any lines that are XYZ moves right before layer change
-                        if " Z" in line:
-                            lines[index] = lines[index].replace("Z" + str(self._cur_z), "Z" + str(self._cur_z + hop_height))
-                        # If there is no 'F' in the next line then add one at the Travel Speed so the z-hop speed doesn't carry over
-                        if not " F" in lines[index] and lines[index].startswith("G0"):
-                            lines[index] = lines[index].replace("G0", f"G0 F{speed_travel}")
-                        if "X" in lines[index - 1] and "Y" in lines[index - 1] and "E" in lines[index - 1]:
-                            self._is_retracted = False
-                        hop_up_lines = self.get_hop_up_lines(retraction_amount, speed_zhop, retract_speed, extra_prime_dist, firmware_retract, relative_extrusion, hop_height)
-                        lines[index] = hop_up_lines + lines[index]
-
-                # Make the 'Zhop down' insertion at the correct index location (or as soon as practicable after it)
-                if hop_end > 0 and index >= hop_end:
-                    # If there is no 'F' in the next line then add one to reinstate the Travel Speed (so the z-hop speed doesn't carry over through the travel moves)
-                    if not " F" in lines[index] and lines[index].startswith("G0"):
-                        lines[index] = lines[index].replace("G0", f"G0 F{speed_travel}")
-                    hop_down_lines = self.get_hop_down_lines(retraction_amount, speed_zhop, retract_speed, prime_speed, extra_prime_dist, firmware_retract, relative_extrusion, hop_height, lines[index])
-                    lines[index] = hop_down_lines + lines[index]
-                    self._is_retracted = False
-                    hop_end = 0
-                    hop_start = 0
-                    hop_down_lines = ""
-                if line.startswith(";"):
-                    continue
-                self._prev_e = self._cur_e
-            data[num] = "\n".join(lines) + "\n"
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
         # Message to the user informing them of the number of Z-hops and retractions added
         hop_cnt = 0
