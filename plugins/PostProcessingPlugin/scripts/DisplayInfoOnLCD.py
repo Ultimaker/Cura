@@ -357,7 +357,7 @@ class DisplayInfoOnLCD(Script):
                 orig_hr = round(orig_hhh // 1)
                 orig_mmm = math.floor((orig_hhh % 1) * 60)
                 if self.add_m118_line:
-                    lines.insert(len(lines) - 2, f"M118 Adjusted Print Time: {hr} hr {mmm} min")
+                    lines.insert(len(lines) - 2, f"M118 Adjusted Print Time is {hr} hr {mmm} min")
                 if self.add_m117_line:
                     lines.insert(len(lines) - 2, f"M117 ET {hr} hr {mmm} min")
                 # Add M73 line at beginning
