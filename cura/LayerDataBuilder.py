@@ -83,6 +83,7 @@ class LayerDataBuilder(MeshBuilder):
         # Set material_colors with indices where line_types (also numpy array) == MoveCombingType
         material_colors[line_types == LayerPolygon.MoveCombingType] = colors[line_types == LayerPolygon.MoveCombingType]
         material_colors[line_types == LayerPolygon.MoveRetractionType] = colors[line_types == LayerPolygon.MoveRetractionType]
+        material_colors[line_types == LayerPolygon.MoveUnretractionType] = colors[line_types == LayerPolygon.MoveUnretractionType]
 
         attributes = {
             "line_dimensions": {
