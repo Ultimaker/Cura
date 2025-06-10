@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "UltiMaker S8",
-    "inherits": "ultimaker_s7",
+    "inherits": "ultimaker_s5",
     "metadata":
     {
         "visible": true,
