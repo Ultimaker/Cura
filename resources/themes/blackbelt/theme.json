@@ -1,0 +1,11 @@
+{
+    "metadata": {
+        "name": "BLACKBELT 3D",
+        "inherits": "cura-light"
+    },
+
+    "sizes": {
+        "sidebar_lining": [0, 0],
+        "sidebar_lining_thin": [0, 0]
+    }
+}
