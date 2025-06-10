@@ -103,8 +103,8 @@ geometry41core =
         vec4 g_vertex_offset_vert;
         vec3 g_vertex_normal_horz_head;
         vec4 g_vertex_offset_horz_head;
-        vec3 g_axial_plan_vector;
-        vec3 g_radial_plan_vector;
+        vec3 g_axial_plane_vector;
+        vec3 g_radial_plane_vector;
 
         float size_x;
         float size_y;
@@ -143,25 +143,25 @@ geometry41core =
 
         if (g_vertex_delta.y == 0.0)
         {
-            // vector is in the horizontal plan, radial vector is a simple rotation around Y axis
-            g_radial_plan_vector = vec3(g_vertex_delta.z, 0.0, -g_vertex_delta.x);
+            // vector is in the horizontal plane, radial vector is a simple rotation around Y axis
+            g_radial_plane_vector = vec3(g_vertex_delta.z, 0.0, -g_vertex_delta.x);
         }
         else if(g_vertex_delta.x == 0.0 && g_vertex_delta.z == 0.0)
         {
             // delta vector is purely vertical, display the line rotated vertically so that it is visible in front and side views
-            g_radial_plan_vector = vec3(1.0, 0.0, -1.0);
+            g_radial_plane_vector = vec3(1.0, 0.0, -1.0);
         }
         else
         {
             // delta vector is completely 3D
-            g_axial_plan_vector = vec3(g_vertex_delta.x, 0.0, g_vertex_delta.z); // Vector projected in the horizontal plan
-            g_radial_plan_vector = cross(g_vertex_delta, g_axial_plan_vector); // Radial vector in the horizontal plan, pointing right.
+            g_axial_plane_vector = vec3(g_vertex_delta.x, 0.0, g_vertex_delta.z); // Vector projected in the horizontal plane
+            g_radial_plane_vector = cross(g_vertex_delta, g_axial_plane_vector); // Radial vector in the horizontal plane, pointing right.
         }
 
         g_vertex_normal_horz_head = normalize(g_vertex_delta); //Lengthwise normal vector
         g_vertex_offset_horz_head = vec4(g_vertex_normal_horz_head * size_x, 0.0); //Lengthwise offset vector
 
-        g_vertex_normal_horz = normalize(g_radial_plan_vector); //Normal vector pointing right.
+        g_vertex_normal_horz = normalize(g_radial_plane_vector); //Normal vector pointing right.
         g_vertex_offset_horz = vec4(g_vertex_normal_horz * size_x, 0.0); //Offset vector pointing right.
 
         g_vertex_normal_vert = vec3(0.0, 1.0, 0.0); //Upwards normal vector.
