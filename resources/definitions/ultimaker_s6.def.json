@@ -9,9 +9,7 @@
         "manufacturer": "Ultimaker B.V.",
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s5_platform.obj",
-        "bom_numbers": [
-            10700
-        ],
+        "bom_numbers": [10700, 10701],
         "firmware_update_info":
         {
             "check_urls": [ "https://software.ultimaker.com/releases/firmware/5078167/stable/um-update.swu.version" ],
@@ -48,6 +46,6 @@
     "overrides":
     {
         "adhesion_type": { "value": "'brim'" },
-        "machine_name": { "default_value": "UltiMaker S6" }
+        "machine_name": { "default_value": "Ultimaker S6" }
     }
 }
