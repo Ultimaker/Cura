@@ -1,14 +1,13 @@
-#  Copyright (c) 2024 UltiMaker
+#  Copyright (c) 2025 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 import uuid
 
-import os
-
 import numpy
-from string import Formatter
 from enum import IntEnum
 import time
-from typing import Any, cast, Dict, List, Optional, Set, Tuple
+from typing import Any, cast, Dict, List, Optional, Set
+import copy
+import math
 import re
 import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
@@ -21,19 +20,26 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Scene import Scene #For typing.
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Math.Vector import Vector
+from UM.Math.Polygon import Polygon
+from UM.Mesh.MeshData import transformVertices
 
 from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.OneAtATimeIterator import OneAtATimeIterator
+from cura.Settings.CuraContainerStack import CuraContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
-
+from plugins.BlackBeltPlugin.BlackBeltDecorator import BlackBeltDecorator
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 
@@ -344,9 +350,14 @@ class StartSliceJob(Job):
                 cast(SceneNode, node.getParent()).removeChild(node)
                 break
 
+        global_enable_support = stack.getProperty("support_enable", "value")
+
         # Get the objects in their groups to print.
         object_groups = []
         if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+
+            # note that one_at_a_time printing is disabled on belt printers due to collission risk (TODO?)
+
             modifier_mesh_nodes = []
 
             for node in DepthFirstIterator(self._scene.getRoot()):
@@ -377,13 +388,19 @@ class StartSliceJob(Job):
         else:
             temp_list = []
             has_printing_mesh = False
+
+            # print convex hull nodes as "faux-raft"  -> skip this for now
+            print_convex_hulls = stack.getProperty("blackbelt_raft", "value")
+
             for node in DepthFirstIterator(self._scene.getRoot()):
                 mesh_data = node.getMeshData()
-                if node.callDecoration("isSliceable") and mesh_data and mesh_data.getVertices() is not None:
+                slice_node = (print_convex_hulls and type(node) is ConvexHullNode) or node.callDecoration("isSliceable")
+                if slice_node and mesh_data and node.getMeshData().getVertices() is not None:
                     is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
                     # Find a reason not to add the node
-                    if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
+                    if node.callDecoration("getBuildPlateNumber") != self._build_plate_number and type(node) is not ConvexHullNode:
+                        # NB: ConvexHullNodes get none of the usual decorators, so skip checking for them
                         continue
                     if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
                         continue
@@ -416,6 +433,8 @@ class StartSliceJob(Job):
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                 extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
+                if extruder_position is None:  # raft meshes may not have an extruder position (yet)
+                    extruder_position = "0"
                 if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                     skip_group = True
                     has_model_with_disabled_extruders = True
@@ -436,6 +455,33 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.NothingToSlice)
             return
 
+        container_registry = ContainerRegistry.getInstance()
+        stack_id = stack.getId()
+
+         # Adapt layer_height and material_flow for a slanted gantry
+        gantry_angle = 0.7  #self._scene.getRoot().callDecoration("getGantryAngle")
+        if gantry_angle: # not 0 or None
+            # Act on a copy of the stack, so these changes don't cause a reslice
+            _stack = CuraContainerStack(stack_id + "_temp")
+            for index, container in enumerate(stack.getContainers()):
+                if container_registry.isReadOnly(container.getId()):
+                    _stack.replaceContainer(index, container)
+                else:
+                    _stack.replaceContainer(index, copy.deepcopy(container))
+            stack = _stack
+
+            # Make sure CuraEngine does not create any supports
+            # support_enable is set in the frontend so support options are settable,
+            # but CuraEngine support structures don't work for slanted gantry
+            stack.setProperty("support_enable", "value", False)
+            # Make sure CuraEngine does not create a raft (we create one manually)
+            # Adhesion type is used in the frontend to show the raft in the viewport
+            stack.setProperty("adhesion_type", "value", "none")
+
+            for key in ["layer_height", "layer_height_0"]:
+                current_value = stack.getProperty(key, "value")
+                stack.setProperty(key, "value", current_value / math.sin(gantry_angle))
+
         self._buildGlobalSettingsMessage(stack)
         self._buildGlobalInheritsStackMessage(stack)
 
@@ -452,7 +498,130 @@ class StartSliceJob(Job):
 
         # Build messages for extruder stacks
         for extruder_stack in global_stack.extruderList:
+
+            if gantry_angle:  # not 0 or None
+                # Act on a copy of the stack, so these changes don't cause a reslice
+                _extruder_stack = CuraContainerStack(extruder_stack.getId() + "_temp")
+                for index, container in enumerate(extruder_stack.getContainers()):
+                    if container_registry.isReadOnly(container.getId()):
+                        _extruder_stack.replaceContainer(index, container)
+                    else:
+                        _extruder_stack.replaceContainer(index, copy.deepcopy(container))
+                extruder_stack = _extruder_stack
+                extruder_stack.setNextStack(stack)
+                for key in ["material_flow", "prime_tower_flow", "spaghetti_flow"]:
+                    if extruder_stack.hasProperty(key, "value"):
+                        current_value = extruder_stack.getProperty(key, "value")
+                        extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
+
             self._buildExtruderMessage(extruder_stack)
+
+        from plugins.BlackBeltPlugin.SupportMeshCreator import SupportMeshCreator
+
+        bottom_cutting_meshes = []
+        raft_meshes = []
+        support_meshes = []
+        if gantry_angle:  # not 0 or None
+            for group in filtered_object_groups:
+                added_meshes = []
+                for object in group:
+
+                    is_non_printing_mesh = False
+                    per_object_stack = object.callDecoration("getStack")
+
+                    # ConvexHullNodes get none of the usual decorators. If it made it here, it is meant to be printed
+                    if type(object) is ConvexHullNode:
+                        raft_thickness = stack.getProperty("blackbelt_raft_thickness", "value")
+                        raft_margin = stack.getProperty("blackbelt_raft_margin", "value")
+
+                        mb = MeshBuilder()
+                        hull_polygon = object.getHull()
+                        if raft_margin > 0:
+                            hull_polygon = hull_polygon.getMinkowskiHull(Polygon.approximatedCircle(raft_margin))
+                        mb.addConvexPolygonExtrusion(hull_polygon.getPoints()[::-1], 0, raft_thickness)
+
+                        new_node = self._addMeshFromBuilder(mb, "raftMesh")
+                        added_meshes.append(new_node)
+                        raft_meshes.append(new_node.getName())
+
+                    elif not is_non_printing_mesh:
+                        # add support mesh if needed
+                        blackbelt_support_gantry_angle_bias = None
+                        blackbelt_support_minimum_island_area = None
+                        if per_object_stack:
+                            is_non_printing_mesh = any(
+                                per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                            node_enable_support = per_object_stack.getProperty("support_enable", "value")
+                            if per_object_stack.getProperty("support_mesh", "value"):
+                                node_enable_support = node_enable_support or per_object_stack.getProperty(
+                                    "support_mesh_drop_down", "value")
+                            add_support_mesh = node_enable_support if node_enable_support is not None else global_enable_support
+
+                            blackbelt_support_gantry_angle_bias = per_object_stack.getProperty(
+                                "blackbelt_support_gantry_angle_bias", "value")
+                            blackbelt_support_minimum_island_area = per_object_stack.getProperty(
+                                "blackbelt_support_minimum_island_area", "value")
+                        else:
+                            add_support_mesh = global_enable_support
+
+                        if add_support_mesh:
+                            if blackbelt_support_gantry_angle_bias is None:
+                                blackbelt_support_gantry_angle_bias = global_stack.getProperty(
+                                    "blackbelt_support_gantry_angle_bias", "value")
+                            biased_down_angle = math.radians(blackbelt_support_gantry_angle_bias)
+                            if blackbelt_support_minimum_island_area is None:
+                                blackbelt_support_minimum_island_area = global_stack.getProperty(
+                                    "blackbelt_support_minimum_island_area", "value")
+                            support_mesh_data = SupportMeshCreator(
+                                down_vector=numpy.array(
+                                    [0, -math.cos(math.radians(biased_down_angle)), -math.sin(biased_down_angle)]),
+                                bottom_cut_off=stack.getProperty("wall_line_width_0", "value") / 2,
+                                minimum_island_area=blackbelt_support_minimum_island_area
+                            ).createSupportMeshForNode(object)
+                            if support_mesh_data:
+                                new_node = self._addMeshFromData(support_mesh_data, "generatedSupportMesh")
+                                added_meshes.append(new_node)
+                                support_meshes.append(new_node.getName())
+
+                        # check if the bottom needs to be cut off
+                        aabb = object.getBoundingBox()
+
+                        if aabb.bottom < 0:
+                            # mesh extends below the belt; add a cutting mesh to cut off the part below the bottom
+                            height = -aabb.bottom
+                            center = Vector(aabb.center.x, -height / 2, aabb.center.z)
+
+                            mb = MeshBuilder()
+                            mb.addCube(
+                                width=aabb.width,
+                                height=height,
+                                depth=aabb.depth,
+                                center=center
+                            )
+
+                            new_node = self._addMeshFromBuilder(mb, "bottomCuttingMesh")
+                            added_meshes.append(new_node)
+                            bottom_cutting_meshes.append(new_node.getName())
+
+                if added_meshes:
+                    group += added_meshes
+
+        transform_matrix = BlackBeltDecorator.calculateTransformData()  # self._scene.getRoot().callDecoration("getTransformMatrix")    ### ????? BOOKMARK!
+        front_offset = None
+
+        raft_offset = 0
+        raft_speed = None
+        raft_flow = 1.0
+
+        if stack.getProperty("blackbelt_raft", "value"):
+            raft_offset = stack.getProperty("blackbelt_raft_thickness", "value") + stack.getProperty(
+                "blackbelt_raft_gap", "value")
+            raft_speed = stack.getProperty("blackbelt_raft_speed", "value")
+            raft_flow = stack.getProperty("blackbelt_raft_flow", "value") * math.sin(gantry_angle)
+
+        adhesion_extruder_nr = stack.getProperty("adhesion_extruder_nr", "value")
+        support_extruder_nr = stack.getProperty("support_extruder_nr", "value")
 
         backend_plugins = CuraApplication.getInstance().getBackendPlugins()
 
@@ -482,17 +651,50 @@ class StartSliceJob(Job):
             if parent is not None and parent.callDecoration("isGroup"):
                 self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
 
+            if transform_matrix:
+                scene_front = None
+                for object in group:
+                    if type(object) is ConvexHullNode:
+                        continue
+
+                    is_non_printing_mesh = object.getName() in bottom_cutting_meshes or object.getName() in raft_meshes
+                    if not is_non_printing_mesh:
+                        per_object_stack = object.callDecoration("getStack")
+                        if per_object_stack:
+                            is_non_printing_mesh = any(
+                                per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+
+                    if not is_non_printing_mesh:
+                        _front = object.getBoundingBox().back
+                        if scene_front is None or _front < scene_front:
+                            scene_front = _front
+
+                if scene_front is not None:
+                    front_offset = transformVertices(numpy.array([[0, 0, scene_front]]), transform_matrix)[0][1]
+
             for object in group:
+                if type(object) is ConvexHullNode:
+                    continue
+
                 mesh_data = object.getMeshData()
                 if mesh_data is None:
                     continue
                 rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                 translate = object.getWorldTransformation().getData()[:3, 3]
+                # offset all non-raft objects if rafts are enabled
+                # air gap is applied here to vertically offset objects from the raft
+                if object.getName() not in raft_meshes:
+                    translate[1] += raft_offset
+                if front_offset:
+                    translate[2] -= front_offset
 
                 # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
                 verts = mesh_data.getVertices()
                 verts = verts.dot(rot_scale)
                 verts += translate
+
+                if transform_matrix:
+                    verts = transformVertices(verts, transform_matrix)
 
                 # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
                 verts[:, [1, 2]] = verts[:, [2, 1]]
@@ -509,11 +711,62 @@ class StartSliceJob(Job):
 
                 obj.vertices = flat_verts
 
-                self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
+                if object.getName() in raft_meshes:
+                    self._addSettingsMessage(obj, {
+                        "wall_line_count": 99999999,
+                        "speed_wall_0": raft_speed,
+                        "speed_wall_x": raft_speed,
+                        "material_flow": raft_flow,
+                        "extruder_nr": adhesion_extruder_nr
+                    })
+
+                elif object.getName() in support_meshes:
+                    self._addSettingsMessage(obj, {
+                        "support_mesh": "True",
+                        "support_mesh_drop_down": "False",
+                        "extruder_nr": support_extruder_nr
+                    })
+
+                elif object.getName() in bottom_cutting_meshes:
+                    self._addSettingsMessage(obj, {
+                        "cutting_mesh": True,
+                        "wall_line_count": 0,
+                        "top_layers": 0,
+                        "bottom_layers": 0,
+                        "infill_line_distance": 0,
+                        "extruder_nr": 0
+                    })
+
+                else:
+                    self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                 Job.yieldThread()
 
+            # Store the front-most coordinate of the scene so the scene can be moved back into place post slicing
+            # TODO: this should be handled per mesh-group instead of per scene
+            # One-at-a-time printing should be disabled for slanted gantry printers for now
+
+            self._scene.getRoot().callDecoration("setSceneFrontOffset", front_offset)
+
         self.setResult(StartJobResult.Finished)
+
+    def _addMeshFromBuilder(self, mesh_builder, base_name = "") -> SceneNode:
+        return self._addMeshFromData(mesh_builder.build(), base_name)
+
+    def _addMeshFromData(self, mesh_data, base_name = "") -> SceneNode:
+        new_node = SceneNode()
+        new_node.setMeshData(mesh_data)
+        node_name = base_name + hex(id(new_node))
+        new_node.setName(node_name)
+
+        return new_node
+
+    def _addSettingsMessage(self, obj, settings):
+        for (key, value) in settings.items():
+            setting = obj.addRepeatedMessage("settings")
+            setting.name = key
+            setting.value = str(value).encode("utf-8")
+            Job.yieldThread()
 
     def cancel(self) -> None:
         super().cancel()
@@ -522,7 +775,7 @@ class StartSliceJob(Job):
     def isCancelled(self) -> bool:
         return self._is_cancelled
 
-    def setIsCancelled(self, value: bool):
+    def setIsCancelled(self, value: bool) -> None:
         self._is_cancelled = value
 
     def _buildReplacementTokens(self, stack: ContainerStack) -> Dict[str, Any]:
@@ -713,6 +966,14 @@ class StartSliceJob(Job):
         # Check all settings for relations, so we can also calculate the correct values for dependent settings.
         top_of_stack = stack.getTop()  # Cache for efficiency.
         changed_setting_keys = top_of_stack.getAllKeys()
+
+        # Remove support_enable for belt-printers
+        if self._scene.getRoot().callDecoration("getGantryAngle"):
+            for key in ["support_enable", "support_mesh_drop_down"]:
+                try:
+                    changed_setting_keys.remove(key)
+                except KeyError:
+                    pass
 
         # Add all relations to changed settings as well.
         for key in top_of_stack.getAllKeys():

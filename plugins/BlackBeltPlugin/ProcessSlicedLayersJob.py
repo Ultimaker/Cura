@@ -27,7 +27,7 @@ from cura import LayerPolygon
 
 import numpy
 from time import time
-from cura.Settings.ExtrudersModel import ExtrudersModel
+
 catalog = i18nCatalog("cura")
 
 EPSILON = 1e-5 # used for float comparison
@@ -258,7 +258,7 @@ class ProcessSlicedLayersJob(Job):
             for extruder in extruders:
                 position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
                 try:
-                    default_color = ExtrudersModel.defaultColors[position]
+                    default_color = "#e0e000"  #ExtrudersModel.defaultColors[position]
                 except IndexError:
                     default_color = "#e0e000"
                 color_code = extruder.material.getMetaDataEntry("color_code", default=default_color)

@@ -1,8 +1,8 @@
-from cura.Machines.MaterialManager import MaterialManager
+
 from UM.Logger import Logger
 import uuid
 
-from PyQt5.Qt import pyqtSlot
+from PyQt6.QtCore import pyqtSlot
 
 from cura.Machines.MaterialNode import MaterialNode
 from cura.Machines.MaterialGroup import MaterialGroup

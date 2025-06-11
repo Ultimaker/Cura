@@ -10,10 +10,15 @@ class CuraEngineBackendPatches():
     def __init__(self, backend):
         self._backend = backend
 
+        print("start CuraEngineBackendPatches")
+
         try:
             self._backend._change_timer.timeout.disconnect(self._backend.slice)
             self._backend._change_timer.timeout.connect(self.slice)
         except:
+
+            print("except nope")
+
             pass
         self._backend.slice = self.slice
 
@@ -22,7 +27,7 @@ class CuraEngineBackendPatches():
     ##  Perform a slice of the scene.
     #   This is a verbatim copy of CuranEngineBackend.slice(), with the only difference being the local imports
     def slice(self) -> None:
-        Logger.log("d", "Starting to slice...")
+        Logger.log("d", "Starting to slice... (patched!)")
         self._backend._slice_start_time = time()
         if not self._backend._build_plates_to_be_sliced:
             self._backend.processingProgress.emit(1.0)
@@ -80,6 +85,9 @@ class CuraEngineBackendPatches():
     #   This is a verbatim copy of CuranEngineBackend._startProcessSlicedLayersJob(), with the only difference being the local imports
     def _startProcessSlicedLayersJob(self, build_plate_number) -> None:
         ## PATCH: local import
+
+        print("startProcessSlicedLayersJob")
+
         self._backend._process_layers_job = ProcessSlicedLayersJob.ProcessSlicedLayersJob(self._backend._stored_optimized_layer_data[build_plate_number])
         self._backend._process_layers_job.setBuildPlate(build_plate_number)
         self._backend._process_layers_job.finished.connect(self._backend._onProcessLayersFinished)

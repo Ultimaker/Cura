@@ -10,7 +10,7 @@ from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
 
-from cura.Arranging.Arrange import Arrange
+from cura.Arranging.Arranger import Arranger
 from cura.Arranging.ShapeArray import ShapeArray
 
 import os

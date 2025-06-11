@@ -4,7 +4,7 @@
 from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QObject
+from PyQt6.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, QObject
 
 import json
 import re

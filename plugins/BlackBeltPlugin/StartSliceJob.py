@@ -9,7 +9,7 @@ from typing import Any, cast, Dict, List, Optional, Set
 import copy
 import math
 import re
-import Arcus #For typing.
+import pyArcus as Arcus #For typing.
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -143,7 +143,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for position, extruder_stack in stack.extruders.items():
+        for position, extruder_stack in stack.extruderList:
             material = extruder_stack.findContainer({"type": "material"})
             if not extruder_stack.isEnabled:
                 continue
@@ -162,7 +162,7 @@ class StartSliceJob(Job):
                 self.setResult(StartJobResult.ObjectSettingError)
                 return
 
-        with self._scene.getSceneLock():
+        with self._scene._lock: # .getSceneLock():
             # Remove old layer data.
             for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                 if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
@@ -235,7 +235,7 @@ class StartSliceJob(Job):
             global_stack = CuraApplication.getInstance().getGlobalContainerStack()
             if not global_stack:
                 return
-            extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
+            extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruderList}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
             associated_disabled_extruders = set()
@@ -258,7 +258,7 @@ class StartSliceJob(Job):
             if has_model_with_disabled_extruders:
                 self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
                 associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
-                self.setMessage(", ".join(associated_disabled_extruders))
+                #self.setMessage(", ".join(associated_disabled_extruders))
                 return
 
             # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
@@ -301,7 +301,7 @@ class StartSliceJob(Job):
             # Build messages for extruder stacks
             # Send the extruder settings in the order of extruder positions. Somehow, if you send e.g. extruder 3 first,
             # then CuraEngine can slice with the wrong settings. This I think should be fixed in CuraEngine as well.
-            extruder_stack_list = sorted(list(global_stack.extruders.items()), key = lambda item: int(item[0]))
+            extruder_stack_list = sorted(list(global_stack.extruderList), key = lambda item: int(item[0]))
             for _, extruder_stack in extruder_stack_list:
                 if gantry_angle: # not 0 or None
                     # Act on a copy of the stack, so these changes don't cause a reslice

@@ -11,6 +11,7 @@ from UM.Version import Version
 from UM.Message import Message
 
 from cura.Settings.CuraContainerStack import _ContainerIndexes as ContainerIndexes
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("BlackBeltPlugin")
 
@@ -22,11 +23,11 @@ from . import PatchedCuraActions
 from . import BuildVolumePatches
 from . import CuraEngineBackendPatches
 from . import PrintInformationPatches
-from . import PatchedMaterialManager
+#from . import PatchedMaterialManager
 from . import USBPrinterOutputDevicePatches
 from . import FlavorParserPatches
 
-from PyQt5.QtQml import qmlRegisterSingletonType
+from PyQt6.QtQml import qmlRegisterSingletonType
 
 import math
 import os.path
@@ -198,9 +199,9 @@ class BlackBeltPlugin(Extension):
         self._application._qml_engine.rootContext().setContextProperty("CuraActions", self._application._cura_actions)
 
         container_registry = ContainerRegistry.getInstance()
-        self._application._material_manager = PatchedMaterialManager.PatchedMaterialManager(container_registry, self._application)
-        self._application.getQualityManager()._material_manager = self._application.getMaterialManager()
-        self._application._material_manager.initialize()
+        #self._application._material_manager = PatchedMaterialManager.PatchedMaterialManager(container_registry, self._application)
+        #self._application.getQualityManager()._material_manager = self._application.getMaterialManager()
+        #self._application._material_manager.initialize()
 
         self._application.getBackend().slicingStarted.connect(self._onSlicingStarted)
 

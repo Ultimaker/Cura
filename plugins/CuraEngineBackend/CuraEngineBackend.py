@@ -409,11 +409,21 @@ class CuraEngineBackend(QObject, Backend):
         self.determineAutoSlicing()  # Switch timer on or off if appropriate
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
+
         self._start_slice_job = StartSliceJob(slice_message)
         self._start_slice_job_build_plate = build_plate_to_be_sliced
         self._start_slice_job.setBuildPlate(self._start_slice_job_build_plate)
         self._start_slice_job.start()
         self._start_slice_job.finished.connect(self._onStartSliceCompleted)
+        """
+        import plugins.BlackBeltPlugin.StartSliceJob as BBStartSliceJob
+
+        self._start_slice_job = BBStartSliceJob.StartSliceJob(slice_message)
+        self._start_slice_job_build_plate = build_plate_to_be_sliced
+        self._start_slice_job.setBuildPlate(self._start_slice_job_build_plate)
+        self._start_slice_job.start()
+        self._start_slice_job.finished.connect(self._onStartSliceCompleted)
+        """
 
     def _terminate(self) -> None:
         """Terminate the engine process.
@@ -1027,7 +1037,18 @@ class CuraEngineBackend(QObject, Backend):
             self._onSceneChanged(source)
 
     def _startProcessSlicedLayersJob(self, build_plate_number: int) -> None:
+
+        # !!!
+        """
         self._process_layers_job = ProcessSlicedLayersJob(self._stored_optimized_layer_data[build_plate_number])
+        self._process_layers_job.setBuildPlate(build_plate_number)
+        self._process_layers_job.finished.connect(self._onProcessLayersFinished)
+        self._process_layers_job.start()
+        """
+
+        import plugins.BlackBeltPlugin.ProcessSlicedLayersJob as BBProcessSlicedLayersJob
+
+        self._process_layers_job = BBProcessSlicedLayersJob.ProcessSlicedLayersJob(self._stored_optimized_layer_data[build_plate_number])
         self._process_layers_job.setBuildPlate(build_plate_number)
         self._process_layers_job.finished.connect(self._onProcessLayersFinished)
         self._process_layers_job.start()
