@@ -1,3 +1,15 @@
+[5.10.1]
+
+* New features and improvements:
+- Introduced the UltiMaker S6, the newest addition to the S series of UltiMaker printers that carry forward the award-winning legacy of the S5.
+- Introduced Visual Intent profiles for PLA and Tough PLA for the UltiMaker S8 
+- Introduced High-Speed Intents for ABSR for Method X and Method XL
+
+* Bug fixes:
+- Updated UltiMaker S8 profiles to significantly improve the quality of PC, CPE, CPE+, PETG, support structures, and dual extrusion prints
+- Support brims no longer listen to the Brim Distance setting, so the brims will always be attached to the support
+- Fixed a bug affecting multi-extruder printers where the initial temperature was not set correctly at the start of a print if all features used an extruder other than T0
+
 [5.10]
 
 * New features and improvements:
