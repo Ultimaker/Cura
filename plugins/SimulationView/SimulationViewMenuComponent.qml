@@ -229,7 +229,7 @@ Cura.ExpandableComponent
                 {
                     const travelsTypesModel = [
                         {
-                            label: catalog.i18nc("@label", "Unretracted"),
+                            label: catalog.i18nc("@label", "Not retracted"),
                             colorId: "layerview_move_combing"
                         },
                         {
@@ -241,7 +241,7 @@ Cura.ExpandableComponent
                             colorId: "layerview_move_while_retracting"
                         },
                         {
-                            label: catalog.i18nc("@label", "Unretracting"),
+                            label: catalog.i18nc("@label", "Priming"),
                             colorId: "layerview_move_while_unretracting"
                         }
                     ];
