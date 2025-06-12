@@ -6,8 +6,9 @@
     {
         "visible": true,
         "author": "Boris Juraga",
+        "has_textured_buildplate": true,
         "machine_extruder_trains": {
-            "0": "biqu_base_extruder_0",
+            "0": "biqu_b2_extruder_0",
             "1": "biqu_b2_extruder_1"
         },
         "quality_definition": "biqu_b2"
