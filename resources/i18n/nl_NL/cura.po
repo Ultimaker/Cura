@@ -2755,10 +2755,6 @@ msgid "Nozzle offset Y"
 msgstr "Nozzle-offset Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Maat nozzle"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Maat nozzle"
 
@@ -5644,3 +5640,59 @@ msgstr "Upgrades van configuraties van Cura 5.8 naar Cura 5.9."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "Versie-upgrade 5.8 naar 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion muizen"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Maakt werken met 3D-muizen mogelijk in Cura."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Duur extruderwissel"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Extruder Prestart G-code"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Y-as toolhandle model omkeren (herstarten vereist)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Licentie voor %1 %2"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ Printfile"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Moet de Y-as van de translate toolhandle worden omgekeerd? Dit heeft alleen invloed op de Y-coördinaat van het model. Alle andere instellingen, zoals de printkopinstellingen van de machine, worden niet beïnvloed en gedragen zich als voorheen."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "Start GCode moet eerst zijn"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Deze instelling is niet beschikbaar omdat er een mismatch of een ander probleem is met het core-type %1. Ga naar <a href='%2'> de supportpagina</a> om te zien welke cores dit printertype ondersteunt wat betreft nieuwe slices."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Werkt instellingen bij van Cura 5.9 naar Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Versie-upgrade 5.9 naar 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y max ( '+' richting voorzijde)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y min ( '-' richting achterzijde)"

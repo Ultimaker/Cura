@@ -110,6 +110,7 @@ from cura.UI.MachineActionManager import MachineActionManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
+from cura.UI.OpenSourceDependenciesModel import OpenSourceDependenciesModel
 from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.TextManager import TextManager
 from cura.UI.WelcomePagesModel import WelcomePagesModel
@@ -139,7 +140,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 24
+    SettingVersion = 25
 
     Created = False
 
@@ -187,6 +188,7 @@ class CuraApplication(QtApplication):
 
         self._single_instance = None
         self._open_project_mode: Optional[str] = None
+        self._read_operation_is_project_file: Optional[bool] = None
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
@@ -1308,6 +1310,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
         qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
+        qmlRegisterType(OpenSourceDependenciesModel, "Cura", 1, 0, "OpenSourceDependenciesModel")
 
         self.processEvents()
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
@@ -2013,18 +2016,18 @@ class CuraApplication(QtApplication):
                 self.deleteAll()
                 break
 
-        is_project_file = self.checkIsValidProjectFile(file)
+        self._read_operation_is_project_file = self.checkIsValidProjectFile(file)
 
         if self._open_project_mode is None:
             self._open_project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
 
-        if is_project_file and self._open_project_mode == "open_as_project":
+        if self._read_operation_is_project_file and self._open_project_mode == "open_as_project":
             # open as project immediately without presenting a dialog
             workspace_handler = self.getWorkspaceFileHandler()
             workspace_handler.readLocalFile(file, add_to_recent_files_hint = add_to_recent_files)
             return
 
-        if is_project_file and self._open_project_mode == "always_ask":
+        if self._read_operation_is_project_file and self._open_project_mode == "always_ask":
             # present a dialog asking to open as project or import models
             self.callLater(self.openProjectFile.emit, file, add_to_recent_files)
             return
@@ -2162,7 +2165,7 @@ class CuraApplication(QtApplication):
                     nodes_to_arrange.append(node)
             # If the file is a project,and models are to be loaded from a that project,
             # models inside file should be arranged in buildplate.
-            elif self._open_project_mode == "open_as_model":
+            elif self._read_operation_is_project_file and self._open_project_mode == "open_as_model":
                 nodes_to_arrange.append(node)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy

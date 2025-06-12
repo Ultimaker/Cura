@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 14:27+0200\n"
+"POT-Creation-Date: 2025-02-21 15:37+0100\n"
 "PO-Revision-Date: 2023-09-03 18:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.3.2\n"
+
+msgctxt "@title:label"
+msgid " "
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -178,6 +182,10 @@ msgstr "3D Pohled"
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "3D Pohled"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -476,6 +484,10 @@ msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "Povoluje načítání a zobrazení souborů G kódu."
 
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Vždy se zeptat"
@@ -515,10 +527,6 @@ msgstr "Anonymní"
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr "Aplikační framework"
 
 msgctxt "@title:column"
 msgid "Applies on"
@@ -697,10 +705,6 @@ msgstr "Koupit cívku"
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr "Od"
-
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr "Binding knihovna C/C++"
 
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
@@ -881,10 +885,6 @@ msgstr "Porovnat a uložit."
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "Mód kompatibility"
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
-msgstr "Kompatibilita mezi Python 2 a 3"
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -1271,10 +1271,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Data poslána"
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr "Formát výměny dat"
-
 msgctxt "@button"
 msgid "Decline"
 msgstr "Odmítnout"
@@ -1334,10 +1330,6 @@ msgstr "Odstranit tiskovou úlohu"
 msgctxt "@label"
 msgid "Density"
 msgstr "Husttoa"
-
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
-msgstr "Správce závislostí a balíčků"
 
 msgctxt "@action:label"
 msgid "Depth (mm)"
@@ -1606,12 +1598,20 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extruder %1"
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Ukončující G-kód extuderu"
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
+msgstr ""
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1803,6 +1803,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr "První dostupný"
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr ""
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "Průtok"
@@ -1818,10 +1822,6 @@ msgstr "Řiďte se postupem pro přidání nové tiskárny"
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr "Následováním několika jednoduchých kroků budete moci synchronizovat všechny vaše materiálové profily s vašimi tiskárnami."
-
-msgctxt "@label"
-msgid "Font"
-msgstr "Font"
 
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
@@ -1878,10 +1878,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr "Varianta G kódu"
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr "Generátor G kódu"
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter nepodporuje textový mód."
@@ -1894,14 +1890,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "Obrázek GIF"
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr "GUI framework"
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr "Propojení GUI frameworku"
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Výška rámu tiskárny"
@@ -1913,10 +1901,6 @@ msgstr "Obecné"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "Vytvořit struktury pro podporu částí modelu, které mají přesahy. Bez těchto struktur by se takové části během tisku zhroutily."
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
-msgstr "Generování instalátorů pro Windows"
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1937,10 +1921,6 @@ msgstr ""
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Globální nastavení"
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
-msgstr "Grafické uživatelské prostředí"
 
 msgctxt "@label"
 msgid "Grid Placement"
@@ -2187,10 +2167,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "Rozhranní"
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr "Meziprocesní komunikační knihovna"
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Špatná IP adresa"
@@ -2218,10 +2194,6 @@ msgstr "Obrázek JPEG"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "Obrázek JPG"
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
-msgstr "JSON parser"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2323,6 +2295,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "Vyrovnat podložku"
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "Světlejší je vyšší"
@@ -2338,10 +2314,6 @@ msgstr "Šířka čáry"
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "Lineární"
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
-msgstr "Sestavování Linux aplikací nezávislých na distribuci"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2429,6 +2401,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -2841,10 +2817,6 @@ msgid "Nozzle offset Y"
 msgstr "Y offset trysky"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Velikost trysky"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Velikost trysky"
 
@@ -3019,10 +2991,6 @@ msgctxt "@header"
 msgid "Package details"
 msgstr "Detaily balíčku"
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr "Vytváření balíčků Python aplikací"
-
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Zpracovávám G kód"
@@ -3181,14 +3149,6 @@ msgstr "Zásuvné moduly"
 msgctxt "@button"
 msgid "Plugins"
 msgstr "Zásuvné moduly"
-
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr "Knihovna pro výstřižky z mnohoúhelníků"
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
-msgstr "Knihovna pro plošnou optimalizaci vyvinutá Prusa Research"
 
 msgctxt "@item:inmenu"
 msgid "Post Processing"
@@ -3465,10 +3425,6 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "Profily kompatibilní s aktivní tiskárnou:"
 
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr "Programovací jazyk"
-
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3596,18 +3552,6 @@ msgstr "Poskytuje náhled slicovaných dat vrstev."
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "Verze PyQt"
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr "Knihovna pro sledování Python chyb"
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr "Propojení Clipper s jazykem Python"
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
-msgstr "Propojení libnest2d s jazykem Python"
 
 msgctxt "@label"
 msgid "Qt version"
@@ -3789,10 +3733,6 @@ msgstr "Pohled z pravé strany"
 msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "Pohled zprava"
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
-msgstr "Kořenové certifikáty pro ověření důvěryhodnosti SSL"
 
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
@@ -3981,10 +3921,6 @@ msgctxt "name"
 msgid "Sentry Logger"
 msgstr "Záznamník hlavy"
 
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr "Knihovna pro sériovou komunikaci"
-
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Nastavit jako aktivní extruder"
@@ -4091,6 +4027,10 @@ msgstr "Měli by se soubory z plochy, nebo externích aplikací otevírat ve ste
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4330,6 +4270,10 @@ msgid "Start G-code"
 msgstr "Počáteční G kód"
 
 msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Začít proces slicování"
 
@@ -4409,34 +4353,6 @@ msgstr "Rozhraní podpor"
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr "Typ podpory"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr "Podpůrný knihovna pro rychlejší matematické výpočty"
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr "Podpůrná knihovna pro metadata souborů a streaming"
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr "Podpůrná knihovna pro manipulaci s 3MF soubory"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr "Podpůrná knihovna pro práci se soubory STL"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr "Podpůrná knihovna pro manipulaci s trojúhelníkovými sítěmi"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr "Podpůrná knihovna pro vědecké výpočty"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
-msgstr "Podpůrná knihovna pro přístup k systémové klíčence"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4762,6 +4678,10 @@ msgstr "Nastala chyba při nahrávání vaší zálohy."
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "Tato konfigurace není k dispozici, protože %1 nebyl rozpoznán. Navštivte prosím %2 a stáhněte si správný materiálový profil."
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr ""
 
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
@@ -5136,10 +5056,6 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr "Univerzální konfigurace překladu programů"
-
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Neznámý"
@@ -5333,6 +5249,10 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
 msgstr ""
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "Nahrát vlastní firmware"
@@ -5356,14 +5276,6 @@ msgstr "S touto kombinací materiálu pro lepší adhezi použijte lepidlo."
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "Uživatelská dohoda"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr "Pomocné funkce zahrnující načítání obrázků"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
-msgstr "Pomocná knihovna zahrnující Voronoi generátor"
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5479,6 +5391,10 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
 msgstr ""
 
 msgctxt "@button"
@@ -5643,12 +5559,12 @@ msgid "Y (Depth)"
 msgstr "Y (Hloubka)"
 
 msgctxt "@label"
-msgid "Y max"
-msgstr "Y max"
+msgid "Y max ( '+' towards front)"
+msgstr ""
 
 msgctxt "@label"
-msgid "Y min"
-msgstr "Y min"
+msgid "Y min ( '-' towards back)"
+msgstr ""
 
 msgctxt "@info"
 msgid "Yes"
@@ -5742,10 +5658,6 @@ msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Výška)"
 
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr "Knihovna ZeroConf discovery"
-
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Přiblížit směrem k směru myši"
@@ -5811,17 +5723,37 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgstr[1] "... a {0} další"
 #~ msgstr[2] "... a {0} dalších"
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Application framework"
+#~ msgstr "Aplikační framework"
+
 #~ msgctxt "@tooltip:button"
 #~ msgid "Become a 3D printing expert with UltiMaker e-learning."
 #~ msgstr "Staňte se expertem na 3D tisk díky UltiMaker e-learningu."
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "C/C++ Binding library"
+#~ msgstr "Binding knihovna C/C++"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Compatibility between Python 2 and 3"
+#~ msgstr "Kompatibilita mezi Python 2 a 3"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled."
 #~ msgstr "Když je aktivován síťový tisk, Cura přesně nezobrazuje vrstvy."
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Data interchange format"
+#~ msgstr "Formát výměny dat"
+
 #~ msgctxt "@label"
 #~ msgid "Default"
 #~ msgstr "Výchozí"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Dependency and package manager"
+#~ msgstr "Správce závislostí a balíčků"
 
 #~ msgctxt "@label"
 #~ msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
@@ -5830,6 +5762,30 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgctxt "@error:zip"
 #~ msgid "Error writing 3mf file."
 #~ msgstr "Chyba při zápisu 3mf file."
+
+#~ msgctxt "@label"
+#~ msgid "Font"
+#~ msgstr "Font"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "G-code generator"
+#~ msgstr "Generátor G kódu"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework"
+#~ msgstr "GUI framework"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework bindings"
+#~ msgstr "Propojení GUI frameworku"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Generating Windows installers"
+#~ msgstr "Generování instalátorů pro Windows"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Graphical user interface"
+#~ msgstr "Grafické uživatelské prostředí"
 
 #~ msgctxt "@label"
 #~ msgid "Hex"
@@ -5847,17 +5803,69 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgid "Install missing material"
 #~ msgstr "Nainstalovat chybějící materiál"
 
+#~ msgctxt "@label Description for application component"
+#~ msgid "Interprocess communication library"
+#~ msgstr "Meziprocesní komunikační knihovna"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "JSON parser"
+#~ msgstr "JSON parser"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Linux cross-distribution application deployment"
+#~ msgstr "Sestavování Linux aplikací nezávislých na distribuci"
+
 #~ msgctxt "@info:title"
 #~ msgid "Material profiles not installed"
 #~ msgstr "Materiálové profily nejsou nainstalovány"
+
+#~ msgctxt "@label"
+#~ msgid "Nozzle Size"
+#~ msgstr "Velikost trysky"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Packaging Python-applications"
+#~ msgstr "Vytváření balíčků Python aplikací"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Polygon clipping library"
+#~ msgstr "Knihovna pro výstřižky z mnohoúhelníků"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Polygon packing library, developed by Prusa Research"
+#~ msgstr "Knihovna pro plošnou optimalizaci vyvinutá Prusa Research"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Programming language"
+#~ msgstr "Programovací jazyk"
 
 #~ msgctxt "description"
 #~ msgid "Provides support for writing 3MF files."
 #~ msgstr "Poskytuje podporu pro psaní souborů 3MF."
 
+#~ msgctxt "@Label Description for application dependency"
+#~ msgid "Python Error tracking library"
+#~ msgstr "Knihovna pro sledování Python chyb"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Python bindings for Clipper"
+#~ msgstr "Propojení Clipper s jazykem Python"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Python bindings for libnest2d"
+#~ msgstr "Propojení libnest2d s jazykem Python"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Root Certificates for validating SSL trustworthiness"
+#~ msgstr "Kořenové certifikáty pro ověření důvěryhodnosti SSL"
+
 #~ msgctxt "@option"
 #~ msgid "Save Cura project and print file"
 #~ msgstr "Uložit projekt Cura a tiskový soubor UFP"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Serial communication library"
+#~ msgstr "Knihovna pro sériovou komunikaci"
 
 #~ msgctxt "@action:inmenu"
 #~ msgid "Show Online Troubleshooting"
@@ -5871,6 +5879,34 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
 #~ msgstr "Slicování selhalo na neočekávané chybě. Zvažte, prosím, nahlášení chyby v našem issue trackeru."
 
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for faster math"
+#~ msgstr "Podpůrný knihovna pro rychlejší matematické výpočty"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for file metadata and streaming"
+#~ msgstr "Podpůrná knihovna pro metadata souborů a streaming"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for handling 3MF files"
+#~ msgstr "Podpůrná knihovna pro manipulaci s 3MF soubory"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling STL files"
+#~ msgstr "Podpůrná knihovna pro práci se soubory STL"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling triangular meshes"
+#~ msgstr "Podpůrná knihovna pro manipulaci s trojúhelníkovými sítěmi"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for scientific computing"
+#~ msgstr "Podpůrná knihovna pro vědecké výpočty"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for system keyring access"
+#~ msgstr "Podpůrná knihovna pro přístup k systémové klíčence"
+
 #~ msgctxt "@label"
 #~ msgid "The material used in this project is currently not installed in Cura.<br/>Install the material profile and reopen the project."
 #~ msgstr "Materiál použitý v tomto projektu není aktuálně nainstalován v Cuře.<br/>Nainstalujte materiálový profil a znovu otevřete projekt."
@@ -5882,3 +5918,27 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgctxt "@error:zip"
 #~ msgid "The operating system does not allow saving a project file to this location or with this file name."
 #~ msgstr "Operační systém nepovoluje uložit soubor s projektem do tohoto umístění nebo pod tímto názvem."
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Universal build system configuration"
+#~ msgstr "Univerzální konfigurace překladu programů"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Utility functions, including an image loader"
+#~ msgstr "Pomocné funkce zahrnující načítání obrázků"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Utility library, including Voronoi generation"
+#~ msgstr "Pomocná knihovna zahrnující Voronoi generátor"
+
+#~ msgctxt "@label"
+#~ msgid "Y max"
+#~ msgstr "Y max"
+
+#~ msgctxt "@label"
+#~ msgid "Y min"
+#~ msgstr "Y min"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "ZeroConf discovery library"
+#~ msgstr "Knihovna ZeroConf discovery"
