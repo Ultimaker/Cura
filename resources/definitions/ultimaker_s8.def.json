@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "UltiMaker S8",
-    "inherits": "ultimaker_s7",
+    "inherits": "ultimaker_s5",
     "metadata":
     {
         "visible": true,
@@ -11,6 +11,17 @@
         "platform": "ultimaker_s7_platform.obj",
         "bom_numbers": [
             10600
+        ],
+        "exclude_materials": [
+            "generic_hips",
+            "generic_flexible",
+            "generic_cffpps",
+            "generic_cffpa",
+            "generic_cffcpe",
+            "generic_gffpa",
+            "generic_gffcpe",
+            "structur3d_",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
@@ -37,7 +48,6 @@
         "preferred_material": "ultimaker_pla_blue",
         "preferred_quality_type": "draft",
         "preferred_variant_name": "AA+ 0.4",
-        "quality_definition": "ultimaker_s8",
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_material_export": true,
         "supports_network_connection": true,
@@ -203,6 +213,14 @@
             "unit": "mm/s",
             "value": 50
         },
+        "build_volume_temperature":
+        {
+            "force_depends_on_settings": [
+                "support_extruder_nr",
+                "support_enable"
+            ]
+        },
+        "cool_during_extruder_switch": { "value": "'all_fans'" },
         "cool_min_layer_time": { "value": 5 },
         "cool_min_layer_time_overhang": { "value": 9 },
         "cool_min_layer_time_overhang_min_segment_length": { "value": 2 },
@@ -245,7 +263,7 @@
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
             "unit": "m/s\u00b3",
-            "value": "jerk_print"
+            "value": "jerk_wall"
         },
         "jerk_print":
         {
@@ -389,6 +407,13 @@
         "machine_nozzle_cool_down_speed": { "default_value": 1.3 },
         "machine_nozzle_heat_up_speed": { "default_value": 0.6 },
         "machine_start_gcode": { "default_value": "M213 U0.1 ;undercut 0.1mm" },
+        "material_bed_temperature":
+        {
+            "force_depends_on_settings": [
+                "support_extruder_nr",
+                "support_enable"
+            ]
+        },
         "material_extrusion_cool_down_speed": { "value": 0 },
         "material_final_print_temperature": { "value": "material_print_temperature - 5" },
         "material_initial_print_temperature": { "value": "material_print_temperature - 5" },
@@ -397,6 +422,7 @@
             "enabled": true,
             "value": 0.5
         },
+        "material_print_temperature": { "maximum_value_warning": 320 },
         "material_print_temperature_layer_0": { "maximum_value_warning": 320 },
         "max_flow_acceleration": { "value": 8.0 },
         "max_skin_angle_for_expansion": { "value": 45 },
@@ -412,7 +438,7 @@
         "retraction_hop": { "value": 1 },
         "retraction_hop_after_extruder_switch_height": { "value": 2 },
         "retraction_hop_enabled": { "value": true },
-        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2" },
+        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2.5" },
         "retraction_prime_speed": { "value": 15 },
         "skin_edge_support_thickness": { "value": 0 },
         "skin_material_flow": { "value": 95 },
@@ -445,12 +471,12 @@
         "speed_layer_0":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "min(speed_wall, 50)"
         },
         "speed_prime_tower":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "min(speed_wall, 50)"
         },
         "speed_print":
         {
@@ -500,13 +526,13 @@
         "speed_travel":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 300,
-            "value": 300
+            "maximum_value_warning": 500,
+            "value": 500
         },
         "speed_travel_layer_0":
         {
             "maximum_value": 500,
-            "maximum_value_warning": 300,
+            "maximum_value_warning": 500,
             "value": 150
         },
         "speed_wall":
@@ -556,7 +582,10 @@
         "support_roof_height": { "minimum_value_warning": 0 },
         "support_structure": { "value": "'normal'" },
         "support_top_distance": { "maximum_value_warning": "3*layer_height" },
+        "support_tree_angle": { "value": 50 },
+        "support_tree_angle_slow": { "value": 35 },
         "support_tree_bp_diameter": { "value": 15 },
+        "support_tree_branch_diameter": { "value": 8 },
         "support_tree_tip_diameter": { "value": 1.0 },
         "support_tree_top_rate": { "value": 20 },
         "support_xy_distance_overhang": { "value": "machine_nozzle_size" },
@@ -573,6 +602,7 @@
         "wall_material_flow": { "value": 95 },
         "wall_overhang_angle": { "value": 45 },
         "wall_x_material_flow": { "value": 100 },
+        "xy_offset": { "value": 0.05 },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backright'" },
         "z_seam_type": { "value": "'sharpest_corner'" }
