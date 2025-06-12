@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from unittest.mock import MagicMock, Mock, patch
+from pytest import fixture
 
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtNetwork import QNetworkReply
@@ -59,6 +60,17 @@ NO_REFRESH_AUTH_RESPONSE = AuthenticationResponse(
 MALFORMED_AUTH_RESPONSE = AuthenticationResponse(success=False)
 
 
+@fixture
+def http_request_manager():
+    mock_reply = Mock()  # The user profile that the service should respond with.
+    mock_reply.error = Mock(return_value=QNetworkReply.NetworkError.NoError)
+
+    http_mock = Mock()
+    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
+    http_mock.readJSON = Mock(return_value={"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
+    http_mock.setDelayRequests = Mock()
+    return http_mock
+
 def test_cleanAuthService() -> None:
     """
     Ensure that when setting up an AuthorizationService, no data is set.
@@ -72,18 +84,20 @@ def test_cleanAuthService() -> None:
 
     assert authorization_service.getAccessToken() is None
 
-def test_refreshAccessTokenSuccess():
+def test_refreshAccessTokenSuccess(http_request_manager):
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
     with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
         authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
     authorization_service.onAuthStateChanged.emit = MagicMock()
 
-    with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", return_value=SUCCESSFUL_AUTH_RESPONSE):
-        authorization_service.refreshAccessToken()
-        assert authorization_service.onAuthStateChanged.emit.called_with(True)
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value=http_request_manager)):
+        with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+            with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", side_effect=lambda refresh_token, callback: callback(SUCCESSFUL_AUTH_RESPONSE)):
+                authorization_service.refreshAccessToken()
+                authorization_service.onAuthStateChanged.emit.assert_called_once_with(logged_in = True)
 
-def test__parseJWTNoRefreshToken():
+def test__parseJWTNoRefreshToken(http_request_manager):
     """
     Tests parsing the user profile if there is no refresh token stored, but there is a normal authentication token.
 
@@ -94,13 +108,8 @@ def test__parseJWTNoRefreshToken():
         authorization_service._storeAuthData(NO_REFRESH_AUTH_RESPONSE)
 
     mock_callback = Mock()  # To log the final profile response.
-    mock_reply = Mock()  # The user profile that the service should respond with.
-    mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.NoError)
-    http_mock = Mock()
-    http_mock.get = lambda url, headers_dict, callback, error_callback, timeout: callback(mock_reply)
-    http_mock.readJSON = Mock(return_value = {"data": {"user_id": "id_ego_or_superego", "username": "Ghostkeeper"}})
 
-    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
+    with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_request_manager)):
         authorization_service._parseJWT(mock_callback)
     mock_callback.assert_called_once()
     profile_reply = mock_callback.call_args_list[0][0][0]
@@ -175,9 +184,10 @@ def test_refreshAccessTokenFailed():
     """
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
     authorization_service.initialize()
+    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+        authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+    authorization_service.onAuthStateChanged.emit = MagicMock()
 
-    def mock_refresh(self, refresh_token, callback):  # Refreshing gives a valid token.
-        callback(FAILED_AUTH_RESPONSE)
     mock_reply = Mock()  # The response that the request should give, containing an error about it failing to authenticate.
     mock_reply.error = Mock(return_value = QNetworkReply.NetworkError.AuthenticationRequiredError)  # The reply is 403: Authentication required, meaning the server responded with a "Can't do that, Dave".
     http_mock = Mock()
@@ -187,10 +197,9 @@ def test_refreshAccessTokenFailed():
     with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.readJSON", Mock(return_value = {"error_description": "Mock a failed request!"})):
         with patch("UM.TaskManagement.HttpRequestManager.HttpRequestManager.getInstance", MagicMock(return_value = http_mock)):
             authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
-            authorization_service.onAuthStateChanged.emit = MagicMock()
-            with patch("cura.OAuth2.AuthorizationHelpers.AuthorizationHelpers.getAccessTokenUsingRefreshToken", mock_refresh):
+            with patch("cura.OAuth2.AuthorizationHelpers.AuthorizationHelpers.getAccessTokenUsingRefreshToken", side_effect=lambda refresh_token, callback: callback(FAILED_AUTH_RESPONSE)):
                 authorization_service.refreshAccessToken()
-                assert authorization_service.onAuthStateChanged.emit.called_with(False)
+                authorization_service.onAuthStateChanged.emit.assert_called_with(logged_in = False)
 
 def test_refreshAccesTokenWithoutData():
     authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
