@@ -1895,36 +1895,39 @@ class CuraApplication(QtApplication):
                 query = QUrlQuery(url.query())
                 model_url = QUrl(query.queryItemValue("file", options=QUrl.ComponentFormattingOption.FullyDecoded))
 
-                def on_finish(response):
-                    content_disposition_header_key = QByteArray("content-disposition".encode())
-
-                    filename = model_url.path().split("/")[-1] + ".stl"
-
-                    if response.hasRawHeader(content_disposition_header_key):
-                        # content_disposition is in the format
-                        # ```
-                        # content_disposition attachment; filename="[FILENAME]"
-                        # ```
-                        # Use a regex to extract the filename
-                        content_disposition = str(response.rawHeader(content_disposition_header_key).data(),
-                                                  encoding='utf-8')
-                        content_disposition_match = re.match(r'attachment; filename=(?P<filename>.*)',
-                                                             content_disposition)
-                        if content_disposition_match is not None:
-                            filename = content_disposition_match.group("filename").strip("\"")
-
-                    tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
-                    with open(tmp.name, "wb") as f:
-                        f.write(response.readAll())
-
-                    self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
-
                 def on_error(*args, **kwargs):
-                    Logger.log("w", "Could not download file from {0}".format(model_url.url()))
-                    Message("Could not download file: " + str(model_url.url()),
+                    Logger.warning(f"Could not download file from {model_url.url()}")
+                    Message(f"Could not download file: {str(model_url.url())}",
                             title= "Loading Model failed",
                             message_type=Message.MessageType.ERROR).show()
-                    return
+
+                def on_finish(response):
+                    try:
+                        content_disposition_header_key = QByteArray("content-disposition".encode())
+
+                        filename = model_url.path().split("/")[-1] + ".stl"
+
+                        if response.hasRawHeader(content_disposition_header_key):
+                            # content_disposition is in the format
+                            # ```
+                            # content_disposition attachment; filename="[FILENAME]"
+                            # ```
+                            # Use a regex to extract the filename
+                            content_disposition = str(response.rawHeader(content_disposition_header_key).data(),
+                                                      encoding='utf-8')
+                            content_disposition_match = re.match(r'attachment; filename=(?P<filename>.*)',
+                                                                 content_disposition)
+                            if content_disposition_match is not None:
+                                filename = content_disposition_match.group("filename").strip("\"")
+
+                        tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
+                        with open(tmp.name, "wb") as f:
+                            f.write(response.readAll())
+
+                        self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+                    except Exception as ex:
+                        Logger.warning(f"Exception {str(ex)}")
+                        on_error()
 
                 self.getHttpRequestManager().get(
                     model_url.url(),
