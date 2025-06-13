@@ -203,3 +203,19 @@ msgstr "Longueur de la buse"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "Différence de hauteur entre l'extrémité de la buse et la partie la plus basse de la tête d'impression."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Durée du changement de l’extrudeuse"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Prestart G-code de l’extrudeuse"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Prestart g-code à exécuter avant de passer à cette extrudeuse."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "Lors de l’utilisation d’une configuration multioutils, cette valeur correspond au temps de changement d’outil en secondes. Cette valeur sera ajoutée au temps estimé en fonction du nombre de changements effectués."

@@ -2752,10 +2752,6 @@ msgid "Nozzle offset Y"
 msgstr "노즐 오프셋 Y"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "노즐 크기"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "노즐 크기"
 
@@ -5632,3 +5628,59 @@ msgstr "Cura 5.8에서 Cura 5.9로 구성을 업그레이드합니다."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "5.8에서 5.9로 버전 업그레이드"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion 마우스"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Cura 내에서 3D 마우스 작업을 허용합니다."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "압출기 변경 시간"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "압출기 사전 시작 G 코드"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "모델 도구 핸들의 Y축 반전 (재시작 필요)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "%1 %2용 라이선스"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ 프린트 파일"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "트랜슬레이트 도구 핸들의 Y축을 반전할까요? 이 작업은 모델의 Y 좌표에만 영향을 주며, 프린트헤드 설정과 같은 다른 기타 설정은 영향을 받지 않고 이전과 같이 작동합니다."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "시작 G코드가 우선해야 합니다"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "이 구성은 코어 유형 %1에 불일치 또는 기타 문제가 있기 때문에 사용할 수 없습니다. <a href='%2'>지원 페이지</a>를 방문하여 이 프린터 유형이 새 슬라이스와 관련하여 어떤 코어를 지원하는지 확인하십시오."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Cura 5.9에서 Cura 5.10으로 업그레이드"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "5.9에서 5.10으로 버전 업그레이드"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y 최대 ('+'를 앞쪽으로)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y 최소 ( '-'를 뒤쪽으로)"
