@@ -1,1474 +1,951 @@
-# ChangeAtZ script - Change printing parameters at a given height
-# This script is the successor of the TweakAtZ plugin for legacy Cura.
-# It contains code from the TweakAtZ plugin V1.0-V4.x and from the ExampleScript by Jaime van Kessel, Ultimaker B.V.
-# It runs with the PostProcessingPlugin which is released under the terms of the LGPLv3 or higher.
-# This script is licensed under the Creative Commons - Attribution - Share Alike (CC BY-SA) terms
+"""
+ This version of ChangeAtZ is by GregValiant (Greg Foresi) March 2025
+    Differences from the previous version (5.3.0):
+        ~"By Height" will work with Z-hops enabled, Adaptive Layers, Scarf Z-seam, and Rafts.  The changes will commence at the first layer where the height is reached or exceeded.  The changes will end at the start of the layer where the End Height is reached or exceeded.
+        ~The user can opt to change just the print speed or both print and travel speeds.  The 'F' parameters are re-calculated line-by-line using the percentage that the user inputs.  Speeds can now be changed 'per extruder'.  M220 is no longer used to change speeds as it affected all speeds.
+        ~Changing the print speed no longer affects retraction or unretract speeds.
+        ~The Z-hop speed is never affected.
+        ~Output to LCD is obsolete to avoid flooding the screen with messages that were quickly over-written.
+        ~Allows the user to select a Range of Layers (rather than just 'Single Layer' or 'To the End'.)
+        ~Added support for single fan control.  This might be a Build Volume Fan, Auxilliary Fan, or a Layer Cooling Fan.  It would depend on the fan circuit number that the user inputs.
+        ~Added support for Relative Extrusion
+        ~Added support for Firmware Retraction
+        ~Added support for 'G2' and 'G3' moves.
+        ~The script supports up to 2 extruders.
+        ~'One-at-a-Time' is not supported and a kick-out is added
+        ~Version number changed to 6.0.0
 
-# Authors of the ChangeAtZ plugin / script:
-# Written by Steven Morlock, smorloc@gmail.com
-# Modified by Ricardo Gomez, ricardoga@otulook.com, to add Bed Temperature and make it work with Cura_13.06.04+
-# Modified by Stefan Heule, Dim3nsioneer@gmx.ch since V3.0 (see changelog below)
-# Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
-# Modified by Ghostkeeper (Ultimaker), rubend@tutanota.com, to debug.
-# Modified by Wes Hanney, https://github.com/novamxd, Retract Length + Speed, Clean up
-# Modified by Alex Jaxon, https://github.com/legend069, Added option to modify Build Volume Temperature
+    Previous contributions by:
+        Original Authors and contributors to the ChangeAtZ post-processing script and the earlier TweakAtZ:
+            Written by Steven Morlock,
+            Modified by Ricardo Gomez, to add Bed Temperature and make it work with Cura_13.06.04+
+            Modified by Stefan Heule, since V3.0
+            Modified by Jaime van Kessel (Ultimaker), to make it work for 15.10 / 2.x
+            Modified by Ghostkeeper (Ultimaker), to debug.
+            Modified by Wes Hanney, Retract Length + Speed, Clean up
+            Modified by Alex Jaxon, Added option to modify Build Volume Temperature
+            Re-write by GregValiant, to work with new variables in Cura 5.x and with the changes noted above
+"""
 
-
-# history / changelog:
-# V3.0.1:   TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
-# V3.1:     Recognizes UltiGCode and deactivates value reset, fan speed added, alternatively layer no. to tweak at,
-# extruder three temperature disabled by "#Ex3"
-# V3.1.1:   Bugfix reset flow rate
-# V3.1.2:   Bugfix disable TweakAtZ on Cool Head Lift
-# V3.2:     Flow rate for specific extruder added (only for 2 extruders), bugfix parser,
-# added speed reset at the end of the print
-# V4.0:     Progress bar, tweaking over multiple layers, M605&M606 implemented, reset after one layer option,
-# extruder three code removed, tweaking print speed, save call of Publisher class,
-# uses previous value from other plugins also on UltiGCode
-# V4.0.1:	Bugfix for doubled G1 commands
-# V4.0.2:	Uses Cura progress bar instead of its own
-# V4.0.3:	Bugfix for cool head lift (contributed by luisonoff)
-# V4.9.91:	First version for Cura 15.06.x and PostProcessingPlugin
-# V4.9.92:	Modifications for Cura 15.10
-# V4.9.93:	Minor bugfixes (input settings) / documentation
-# V4.9.94:	Bugfix Combobox-selection; remove logger
-# V5.0:		Bugfix for fall back after one layer and doubled G0 commands when using print speed tweak, Initial version for Cura 2.x
-# V5.0.1:	Bugfix for calling unknown property 'bedTemp' of previous settings storage and unknown variable 'speed'
-# V5.1:		API Changes included for use with Cura 2.2
-# V5.2.0:	Wes Hanney. Added support for changing Retract Length and Speed. Removed layer spread option. Fixed issue of cumulative ChangeAtZ
-# mods so they can now properly be stacked on top of each other. Applied code refactoring to clean up various coding styles. Added comments.
-# Broke up functions for clarity. Split up class so it can be debugged outside of Cura.
-# V5.2.1:	Wes Hanney. Added support for firmware based retractions. Fixed issue of properly restoring previous values in single layer option.
-# Added support for outputting changes to LCD (untested). Added type hints to most functions and variables. Added more comments. Created GCodeCommand
-# class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
-# of Single Layer vs Keep Layer to better reflect what was happening.
-# V5.3.0    Alex Jaxon, Added option to modify Build Volume Temperature keeping current format
-#
-
-
-
-# Uses -
-# M220 S<factor in percent> - set speed factor override percentage
-# M221 S<factor in percent> - set flow factor override percentage
-# M221 S<factor in percent> T<0-#toolheads> - set flow factor override percentage for single extruder
-# M104 S<temp> T<0-#toolheads> - set extruder <T> to target temperature <S>
-# M140 S<temp> - set bed target temperature
-# M106 S<PWM> - set fan speed to target speed <S>
-# M207 S<mm> F<mm/m> - set the retract length <S> or feed rate <F>
-# M117 - output the current changes
-
-from typing import List, Dict
+from UM.Application import Application
 from ..Script import Script
 import re
+from UM.Message import Message
+from UM.Logger import Logger
 
-
-# this was broken up into a separate class so the main ChangeAtZ script could be debugged outside of Cura
 class ChangeAtZ(Script):
-    version = "5.3.0"
+    version = "6.0.0"
+
+    def initialize(self) -> None:
+        """
+        Prepare the script settings for the machine hardware configuration on Cura opening
+        """
+        super().initialize()
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
+        self.extruder_count = int(self.global_stack.getProperty("machine_extruder_count", "value"))
+        # If the printer is multi-extruder then enable the settings for T1
+        if self.extruder_count == 1:
+            self._instance.setProperty("multi_extruder", "value", False)
+        else:
+            self._instance.setProperty("multi_extruder", "value", True)
+
+        # Enable the build volume temperature change when a heated build volume is present
+        machine_heated_build_volume = bool(self.global_stack.getProperty("machine_heated_build_volume", "value"))
+        if machine_heated_build_volume:
+            self._instance.setProperty("heated_build_volume", "value", True)
+        else:
+            self._instance.setProperty("heated_build_volume", "value", False)
+
+        # If it doesn't have a heated bed it is unlikely to have a Chamber or Auxiliary fan.
+        has_heated_bed = bool(self.global_stack.getProperty("machine_heated_bed", "value"))
+        if has_heated_bed:
+            self._instance.setProperty("has_bv_fan", "value", True)
 
     def getSettingDataString(self):
         return """{
-            "name": "ChangeAtZ """ + self.version + """(Experimental)",
+            "name": "Change At Z (6.0)",
             "key": "ChangeAtZ",
             "metadata": {},
             "version": 2,
             "settings": {
                 "caz_enabled": {
-                    "label": "Enabled",
-                    "description": "Allows adding multiple ChangeAtZ mods and disabling them as needed.",
+                    "label": "Enable Change at Z",
+                    "description": "Enables the script so it will run.  You may have more than one instance of 'Change At Z' in the list of post processors.",
                     "type": "bool",
-                    "default_value": true
+                    "default_value": true,
+                    "enabled": true
                 },
-                "a_trigger": {
-                    "label": "Trigger",
-                    "description": "Trigger at height or at layer no.",
+                "by_layer_or_height": {
+                    "label": "'By Layer' or 'By Height'",
+                    "description": "Which criteria to use to start and end the changes.",
                     "type": "enum",
-                    "options": {
-                        "height": "Height",
-                        "layer_no": "Layer No."
+                    "options":
+                    {
+                        "by_layer": "By Layer",
+                        "by_height": "By Height"
                     },
-                    "default_value": "height"
+                    "default_value": "by_layer",
+                    "enabled": "caz_enabled"
                 },
-                "b_targetZ": {
-                    "label": "Change Height",
-                    "description": "Z height to change at",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 5.0,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0.1",
-                    "maximum_value_warning": "230",
-                    "enabled": "a_trigger == 'height'"
-                },
-                "b_targetL": {
-                    "label": "Change Layer",
-                    "description": "Layer no. to change at",
+                "a_start_layer": {
+                    "label": "Start Layer",
+                    "description": "Layer number to start the changes at.  Use the Cura preview layer numbers.  The changes will start at the beginning of the layer.",
                     "unit": "",
                     "type": "int",
                     "default_value": 1,
-                    "minimum_value": "-100",
-                    "minimum_value_warning": "-1",
-                    "enabled": "a_trigger == 'layer_no'"
+                    "minimum_value": "-7",
+                    "minimum_value_warning": "1",
+                    "unit": "Layer #",
+                    "enabled": "caz_enabled and by_layer_or_height == 'by_layer'"
                 },
-                "c_behavior": {
-                    "label": "Apply To",
-                    "description": "Target Layer + Subsequent Layers is good for testing changes between ranges of layers, ex: Layer 0 to 10 or 0mm to 5mm. Single layer is good for testing changes at a single layer, ex: at Layer 10 or 5mm only.",
+                "a_end_layer": {
+                    "label": "End Layer",
+                    "description": "Use '-1' to indicate the end of the last layer.  The changes will end at the end of the indicated layer.  Use the Cura preview layer number.  If the 'Start Layer' is equal to the 'End Layer' then the changes only affect that single layer.",
+                    "type": "int",
+                    "default_value": -1,
+                    "unit": "Layer #",
+                    "enabled": "caz_enabled and by_layer_or_height == 'by_layer'"
+                },
+                "a_height_start": {
+                    "label": "Height Start of Changes",
+                    "description": "Enter the 'Z-Height' to Start the changes at.  The changes START at the beginning of the first layer where this height is reached (or exceeded).  If the model is on a raft then this height will be from the top of the air gap (first height of the actual model print).",
+                    "type": "float",
+                    "default_value": 0,
+                    "unit": "mm",
+                    "enabled": "caz_enabled and by_layer_or_height == 'by_height'"
+                },
+                "a_height_end": {
+                    "label": "Height End of Changes",
+                    "description": "Enter the 'Z-Height' to End the changes at.  The changes continue until this height is reached or exceeded.  If the model is on a raft then this height will be from the top of the air gap (first height of the actual model print).",
+                    "type": "float",
+                    "default_value": 0,
+                    "unit": "mm",
+                    "enabled": "caz_enabled and by_layer_or_height == 'by_height'"
+                }       ,
+                "b_change_speed": {
+                    "label": "Change Speeds",
+                    "description": "Check to enable a speed change for the Print Speeds.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "caz_enabled"
+                },
+                "change_speed_per_extruder": {
+                    "label": "    Which extruder(s)",
+                    "description": "For multi-extruder printers the changes can be for either or both extruders.",
                     "type": "enum",
                     "options": {
-                        "keep_value": "Target Layer + Subsequent Layers",
-                        "single_layer": "Target Layer Only"
-                    },
-                    "default_value": "keep_value"
+                        "ext_0": "Extruder 1 (T0)",
+                        "ext_1": "Extruder 2 (T1)",
+                        "ext_both": "Both extruders"},
+                    "default_value": "ext_both",
+                    "enabled": "caz_enabled and b_change_speed and multi_extruder"
                 },
-                "caz_output_to_display": {
-                    "label": "Output to Display",
-                    "description": "Displays the current changes to the LCD",
+                "b_change_printspeed": {
+                    "label": "    Include Travel Speeds",
+                    "description": "Check this box to change the Travel Speeds as well as the Print Speeds.",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": false,
+                    "enabled": "b_change_speed and caz_enabled"
                 },
-                "e1_Change_speed": {
-                    "label": "Change Speed",
-                    "description": "Select if total speed (print and travel) has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "e2_speed": {
-                    "label": "Speed",
-                    "description": "New total speed (print and travel)",
-                    "unit": "%",
+                "b_speed": {
+                    "label": "    Speed %",
+                    "description": "Speed factor as a percentage.  The chosen speeds will be altered by this much.",
+                    "unit": "%  ",
                     "type": "int",
                     "default_value": 100,
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
+                    "minimum_value": "10",
+                    "minimum_value_warning": "50",
                     "maximum_value_warning": "200",
-                    "enabled": "e1_Change_speed"
+                    "enabled": "b_change_speed and caz_enabled"
                 },
-                "f1_Change_printspeed": {
-                    "label": "Change Print Speed",
-                    "description": "Select if print speed has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "f2_printspeed": {
-                    "label": "Print Speed",
-                    "description": "New print speed",
-                    "unit": "%",
-                    "type": "int",
-                    "default_value": 100,
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
-                    "maximum_value_warning": "200",
-                    "enabled": "f1_Change_printspeed"
-                },
-                "g1_Change_flowrate": {
+                "c_change_flowrate": {
                     "label": "Change Flow Rate",
-                    "description": "Select if flow rate has to be changed",
+                    "description": "Select to change the flow rate of all extrusions in the layer range.  This command uses M221 to set the flow percentage in the printer.",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": false,
+                    "enabled": "caz_enabled"
                 },
-                "g2_flowrate": {
-                    "label": "Flow Rate",
-                    "description": "New Flow rate",
-                    "unit": "%",
+                "c_flowrate_t0": {
+                    "label": "    Flow Rate % (T0)",
+                    "description": "Enter the new Flow Rate Percentage.  For a multi-extruder printer this will apply to Extruder 1 (T0).",
+                    "unit": "%  ",
+                    "type": "int",
+                    "default_value": 100,
+                    "minimum_value": "25",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "maximum_value": "200",
+                    "enabled": "c_change_flowrate and caz_enabled"
+                },
+                "multi_extruder": {
+                    "label": "Hidden setting to enable 2nd extruder settings for multi-extruder printers.",
+                    "description": "Enable T1 options.",
+                    "type": "bool",
+                    "value": false,
+                    "default_value": false,
+                    "enabled": false
+                },
+                "c_flowrate_t1": {
+                    "label": "    Flow Rate % T1",
+                    "description": "New Flow rate percentage for Extruder 2 (T1).",
+                    "unit": "%  ",
                     "type": "int",
                     "default_value": 100,
                     "minimum_value": "1",
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "g1_Change_flowrate"
+                    "enabled": "multi_extruder and c_change_flowrate and caz_enabled"
                 },
-                "g3_Change_flowrateOne": {
-                    "label": "Change Flow Rate 1",
-                    "description": "Select if first extruder flow rate has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "g4_flowrateOne": {
-                    "label": "Flow Rate One",
-                    "description": "New Flow rate Extruder 1",
-                    "unit": "%",
-                    "type": "int",
-                    "default_value": 100,
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
-                    "maximum_value_warning": "200",
-                    "enabled": "g3_Change_flowrateOne"
-                },
-                "g5_Change_flowrateTwo": {
-                    "label": "Change Flow Rate 2",
-                    "description": "Select if second extruder flow rate has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "g6_flowrateTwo": {
-                    "label": "Flow Rate two",
-                    "description": "New Flow rate Extruder 2",
-                    "unit": "%",
-                    "type": "int",
-                    "default_value": 100,
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
-                    "maximum_value_warning": "200",
-                    "enabled": "g5_Change_flowrateTwo"
-                },
-                "h1_Change_bedTemp": {
+                "d_change_bed_temp": {
                     "label": "Change Bed Temp",
-                    "description": "Select if Bed Temperature has to be changed",
+                    "description": "Select if Bed Temperature is to be changed.  The bed temperature will revert at the End Layer.",
                     "type": "bool",
-                    "default_value": false
+                    "default_value": false,
+                    "enabled": "caz_enabled"
                 },
-                "h2_bedTemp": {
-                    "label": "Bed Temp",
+                "d_bedTemp": {
+                    "label": "    Bed Temp",
                     "description": "New Bed Temperature",
-                    "unit": "C",
-                    "type": "float",
+                    "unit": "°C  ",
+                    "type": "int",
                     "default_value": 60,
                     "minimum_value": "0",
                     "minimum_value_warning": "30",
                     "maximum_value_warning": "120",
-                    "enabled": "h1_Change_bedTemp"
+                    "enabled": "d_change_bed_temp and caz_enabled"
                 },
-                "h1_Change_buildVolumeTemperature": {
-                    "label": "Change Build Volume Temperature",
-                    "description": "Select if Build Volume Temperature has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "h2_buildVolumeTemperature": {
-                    "label": "Build Volume Temperature",
-                    "description": "New Build Volume Temperature",
-                    "unit": "C",
-                    "type": "float",
-                    "default_value": 20,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "10",
-                    "maximum_value_warning": "50",
-                    "enabled": "h1_Change_buildVolumeTemperature"
-                },
-                "i1_Change_extruderOne": {
-                    "label": "Change Extruder 1 Temp",
-                    "description": "Select if First Extruder Temperature has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "i2_extruderOne": {
-                    "label": "Extruder 1 Temp",
-                    "description": "New First Extruder Temperature",
-                    "unit": "C",
-                    "type": "float",
-                    "default_value": 190,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "160",
-                    "maximum_value_warning": "250",
-                    "enabled": "i1_Change_extruderOne"
-                },
-                "i3_Change_extruderTwo": {
-                    "label": "Change Extruder 2 Temp",
-                    "description": "Select if Second Extruder Temperature has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "i4_extruderTwo": {
-                    "label": "Extruder 2 Temp",
-                    "description": "New Second Extruder Temperature",
-                    "unit": "C",
-                    "type": "float",
-                    "default_value": 190,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "160",
-                    "maximum_value_warning": "250",
-                    "enabled": "i3_Change_extruderTwo"
-                },
-                "j1_Change_fanSpeed": {
-                    "label": "Change Fan Speed",
-                    "description": "Select if Fan Speed has to be changed",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "j2_fanSpeed": {
-                    "label": "Fan Speed",
-                    "description": "New Fan Speed (0-100)",
-                    "unit": "%",
-                    "type": "int",
-                    "default_value": 100,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
-                    "enabled": "j1_Change_fanSpeed"
-                },
-                "caz_change_retract": {
-                    "label": "Change Retraction",
-                    "description": "Indicates you would like to modify retraction properties. Does not work when using relative extrusion.",
-                    "type": "bool",
-                    "default_value": false
-                },
-                "caz_retractstyle": {
-                    "label": "Retract Style",
-                    "description": "Specify if you're using firmware retraction or linear move based retractions. Check your printer settings to see which you're using.",
-                    "type": "enum",
-                    "options": {
-                        "linear": "Linear Move",
-                        "firmware": "Firmware"
-                    },
-                    "default_value": "linear",
-                    "enabled": "caz_change_retract"
-                },
-                "caz_change_retractfeedrate": {
-                    "label": "Change Retract Feed Rate",
-                    "description": "Changes the retraction feed rate during print",
+                "heated_build_volume": {
+                    "label": "Hidden setting",
+                    "description": "This enables the build volume settings",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "caz_change_retract"
+                    "enabled": false
                 },
-                "caz_retractfeedrate": {
-                    "label": "Retract Feed Rate",
-                    "description": "New Retract Feed Rate (mm/s)",
-                    "unit": "mm/s",
+                "e_change_build_volume_temperature": {
+                    "label": "Change Build Volume Temperature",
+                    "description": "Select if Build Volume Temperature is to be changed",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "heated_build_volume and caz_enabled"
+                },
+                "e_build_volume_temperature": {
+                    "label": "    Build Volume Temperature",
+                    "description": "New Build Volume Temperature.  This will revert at the end of the End Layer.",
+                    "unit": "°C  ",
+                    "type": "int",
+                    "default_value": 20,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "15",
+                    "maximum_value_warning": "80",
+                    "enabled": "heated_build_volume and e_change_build_volume_temperature and caz_enabled"
+                },
+                "f_change_extruder_temperature": {
+                    "label": "Change Print Temp",
+                    "description": "Select if the Printing Temperature is to be changed",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "caz_enabled"
+                },
+                "f_extruder_temperature_t0": {
+                    "label": "    Extruder 1 Temp (T0)",
+                    "description": "New temperature for Extruder 1 (T0).",
+                    "unit": "°C  ",
+                    "type": "int",
+                    "default_value": 190,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "160",
+                    "maximum_value_warning": "250",
+                    "enabled": "f_change_extruder_temperature and caz_enabled"
+                },
+                "f_extruder_temperature_t1": {
+                    "label": "    Extruder 2 Temp (T1)",
+                    "description": "New temperature for Extruder 2 (T1).",
+                    "unit": "°C  ",
+                    "type": "int",
+                    "default_value": 190,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "160",
+                    "maximum_value_warning": "250",
+                    "enabled": "multi_extruder and f_change_extruder_temperature and caz_enabled"
+                },
+                "g_change_retract": {
+                    "label": "Change Retraction Settings",
+                    "description": "Indicates you would like to modify retraction properties.  If 'Firmware Retraction' is enabled then M207 and M208 lines are added.  Your firmware must understand those commands.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "caz_enabled and not multi_extruder"
+                },
+                "g_change_retract_speed": {
+                    "label": "    Change Retract/Prime Speed",
+                    "description": "Changes the retraction and prime speed.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "g_change_retract and caz_enabled and not multi_extruder"
+                },
+                "g_retract_speed": {
+                    "label": "        Retract/Prime Speed",
+                    "description": "New Retract Feed Rate (mm/s).  If 'Firmware Retraction' is enabled then M207 and M208 are used to change the retract and prime speeds and the distance.  NOTE: the same speed will be used for both retract and prime.",
+                    "unit": "mm/s  ",
                     "type": "float",
                     "default_value": 40,
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
-                    "enabled": "caz_change_retractfeedrate"
+                    "enabled": "g_change_retract and g_change_retract_speed and caz_enabled and not multi_extruder"
                 },
-                "caz_change_retractlength": {
-                    "label": "Change Retract Length",
+                "g_change_retract_amount": {
+                    "label": "    Change Retraction Amount",
                     "description": "Changes the retraction length during print",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "caz_change_retract"
+                    "enabled": "g_change_retract and caz_enabled and not multi_extruder"
                 },
-                "caz_retractlength": {
-                    "label": "Retract Length",
-                    "description": "New Retract Length (mm)",
-                    "unit": "mm",
+                "g_retract_amount": {
+                    "label": "        Retract Amount",
+                    "description": "New Retraction Distance (mm).  If firmware retraction is used then M207 and M208 are used to change the retract and prime amount.",
+                    "unit": "mm  ",
                     "type": "float",
-                    "default_value": 6,
+                    "default_value": 6.5,
                     "minimum_value": "0",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "20",
-                    "enabled": "caz_change_retractlength"
-                }      
+                    "enabled": "g_change_retract and g_change_retract_amount and caz_enabled and not multi_extruder"
+                },
+                "enable_bv_fan_change": {
+                    "label": "Chamber/Aux Fan Change",
+                    "description": "Can alter the setting of a secondary fan when the printer is equipped with one.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "has_bv_fan and caz_enabled"
+                },
+                "e1_build_volume_fan_speed": {
+                    "label": "    Chamber/Aux Fan Speed",
+                    "description": "New Build Volume or Auxiliary Fan Speed.  This will reset to zero at the end of the 'End Layer'.",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 100,
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "enabled": "has_bv_fan and enable_bv_fan_change and caz_enabled"
+                },
+                "bv_fan_nr": {
+                    "label": "    Chamber/Aux Fan Number",
+                    "description": "The circuit number of the Auxilliary or Chamber fan.  M106 will be used and the 'P' parameter (the fan number) will be the number entered here.",
+                    "type": "int",
+                    "unit": "#",
+                    "default_value": 3,
+                    "minimum_value": 0,
+                    "enabled": "has_bv_fan and enable_bv_fan_change and caz_enabled"
+                },
+                "has_bv_fan": {
+                    "label": "Hidden setting",
+                    "description": "Enables the Build Volume/Auxiliary fan speed control when 'machine_heated_bed' is true.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false
+                }
             }
         }"""
 
-    def __init__(self):
-        super().__init__()
-
     def execute(self, data):
-
-        caz_instance = ChangeAtZProcessor()
-
-        caz_instance.targetValues = {}
-
-        # copy over our settings to our change z class
-        self.setIntSettingIfEnabled(caz_instance, "e1_Change_speed", "speed", "e2_speed")
-        self.setIntSettingIfEnabled(caz_instance, "f1_Change_printspeed", "printspeed", "f2_printspeed")
-        self.setIntSettingIfEnabled(caz_instance, "g1_Change_flowrate", "flowrate", "g2_flowrate")
-        self.setIntSettingIfEnabled(caz_instance, "g3_Change_flowrateOne", "flowrateOne", "g4_flowrateOne")
-        self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
-        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
-        self.setFloatSettingIfEnabled(caz_instance, "h1_Change_buildVolumeTemperature", "buildVolumeTemperature", "h2_buildVolumeTemperature")
-        self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
-        self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
-        self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
-        self.setFloatSettingIfEnabled(caz_instance, "caz_change_retractfeedrate", "retractfeedrate", "caz_retractfeedrate")
-        self.setFloatSettingIfEnabled(caz_instance, "caz_change_retractlength", "retractlength", "caz_retractlength")
-
-        # is this mod enabled?
-        caz_instance.enabled = self.getSettingValueByKey("caz_enabled")
-
-        # are we emitting data to the LCD?
-        caz_instance.displayChangesToLcd = self.getSettingValueByKey("caz_output_to_display")
-
-        # are we doing linear move retractions?
-        caz_instance.linearRetraction = self.getSettingValueByKey("caz_retractstyle") == "linear"
-
-        # see if we're applying to a single layer or to all layers hence forth
-        caz_instance.applyToSingleLayer = self.getSettingValueByKey("c_behavior") == "single_layer"
-
-        # used for easy reference of layer or height targeting
-        caz_instance.targetByLayer = self.getSettingValueByKey("a_trigger") == "layer_no"
-
-        # change our target based on what we're targeting
-        caz_instance.targetLayer = self.getIntSettingByKey("b_targetL", None)
-        caz_instance.targetZ = self.getFloatSettingByKey("b_targetZ", None)
-
-        # run our script
-        return caz_instance.execute(data)
-
-    # Sets the given TargetValue in the ChangeAtZ instance if the trigger is specified
-    def setIntSettingIfEnabled(self, caz_instance, trigger, target, setting):
-
-        # stop here if our trigger isn't enabled
-        if not self.getSettingValueByKey(trigger):
-            return
-
-        # get our value from the settings
-        value = self.getIntSettingByKey(setting, None)
-
-        # skip if there's no value or we can't interpret it
-        if value is None:
-            return
-
-        # set our value in the target settings
-        caz_instance.targetValues[target] = value
-
-    # Sets the given TargetValue in the ChangeAtZ instance if the trigger is specified
-    def setFloatSettingIfEnabled(self, caz_instance, trigger, target, setting):
-
-        # stop here if our trigger isn't enabled
-        if not self.getSettingValueByKey(trigger):
-            return
-
-        # get our value from the settings
-        value = self.getFloatSettingByKey(setting, None)
-
-        # skip if there's no value or we can't interpret it
-        if value is None:
-            return
-
-        # set our value in the target settings
-        caz_instance.targetValues[target] = value
-
-    # Returns the given settings value as an integer or the default if it cannot parse it
-    def getIntSettingByKey(self, key, default):
-
-        # change our target based on what we're targeting
-        try:
-            return int(self.getSettingValueByKey(key))
-        except:
-            return default
-
-    # Returns the given settings value as an integer or the default if it cannot parse it
-    def getFloatSettingByKey(self, key, default):
-
-        # change our target based on what we're targeting
-        try:
-            return float(self.getSettingValueByKey(key))
-        except:
-            return default
-
-
-# This is a utility class for getting details of gcodes from a given line
-class GCodeCommand:
-
-    # The GCode command itself (ex: G10)
-    command = None,
-
-    # Contains any arguments passed to the command. The key is the argument name, the value is the value of the argument.
-    arguments = {}
-
-    # Contains the components of the command broken into pieces
-    components = []
-
-    # Constructor. Sets up defaults
-    def __init__(self):
-        self.reset()
-
-    # Gets a GCode Command from the given single line of GCode
-    @staticmethod
-    def getFromLine(line: str):
-
-        # obviously if we don't have a command, we can't return anything
-        if line is None or len(line) == 0:
-            return None
-
-        # we only support G or M commands
-        if line[0] != "G" and line[0] != "M":
-            return None
-
-        # remove any comments
-        line = re.sub(r";.*$", "", line)
-
-        # break into the individual components
-        command_pieces = line.strip().split(" ")
-
-        # our return command details
-        command = GCodeCommand()
-
-        # stop here if we don't even have something to interpret
-        if len(command_pieces) == 0:
-            return None
-
-        # stores all the components of the command within the class for later
-        command.components = command_pieces
-
-        # set the actual command
-        command.command = command_pieces[0]
-
-        # stop here if we don't have any parameters
-        if len(command_pieces) == 1:
-            return None
-
-        # return our indexed command
-        return command
-
-    # Handy function for reading a linear move command
-    @staticmethod
-    def getLinearMoveCommand(line: str):
-
-        # get our command from the line
-        linear_command = GCodeCommand.getFromLine(line)
-
-        # if it's not a linear move, we don't care
-        if linear_command is None or (linear_command.command != "G0" and linear_command.command != "G1"):
-            return None
-
-        # convert our values to floats (or defaults)
-        linear_command.arguments["F"] = linear_command.getArgumentAsFloat("F", None)
-        linear_command.arguments["X"] = linear_command.getArgumentAsFloat("X", None)
-        linear_command.arguments["Y"] = linear_command.getArgumentAsFloat("Y", None)
-        linear_command.arguments["Z"] = linear_command.getArgumentAsFloat("Z", None)
-        linear_command.arguments["E"] = linear_command.getArgumentAsFloat("E", None)
-
-        # return our new command
-        return linear_command
-
-    # Gets the value of a parameter or returns the default if there is none
-    def getArgument(self, name: str, default: str = None) -> str:
-
-        # parse our arguments (only happens once)
-        self.parseArguments()
-
-        # if we don't have the parameter, return the default
-        if name not in self.arguments:
-            return default
-
-        # otherwise return the value
-        return self.arguments[name]
-
-    # Gets the value of a parameter as a float or returns the default
-    def getArgumentAsFloat(self, name: str, default: float = None) -> float:
-
-        # try to parse as a float, otherwise return the default
-        try:
-            return float(self.getArgument(name, default))
-        except:
-            return default
-
-    # Gets the value of a parameter as an integer or returns the default
-    def getArgumentAsInt(self, name: str, default: int = None) -> int:
-
-        # try to parse as a integer, otherwise return the default
-        try:
-            return int(self.getArgument(name, default))
-        except:
-            return default
-
-    # Allows retrieving values from the given GCODE line
-    @staticmethod
-    def getDirectArgument(line: str, key: str, default: str = None) -> str:
-
-        if key not in line or (";" in line and line.find(key) > line.find(";") and ";ChangeAtZ" not in key and ";LAYER:" not in key):
-            return default
-
-        # allows for string lengths larger than 1
-        sub_part = line[line.find(key) + len(key):]
-
-        if ";ChangeAtZ" in key:
-            m = re.search("^[0-4]", sub_part)
-        elif ";LAYER:" in key:
-            m = re.search("^[+-]?[0-9]*", sub_part)
-        else:
-            # the minus at the beginning allows for negative values, e.g. for delta printers
-            m = re.search(r"^[-]?[0-9]*\.?[0-9]*", sub_part)
-        if m is None:
-            return default
-
-        try:
-            return m.group(0)
-        except:
-            return default
-
-    # Converts the command parameter to a int or returns the default
-    @staticmethod
-    def getDirectArgumentAsFloat(line: str, key: str, default: float = None) -> float:
-
-        # get the value from the command
-        value = GCodeCommand.getDirectArgument(line, key, default)
-
-        # stop here if it's the default
-        if value == default:
-            return value
-
-        try:
-            return float(value)
-        except:
-            return default
-
-    # Converts the command parameter to a int or returns the default
-    @staticmethod
-    def getDirectArgumentAsInt(line: str, key: str, default: int = None) -> int:
-
-        # get the value from the command
-        value = GCodeCommand.getDirectArgument(line, key, default)
-
-        # stop here if it's the default
-        if value == default:
-            return value
-
-        try:
-            return int(value)
-        except:
-            return default
-
-    # Parses the arguments of the command on demand, only once
-    def parseArguments(self):
-
-        # stop here if we don't have any remaining components
-        if len(self.components) <= 1:
-            return None
-
-        # iterate and index all of our parameters, skip the first component as it's the command
-        for i in range(1, len(self.components)):
-
-            # get our component
-            component = self.components[i]
-
-            # get the first character of the parameter, which is the name
-            component_name = component[0]
-
-            # get the value of the parameter (the rest of the string
-            component_value = None
-
-            # get our value if we have one
-            if len(component) > 1:
-                component_value = component[1:]
-
-            # index the argument
-            self.arguments[component_name] = component_value
-
-        # clear the components to we don't process again
-        self.components = []
-
-    # Easy function for replacing any GCODE parameter variable in a given GCODE command
-    @staticmethod
-    def replaceDirectArgument(line: str, key: str, value: str) -> str:
-        return re.sub(r"(^|\s)" + key + r"[\d\.]+(\s|$)", r"\1" + key + str(value) + r"\2", line)
-
-    # Resets the model back to defaults
-    def reset(self):
-        self.command = None
-        self.arguments = {}
-
-
-# The primary ChangeAtZ class that does all the gcode editing. This was broken out into an
-# independent class so it could be debugged using a standard IDE
-class ChangeAtZProcessor:
-
-    # Holds our current height
-    currentZ = None
-
-    # Holds our current layer number
-    currentLayer = None
-
-    # Indicates if we're only supposed to apply our settings to a single layer or multiple layers
-    applyToSingleLayer = False
-
-    # Indicates if this should emit the changes as they happen to the LCD
-    displayChangesToLcd = False
-
-    # Indicates that this mod is still enabled (or not)
-    enabled = True
-
-    # Indicates if we're processing inside the target layer or not
-    insideTargetLayer = False
-
-    # Indicates if we have restored the previous values from before we started our pass
-    lastValuesRestored = False
-
-    # Indicates if the user has opted for linear move retractions or firmware retractions
-    linearRetraction = True
-
-    # Indicates if we're targeting by layer or height value
-    targetByLayer = True
-
-    # Indicates if we have injected our changed values for the given layer yet
-    targetValuesInjected = False
-
-    # Holds the last extrusion value, used with detecting when a retraction is made
-    lastE = None
-
-    # An index of our gcodes which we're monitoring
-    lastValues = {}
-
-    # The detected layer height from the gcode
-    layerHeight = None
-
-    # The target layer
-    targetLayer = None
-
-    # Holds the values the user has requested to change
-    targetValues = {}
-
-    # The target height in mm
-    targetZ = None
-
-    # Used to track if we've been inside our target layer yet
-    wasInsideTargetLayer = False
-
-    # boots up the class with defaults
-    def __init__(self):
-        self.reset()
-
-    # Modifies the given GCODE and injects the commands at the various targets
-    def execute(self, data):
-
-        # short cut the whole thing if we're not enabled
-        if not self.enabled:
+        # Exit if the script isn't enabled
+        if not bool(self.getSettingValueByKey("caz_enabled")):
+            data[0] += ";    [Change at Z] is not enabled\n"
+            Logger.log("i", "[Change at Z] is not enabled")
             return data
 
-        # our layer cursor
-        index = 0
+        # Message the user and exit if the print sequence is 'One at a Time'
+        if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            Message(title = "[Change at Z]", text = "One-at-a-Time mode is not supported.  The script will exit without making any changes.").show()
+            data[0] += ";    [Change at Z] Did not run (One at a Time mode is not supported)\n"
+            Logger.log("i", "ChangeAtZ does not support 'One at a Time' mode")
+            return data
 
-        for active_layer in data:
+        # Exit if the gcode has been previously post-processed.
+        if ";POSTPROCESSED" in data[0]:
+            return data
 
-            # will hold our updated gcode
-            modified_gcode = ""
+        # Pull some settings from Cura
+        self.extruder_list = self.global_stack.extruderList
+        self.firmware_retraction = bool(self.global_stack.getProperty("machine_firmware_retract", "value"))
+        self.relative_extrusion = bool(self.global_stack.getProperty("relative_extrusion", "value"))
+        self.heated_build_volume = bool(self.global_stack.getProperty("machine_heated_build_volume", "value"))
+        self.heated_bed = bool(self.global_stack.getProperty("machine_heated_bed", "value"))
+        self.retract_enabled = bool(self.extruder_list[0].getProperty("retraction_enable", "value"))
+        self.orig_bed_temp = self.global_stack.getProperty("material_bed_temperature", "value")
+        self.orig_bv_temp = self.global_stack.getProperty("build_volume_temperature", "value")
+        self.z_hop_enabled = bool(self.extruder_list[0].getProperty("retraction_hop_enabled", "value"))
+        self.raft_enabled = True if str(self.global_stack.getProperty("adhesion_type", "value")) == "raft" else False
+        # The Start and end layer numbers are used when 'By Layer' is selected
+        self.start_layer = self.getSettingValueByKey("a_start_layer") - 1
+        end_layer = int(self.getSettingValueByKey("a_end_layer"))
+        nbr_raft_layers = 0
+        if self.raft_enabled:
+            for layer in data:
+                if ";LAYER:-" in layer:
+                    nbr_raft_layers += 1
+                if ";LAYER:0\n" in layer:
+                    break
+        # Adjust the start layer to account for any raft layers
+        self.start_layer -= nbr_raft_layers
+        # Find the indexes of the Start and End layers if 'By Layer'
+        self.start_index = 0
+        # When retraction is enabled it adds a single line item to the data list
+        self.end_index = len(data) - 1 - int(self.retract_enabled)
+        if self.getSettingValueByKey("by_layer_or_height") == "by_layer":
+            for index, layer in enumerate(data):
+                if ";LAYER:" + str(self.start_layer) + "\n" in layer:
+                    self.start_index = index
+                    break
+            # If the changes continue to the top layer
+            if end_layer == -1:
+                if self.retract_enabled:
+                    self.end_index = len(data) - 2
+                else:
+                    self.end_index = len(data) - 1
+            # If the changes end below the top layer
+            else:
+                # Adjust the end layer from base1 numbering to base0 numbering
+                end_layer -= 1
+                # Adjust the End Layer if it is not the top layer and if bed adhesion is 'raft'
+                end_layer -= nbr_raft_layers
+                for index, layer in enumerate(data):
+                    if ";LAYER:" + str(end_layer) + "\n" in layer:
+                        self.end_index = index
+                        break
 
-            # mark all the defaults for deletion
-            active_layer = self.markChangesForDeletion(active_layer)
+        # The Start and End heights are used to find the Start and End indexes when changes are 'By Height'
+        elif self.getSettingValueByKey("by_layer_or_height") == "by_height":
+            start_height = float(self.getSettingValueByKey("a_height_start"))
+            end_height = float(self.getSettingValueByKey("a_height_end"))
+            # Get the By Height start and end indexes
+            self.start_index = self._is_legal_z(data, start_height)
+            self.end_index = self._is_legal_z(data, end_height) - 1
 
-            # break apart the layer into commands
-            lines = active_layer.split("\n")
+        # Exit if the Start Layer wasn't found
+        if self.start_index == 0:
+            Message(title = "[Change at Layer]", text = "The 'Start Layer' is beyond the top of the print.  The script did not run.").show()
+            Logger.log("w", "[Change at Layer] The 'Start Layer' is beyond the top of the print.  The script did not run.")
+            return data
 
-            # evaluate each command individually
-            for line in lines:
+        # Adjust the End Index if the End Index < Start Index (required for the script to make changes)
+        if self.end_index < self.start_index:
+            self.start_index = self.end_index
+            Message(title = "[Change at Layer]", text = "Check the Gcode.  Your 'Start Layer/Height' input is higher than the End Layer/Height input.  The Start Layer has been adjusted to equal the End Layer.").show()
 
-                # trim or command
-                line = line.strip()
+        # Map settings to corresponding methods
+        procedures = {
+            "b_change_speed": self._change_speed,
+            "c_change_flowrate": self._change_flow,
+            "d_change_bed_temp": self._change_bed_temp,
+            "e_change_build_volume_temperature": self._change_bv_temp,
+            "f_change_extruder_temperature": self._change_hotend_temp,
+            "g_change_retract": self._change_retract,
+            "has_bv_fan": self._change_bv_fan_speed
+        }
 
-                # skip empty lines
-                if len(line) == 0:
-                    continue
-
-                # update our layer number if applicable
-                self.processLayerNumber(line)
-
-                # update our layer height if applicable
-                self.processLayerHeight(line)
-
-                # check if we're at the target layer or not
-                self.processTargetLayer()
-
-                # process any changes to the gcode
-                modified_gcode += self.processLine(line)
-
-            # remove any marked defaults
-            modified_gcode = self.removeMarkedChanges(modified_gcode)
-
-            # append our modified line
-            data[index] = modified_gcode
-
-            index += 1
-
-        # return our modified gcode
+        # Run the selected procedures
+        for setting, method in procedures.items():
+            if self.getSettingValueByKey(setting):
+                method(data)
+        data = self._format_lines(data)
         return data
 
-    # Builds the restored layer settings based on the previous settings and returns the relevant GCODE lines
-    def getChangedLastValues(self) -> Dict[str, any]:
+    def _change_speed(self, data:str)->str:
+        """
+        The actual speed will be a percentage of the Cura calculated 'F' values in the gcode.  The percentage can be different for each extruder.  Travel speeds can also be affected dependent on the user input.
+        :params:
+            speed_x: The speed percentage to use
+            print_speed_only: Only change speeds with extrusions (but not retract or primes)
+            target_extruder: For multi-extruder printers this is the active extruder
+            off_extruder: For multi-extruders this is the inactive extruder.
+        """
+        # Since a single extruder changes all relevant speed settings then for a multi-extruder 'both extruders' is the same
+        if self.extruder_count == 1 or self.getSettingValueByKey("change_speed_per_extruder") == "ext_both":
+            speed_x = self.getSettingValueByKey("b_speed")/100
+            print_speed_only = not bool(self.getSettingValueByKey("b_change_printspeed"))
+            for index, layer in enumerate(data):
+                if index >= self.start_index and index <= self.end_index:
+                    lines = layer.splitlines()
+                    for l_index, line in enumerate(lines):
+                        if " F" in line and " X" in line and " Y" in line and not " Z" in line:
+                            f_value = self.getValue(line, "F")
+                            if line.startswith(("G1", "G2", "G3")):
+                                lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
+                                lines[l_index] += f" ; ChangeAtZ: {round(speed_x * 100)}% Print Speed"
+                                continue
+                            if not print_speed_only and line.startswith("G0"):
+                                lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
+                                lines[l_index] += f" ; ChangeAtZ: {round(speed_x * 100)}% Travel Speed"
+                    data[index] = "\n".join(lines) + "\n"
+        elif self.extruder_count > 1:
+            speed_x = self.getSettingValueByKey("b_speed")/100
+            print_speed_only = not bool(self.getSettingValueByKey("b_change_printspeed"))
+            target_extruder = self.getSettingValueByKey("change_speed_per_extruder")
 
-        # capture the values that we've changed
-        changed = {}
+            # These variables are used as the 'turn changes on' and 'turn changes off' at tool changes.
+            if target_extruder == "ext_0":
+                target_extruder = "T0"
+                off_extruder = "T1"
+            elif target_extruder == "ext_1":
+                target_extruder = "T1"
+                off_extruder = "T0"
 
-        # for each of our target values, get the value to restore
-        # no point in restoring values we haven't changed
-        for key in self.targetValues:
+            # After all of that it goes to work.
+            for index, layer in enumerate(data):
+                if index < self.start_index:
+                    lineT = layer.splitlines()
+                    for tline in lineT:
+                        if "T0" in tline:
+                            active_tool = "T0"
+                        if "T1" in tline:
+                            active_tool = "T1"
+                if index >= self.start_index and index <= self.end_index:
+                    lines = layer.splitlines()
+                    for l_index, line in enumerate(lines):
+                        if active_tool == target_extruder:
+                            if " F" in line and " X" in line and " Y" in line and not " Z" in line:
+                                f_value = self.getValue(line, "F")
+                                if line.startswith(("G1", "G2", "G3")):
+                                    lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
+                                    lines[l_index] += f" ; ChangeAtZ: {round(speed_x * 100)}% Print Speed"
+                                    continue
+                                if not print_speed_only and line.startswith("G0"):
+                                    lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
+                                    lines[l_index] += f" ; ChangeAtZ: {round(speed_x * 100)}% Travel Speed"
+                        if line.startswith(off_extruder):
+                            active_tool = off_extruder
+                        if line.startswith(target_extruder):
+                            active_tool = target_extruder
 
-            # skip target values we can't restore
-            if key not in self.lastValues:
+                    data[index] = "\n".join(lines) + "\n"
+        return data
+
+    def _change_flow(self, data:str)->str:
+        """
+        M221 is used to change the flow rate.
+        :params:
+            new_flow_ext_0: The flowrate percentage from these script settings (for the primary extruder)
+            new_flowrate_0: The string to use for the new flowrate for T0
+            reset_flowrate_0: Resets the flowrate to 100% (for either extruder)
+            new_flow_ext_1: The flowrate percentage from these script settings (for the secondary extruder)
+            new_flowrate_1: The string to use for the new flowrate for T1
+        """
+        new_flow_ext_0 = self.getSettingValueByKey("c_flowrate_t0")
+        new_flowrate_0 = f"\nM221 S{new_flow_ext_0} ; ChangeAtZ: Alter Flow Rate"
+        reset_flowrate_0 = "\nM221 S100 ; ChangeAtZ: Reset Flow Rate"
+        if self.extruder_count > 1:
+            new_flow_ext_1 = self.getSettingValueByKey("c_flowrate_t1")
+            new_flowrate_1 = f"\nM221 S{new_flow_ext_1} ; ChangeAtZ: Alter Flow Rate"
+        else:
+            new_flowrate_1 = ""
+        # For single extruder
+        if self.extruder_count == 1:
+            lines = data[self.start_index].splitlines()
+            lines[0] += new_flowrate_0
+            data[self.start_index] = "\n".join(lines) + "\n"
+            lines = data[self.end_index].splitlines()
+            lines[len(lines) - 2] += reset_flowrate_0
+            data[self.end_index] = "\n".join(lines) + "\n"
+        # For dual-extruders
+        elif self.extruder_count > 1:
+            for index, layer in enumerate(data):
+                if index < self.start_index:
+                    continue
+                else:
+                    lines = layer.splitlines()
+                    for l_index, line in enumerate(lines):
+                        if line.startswith("T0"):
+                            lines[l_index] += new_flowrate_0 + " T0"
+                        if line.startswith("T1"):
+                            lines[l_index] += new_flowrate_1 + " T1"
+                    data[index] = "\n".join(lines) + "\n"
+                    if index == self.end_index:
+                        lines = data[index].splitlines()
+                        lines[len(lines) - 2] += "\nM221 S100 ; ChangeAtZ: Reset Flow Rate"
+                        data[index] = "\n".join(lines) + "\n"
+                        break
+                if index > self.end_index:
+                    break
+        return data
+
+    def _change_bed_temp(self, data:str)->str:
+        """
+        Change the Bed Temperature at height or layer
+        :params:
+        new_bed_temp: The new temperature from the settings for this script
+        """
+        if not self.heated_bed:
+            return data
+        new_bed_temp = self.getSettingValueByKey("d_bedTemp")
+        if self.start_index == 2:
+            if "M140 S" in data[2]:
+                data[2] = re.sub("M140 S", ";M140 S", data[2])
+            if "M140 S" in data[3]:
+                data[3] = re.sub("M140 S", ";M140 S", data[3])
+        lines = data[self.start_index].splitlines()
+        lines[0] += "\nM140 S" + str(new_bed_temp) + " ; ChangeAtZ: Change Bed Temperature"
+        data[self.start_index] = "\n".join(lines) + "\n"
+        lines = data[self.end_index].splitlines()
+        lines[len(lines) - 2] += "\nM140 S" + str(self.orig_bed_temp) + " ; ChangeAtZ: Reset Bed Temperature"
+        data[self.end_index] = "\n".join(lines) + "\n"
+        return data
+
+    def _change_bv_temp(self, data:str)->str:
+        """
+        Change the Build Volume temperature at height or layer
+        :param:
+        new_bv_temp: The new temperature from the settings for this script
+        """
+        if not self.heated_build_volume:
+            return data
+        new_bv_temp = self.getSettingValueByKey("e_build_volume_temperature")
+        lines = data[self.start_index].splitlines()
+        lines[0] += "\nM141 S" + str(new_bv_temp) + " ; ChangeAtZ: Change Build Volume Temperature"
+        data[self.start_index] = "\n".join(lines) + "\n"
+        lines = data[self.end_index].splitlines()
+        lines[len(lines) - 2] += "\nM141 S" + str(self.orig_bv_temp) + " ; ChangeAtZ: Reset Build Volume Temperature"
+        data[self.end_index] = "\n".join(lines) + "\n"
+        return data
+
+    def _change_hotend_temp(self, data:str)->str:
+        """
+        Changes to the hot end temperature(s).
+        :params:
+            extruders_share_heater: Lets the script know how to handle the differences
+            active_tool: Tracks the active tool through the gcode
+            new_hotend_temp_0: The new temperature for the primary extruder T0
+            orig_hot_end_temp_0: The print temperature for the primary extruder T0 as set in Cura
+            orig_standby_temp_0: The standby temperature for the primary extruder T0 from Cura.  This marks a temperature line to ignore.
+            new_hotend_temp_1: The new temperature for the secondary extruder T1
+            orig_hot_end_temp_1: The print temperature for the secondary extruder T1 as set in Cura
+            orig_standby_temp_1: The standby temperature for the secondary extruder T1 from Cura.  This marks a temperature line to ignore.
+        """
+        extruders_share_heater = bool(self.global_stack.getProperty("machine_extruders_share_heater", "value"))
+        self.active_tool = "T0"
+        self.new_hotend_temp_0 = self.getSettingValueByKey("f_extruder_temperature_t0")
+        self.orig_hot_end_temp_0 = int(self.extruder_list[0].getProperty("material_print_temperature", "value"))
+        self.orig_standby_temp_0 = int(self.extruder_list[0].getProperty("material_standby_temperature", "value"))
+
+        # Start with single extruder machines
+        if self.extruder_count == 1:
+            if self.start_index == 2:
+                if "M104 S" in data[2]:
+                    data[2] = re.sub("M104 S", ";M104 S", data[2])
+                if "M104 S" in data[3]:
+                    data[3] = re.sub("M104 S", ";M104 S", data[3])
+            # Add the temperature change at the beginning of the start layer
+            lines = data[self.start_index].splitlines()
+            for index, line in enumerate(lines):
+                lines[0] += "\n" + "M104 S" + str(self.new_hotend_temp_0) + " ; ChangeAtZ: Change Nozzle Temperature"
+                data[self.start_index] = "\n".join(lines) + "\n"
+                break
+            # Revert the temperature to the Cura setting at the end of the end layer
+            lines = data[self.end_index].splitlines()
+            for index, line in enumerate(lines):
+                lines[len(lines) - 2] += "\n" + "M104 S" + str(self.orig_hot_end_temp_0) + " ; ChangeAtZ: Reset Nozzle Temperature"
+                data[self.end_index] = "\n".join(lines) + "\n"
+                break
+
+        # Multi-extruder machines
+        elif self.extruder_count > 1:
+            self.new_hotend_temp_1 = self.getSettingValueByKey("f_extruder_temperature_t1")
+            self.orig_hot_end_temp_1 = int(self.extruder_list[1].getProperty("material_print_temperature", "value"))
+            self.orig_standby_temp_1 = int(self.extruder_list[1].getProperty("material_standby_temperature", "value"))
+            # Track the tool number up to the start of the start layer
+            self.getTool("T0")
+            for index, layer in enumerate(data):
+                lines = layer.split("\n")
+                for line in lines:
+                    if line.startswith("T"):
+                        self.getTool(line)
+                if index == self.start_index - 1:
+                    break
+            # Add the active extruder initial temperature change at the start of the starting layer
+            data[self.start_index] = data[self.start_index].replace("\n", f"\nM104 S{self.active_print_temp} ; ChangeAtZ: Start Temperature Change\n",1)
+            # At the start layer commence making the changes
+            for index, layer in enumerate(data):
+                if index < self.start_index:
+                    continue
+                if index > self.end_index:
+                    break
+                lines = layer.splitlines()
+                for l_index, line in enumerate(lines):
+                    # Continue to track the tool number
+                    if line.startswith("T"):
+                        self.getTool(line)
+                    if line.startswith("M109"):
+                        lines[l_index] = f"M109 S{self.active_print_temp} ; ChangeAtZ: Alter temperature"
+                    elif line.startswith("M104"):
+                        if self.getValue(line, "S") == self.inactive_standby_temp:
+                            continue
+                        elif self.getValue(line, "S") == self.inactive_tool_orig_temp:
+                            lines[l_index] = re.sub("S(\d+|\d.+)", f"S{self.inactive_print_temp} ; ChangeAtZ: Alter temperature", line)
+                        elif self.getValue(line, "S") == self.active_tool_orig_temp:
+                            lines[l_index] = re.sub("S(\d+|\d.+)", f"S{self.active_print_temp} ; ChangeAtZ: Alter temperature", line)
+                data[index] = "\n".join(lines) + "\n"
+            # Revert the active extruder temperature at the end of the changes
+            lines = data[self.end_index].split("\n")
+            lines[len(lines) - 3] += f"\nM104 {self.active_tool} S{self.active_tool_orig_temp} ; ChangeAtZ: Original Temperature active tool"
+            data[self.end_index] = "\n".join(lines)
+        return data
+
+    def getTool(self, line):
+        if line.startswith("T1"):
+            self.active_tool = "T1"
+            self.active_tool_orig_temp = self.orig_hot_end_temp_1
+            self.active_print_temp = self.new_hotend_temp_1
+            self.inactive_tool = "T0"
+            self.inactive_tool_orig_temp = self.orig_hot_end_temp_0
+            self.inactive_print_temp = self.new_hotend_temp_0
+            self.inactive_standby_temp = self.orig_standby_temp_0
+        else:
+            self.active_tool = "T0"
+            self.active_tool_orig_temp = self.orig_hot_end_temp_0
+            self.active_print_temp = self.new_hotend_temp_0
+            self.inactive_tool = "T1"
+            self.inactive_tool_orig_temp = self.orig_hot_end_temp_1
+            self.inactive_print_temp = self.new_hotend_temp_1
+            self.inactive_standby_temp = self.orig_standby_temp_1
+        return
+
+    def _change_retract(self, data:str)->str:
+        """
+        This is for single extruder printers only (tool change retractions get in the way for multi-extruders).
+        Depending on the selected options, this will change the Retraction Speeds and Prime Speeds, and the Retraction Distance.  NOTE: The retraction and prime speeds will be the same.
+        :params:
+            speed_retract_0:  The set retraction and prime speed from Cura.
+            retract_amt_0:  The set retraction distance from Cura
+            change_retract_amt:  Boolean to trip changing the retraction distance
+            change_retract_speed:  Boolean to trip changing the speeds
+            new_retract_amt:  The new retraction amount to use from this script settings.
+            new_retract_speed:  The new retract and prime speed from this script settings.
+            firmware_start_str:  The string to insert for changes to firmware retraction
+            firmware_reset:  The last insertion for firmware retraction will set the numbers back to the settings in Cura.
+            is_retracted:  Tracks the end of the filament location
+            cur_e:  The current location of the extruder
+            prev_e:  The location of where the extruder was before the current e
+        """
+        if not self.retract_enabled:
+            return
+        speed_retract_0 = int(self.extruder_list[0].getProperty("retraction_speed", "value") * 60)
+        retract_amt_0 = self.extruder_list[0].getProperty("retraction_amount", "value")
+        change_retract_amt = self.getSettingValueByKey("g_change_retract_amount")
+        change_retract_speed = self.getSettingValueByKey("g_change_retract_speed")
+        new_retract_speed = int(self.getSettingValueByKey("g_retract_speed") * 60)
+        new_retract_amt = self.getSettingValueByKey("g_retract_amount")
+
+        if self.firmware_retraction:
+            lines = data[self.start_index].splitlines()
+            firmware_start_str = "\nM207"
+            if change_retract_speed:
+                firmware_start_str += " F" + str(new_retract_speed)
+            if change_retract_amt:
+                firmware_start_str += " S" + str(new_retract_amt)
+            firmware_start_str += f" ; ChangeAtZ: Alter Firmware Retract\nM208 F{new_retract_speed} ; ChangeAtZ: Alter Firmware Prime"
+            lines[0] += firmware_start_str
+            data[self.start_index] = "\n".join(lines) + "\n"
+            lines = data[self.end_index].splitlines()
+            firmware_reset = f"M207 F{speed_retract_0} S{retract_amt_0} ; ChangeAtZ: Reset Firmware Retract\nM208 S{speed_retract_0} ; ChangeAtZ: Reset Firmware Prime"
+            if len(lines) < 2:
+                lines.append(firmware_reset)
+            else:
+                lines[len(lines) - 1] += "\n" + firmware_reset
+            data[self.end_index] = "\n".join(lines) + "\n"
+            return data
+
+        if not self.firmware_retraction:
+            prev_e = 0
+            cur_e = 0
+            is_retracted = False
+            for num in range(1, self.start_index - 1):
+                lines = data[num].splitlines()
+                for line in lines:
+                    if " E" in line:
+                        cur_e = self.getValue(line, "E")
+                        prev_e = cur_e
+            for num in range(self.start_index, self.end_index):
+                lines = data[num].splitlines()
+                for index, line in enumerate(lines):
+                    if line == "G92 E0":
+                        cur_e = 0
+                        prev_e = 0
+                        continue
+                    if " E" in line and self.getValue(line, "E") is not None:
+                        cur_e = self.getValue(line, "E")
+                    if cur_e >= prev_e and " X" in line and " Y" in line:
+                        prev_e = cur_e
+                        is_retracted = False
+                        continue
+                    if " F" in line and " E" in line and not " X" in line and not " Z" in line:
+                        cur_speed = self.getValue(line, "F")
+                        if cur_e < prev_e:
+                            is_retracted = True
+                            new_e = prev_e - new_retract_amt
+                            if not self.relative_extrusion:
+                                if change_retract_amt:
+                                    lines[index] = lines[index].replace("E" + str(cur_e), "E" + str(new_e))
+                                    prev_e = new_e
+                                if change_retract_speed:
+                                    lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
+                            elif self.relative_extrusion:
+                                if change_retract_amt:
+                                    lines[index] = lines[index].replace("E" + str(cur_e), "E-" + str(new_retract_amt))
+                                    prev_e = 0
+                                if change_retract_speed:
+                                    lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
+                            lines[index] += " ; ChangeAtZ: Alter retract"
+                        else:
+                            # Prime line
+                            if change_retract_speed:
+                                lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
+                                prev_e = cur_e
+                            if self.relative_extrusion:
+                                if change_retract_amt:
+                                    lines[index] = lines[index].replace("E" + str(cur_e), "E" + str(new_retract_amt))
+                                prev_e = 0
+                            lines[index] += " ; ChangeAtZ: Alter retract"
+                            is_retracted = False
+                data[num] = "\n".join(lines) + "\n"
+
+            # If the changes end before the last layer and the filament is retracted, then adjust the first prime of the next layer so it doesn't blob.
+            if is_retracted and self.getSettingValueByKey("a_end_layer") != -1:
+                layer = data[self.end_index]
+                lines = layer.splitlines()
+                for index, line in enumerate(lines):
+                    if " X" in line and " Y" in line and " E" in line:
+                        break
+                    if " F" in line and " E" in line and not " X" in line and not " Z" in line:
+                        cur_e = self.getValue(line, "E")
+                        if not self.relative_extrusion:
+                            new_e = prev_e + new_retract_amt
+                            if change_retract_amt:
+                                lines[index] = lines[index].replace("E" + str(cur_e), "E" + str(new_e)) + " ; ChangeAtZ: Alter retract"
+                                break
+                        elif self.relative_extrusion:
+                            if change_retract_amt:
+                                lines[index] = lines[index].replace("E" + str(cur_e), "E" + str(new_retract_amt)) + " ; ChangeAtZ: Alter retract"
+                                break
+                data[self.end_index] = "\n".join(lines) + "\n"
+        return data
+
+    def _format_lines(self, temp_data: str) -> str:
+        """
+        This adds '-' as padding so the setting descriptions are more readable in the gcode
+        """
+        for l_index, layer in enumerate(temp_data):
+            lines = layer.split("\n")
+            for index, line in enumerate(lines):
+                if "; ChangeAtZ:" in line:
+                    lines[index] = lines[index].split(";")[0] + ";" + ("-" * (40 - len(lines[index].split(";")[0]))) + lines[index].split(";")[1]
+            temp_data[l_index] = "\n".join(lines)
+        return temp_data
+
+    def _change_bv_fan_speed(self, temp_data: str) -> str:
+        """
+        This can be used to control any fan.  Typically this would be an Auxilliary or Build Volume fan
+        :params:
+            bv_fan_nr:  The 'P' number of the fan
+            bv_fan_speed:  The new speed for the fan
+            orig_bv_fan_speed:  The reset speed.  This is currently always "0" as the fan speed may not exist in Cura, or the fan might be 'on-off' and not PWM controlled.
+        """
+        if not self.getSettingValueByKey("enable_bv_fan_change"):
+            return temp_data
+        bv_fan_nr = self.getSettingValueByKey("bv_fan_nr")
+        bv_fan_speed = self.getSettingValueByKey("e1_build_volume_fan_speed")
+        orig_bv_fan_speed = 0
+        if bool(self.extruder_list[0].getProperty("machine_scale_fan_speed_zero_to_one", "value")):
+            bv_fan_speed = round(bv_fan_speed * 0.01, 2)
+            orig_bv_fan_speed = round(orig_bv_fan_speed * 0.01, 2)
+        else:
+            bv_fan_speed = round(bv_fan_speed * 2.55)
+            orig_bv_fan_speed = round(orig_bv_fan_speed * 2.55)
+
+        # Add the changes to the gcode
+        for index, layer in enumerate(temp_data):
+            if index == self.start_index:
+                lines = layer.split("\n")
+                lines.insert(1, f"M106 S{bv_fan_speed} P{bv_fan_nr} ; ChangeAtZ: Change Build Volume Fan Speed")
+                temp_data[index] = "\n".join(lines)
+            if index == self.end_index:
+                lines = layer.split("\n")
+                lines.insert(len(lines) - 2, f"M106 S{orig_bv_fan_speed} P{bv_fan_nr} ; ChangeAtZ: Reset Build Volume Fan Speed")
+                temp_data[index] = "\n".join(lines)
+        return temp_data
+
+    # Get the starting index or ending index of the change range when 'By Height'
+    def _is_legal_z(self, data: str, the_height: float) -> int:
+        """
+        When in 'By Height' mode, this will return the index of the layer where the working Z is >= the Starting Z height, or the index of the layer where the working Z >= the Ending Z height
+        :params:
+            max_z:  The maximum Z height within the Gcode.  This is used to determine the upper limit of the data list that should be returned.
+            the_height:  The user input height.  This will be adjusted if rafts are enabled and/or Z-hops are enabled
+            cur_z:  Is the current Z height as tracked through the gcode
+            the_index:  The number to return.
+        """
+        # The height passed down cannot exceed the height of the model or the search for the Z fails
+        lines = data[0].split("\n")
+        for line in lines:
+            if "MAXZ" in line or "MAX.Z" in line:
+                max_z = float(line.split(":")[1])
+                break
+        if the_height > max_z:
+            the_height = max_z
+
+        starting_z = 0
+        the_index = 0
+
+        # The start height varies depending whether or not rafts are enabled and whether Z-hops are enabled.
+        if str(self.global_stack.getProperty("adhesion_type", "value")) == "raft":
+            # If z-hops are enabled then start looking for the working Z after layer:0
+            if self.z_hop_enabled:
+                for layer in data:
+                    if ";LAYER:0" in layer:
+                        lines = layer.splitlines()
+                        for index, line in enumerate(lines):
+                            try:
+                                if " Z" in line and " E" in lines[index + 1]:
+                                    starting_z = round(float(self.getValue(line, "Z")),2)
+                                    the_height += starting_z
+                                    break
+                            # If the layer ends without an extruder move following the Z line, then just jump out
+                            except IndexError:
+                                starting_z = round(float(self.getValue(line, "Z")),2)
+                                the_height += starting_z
+                                break
+
+            # If Z-hops are disabled, then look for the starting Z from the start of the raft up to Layer:0
+            else:
+                for layer in data:
+                    lines = layer.splitlines()
+                    for index, line in enumerate(lines):
+                        # This try/except catches comments in the startup gcode
+                        try:
+                            if " Z" in line and " E" in lines[index - 1]:
+                                starting_z = float(self.getValue(line, "Z"))
+                        except TypeError:
+                            # Just pass beause there will be further Z values
+                            pass
+                        if ";LAYER:0" in line:
+                            the_height += starting_z
+                            break
+
+        for index, layer in enumerate(data):
+            # Skip over the opening paragraph and StartUp Gcode
+            if index < 2:
                 continue
-
-            # save into our changed
-            changed[key] = self.lastValues[key]
-
-        # return our collection of changed values
-        return changed
-
-    # Builds the relevant display feedback for each of the values
-    def getDisplayChangesFromValues(self, values: Dict[str, any]) -> str:
-
-        # stop here if we're not outputting data
-        if not self.displayChangesToLcd:
-            return ""
-
-        # will hold all the default settings for the target layer
-        codes = []
-
-        # looking for wait for bed temp
-        if "bedTemp" in values:
-            codes.append("BedTemp: " + str(round(values["bedTemp"])))
-
-        # looking for wait for Build Volume Temperature
-        if "buildVolumeTemperature" in values:
-            codes.append("buildVolumeTemperature: " + str(round(values["buildVolumeTemperature"])))
-
-        # set our extruder one temp (if specified)
-        if "extruderOne" in values:
-            codes.append("Extruder 1 Temp: " + str(round(values["extruderOne"])))
-
-        # set our extruder two temp (if specified)
-        if "extruderTwo" in values:
-            codes.append("Extruder 2 Temp: " + str(round(values["extruderTwo"])))
-
-        # set global flow rate
-        if "flowrate" in values:
-            codes.append("Extruder A Flow Rate: " + str(values["flowrate"]))
-
-        # set extruder 0 flow rate
-        if "flowrateOne" in values:
-            codes.append("Extruder 1 Flow Rate: " + str(values["flowrateOne"]))
-
-        # set second extruder flow rate
-        if "flowrateTwo" in values:
-            codes.append("Extruder 2 Flow Rate: " + str(values["flowrateTwo"]))
-
-        # set our fan speed
-        if "fanSpeed" in values:
-            codes.append("Fan Speed: " + str(values["fanSpeed"]))
-
-        # set feedrate percentage
-        if "speed" in values:
-            codes.append("Print Speed: " + str(values["speed"]))
-
-        # set print rate percentage
-        if "printspeed" in values:
-            codes.append("Linear Print Speed: " + str(values["printspeed"]))
-
-        # set retract rate
-        if "retractfeedrate" in values:
-            codes.append("Retract Feed Rate: " + str(values["retractfeedrate"]))
-
-        # set retract length
-        if "retractlength" in values:
-            codes.append("Retract Length: " + str(values["retractlength"]))
-
-        # stop here if there's nothing to output
-        if len(codes) == 0:
-            return ""
-
-        # output our command to display the data
-        return "M117 " + ", ".join(codes) + "\n"
-
-    # Converts the last values to something that can be output on the LCD
-    def getLastDisplayValues(self) -> str:
-
-        # convert our last values to something we can output
-        return self.getDisplayChangesFromValues(self.getChangedLastValues())
-
-    # Converts the target values to something that can be output on the LCD
-    def getTargetDisplayValues(self) -> str:
-
-        # convert our target values to something we can output
-        return self.getDisplayChangesFromValues(self.targetValues)
-
-    # Builds the the relevant GCODE lines from the given collection of values
-    def getCodeFromValues(self, values: Dict[str, any]) -> str:
-
-        # will hold all the desired settings for the target layer
-        codes = self.getCodeLinesFromValues(values)
-
-        # stop here if there are no values that require changing
-        if len(codes) == 0:
-            return ""
-
-        # return our default block for this layer
-        return ";[CAZD:\n" + "\n".join(codes) + "\n;:CAZD]"
-
-    # Builds the relevant GCODE lines from the given collection of values
-    def getCodeLinesFromValues(self, values: Dict[str, any]) -> List[str]:
-
-        # will hold all the default settings for the target layer
-        codes = []
-
-        # looking for wait for bed temp
-        if "bedTemp" in values:
-            codes.append("M140 S" + str(values["bedTemp"]))
-
-        # looking for wait for Build Volume Temperature
-        if "buildVolumeTemperature" in values:
-            codes.append("M141 S" + str(values["buildVolumeTemperature"]))
-
-        # set our extruder one temp (if specified)
-        if "extruderOne" in values:
-            codes.append("M104 S" + str(values["extruderOne"]) + " T0")
-
-        # set our extruder two temp (if specified)
-        if "extruderTwo" in values:
-            codes.append("M104 S" + str(values["extruderTwo"]) + " T1")
-
-        # set our fan speed
-        if "fanSpeed" in values:
-
-            # convert our fan speed percentage to PWM
-            fan_speed = int((float(values["fanSpeed"]) / 100.0) * 255)
-
-            # add our fan speed to the defaults
-            codes.append("M106 S" + str(fan_speed))
-
-        # set global flow rate
-        if "flowrate" in values:
-            codes.append("M221 S" + str(values["flowrate"]))
-
-        # set extruder 0 flow rate
-        if "flowrateOne" in values:
-            codes.append("M221 S" + str(values["flowrateOne"]) + " T0")
-
-        # set second extruder flow rate
-        if "flowrateTwo" in values:
-            codes.append("M221 S" + str(values["flowrateTwo"]) + " T1")
-
-        # set feedrate percentage
-        if "speed" in values:
-            codes.append("M220 S" + str(values["speed"]) + "")
-
-        # set print rate percentage
-        if "printspeed" in values:
-            codes.append(";PRINTSPEED " + str(values["printspeed"]) + "")
-
-        # set retract rate
-        if "retractfeedrate" in values:
-
-            if self.linearRetraction:
-                codes.append(";RETRACTFEEDRATE " + str(values["retractfeedrate"] * 60) + "")
-            else:
-                codes.append("M207 F" + str(values["retractfeedrate"] * 60) + "")
-
-        # set retract length
-        if "retractlength" in values:
-
-            if self.linearRetraction:
-                codes.append(";RETRACTLENGTH " + str(values["retractlength"]) + "")
-            else:
-                codes.append("M207 S" + str(values["retractlength"]) + "")
-
-        return codes
-
-    # Builds the restored layer settings based on the previous settings and returns the relevant GCODE lines
-    def getLastValues(self) -> str:
-
-        # build the gcode to restore our last values
-        return self.getCodeFromValues(self.getChangedLastValues())
-
-    # Builds the gcode to inject either the changed values we want or restore the previous values
-    def getInjectCode(self) -> str:
-
-        # if we're now outside of our target layer and haven't restored our last values, do so now
-        if not self.insideTargetLayer and self.wasInsideTargetLayer and not self.lastValuesRestored:
-
-            # mark that we've injected the last values
-            self.lastValuesRestored = True
-
-            # inject the defaults
-            return self.getLastValues() + "\n" + self.getLastDisplayValues()
-
-        # if we're inside our target layer but haven't added our values yet, do so now
-        if self.insideTargetLayer and not self.targetValuesInjected:
-
-            # mark that we've injected the target values
-            self.targetValuesInjected = True
-
-            # inject the defaults
-            return self.getTargetValues() + "\n" + self.getTargetDisplayValues()
-
-        # nothing to do
-        return ""
-
-    # Returns the unmodified GCODE line from previous ChangeAtZ edits
-    @staticmethod
-    def getOriginalLine(line: str) -> str:
-
-        # get the change at z original (cazo) details
-        original_line = re.search(r"\[CAZO:(.*?):CAZO\]", line)
-
-        # if we didn't get a hit, this is the original line
-        if original_line is None:
-            return line
-
-        return original_line.group(1)
-
-    # Builds the target layer settings based on the specified values and returns the relevant GCODE lines
-    def getTargetValues(self) -> str:
-
-        # build the gcode to change our current values
-        return self.getCodeFromValues(self.targetValues)
-
-    # Determines if the current line is at or below the target required to start modifying
-    def isTargetLayerOrHeight(self) -> bool:
-
-        # target selected by layer no.
-        if self.targetByLayer:
-
-            # if we don't have a current layer, we're not there yet
-            if self.currentLayer is None:
-                return False
-
-            # if we're applying to a single layer, stop if our layer is not identical
-            if self.applyToSingleLayer:
-                return self.currentLayer == self.targetLayer
-            else:
-                return self.currentLayer >= self.targetLayer
-
-        else:
-
-            # if we don't have a current Z, we're not there yet
-            if self.currentZ is None:
-                return False
-
-            # if we're applying to a single layer, stop if our Z is not identical
-            if self.applyToSingleLayer:
-                return self.currentZ == self.targetZ
-            else:
-                return self.currentZ >= self.targetZ
-
-    # Marks any current ChangeAtZ layer defaults in the layer for deletion
-    @staticmethod
-    def markChangesForDeletion(layer: str):
-        return re.sub(r";\[CAZD:", ";[CAZD:DELETE:", layer)
-
-    # Grabs the current height
-    def processLayerHeight(self, line: str):
-
-        # stop here if we haven't entered a layer yet
-        if self.currentLayer is None:
-            return
-
-        # get our gcode command
-        command = GCodeCommand.getFromLine(line)
-
-        # skip if it's not a command we're interested in
-        if command is None:
-            return
-
-        # stop here if this isn't a linear move command
-        if command.command != "G0" and command.command != "G1":
-            return
-
-        # get our value from the command
-        current_z = command.getArgumentAsFloat("Z", None)
-
-        # stop here if we don't have a Z value defined, we can't get the height from this command
-        if current_z is None:
-            return
-
-        # stop if there's no change
-        if current_z == self.currentZ:
-            return
-
-        # set our current Z value
-        self.currentZ = current_z
-
-        # if we don't have a layer height yet, set it based on the current Z value
-        if self.layerHeight is None:
-            self.layerHeight = self.currentZ
-
-    # Grabs the current layer number
-    def processLayerNumber(self, line: str):
-
-        # if this isn't a layer comment, stop here, nothing to update
-        if ";LAYER:" not in line:
-            return
-
-        # get our current layer number
-        current_layer = GCodeCommand.getDirectArgumentAsInt(line, ";LAYER:", None)
-
-        # this should never happen, but if our layer number hasn't changed, stop here
-        if current_layer == self.currentLayer:
-            return
-
-        # update our current layer
-        self.currentLayer = current_layer
-
-    # Makes any linear move changes and also injects either target or restored values depending on the plugin state
-    def processLine(self, line: str) -> str:
-
-        # used to change the given line of code
-        modified_gcode = ""
-
-        # track any values that we may be interested in
-        self.trackChangeableValues(line)
-
-        # if we're not inside the target layer, simply read the any
-        # settings we can and revert any ChangeAtZ deletions
-        if not self.insideTargetLayer:
-
-            # read any settings if we haven't hit our target layer yet
-            if not self.wasInsideTargetLayer:
-                self.processSetting(line)
-
-            # if we haven't hit our target yet, leave the defaults as is (unmark them for deletion)
-            if "[CAZD:DELETE:" in line:
-                line = line.replace("[CAZD:DELETE:", "[CAZD:")
-
-        # if we're targeting by Z, we want to add our values before the first linear move
-        if "G1 " in line or "G0 " in line:
-            modified_gcode += self.getInjectCode()
-
-        # modify our command if we're still inside our target layer, otherwise pass unmodified
-        if self.insideTargetLayer:
-            modified_gcode += self.processLinearMove(line) + "\n"
-        else:
-            modified_gcode += line + "\n"
-
-        # if we're targeting by layer we want to add our values just after the layer label
-        if ";LAYER:" in line:
-            modified_gcode += self.getInjectCode()
-
-        # return our changed code
-        return modified_gcode
-
-    # Handles any linear moves in the current line
-    def processLinearMove(self, line: str) -> str:
-
-        # if it's not a linear motion command we're not interested
-        if not ("G1 " in line or "G0 " in line):
-            return line
-
-        # always get our original line, otherwise the effect will be cumulative
-        line = self.getOriginalLine(line)
-
-        # get our command from the line
-        linear_command = GCodeCommand.getLinearMoveCommand(line)
-
-        # if it's not a linear move, we don't care
-        if linear_command is None:
-            return line
-
-        # get our linear move parameters
-        feed_rate = linear_command.arguments["F"]
-        x_coord = linear_command.arguments["X"]
-        y_coord = linear_command.arguments["Y"]
-        z_coord = linear_command.arguments["Z"]
-        extrude_length = linear_command.arguments["E"]
-
-        # set our new line to our old line
-        new_line = line
-
-        # handle retract length
-        new_line = self.processRetractLength(extrude_length, feed_rate, new_line, x_coord, y_coord, z_coord)
-
-        # handle retract feed rate
-        new_line = self.processRetractFeedRate(extrude_length, feed_rate, new_line, x_coord, y_coord, z_coord)
-
-        # handle print speed adjustments
-        if extrude_length is not None:  # Only for extrusion moves.
-            new_line = self.processPrintSpeed(feed_rate, new_line)
-
-        # set our current extrude position
-        self.lastE = extrude_length if extrude_length is not None else self.lastE
-
-        # if no changes have been made, stop here
-        if new_line == line:
-            return line
-
-        # return our updated command
-        return self.setOriginalLine(new_line, line)
-
-    # Handles any changes to print speed for the given linear motion command
-    def processPrintSpeed(self, feed_rate: float, new_line: str) -> str:
-
-        # if we're not setting print speed or we don't have a feed rate, stop here
-        if "printspeed" not in self.targetValues or feed_rate is None:
-            return new_line
-
-        # get our requested print speed
-        print_speed = int(self.targetValues["printspeed"])
-
-        # if they requested no change to print speed (ie: 100%), stop here
-        if print_speed == 100:
-            return new_line
-
-        # get our feed rate from the command
-        feed_rate = GCodeCommand.getDirectArgumentAsFloat(new_line, "F") * (float(print_speed) / 100.0)
-
-        # change our feed rate
-        return GCodeCommand.replaceDirectArgument(new_line, "F", feed_rate)
-
-    # Handles any changes to retraction length for the given linear motion command
-    def processRetractLength(self, extrude_length: float, feed_rate: float, new_line: str, x_coord: float, y_coord: float, z_coord: float) -> str:
-
-        # if we don't have a retract length in the file we can't add one
-        if "retractlength" not in self.lastValues or self.lastValues["retractlength"] == 0:
-            return new_line
-
-        # if we're not changing retraction length, stop here
-        if "retractlength" not in self.targetValues:
-            return new_line
-
-        # retractions are only F (feed rate) and E (extrude), at least in cura
-        if x_coord is not None or y_coord is not None or z_coord is not None:
-            return new_line
-
-        # since retractions require both F and E, and we don't have either, we can't process
-        if feed_rate is None or extrude_length is None:
-            return new_line
-
-        # stop here if we don't know our last extrude value
-        if self.lastE is None:
-            return new_line
-
-        # if there's no change in extrude we have nothing to change
-        if self.lastE == extrude_length:
-            return new_line
-
-        # if our last extrude was lower than our current, we're restoring, so skip
-        if self.lastE < extrude_length:
-            return new_line
-
-        # get our desired retract length
-        retract_length = float(self.targetValues["retractlength"])
-
-        # subtract the difference between the default and the desired
-        extrude_length -= (retract_length - self.lastValues["retractlength"])
-
-        # replace our extrude amount
-        return GCodeCommand.replaceDirectArgument(new_line, "E", extrude_length)
-
-    # Used for picking out the retract length set by Cura
-    def processRetractLengthSetting(self, line: str):
-
-        # skip if we're not doing linear retractions
-        if not self.linearRetraction:
-            return
-
-        # get our command from the line
-        linear_command = GCodeCommand.getLinearMoveCommand(line)
-
-        # if it's not a linear move, we don't care
-        if linear_command is None:
-            return
-
-        # get our linear move parameters
-        feed_rate = linear_command.arguments["F"]
-        x_coord = linear_command.arguments["X"]
-        y_coord = linear_command.arguments["Y"]
-        z_coord = linear_command.arguments["Z"]
-        extrude_length = linear_command.arguments["E"]
-
-        # the command we're looking for only has extrude and feed rate
-        if x_coord is not None or y_coord is not None or z_coord is not None:
-            return
-
-        # if either extrude or feed is missing we're likely looking at the wrong command
-        if extrude_length is None or feed_rate is None:
-            return
-
-        # cura stores the retract length as a negative E just before it starts printing
-        extrude_length = extrude_length * -1
-
-        # if it's a negative extrude after being inverted, it's not our retract length
-        if extrude_length < 0:
-            return
-
-        # what ever the last negative retract length is it wins
-        self.lastValues["retractlength"] = extrude_length
-
-    # Handles any changes to retraction feed rate for the given linear motion command
-    def processRetractFeedRate(self, extrude_length: float, feed_rate: float, new_line: str, x_coord: float, y_coord: float, z_coord: float) -> str:
-
-        # skip if we're not doing linear retractions
-        if not self.linearRetraction:
-            return new_line
-
-        # if we're not changing retraction length, stop here
-        if "retractfeedrate" not in self.targetValues:
-            return new_line
-
-        # retractions are only F (feed rate) and E (extrude), at least in cura
-        if x_coord is not None or y_coord is not None or z_coord is not None:
-            return new_line
-
-        # since retractions require both F and E, and we don't have either, we can't process
-        if feed_rate is None or extrude_length is None:
-            return new_line
-
-        # get our desired retract feed rate
-        retract_feed_rate = float(self.targetValues["retractfeedrate"])
-
-        # convert to units/min
-        retract_feed_rate *= 60
-
-        # replace our feed rate
-        return GCodeCommand.replaceDirectArgument(new_line, "F", retract_feed_rate)
-
-    # Used for finding settings in the print file before we process anything else
-    def processSetting(self, line: str):
-
-        # if we're in layers already we're out of settings
-        if self.currentLayer is not None:
-            return
-
-        # check our retract length
-        self.processRetractLengthSetting(line)
-
-    # Sets the flags if we're at the target layer or not
-    def processTargetLayer(self):
-
-        # skip this line if we're not there yet
-        if not self.isTargetLayerOrHeight():
-
-            # flag that we're outside our target layer
-            self.insideTargetLayer = False
-
-            # skip to the next line
-            return
-
-        # flip if we hit our target layer
-        self.wasInsideTargetLayer = True
-
-        # flag that we're inside our target layer
-        self.insideTargetLayer = True
-
-    # Removes all the ChangeAtZ layer defaults from the given layer
-    @staticmethod
-    def removeMarkedChanges(layer: str) -> str:
-        return re.sub(r";\[CAZD:DELETE:[\s\S]+?:CAZD\](\n|$)", "", layer)
-
-    # Resets the class contents to defaults
-    def reset(self):
-
-        self.targetValues = {}
-        self.applyToSingleLayer = False
-        self.lastE = None
-        self.currentZ = None
-        self.currentLayer = None
-        self.targetByLayer = True
-        self.targetLayer = None
-        self.targetZ = None
-        self.layerHeight = None
-        self.lastValues = {"speed": 100}
-        self.linearRetraction = True
-        self.insideTargetLayer = False
-        self.targetValuesInjected = False
-        self.lastValuesRestored = False
-        self.wasInsideTargetLayer = False
-        self.enabled = True
-
-    # Sets the original GCODE line in a given GCODE command
-    @staticmethod
-    def setOriginalLine(line, original) -> str:
-        return line + ";[CAZO:" + original + ":CAZO]"
-
-    # Tracks the change in gcode values we're interested in
-    def trackChangeableValues(self, line: str):
-
-        # simulate a print speed command
-        if ";PRINTSPEED" in line:
-            line = line.replace(";PRINTSPEED ", "M220 S")
-
-        # simulate a retract feedrate command
-        if ";RETRACTFEEDRATE" in line:
-            line = line.replace(";RETRACTFEEDRATE ", "M207 F")
-
-        # simulate a retract length command
-        if ";RETRACTLENGTH" in line:
-            line = line.replace(";RETRACTLENGTH ", "M207 S")
-
-        # get our gcode command
-        command = GCodeCommand.getFromLine(line)
-
-        # stop here if it isn't a G or M command
-        if command is None:
-            return
-
-        # handle retract length changes
-        if command.command == "M207":
-
-            # get our retract length if provided
-            if "S" in command.arguments:
-                self.lastValues["retractlength"] = command.getArgumentAsFloat("S")
-
-            # get our retract feedrate if provided, convert from mm/m to mm/s
-            if "F" in command.arguments:
-                self.lastValues["retractfeedrate"] = command.getArgumentAsFloat("F") / 60.0
-
-            # move to the next command
-            return
-
-        # handle bed temp changes
-        if command.command == "M140" or command.command == "M190":
-
-            # get our bed temp if provided
-            if "S" in command.arguments:
-                self.lastValues["bedTemp"] = command.getArgumentAsFloat("S")
-
-            # move to the next command
-            return
-
-        # handle Build Volume Temperature changes, really shouldn't want to wait for enclousure temp mid print though.
-        if command.command == "M141" or command.command == "M191":
-
-            # get our bed temp if provided
-            if "S" in command.arguments:
-                self.lastValues["buildVolumeTemperature"] = command.getArgumentAsFloat("S")
-
-            # move to the next command
-            return
-
-        # handle extruder temp changes
-        if command.command == "M104" or command.command == "M109":
-
-            # get our temperature
-            temperature = command.getArgumentAsFloat("S")
-
-            # don't bother if we don't have a temperature
-            if temperature is None:
-                return
-
-            # get our extruder, default to extruder one
-            extruder = command.getArgumentAsInt("T", None)
-
-            # set our extruder temp based on the extruder
-            if extruder is None or extruder == 0:
-                self.lastValues["extruderOne"] = temperature
-
-            if extruder is None or extruder == 1:
-                self.lastValues["extruderTwo"] = temperature
-
-            # move to the next command
-            return
-
-        # handle fan speed changes
-        if command.command == "M106":
-
-            # get our bed temp if provided
-            if "S" in command.arguments:
-                self.lastValues["fanSpeed"] = (command.getArgumentAsInt("S") / 255.0) * 100
-
-            # move to the next command
-            return
-
-        # handle flow rate changes
-        if command.command == "M221":
-
-            # get our flow rate
-            temperature = command.getArgumentAsFloat("S")
-
-            # don't bother if we don't have a flow rate (for some reason)
-            if temperature is None:
-                return
-
-            # get our extruder, default to global
-            extruder = command.getArgumentAsInt("T", None)
-
-            # set our extruder temp based on the extruder
-            if extruder is None:
-                self.lastValues["flowrate"] = temperature
-            elif extruder == 1:
-                self.lastValues["flowrateOne"] = temperature
-            elif extruder == 1:
-                self.lastValues["flowrateTwo"] = temperature
-
-            # move to the next command
-            return
-
-        # handle print speed changes
-        if command.command == "M220":
-
-            # get our speed if provided
-            if "S" in command.arguments:
-                self.lastValues["speed"] = command.getArgumentAsInt("S")
-
-            # move to the next command
-            return
+            lines = layer.splitlines()
+            for z_index, line in enumerate(lines):
+                if line[0:3] in ["G0 ", "G1 ", "G2 ", "G3 "] and index <= self.end_index:
+                    if " Z" in line:
+                        cur_z = float(self.getValue(line, "Z"))
+                    if cur_z >= the_height and lines[z_index - 1].startswith(";TYPE:"):
+                        the_index = index
+                        break
+            if the_index > 0:
+                break
+
+        # Catch-all to insure an entry of the 'model_height'.  This allows the changes to continue to the end of the top layer
+        if the_height >= max_z:
+            the_index = len(data) - 2
+        return the_index
