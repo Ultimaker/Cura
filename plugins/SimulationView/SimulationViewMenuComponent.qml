@@ -227,29 +227,52 @@ Cura.ExpandableComponent
                 id: typesLegendModel
                 Component.onCompleted:
                 {
+                    const travelsTypesModel = [
+                        {
+                            label: catalog.i18nc("@label", "Not retracted"),
+                            colorId: "layerview_move_combing"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Retracted"),
+                            colorId: "layerview_move_retraction"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Retracting"),
+                            colorId: "layerview_move_while_retracting"
+                        },
+                        {
+                            label: catalog.i18nc("@label", "Priming"),
+                            colorId: "layerview_move_while_unretracting"
+                        }
+                    ];
+
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Travels"),
                         initialValue: viewSettings.show_travel_moves,
                         preference: "layerview/show_travel_moves",
-                        colorId:  "layerview_move_combing"
+                        colorId:  "layerview_move_combing",
+                        subTypesModel: travelsTypesModel
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Helpers"),
                         initialValue: viewSettings.show_helpers,
                         preference: "layerview/show_helpers",
-                        colorId:  "layerview_support"
+                        colorId:  "layerview_support",
+                        subTypesModel: []
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Shell"),
                         initialValue: viewSettings.show_skin,
                         preference: "layerview/show_skin",
-                        colorId:  "layerview_inset_0"
+                        colorId:  "layerview_inset_0",
+                        subTypesModel: []
                     });
                     typesLegendModel.append({
                         label: catalog.i18nc("@label", "Infill"),
                         initialValue: viewSettings.show_infill,
                         preference: "layerview/show_infill",
-                        colorId:  "layerview_infill"
+                        colorId:  "layerview_infill",
+                        subTypesModel: []
                     });
                     if (! UM.SimulationView.compatibilityMode)
                     {
@@ -257,7 +280,8 @@ Cura.ExpandableComponent
                             label: catalog.i18nc("@label", "Starts"),
                             initialValue: viewSettings.show_starts,
                             preference: "layerview/show_starts",
-                            colorId:  "layerview_starts"
+                            colorId:  "layerview_starts",
+                            subTypesModel: []
                         });
                     }
                 }
@@ -273,6 +297,7 @@ Cura.ExpandableComponent
 
                 Rectangle
                 {
+                    id: rectangleColor
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: legendModelCheckBox.right
                     width: UM.Theme.getSize("layerview_legend_size").width
@@ -281,6 +306,58 @@ Cura.ExpandableComponent
                     border.width: UM.Theme.getSize("default_lining").width
                     border.color: UM.Theme.getColor("lining")
                     visible: viewSettings.show_legend
+
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        acceptedButtons: Qt.NoButton
+                        enabled: subTypesModel.count > 0
+
+                        onEntered: tooltip.show()
+                        onExited: tooltip.hide()
+
+                        UM.ToolTip
+                        {
+                            id: tooltip
+                            delay: 0
+                            width: subTypesColumn.implicitWidth + 2 * UM.Theme.getSize("thin_margin").width
+                            height: subTypesColumn.implicitHeight + 2 * UM.Theme.getSize("thin_margin").width
+
+                            contentItem: Column
+                            {
+                                id: subTypesColumn
+                                padding: 0
+                                spacing: UM.Theme.getSize("layerview_row_spacing").height
+
+                                Repeater
+                                {
+                                    model: subTypesModel
+                                    UM.Label
+                                    {
+                                        text: label
+
+                                        height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
+                                        width: UM.Theme.getSize("layerview_menu_size").width
+                                        color: UM.Theme.getColor("tooltip_text")
+                                        Rectangle
+                                        {
+                                            anchors.verticalCenter: parent.verticalCenter
+                                            anchors.right: parent.right
+
+                                            width: UM.Theme.getSize("layerview_legend_size").width
+                                            height: UM.Theme.getSize("layerview_legend_size").height
+
+                                            color: UM.Theme.getColor(model.colorId)
+
+                                            border.width: UM.Theme.getSize("default_lining").width
+                                            border.color: UM.Theme.getColor("lining")
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 UM.Label

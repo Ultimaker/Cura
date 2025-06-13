@@ -19,15 +19,22 @@ class LayerPolygon:
     SkirtType = 5
     InfillType = 6
     SupportInfillType = 7
-    MoveCombingType = 8
-    MoveRetractionType = 9
+    MoveUnretractedType = 8
+    MoveRetractedType = 9
     SupportInterfaceType = 10
     PrimeTowerType = 11
-    __number_of_types = 12
+    MoveWhileRetractingType = 12
+    MoveWhileUnretractingType = 13
+    StationaryRetractUnretract = 14
+    __number_of_types = 15
 
-    __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType,
-                                                   numpy.arange(__number_of_types) == MoveCombingType),
-                                                   numpy.arange(__number_of_types) == MoveRetractionType)
+    __jump_map = numpy.logical_or(numpy.logical_or(numpy.logical_or(
+                                                   numpy.arange(__number_of_types) == NoneType,
+                                                   numpy.arange(__number_of_types) == MoveUnretractedType),
+                                                   numpy.logical_or(
+                                                   numpy.arange(__number_of_types) == MoveRetractedType,
+                                                   numpy.arange(__number_of_types) == MoveWhileRetractingType)),
+                                                   numpy.arange(__number_of_types) == MoveWhileUnretractingType)
 
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray,
                  line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
@@ -269,10 +276,13 @@ class LayerPolygon:
                 theme.getColor("layerview_skirt").getRgbF(),  # SkirtType
                 theme.getColor("layerview_infill").getRgbF(),  # InfillType
                 theme.getColor("layerview_support_infill").getRgbF(),  # SupportInfillType
-                theme.getColor("layerview_move_combing").getRgbF(),  # MoveCombingType
-                theme.getColor("layerview_move_retraction").getRgbF(),  # MoveRetractionType
+                theme.getColor("layerview_move_combing").getRgbF(),  # MoveUnretractedType
+                theme.getColor("layerview_move_retraction").getRgbF(),  # MoveRetractedType
                 theme.getColor("layerview_support_interface").getRgbF(),   # SupportInterfaceType
-                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
+                theme.getColor("layerview_prime_tower").getRgbF(),   # PrimeTowerType
+                theme.getColor("layerview_move_while_retracting").getRgbF(),  # MoveWhileRetracting
+                theme.getColor("layerview_move_while_unretracting").getRgbF(),  # MoveWhileUnretracting
+                theme.getColor("layerview_move_retraction").getRgbF(),  # StationaryRetractUnretract
             ])
 
         return cls.__color_map
