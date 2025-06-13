@@ -12,7 +12,7 @@
         "has_materials": true,
         "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "hellbot_magna_SE_Pro_extruder" },
-        "platform_texture": "Hellbot_Magna_SE_Pro.png"
+        "platform_texture": "Hellbot_magna_SE_Pro.png"
     },
     "overrides":
     {
