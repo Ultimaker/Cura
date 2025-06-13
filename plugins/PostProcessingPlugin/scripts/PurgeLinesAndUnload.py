@@ -35,9 +35,6 @@ class Position(tuple, Enum):
 
 class PurgeLinesAndUnload(Script):
 
-    def __init__(self):
-        super().__init__()
-
     def initialize(self) -> None:
         super().initialize()
         # Get required values from the global stack and set default values for the script
