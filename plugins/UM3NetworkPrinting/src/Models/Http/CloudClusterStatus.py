@@ -14,6 +14,7 @@ class CloudClusterStatus(BaseModel):
     def __init__(self, printers: List[Union[ClusterPrinterStatus, Dict[str, Any]]],
                  print_jobs: List[Union[ClusterPrintJobStatus, Dict[str, Any]]],
                  generated_time: Union[str, datetime],
+                 unavailable: bool = False,
                  **kwargs) -> None:
         """Creates a new cluster status model object.
 
@@ -23,6 +24,7 @@ class CloudClusterStatus(BaseModel):
         """
 
         self.generated_time = self.parseDate(generated_time)
+        self.active = not unavailable
         self.printers = self.parseModels(ClusterPrinterStatus, printers)
         self.print_jobs = self.parseModels(ClusterPrintJobStatus, print_jobs)
         super().__init__(**kwargs)

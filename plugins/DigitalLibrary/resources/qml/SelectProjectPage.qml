@@ -159,17 +159,30 @@ Item
                 Repeater
                 {
                     model: manager.digitalFactoryProjectModel
-                    delegate: ProjectSummaryCard
+                    delegate: Item
                     {
-                        id: projectSummaryCard
-                        imageSource: model.thumbnailUrl || "../images/placeholder.svg"
-                        projectNameText: model.displayName
-                        projectUsernameText: model.username
-                        projectLastUpdatedText: "Last updated: " + model.lastUpdated
+                        width: parent.width
+                        height: projectSummaryCard.height
 
-                        onClicked:
+                        UM.TooltipArea
                         {
-                            manager.selectedProjectIndex = index
+                            anchors.fill: parent
+                            text: "This project is inactive and cannot be used."
+                            enabled: !model.active
+                        }
+
+                        ProjectSummaryCard
+                        {
+                            id: projectSummaryCard
+                            imageSource: model.thumbnailUrl || "../images/placeholder.svg"
+                            projectNameText: model.displayName
+                            projectUsernameText: model.username
+                            projectLastUpdatedText: "Last updated: " + model.lastUpdated
+                            enabled: model.active
+
+                            onClicked: {
+                                manager.selectedProjectIndex = index
+                            }
                         }
                     }
                 }
