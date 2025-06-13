@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-11-06 10:43+0000\n"
+"POT-Creation-Date: 2025-02-21 15:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -316,6 +316,10 @@ msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr ""
 
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr ""
+
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
 msgstr ""
@@ -385,7 +389,7 @@ msgid "Machine Head & Fan Polygon"
 msgstr ""
 
 msgctxt "machine_head_with_fans_polygon description"
-msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
 msgstr ""
 
 msgctxt "gantry_height label"
@@ -418,6 +422,14 @@ msgstr ""
 
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
 msgid "Apply the extruder offset to the coordinate system. Affects all extruders."
+msgstr ""
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
 msgstr ""
 
 msgctxt "extruder_prime_pos_z label"
@@ -1154,6 +1166,66 @@ msgstr ""
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr ""
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr ""
+
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr ""
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr ""
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr ""
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr ""
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr ""
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr ""
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr ""
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr ""
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr ""
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr ""
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr ""
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
 msgstr ""
 
 msgctxt "top_bottom_extruder_nr label"
@@ -2088,6 +2160,22 @@ msgctxt "wall_x_material_flow_roofing description"
 msgid "Flow compensation on top surface wall lines for all wall lines except the outermost one."
 msgstr ""
 
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr ""
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr ""
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr ""
+
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr ""
+
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
 msgstr ""
@@ -2102,6 +2190,14 @@ msgstr ""
 
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
+msgstr ""
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr ""
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
 msgstr ""
 
 msgctxt "infill_material_flow label"
@@ -2240,6 +2336,14 @@ msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr ""
 
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr ""
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr ""
+
 msgctxt "speed label"
 msgid "Speed"
 msgstr ""
@@ -2304,12 +2408,36 @@ msgctxt "speed_wall_x_roofing description"
 msgid "The speed at which the top surface inner walls are printed."
 msgstr ""
 
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr ""
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr ""
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr ""
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr ""
+
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
 msgstr ""
 
 msgctxt "speed_roofing description"
 msgid "The speed at which top surface skin layers are printed."
+msgstr ""
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr ""
+
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
 msgstr ""
 
 msgctxt "speed_topbottom label"
@@ -2504,12 +2632,36 @@ msgctxt "acceleration_wall_x_roofing description"
 msgid "The acceleration with which the top surface inner walls are printed."
 msgstr ""
 
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr ""
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr ""
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr ""
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr ""
+
 msgctxt "acceleration_roofing label"
 msgid "Top Surface Skin Acceleration"
 msgstr ""
 
 msgctxt "acceleration_roofing description"
 msgid "The acceleration with which top surface skin layers are printed."
+msgstr ""
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr ""
+
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
 msgstr ""
 
 msgctxt "acceleration_topbottom label"
@@ -2680,12 +2832,36 @@ msgctxt "jerk_wall_x_roofing description"
 msgid "The maximum instantaneous velocity change with which the top surface inner walls are printed."
 msgstr ""
 
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr ""
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr ""
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr ""
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr ""
+
 msgctxt "jerk_roofing label"
 msgid "Top Surface Skin Jerk"
 msgstr ""
 
 msgctxt "jerk_roofing description"
 msgid "The maximum instantaneous velocity change with which top surface skin layers are printed."
+msgstr ""
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr ""
+
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
 msgstr ""
 
 msgctxt "jerk_topbottom label"
@@ -2908,6 +3084,14 @@ msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
 msgstr ""
 
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr ""
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr ""
+
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
 msgstr ""
@@ -3090,6 +3274,22 @@ msgstr ""
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
 msgstr ""
 
 msgctxt "cool_min_speed label"
@@ -4832,6 +5032,54 @@ msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr ""
 
+msgctxt "interlocking_enable label"
+msgid "Generate Interlocking Structure"
+msgstr ""
+
+msgctxt "interlocking_enable description"
+msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
+msgstr ""
+
+msgctxt "interlocking_beam_width label"
+msgid "Interlocking Beam Width"
+msgstr ""
+
+msgctxt "interlocking_beam_width description"
+msgid "The width of the interlocking structure beams."
+msgstr ""
+
+msgctxt "interlocking_orientation label"
+msgid "Interlocking Structure Orientation"
+msgstr ""
+
+msgctxt "interlocking_orientation description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+msgctxt "interlocking_beam_layer_count label"
+msgid "Interlocking Beam Layer Count"
+msgstr ""
+
+msgctxt "interlocking_beam_layer_count description"
+msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
+msgstr ""
+
+msgctxt "interlocking_depth label"
+msgid "Interlocking Depth"
+msgstr ""
+
+msgctxt "interlocking_depth description"
+msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
+msgstr ""
+
+msgctxt "interlocking_boundary_avoidance label"
+msgid "Interlocking Boundary Avoidance"
+msgstr ""
+
+msgctxt "interlocking_boundary_avoidance description"
+msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr ""
+
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
 msgstr ""
@@ -5168,54 +5416,6 @@ msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr ""
 
-msgctxt "interlocking_enable label"
-msgid "Generate Interlocking Structure"
-msgstr ""
-
-msgctxt "interlocking_enable description"
-msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
-msgstr ""
-
-msgctxt "interlocking_beam_width label"
-msgid "Interlocking Beam Width"
-msgstr ""
-
-msgctxt "interlocking_beam_width description"
-msgid "The width of the interlocking structure beams."
-msgstr ""
-
-msgctxt "interlocking_orientation label"
-msgid "Interlocking Structure Orientation"
-msgstr ""
-
-msgctxt "interlocking_orientation description"
-msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
-
-msgctxt "interlocking_beam_layer_count label"
-msgid "Interlocking Beam Layer Count"
-msgstr ""
-
-msgctxt "interlocking_beam_layer_count description"
-msgid "The height of the beams of the interlocking structure, measured in number of layers. Less layers is stronger, but more prone to defects."
-msgstr ""
-
-msgctxt "interlocking_depth label"
-msgid "Interlocking Depth"
-msgstr ""
-
-msgctxt "interlocking_depth description"
-msgid "The distance from the boundary between models to generate interlocking structure, measured in cells. Too few cells will result in poor adhesion."
-msgstr ""
-
-msgctxt "interlocking_boundary_avoidance label"
-msgid "Interlocking Boundary Avoidance"
-msgstr ""
-
-msgctxt "interlocking_boundary_avoidance description"
-msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
-msgstr ""
-
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr ""
@@ -5488,12 +5688,12 @@ msgctxt "seam_overhang_angle description"
 msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
 msgstr ""
 
-msgctxt "wall_overhang_speed_factor label"
-msgid "Overhanging Wall Speed"
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
 msgstr ""
 
-msgctxt "wall_overhang_speed_factor description"
-msgid "Overhanging walls will be printed at this percentage of their normal print speed."
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
 msgstr ""
 
 msgctxt "bridge_settings_enabled label"
@@ -5857,7 +6057,7 @@ msgid "This is the ratio of the top speed to start with when printing an outer w
 msgstr ""
 
 msgctxt "wall_0_acceleration label"
-msgid "Outer Wall Acceleration"
+msgid "Outer Wall Start Acceleration"
 msgstr ""
 
 msgctxt "wall_0_acceleration description"
@@ -5873,7 +6073,7 @@ msgid "This is the ratio of the top speed to end with when printing an outer wal
 msgstr ""
 
 msgctxt "wall_0_deceleration label"
-msgid "Outer Wall Deceleration"
+msgid "Outer Wall End Deceleration"
 msgstr ""
 
 msgctxt "wall_0_deceleration description"
@@ -6002,13 +6202,9 @@ msgstr ""
 
 
 msgctxt "variant_name"
-msgid "Extruder"
-msgstr ""
-
-msgctxt "variant_name"
 msgid "Print Core"
 msgstr ""
 
 msgctxt "variant_name"
-msgid "Nozzle Size"
+msgid "Extruder"
 msgstr ""

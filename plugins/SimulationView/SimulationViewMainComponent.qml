@@ -144,9 +144,7 @@ Item
         {
             // divide by 1000 to account for ms to s conversion
             const advance_time = simulationTimer.interval / 1000.0;
-            if (!UM.SimulationView.advanceTime(advance_time)) {
-                playButton.pauseSimulation();
-            }
+            UM.SimulationView.advanceTime(advance_time);
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
             // correctly, because part of the logic is in this trigger function.
             isSimulationPlaying = true;

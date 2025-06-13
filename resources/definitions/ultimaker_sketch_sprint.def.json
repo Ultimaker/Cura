@@ -54,7 +54,8 @@
             "ultimaker_rapidrinse",
             "ultimaker_sr30",
             "ultimaker_petg",
-            "ultimaker_metallic_pla"
+            "ultimaker_pc-abs",
+            "ultimaker_pc-abs-fr"
         ],
         "has_machine_quality": true,
         "has_materials": true,
@@ -130,7 +131,7 @@
             ]
         },
         "infill_before_walls": { "value": false },
-        "infill_line_width": { "value": 0.45 },
+        "infill_line_width": { "value": "0.45 if layer_height == 0.2 else 0.4" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'lines'" },
         "infill_sparse_density": { "value": 15 },
@@ -341,10 +342,12 @@
             "value": 20
         },
         "support_angle": { "value": "60" },
-        "support_bottom_density": { "value": "support_infill_rate" },
-        "support_bottom_distance": { "value": "layer_height" },
+        "support_bottom_density": { "value": "80 if support_structure == 'tree' else support_infill_rate" },
+        "support_bottom_distance": { "value": 0.2 },
         "support_bottom_enable": { "value": true },
-        "support_bottom_height": { "value": "layer_height * 2" },
+        "support_bottom_height": { "value": "layer_height if support_structure == 'tree' else layer_height * 2" },
+        "support_bottom_offset": { "value": "0 if support_structure == 'tree' else support_interface_offset" },
+        "support_bottom_wall_count": { "value": "1 if support_structure == 'tree' else 0" },
         "support_brim_line_count": { "value": 5 },
         "support_infill_angles":
         {
@@ -370,7 +373,7 @@
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": 0.3 },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
-        "support_z_distance": { "value": "layer_height if support_structure == 'tree' else 0.25" },
+        "support_z_distance": { "value": "0.2 if support_structure == 'tree' else 0.25" },
         "top_bottom_thickness": { "value": "5 * layer_height" },
         "top_layers": { "value": 5 },
         "travel_avoid_distance": { "value": 0.625 },
@@ -380,10 +383,12 @@
         "wall_0_wipe_dist": { "value": 0.2 },
         "wall_line_width_x": { "value": 0.58 },
         "wall_overhang_angle": { "value": 35 },
-        "wall_overhang_speed_factor":
+        "wall_overhang_speed_factors":
         {
             "minimum_value_warning": 15,
-            "value": 17.5
+            "value": [
+                18
+            ]
         },
         "wall_thickness": { "value": 1 },
         "wall_x_material_flow_layer_0": { "value": "material_flow" },
@@ -392,8 +397,6 @@
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
         "z_seam_position": { "value": "'backleft'" },
         "z_seam_type": { "value": "'sharpest_corner'" },
-        "z_seam_x": { "value": 150 },
-        "z_seam_y": { "value": 180 },
         "zig_zaggify_infill": { "value": true }
     }
 }

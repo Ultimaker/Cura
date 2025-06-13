@@ -2757,10 +2757,6 @@ msgid "Nozzle offset Y"
 msgstr "Y-Versatz Düse"
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr "Düsengröße"
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr "Düsengröße"
 
@@ -5645,3 +5641,59 @@ msgstr "Aktualisiert Konfigurationen von Cura 5.8 auf Cura 5.9."
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
 msgstr "Versionsaktualisierung 5.8 auf 5.9"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion-Mäuse"
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "Ermöglicht das Arbeiten mit 3D-Mäusen in Cura."
+
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "Dauer des Extruderwechsels"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "Extruder-Vorstart-G-Code"
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr "Flip-Modell-Werkzeuggriff Y-Achse (Neustart erforderlich)"
+
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "Lizenz für %1 %2"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ Druckdatei"
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "Sollte die Y-Achse des Übersetzungs-Werkzeuggriffs gespiegelt werden? Dies wirkt sich nur auf die Y-Koordinate des Modells aus, alle anderen Einstellungen wie die Druckkopfeinstellungen der Maschine bleiben unberührt und verhalten sich wie zuvor."
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "Start GCode ist zuerst erforderlich"
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "Diese Konfiguration ist nicht verfügbar, da eine Nichtübereinstimmung oder ein anderes Problem mit dem Kerntyp %1 vorliegt. Bitte besuchen Sie <a href='%2'>die Support-Seite</a>, um zu überprüfen, welche Kerne dieser Druckertyp in Bezug auf neue Slices unterstützt."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "Konfigurationsupgrades von Cura 5.9 auf Cura 5.10"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "Versions-Upgrade 5.9 auf 5.10"
+
+msgctxt "@label"
+msgid "Y max ( '+' towards front)"
+msgstr "Y max ( '+' nach vorne)"
+
+msgctxt "@label"
+msgid "Y min ( '-' towards back)"
+msgstr "Y min ( '-' nach hinten)"

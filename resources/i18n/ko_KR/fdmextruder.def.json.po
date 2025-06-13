@@ -203,3 +203,19 @@ msgstr "노즐 길이"
 msgctxt "machine_nozzle_head_distance description"
 msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 msgstr "노즐 끝과 프린트 헤드의 가장 낮은 부분 사이의 높이 차이입니다."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "압출기 변경 시간"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "압출기 사전 시작 G-코드"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "이 압출기로 전환하기 전에 실행할 사전 시작 g-코드입니다."
+
+msgctxt "machine_extruder_change_duration description"
+msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
+msgstr "멀티 도구 설정을 사용할 경우, 해당 값은 도구 변경에 걸리는 시간(초 단위)입니다. 이 값은 발생하는 변경 횟수에 따라 예상 시간에 추가됩니다."

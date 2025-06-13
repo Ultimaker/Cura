@@ -13,7 +13,9 @@ class FormatMaps:
         "fire_e": "ultimaker_method",
         "lava_f": "ultimaker_methodx",
         "magma_10": "ultimaker_methodxl",
-        "sketch": "ultimaker_sketch"
+        "sketch": "ultimaker_sketch",
+        "sketch_large": "ultimaker_sketch_large",
+        "sketch_sprint": "ultimaker_sketch_sprint"
     }
 
     # A map from the extruder-name in their native file-formats to the internal name we use.
@@ -23,7 +25,10 @@ class FormatMaps:
         "mk14_c": "1C",
         "mk14": "1A",
         "mk14_s": "2A",
-        "mk14_e": "LABS"
+        "mk14_e": "LABS",
+        "sketch_extruder": "0.4mm",
+        "sketch_l_extruder": "0.4mm",
+        "sketch_sprint_extruder": "0.4mm",
     }
 
     # A map from the material-name in their native file-formats to some info, including the internal name we use.

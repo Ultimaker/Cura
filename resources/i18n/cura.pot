@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-09 14:27+0200\n"
+"POT-Creation-Date: 2025-02-21 15:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgctxt "@title:label"
+msgid " "
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -478,10 +482,6 @@ msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr ""
 
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr ""
-
 msgctxt "@title:column"
 msgid "Applies on"
 msgstr ""
@@ -656,10 +656,6 @@ msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr ""
-
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr ""
@@ -825,10 +821,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Compatibility Mode"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1182,10 +1174,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr ""
-
 msgctxt "@button"
 msgid "Decline"
 msgstr ""
@@ -1244,10 +1232,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Density"
-msgstr ""
-
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
 msgstr ""
 
 msgctxt "@action:label"
@@ -1509,12 +1493,20 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr ""
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr ""
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr ""
 
 msgctxt "@label"
 msgid "Extruder End G-code duration"
+msgstr ""
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
 msgstr ""
 
 msgctxt "@title:label"
@@ -1698,6 +1690,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr ""
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (restart required)"
+msgstr ""
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr ""
@@ -1712,10 +1708,6 @@ msgstr ""
 
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
-msgstr ""
-
-msgctxt "@label"
-msgid "Font"
 msgstr ""
 
 msgctxt "@label"
@@ -1761,10 +1753,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr ""
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr ""
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr ""
@@ -1777,14 +1765,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr ""
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr ""
@@ -1795,10 +1775,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
-msgstr ""
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
 msgstr ""
 
 msgctxt "@label:category menu label"
@@ -1819,10 +1795,6 @@ msgstr ""
 
 msgctxt "@title:tab"
 msgid "Global Settings"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
 msgstr ""
 
 msgctxt "@label"
@@ -2066,10 +2038,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr ""
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr ""
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr ""
@@ -2096,10 +2064,6 @@ msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
 msgstr ""
 
 msgctxt "@label"
@@ -2198,6 +2162,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr ""
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr ""
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr ""
@@ -2212,10 +2180,6 @@ msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "Linear"
-msgstr ""
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
 msgstr ""
 
 msgctxt "@label"
@@ -2292,6 +2256,10 @@ msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
+msgstr ""
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -2678,10 +2646,6 @@ msgid "Nozzle offset Y"
 msgstr ""
 
 msgctxt "@label"
-msgid "Nozzle Size"
-msgstr ""
-
-msgctxt "@label"
 msgid "Nozzle size"
 msgstr ""
 
@@ -2855,10 +2819,6 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr ""
-
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr ""
@@ -3004,14 +2964,6 @@ msgstr ""
 
 msgctxt "@button"
 msgid "Plugins"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
 msgstr ""
 
 msgctxt "@item:inmenu"
@@ -3275,10 +3227,6 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr ""
-
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3305,18 +3253,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "PyQt version"
-msgstr ""
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
 msgstr ""
 
 msgctxt "@label"
@@ -3490,10 +3426,6 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "Right View"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
 msgstr ""
 
 msgctxt "@info:title"
@@ -3679,10 +3611,6 @@ msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr ""
-
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr ""
@@ -3789,6 +3717,10 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4010,6 +3942,10 @@ msgid "Start G-code"
 msgstr ""
 
 msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr ""
+
+msgctxt "@label"
 msgid "Start the slicing process"
 msgstr ""
 
@@ -4080,34 +4016,6 @@ msgstr ""
 
 msgctxt "@action:label"
 msgid "Support Type"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr ""
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4424,6 +4332,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
+msgstr ""
+
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
 msgstr ""
 
 msgctxt "@text:window"
@@ -4763,10 +4675,6 @@ msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr ""
 
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr ""
-
 msgctxt "@label"
 msgid "Unknown"
 msgstr ""
@@ -4870,14 +4778,6 @@ msgstr ""
 
 msgctxt "@label"
 msgid "User Agreement"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr ""
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
 msgstr ""
 
 msgctxt "@title:column"
@@ -5030,11 +4930,11 @@ msgid "Y (Depth)"
 msgstr ""
 
 msgctxt "@label"
-msgid "Y max"
+msgid "Y max ( '+' towards front)"
 msgstr ""
 
 msgctxt "@label"
-msgid "Y min"
+msgid "Y min ( '-' towards back)"
 msgstr ""
 
 msgctxt "@info"
@@ -5118,10 +5018,6 @@ msgctxt "@label"
 msgid "Z (Height)"
 msgstr ""
 
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr ""
-
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr ""
@@ -5193,6 +5089,14 @@ msgstr ""
 
 msgctxt "name"
 msgid "G-code Profile Reader"
+msgstr ""
+
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr ""
+
+msgctxt "name"
+msgid "3DConnexion mouses"
 msgstr ""
 
 msgctxt "description"
@@ -5705,6 +5609,14 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 5.8 to 5.9"
+msgstr ""
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
 msgstr ""
 
 msgctxt "description"
