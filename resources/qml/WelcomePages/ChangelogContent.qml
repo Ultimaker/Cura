@@ -43,6 +43,8 @@ Item
         textArea.readOnly: true
         textArea.font: UM.Theme.getFont("default")
         textArea.onLinkActivated: Qt.openUrlExternally(link)
+        textArea.rightPadding: 15
+        textArea.leftPadding: 15
     }
 
     Cura.PrimaryButton

@@ -3,5 +3,7 @@
     "ultimaker_methodx": "MakerBot Method X",
     "ultimaker_methodxl": "MakerBot Method XL",
     "ultimaker_factor4": "Ultimaker Factor 4",
-    "ultimaker_sketch": "MakerBot Sketch"
+    "ultimaker_sketch": "MakerBot Sketch",
+    "ultimaker_sketch_large": "MakerBot Sketch Large",
+    "ultimaker_sketch_sprint": "MakerBot Sketch Sprint"
 }

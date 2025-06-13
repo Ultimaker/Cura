@@ -11,7 +11,7 @@ Item
     // Use the depth of the model to move the item, but also leave space for the visibility / enabled exclamation mark.
 
     // Align checkbox with SettingVisibilityCategory icon with + 5
-    x: definition ? definition.depth * UM.Theme.getSize("narrow_margin").width : UM.Theme.getSize("default_margin").width
+    x: definition ? definition.depth * UM.Theme.getSize("wide_margin").width : UM.Theme.getSize("default_margin").width
 
     UM.TooltipArea
     {
@@ -46,33 +46,26 @@ Item
 
         text:
         {
-            if(provider.properties.enabled == "True")
-            {
-                return ""
-            }
-            var key = definition ? definition.key : ""
-            var requires = settingDefinitionsModel.getRequires(key, "enabled")
-            if (requires.length == 0)
-            {
-                return catalog.i18nc("@item:tooltip", "This setting has been hidden by the active machine and will not be visible.");
-            }
-            else
-            {
-                var requires_text = ""
-                for (var i in requires)
-                {
-                    if (requires_text == "")
-                    {
-                        requires_text = requires[i].label
-                    }
-                    else
-                    {
-                        requires_text += ", " + requires[i].label
-                    }
-                }
+            if (provider.properties.enabled === "True") return "";
 
-                return catalog.i18ncp("@item:tooltip %1 is list of setting names", "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible.", "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible.", requires.length) .arg(requires_text);
+            var key = definition ? definition.key : "";
+            var requires = settingDefinitionsModel.getRequires(key, "enabled");
+
+            if (requires.length === 0) {
+                return catalog.i18nc(
+                    "@item:tooltip",
+                    "This setting has been hidden by the active machine and will not be visible."
+                );
             }
+
+            var requiresText = requires.map(r => r.label).join(", ");
+
+            return catalog.i18ncp(
+                "@item:tooltip %1 is list of setting names",
+                "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible.",
+                "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible.",
+                requires.length
+            ).arg(requiresText);
         }
 
         UM.ColorImage

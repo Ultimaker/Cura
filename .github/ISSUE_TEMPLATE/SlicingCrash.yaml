@@ -5,38 +5,25 @@ body:
 - type: markdown
   attributes:
     value: |      
-       ### ✨Try our improved Cura 5.7✨
-       Before filling out the report below, we want you to try the latest Cura 5.7. 
-       This version of Cura has become significantly more reliable and has an updated slicing engine that will automatically send a report to the Cura Team for analysis. 
-       #### [You can find the downloads here](https://github.com/Ultimaker/Cura/releases/latest) #### 
-       If you still encounter a crash you are still welcome to report the issue so we can use your model as a test case, you can find instructions on how to do that below.      
+       ### ✨Are you stuck? Have you tried these two things? ✨
+       1- Are you on a Cura version lower than Cura 5.7? We really recommend updating because it resolves a lot of slicing crashes!
+       2- Have you tried fixing the model with software that repairs 3d files and makes them watertight? 
+          Are you seeing spots and dots on your model? That is Cura indicating that your model is not watertight.  
+          You can try doing a quick [Mesh Fix with the Meshtools Plugin](https://marketplace.ultimaker.com/app/cura/plugins/fieldofview/MeshTools) or other mesh editing software. 
        
-       ### Project File
-       **⚠️ Before you continue, we need your project file to troubleshoot a slicing crash.**
-       It contains the printer and settings we need for troubleshooting. 
+       If you still encounter a crash you are welcome to report the issue so we can use your model as a test case. 
+       You can find instructions on how to share your model in a Package for Technical Support below.        
        
-       ![Alt Text](https://user-images.githubusercontent.com/40423138/240616958-5a9751f2-bd34-4808-9752-6fde2e27516e.gif)
-       
-       To save a project file go to File -> Save project. 
-       Please make sure to .zip your project file. 
-       For big files, you may need to use [WeTransfer](https://wetransfer.com/) or similar file-sharing sites.
-       
-       🤔 Before you share, please think to yourself. Is this a model that can be shared?
-           Unfortunately we cannot help if this file is missing. 
-           Do you have the project file? Than let's continue ⬇️
-
-       ### Questions
+       🤔 Before you share, please think to yourself. Is this a model that can be shared on the internet?
+       **Unfortunately, we cannot help if this file is missing.** 
+     
+### Questions
 - type: input
   attributes:
     label: Cura Version
-    placeholder: 5.6.0
+    description: We work hard on improving our slicing crashes. If you are not on the latest version of Cura, [you can download it here](https://github.com/Ultimaker/Cura/releases/latest)
   validations:
     required: true
-- type: markdown
-  attributes:
-    value: |
-      We work hard on improving our slicing crashes. Our most recent release is 5.7.1.
-      If you are not on the latest version of Cura, [you can download it here](https://github.com/Ultimaker/Cura/releases/latest)
 - type: input
   attributes:
     label: Operating System
@@ -50,27 +37,13 @@ body:
     description: Which printer was selected in Cura?
   validations:
     required: true
-- type: input
-  attributes:
-    label: Name abnormal settings
-    description: Are there any settings that you might have changed that caused the crash? Does your model slice when you select the default profiles?
-    placeholder:
-  validations:
-- type: input
-  attributes:
-    label: Describe model location
-    description: Does your model slice if you rotate the model 90 degrees or if you move it away from the center of the buildplate? 
-    placeholder:
-  validations:
-- type: input
-  attributes:
-    label: Describe your model
-    description: Have you sliced your model succesfully before? Is it watertight? Have you tried doing a quick [Mesh Fix with the Meshtools Plugin](https://marketplace.ultimaker.com/app/cura/plugins/fieldofview/MeshTools)? 
-  validations:
-    required: true
+
 - type: textarea
   attributes:
-    label: Add your .zip here ⬇️ 
-    description: You can add the zip file and additional information that is relevant to the issue in the comments below.
+    label: Describe your problem and add the package for technical support as a .zip here ⬇️ 
+    description: |
+      If you still have Cura open with your crash > Click on Help on top bar > Click on Export Package For Technical Support > Compress the file into a zip > Add the file here to your GitHub issue 🔗
+      
+      If you closed Cura, please open Cura to recreate the crash> Select your printer > Load your model > Select your print settings > Click on Help on top bar > Click on Export Package For Technical Support > Compress the file into a zip > Add the file here to your GitHub issue 🔗
   validations:
     required: true

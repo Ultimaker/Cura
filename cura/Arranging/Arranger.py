@@ -16,12 +16,16 @@ class Arranger:
         """
         raise NotImplementedError
 
-    def arrange(self, add_new_nodes_in_scene: bool = False) -> bool:
+    def arrange(self, add_new_nodes_in_scene: bool = False, only_if_full_success: bool = False) -> bool:
         """
         Find placement for a set of scene nodes, and move them by using a single grouped operation.
         :param add_new_nodes_in_scene: Whether to create new scene nodes before applying the transformations and rotations
         :return: found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
         """
         grouped_operation, not_fit_count = self.createGroupOperationForArrange(add_new_nodes_in_scene)
-        grouped_operation.push()
-        return not_fit_count == 0
+        full_success = not_fit_count == 0
+
+        if full_success or not only_if_full_success:
+            grouped_operation.push()
+
+        return full_success

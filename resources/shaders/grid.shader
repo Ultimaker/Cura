@@ -45,6 +45,7 @@ fragment =
         float majorLine = min(majorGrid.x, majorGrid.y);
 
         gl_FragColor = mix(minorGridColor, u_gridColor0, 1.0 - min(majorLine, 1.0));
+        gl_FragColor.a = u_plateColor.a;
     }
 
 vertex41core =
@@ -88,6 +89,7 @@ fragment41core =
         float majorLine = min(majorGrid.x, majorGrid.y);
 
         frag_color = mix(minorGridColor, u_gridColor0, 1.0 - min(majorLine, 1.0));
+        frag_color.a = u_plateColor.a;
     }
 
 [defaults]

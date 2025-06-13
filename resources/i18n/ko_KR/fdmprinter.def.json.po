@@ -5861,6 +5861,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "버텍스 상의 Z 심"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "위 스킨을 지지하기 위해 내부채움 패턴에 선을 추가로 더합니다. 이 옵션은 아래의 내부채움이 위에 출력되는 스킨 레이어를 제대로 지지하지 못해 복잡한 모양의 스킨에 구멍이나 플라스틱 방울이 생기는 것을 방지합니다. '벽'은 스킨의 윤곽선만 지지하는 반면 '벽 및 선'은 스킨을 이루는 선의 끝부분도 지지합니다."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "높이에서 팬 속도 설정"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "레이어에서 팬 속도 설정"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "빌드 볼륨 팬 번호"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "스카프 솔기를 따라 압출할 때 흐름 변화에서 각 단계의 길이를 결정합니다. 거리가 짧을수록 더 정밀하지만 G코드도 복잡해집니다."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Z 솔기를 덜 보이게 하는 솔기 유형인 스카프 솔기의 길이를 결정합니다. 0보다 커야 효과적입니다."
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
@@ -5868,6 +5892,10 @@ msgstr "점진적 흐름 변경에서 각 단계의 지속 시간"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "점진적 흐름 변경을 활성화합니다. 활성화하면 흐름이 목표 흐름까지 점진적으로 증가/감소합니다. 이는 압출기 모터가 시작/정지될 때 흐름이 즉시 변경되지 않는 보우덴 튜브가 있는 프린터에 유용합니다."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "스킨을 지지하는 추가 내부채움 선"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5925,318 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "첫 번째 레이어의 점진적 흐름 변경에 대한 최소 속도"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "없음"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "외벽 가속"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "외벽 감속"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "외벽 종료 속도 비율"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "외벽 속도 분할 거리"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "외벽 시작 속도 비율"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "흐름 지속 시간 재설정"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "스카프 솔기 길이"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "스카프 솔기 시작 높이"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "스카프 솔기 단계 길이"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "일반 팬 속도에서 팬이 회전하는 높이입니다. 아래 레이어에서는 팬 속도가 초기 팬 속도에서 일반 팬 속도로 점차 증가합니다."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "빌드 팬이 최대 팬 속도로 회전하는 레이어입니다. 이 값은 계산되어 정수로 반올림됩니다."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "빌드 볼륨을 냉각하는 팬의 수입니다. 0으로 설정하면 빌드 볼륨 팬이 없는 것을 나타냅니다."
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "스카프 솔기가 시작되는 선택한 레이어 높이의 비율입니다. 숫자가 낮을수록 솔기 높이가 커집니다. 100보다 낮아야 효과적입니다."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "외벽을 출력할 때 최고 속도에 도달하는 가속도입니다."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "외벽 출력을 종료할 때의 감속도입니다."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "외벽 가속/감속을 적용하기 위해 긴 경로를 분할 때 압출 경로의 최대 길이입니다. 거리가 짧을수록 더 정밀해지지만 G코드도 복잡해집니다."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "외벽을 출력할 때 종료되는 최고 속도의 비율입니다."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "외벽을 출력할 때 시작되는 최고 속도의 비율입니다."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "벽만"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "벽 및 선"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "이 각도보다 더 돌출된 벽은 돌출 벽 설정을 사용하여 출력됩니다. 값이 90인 경우 벽은 돌출부로 간주하지 않습니다. 지지대가 지지하는 돌출부도 돌출부로 간주하지 않습니다. 또한 돌출부의 절반보다 짧은 선도 돌출부로 간주하지 않습니다."
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "하단 표면 스킨 레이어에 선 또는 지그재그 패턴을 사용할 때 사용할 정수 라인 방향의 목록입니다. 목록의 요소는 레이어가 진행됨에 따라 순차적으로 사용되며, 목록의 끝에 도달하면 처음부터 다시 시작합니다. 목록 항목은 쉼표로 구분하며 전체 목록은 대괄호 안에 포함됩니다. 기본값은 빈 목록으로, 기존의 기본 각도(45도 및 135도)를 사용합니다."
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr "바닥 표면 내벽 가속도"
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr "바닥 표면 내벽 충격"
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr "바닥 표면 내벽 속도"
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr "바닥 표면 내벽 흐름"
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr "바닥 표면 외벽 가속도"
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr "바닥 표면 외벽 흐름"
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr "바닥 표면 외벽 충격"
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr "바닥 표면 외벽 속도"
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr "바닥 표면 스킨 가속"
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr "바닥 표면 스킨 압출기"
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr "바닥 표면 스킨 흐름"
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr "바닥 표면 스킨 충격"
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr "바닥 표면 스킨 레이어"
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr "바닥 표면 스킨 라인 방향"
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr "바닥 표면 스킨 라인 폭"
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr "바닥 표면 스킨 패턴"
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr "바닥 표면 스킨 속도"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr "동심원"
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr "압출기"
+
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr "바깥쪽 벽선을 제외한 모든 벽선의 바닥 표면 벽선에서 흐름 보정."
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr "인쇄 하단의 영역에 있는 줄에서 흐름 보정."
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr "바닥 표면의 가장 바깥쪽 벽선에서 흐름 보정."
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr "그리핀+치타"
+
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr "내부 이동 거리 최소화"
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr "라인"
+
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr "오버행 시 최소 레이어 시간"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr "최소 오버행 구간 길이"
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr "단조 바닥 표면 정렬"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr "외벽 끝부분 감속"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr "외벽 시작 부분 가속"
+
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
+msgstr "오버행 벽 출력 속도"
+
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr "돌출된 벽은 정상 인쇄 속도의 일정 비율로 인쇄됩니다. 여러 값을 지정할 수 있으므로, 예를 들어 [75, 50, 25]를 설정하여 더 많은 돌출된 벽을 더 느리게 인쇄할 수 있습니다."
+
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr "압력 상승 계수"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr "인쇄 코어"
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "인쇄 시에는 하단 표면의 선을 한 방향으로 인접한 선과 항상 겹치게 인쇄하세요. 인쇄하는 데 시간이 조금 더 걸리지만, 평평한 표면이 더 일관성 있게 보입니다."
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr "시작 GCode가 반드시 우선합니다"
+
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr "바닥 표면 스킨 레이어의 인쇄 속도가 빨라집니다."
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr "바닥 표면 내벽의 인쇄 속도가 빨라집니다."
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr "바닥 표면의 가장 바깥쪽 벽이 인쇄되는 속도."
+
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr "'한 번에 하나씩' 인쇄 시 '안전 모델 거리'를 결정하는 데 쓰이는 프린트 헤드의 제원입니다. 이 숫자들은 첫 번째 압출기 노즐의 중심선과 관련이 있습니다. 노즐의 왼쪽은 'X 최소'이고 음수여야 합니다.  노즐의 뒤쪽은 'Y 최소'이고 음수여야 합니다. X 최대(오른쪽)와 Y 최대(앞쪽)는 양수입니다. 갠트리 높이는 빌드 플레이트에서 X 갠트리 빔까지의 거리입니다."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr "모델 내부에서 이동할 때 노즐과 이미 인쇄된 외벽 사이의 거리입니다."
+
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr "가장 아래쪽 스킨을 인쇄하는 데 사용되는 압출기 트레인입니다. 이것은 다중 압출에 사용됩니다."
+
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr "바닥 표면 스킨 레이어가 인쇄되는 최대 순간 속도 변화."
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr "바닥 표면 내벽이 인쇄되는 최대 순간 속도 변화."
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr "바닥 표면의 가장 바깥쪽 벽에 인쇄되는 최대 순간 속도 변화."
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr "겹쳐진 돌출부가 포함된 레이어에 소요되는 최소 시간입니다. 이 값은 프린터의 속도를 늦추고, 최소한 여기에 설정된 시간을 한 레이어에 사용하도록 합니다. 이렇게 하면 인쇄된 재료가 다음 레이어 인쇄 전 적절하게 냉각될 수 있습니다. 리프트 헤드가 비활성화되어 있고 최소 속도가 위반되는 경우, 레이어 시간은 여전히 최소 레이어 시간보다 짧을 수 있습니다."
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr "최하단에 있는 스킨 레이어 수입니다. 일반적으로 가장 아래에 있는 레이어 하나만으로 더 높은 품질의 바닥 표면을 생성할 수 있습니다."
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr "가장 아래 레이어의 패턴입니다."
+
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr "바닥 표면의 스킨 레이어가 인쇄되는 속도입니다."
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr "바닥 표면의 내벽이 인쇄되는 속도입니다."
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr "바닥 표면의 가장 바깥쪽 벽이 인쇄되는 속도입니다."
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
+msgstr "이 설정은 시작 g-코드를 항상 첫 번째 g-코드로 강제 적용할지 여부를 제어합니다. 이 옵션이 없으면 T0과 같은 다른 g-코드를 시작 g-코드 앞에 삽입할 수 있습니다."
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr "압력 전진에 대한 조정 요소로, 이는 압출과 동작을 동기화하기 위한 것입니다."
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr "오버행 레이어에 대한 최소 레이어 시간을 적용하고자 할 때, 해당 값보다 긴 오버행 돌출 이동이 연속적으로 하나 이상 있는 경우에만 적용됩니다."
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr "인쇄 하단 영역에 있는 한 줄의 너비."
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "지그재그"

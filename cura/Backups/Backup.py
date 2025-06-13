@@ -1,5 +1,8 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import tempfile
+
+import json
 
 import io
 import os
@@ -7,12 +10,13 @@ import re
 import shutil
 from copy import deepcopy
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
-from typing import Dict, Optional, TYPE_CHECKING, List
+from typing import Callable, Dict, Optional, TYPE_CHECKING, List
 
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
+from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Version import Version
 
@@ -30,6 +34,7 @@ class Backup:
     """These files should be ignored when making a backup."""
 
     IGNORED_FOLDERS = []  # type: List[str]
+    """These folders should be ignored when making a backup."""
 
     SECRETS_SETTINGS = ["general/ultimaker_auth_data"]
     """Secret preferences that need to obfuscated when making a backup of Cura"""
@@ -42,7 +47,7 @@ class Backup:
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[Dict[str, str]]
 
-    def makeFromCurrent(self) -> None:
+    def makeFromCurrent(self, available_remote_plugins: frozenset[str] = frozenset()) -> None:
         """Create a back-up from the current user config folder."""
 
         cura_release = self._application.getVersion()
@@ -68,7 +73,7 @@ class Backup:
 
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()
-        archive = self._makeArchive(buffer, version_data_dir)
+        archive = self._makeArchive(buffer, version_data_dir, available_remote_plugins)
         if archive is None:
             return
         files = archive.namelist()
@@ -77,9 +82,7 @@ class Backup:
         machine_count = max(len([s for s in files if "machine_instances/" in s]) - 1, 0)  # If people delete their profiles but not their preferences, it can still make a backup, and report -1 profiles. Server crashes on this.
         material_count = max(len([s for s in files if "materials/" in s]) - 1, 0)
         profile_count = max(len([s for s in files if "quality_changes/" in s]) - 1, 0)
-        # We don't store plugins anymore, since if you can make backups, you have an account (and the plugins are
-        # on the marketplace anyway)
-        plugin_count = 0
+        plugin_count = len([s for s in files if "plugin.json" in s])
         # Store the archive and metadata so the BackupManager can fetch them when needed.
         self.zip_file = buffer.getvalue()
         self.meta_data = {
@@ -92,22 +95,72 @@ class Backup:
         # Restore the obfuscated settings
         self._illuminate(**secrets)
 
-    def _makeArchive(self, buffer: "io.BytesIO", root_path: str) -> Optional[ZipFile]:
+    def _fillToInstallsJson(self, file_path: str, reinstall_on_restore: frozenset[str], add_to_archive: Callable[[str, str], None]) -> Optional[str]:
+        """ Moves all plugin-data (in a config-file) for plugins that could be (re)installed from the Marketplace from
+            'installed' to 'to_installs' before adding that file to the archive.
+
+        Note that the 'filename'-entry in the package-data (of the plugins) might not be valid anymore on restore.
+        We'll replace it on restore instead, as that's the time when the new package is downloaded.
+
+        :param file_path: Absolute path to the packages-file.
+        :param reinstall_on_restore: A set of plugins that _can_ be reinstalled from the Marketplace.
+        :param add_to_archive: A function/lambda that takes a filename and adds it to the archive (as the 2nd name).
+        """
+        with open(file_path, "r") as file:
+            data = json.load(file)
+            reinstall, keep_in = {}, {}
+            for install_id, install_info in data["installed"].items():
+                (reinstall if install_id in reinstall_on_restore else keep_in)[install_id] = install_info
+            data["installed"] = keep_in
+            data["to_install"].update(reinstall)
+        if data is not None:
+            tmpfile = tempfile.NamedTemporaryFile(delete_on_close=False)
+            with open(tmpfile.name, "w") as outfile:
+                json.dump(data, outfile)
+            add_to_archive(tmpfile.name, file_path)
+            return tmpfile.name
+        return None
+
+    def _findRedownloadablePlugins(self, available_remote_plugins: frozenset) -> (frozenset[str], frozenset[str]):
+        """ Find all plugins that should be able to be reinstalled from the Marketplace.
+
+        :param plugins_path: Path to all plugins in the user-space.
+        :return: Tuple of a set of plugin-ids and a set of plugin-paths.
+        """
+        plugin_reg = PluginRegistry.getInstance()
+        id = "id"
+        plugins = [v for v in plugin_reg.getAllMetaData()
+                   if v[id] in available_remote_plugins and not plugin_reg.isBundledPlugin(v[id])]
+        return frozenset([v[id] for v in plugins]), frozenset([v["location"] for v in plugins])
+
+    def _makeArchive(self, buffer: "io.BytesIO", root_path: str, available_remote_plugins: frozenset) -> Optional[ZipFile]:
         """Make a full archive from the given root path with the given name.
 
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
         ignore_string = re.compile("|".join(self.IGNORED_FILES + self.IGNORED_FOLDERS))
+        reinstall_instead_ids, reinstall_instead_paths = self._findRedownloadablePlugins(available_remote_plugins)
+        tmpfiles = []
         try:
             archive = ZipFile(buffer, "w", ZIP_DEFLATED)
-            for root, folders, files in os.walk(root_path):
+            add_path_to_archive = lambda path, alt_path: archive.write(path, alt_path[len(root_path) + len(os.sep):])
+            for root, folders, files in os.walk(root_path, topdown=True):
                 for item_name in folders + files:
                     absolute_path = os.path.join(root, item_name)
-                    if ignore_string.search(absolute_path):
+                    if ignore_string.search(absolute_path) or any([absolute_path.startswith(x) for x in reinstall_instead_paths]):
                         continue
-                    archive.write(absolute_path, absolute_path[len(root_path) + len(os.sep):])
+                    if item_name == "packages.json":
+                        tmpfiles.append(
+                            self._fillToInstallsJson(absolute_path, reinstall_instead_ids, add_path_to_archive))
+                    else:
+                        add_path_to_archive(absolute_path, absolute_path)
             archive.close()
+            for tmpfile_path in tmpfiles:
+                try:
+                    os.remove(tmpfile_path)
+                except IOError as ex:
+                    Logger.warning(f"Couldn't remove temporary file '{tmpfile_path}' because '{ex}'.")
             return archive
         except (IOError, OSError, BadZipfile) as error:
             Logger.log("e", "Could not create archive from user data directory: %s", error)

@@ -127,13 +127,12 @@ class QualityManagementModel(ListModel):
         # have no container for the global stack, because "my_profile" just got renamed to "my_new_profile". This results
         # in crashes because the rest of the system assumes that all data in a QualityChangesGroup will be correct.
         #
-        # Renaming the container for the global stack in the end seems to be ok, because the assumption is mostly based
-        # on the quality changes container for the global stack.
+        # This is why we use the "supress_signals" flag for the set name. This basically makes the change silent.
         for metadata in quality_changes_group.metadata_per_extruder.values():
             extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
-            extruder_container.setName(new_name)
+            extruder_container.setName(new_name, supress_signals=True)
         global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
-        global_container.setName(new_name)
+        global_container.setName(new_name, supress_signals=True)
 
         quality_changes_group.name = new_name
 

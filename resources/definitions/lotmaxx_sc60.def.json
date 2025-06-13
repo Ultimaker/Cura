@@ -61,7 +61,12 @@
         "support_pattern": { "default_value": "lines" },
         "switch_extruder_retraction_amount": { "value": 100 },
         "switch_extruder_retraction_speeds": { "value": 60 },
-        "wall_overhang_speed_factor": { "value": 50 },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                50
+            ]
+        },
         "z_seam_corner": { "default_value": "z_seam_corner_any" },
         "z_seam_relative": { "value": true },
         "z_seam_type": { "default_value": "sharpest_corner" },

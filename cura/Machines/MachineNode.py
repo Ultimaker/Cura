@@ -48,6 +48,7 @@ class MachineNode(ContainerNode):
         self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
         self.preferred_material = my_metadata.get("preferred_material", "")
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
+        self.supports_abstract_color = parseBool(my_metadata.get("supports_abstract_color", "false"))
 
         self._loadAll()
 

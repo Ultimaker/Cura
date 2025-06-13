@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+import math
 
 from PyQt6.QtCore import Qt, QCoreApplication, QTimer
 from PyQt6.QtGui import QPixmap, QColor, QFont, QPen, QPainter
@@ -51,6 +52,7 @@ class CuraSplashScreen(QSplashScreen):
         self._last_update_time = time.time()
         # Since we don't know how much time actually passed, check how many intervals of 50 we had.
         self._loading_image_rotation_angle -= 10 * (time_since_last_update * 1000 / 50)
+        self._loading_image_rotation_angle = math.fmod(self._loading_image_rotation_angle, 360)
         self.repaint()
 
     # Override the mousePressEvent so the splashscreen doesn't disappear when clicked

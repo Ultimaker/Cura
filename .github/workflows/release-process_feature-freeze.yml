@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       package_version: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}.0-alpha.1
+      branch: ${{ steps.version_parser.outputs.major }}.${{ steps.version_parser.outputs.minor }}
     steps:
       - name: Parse version string
         id: version_parser
@@ -28,5 +29,6 @@ jobs:
     needs: [parse-version]
     with:
       cura_version: ${{ needs.parse-version.outputs.package_version }}
+      branch: ${{ needs.parse-version.outputs.branch }}
       create_feature_branch: true
     secrets: inherit

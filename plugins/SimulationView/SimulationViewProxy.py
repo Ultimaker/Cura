@@ -54,9 +54,9 @@ class SimulationViewProxy(QObject):
     def currentPath(self):
         return self._simulation_view.getCurrentPath()
 
-    @pyqtSlot(float, result=bool)
-    def advanceTime(self, duration: float) -> bool:
-        return self._simulation_view.advanceTime(duration)
+    @pyqtSlot(float)
+    def advanceTime(self, duration: float) -> None:
+        self._simulation_view.advanceTime(duration)
 
     @pyqtProperty(int, notify=currentPathChanged)
     def minimumPath(self):

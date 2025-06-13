@@ -11,6 +11,7 @@
         "platform": "dagoma_sigma_pro.obj",
         "first_start_actions": [ "MachineSettingsAction" ],
         "has_machine_quality": true,
+        "has_textured_buildplate": true,
         "has_variants": true,
         "machine_extruder_trains":
         {

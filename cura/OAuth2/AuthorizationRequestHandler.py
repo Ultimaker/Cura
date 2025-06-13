@@ -127,6 +127,7 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
         self.send_response(status.code, status.message)
         self.send_header("Content-type", content_type)
+        self.send_header("Strict-Transport-Security", "max-age=900")
         if redirect_uri:
             self.send_header("Location", redirect_uri)
         self.end_headers()

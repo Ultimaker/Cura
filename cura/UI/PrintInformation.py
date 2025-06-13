@@ -449,6 +449,6 @@ class PrintInformation(QObject):
         """If this is a sort of output 'device' (like local or online file storage, rather than a printer),
            the user could have altered the file-name, and thus the project name should be altered as well."""
         if isinstance(output_device, ProjectOutputDevice):
-            new_name = output_device.getLastOutputName()
+            new_name = output_device.popLastOutputName()
             if new_name is not None:
                 self.setJobName(os.path.splitext(os.path.basename(new_name))[0])

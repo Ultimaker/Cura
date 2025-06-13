@@ -5861,6 +5861,30 @@ msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "顶点上的 Z 形接缝"
 
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "在填充模式中添加额外的线条以支撑上面的表皮。这一选项可以防止因下面的填充未能正确支撑上面打印的表皮层而导致的孔洞或塑料块,这在复杂形状的表皮中常见。\"墙\"仅支持表皮的轮廓,而\"墙和线\"还支持构成表皮的线条之末端。"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "在高度处的风扇速度"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "在层上的风扇速度"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "构建体积风扇编号"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "确定在沿着缝合接缝挤出时流量变化中每一步的长度。较小的距离会导致更精确但也更复杂的 G-code。"
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "确定缝合接缝的长度,这是一种应使 Z 接缝不那么明显的接缝类型。必须大于 0 才能有效。"
+
 msgctxt "gradual_flow_discretisation_step_size description"
 msgid "Duration of each step in the gradual flow change"
 msgstr "渐变流量变化中每个步骤的持续时间"
@@ -5868,6 +5892,10 @@ msgstr "渐变流量变化中每个步骤的持续时间"
 msgctxt "gradual_flow_enabled description"
 msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
 msgstr "启用渐变流量变化。启用之后,流量将会逐渐增加/减少到目标流量。这对于带有波登管的打印机非常有用,因为当挤出机电机启动/停止时,流量并不会立即改变。"
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "额外填充线以支撑表皮"
 
 msgctxt "reset_flow_duration description"
 msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
@@ -5897,6 +5925,318 @@ msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "第一层渐变流量变化的最小速度"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "无"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "外墙加速"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "外墙减速"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "外墙结束速度比率"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "外墙速度分割距离"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "外墙起始速度比率"
+
 msgctxt "reset_flow_duration label"
 msgid "Reset flow duration"
 msgstr "重置流量持续时间"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "缝合接缝长度"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "缝合接缝起始高度"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "缝合接缝步长"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "风扇在常规风速下旋转的高度。在下面的层中,风扇速度会逐渐从初始风速增加到常规风速。"
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "构建风扇以全速旋转的层数。此值经过计算并四舍五入为整数。"
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "冷却构建体积的风扇编号。如果设置为 0,则表示没有构建体积风扇"
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "缝合接缝开始的层高比率。较低的数字将导致更大的缝合高度。必须低于 100 才能有效。"
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "这是打印外墙时达到最高速度的加速度。"
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "这是结束打印外墙时的减速度。"
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "这是在拆分更长路径以应用外墙加速/减速时挤出路径的最大长度。较小的距离将创建更精确但也更冗长的 G-Code。"
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "这是打印外墙时在结束时的最高速度比率。"
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "这是打印外墙时在开始时的最高速度比率。"
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "仅墙体"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "墙体和线条"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "超过此角度的悬垂墙将使用悬垂墙设置打印。当值为 90 时,没有墙会被视为悬垂。得到支撑的悬垂也不会被视为悬垂。此外,任何少于一半悬垂的线也不会被视为悬垂。"
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "底部表面皮肤层使用线条或锯齿图案时使用的整数线条方向列表。随着层数的增加,列表中的元素按顺序使用,当到达列表末尾时,从头开始。列表项用逗号分隔,整个列表用方括号括起来。默认值为空列表,表示使用传统的默认角度（45度和135度）。"
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr "底部表面内壁加速度"
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr "底部表面内壁急动度"
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr "底部表面内壁速度"
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr "底部表面内壁流量"
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr "底部表面外壁加速度"
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr "底部表面外壁流量"
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr "底部表面外壁急动度"
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr "底部表面外壁速度"
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr "底部表面皮肤加速度"
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr "底部表面皮肤挤出机"
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr "底部表面皮肤流量"
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr "底部表面皮肤急动度"
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr "底部表面皮肤层数"
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr "底部表面皮肤线条方向"
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr "底部表面皮肤线条宽度"
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr "底部表面皮肤图案"
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr "底部表面皮肤速度"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr "同心"
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr "挤出机"
+
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr "底部表面壁线的流量补偿（除最外层外的所有壁线）。"
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr "打印底部区域线条的流量补偿"
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr "打印底部表面最外层壁线的流量补偿"
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr "Griffin+Cheetah"
+
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr "内部移动避让距离"
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr "线条"
+
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr "带悬垂的最小层时间"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr "最小悬垂段长度"
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr "单调底部表面顺序"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr "外壁结束减速"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr "外壁起始加速度"
+
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
+msgstr "悬垂壁速度"
+
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr "悬垂壁将以正常打印速度的百分比进行打印。您可以指定多个值,以便更悬垂的壁以更慢的速度打印,例如通过设置[75, 50, 25]。"
+
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr "压力推进因子"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr "打印核心"
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "以单方向重叠相邻线条的顺序打印底部表面线条。这需要稍长的打印时间,但可以使平坦表面看起来更加一致。"
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr "启动G代码必须放在首位"
+
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的加速度"
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的加速度"
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr "打印底部表面最外层壁的加速度"
+
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr "用于在\"一次打印一个\"时确定\"安全模型距离\"的打印头尺寸。这些数字与第一个挤出机喷嘴的中心线相关。喷嘴左侧为\"X最小值\",必须为负数。喷嘴后方为\"Y最小值\",必须为负数。X最大值（右侧）和Y最大值（前方）为正数。龙门高度是从构建板到X龙门梁的尺寸。"
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr "喷嘴与已打印外壁之间的内部移动距离"
+
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr "用于打印最底部皮肤的挤出机轨道。这用于多挤出机设置。"
+
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的最大瞬时速度变化"
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的最大瞬时速度变化"
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr "打印底部表面最外层壁的最大瞬时速度变化"
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr "包含悬垂挤出的层的最小时间。这迫使打印机减速,至少在此处设置的时间内完成一层打印。这允许打印材料在打印下一层之前适当冷却。如果\"提升打印头\"被禁用且最小速度未被违反,则层可能仍然比最小层时间短。"
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr "最底部皮肤层的数量。通常只需一层最底部皮肤即可生成更高质量的底部表面。"
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr "最底部层的图案"
+
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的速度"
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的速度"
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr "打印底部表面最外层壁的速度"
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
+msgstr "此设置控制启动G代码是否始终强制为第一个G代码。如果没有此选项,其他G代码（如T0）可能会插入到启动G代码之前。"
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr "压力推进的调整因子,旨在将挤出与运动同步"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr "当尝试应用特定于悬垂层的最小层时间时,仅当至少一个连续的悬垂挤出移动长度超过此值时才会应用。"
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr "打印底部区域的单线宽度"
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "锯齿形"

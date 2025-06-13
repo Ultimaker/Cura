@@ -21,7 +21,7 @@ def main() -> None:
     parser.add_argument("--diagnose", action="store_true", help="Diagnose the files")
     parser.add_argument("--deleted", action="store_true", help="Check for deleted files")
     parser.add_argument("--fix", action="store_true", help="Attempt to apply the suggested fixes on the files")
-    parser.add_argument("Files", metavar="F", type=Path, nargs="+", help="Files or directories to format")
+    parser.add_argument("Files", type=Path, nargs="+", help="Files or directories to format")
 
     args = parser.parse_args()
     files = extractFilePaths(args.Files)
@@ -39,7 +39,7 @@ def main() -> None:
         return
 
     with open(setting_path, "r") as f:
-        settings = yaml.load(f, yaml.FullLoader)
+        settings = yaml.safe_load(f)
 
     full_body_check = {"Diagnostics": []}
     comments_check = {"Error Files": []}

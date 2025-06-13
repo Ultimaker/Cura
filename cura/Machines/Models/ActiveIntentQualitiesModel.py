@@ -72,6 +72,13 @@ class ActiveIntentQualitiesModel(ListModel):
                     new_items.append(intent)
                     added_quality_type_set.add(intent["quality_type"])
 
+        # If there aren't any possibilities when the Intent is kept the same, attempt to set it 'back' to default.
+        current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
+        if len(new_items) == 0 and self._intent_category != "default" and current_quality_type != "not_supported":
+            IntentManager.getInstance().selectIntent("default", current_quality_type)
+            self._update()
+            return
+
         new_items = sorted(new_items, key=lambda x: x["layer_height"])
         self.setItems(new_items)
 

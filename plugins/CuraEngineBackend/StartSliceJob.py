@@ -76,7 +76,7 @@ class GcodeStartEndFormatter:
     # will be used. Alternatively, if the expression is formatted as "{[expression], [extruder_nr]}",
     # then the expression will be evaluated with the extruder stack of the specified extruder_nr.
 
-    _instruction_regex = re.compile(r"{(?P<condition>if|else|elif|endif)?\s*(?P<expression>.*?)\s*(?:,\s*(?P<extruder_nr_expr>.*))?\s*}(?P<end_of_line>\n?)")
+    _instruction_regex = re.compile(r"{(?P<condition>if|else|elif|endif)?\s*(?P<expression>[^{}]*?)\s*(?:,\s*(?P<extruder_nr_expr>[^{}]*))?\s*}(?P<end_of_line>\n?)")
 
     def __init__(self, all_extruder_settings: Dict[str, Dict[str, Any]], default_extruder_nr: int = -1) -> None:
         super().__init__()
@@ -614,6 +614,7 @@ class StartSliceJob(Job):
 
         # Replace the setting tokens in start and end g-code.
         extruder_nr = stack.getProperty("extruder_nr", "value")
+        settings["machine_extruder_prestart_code"] = self._expandGcodeTokens(settings["machine_extruder_prestart_code"], extruder_nr)
         settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
         settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
