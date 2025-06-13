@@ -76,6 +76,11 @@ UM.TooltipArea
         anchors.left: fieldLabel.right
         anchors.leftMargin: spacing
         verticalAlignment: Text.AlignVCenter
+
+        // The control is set up for left to right. So we force it to that. If we don't, it will take the OS reading
+        // direction, which might not be left to right. This will lead to the text overlapping with the unit
+        horizontalAlignment: TextInput.AlignLeft
+
         selectionColor: UM.Theme.getColor("text_selection")
         selectedTextColor: UM.Theme.getColor("setting_control_text")
         padding: 0

@@ -43,8 +43,6 @@
         "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nG92 E0 ;zero the extruded length\nG28 ;home\nG1 F200 E30 ;extrude 30 mm of feed stock\nG92 E0 ;zero the extruded length\nG1 E-5 ;retract 5 mm\nG28 SC ;Do homeing, clean nozzles and let printer to know that printing started\nG92 X-6 ;Sets Curas checker board to match printers heated bed coordinates\nG1 F{speed_travel}\nM117 Printing..." },
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
         "machine_width": { "default_value": 305 },
-        "prime_tower_position_x": { "value": "185" },
-        "prime_tower_position_y": { "value": "160" },
         "print_sequence": { "enabled": true },
         "retraction_amount": { "default_value": 6 },
         "retraction_speed": { "default_value": 180 },

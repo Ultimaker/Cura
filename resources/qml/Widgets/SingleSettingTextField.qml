@@ -53,6 +53,7 @@ UM.TextField
     {
         id: propertyProvider
         watchedProperties: ["value", "validationState",  "resolve"]
+        removeUnusedValue: false
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
     }
 

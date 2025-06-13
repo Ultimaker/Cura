@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Left Extruder",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "dagoma_sigma_pro_dual",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 1 },
+        "machine_extruder_end_code": { "default_value": ";END T1\nG92 E0\nM83\nG1 E-55 F4700\nM82\nG92 E0\n" },
+        "machine_extruder_start_code": { "default_value": ";START T1\n;No temperature change\nG1 X0 Y77.5 F8000\nG92 E0\nM83\nG1 E50 F1200\nM82\nG92 E0\n" },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

@@ -1,4 +1,4 @@
-# This PostProcessingPlugin script is released under the terms of the AGPLv3 or higher.
+# This PostProcessingPlugin script is released under the terms of the LGPLv3 or higher.
 """
 Copyright (c) 2017 Christophe Baribaud 2017
 Python implementation of https://github.com/electrocbd/post_stretch

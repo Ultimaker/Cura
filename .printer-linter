@@ -2,6 +2,12 @@ checks:
     diagnostic-mesh-file-extension: true
     diagnostic-mesh-file-size: true
     diagnostic-definition-redundant-override: true
+    diagnostic-definition-experimental-setting: true
+    diagnostic-resources-macos-app-directory-name: true
+    diagnostic-incorrect-formula: true
+    diagnostic-resource-file-deleted: true
+    diagnostic-material-temperature-defined: false
+    diagnostic-long-profile-names: true
 fixes:
     diagnostic-definition-redundant-override: true
 format:

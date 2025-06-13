@@ -33,6 +33,21 @@
             />
         </Upgrade>
 
+        <Property Id="ASSOCIATE_URL_PROTOCOLS">
+            <RegistrySearch Id="CheckCuraProtocolHandler"
+                Type="raw"
+                Root="HKCR"
+                Key="cura"
+                Name="URL Protocol"
+            />
+            <RegistrySearch Id="CheckSlicerProtocolHandler"
+                Type="raw"
+                Root="HKCR"
+                Key="slicer"
+                Name="URL Protocol"
+            />
+        </Property>
+
         {% if "Enterprise" in app_name %}
         <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
         <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
@@ -144,11 +159,32 @@
             </Component>
         </DirectoryRef>
 
+        <!--Url Scheme-->
+        <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+            <RegistryKey Root="HKCR" Key="cura">
+                <RegistryValue Type="string" Value="URL:Cura Protocol"/>
+                <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+            </RegistryKey>
+        </Component>
+
+        <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+            <RegistryKey Root="HKCR" Key="slicer">
+                <RegistryValue Type="string" Value="URL:Slicer Protocol"/>
+                <RegistryValue Type="string" Name="URL Protocol" Value=""/>
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+            </RegistryKey>
+        </Component>
+
         <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER">
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
             <ComponentRef Id="CMP_CuraEngine_exe" />
             <ComponentGroupRef Id="NewFilesGroup" />
             <ComponentRef Id="CMP_Shortcuts" />
+            <ComponentRef Id="CuraRegistration"/>
+            <ComponentRef Id="SlicerRegistration"/>
         </Feature>
         <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..."/>
     </Product>

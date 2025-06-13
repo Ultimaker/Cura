@@ -1,4 +1,4 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.FileHandler.FileHandler import FileHandler #For typing.
@@ -6,6 +6,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode #For typing.
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.FormatMaps import FormatMaps
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 
@@ -415,7 +416,13 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtProperty(str, constant = True)
     def printerType(self) -> str:
-        return self._properties.get(b"printer_type", b"Unknown").decode("utf-8")
+        return NetworkedPrinterOutputDevice.applyPrinterTypeMapping(self._properties.get(b"printer_type", b"Unknown").decode("utf-8"))
+
+    @staticmethod
+    def applyPrinterTypeMapping(printer_type):
+        if printer_type in FormatMaps.PRINTER_TYPE_NAME:
+            return FormatMaps.PRINTER_TYPE_NAME[printer_type]
+        return printer_type
 
     @pyqtProperty(str, constant = True)
     def ipAddress(self) -> str:

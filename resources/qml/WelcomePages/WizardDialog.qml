@@ -32,11 +32,6 @@ Window
     property var model: null  // Needs to be set by whoever is using this dialog.
     property alias progressBarVisible: wizardPanel.progressBarVisible
 
-    function resetModelState()
-    {
-        model.resetState()
-    }
-
     WizardPanel
     {
         id: wizardPanel

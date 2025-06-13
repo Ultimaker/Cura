@@ -25,7 +25,7 @@ UM.TooltipArea
         onClicked:
         {
             addedSettingsModel.setVisible(model.key, checked);
-            UM.ActiveTool.forceUpdate();
+            UM.Controller.forceUpdate();
         }
     }
 

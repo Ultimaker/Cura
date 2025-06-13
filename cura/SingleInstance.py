@@ -5,16 +5,18 @@ import json
 import os
 from typing import List, Optional
 
+from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QLocalServer, QLocalSocket
 
-from UM.Qt.QtApplication import QtApplication #For typing.
+from UM.Qt.QtApplication import QtApplication  # For typing.
 from UM.Logger import Logger
 
 
 class SingleInstance:
-    def __init__(self, application: QtApplication, files_to_open: Optional[List[str]]) -> None:
+    def __init__(self, application: QtApplication, files_to_open: Optional[List[str]], url_to_open: Optional[List[str]]) -> None:
         self._application = application
         self._files_to_open = files_to_open
+        self._url_to_open = url_to_open
 
         self._single_instance_server = None
 
@@ -33,7 +35,7 @@ class SingleInstance:
             return False
 
         # We only send the files that need to be opened.
-        if not self._files_to_open:
+        if not self._files_to_open and not self._url_to_open:
             Logger.log("i", "No file need to be opened, do nothing.")
             return True
 
@@ -55,8 +57,12 @@ class SingleInstance:
                 payload = {"command": "open", "filePath": os.path.abspath(filename)}
                 single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
 
+            for url in self._url_to_open:
+                payload = {"command": "open-url", "urlPath": url.toString()}
+                single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
+
             payload = {"command": "close-connection"}
-            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding = "ascii"))
+            single_instance_socket.write(bytes(json.dumps(payload) + "\n", encoding="ascii"))
 
             single_instance_socket.flush()
             single_instance_socket.waitForDisconnected()
@@ -72,7 +78,7 @@ class SingleInstance:
 
     def _onClientConnected(self) -> None:
         Logger.log("i", "New connection received on our single-instance server")
-        connection = None #type: Optional[QLocalSocket]
+        connection = None  # type: Optional[QLocalSocket]
         if self._single_instance_server:
             connection = self._single_instance_server.nextPendingConnection()
 
@@ -81,7 +87,7 @@ class SingleInstance:
 
     def __readCommands(self, connection: QLocalSocket) -> None:
         line = connection.readLine()
-        while len(line) != 0:    # There is also a .canReadLine()
+        while len(line) != 0:  # There is also a .canReadLine()
             try:
                 payload = json.loads(str(line, encoding = "ascii").strip())
                 command = payload["command"]
@@ -94,13 +100,19 @@ class SingleInstance:
                 elif command == "open":
                     self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
 
+                #command: Load a url link in Cura
+                elif command == "open-url":
+                    url = QUrl(payload["urlPath"])
+                    self._application.callLater(lambda: self._application._openUrl(url))
+
+
                 # Command: Activate the window and bring it to the top.
                 elif command == "focus":
                     # Operating systems these days prevent windows from moving around by themselves.
                     # 'alert' or flashing the icon in the taskbar is the best thing we do now.
                     main_window = self._application.getMainWindow()
                     if main_window is not None:
-                        self._application.callLater(lambda: main_window.alert(0)) # type: ignore # I don't know why MyPy complains here
+                        self._application.callLater(lambda: main_window.alert(0))  # type: ignore # I don't know why MyPy complains here
 
                 # Command: Close the socket connection. We're done.
                 elif command == "close-connection":

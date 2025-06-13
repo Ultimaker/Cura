@@ -81,8 +81,6 @@
         "material_standby_temperature": { "value": "material_print_temperature" },
         "prime_blob_enable": { "enabled": true },
         "prime_tower_min_volume": { "default_value": 50 },
-        "prime_tower_position_x": { "value": "175" },
-        "prime_tower_position_y": { "value": "178" },
         "prime_tower_wipe_enabled": { "default_value": false },
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 15 },

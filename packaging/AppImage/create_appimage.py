@@ -30,6 +30,10 @@ def copy_metadata_files(dist_path, version):
     Copy metadata files for the metadata of the AppImage.
     """
     copied_files = {
+        os.path.join("..", "icons", "cura-icon.svg"):         os.path.join("usr", "share", "icons", "hicolor", "scalable", "apps", "cura-icon.svg"),
+        os.path.join("..", "icons", "cura-icon_64x64.png"):   os.path.join("usr", "share", "icons", "hicolor", "64x64", "apps", "cura-icon.png"),
+        os.path.join("..", "icons", "cura-icon_128x128.png"): os.path.join("usr", "share", "icons", "hicolor", "128x128", "apps", "cura-icon.png"),
+        os.path.join("..", "icons", "cura-icon_256x256.png"): os.path.join("usr", "share", "icons", "hicolor", "256x256", "apps", "cura-icon.png"),
         os.path.join("..", "icons", "cura-icon_256x256.png"): "cura-icon.png",
         "cura.appdata.xml": "cura.appdata.xml",
         "AppRun": "AppRun"
@@ -37,8 +41,9 @@ def copy_metadata_files(dist_path, version):
 
     packaging_dir = os.path.dirname(__file__)
     for source, dest in copied_files.items():
-        print("Copying", os.path.join(packaging_dir, source), "to", os.path.join(dist_path, dest))
-        shutil.copyfile(os.path.join(packaging_dir, source), os.path.join(dist_path, dest))
+        dest_file_path = os.path.join(dist_path, dest)
+        os.makedirs(os.path.dirname(dest_file_path), exist_ok=True)
+        shutil.copyfile(os.path.join(packaging_dir, source), dest_file_path)
 
     # Ensure that AppRun has the proper permissions: 755 (user reads, writes and executes, group reads and executes, world reads and executes).
     print("Changing permissions for AppRun")

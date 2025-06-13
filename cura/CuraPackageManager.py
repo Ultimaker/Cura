@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import glob
 import os
@@ -55,7 +55,9 @@ class CuraPackageManager(PackageManager):
     def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-        self._installation_dirs_dict["variants"] = Resources.getStoragePath(CuraApplication.ResourceTypes.VariantInstanceContainer)
+        self._installation_dirs_dict["variants"] = Resources.getStoragePath(
+            CuraApplication.ResourceTypes.VariantInstanceContainer)
+        self._installation_dirs_dict["images"] = Resources.getStoragePath(CuraApplication.ResourceTypes.ImageFiles)
 
         # Due to a bug in Cura 5.1.0 we needed to change the directory structure of the curapackage on the server side (See SD-3871).
         # Although the material intent profiles will be installed in the `intent` folder, the curapackage from the server side will

@@ -56,11 +56,12 @@ class CuraFormulaFunctions:
         if isinstance(value, SettingFunction):
             value = value(extruder_stack, context = context)
 
+        if isinstance(value, str):
+            value = value.lower()
+
         return value
 
-    # Gets all extruder values as a list for the given property.
-    def getValuesInAllExtruders(self, property_key: str,
-                                context: Optional["PropertyEvaluationContext"] = None) -> List[Any]:
+    def _getActiveExtruders(self, context: Optional["PropertyEvaluationContext"] = None) -> List[str]:
         machine_manager = self._application.getMachineManager()
         extruder_manager = self._application.getExtruderManager()
 
@@ -73,7 +74,17 @@ class CuraFormulaFunctions:
             # only include values from extruders that are "active" for the current machine instance
             if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
                 continue
+            result.append(extruder)
 
+        return result
+
+    # Gets all extruder values as a list for the given property.
+    def getValuesInAllExtruders(self, property_key: str,
+                                context: Optional["PropertyEvaluationContext"] = None) -> List[Any]:
+        global_stack = self._application.getMachineManager().activeMachine
+
+        result = []
+        for extruder in self._getActiveExtruders(context):
             value = extruder.getRawProperty(property_key, "value", context = context)
 
             if value is None:
@@ -88,6 +99,25 @@ class CuraFormulaFunctions:
             result.append(global_stack.getProperty(property_key, "value", context = context))
 
         return result
+
+    # Get the first extruder that adheres to a specific (boolean) property, like 'material_is_support_material'.
+    def getAnyExtruderPositionWithOrDefault(self, filter_key: str,
+                                            context: Optional["PropertyEvaluationContext"] = None) -> str:
+        for extruder in self._getActiveExtruders(context):
+            value = extruder.getRawProperty(filter_key, "value", context=context)
+            if value is None or not value:
+                continue
+            return str(extruder.position)
+
+    # Get the first extruder with material that adheres to a specific (boolean) property, like 'material_is_support_material'.
+    def getExtruderPositionWithMaterial(self, filter_key: str,
+                               context: Optional["PropertyEvaluationContext"] = None) -> str:
+        for extruder in self._getActiveExtruders(context):
+            material_container = extruder.material
+            value = material_container.getProperty(filter_key, "value", context)
+            if value is not None:
+                return str(extruder.position)
+        return self.getDefaultExtruderPosition()
 
     # Get the resolve value or value for a given key.
     def getResolveOrValue(self, property_key: str, context: Optional["PropertyEvaluationContext"] = None) -> Any:

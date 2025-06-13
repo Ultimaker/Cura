@@ -101,6 +101,8 @@
         },
         "machine_height": { "default_value": 250 },
         "machine_name": { "default_value": "Deltacomb DC-20 DUAL" },
-        "machine_width": { "default_value": 190 }
+        "machine_width": { "default_value": 190 },
+        "prime_tower_position_x": { "value": "60" },
+        "prime_tower_position_y": { "value": "60" }
     }
 }

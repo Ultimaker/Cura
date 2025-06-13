@@ -44,7 +44,7 @@ Popup
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Print jobs"),
-                    thumbnail: UM.Theme.getIcon("FoodBeverages"),
+                    thumbnail: UM.Theme.getIcon("Nozzle"),
                     description: catalog.i18nc("@tooltip:button", "Monitor print jobs and reprint from your print history."),
                     link: "https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printjobs",
                     permissionsRequired: ["digital-factory.print-job.read"]
@@ -57,10 +57,10 @@ Popup
                     permissionsRequired: []
                 },
                 {
-                    displayName: "UltiMaker Academy", //Not translated, since it's a brand name.
-                    thumbnail: UM.Theme.getIcon("Knowledge"),
-                    description: catalog.i18nc("@tooltip:button", "Become a 3D printing expert with UltiMaker e-learning."),
-                    link: "https://academy.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-academy",
+                    displayName: catalog.i18nc("@label:button", "Sponsor Cura"),
+                    thumbnail: UM.Theme.getIcon("Heart"),
+                    description: catalog.i18nc("@tooltip:button", "Show your support for Cura with a donation."),
+                    link: "https://ultimaker.com/software/ultimaker-cura/sponsor/",
                     permissionsRequired: []
                 },
                 {

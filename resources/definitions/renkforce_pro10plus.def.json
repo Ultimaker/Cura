@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Renkforce Pro 10+",
+    "inherits": "goofoo_near",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Woosh (based on RF100.ini by Conrad Electronic SE)",
+        "manufacturer": "Renkforce"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 360 },
+        "machine_height": { "default_value": 400 },
+        "machine_name": { "default_value": "Renkforce Pro 10+" },
+        "machine_width": { "default_value": 360 }
+    }
+}

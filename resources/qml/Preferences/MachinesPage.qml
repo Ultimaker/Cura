@@ -58,10 +58,11 @@ UM.ManagementPage
         anchors.fill: parent
         spacing: UM.Theme.getSize("default_margin").height
 
+
         Repeater
         {
             id: machineActionRepeater
-            model: base.currentItem ? Cura.MachineActionManager.getSupportedActions(Cura.MachineManager.getDefinitionByMachineId(base.currentItem.id)) : null
+            model: base.currentItem ? CuraApplication.getSupportedActionMachineList(base.currentItem.id) : null
 
             Item
             {

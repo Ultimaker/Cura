@@ -48,6 +48,8 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
+    from PyQt6.QtCore import QVariantList
+
     from cura.CuraApplication import CuraApplication
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
@@ -396,7 +398,8 @@ class MachineManager(QObject):
                 self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
                 variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
 
-            material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
+            material_node = variant_node.materials.get(
+                extruder.material.getMetaDataEntry("base_file")) if variant_node else None
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
                 if not self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material):
@@ -580,6 +583,10 @@ class MachineManager(QObject):
     @pyqtProperty(QObject, notify = globalContainerChanged)
     def activeMachine(self) -> Optional["GlobalStack"]:
         return self._global_container_stack
+
+    @pyqtProperty("QVariantList", notify=activeVariantChanged)
+    def activeMachineExtruders(self) -> Optional["QVariantList"]:
+        return self._global_container_stack.extruderList if self._global_container_stack else None
 
     @pyqtProperty(str, notify = activeStackChanged)
     def activeStackId(self) -> str:
@@ -840,6 +847,24 @@ class MachineManager(QObject):
             result = result and (buildplate_compatible or buildplate_usable)
 
         return result
+
+    @pyqtProperty(bool, notify = currentConfigurationChanged)
+    def variantCoreUsableForFactor4(self) -> bool:
+        """The selected core is usable if it is in second extruder of Factor4
+        """
+        result = True
+        if not self._global_container_stack:
+            return result
+        if self.activeMachine.definition.id != "ultimaker_factor4":
+            return result
+
+        for extruder_container in self._global_container_stack.extruderList:
+            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right"):
+                if extruder_container.material == empty_material_container:
+                    return True
+                if extruder_container.variant.id.startswith("ultimaker_factor4_bb"):
+                    return False
+        return True
 
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> Optional[str]:
@@ -1654,7 +1679,7 @@ class MachineManager(QObject):
             intent_category = self.activeIntentCategory,
             intent_name = IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
             custom_profile = self.activeQualityOrQualityChangesName if global_stack.qualityChanges is not empty_quality_changes_container else None,
-            layer_height = self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
+            layer_height = float("{:.2f}".format(self.activeQualityLayerHeight)) if self.isActiveQualitySupported else None,
             is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported
         )
 
@@ -1699,6 +1724,16 @@ class MachineManager(QObject):
                     break
             else:  # No intent had the correct category.
                 extruder.intent = empty_intent_container
+
+    @pyqtSlot()
+    def resetIntents(self) -> None:
+        """Reset the intent category of the current printer.
+        """
+        global_stack = self._application.getGlobalContainerStack()
+        if global_stack is None:
+            return
+        for extruder in global_stack.extruderList:
+            extruder.intent = empty_intent_container
 
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         """Get the currently activated quality group.

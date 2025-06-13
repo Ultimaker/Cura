@@ -1,5 +1,5 @@
 # Copyright (c) 2023 UltiMaker B.V.
-# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
 

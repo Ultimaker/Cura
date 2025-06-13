@@ -3,7 +3,6 @@
 
 import json
 from json import JSONDecodeError
-import re
 from time import time
 from typing import List, Any, Optional, Union, Type, Tuple, Dict, cast, TypeVar, Callable
 
@@ -197,7 +196,7 @@ class DigitalFactoryApiClient:
         url = "{}/projects/{}/files".format(self.CURA_API_ROOT, library_project_id)
         self._http.get(url,
                        scope = self._scope,
-                       callback = self._parseCallback(on_finished, DigitalFactoryFileResponse, failed),
+                       callback = self._parseCallback(on_finished, DigitalFactoryFileResponse, failed, default_values = {'username': ''}),
                        error_callback = failed,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
@@ -206,7 +205,8 @@ class DigitalFactoryApiClient:
                                           Callable[[List[CloudApiClientModel]], Any]],
                        model: Type[CloudApiClientModel],
                        on_error: Optional[Callable] = None,
-                       pagination_manager: Optional[PaginationManager] = None) -> Callable[[QNetworkReply], None]:
+                       pagination_manager: Optional[PaginationManager] = None,
+                       default_values: Dict[str, str] = None) -> Callable[[QNetworkReply], None]:
 
         """
         Creates a callback function so that it includes the parsing of the response into the correct model.
@@ -235,7 +235,7 @@ class DigitalFactoryApiClient:
             if status_code >= 300 and on_error is not None:
                 on_error()
             else:
-                self._parseModels(response, on_finished, model, pagination_manager = pagination_manager)
+                self._parseModels(response, on_finished, model, pagination_manager = pagination_manager, default_values = default_values)
 
         self._anti_gc_callbacks.append(parse)
         return parse
@@ -263,7 +263,8 @@ class DigitalFactoryApiClient:
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
                      model_class: Type[CloudApiClientModel],
-                     pagination_manager: Optional[PaginationManager] = None) -> None:
+                     pagination_manager: Optional[PaginationManager] = None,
+                     default_values: Dict[str, str] = None) -> None:
         """Parses the given models and calls the correct callback depending on the result.
 
         :param response: The response from the server, after being converted to a dict.
@@ -280,7 +281,10 @@ class DigitalFactoryApiClient:
             if "links" in response and pagination_manager:
                 pagination_manager.setLinks(response["links"])
             if isinstance(data, list):
-                results = [model_class(**c) for c in data]  # type: List[CloudApiClientModel]
+                results = []  # type: List[CloudApiClientModel]
+                for model_data in data:
+                    complete_model_data = (default_values | model_data) if default_values is not None else model_data
+                    results.append(model_class(**complete_model_data))
                 on_finished_list = cast(Callable[[List[CloudApiClientModel]], Any], on_finished)
                 on_finished_list(results)
             else:
@@ -313,7 +317,7 @@ class DigitalFactoryApiClient:
                        error_callback = on_error,
                        timeout = self.DEFAULT_REQUEST_TIMEOUT)
 
-    def requestUploadUFP(self, request: DFPrintJobUploadRequest,
+    def requestUploadMeshFile(self, request: DFPrintJobUploadRequest,
                          on_finished: Callable[[DFPrintJobUploadResponse], Any],
                          on_error: Optional[Callable[["QNetworkReply", "QNetworkReply.NetworkError"], None]] = None) -> None:
         """Requests the Digital Factory to register the upload of a file in a library project.

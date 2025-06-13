@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "name": "Multicomp Pro MCPI-200",
+    "inherits": "goofoo_near",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Woosh",
+        "manufacturer": "Multicomp Pro"
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 200 },
+        "machine_name": { "default_value": "Multicomp Pro MCPI-200" },
+        "machine_width": { "default_value": 200 }
+    }
+}

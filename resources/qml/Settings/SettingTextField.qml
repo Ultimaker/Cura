@@ -92,6 +92,8 @@ SettingItem
 
         UM.Label
         {
+            id: unitLabel
+
             anchors
             {
                 left: parent.left
@@ -106,6 +108,16 @@ SettingItem
             horizontalAlignment: (input.effectiveHorizontalAlignment == Text.AlignLeft) ? Text.AlignRight : Text.AlignLeft
             textFormat: Text.PlainText
             color: UM.Theme.getColor("setting_unit")
+
+            Binding
+            {
+                target: unitLabel
+                property: "text"
+                value:
+                {
+                    return propertyProvider.properties.unit;
+                }
+            }
         }
 
         TextInput
@@ -148,6 +160,11 @@ SettingItem
                 if(activeFocus)
                 {
                     base.focusReceived();
+                    setScrollPositionChangeLoseFocus(false);
+                }
+                else
+                {
+                    setScrollPositionChangeLoseFocus(true);
                 }
                 base.focusGainedByClick = false;
             }
@@ -223,7 +240,7 @@ SettingItem
 
                 cursorShape: Qt.IBeamCursor
 
-                onPressed: {
+                onPressed:(mouse)=> {
                     if (!input.activeFocus)
                     {
                         base.focusGainedByClick = true

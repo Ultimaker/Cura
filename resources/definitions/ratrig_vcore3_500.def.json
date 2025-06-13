@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "name": "RatRig V-Core 3 500mm",
+    "inherits": "ratrig_vcore3_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "ratrig_vcore3_500.stl",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "weight": 16
+    },
+    "overrides":
+    {
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 500 },
+        "machine_name": { "default_value": "RatRig V-Core 3 500mm" },
+        "machine_width": { "default_value": 500 }
+    }
+}

@@ -5,9 +5,9 @@ import os
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
-from UM.Mesh.MeshWriter import MeshWriter #To get the g-code output.
-from UM.Message import Message #Show an error when already printing.
-from UM.PluginRegistry import PluginRegistry #To get the g-code output.
+from UM.Mesh.MeshWriter import MeshWriter # To get the g-code output.
+from UM.Message import Message # Show an error when already printing.
+from UM.PluginRegistry import PluginRegistry # To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
@@ -19,7 +19,7 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
-from io import StringIO #To write the g-code output.
+from io import StringIO # To write the g-code output.
 from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
@@ -97,6 +97,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
 
+        CuraApplication.getInstance().getPreferences().addPreference("usb_printing/enabled", False)
+
     # This is a callback function that checks if there is any printing in progress via USB when the application tries
     # to exit. If so, it will show a confirmation before
     def _checkActivePrintingUponAppExit(self) -> None:
@@ -143,6 +145,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         controller.stopPreheatTimers()
 
         CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
+
+        CuraApplication.getInstance().getPreferences().setValue("usb_printing/enabled", True)
 
         #Find the g-code to print.
         gcode_textio = StringIO()

@@ -148,6 +148,9 @@ class CloudMaterialSync(QObject):
                 continue
             if metadata["id"] == "empty_material":  # Don't export the empty material.
                 continue
+            # Ignore materials that are marked as not visible for whatever reason
+            if not bool(metadata.get("visible", True)):
+                continue
             material = registry.findContainers(id = metadata["id"])[0]
             suffix = registry.getMimeTypeForContainer(type(material)).preferredSuffix
             filename = metadata["id"] + "." + suffix

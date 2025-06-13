@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, List
 
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
 from ..BaseModel import BaseModel
 
 
@@ -34,7 +35,7 @@ class CloudClusterResponse(BaseModel):
         self.host_version = host_version
         self.host_internal_ip = host_internal_ip
         self.friendly_name = friendly_name
-        self.printer_type = printer_type
+        self.printer_type = NetworkedPrinterOutputDevice.applyPrinterTypeMapping(printer_type)
         self.printer_count = printer_count
         self.capabilities = capabilities if capabilities is not None else []
         super().__init__(**kwargs)
@@ -51,3 +52,4 @@ class CloudClusterResponse(BaseModel):
         :return: A human-readable representation of the data in this object.
         """
         return str({k: v for k, v in self.__dict__.items() if k in {"cluster_id", "host_guid", "host_name", "status", "is_online", "host_version", "host_internal_ip", "friendly_name", "printer_type", "printer_count", "capabilities"}})
+

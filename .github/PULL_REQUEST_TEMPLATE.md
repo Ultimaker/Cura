@@ -28,6 +28,6 @@ This fixes... OR This improves... -->
 <!-- Check if relevant -->
 
 - [ ] My code follows the style guidelines of this project as described in [UltiMaker Meta](https://github.com/Ultimaker/Meta) and [Cura QML best practices](https://github.com/Ultimaker/Cura/wiki/QML-Best-Practices)
-- [ ] I have read the [Contribution guide](https://github.com/Ultimaker/Cura/blob/main/contributing.md) 
+- [ ] I have read the [Contribution guide](https://github.com/Ultimaker/Cura/blob/main/CONTRIBUTING.md) 
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have uploaded any files required to test this change

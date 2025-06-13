@@ -12,19 +12,15 @@ import Cura 1.1 as Cura
 //
 // TextArea widget for editing Gcode in the Machine Settings dialog.
 //
-UM.TooltipArea
+Item
 {
     id: control
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    text: tooltip
-
     property alias containerStackId: propertyProvider.containerStackId
     property alias settingKey: propertyProvider.key
     property alias settingStoreIndex: propertyProvider.storeIndex
-
-    property string tooltip: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     property alias labelText: titleLabel.text
     property alias labelFont: titleLabel.font
@@ -55,6 +51,7 @@ UM.TooltipArea
         }
 
         ScrollBar.vertical: UM.ScrollBar {}
+        clip: true
 
         TextArea.flickable: TextArea
         {
@@ -70,6 +67,7 @@ UM.TooltipArea
             selectionColor: UM.Theme.getColor("text_selection")
             selectedTextColor: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
+            padding: UM.Theme.getSize("narrow_margin").height + backgroundRectangle.border.width
 
             onActiveFocusChanged:
             {
@@ -81,8 +79,9 @@ UM.TooltipArea
 
             background: Rectangle
             {
+                id: backgroundRectangle
+
                 anchors.fill: parent
-                anchors.margins: -border.width //Wrap the border around the parent.
 
                 color: UM.Theme.getColor("detail_background")
                 border.color:

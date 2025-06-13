@@ -47,8 +47,13 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
         onTriggered:
         {
-            var args = { "filter_by_machine": false, "file_type": "workspace", "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml" };
-            if(UM.Preferences.getValue("cura/dialog_on_project_save"))
+            const args = {
+                "filter_by_machine": false,
+                "file_type": "workspace",
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                "limit_mimetypes":["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+            };
+            if (UM.Preferences.getValue("cura/dialog_on_project_save"))
             {
                 saveWorkspaceDialog.args = args
                 saveWorkspaceDialog.open()
@@ -70,6 +75,14 @@ Cura.Menu
         enabled: UM.WorkspaceFileHandler.enabled
     }
 
+    Cura.MenuItem
+    {
+        id: saveUCPMenu
+        text: catalog.i18nc("@title:menu menubar:file Don't translate 'Universal Cura Project'", "&Save Universal Cura Project...")
+        enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
+        onTriggered: CuraApplication.exportUcp()
+    }
+
     Cura.MenuSeparator { }
 
     Cura.MenuItem
@@ -78,8 +91,11 @@ Cura.Menu
         text: catalog.i18nc("@title:menu menubar:file", "&Export...")
         onTriggered:
         {
-            var localDeviceId = "local_file"
-            UM.OutputDeviceManager.requestWriteToDevice(localDeviceId, PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
+            const args = {
+                "filter_by_machine": false,
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            };
+            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args);
         }
     }
 
@@ -89,7 +105,13 @@ Cura.Menu
         text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
         enabled: UM.Selection.hasSelection
         icon.name: "document-save-as"
-        onTriggered: UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, { "filter_by_machine": false, "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml"})
+        onTriggered: {
+            const args = {
+                "filter_by_machine": false,
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+            };
+            UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, args);
+        }
     }
 
     Cura.MenuSeparator { }

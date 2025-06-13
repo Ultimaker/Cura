@@ -20,10 +20,15 @@
     ...but we can use this longer `substring` expression instead (see https://github.com/wixtoolset/issues/issues/5609 )
     -->
     <xsl:key
-            name="ExeToRemove"
-            match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 3 ) = '.exe' ]"
+            name="UltiMaker_Cura_exe_ToRemove"
+            match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 17 ) = 'UltiMaker-Cura.exe' ]"
             use="@Id"
-    /> <!-- Get the last 4 characters of a string using `substring( s, len(s) - 3 )`, it uses -3 and not -4 because XSLT uses 1-based indexes, not 0-based indexes. -->
+    />
+    <xsl:key
+            name="CuraEngine_exe_ToRemove"
+            match="wix:Component[ substring( wix:File/@Source, string-length( wix:File/@Source ) - 17 ) = 'CuraEngine.exe' ]"
+            use="@Id"
+    />
 
     <!-- By default, copy all elements and nodes into the output... -->
     <xsl:template match="@*|node()">
@@ -32,6 +37,7 @@
         </xsl:copy>
     </xsl:template>
 
-    <!-- ...but if the element has the "ExeToRemove" key then don't render anything (i.e. removing it from the output) -->
-    <xsl:template match="*[ self::wix:Component or self::wix:ComponentRef ][ key( 'ExeToRemove', @Id ) ]"/>
+    <!-- ...but if the element has the "UltiMaker_Cura_exe_ToRemove" or "CuraEngine_exe_ToRemove" key then don't render anything (i.e. removing it from the output) -->
+    <xsl:template match="*[ self::wix:Component or self::wix:ComponentRef ][ key( 'UltiMaker_Cura_exe_ToRemove', @Id ) ]"/>
+    <xsl:template match="*[ self::wix:Component or self::wix:ComponentRef ][ key( 'CuraEngine_exe_ToRemove', @Id ) ]"/>
 </xsl:stylesheet>

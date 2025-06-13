@@ -44,6 +44,10 @@ class MaterialBrandsModel(BaseMaterialsModel):
             if bool(container_node.getMetaDataEntry("removed", False)):
                 continue
 
+            # Ignore materials that are marked as not visible for whatever reason
+            if not bool(container_node.getMetaDataEntry("visible", True)):
+                continue
+
             # Add brands we haven't seen yet to the dict, skipping generics
             brand = container_node.getMetaDataEntry("brand", "")
             if brand.lower() == "generic":

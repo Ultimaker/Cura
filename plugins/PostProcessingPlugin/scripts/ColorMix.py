@@ -1,6 +1,6 @@
 # ColorMix script - 2-1 extruder color mix and blending
 # This script is specific for the Geeetech A10M dual extruder but should work with other Marlin printers. 
-# It runs with the PostProcessingPlugin which is released under the terms of the AGPLv3 or higher.
+# It runs with the PostProcessingPlugin which is released under the terms of the LGPLv3 or higher.
 # This script is licensed under the Creative Commons - Attribution - Share Alike (CC BY-SA) terms
 
 #Authors of the 2-1 ColorMix plug-in / script:
@@ -21,7 +21,7 @@
 # M163 - Set Mix Factor 
 # M164 - Save Mix - saves to T2 as a unique mix
 
-import re #To perform the search and replace.
+import re # To perform the search and replace.
 from ..Script import Script
 
 class ColorMix(Script):

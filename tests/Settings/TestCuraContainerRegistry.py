@@ -314,8 +314,8 @@ class TestImportProfile:
 
 @pytest.mark.parametrize("metadata,result", [(None, False),
                                              ({}, False),
-                                             ({"setting_version": cura.CuraApplication.CuraApplication.SettingVersion}, True),
-                                             ({"setting_version": 0}, False)])
+                                             ({"setting_version": cura.CuraApplication.CuraApplication.SettingVersion, "type": "some_type", "name": "some_name"}, True),
+                                             ({"setting_version": 0, "type": "some_type", "name": "some_name"}, False)])
 def test_isMetaDataValid(container_registry, metadata, result):
     assert container_registry._isMetadataValid(metadata) == result
 

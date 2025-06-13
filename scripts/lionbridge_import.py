@@ -1,10 +1,10 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import argparse #To get the source directory from command line arguments.
+import argparse # To get the source directory from command line arguments.
 import io # To fix encoding issues in Windows
-import os #To find files from the source.
-import os.path #To find files from the source and the destination path.
+import os # To find files from the source.
+import os.path # To find files from the source and the destination path.
 
 cura_files = {"cura", "fdmprinter.def.json", "fdmextruder.def.json"}
 uranium_files = {"uranium"}

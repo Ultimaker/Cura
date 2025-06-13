@@ -19,10 +19,9 @@ I18N_CATALOG = i18nCatalog("cura")
 class MeshFormatHandler:
     """This class is responsible for choosing the formats used by the connected clusters."""
 
-
-    def __init__(self, file_handler: Optional[FileHandler], firmware_version: str) -> None:
+    def __init__(self, file_handler: Optional[FileHandler], firmware_version: str, printer_type: str) -> None:
         self._file_handler = file_handler or CuraApplication.getInstance().getMeshFileHandler()
-        self._preferred_format = self._getPreferredFormat(firmware_version)
+        self._preferred_format = self._getPreferredFormat(firmware_version, printer_type)
         self._writer = self._getWriter(self.mime_type) if self._preferred_format else None
 
     @property
@@ -82,7 +81,7 @@ class MeshFormatHandler:
             value = value.encode()
         return value
 
-    def _getPreferredFormat(self, firmware_version: str) -> Dict[str, Union[str, int, bool]]:
+    def _getPreferredFormat(self, firmware_version: str, printer_type: str) -> Dict[str, Union[str, int, bool]]:
         """Chooses the preferred file format for the given file handler.
 
         :param firmware_version: The version of the firmware.
@@ -103,7 +102,9 @@ class MeshFormatHandler:
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
 
         # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
-        if "application/x-ufp" not in machine_file_formats and Version(firmware_version) >= Version("4.4"):
+        if printer_type in (
+        "ultimaker3", "ultimaker3_extended") and "application/x-ufp" not in machine_file_formats and Version(
+                firmware_version) >= Version("4.4"):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.

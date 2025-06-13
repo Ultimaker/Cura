@@ -55,6 +55,7 @@
                     [215, 160]
                 ]
             ]
-        }
+        },
+        "prime_tower_position_x": { "value": "350" }
     }
 }

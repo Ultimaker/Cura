@@ -1,14 +1,17 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional
 
 from PyQt6.QtCore import pyqtProperty, QObject
+from cura.PrinterOutput.FormatMaps import FormatMaps
 
 
 class MaterialOutputModel(QObject):
     def __init__(self, guid: Optional[str], type: str, color: str, brand: str, name: str, parent = None) -> None:
         super().__init__(parent)
+
+        name, guid = MaterialOutputModel.getMaterialFromDefinition(guid, type, brand, name)
         self._guid = guid
         self._type = type
         self._color = color
@@ -18,6 +21,14 @@ class MaterialOutputModel(QObject):
     @pyqtProperty(str, constant = True)
     def guid(self) -> str:
         return self._guid if self._guid else ""
+
+    @staticmethod
+    def getMaterialFromDefinition(guid, type, brand, name):
+        if guid is None and brand != "empty" and type in FormatMaps.MATERIAL_MAP:
+            name = FormatMaps.MATERIAL_MAP[type]["name"]
+            guid = FormatMaps.MATERIAL_MAP[type]["guid"]
+        return name, guid
+
 
     @pyqtProperty(str, constant = True)
     def type(self) -> str:

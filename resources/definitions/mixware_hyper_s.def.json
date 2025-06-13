@@ -78,7 +78,7 @@
             "minimum_value_warning": "0.01"
         },
         "retraction_amount": { "default_value": 2 },
-        "retraction_combing": { "value": "off" },
+        "retraction_combing": { "value": "'off'" },
         "retraction_combing_max_distance": { "default_value": 0.5 },
         "retraction_count_max": { "default_value": 100 },
         "retraction_extrusion_window":
@@ -117,8 +117,8 @@
         "speed_wall_x": { "value": "speed_wall" },
         "speed_z_hop": { "default_value": 5 },
         "support_angle": { "default_value": 60 },
-        "support_bottom_stair_step_height": { "default_value": 0.2 },
-        "support_brim_width": { "default_value": 4 },
+        "support_bottom_stair_step_height": { "value": 0.2 },
+        "support_brim_enable": { "value": false },
         "support_enable": { "default_value": true },
         "support_interface_density": { "default_value": 80 },
         "support_interface_enable": { "default_value": true },

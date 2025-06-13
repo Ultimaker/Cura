@@ -3,12 +3,10 @@
 
 from typing import Optional, TYPE_CHECKING, Dict, List
 
-from .Constants import PACKAGES_URL
 from .PackageModel import PackageModel
 from .RemotePackageList import RemotePackageList
 from PyQt6.QtCore import pyqtSignal, QObject, pyqtProperty, QCoreApplication
 
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager  # To request the package list from the API.
 from UM.i18n import i18nCatalog
 
 if TYPE_CHECKING:
@@ -20,7 +18,6 @@ class MissingPackageList(RemotePackageList):
     def __init__(self, packages_metadata: List[Dict[str, str]], parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._packages_metadata: List[Dict[str, str]] = packages_metadata
-        self._package_type_filter = "material"
         self._search_type = "package_ids"
         self._requested_search_string = ",".join(map(lambda package: package["id"], packages_metadata))
 
@@ -38,7 +35,14 @@ class MissingPackageList(RemotePackageList):
 
         for package_metadata in self._packages_metadata:
             if package_metadata["id"] not in returned_packages_ids:
-                package = PackageModel.fromIncompletePackageInformation(package_metadata["display_name"], package_metadata["package_version"], self._package_type_filter)
+                package_type = package_metadata["type"] if "type" in package_metadata else "material"
+                # When this feature was originally introduced only missing materials were detected. With the inclusion
+                # of backend plugins this system was extended to also detect missing plugins. With that change the type
+                # of the package was added to the metadata. Project files before this change do not have this type. So
+                # if the type is not present we assume it is a material.
+                package = PackageModel.fromIncompletePackageInformation(package_metadata["display_name"],
+                                                                        package_metadata["package_version"],
+                                                                        package_type)
                 self.appendItem({"package": package})
 
         self.itemsChanged.emit()
