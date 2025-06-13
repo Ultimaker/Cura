@@ -60,11 +60,9 @@ class VariantNode(ContainerNode):
             materials = list(materials_per_base_file.values())
 
         # Filter materials based on the exclude_materials property.
-        filtered_materials = [material for material in materials if not self.machine.isExcludedMaterialBaseFile(material["id"])]
+        filtered_materials = [material for material in materials if material["id"] not in self.machine.exclude_materials]
 
         for material in filtered_materials:
-            if material.get("abstract_color", False) and not self.machine.supports_abstract_color:
-                continue  # do not show abstract color profiles if the machine does not support them
             base_file = material["base_file"]
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
@@ -128,10 +126,8 @@ class VariantNode(ContainerNode):
             return  # We won't add any materials.
         material_definition = container.getMetaDataEntry("definition")
 
-        if (not self.machine.supports_abstract_color) and container.getMetaDataEntry("abstract_color", False):
-            return
         base_file = container.getMetaDataEntry("base_file")
-        if self.machine.isExcludedMaterialBaseFile(base_file):
+        if base_file in self.machine.exclude_materials:
             return  # Material is forbidden for this printer.
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.machine.container_id:
@@ -152,7 +148,7 @@ class VariantNode(ContainerNode):
 
         if "empty_material" in self.materials:
             del self.materials["empty_material"]
-        self.materials[base_file] = MaterialNode(container.getId(), variant = self, container = container)
+        self.materials[base_file] = MaterialNode(container.getId(), variant = self)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
 

@@ -35,9 +35,8 @@ Rectangle
             id: printerTitle
 
             Layout.preferredWidth: parent.width / 3
-            Layout.preferredHeight: childrenRect.height
             Layout.fillWidth: true
-            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
             Layout.fillHeight: false
 
             source: UM.Theme.getIcon("Printer")
@@ -46,14 +45,13 @@ Rectangle
             font: UM.Theme.getFont("medium_bold")
         }
 
-        Column
+        ColumnLayout
         {
             id: extruderInformation
             Layout.fillWidth: true
             Layout.preferredWidth: parent.width / 2
-            Layout.preferredHeight: childrenRect.height
-            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
-            spacing: UM.Theme.getSize("narrow_margin").height
+            Layout.alignment: Qt.AlignTop
+            spacing: UM.Theme.getSize("narrow_margin").width
 
             Repeater
             {
@@ -61,7 +59,7 @@ Rectangle
 
                 Item
                 {
-                    width: extruderInformation.width
+                    Layout.preferredWidth: extruderInformation.width
                     height: childrenRect.height
 
                     Cura.ExtruderIcon
@@ -79,7 +77,7 @@ Rectangle
                         anchors.verticalCenter: extruderIcon.verticalCenter
                         anchors.left: extruderIcon.right
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                        text: modelData ? (modelData.core ? modelData.core : "" ) : ""
+                        text: modelData.core
                         font: UM.Theme.getFont("default_bold")
                     }
 
@@ -119,8 +117,7 @@ Rectangle
 
             implicitWidth: UM.Theme.getSize("large_button").width
             implicitHeight: implicitWidth
-            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop : Qt.AlignCenter
-            Layout.preferredHeight: childrenRect.height
+            Layout.alignment: extruders[0].materials.length > 1 ? Qt.AlignTop: Qt.AlignCenter
             padding: 0
 
             background: Rectangle

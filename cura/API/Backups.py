@@ -1,4 +1,4 @@
-# Copyright (c) 2025 UltiMaker
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Tuple, Optional, TYPE_CHECKING, Dict, Any
 
@@ -9,10 +9,14 @@ if TYPE_CHECKING:
 
 
 class Backups:
-    """The back-ups API provides a version-proof bridge between Cura's BackupManager and plug-ins that hook into it.
+    """The back-ups API provides a version-proof bridge between Cura's
+
+    BackupManager and plug-ins that hook into it.
 
     Usage:
+
     .. code-block:: python
+
        from cura.API import CuraAPI
        api = CuraAPI()
        api.backups.createBackup()
@@ -22,22 +26,19 @@ class Backups:
     def __init__(self, application: "CuraApplication") -> None:
         self.manager = BackupsManager(application)
 
-    def createBackup(self, available_remote_plugins: frozenset[str] = frozenset()) -> Tuple[Optional[bytes], Optional[Dict[str, Any]]]:
+    def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, Any]]]:
         """Create a new back-up using the BackupsManager.
 
         :return: Tuple containing a ZIP file with the back-up data and a dict with metadata about the back-up.
         """
 
-        return self.manager.createBackup(available_remote_plugins)
+        return self.manager.createBackup()
 
-    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, Any], auto_close: bool = True) -> None:
+    def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, Any]) -> None:
         """Restore a back-up using the BackupsManager.
 
         :param zip_file: A ZIP file containing the actual back-up data.
         :param meta_data: Some metadata needed for restoring a back-up, like the Cura version number.
         """
 
-        return self.manager.restoreBackup(zip_file, meta_data, auto_close=auto_close)
-
-    def shouldReinstallDownloadablePlugins(self) -> bool:
-        return self.manager.shouldReinstallDownloadablePlugins()
+        return self.manager.restoreBackup(zip_file, meta_data)

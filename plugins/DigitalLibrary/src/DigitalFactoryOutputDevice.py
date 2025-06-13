@@ -92,8 +92,7 @@ class DigitalFactoryOutputDevice(ProjectOutputDevice):
         if not self._controller.file_handlers:
             self._controller.file_handlers = {
                 "3mf": CuraApplication.getInstance().getWorkspaceFileHandler(),
-                "ufp": CuraApplication.getInstance().getMeshFileHandler(),
-                "makerbot": CuraApplication.getInstance().getMeshFileHandler()
+                "ufp": CuraApplication.getInstance().getMeshFileHandler()
             }
 
         self._dialog = CuraApplication.getInstance().createQmlComponent(self._dialog_path, {"manager": self._controller})

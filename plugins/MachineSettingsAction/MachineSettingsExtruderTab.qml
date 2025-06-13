@@ -54,7 +54,7 @@ Item
         {
             anchors.top: parent.top
             anchors.left: parent.left
-            width: parent.width / 2
+            width: parent.width * 2 / 3
 
             spacing: base.columnSpacing
 
@@ -140,67 +140,6 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }
-
-
-        // =======================================
-        // Right-side column "Nozzle Settings"
-        // =======================================
-        Column
-        {
-            anchors.top: parent.top
-            anchors.right: parent.right
-            width: parent.width / 2
-
-            spacing: base.columnSpacing
-
-            UM.Label   // Title Label
-            {
-                text: catalog.i18nc("@title:label", " ")
-                font: UM.Theme.getFont("medium_bold")
-            }
-
-            Cura.NumericTextFieldWithUnit
-            {
-                id: extruderChangeDurationFieldId
-                containerStackId: base.extruderStackId
-                settingKey: "machine_extruder_change_duration"
-                settingStoreIndex: propertyStoreIndex
-                labelText: catalog.i18nc("@label", "Extruder Change duration")
-                labelFont: base.labelFont
-                labelWidth: base.labelWidth
-                controlWidth: base.controlWidth
-                unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
-            }
-
-            Cura.NumericTextFieldWithUnit
-            {
-                id: extruderStartCodeDurationFieldId
-                containerStackId: base.extruderStackId
-                settingKey: "machine_extruder_start_code_duration"
-                settingStoreIndex: propertyStoreIndex
-                labelText: catalog.i18nc("@label", "Extruder Start G-code duration")
-                labelFont: base.labelFont
-                labelWidth: base.labelWidth
-                controlWidth: base.controlWidth
-                unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
-            }
-
-            Cura.NumericTextFieldWithUnit
-            {
-                id: extruderEndCodeDurationFieldId
-                containerStackId: base.extruderStackId
-                settingKey: "machine_extruder_end_code_duration"
-                settingStoreIndex: propertyStoreIndex
-                labelText: catalog.i18nc("@label", "Extruder End G-code duration")
-                labelFont: base.labelFont
-                labelWidth: base.labelWidth
-                controlWidth: base.controlWidth
-                unitText: catalog.i18nc("@label", "s")
-                forceUpdateOnChangeFunction: forceUpdateFunction
-            }
-        }
     }
 
     Item  // Extruder Start and End G-code
@@ -212,48 +151,24 @@ Item
         anchors.right: parent.right
         anchors.margins: UM.Theme.getSize("default_margin").width
 
-        Column
+        Cura.GcodeTextArea   // "Extruder Start G-code"
         {
             anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.bottom: buttonLearnMore.top
+            anchors.bottom: parent.bottom
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            
-            width: parent.width / 2
+            anchors.left: parent.left
+            width: base.columnWidth - UM.Theme.getSize("default_margin").width
 
-            spacing: base.columnSpacing
-
-            Cura.GcodeTextArea   // "Extruder Prestart G-code"
-            {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                height: (parent.height / 2) - UM.Theme.getSize("default_margin").height
-                width: base.columnWidth - UM.Theme.getSize("default_margin").width
-
-                labelText: catalog.i18nc("@title:label", "Extruder Prestart G-code")
-                containerStackId: base.extruderStackId
-                settingKey: "machine_extruder_prestart_code"
-                settingStoreIndex: propertyStoreIndex
-            }
-
-            Cura.GcodeTextArea   // "Extruder Start G-code"
-            {
-                anchors.bottom: parent.bottom
-                anchors.left: parent.left
-                height: (parent.height / 2) - UM.Theme.getSize("default_margin").height
-                width: base.columnWidth - UM.Theme.getSize("default_margin").width
-
-                labelText: catalog.i18nc("@title:label", "Extruder Start G-code")
-                containerStackId: base.extruderStackId
-                settingKey: "machine_extruder_start_code"
-                settingStoreIndex: propertyStoreIndex
-            }
+            labelText: catalog.i18nc("@title:label", "Extruder Start G-code")
+            containerStackId: base.extruderStackId
+            settingKey: "machine_extruder_start_code"
+            settingStoreIndex: propertyStoreIndex
         }
 
         Cura.GcodeTextArea   // "Extruder End G-code"
         {
             anchors.top: parent.top
-            anchors.bottom: buttonLearnMore.top
+            anchors.bottom: parent.bottom
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
             anchors.right: parent.right
             width: base.columnWidth - UM.Theme.getSize("default_margin").width
@@ -262,18 +177,6 @@ Item
             containerStackId: base.extruderStackId
             settingKey: "machine_extruder_end_code"
             settingStoreIndex: propertyStoreIndex
-        }
-
-        Cura.TertiaryButton
-        {
-            id: buttonLearnMore
-
-            text: catalog.i18nc("@button", "Learn more")
-            iconSource: UM.Theme.getIcon("LinkExternal")
-            isIconOnRightSide: true
-            onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
         }
     }
 }

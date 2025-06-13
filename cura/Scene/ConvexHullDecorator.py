@@ -111,7 +111,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # Parent can be None if node is just loaded.
         if self._isSingularOneAtATimeNode():
-            return self.getConvexHullHeadFull()
+            hull = self.getConvexHullHeadFull()
+            if hull is None:
+                return None
+            hull = self._add2DAdhesionMargin(hull)
+            return hull
 
         return self._compute2DConvexHull()
 
@@ -319,7 +323,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
-        convex_hull = self._add2DAdhesionMargin(convex_hull)
         if convex_hull:
             return convex_hull.getMinkowskiHull(self._getHeadAndFans())
         return None

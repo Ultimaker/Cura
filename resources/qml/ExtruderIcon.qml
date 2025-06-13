@@ -15,7 +15,6 @@ Item
     property int iconSize: UM.Theme.getSize("extruder_icon").width
     property string iconVariant: "medium"
     property alias font: extruderNumberText.font
-    property alias text: extruderNumberText.text
 
     implicitWidth: iconSize
     implicitHeight: iconSize

@@ -76,7 +76,6 @@ Cura.Menu
     {
         id: genericMenu
         title: catalog.i18nc("@label:category menu label", "Generic")
-        enabled: genericMaterialsModel.items.length > 0
 
         Instantiator
         {

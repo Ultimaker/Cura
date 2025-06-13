@@ -21,12 +21,10 @@ def build_dmg(source_path: str, dist_path: str, filename: str, app_name: str) ->
                  "--icon", app_name, "169", "272",
                  "--eula", f"{source_path}/packaging/cura_license.txt",
                  "--background", f"{source_path}/packaging/MacOs/cura_background_dmg.png",
-                 "--hdiutil-quiet",
                  f"{dist_path}/{filename}",
                  f"{dist_path}/{app_name}"]
 
-    print(f"Run create dmg command [{" ".join([str(arg) for arg in arguments])}]")
-    subprocess.run(arguments, check=True)
+    subprocess.run(arguments)
 
 
 def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_version: str, installer_filename: str) -> None:
@@ -57,8 +55,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     else:
         print("CODESIGN_IDENTITY missing. The installer is not being signed")
 
-    print(f"Run package build command [{" ".join([str(arg) for arg in pkg_build_arguments])}]")
-    subprocess.run(pkg_build_arguments, check=True)
+    subprocess.run(pkg_build_arguments)
 
     # This automatically generates a distribution.xml file that is used to build the installer.
     # If you want to make any changes to how the installer functions, this file should be changed to do that.
@@ -69,8 +66,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         "--package", Path(dist_path, component_filename),  # Package that will be inside installer
         Path(dist_path, "distribution.xml"),  # Output location for sythesized distributions file
     ]
-    print(f"Run distribution creation command [{" ".join([str(arg) for arg in distribution_creation_arguments])}]")
-    subprocess.run(distribution_creation_arguments, check=True)
+    subprocess.run(distribution_creation_arguments)
 
     # This creates the distributable package (Installer)
     installer_creation_arguments = [
@@ -83,28 +79,25 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
     if codesign_identity:
         installer_creation_arguments.extend(["--sign", codesign_identity])
 
-    print(f"Run installer creation command [{" ".join([str(arg) for arg in installer_creation_arguments])}]")
-    subprocess.run(installer_creation_arguments, check=True)
+    subprocess.run(installer_creation_arguments)
 
 
 def notarize_file(dist_path: str, filename: str) -> None:
     """ Notarize a file. This takes 5+ minutes, there is indication that this step is successful."""
     notarize_user = os.environ.get("MAC_NOTARIZE_USER")
     notarize_password = os.environ.get("MAC_NOTARIZE_PASS")
-    notarize_team = os.environ.get("MACOS_CERT_USER")
-    notary_executable = os.environ.get("NOTARY_TOOL_EXECUTABLE", "notarytool")
+    altool_executable = os.environ.get("ALTOOL_EXECUTABLE", "altool")
 
     notarize_arguments = [
-        "xcrun", notary_executable,
-        "submit",
-        "--apple-id", notarize_user,
+        "xcrun", altool_executable,
+        "--notarize-app",
+        "--primary-bundle-id", ULTIMAKER_CURA_DOMAIN,
+        "--username", notarize_user,
         "--password", notarize_password,
-        "--team-id", notarize_team,
-        Path(dist_path, filename)
+        "--file", Path(dist_path, filename)
     ]
 
-    print(f"Run notarize command [{" ".join([str(arg) for arg in notarize_arguments])}]")
-    subprocess.run(notarize_arguments, check=True)
+    subprocess.run(notarize_arguments)
 
 
 def create_pkg_installer(filename: str,  dist_path: str, cura_version: str, app_name: str) -> None:
@@ -145,20 +138,18 @@ def create_dmg(filename: str, dist_path: str, source_path: str, app_name: str) -
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create installer for Cura.")
-    parser.add_argument("--source_path", required = True, type = str, help = "Path to Pyinstaller source folder")
-    parser.add_argument("--dist_path", required = True, type = str, help = "Path to Pyinstaller dist folder")
-    parser.add_argument("--cura_conan_version", required = True, type = str, help = "The version of cura")
-    parser.add_argument("--filename", required = True, type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.5.0-Macos-X64' or 'UltiMaker-Cura-5.5.0-beta.1-Macos-ARM64')")
-    parser.add_argument("--build_pkg", action="store_true", default = False, help = "build the pkg")
-    parser.add_argument("--build_dmg", action="store_true", default = True, help = "build the dmg")
-    parser.add_argument("--app_name", required = True, type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
+    parser.add_argument("source_path", type = str, help = "Path to Pyinstaller source folder")
+    parser.add_argument("dist_path", type = str, help = "Path to Pyinstaller dist folder")
+    parser.add_argument("cura_conan_version", type = str, help="The version of cura")
+    parser.add_argument("filename", type = str, help = "Filename of the pkg/dmg (e.g. 'UltiMaker-Cura-5.1.0-beta-Macos-X64.pkg' or 'UltiMaker-Cura-5.1.0-beta-Macos-X64.dmg')")
+    parser.add_argument("app_name", type = str, help = "Filename of the .app that will be contained within the dmg/pkg")
     args = parser.parse_args()
 
-    cura_version = args.cura_conan_version.replace("+", "-")  # + is not allowed for bundle identifier
+    cura_version = args.cura_conan_version.split("/")[-1]
 
     app_name = f"{args.app_name}.app"
 
-    if args.build_pkg:
-        create_pkg_installer(f"{args.filename}.pkg", args.dist_path, cura_version, app_name)
-    if args.build_dmg:
-        create_dmg(f"{args.filename}.dmg", args.dist_path, args.source_path, app_name)
+    if Path(args.filename).suffix == ".pkg":
+        create_pkg_installer(args.filename, args.dist_path, cura_version, app_name)
+    else:
+        create_dmg(args.filename, args.dist_path, args.source_path, app_name)

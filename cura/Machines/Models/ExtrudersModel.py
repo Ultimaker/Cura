@@ -227,7 +227,7 @@ class ExtrudersModel(ListModel):
                     "material_brand": "",
                     "color_name": "",
                     "material_type": "",
-                    "material_name": ""
+                    "material_label": ""
                 }
                 items.append(item)
             if self._items != items:

@@ -19,10 +19,6 @@ vertex41core =
 
     uniform highp mat4 u_normalMatrix;
 
-    uniform vec3 u_last_vertex;
-    uniform vec3 u_next_vertex;
-    uniform float u_last_line_ratio;
-
     in highp vec4 a_vertex;
     in lowp vec4 a_color;
     in lowp vec4 a_material_color;
@@ -138,10 +134,6 @@ vertex41core =
     void main()
     {
         vec4 v1_vertex = a_vertex;
-        if (v1_vertex.xyz == u_next_vertex)
-        {
-            v1_vertex.xyz = mix(u_last_vertex, u_next_vertex, u_last_line_ratio);
-        }
         v1_vertex.y -= a_line_dim.y / 2;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
@@ -356,12 +348,9 @@ geometry41core =
             EndPrimitive();
         }
 
-        if ((u_show_starts == 1) && (
-            ((v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) ||
-            ((v_prev_line_type[0] != 4) && (v_line_type[0] == 4))
-            )) {
-            float w = max(0.05, size_x);
-            float h = max(0.05, size_y);
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
+            float w = size_x;
+            float h = size_y;
 
             myEmitVertex(v_vertex[0] + vec3( w,  h,  w), u_starts_color, normalize(vec3( 1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4( w,  h,  w, 0.0))); // Front-top-left
             myEmitVertex(v_vertex[0] + vec3(-w,  h,  w), u_starts_color, normalize(vec3(-1.0,  1.0,  1.0)), viewProjectionMatrix * (gl_in[0].gl_Position + vec4(-w,  h,  w, 0.0))); // Front-top-right
@@ -437,10 +426,6 @@ u_max_feedrate = 1
 
 u_min_thickness = 0
 u_max_thickness = 1
-
-u_last_vertex = [0.0, 0.0, 0.0]
-u_next_vertex = [0.0, 0.0, 0.0]
-u_last_line_ratio = 1.0
 
 [bindings]
 u_modelMatrix = model_matrix

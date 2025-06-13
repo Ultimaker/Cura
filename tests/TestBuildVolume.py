@@ -424,3 +424,4 @@ class TestGetEdgeDisallowedSize:
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
             with patch.dict(self.setting_property_dict, {"print_sequence": {"value": "one_at_a_time"}}):
                 assert build_volume.getEdgeDisallowedSize() == 0.1
+

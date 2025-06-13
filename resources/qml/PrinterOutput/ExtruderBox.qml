@@ -22,9 +22,11 @@ Item
     {
         id: extruderTemperature
         containerStackId: Cura.ExtruderManager.extruderIds[position]
-        key: "material_print_temperature_layer_0"
+        key: "material_print_temperature"
         watchedProperties: ["value", "minimum_value", "maximum_value", "resolve"]
         storeIndex: 0
+
+        property var resolve: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine ? properties.resolve : "None"
     }
 
     Rectangle

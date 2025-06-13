@@ -13,7 +13,7 @@ import "."
 Item
 {
     id: base
-    height: enabled ? Math.max(UM.Theme.getSize("section").height, label.height) + UM.Theme.getSize("narrow_margin").height : 0
+    height: enabled ? UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height : 0
     anchors.left: parent.left
     anchors.right: parent.right
 
@@ -53,7 +53,6 @@ Item
     signal showTooltip(string text)
     signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
-    signal setScrollPositionChangeLoseFocus(bool lose_focus)
 
     function createTooltipText()
     {

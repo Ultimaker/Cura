@@ -8,20 +8,17 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.GridArrange import GridArrange
-from cura.Arranging.Nest2DArrange import Nest2DArrange
+from cura.Arranging.Nest2DArrange import arrange
 
 i18n_catalog = i18nCatalog("cura")
 
 
 class ArrangeObjectsJob(Job):
-    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8,
-                *, grid_arrange: bool = False) -> None:
+    def __init__(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode], min_offset = 8) -> None:
         super().__init__()
         self._nodes = nodes
         self._fixed_nodes = fixed_nodes
         self._min_offset = min_offset
-        self._grid_arrange = grid_arrange
 
     def run(self):
         found_solution_for_all = False
@@ -32,18 +29,10 @@ class ArrangeObjectsJob(Job):
                                  title = i18n_catalog.i18nc("@info:title", "Finding Location"))
         status_message.show()
 
-        if self._grid_arrange:
-            arranger = GridArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
-        else:
-            arranger = Nest2DArrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes,
-                                     factor=1000)
-
-        found_solution_for_all = False
         try:
-            found_solution_for_all = arranger.arrange(only_if_full_success = True)
+            found_solution_for_all = arrange(self._nodes, Application.getInstance().getBuildVolume(), self._fixed_nodes)
         except:  # If the thread crashes, the message should still close
-            Logger.logException("e",
-                                "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
+            Logger.logException("e", "Unable to arrange the objects on the buildplate. The arrange algorithm has crashed.")
 
         status_message.hide()
 

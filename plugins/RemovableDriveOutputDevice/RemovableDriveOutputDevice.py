@@ -1,14 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os
 import os.path
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.FileHandler.WriteFileJob import WriteFileJob
-from UM.FileHandler.FileWriter import FileWriter # To check against the write modes (text vs. binary).
+from UM.FileHandler.FileWriter import FileWriter #To check against the write modes (text vs. binary).
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
@@ -101,8 +100,7 @@ class RemovableDriveOutputDevice(OutputDevice):
                 self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
             else: #Binary mode.
                 self._stream = open(file_name, "wb", buffering = 1)
-            writer_args = {"mime_type": preferred_format["mime_type"]}
-            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"], writer_args)
+            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"])
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)
@@ -145,44 +143,38 @@ class RemovableDriveOutputDevice(OutputDevice):
 
     def _onFinished(self, job):
         if self._stream:
-            error = job.getError()
+            # Explicitly closing the stream flushes the write-buffer
             try:
-                # Explicitly closing the stream flushes the write-buffer
                 self._stream.close()
-            except Exception as e:
-                if not error:
-                    # Only log new error if there was no previous one
-                    error = e
-
-            self._stream = None
-            self._writing = False
-            self.writeFinished.emit(self)
-
-            if not error:
-                message = Message(
-                    catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(),
-                                                                                                os.path.basename(
-                                                                                                    job.getFileName())),
-                    title=catalog.i18nc("@info:title", "File Saved"),
-                    message_type=Message.MessageType.POSITIVE)
-                message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject",
-                                  catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
-                message.actionTriggered.connect(self._onActionTriggered)
-                message.show()
-                self.writeSuccess.emit(self)
-            else:
-                try:
-                    os.remove(job.getFileName())
-                except Exception as e:
-                    Logger.logException("e", "Exception when trying to remove incomplete exported file %s",
-                                        str(job.getFileName()))
-                message = Message(catalog.i18nc("@info:status",
-                                                "Could not save to removable drive {0}: {1}").format(self.getName(),
-                                                                                                     str(job.getError())),
-                                  title=catalog.i18nc("@info:title", "Error"),
-                                  message_type=Message.MessageType.ERROR)
+                self._stream = None
+            except:
+                Logger.logException("w", "An exception occurred while trying to write to removable drive.")
+                message = Message(catalog.i18nc("@info:status", "Could not save to removable drive {0}: {1}").format(self.getName(),str(job.getError())),
+                                  title = catalog.i18nc("@info:title", "Error"),
+                                  message_type = Message.MessageType.ERROR)
                 message.show()
                 self.writeError.emit(self)
+                return
+
+        self._writing = False
+        self.writeFinished.emit(self)
+        if job.getResult():
+            message = Message(catalog.i18nc("@info:status", "Saved to Removable Drive {0} as {1}").format(self.getName(), os.path.basename(job.getFileName())),
+                              title = catalog.i18nc("@info:title", "File Saved"),
+                              message_type = Message.MessageType.POSITIVE)
+            message.addAction("eject", catalog.i18nc("@action:button", "Eject"), "eject", catalog.i18nc("@action", "Eject removable device {0}").format(self.getName()))
+            message.actionTriggered.connect(self._onActionTriggered)
+            message.show()
+            self.writeSuccess.emit(self)
+        else:
+            message = Message(catalog.i18nc("@info:status",
+                                            "Could not save to removable drive {0}: {1}").format(self.getName(),
+                                                                                                 str(job.getError())),
+                              title = catalog.i18nc("@info:title", "Error"),
+                              message_type = Message.MessageType.ERROR)
+            message.show()
+            self.writeError.emit(self)
+        job.getStream().close()
 
     def _onActionTriggered(self, message, action):
         if action == "eject":

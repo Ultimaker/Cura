@@ -214,7 +214,7 @@ Item
 
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y min ( '-' towards back)")
+                labelText: catalog.i18nc("@label", "Y min")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
@@ -254,7 +254,7 @@ Item
                 settingKey: "machine_head_with_fans_polygon"
                 settingStoreIndex: propertyStoreIndex
 
-                labelText: catalog.i18nc("@label", "Y max ( '+' towards front)")
+                labelText: catalog.i18nc("@label", "Y max")
                 labelFont: base.labelFont
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
@@ -344,21 +344,6 @@ Item
                 labelWidth: base.labelWidth
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
-
-            /* 
-               - Allows user to toggle if Start Gcode is the absolute first gcode.
-            */
-            Cura.SimpleCheckBox  // "Make sure Start Code is before all gcodes"
-            {
-                id: applyStartGcodeFirstCheckbox
-                containerStackId: machineStackId
-                settingKey: "machine_start_gcode_first"
-                settingStoreIndex: propertyStoreIndex
-                labelText: catalog.i18nc("@label", "Start GCode must be first")
-                labelFont: base.labelFont
-                labelWidth: base.labelWidth
-                forceUpdateOnChangeFunction: forceUpdateFunction
-            }
 			
 			
             /* The "Shared Heater" feature is temporarily disabled because its
@@ -391,7 +376,7 @@ Item
         anchors
         {
             top: upperBlock.bottom
-            bottom: buttonLearnMore.top
+            bottom: parent.bottom
             left: parent.left
             right: parent.right
             margins: UM.Theme.getSize("default_margin").width
@@ -418,19 +403,5 @@ Item
             settingKey: "machine_end_gcode"
             settingStoreIndex: propertyStoreIndex
         }
-
-    }
-
-    Cura.TertiaryButton
-    {
-        id: buttonLearnMore
-
-        text: catalog.i18nc("@button", "Learn more")
-        iconSource: UM.Theme.getIcon("LinkExternal")
-        isIconOnRightSide: true
-        onClicked: Qt.openUrlExternally("https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code")
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
     }
 }

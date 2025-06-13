@@ -14,9 +14,6 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.i18n import i18nCatalog
 
-from cura.PrintOrderManager import PrintOrderManager
-from cura.Scene.CuraSceneNode import CuraSceneNode
-
 catalog = i18nCatalog("cura")
 
 
@@ -72,15 +69,12 @@ class ObjectsModel(ListModel):
         self._group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
         self._group_name_prefix = self._group_name_template.split("#")[0]
 
-        self._naming_regex = re.compile(r"^(.+)\(([0-9]+)\)$")
+        self._naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
 
     def setActiveBuildPlate(self, nr: int) -> None:
         if self._build_plate_number != nr:
             self._build_plate_number = nr
             self._update()
-
-    def getNodes(self) -> List[CuraSceneNode]:
-        return list(map(lambda n: n["node"], self.items))
 
     def _updateSceneDelayed(self, source) -> None:
         if not isinstance(source, Camera):
@@ -181,10 +175,6 @@ class ObjectsModel(ListModel):
 
         all_nodes = self._renameNodes(name_to_node_info_dict)
 
-        user_defined_print_order_enabled = PrintOrderManager.isUserDefinedPrintOrderEnabled()
-        if user_defined_print_order_enabled:
-            PrintOrderManager.initializePrintOrders(all_nodes)
-
         for node in all_nodes:
             if hasattr(node, "isOutsideBuildArea"):
                 is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
@@ -233,13 +223,8 @@ class ObjectsModel(ListModel):
                 # for anti overhang meshes and groups the extruder nr is irrelevant
                 extruder_number = -1
 
-            if not user_defined_print_order_enabled:
-                name = node.getName()
-            else:
-                name = "{print_order}. {name}".format(print_order = node.printOrder, name = node.getName())
-
             nodes.append({
-                "name": name,
+                "name": node.getName(),
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
@@ -249,5 +234,5 @@ class ObjectsModel(ListModel):
                 "node": node
             })
 
-        nodes = sorted(nodes, key=lambda n: n["name"] if not user_defined_print_order_enabled else n["node"].printOrder)
+        nodes = sorted(nodes, key=lambda n: n["name"])
         self.setItems(nodes)

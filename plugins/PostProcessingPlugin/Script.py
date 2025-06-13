@@ -1,6 +1,6 @@
 # Copyright (c) 2015 Jaime van Kessel
 # Copyright (c) 2018 Ultimaker B.V.
-# The PostProcessingPlugin is released under the terms of the LGPLv3 or higher.
+# The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 from typing import Optional, Any, Dict, TYPE_CHECKING, List
 
 from UM.Signal import Signal, signalemitter
@@ -122,7 +122,7 @@ class Script:
         if not key in line or (';' in line and line.find(key) > line.find(';')):
             return default
         sub_part = line[line.find(key) + 1:]
-        m = re.search(r'^-?[0-9]+\.?[0-9]*', sub_part)
+        m = re.search('^-?[0-9]+\.?[0-9]*', sub_part)
         if m is None:
             return default
         try:

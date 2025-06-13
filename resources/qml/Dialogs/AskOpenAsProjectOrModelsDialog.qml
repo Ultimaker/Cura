@@ -14,9 +14,7 @@ UM.Dialog
     // This dialog asks the user whether he/she wants to open a project file as a project or import models.
     id: base
 
-    title: base.is_ucp
-        ? catalog.i18nc("@title:window Don't translate 'Universal Cura Project'", "Open Universal Cura Project (UCP) file")
-        : catalog.i18nc("@title:window", "Open project file")
+    title: catalog.i18nc("@title:window", "Open project file")
     width: UM.Theme.getSize("small_popup_dialog").width
     height: UM.Theme.getSize("small_popup_dialog").height
     backgroundColor: UM.Theme.getColor("main_background")
@@ -26,11 +24,10 @@ UM.Dialog
     minimumHeight: maximumHeight
     minimumWidth: maximumWidth
 
-    modality: Qt.ApplicationModal
+    modality: Qt.WindowModal
 
     property var fileUrl
     property var addToRecent: true //Whether to add this file to the recent files list after reading it.
-    property bool is_ucp: false
 
     // load the entire project
     function loadProjectFile() {
@@ -84,9 +81,7 @@ UM.Dialog
         {
             id: questionText
             width: parent.width
-            text: base.is_ucp
-                ? catalog.i18nc("@text:window", "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?")
-                : catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
+            text: catalog.i18nc("@text:window", "This is a Cura project file. Would you like to open it as a project or import the models from it?")
             wrapMode: Text.WordWrap
         }
 
@@ -107,16 +102,8 @@ UM.Dialog
     [
         Cura.PrimaryButton
         {
-            text: catalog.i18nc("@action:button", "Open as UCP")
-            iconSource: UM.Theme.getIcon("CuraShareIcon")
-            onClicked: loadProjectFile()
-            visible: base.is_ucp
-        },
-        Cura.PrimaryButton
-        {
             text: catalog.i18nc("@action:button", "Open as project")
             onClicked: loadProjectFile()
-            visible: !base.is_ucp
         },
         Cura.SecondaryButton
         {

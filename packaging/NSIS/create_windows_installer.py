@@ -1,11 +1,10 @@
-# Copyright (c) 2025 UltiMaker
+# Copyright (c) 2022 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 
 import os
 import argparse  # Command line arguments parsing and help.
 import subprocess
-import semver
 
 import shutil
 from datetime import datetime
@@ -15,12 +14,11 @@ from pathlib import Path
 from jinja2 import Template
 
 
-def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
+def generate_nsi(source_path: str, dist_path: str, filename: str):
     dist_loc = Path(os.getcwd(), dist_path)
     source_loc = Path(os.getcwd(), source_path)
     instdir = Path("$INSTDIR")
     dist_paths = [p.relative_to(dist_loc.joinpath("UltiMaker-Cura")) for p in sorted(dist_loc.joinpath("UltiMaker-Cura").rglob("*")) if p.is_file()]
-    parsed_version = semver.Version.parse(version)
     mapped_out_paths = {}
     for dist_path in dist_paths:
         if "__pycache__" not in dist_path.parts:
@@ -44,13 +42,14 @@ def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
 
 
     nsis_content = template.render(
-        app_name = f"UltiMaker Cura {version}",
+        app_name = f"UltiMaker Cura {os.getenv('CURA_VERSION_FULL')}",
         main_app = "UltiMaker-Cura.exe",
-        version = version,
-        version_major = str(parsed_version.major),
-        version_minor = str(parsed_version.minor),
-        version_patch = str(parsed_version.patch),
+        version = os.getenv('CURA_VERSION_FULL'),
+        version_major = os.environ.get("CURA_VERSION_MAJOR"),
+        version_minor = os.environ.get("CURA_VERSION_MINOR"),
+        version_patch = os.environ.get("CURA_VERSION_PATCH"),
         company = "UltiMaker",
+        web_site = "https://ultimaker.com",
         year = datetime.now().year,
         cura_license_file = str(source_loc.joinpath("packaging", "cura_license.txt")),
         compression_method = "LZMA",  # ZLIB, BZIP2 or LZMA
@@ -75,10 +74,9 @@ def build(dist_path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "Create Windows exe installer of Cura.")
-    parser.add_argument("--source_path", type=str, help="Path to Conan install Cura folder.")
-    parser.add_argument("--dist_path", type=str, help="Path to Pyinstaller dist folder")
-    parser.add_argument("--filename", type=str, help="Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
-    parser.add_argument("--version", type=str, help="The full cura version, e.g. 5.9.0-beta.1+24132")
+    parser.add_argument("source_path", type=str, help="Path to Conan install Cura folder.")
+    parser.add_argument("dist_path", type=str, help="Path to Pyinstaller dist folder")
+    parser.add_argument("filename", type = str, help = "Filename of the exe (e.g. 'UltiMaker-Cura-5.1.0-beta-Windows-X64.exe')")
     args = parser.parse_args()
-    generate_nsi(args.source_path, args.dist_path, args.filename, args.version)
+    generate_nsi(args.source_path, args.dist_path, args.filename)
     build(args.dist_path)

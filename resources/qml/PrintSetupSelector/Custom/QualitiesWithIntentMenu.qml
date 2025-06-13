@@ -187,7 +187,7 @@ Popup
                         //Add all the custom profiles.
                         Repeater
                         {
-                            model: CuraApplication.getCustomQualityProfilesDropDownMenuModel()
+                            model: Cura.CustomQualityProfilesDropDownMenuModel
                             MenuButton
                             {
                                 onClicked: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)

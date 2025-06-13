@@ -10,16 +10,13 @@ class VariantDatabaseHandler(DatabaseMetadataContainerController):
     """The Database handler for Variant containers"""
 
     def __init__(self):
-        super().__init__(SQLQueryFactory(
-            table="variant",
-            fields={
-                "id": "text",
-                "name": "text",
-                "hardware_type": "text",
-                "definition": "text",
-                "version": "text",
-                "setting_version": "text",
-                "reference_extruder_id": "text",
-            },
-        ))
+        super().__init__(SQLQueryFactory(table = "variant",
+                                         fields = {
+                                             "id": "text",
+                                             "name": "text",
+                                             "hardware_type": "text",
+                                             "definition": "text",
+                                             "version": "text",
+                                             "setting_version": "text"
+                                         }))
         self._container_type = InstanceContainer

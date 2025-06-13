@@ -1,7 +1,7 @@
 //Copyright (c) 2022 Ultimaker B.V.
 //Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.15
+import QtQuick 2.2
 import QtQuick.Controls 2.15
 
 import UM 1.5 as UM
@@ -23,7 +23,7 @@ Item
     readonly property string infillMeshType: "infill_mesh"
     readonly property string antiOverhangMeshType: "anti_overhang_mesh"
 
-    property var currentMeshType: UM.Controller.properties.getValue("MeshType")
+    property var currentMeshType: UM.ActiveTool.properties.getValue("MeshType")
 
     // Update the view every time the currentMeshType changes
     onCurrentMeshTypeChanged:
@@ -56,7 +56,7 @@ Item
 
     function setMeshType(type)
     {
-        UM.Controller.setProperty("MeshType", type)
+        UM.ActiveTool.setProperty("MeshType", type)
         updateMeshTypeCheckedState(type)
     }
 
@@ -167,7 +167,11 @@ Item
 
             onActivated:
             {
-                setMeshType(index === 0 ? infillMeshType : cuttingMeshType);
+                if (index == 0){
+                    setMeshType(infillMeshType)
+                } else {
+                    setMeshType(cuttingMeshType)
+                }
             }
 
             Binding
@@ -200,21 +204,21 @@ Item
                 model: UM.SettingDefinitionsModel
                 {
                     id: addedSettingsModel
-                    containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    expanded: ["*"]
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                    expanded: [ "*" ]
                     filter:
                     {
-                        if (printSequencePropertyProvider.properties.value === "one_at_a_time")
+                        if (printSequencePropertyProvider.properties.value == "one_at_a_time")
                         {
-                            return { settable_per_meshgroup: true }
+                            return {"settable_per_meshgroup": true}
                         }
-                        return { settable_per_meshgroup: true }
+                        return {"settable_per_mesh": true}
                     }
                     exclude:
                     {
-                        const excluded_settings = ["support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh"]
+                        var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
-                        if (currentMeshType === "support_mesh")
+                        if (currentMeshType == "support_mesh")
                         {
                             excluded_settings = excluded_settings.concat(base.allCategoriesExceptSupport)
                         }
@@ -224,7 +228,7 @@ Item
                     visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                     {
                         id: visibility_handler
-                        selectedObjectId: UM.Controller.properties.getValue("SelectedObjectId")
+                        selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                     }
 
                     // For some reason the model object is updated after removing him from the memory and
@@ -234,15 +238,15 @@ Item
                         setDestroyed(true)
                     }
                 }
-                property int indexWithFocus: -1
+
                 delegate: Row
                 {
                     spacing: UM.Theme.getSize("default_margin").width
-                    property var settingLoaderItem: settingLoader.item
                     Loader
                     {
                         id: settingLoader
                         width: UM.Theme.getSize("setting").width - removeButton.width - scrollBar.width
+                        height: UM.Theme.getSize("section").height + UM.Theme.getSize("narrow_margin").height
                         enabled: provider.properties.enabled === "True"
                         property var definition: model
                         property var settingDefinitionsModel: addedSettingsModel
@@ -253,7 +257,7 @@ Item
                         //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                         //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                         //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                        asynchronous: model.type !== "enum" && model.type !== "extruder"
+                        asynchronous: model.type != "enum" && model.type != "extruder"
 
                         onLoaded:
                         {
@@ -262,7 +266,6 @@ Item
                             settingLoader.item.showLinkedSettingIcon = false
                             settingLoader.item.doDepthIndentation = false
                             settingLoader.item.doQualityUserSettingEmphasis = false
-                            settingLoader.item.height = UM.Theme.getSize("setting").height + UM.Theme.getSize("narrow_margin").height
                         }
 
                         sourceComponent:
@@ -320,7 +323,7 @@ Item
                     {
                         id: provider
 
-                        containerStackId: UM.Controller.properties.getValue("ContainerID")
+                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                         key: model.key
                         watchedProperties: [ "value", "enabled", "validationState" ]
                         storeIndex: 0
@@ -330,7 +333,7 @@ Item
                     UM.SettingPropertyProvider
                     {
                         id: inheritStackProvider
-                        containerStackId: UM.Controller.properties.getValue("ContainerID")
+                        containerStackId: UM.ActiveTool.properties.getValue("ContainerID")
                         key: model.key
                         watchedProperties: [ "limit_to_extruder" ]
                     }
@@ -343,65 +346,27 @@ Item
 
                     Connections
                     {
-                        target: settingLoader.item
-                        function onFocusReceived()
-                        {
-
-                            contents.indexWithFocus = index
-                            contents.positionViewAtIndex(index, ListView.Contain)
-                        }
-                        function onSetActiveFocusToNextSetting(forward)
-                        {
-                            if (forward == undefined || forward)
-                            {
-                                contents.currentIndex = contents.indexWithFocus + 1
-                                while(contents.currentItem && contents.currentItem.height <= 0)
-                                {
-                                    contents.currentIndex++
-                                }
-                                if (contents.currentItem)
-                                {
-                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
-                                }
-                            }
-                            else
-                            {
-                                contents.currentIndex = contents.indexWithFocus - 1
-                                while(contents.currentItem && contents.currentItem.height <= 0)
-                                {
-                                    contents.currentIndex--
-                                }
-                                if (contents.currentItem)
-                                {
-                                    contents.currentItem.settingLoaderItem.focusItem.forceActiveFocus()
-                                }
-                            }
-                        }
-                    }
-
-                    Connections
-                    {
-                        target: UM.Controller
+                        target: UM.ActiveTool
                         function onPropertiesChanged()
                         {
-                            // the values cannot be bound with UM.Controller.properties.getValue() calls,
+                            // the values cannot be bound with UM.ActiveTool.properties.getValue() calls,
                             // so here we connect to the signal and update the those values.
-                            if (typeof UM.Controller.properties.getValue("SelectedObjectId") !== "undefined")
+                            if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                             {
-                                const selectedObjectId = UM.Controller.properties.getValue("SelectedObjectId")
+                                const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
                                 if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
                                 {
                                     addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
                                 }
                             }
-                            if (typeof UM.Controller.properties.getValue("ContainerID") !== "undefined")
+                            if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                             {
-                                const containerId = UM.Controller.properties.getValue("ContainerID")
-                                if (provider.containerStackId !== containerId)
+                                const containerId = UM.ActiveTool.properties.getValue("ContainerID")
+                                if (provider.containerStackId != containerId)
                                 {
                                     provider.containerStackId = containerId
                                 }
-                                if (inheritStackProvider.containerStackId !== containerId)
+                                if (inheritStackProvider.containerStackId != containerId)
                                 {
                                     inheritStackProvider.containerStackId = containerId
                                 }
@@ -423,13 +388,13 @@ Item
             onClicked:
             {
                 settingPickDialog.visible = true;
-                if (currentMeshType === "support_mesh")
+                if (currentMeshType == "support_mesh")
                 {
                     settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
                 }
                 else
                 {
-                    settingPickDialog.additional_excluded_settings = [];
+                    settingPickDialog.additional_excluded_settings = []
                 }
             }
         }
@@ -447,7 +412,7 @@ Item
 
         containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
-        watchedProperties: ["value"]
+        watchedProperties: [ "value" ]
         storeIndex: 0
     }
 
@@ -457,15 +422,56 @@ Item
 
         containerStack: Cura.MachineManager.activeMachine
         key: "print_sequence"
-        watchedProperties: ["value"]
+        watchedProperties: [ "value" ]
         storeIndex: 0
     }
 
-    Component { id: settingTextField; Cura.SettingTextField { } }
-    Component { id: settingComboBox; Cura.SettingComboBox { } }
-    Component { id: settingExtruder; Cura.SettingExtruder { } }
-    Component { id: settingOptionalExtruder; Cura.SettingOptionalExtruder { } }
-    Component { id: settingCheckBox; Cura.SettingCheckBox { } }
-    Component { id: settingCategory; Cura.SettingCategory { } }
-    Component { id: settingUnknown; Cura.SettingUnknown { } }
+    Component
+    {
+        id: settingTextField
+
+        Cura.SettingTextField { }
+    }
+
+    Component
+    {
+        id: settingComboBox
+
+        Cura.SettingComboBox { }
+    }
+
+    Component
+    {
+        id: settingExtruder
+
+        Cura.SettingExtruder { }
+    }
+
+    Component
+    {
+        id: settingOptionalExtruder
+
+        Cura.SettingOptionalExtruder { }
+    }
+
+    Component
+    {
+        id: settingCheckBox
+
+        Cura.SettingCheckBox { }
+    }
+
+    Component
+    {
+        id: settingCategory
+
+        Cura.SettingCategory { }
+    }
+
+    Component
+    {
+        id: settingUnknown
+
+        Cura.SettingUnknown { }
+    }
 }

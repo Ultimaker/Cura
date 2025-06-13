@@ -398,9 +398,5 @@
     "viewmode": {
         "new_icon": "Eye",
         "size": "default"
-    },
-    "FoodBeverages": {
-        "new_icon": "Nozzle",
-        "size": "default"
     }
 }

@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 
-import UM 1.8 as UM
+import UM 1.5 as UM
 
 
 Item
@@ -80,22 +80,42 @@ Item
             sourceComponent: combobox
         }
 
-        UM.HelpIcon
+        MouseArea
         {
+            id: helpIconMouseArea
             anchors.right: parent.right
             anchors.verticalCenter: comboboxLabel.verticalCenter
-            color: UM.Theme.getColor("small_button_text")
-            icon: UM.Theme.getIcon("Information")
-            text: comboboxTooltipText
-            visible: comboboxTooltipText != ""
+            width: childrenRect.width
+            height: childrenRect.height
+            hoverEnabled: true
+
+            UM.ColorImage
+            {
+                width: UM.Theme.getSize("section_icon").width
+                height: width
+
+                visible: comboboxTooltipText != ""
+                source: UM.Theme.getIcon("Help")
+                color: UM.Theme.getColor("text")
+
+                UM.ToolTip
+                {
+                    text: comboboxTooltipText
+                    visible: helpIconMouseArea.containsMouse
+                    targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), parent.y)
+                    x: 0
+                    y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+                    width: UM.Theme.getSize("tooltip").width
+                }
+            }
         }
     }
+
 
     Loader
     {
         width: parent.width
         height: content.height
-        z: -1
         anchors.top: sectionTitleRow.bottom
         sourceComponent: content
     }

@@ -226,3 +226,4 @@ class Test_Update:
                 "per_object_settings_count": 0,
                 "mesh_type": ""
             }]
+

@@ -1,6 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import math
+
 import sys
 
 from PyQt6.QtCore import Qt
@@ -58,7 +58,6 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
-    SIMULATION_FACTOR = 2
 
     _no_layers_warning_preference = "view/no_layers_warning"
 
@@ -75,20 +74,19 @@ class SimulationView(CuraView):
         self._old_max_layers = 0
 
         self._max_paths = 0
-        self._current_path_num: float = 0.0
-        self._current_time = 0.0
+        self._current_path_num = 0
         self._minimum_path_num = 0
         self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
 
         self._busy = False
         self._simulation_running = False
 
-        self._ghost_shader: Optional["ShaderProgram"] = None
-        self._layer_pass: Optional[SimulationPass] = None
-        self._composite_pass: Optional[CompositePass] = None
-        self._old_layer_bindings: Optional[List[str]] = None
-        self._simulationview_composite_shader: Optional["ShaderProgram"] = None
-        self._old_composite_shader: Optional["ShaderProgram"] = None
+        self._ghost_shader = None  # type: Optional["ShaderProgram"]
+        self._layer_pass = None  # type: Optional[SimulationPass]
+        self._composite_pass = None  # type: Optional[CompositePass]
+        self._old_layer_bindings = None  # type: Optional[List[str]]
+        self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
+        self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
         self._max_feedrate = sys.float_info.min
         self._min_feedrate = sys.float_info.max
@@ -98,16 +96,14 @@ class SimulationView(CuraView):
         self._min_line_width = sys.float_info.max
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration_layer: Optional[int] = None
-        self._cumulative_line_duration: List[float] = []
 
-        self._global_container_stack: Optional[ContainerStack] = None
+        self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
 
         self._resetSettings()
         self._legend_items = None
         self._show_travel_moves = False
-        self._nozzle_node: Optional[NozzleNode] = None
+        self._nozzle_node = None  # type: Optional[NozzleNode]
 
         Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
@@ -129,12 +125,17 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."),
-            title=catalog.i18nc("@info:title", "No layers to show"),
-            option_text=catalog.i18nc("@info:option_text",
-                                      "Do not show this message again"),
-            option_state=False,
-            message_type=Message.MessageType.WARNING)
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
+                                                                "Cura does not accurately display layers when Wire Printing is enabled."),
+                                                  title = catalog.i18nc("@info:title", "Simulation View"),
+                                                  message_type = Message.MessageType.WARNING)
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status",
+                                                                  "Nothing is shown because you need to slice first."),
+                                                    title = catalog.i18nc("@info:title", "No layers to show"),
+                                                    option_text = catalog.i18nc("@info:option_text",
+                                                                                "Do not show this message again"),
+                                                    option_state = False,
+                                                    message_type = Message.MessageType.WARNING)
         self._slice_first_warning_message.optionToggled.connect(self._onDontAskMeAgain)
         CuraApplication.getInstance().getPreferences().addPreference(self._no_layers_warning_preference, True)
 
@@ -190,97 +191,8 @@ class SimulationView(CuraView):
     def getMaxLayers(self) -> int:
         return self._max_layers
 
-    def getCurrentPath(self) -> float:
+    def getCurrentPath(self) -> int:
         return self._current_path_num
-
-    def setTime(self, time: float) -> None:
-        cumulative_line_duration = self.cumulativeLineDuration()
-        if len(cumulative_line_duration) > 0:
-            self._current_time = time
-            left_i = 0
-            right_i = len(cumulative_line_duration) - 1
-            total_duration = cumulative_line_duration[-1]
-            # make an educated guess about where to start
-            i = int(right_i * max(0.0, min(1.0, self._current_time / total_duration)))
-            # binary search for the correct path
-            while left_i < right_i:
-                if cumulative_line_duration[i] <= self._current_time:
-                    left_i = i + 1
-                else:
-                    right_i = i
-                i = int((left_i + right_i) / 2)
-
-            left_value = cumulative_line_duration[i - 1] if i > 0 else 0.0
-            right_value = cumulative_line_duration[i]
-
-            if not (left_value <= self._current_time <= right_value):
-                Logger.warn(
-                    f"Binary search error (out of bounds): index {i}: left value {left_value} right value {right_value} and current time is {self._current_time}")
-
-            segment_duration = right_value - left_value
-            fractional_value = 0.0 if segment_duration == 0.0 else (self._current_time - left_value) / segment_duration
-
-            self.setPath(i + fractional_value)
-
-    def advanceTime(self, time_increase: float) -> None:
-        """
-        Advance the time by the given amount.
-
-        :param time_increase: The amount of time to advance (in seconds).
-        """
-        total_duration = 0.0
-        if len(self.cumulativeLineDuration()) > 0:
-            total_duration = self.cumulativeLineDuration()[-1]
-
-        if self._current_time + time_increase > total_duration:
-            # If we have reached the end of the simulation, go to the next layer.
-            if self.getCurrentLayer() == self.getMaxLayers():
-                # If we are already at the last layer, go to the first layer.
-                self.setLayer(0)
-            else:
-                # advance to the next layer, and reset the time
-                self.setLayer(self.getCurrentLayer() + 1)
-            self.setTime(0.0)
-        else:
-            self.setTime(self._current_time + time_increase)
-
-    def cumulativeLineDuration(self) -> List[float]:
-        # Make sure _cumulative_line_duration is initialized properly
-        if self.getCurrentLayer() != self._cumulative_line_duration_layer:
-            #clear cache
-            self._cumulative_line_duration = []
-            total_duration = 0.0
-            polylines = self.getLayerData()
-            if polylines is not None:
-                for polyline in polylines.polygons:
-                    for line_index in range(len(polyline.lineLengths)):
-                        line_length = polyline.lineLengths[line_index]
-                        line_feedrate = polyline.lineFeedrates[line_index][0]
-
-                        if line_feedrate > 0.0:
-                            line_duration = line_length / line_feedrate
-                        else:
-                            # Something is wrong with this line, set an arbitrary non-null duration
-                            line_duration = 0.1
-
-                        total_duration += line_duration / SimulationView.SIMULATION_FACTOR
-                        self._cumulative_line_duration.append(total_duration)
-
-                    # for tool change we add an extra tool path
-                    self._cumulative_line_duration.append(total_duration)
-            # set current cached layer
-            self._cumulative_line_duration_layer = self.getCurrentLayer()
-
-        return self._cumulative_line_duration
-
-    def getLayerData(self) -> Optional["LayerData"]:
-        scene = self.getController().getScene()
-        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
-            layer_data = node.callDecoration("getLayerData")
-            if not layer_data:
-                continue
-            return layer_data.getLayer(self.getCurrentLayer())
-        return None
 
     def getMinimumPath(self) -> int:
         return self._minimum_path_num
@@ -369,7 +281,7 @@ class SimulationView(CuraView):
             self._startUpdateTopLayers()
             self.currentLayerNumChanged.emit()
 
-    def setPath(self, value: float) -> None:
+    def setPath(self, value: int) -> None:
         """
         Set the upper end of the range of visible paths on the current layer.
 
@@ -379,12 +291,6 @@ class SimulationView(CuraView):
         if self._current_path_num != value:
             self._current_path_num = min(max(value, 0), self._max_paths)
             self._minimum_path_num = min(self._minimum_path_num, self._current_path_num)
-            # update _current time when the path is changed by user
-            if self._current_path_num < self._max_paths and round(self._current_path_num)== self._current_path_num:
-                actual_path_num = int(self._current_path_num)
-                cumulative_line_duration = self.cumulativeLineDuration()
-                if actual_path_num < len(cumulative_line_duration):
-                    self._current_time = cumulative_line_duration[actual_path_num]
 
             self._startUpdateTopLayers()
             self.currentPathNumChanged.emit()
@@ -590,7 +496,6 @@ class SimulationView(CuraView):
         self._max_thickness = sys.float_info.min
         self._min_flow_rate = sys.float_info.max
         self._max_flow_rate = sys.float_info.min
-        self._cumulative_line_duration = []
 
         # The colour scheme is only influenced by the visible lines, so filter the lines by if they should be visible.
         visible_line_types = []
@@ -766,8 +671,11 @@ class SimulationView(CuraView):
         elif event.type == Event.ViewDeactivateEvent:
             self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
             Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
+            self._wireprint_warning_message.hide()
             self._slice_first_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
+            if self._global_container_stack:
+                self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             if self._nozzle_node:
                 self._nozzle_node.setParent(None)
 
@@ -790,10 +698,23 @@ class SimulationView(CuraView):
         return self._current_layer_jumps
 
     def _onGlobalStackChanged(self) -> None:
+        if self._global_container_stack:
+            self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
         self._global_container_stack = Application.getInstance().getGlobalContainerStack()
         if self._global_container_stack:
+            self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
             self._extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
+            self._onPropertyChanged("wireframe_enabled", "value")
             self.globalStackChanged.emit()
+        else:
+            self._wireprint_warning_message.hide()
+
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
+        if key == "wireframe_enabled" and property_name == "value":
+            if self._global_container_stack and self._global_container_stack.getProperty("wireframe_enabled", "value"):
+                self._wireprint_warning_message.show()
+            else:
+                self._wireprint_warning_message.hide()
 
     def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)

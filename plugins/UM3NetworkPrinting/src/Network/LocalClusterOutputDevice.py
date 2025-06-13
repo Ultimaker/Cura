@@ -10,7 +10,6 @@ from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
-from UM.Version import Version
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
@@ -87,10 +86,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        if Version(self.firmwareVersion) >= Version("7.0.2"):
-            QDesktopServices.openUrl(QUrl("http://" + self._address + "/print_jobs"))
-        else:
-            QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
+        QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
 
     @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
@@ -146,12 +142,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeStarted.emit(self)
 
         # Export the scene to the correct file type.
-        job = ExportFileJob(
-            file_handler=file_handler,
-            nodes=nodes,
-            firmware_version=self.firmwareVersion,
-            print_type=self.printerType,
-        )
+        job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
         job.finished.connect(self._onPrintJobCreated)
         job.start()
 

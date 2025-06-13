@@ -199,7 +199,17 @@ Item
                     {
                         return "";
                     }
-                    return bedTemperature.properties.value;
+                    if ((bedTemperature.resolve != "None" && bedTemperature.resolve) && (bedTemperature.stackLevels[0] != 0) && (bedTemperature.stackLevels[0] != 1))
+                    {
+                        // We have a resolve function. Indicates that the setting is not settable per extruder and that
+                        // we have to choose between the resolved value (default) and the global value
+                        // (if user has explicitly set this).
+                        return bedTemperature.resolve;
+                    }
+                    else
+                    {
+                        return bedTemperature.properties.value;
+                    }
                 }
             }
         }

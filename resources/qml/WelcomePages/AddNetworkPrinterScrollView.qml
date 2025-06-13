@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtQuick.Layouts 2.3
 
 import UM 1.5 as UM
 import Cura 1.1 as Cura
@@ -16,7 +15,9 @@ import Cura 1.1 as Cura
 Item
 {
     id: base
+    height: networkPrinterInfo.height + controlsRectangle.height
 
+    property alias maxItemCountAtOnce: networkPrinterListView.maxItemCountAtOnce
     property var currentItem: (networkPrinterListView.currentIndex >= 0)
                               ? networkPrinterListView.model[networkPrinterListView.currentIndex]
                               : null
@@ -28,32 +29,35 @@ Item
     Item
     {
         id: networkPrinterInfo
+        height: networkPrinterListView.visible ? networkPrinterListView.height : noPrinterLabel.height
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.bottom: separator.top
 
         UM.Label
         {
             id: noPrinterLabel
             height: UM.Theme.getSize("setting_control").height + UM.Theme.getSize("default_margin").height
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_margin").width
+            anchors.left: parent.left
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@label", "There is no printer found over your network.")
             visible: networkPrinterListView.count == 0  // Do not show if there are discovered devices.
-            verticalAlignment: Text.AlignTop
         }
 
         ListView
         {
             id: networkPrinterListView
-            anchors.fill: parent
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: Math.min(contentHeight, (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height)
 
             ScrollBar.vertical: UM.ScrollBar
             {
                 id: networkPrinterScrollBar
             }
             clip: true
+            property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             visible: networkPrinterListView.count > 0
 
             model: contentLoader.enabled ? CuraApplication.getDiscoveredPrintersModel().discoveredPrinters: undefined
@@ -134,7 +138,7 @@ Item
     {
         id: separator
         anchors.left: parent.left
-        anchors.bottom: controlsRectangle.top
+        anchors.top: networkPrinterInfo.bottom
         anchors.right: parent.right
         height: UM.Theme.getSize("default_lining").height
         color: UM.Theme.getColor("lining")
@@ -145,7 +149,7 @@ Item
         id: controlsRectangle
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: parent.bottom
+        anchors.top: separator.bottom
 
         height: UM.Theme.getSize("message_action_button").height + UM.Theme.getSize("default_margin").height
 

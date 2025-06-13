@@ -16,8 +16,7 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm",
-        "variants_name": "Extruder",
-        "variants_name_has_translation": true
+        "variants_name": "Extruder:"
     },
     "overrides":
     {
@@ -114,7 +113,7 @@
             "minimum_value_warning": "100"
         },
         "adhesion_type": { "value": "'skirt'" },
-        "brim_location": { "value": "everywhere" },
+        "brim_outside_only": { "value": false },
         "cool_fan_speed_min": { "value": "0.5*cool_fan_speed" },
         "cool_min_layer_time_fan_speed_max": { "value": 10 },
         "default_material_bed_temperature": { "maximum_value": "150" },

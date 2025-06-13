@@ -27,17 +27,24 @@ Cura.Menu
         {
             text: model.hotend_name
             checkable: true
+            property var activeMachine: Cura.MachineManager.activeMachine
             checked:
             {
-                const extruder = Cura.MachineManager.activeMachineExtruders[extruderIndex];
-                if (!extruder) return false;
-                return extruder.variant.name == model.hotend_name;
+                if (activeMachine === null)
+                {
+                    return false
+                }
+                var extruder = activeMachine.extruderList[extruderIndex]
+                return (extruder === undefined) ? false : (extruder.variant.name == model.hotend_name)
             }
             enabled:
             {
-                const extruder = Cura.MachineManager.activeMachineExtruders[extruderIndex];
-                if (!extruder) return false;
-                return extruder.isEnabled;
+                if (activeMachine === null)
+                {
+                    return false
+                }
+                var extruder = activeMachine.extruderList[extruderIndex]
+                return (extruder === undefined) ? false : extruder.isEnabled
             }
             onTriggered: Cura.MachineManager.setVariant(nozzleMenu.extruderIndex, model.container_node)
         }
@@ -45,4 +52,5 @@ Cura.Menu
         onObjectAdded: function(index, object) { nozzleMenu.insertItem(index, object) }
         onObjectRemoved: function(index, object) {nozzleMenu.removeItem(object)}
     }
+
 }

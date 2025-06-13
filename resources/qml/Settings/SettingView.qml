@@ -15,7 +15,6 @@ Item
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
     property bool findingSettings
-    property bool loseFocusOnScrollPositionChange: true
 
     Item
     {
@@ -41,7 +40,7 @@ Item
         Cura.TextField
         {
             id: filter
-            implicitHeight: parent.height
+            height: parent.height
             anchors.left: parent.left
             anchors.right: parent.right
             topPadding: height / 4
@@ -196,7 +195,7 @@ Item
             onPositionChanged: {
                 // This removes focus from items when scrolling.
                 // This fixes comboboxes staying open and scrolling container
-                if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange) {
+                if (!activeFocus && !filter.activeFocus) {
                     forceActiveFocus();
                 }
             }
@@ -321,7 +320,7 @@ Item
 
                 containerStackId: contents.activeMachineId
                 key: model.key
-                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve", "unit" ]
+                watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                 storeIndex: 0
                 removeUnusedValue: model.resolve === undefined
             }
@@ -338,7 +337,7 @@ Item
                 }
                 function onShowTooltip(text) { base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text) }
                 function onHideTooltip() { base.hideTooltip() }
-                function onShowAllHiddenInheritedSettings(category_id)
+                function onShowAllHiddenInheritedSettings()
                 {
                     var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
                     for(var i = 0; i < children_with_override.length; i++)
@@ -378,10 +377,6 @@ Item
                             contents.currentItem.item.focusItem.forceActiveFocus()
                         }
                     }
-                }
-                function onSetScrollPositionChangeLoseFocus(lose_focus)
-                {
-                    loseFocusOnScrollPositionChange = lose_focus;
                 }
             }
         }

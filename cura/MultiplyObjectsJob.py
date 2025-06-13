@@ -14,19 +14,17 @@ from UM.Operations.TranslateOperation import TranslateOperation
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
-from cura.Arranging.GridArrange import GridArrange
-from cura.Arranging.Nest2DArrange import Nest2DArrange
+from cura.Arranging.Nest2DArrange import arrange, createGroupOperationForArrange
 
 i18n_catalog = i18nCatalog("cura")
 
 
 class MultiplyObjectsJob(Job):
-    def __init__(self, objects, count: int, min_offset: int = 8 ,* , grid_arrange: bool = False):
+    def __init__(self, objects, count, min_offset = 8):
         super().__init__()
         self._objects = objects
-        self._count: int = count
-        self._min_offset: int = min_offset
-        self._grid_arrange: bool = grid_arrange
+        self._count = count
+        self._min_offset = min_offset
 
     def run(self) -> None:
         status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime = 0,
@@ -41,7 +39,7 @@ class MultiplyObjectsJob(Job):
 
         root = scene.getRoot()
 
-        processed_nodes: List[SceneNode] = []
+        processed_nodes = []  # type: List[SceneNode]
         nodes = []
 
         fixed_nodes = []
@@ -78,12 +76,11 @@ class MultiplyObjectsJob(Job):
         found_solution_for_all = True
         group_operation = GroupedOperation()
         if nodes:
-            if self._grid_arrange:
-                arranger = GridArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes)
-            else:
-                arranger = Nest2DArrange(nodes, Application.getInstance().getBuildVolume(), fixed_nodes, factor=1000)
-
-            group_operation, not_fit_count = arranger.createGroupOperationForArrange(add_new_nodes_in_scene=True)
+            group_operation, not_fit_count = createGroupOperationForArrange(nodes,
+                                                                            Application.getInstance().getBuildVolume(),
+                                                                            fixed_nodes,
+                                                                            factor = 10000,
+                                                                            add_new_nodes_in_scene = True)
             found_solution_for_all = not_fit_count == 0
 
         if nodes_to_add_without_arrange:

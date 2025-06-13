@@ -34,8 +34,7 @@ UM.Slider
     {
         id: propertyProvider
         containerStackId: updateAllExtruders ? Cura.ExtruderManager.extruderIds[defaultExtruderIndex] : Cura.MachineManager.activeMachine.id
-        watchedProperties: ["value", "validationState",  "resolve"]
-        removeUnusedValue: false
+        watchedProperties: ["value"]
         storeIndex: 0
     }
 

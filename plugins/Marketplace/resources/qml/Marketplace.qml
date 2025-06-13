@@ -280,7 +280,7 @@ Window
                 onClicked:
                 {
                     marketplaceDialog.hide();
-                    CuraApplication.checkAndExitApplication();
+                    CuraApplication.closeApplication();
                 }
             }
         }

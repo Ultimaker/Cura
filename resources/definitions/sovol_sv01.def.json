@@ -1,11 +1,11 @@
 {
     "version": 2,
     "name": "Sovol SV01",
-    "inherits": "sovol_base_titan",
+    "inherits": "sovol_base_bowden",
     "metadata":
     {
         "visible": true,
-        "quality_definition": "sovol_base_titan"
+        "quality_definition": "sovol_base_bowden"
     },
     "overrides":
     {

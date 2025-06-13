@@ -3,22 +3,20 @@
 
 import copy
 import io
-import json # To parse the product-to-id mapping file.
-import os.path # To find the product-to-id mapping.
-from typing import Any, Dict, List, Optional, Tuple, cast, Set
+import json #To parse the product-to-id mapping file.
+import os.path #To find the product-to-id mapping.
+from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Logger import Logger
-from UM.Decorators import CachedMemberFunctions
 import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.FormatMaps import FormatMaps
 from cura.Machines.VariantType import VariantType
 
 try:
@@ -71,8 +69,6 @@ class XmlMaterialProfile(InstanceContainer):
         if registry.isReadOnly(self.getId()):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
-
-        CachedMemberFunctions.clearInstanceCache(self)
 
         # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
         # "properties" field and apply the new values to SettingInstances as well.
@@ -253,7 +249,7 @@ class XmlMaterialProfile(InstanceContainer):
             machine_variant_map[definition_id][variant_name] = variant_dict
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = self.getProductIdMap()
 
         for definition_id, container in machine_container_map.items():
             definition_id = container.getMetaDataEntry("definition")
@@ -483,7 +479,6 @@ class XmlMaterialProfile(InstanceContainer):
                     first.append(element)
 
     def clearData(self):
-        CachedMemberFunctions.clearInstanceCache(self)
         self._metadata = {
             "id": self.getId(),
             "name": ""
@@ -522,8 +517,6 @@ class XmlMaterialProfile(InstanceContainer):
 
     def deserialize(self, serialized, file_name = None):
         """Overridden from InstanceContainer"""
-
-        CachedMemberFunctions.clearInstanceCache(self)
 
         containers_to_add = []
         # update the serialized data first
@@ -586,9 +579,8 @@ class XmlMaterialProfile(InstanceContainer):
 
             meta_data[tag_name] = entry.text
 
-            for tag_name, value in meta_data.items():
-                if tag_name in self.__material_metadata_setting_map:
-                    common_setting_values[self.__material_metadata_setting_map[tag_name]] = value
+            if tag_name in self.__material_metadata_setting_map:
+                common_setting_values[self.__material_metadata_setting_map[tag_name]] = entry.text
 
         if "description" not in meta_data:
             meta_data["description"] = ""
@@ -654,7 +646,7 @@ class XmlMaterialProfile(InstanceContainer):
         self._dirty = False
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = self.getProductIdMap()
 
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
@@ -927,7 +919,7 @@ class XmlMaterialProfile(InstanceContainer):
         result_metadata.append(base_metadata)
 
         # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
+        product_id_map = cls.getProductIdMap()
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
@@ -1087,8 +1079,10 @@ class XmlMaterialProfile(InstanceContainer):
             # Skip material properties (eg diameter) or metadata (eg GUID)
             return
 
-        if tag_name != "cura:setting" and isinstance(instance.value, bool):
-            data = "yes" if instance.value else "no"
+        if instance.value is True:
+            data = "yes"
+        elif instance.value is False:
+            data = "no"
         else:
             data = str(instance.value)
 
@@ -1130,6 +1124,29 @@ class XmlMaterialProfile(InstanceContainer):
                    }
         id_list = list(id_list)
         return id_list
+
+    __product_to_id_map: Optional[Dict[str, List[str]]] = None
+
+    @classmethod
+    def getProductIdMap(cls) -> Dict[str, List[str]]:
+        """Gets a mapping from product names in the XML files to their definition IDs.
+
+        This loads the mapping from a file.
+        """
+        if cls.__product_to_id_map is not None:
+            return cls.__product_to_id_map
+
+        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
+        product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
+        with open(product_to_id_file, encoding = "utf-8") as f:
+            contents = ""
+            for line in f:
+                contents += line if "#" not in line else "".join([line.replace("#", str(n)) for n in range(1, 12)])
+            cls.__product_to_id_map = json.loads(contents)
+        cls.__product_to_id_map = {key: [value] for key, value in cls.__product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
+        return cls.__product_to_id_map
 
     @staticmethod
     def _parseCompatibleValue(value: str):
@@ -1202,9 +1219,7 @@ class XmlMaterialProfile(InstanceContainer):
         "diameter": "material_diameter"
     }
     __material_metadata_setting_map = {
-        "GUID": "material_guid",
-        "material": "material_type",
-        "brand": "material_brand",
+        "GUID": "material_guid"
     }
 
     # Map of recognised namespaces with a proper prefix.

@@ -12,7 +12,7 @@ import Cura 1.6 as Cura
 Marketplace
 {
     modality: Qt.ApplicationModal
-    title: catalog.i18nc("@title", "Install missing packages")
+    title: catalog.i18nc("@title", "Install missing Materials")
     pageContentsSource: "MissingPackages.qml"
     showSearchHeader: false
     showOnboadBanner: false

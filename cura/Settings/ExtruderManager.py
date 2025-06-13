@@ -15,7 +15,6 @@ from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Settings.ExtruderStack import ExtruderStack
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -258,7 +257,6 @@ class ExtruderManager(QObject):
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
                                           "wall_x_extruder_nr",
                                           "roofing_extruder_nr",
-                                          "flooring_extruder_nr",
                                           "top_bottom_extruder_nr",
                                           "infill_extruder_nr",
                                           ]
@@ -305,11 +303,6 @@ class ExtruderManager(QObject):
             Logger.log("e", "Unable to find one or more of the extruders in %s", used_extruder_stack_ids)
             return []
 
-    def getFirstUsedExtruderStack(self)-> ExtruderStack:
-        used_extruders = self.getUsedExtruderStacks()
-        sorted_extruders = sorted(used_extruders, key=lambda extruder: extruder.getValue("extruder_nr"))
-        return sorted_extruders[0]
-
     def getInitialExtruderNr(self) -> int:
         """Get the extruder that the print will start with.
 
@@ -323,12 +316,7 @@ class ExtruderManager(QObject):
         # Starts with the adhesion extruder.
         adhesion_type = global_stack.getProperty("adhesion_type", "value")
         if adhesion_type in {"skirt", "brim"}:
-            skirt_brim_extruder_nr = global_stack.getProperty("skirt_brim_extruder_nr", "value")
-            # if the skirt_brim_extruder_nr is -1, then we use the first used extruder
-            if skirt_brim_extruder_nr == -1:
-                return self.getFirstUsedExtruderStack().getValue("extruder_nr")
-            else:
-                return skirt_brim_extruder_nr
+            return max(0, int(global_stack.getProperty("skirt_brim_extruder_nr", "value")))  # optional skirt/brim extruder defaults to zero
         if adhesion_type == "raft":
             return global_stack.getProperty("raft_base_extruder_nr", "value")
 
@@ -337,7 +325,7 @@ class ExtruderManager(QObject):
             return global_stack.getProperty("support_infill_extruder_nr", "value")
 
         # REALLY no adhesion? Use the first used extruder.
-        return self.getFirstUsedExtruderStack().getValue("extruder_nr")
+        return self.getUsedExtruderStacks()[0].getProperty("extruder_nr", "value")
 
     def removeMachineExtruders(self, machine_id: str) -> None:
         """Removes the container stack and user profile for the extruders for a specific machine.

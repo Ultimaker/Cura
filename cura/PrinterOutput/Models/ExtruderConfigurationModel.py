@@ -1,10 +1,9 @@
-# Copyright (c) 2024 UltiMaker
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
 from PyQt6.QtCore import pyqtProperty, QObject, pyqtSignal
 
-from cura.PrinterOutput.FormatMaps import FormatMaps
 from .MaterialOutputModel import MaterialOutputModel
 
 
@@ -41,14 +40,8 @@ class ExtruderConfigurationModel(QObject):
 
     def setHotendID(self, hotend_id: Optional[str]) -> None:
         if self._hotend_id != hotend_id:
-            self._hotend_id = ExtruderConfigurationModel.applyNameMappingHotend(hotend_id)
+            self._hotend_id = hotend_id
             self.extruderConfigurationChanged.emit()
-
-    @staticmethod
-    def applyNameMappingHotend(hotendId) -> str:
-        if hotendId in FormatMaps.EXTRUDER_NAME_MAP:
-            return FormatMaps.EXTRUDER_NAME_MAP[hotendId]
-        return hotendId
 
     @pyqtProperty(str, fset = setHotendID, notify = extruderConfigurationChanged)
     def hotendID(self) -> Optional[str]:
