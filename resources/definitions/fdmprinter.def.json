@@ -1543,6 +1543,19 @@
                             "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
+                        },
+                        "roofing_extension":
+                        {
+                            "label": "Top Surface Extension",
+                            "description": "Determines how much the top surfaces are extended beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces.",
+                            "type": "float",
+                            "default_value": "0.4",
+                            "value": "roofing_line_width * (wall_line_count_roofing + 1)",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "roofing_line_width * 10",
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
                         }
                     }
                 },
@@ -1843,6 +1856,51 @@
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric' or (roofing_layer_count > 0 and roofing_pattern != 'concentric'))",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "wall_line_count_skin":
+                {
+                    "label": "Wall Line Count Top/Initial",
+                    "description": "The number of walls in the top-skin and initial-layer-skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air' (except for bottom parts higher up in the model).",
+                    "default_value": 1,
+                    "value": "wall_line_count",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0)",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_line_count_layer_0":
+                        {
+                            "label": "Wall Line Count Initial Layer",
+                            "description": "The number of walls in the initial layer.",
+                            "default_value": 1,
+                            "value": "wall_line_count_skin",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "enabled": "bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "wall_line_count_roofing":
+                        {
+                            "label": "Wall Line Count Top",
+                            "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
+                            "default_value": 1,
+                            "value": "wall_line_count_skin",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "enabled": "top_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "ironing_enabled":
                 {
