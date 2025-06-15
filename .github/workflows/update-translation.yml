@@ -11,5 +11,5 @@ on:
 jobs:
   update-translations:
     uses: ultimaker/cura-workflows/.github/workflows/update-translations.yml@main
-      with:
-        branch: ${{ inputs.branch }}
+    with:
+      branch: ${{ inputs.branch }}
