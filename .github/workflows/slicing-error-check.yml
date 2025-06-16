@@ -10,14 +10,11 @@ permissions:
 jobs:
   processSlicingError:
     runs-on: ubuntu-latest
-    outputs:
-      needs_info: ${{ steps.check_issue_details.outputs.needs_info }}
     steps:
       - name: Check for project file and set output
         id: check_issue_details
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
               const core = require('@actions/core');
               const issue = context.payload.issue;
