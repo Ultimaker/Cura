@@ -1,8 +1,9 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, List
 
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Util import parseBool
@@ -47,6 +48,7 @@ class MachineNode(ContainerNode):
         self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
         self.preferred_material = my_metadata.get("preferred_material", "")
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
+        self.supports_abstract_color = parseBool(my_metadata.get("supports_abstract_color", "false"))
 
         self._loadAll()
 
@@ -168,12 +170,17 @@ class MachineNode(ContainerNode):
 
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
-    def isExcludedMaterial(self, material: MaterialNode) -> bool:
+    def isExcludedMaterialBaseFile(self, material_base_file: str) -> bool:
         """Returns whether the material should be excluded from the list of materials."""
         for exclude_material in self.exclude_materials:
-            if exclude_material in material["id"]:
+            if exclude_material in material_base_file:
                 return True
         return False
+
+    @deprecated("Use isExcludedMaterialBaseFile instead.", since = "5.9.0")
+    def isExcludedMaterial(self, material: MaterialNode) -> bool:
+        """Returns whether the material should be excluded from the list of materials."""
+        return self.isExcludedMaterialBaseFile(material.base_file)
 
     @UM.FlameProfiler.profile
     def _loadAll(self) -> None:

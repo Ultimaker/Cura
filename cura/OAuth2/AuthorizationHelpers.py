@@ -96,7 +96,7 @@ class AuthorizationHelpers:
             return
 
         if token_response.error() != QNetworkReply.NetworkError.NoError:
-            callback(AuthenticationResponse(success = False, err_message = token_data["error_description"]))
+            callback(AuthenticationResponse(success = False, err_message = token_data.get("error_description", "an unknown server error occurred")))
             return
 
         callback(AuthenticationResponse(success = True,

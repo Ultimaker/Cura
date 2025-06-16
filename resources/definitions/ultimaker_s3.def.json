@@ -17,7 +17,9 @@
         "exclude_materials": [
             "generic_hips",
             "generic_flexible",
-            "structur3d_"
+            "generic_cffpps",
+            "structur3d_",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
@@ -48,7 +50,8 @@
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_material_export": true,
         "supports_usb_connection": false,
-        "variants_name": "Print core",
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true,
         "weight": -1
     },
     "overrides":

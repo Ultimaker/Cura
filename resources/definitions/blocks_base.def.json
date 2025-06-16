@@ -107,7 +107,7 @@
         "travel_retract_before_outer_wall": { "value": true },
         "wall_0_wipe_dist": { "value": 0.0 },
         "wall_overhang_angle": { "default_value": 75 },
-        "wall_overhang_speed_factor": { "default_value": 50 },
+        "wall_overhang_speed_factors": { "default_value": "[50]" },
         "wall_thickness": { "value": "line_width * 2" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_type": { "value": "'back'" }
