@@ -100,7 +100,7 @@ class InsertAtLayerChange(Script):
         if not bool(self.getSettingValueByKey("enabled")):
             return data
         #Initialize variables
-        mycode = self.getSettingValueByKey("gcode_to_add").upper() if bool(self.getSettingValueByKey("convert_to_upper")) else self.getSettingValueByKey("gcode_to_add")
+        mycode = self.getSettingValueByKey("gcode_to_add").upper() if self.getSettingValueByKey("convert_to_upper") else self.getSettingValueByKey("gcode_to_add")
         start_layer = int(self.getSettingValueByKey("start_layer"))
         end_layer = int(self.getSettingValueByKey("end_layer"))
         when_to_insert = self.getSettingValueByKey("insert_frequency")
