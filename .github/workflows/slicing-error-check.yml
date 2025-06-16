@@ -62,6 +62,5 @@ jobs:
         if: ${{ steps.check_issue_details.outputs.needs_info == 'true' }}
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             Status: Needs Info
