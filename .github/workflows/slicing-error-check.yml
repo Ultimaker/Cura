@@ -19,6 +19,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+              const core = require('@actions/core');
               const issue = context.payload.issue;
               const issueNumber = issue.number;
 
@@ -45,7 +46,7 @@ jobs:
               } else {
                 console.log(`Issue #${issueNumber} does not match slicing error criteria. No action needed.`);
               }
-              console.log(`echo "needs_info=${setNeedsInfoOutput.toString()}" >> $GITHUB_OUTPUT`);
+              core.setOutput('needs_info', setNeedsInfoOutput.toString());
 
       - name: Add comment if project file is missing
         if: ${{ steps.check_issue_details.outputs.needs_info == 'true' }}
