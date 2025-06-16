@@ -94,8 +94,8 @@ class CreateThumbnail(Script):
                 },
                 "use_star":
                 {
-                    "label": "xxx*yyy",
-                    "description": "Use '*' instead of 'x' for size of image",
+                    "label": "Use '*' for size of image",
+                    "description": "Use '*' instead of 'x' for size of image as Width '*' Height",
                     "type": "bool",
                     "default_value": false
                 }
