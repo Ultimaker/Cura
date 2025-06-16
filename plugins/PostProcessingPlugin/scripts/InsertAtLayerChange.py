@@ -1,6 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Created by Wayne Porter
 # Re-write in April of 2024 by GregValiant (Greg Foresi)
+# Made convert inserted text to upper-case optional March 2025 by HellAholic
 # Changes:
 #     Added an 'Enable' setting
 #     Added support for multi-line insertions (comma delimited)
@@ -82,6 +83,14 @@ class InsertAtLayerChange(Script):
                     "type": "str",
                     "default_value": "",
                     "enabled": "enabled"
+                },
+                "convert_to_upper":
+                {
+                    "label": "Convert to upper-case",
+                    "description": "Convert all inserted text to upper-case as some firmwares don't understand lower-case.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "enabled"
                 }
             }
         }"""
@@ -91,7 +100,7 @@ class InsertAtLayerChange(Script):
         if not bool(self.getSettingValueByKey("enabled")):
             return data
         #Initialize variables
-        mycode = self.getSettingValueByKey("gcode_to_add").upper()
+        mycode = self.getSettingValueByKey("gcode_to_add").upper() if self.getSettingValueByKey("convert_to_upper") else self.getSettingValueByKey("gcode_to_add")
         start_layer = int(self.getSettingValueByKey("start_layer"))
         end_layer = int(self.getSettingValueByKey("end_layer"))
         when_to_insert = self.getSettingValueByKey("insert_frequency")

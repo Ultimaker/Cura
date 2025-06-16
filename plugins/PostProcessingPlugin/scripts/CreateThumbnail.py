@@ -35,16 +35,21 @@ class CreateThumbnail(Script):
     def _convertSnapshotToGcode(self, encoded_snapshot, width, height, chunk_size=78):
         gcode = []
 
+        use_thumbnail = self.getSettingValueByKey("use_thumbnail")
+        use_star = self.getSettingValueByKey("use_star")
+
         encoded_snapshot_length = len(encoded_snapshot)
+        image_type = "thumbnail" if use_thumbnail else "png"
+        resolution_symbol = '*' if use_star else 'x'
         gcode.append(";")
-        gcode.append("; thumbnail begin {}x{} {}".format(
-            width, height, encoded_snapshot_length))
+        gcode.append("; {} begin {}{}{} {}".format(
+            image_type, width, resolution_symbol, height, encoded_snapshot_length))
 
         chunks = ["; {}".format(encoded_snapshot[i:i+chunk_size])
                   for i in range(0, len(encoded_snapshot), chunk_size)]
         gcode.extend(chunks)
 
-        gcode.append("; thumbnail end")
+        gcode.append("; {} end".format(image_type))
         gcode.append(";")
         gcode.append("")
 
@@ -79,6 +84,20 @@ class CreateThumbnail(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "12",
                     "maximum_value_warning": "600"
+                },
+                "use_thumbnail":
+                {
+                    "label": "Thumbnail Begin/End",
+                    "description": "Use Thumbnail Begin/End rather than PNG",
+                    "type": "bool",
+                    "default_value": true
+                },
+                "use_star":
+                {
+                    "label": "Use '*' for size of image",
+                    "description": "Use '*' instead of 'x' for size of image as Width '*' Height",
+                    "type": "bool",
+                    "default_value": false
                 }
             }
         }"""
