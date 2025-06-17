@@ -1,0 +1,52 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra 3 v2",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Sam Bonnekamp",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "anycubic_kobra3v2_buildplate.STL",
+        "machine_extruder_trains": { "0": "anycubic_kobra3v2_extruder_0" }
+    },
+    "overrides":
+    {
+        "machine_height": { "default_value": 260 },
+	"machine_width": { "default_value": 250 },
+	"machine_depth": { "default_value": 250 },
+	"machine_name":
+        {            
+            "description": "Anycubic Kobra 3 v2",
+            "default_value": "Anycubic Kobra 3 v2"
+        },
+	"machine_buildplate_type": { "default_value": "PEI Spring Steel" },
+	"machine_heated_bed": { "default_value": true},
+	"material_bed_temperature":
+	{
+	    "default_value": 60,
+	    "maximum_value": "110",
+	    "maximum_value_warning": "90"	    
+	},	
+        "material_print_temp_wait": { "value": true },
+	"machine_center_is_zero": { "default_value": false },
+	"layer_height": { "default_value": 0.2 },
+        "speed_slowdown_layers": { "value": 2 },
+	"material_diameter": { "default_value": 1.75 },
+	"material_initial_print_temperature":
+        {
+            "maximum_value_warning": 295,
+            "value": "material_print_temperature + 5"
+        },
+        "material_print_temperature": { "maximum_value_warning": 250 },
+        "material_print_temperature_layer_0":
+        {
+            "maximum_value_warning": 295,
+            "value": "material_print_temperature + 5"
+        },
+	"material_print_temp_prep": { "default_value": false },
+	"machine_start_gcode_first": { "default_value": true },
+	"machine_start_gcode": { "default_value": "; external perimeters extrusion width = 0.42mm\n; perimeters extrusion width = 0.45mm\n; infill extrusion width = 0.45mm\n; solid infill extrusion width = 0.45mm\n; top infill extrusion width = 0.42mm\n; support material extrusion width = 0.42mm\n; first layer extrusion width = 0.50mm\nTYPE:Custom\nG9111 bedTemp={material_bed_temperature} extruderTemp={material_print_temperature}\nM117 ;display LCD message\nM900 K0.05 ;linear advance factor, ive only seen this set to k0.05\n;START HEADER\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM83 ; use relative distances for extrusion\nT0 ;set or report the current extruder or other tool\nM107 ; turn fan off" }
+    }
+}
