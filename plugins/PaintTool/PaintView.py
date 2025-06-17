@@ -89,7 +89,7 @@ class PaintView(View):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        node = Selection.getAllSelectedObjects()[0]
+        node = Selection.getSelectedObject(0)
         if node is None:
             return
 

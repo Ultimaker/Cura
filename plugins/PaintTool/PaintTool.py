@@ -47,7 +47,8 @@ class PaintTool(Tool):
         self._ctrl_held: bool = False
         self._shift_held: bool = False
 
-        self._last_text_coords: Optional[Tuple[int, int]] = None
+        self._last_text_coords: Optional[numpy.ndarray] = None
+        self._last_face_id: Optional[int] = None
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
@@ -111,14 +112,16 @@ class PaintTool(Tool):
             paintview.redoStroke()
         else:
             paintview.undoStroke()
-        nodes = Selection.getAllSelectedObjects()
-        if len(nodes) > 0:
-            Application.getInstance().getController().getScene().sceneChanged.emit(nodes[0])
+        node = Selection.getSelectedObject(0)
+        if node is not None:
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
         return True
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
         # compute the intersection of (param) A - pt with (param) B - (param) C
+        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
+            return 1.0
 
         # compute unit vectors of directions of lines A and B
         udir_a = a - pt
@@ -142,10 +145,10 @@ class PaintTool(Tool):
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Optional[Tuple[float, float]]:
+    def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Tuple[int, Optional[numpy.ndarray]]:
         face_id = self._selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
-            return None
+            return face_id, None
 
         pt = self._picking_pass.getPickedPosition(x, y).getData()
 
@@ -162,7 +165,7 @@ class PaintTool(Tool):
         wb /= wt
         wc /= wt
         texcoords = wa * ta + wb * tb + wc * tc
-        return texcoords
+        return face_id, texcoords
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -174,10 +177,9 @@ class PaintTool(Tool):
         super().event(event)
 
         controller = Application.getInstance().getController()
-        nodes = Selection.getAllSelectedObjects()
-        if len(nodes) <= 0:
+        node = Selection.getSelectedObject(0)
+        if node is None:
             return False
-        node = nodes[0]
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
@@ -218,6 +220,7 @@ class PaintTool(Tool):
                 return False
             self._mouse_held = False
             self._last_text_coords = None
+            self._last_face_id = None
             return True
 
         is_moved = event.type == Event.MouseMoveEvent
@@ -264,11 +267,20 @@ class PaintTool(Tool):
 
             self._selection_pass.renderFacesMode()
 
-            texcoords = self._getTexCoordsFromClick(node, evt.x, evt.y)
+            face_id, texcoords = self._getTexCoordsFromClick(node, evt.x, evt.y)
             if texcoords is None:
                 return False
             if self._last_text_coords is None:
                 self._last_text_coords = texcoords
+                self._last_face_id = face_id
+
+            if face_id != self._last_face_id:
+                # TODO: draw two strokes in this case, for the two faces involved
+                #       ... it's worse, for smaller faces we may genuinely require the patch -- and it may even go over _multiple_ patches if the user paints fast enough
+                #       -> for now; make a lookup table for which faces are connected to which, don't split if they are connected, and solve the connection issue(s) later
+                self._last_text_coords = texcoords
+                self._last_face_id = face_id
+                return True
 
             w, h = paintview.getUvTexDimensions()
             sub_image, (start_x, start_y) = self._createStrokeImage(
@@ -280,6 +292,7 @@ class PaintTool(Tool):
             paintview.addStroke(sub_image, start_x, start_y)
 
             self._last_text_coords = texcoords
+            self._last_face_id = face_id
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
             return True
 
