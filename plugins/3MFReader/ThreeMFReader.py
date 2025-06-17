@@ -17,6 +17,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Scene.SceneNodeSettings import SceneNodeSettings
+from UM.Util import parseBool
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -93,7 +94,7 @@ class ThreeMFReader(MeshReader):
         return temp_mat
 
     @staticmethod
-    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+    def _convertSavitarNodeToUMNode(savitar_node: Savitar.SceneNode, file_name: str = "", archive: zipfile.ZipFile = None) -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
 
         :returns: Scene node.
@@ -114,6 +115,10 @@ class ThreeMFReader(MeshReader):
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
+        component_path = savitar_node.getComponentPath()
+        if component_path != "" and archive is not None:
+            savitar_node.parseComponentData(archive.open(component_path.lstrip("/")).read())
+
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         try:
@@ -131,6 +136,7 @@ class ThreeMFReader(MeshReader):
         vertices = numpy.resize(data, (int(data.size / 3), 3))
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
+        mesh_builder.setMeshId(node_id)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
@@ -141,7 +147,7 @@ class ThreeMFReader(MeshReader):
             um_node.setMeshData(mesh_data)
 
         for child in savitar_node.getChildren():
-            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child)
+            child_node = ThreeMFReader._convertSavitarNodeToUMNode(child, archive=archive)
             if child_node:
                 um_node.addChild(child_node)
 
@@ -182,7 +188,7 @@ class ThreeMFReader(MeshReader):
                     um_node.printOrder = int(setting_value)
                     continue
                 if key =="drop_to_buildplate":
-                    um_node.setSetting(SceneNodeSettings.AutoDropDown, eval(setting_value))
+                    um_node.setSetting(SceneNodeSettings.AutoDropDown, parseBool(setting_value))
                     continue
                 if key in known_setting_keys:
                     setting_container.setProperty(key, "value", setting_value)
@@ -230,7 +236,7 @@ class ThreeMFReader(MeshReader):
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 
             for node in scene_3mf.getSceneNodes():
-                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name)
+                um_node = ThreeMFReader._convertSavitarNodeToUMNode(node, file_name, archive)
                 if um_node is None:
                     continue
 

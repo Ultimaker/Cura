@@ -109,6 +109,9 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/restore_window_geometry")
         restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
+        UM.Preferences.resetPreference("tool/flip_y_axis_tool_handle")
+        flipToolhandleYCheckbox.checked = boolcheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
 //        /setDefaultCameraMode(defaultCameraMode)
@@ -355,17 +358,6 @@ UM.PreferencesPage
 
                     text: catalog.i18nc("@option:check", "Add icon to system tray *");
                 }
-            }
-
-            UM.Label
-            {
-                id: languageCaption
-
-                //: Language change warning
-                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
-                wrapMode: Text.WordWrap
-                font.italic: true
-
             }
 
             Item
@@ -662,6 +654,21 @@ UM.PreferencesPage
                     }
                 }
             }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before.")
+
+                UM.CheckBox
+                {
+                    id: flipToolhandleYCheckbox
+                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (restart required)")
+                    checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
+                    onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
+                }
+            }
+
 
             Item
             {
@@ -687,7 +694,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura")
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura *")
 
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
@@ -1083,14 +1090,24 @@ UM.PreferencesPage
                 }
             }
 
-
-            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
             {
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
                 width: UM.Theme.getSize("default_margin").height
             }
+
+            UM.Label
+            {
+                id: languageCaption
+
+                //: Language change warning
+                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                wrapMode: Text.WordWrap
+                font.italic: true
+            }
+
+            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
 
             Label
             {

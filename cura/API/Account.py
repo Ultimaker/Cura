@@ -115,15 +115,15 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.sync)
 
-        self._sync_services: Dict[str, int] = {}
         """contains entries "service_name" : SyncState"""
-        self.syncRequested.connect(self._updatePermissions)
+        self._sync_services: Dict[str, int] = {}
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
+        self._authorization_service.accessTokenChanged.connect(self._updatePermissions)
         self._authorization_service.loadAuthDataFromPreferences()
 
     @pyqtProperty(int, notify=syncStateChanged)
@@ -232,6 +232,7 @@ class Account(QObject):
 
     def _onProfileChanged(self, profile: Optional[UserProfile]) -> None:
         self._user_profile = profile
+        self._updatePermissions()
         self.userProfileChanged.emit()
 
     def _sync(self) -> None:
