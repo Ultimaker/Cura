@@ -39,7 +39,7 @@
 	"machine_center_is_zero": { "default_value": false },
 	"machine_start_gcode_first": { "default_value": true },
 	"machine_start_gcode": { "default_value": "; external perimeters extrusion width = 0.42mm\n; perimeters extrusion width = 0.45mm\n; infill extrusion width = 0.45mm\n; solid infill extrusion width = 0.45mm\n; top infill extrusion width = 0.42mm\n; support material extrusion width = 0.42mm\n; first layer extrusion width = 0.50mm\n;TYPE:Custom\nG9111 bedTemp={material_bed_temperature} extruderTemp={material_print_temperature}\nM117 ;display LCD message\nM900 K0.05 ;linear advance factor, ive only seen this set to k0.05\n;START HEADER\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nT0 ;set or report the current extruder or other tool\nM107 ; turn fan off" },
-	"machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG27 P2 ;Park toolhead\nM84" }	
+	"machine_end_gcode": { "default_value": "G1 X5 Y{machine_depth*0.95} F{speed_travel*60} ; present print\nM140 S0 ; turn off heat bed\nM104 S0 ; turn off temperature\nM84; disable motors              ; disable stepper motors" },	
 	
 	"material_diameter": { "default_value": 1.75 },
 	"material_initial_print_temperature":
