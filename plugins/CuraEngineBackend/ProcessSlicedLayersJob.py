@@ -5,6 +5,8 @@ import gc
 import sys
 
 from UM.Job import Job
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
 from UM.View.GL.OpenGLContext import OpenGLContext
@@ -14,6 +16,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 
 from UM.Math.Vector import Vector
+from UM.Math.Matrix import Matrix
 
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -27,6 +30,7 @@ from time import time
 from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
+EPSILON = 1e-5 # used for float comparison
 
 def colorCodeToRGBA(color_code):
     """Return a 4-tuple with floats 0-1 representing the html color code
@@ -115,6 +119,11 @@ class ProcessSlicedLayersJob(Job):
                 if layer.id < 0:
                     negative_layers += 1
 
+        ### START PATCH
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        half_outer_wall_thickness = global_container_stack.getProperty("wall_line_width_0", "value") / 2
+        ### END PATCH
+
         current_layer = 0
 
         for layer in self._layers:
@@ -158,6 +167,58 @@ class ProcessSlicedLayersJob(Job):
 
                 line_feedrates = numpy.fromstring(polygon.line_feedrate, dtype = "f4")  # Convert bytearray to numpy array
                 line_feedrates = line_feedrates.reshape((-1,1))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+
+                ### START PATCH
+                # Adjust layer data to show Raft line type, if it is enabled
+                if global_container_stack.getProperty("blackbelt_raft", "value"):
+                    raft_thickness = global_container_stack.getProperty("blackbelt_raft_thickness", "value")
+
+                    extrusion_started = False
+                    for index, segment_type in enumerate(line_types):
+                        if points[index + 1][1] <= half_outer_wall_thickness + raft_thickness:
+                            if segment_type in [LayerPolygon.LayerPolygon.Inset0Type, LayerPolygon.LayerPolygon.InsetXType]:
+                                line_types[index] = LayerPolygon.LayerPolygon.SkirtType
+                                extrusion_started = True
+                            elif extrusion_started:
+                                break
+
+                # Adjust layer data to show Belt Wall feed rate, if it is enabled
+                if global_container_stack.getProperty("blackbelt_belt_wall_enabled", "value"):
+                    belt_wall_feedrate = global_container_stack.getProperty("blackbelt_belt_wall_speed", "value")
+
+                    belt_wall_indices = []
+                    for index,point in enumerate(points):
+                        if point[1] <= half_outer_wall_thickness + EPSILON:
+                            if last_point_hit_wall and line_feedrates[index - 1] > belt_wall_feedrate:
+                                belt_wall_indices.append(index)
+                            last_point_hit_wall = True
+                        else:
+                            last_point_hit_wall = False
+
+                    dimensionality = points.shape[1]
+                    edited_points = points.flatten()
+                    line_types = line_types.flatten()
+                    line_widths = line_widths.flatten()
+                    line_thicknesses = line_thicknesses.flatten()
+                    line_feedrates = line_feedrates.flatten()
+                    for index in reversed(belt_wall_indices):
+                        edited_points = numpy.insert(edited_points, dimensionality * (index), numpy.append(points[index - 1], points[index]))
+                        line_types = numpy.insert(line_types, index, [line_types[index - 1]] * 2)
+                        line_widths = numpy.insert(line_widths, index, [line_widths[index - 1]] * 2)
+                        line_thicknesses = numpy.insert(line_thicknesses, index, [line_thicknesses[index - 1]] * 2)
+                        line_feedrates = numpy.insert(line_feedrates, index - 1, [belt_wall_feedrate] * 2)
+
+                    # Fix shape of adjusted data
+                    if polygon.point_type == 0:
+                        points = edited_points.reshape((-1,2))  # We get a linear list of pairs that make up the points, so make numpy interpret them correctly.
+                    else:
+                        points = edited_points.reshape((-1,3))
+
+                    line_types = line_types.reshape((-1,1))
+                    line_widths = line_widths.reshape((-1,1))
+                    line_thicknesses = line_thicknesses.reshape((-1,1))
+                    line_feedrates = line_feedrates.reshape((-1,1))
+                ### END PATCH
 
                 # Create a new 3D-array, copy the 2D points over and insert the right height.
                 # This uses manual array creation + copy rather than numpy.insert since this is
@@ -241,6 +302,18 @@ class ProcessSlicedLayersJob(Job):
         settings = Application.getInstance().getGlobalContainerStack()
         if not settings.getProperty("machine_center_is_zero", "value"):
             new_node.setPosition(Vector(-settings.getProperty("machine_width", "value") / 2, 0.0, settings.getProperty("machine_depth", "value") / 2))
+
+        ### START PATCH
+        transform = self._scene.getRoot().callDecoration("getTransformMatrix")
+        if transform and transform != Matrix():
+            transform_matrix = new_node.getLocalTransformation().preMultiply(transform.getInverse())
+            new_node.setTransformation(transform_matrix)
+            front_offset = self._scene.getRoot().callDecoration("getSceneFrontOffset")
+            if global_container_stack.getProperty("blackbelt_raft", "value"):
+                    front_offset = front_offset - global_container_stack.getProperty("blackbelt_raft_margin", "value") \
+                                                - global_container_stack.getProperty("blackbelt_raft_thickness", "value")
+            new_node.translate(Vector(0, 0, front_offset), SceneNode.TransformSpace.World)
+        ### END PATCH
 
         if self._progress_message:
             self._progress_message.setProgress(100)
