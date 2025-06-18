@@ -460,7 +460,7 @@ class StartSliceJob(Job):
         stack_id = stack.getId()
 
          # Adapt layer_height and material_flow for a slanted gantry
-        gantry_angle = 0.7  #self._scene.getRoot().callDecoration("getGantryAngle")
+        gantry_angle = 0.48869219  #self._scene.getRoot().callDecoration("getGantryAngle")
         if gantry_angle: # not 0 or None
             # Act on a copy of the stack, so these changes don't cause a reslice
             _stack = CuraContainerStack(stack_id + "_temp")

@@ -26,7 +26,7 @@ class BlackBeltDecorator(SceneNodeDecorator):
             #self._gantry_angle = 0
             #self._transform_matrix = Matrix()
         #    return Matrix()
-        gantry_angle = 0.7  #math.radians(float(gantry_angle))
+        gantry_angle = 0.48869219  #math.radians(float(gantry_angle))
 
         machine_depth = global_stack.getProperty("machine_depth", "value")
 
