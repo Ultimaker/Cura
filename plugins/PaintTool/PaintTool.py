@@ -31,13 +31,6 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
-        self._color_str_to_rgba: Dict[str, List[int]] = {
-            "A": [192, 0, 192, 255],
-            "B": [232, 128, 0, 255],
-            "C": [0, 255, 0, 255],
-            "D": [255, 255, 255, 255],
-        }
-
         self._brush_size: int = 10
         self._brush_color: str = "A"
         self._brush_shape: str = "A"
@@ -53,8 +46,8 @@ class PaintTool(Tool):
     def _createBrushPen(self) -> QPen:
         pen = QPen()
         pen.setWidth(self._brush_size)
-        color = self._color_str_to_rgba[self._brush_color]
-        pen.setColor(QColor(color[0], color[1], color[2], color[3]))
+        pen.setColor(Qt.GlobalColor.white)
+
         match self._brush_shape:
             case "A":
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
@@ -70,8 +63,8 @@ class PaintTool(Tool):
         start_x = int(min(x0, x1) - half_brush_size)
         start_y = int(min(y0, y1) - half_brush_size)
 
-        stroke_image = QImage(abs(xdiff) + self._brush_size, abs(ydiff) + self._brush_size, QImage.Format.Format_RGBA8888)
-        stroke_image.fill(QColor(0,0,0,0))
+        stroke_image = QImage(abs(xdiff) + self._brush_size, abs(ydiff) + self._brush_size, QImage.Format.Format_RGB32)
+        stroke_image.fill(0)
 
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
@@ -85,8 +78,14 @@ class PaintTool(Tool):
         return stroke_image, (start_x, start_y)
 
     def setPaintType(self, paint_type: str) -> None:
-        Logger.warning(f"TODO: Implement paint-types ({paint_type}).")
-        pass  # FIXME: ... and also please call `self._brush_pen = self._createBrushPen()` (see other funcs).
+        paint_view = self._get_paint_view()
+        if paint_view is None:
+            return
+
+        paint_view.setPaintType(paint_type)
+
+        self._brush_pen = self._createBrushPen()
+        self._updateScene()
 
     def setBrushSize(self, brush_size: float) -> None:
         if brush_size != self._brush_size:
@@ -94,9 +93,7 @@ class PaintTool(Tool):
             self._brush_pen = self._createBrushPen()
 
     def setBrushColor(self, brush_color: str) -> None:
-        if brush_color != self._brush_color:
-            self._brush_color = brush_color
-            self._brush_pen = self._createBrushPen()
+        self._brush_color = brush_color
 
     def setBrushShape(self, brush_shape: str) -> None:
         if brush_shape != self._brush_shape:
@@ -104,18 +101,24 @@ class PaintTool(Tool):
             self._brush_pen = self._createBrushPen()
 
     def undoStackAction(self, redo_instead: bool) -> bool:
-        paintview = Application.getInstance().getController().getActiveView()
-        if paintview is None or paintview.getPluginId() != "PaintTool":
+        paint_view = self._get_paint_view()
+        if paint_view is None:
             return False
-        paintview = cast(PaintView, paintview)
+
         if redo_instead:
-            paintview.redoStroke()
+            paint_view.redoStroke()
         else:
-            paintview.undoStroke()
-        node = Selection.getSelectedObject(0)
-        if node is not None:
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            paint_view.undoStroke()
+
+        self._updateScene()
         return True
+
+    @staticmethod
+    def _get_paint_view() -> Optional[PaintView]:
+        paint_view = Application.getInstance().getController().getActiveView()
+        if paint_view is None or paint_view.getPluginId() != "PaintTool":
+            return None
+        return cast(PaintView, paint_view)
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -289,11 +292,18 @@ class PaintTool(Tool):
                 texcoords[0] * w,
                 texcoords[1] * h
             )
-            paintview.addStroke(sub_image, start_x, start_y)
+            paintview.addStroke(sub_image, start_x, start_y, self._brush_color)
 
             self._last_text_coords = texcoords
             self._last_face_id = face_id
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            self._updateScene(node)
             return True
 
         return False
+
+    @staticmethod
+    def _updateScene(node: SceneNode = None):
+        if node is None:
+            node = Selection.getSelectedObject(0)
+        if node is not None:
+            Application.getInstance().getController().getScene().sceneChanged.emit(node)
