@@ -8,6 +8,8 @@ from PyQt6.QtGui import QImage, QPainter, QColor, QPen
 from PyQt6 import QtWidgets
 from typing import cast, Dict, List, Optional, Tuple
 
+from numpy import ndarray
+
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
 from UM.Logger import Logger
@@ -160,7 +162,7 @@ class PaintTool(Tool):
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Tuple[int, Optional[numpy.ndarray]]:
+    def _getTexCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray]]:
         face_id = self._selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
             return face_id, None
@@ -183,6 +185,34 @@ class PaintTool(Tool):
         wc /= wt
         texcoords = wa * ta + wb * tb + wc * tc
         return face_id, texcoords
+
+    def _iteratateSplitSubstroke(self, node, substrokes,
+                                 info_a: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]],
+                                 info_b: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]]) -> None:
+        click_a, (face_a, texcoords_a) = info_a
+        click_b, (face_b, texcoords_b) = info_b
+
+        if (abs(click_a[0] - click_b[0]) < 0.0001 and abs(click_a[1] - click_b[1]) < 0.0001) or (face_a < 0 and face_b < 0):
+            return
+        if face_b < 0 or face_a == face_b:
+            substrokes.append((self._last_text_coords, texcoords_a))
+            return
+        if face_a < 0:
+            substrokes.append((self._last_text_coords, texcoords_b))
+            return
+
+        mouse_mid = (click_a[0] + click_b[0]) / 2.0, (click_a[1] + click_b[1]) / 2.0
+        face_mid, texcoords_mid = self._getTexCoordsFromClick(node, mouse_mid[0], mouse_mid[1])
+        mid_struct = (mouse_mid, (face_mid, texcoords_mid))
+        if face_mid == face_a:
+            substrokes.append((texcoords_a, texcoords_mid))
+            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
+        elif face_mid == face_b:
+            substrokes.append((texcoords_mid, texcoords_b))
+            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
+        else:
+            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
+            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -268,19 +298,16 @@ class PaintTool(Tool):
                 self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
                 self._last_face_id = face_id
 
-            substrokes_per_face = {}
+            substrokes = []
             if face_id == self._last_face_id:
-                substrokes_per_face[face_id] = (self._last_text_coords, texcoords)
+                substrokes.append((self._last_text_coords, texcoords))
             else:
-                # TODO: In case the stroke doesn't begin and end within the same face:
-                #   Iteratively get the face-id's and texture coordinates of mid-point between the previous-mouse position and this one, ...
-                self._last_text_coords = texcoords
-                self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
-                self._last_face_id = face_id
-                return True
+                self._iteratateSplitSubstroke(node, substrokes,
+                                              (self._last_mouse_coords, (self._last_face_id, self._last_text_coords)),
+                                              ((mouse_evt.x, mouse_evt.y), (face_id, texcoords)))
 
             w, h = paintview.getUvTexDimensions()
-            for faceid, (start_coords, end_coords) in substrokes_per_face.items():
+            for start_coords, end_coords in substrokes:
                 sub_image, (start_x, start_y) = self._createStrokeImage(
                     start_coords[0] * w,
                     start_coords[1] * h,
