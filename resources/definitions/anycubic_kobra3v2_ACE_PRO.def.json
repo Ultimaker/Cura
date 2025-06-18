@@ -51,7 +51,7 @@
             "value": "material_print_temperature + 5"
         },
 	"machine_start_gcode_first": { "default_value": true },
-	"machine_start_gcode": { "default_value": "; external perimeters extrusion width = 0.42mm\n; perimeters extrusion width = 0.45mm\n; infill extrusion width = 0.45mm\n; solid infill extrusion width = 0.45mm\n; top infill extrusion width = 0.42mm\n; support material extrusion width = 0.42mm\n; first layer extrusion width = 0.50mm\nTYPE:Custom\nG9111 bedTemp={material_bed_temperature} extruderTemp={material_print_temperature}\nM117 ;display LCD message\nM900 K0.05 ;linear advance factor, ive only seen this set to k0.05\n;START HEADER\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM83 ; use relative distances for extrusion\nT0 ;set or report the current extruder or other tool\nM107 ; turn fan off" },
+	"machine_start_gcode": { "default_value": "; external perimeters extrusion width = 0.42mm\n; perimeters extrusion width = 0.45mm\n; infill extrusion width = 0.45mm\n; solid infill extrusion width = 0.45mm\n; top infill extrusion width = 0.42mm\n; support material extrusion width = 0.42mm\n; first layer extrusion width = 0.50mm\n;TYPE:Custom\nG9111 bedTemp={material_bed_temperature} extruderTemp={material_print_temperature}\nM117 ;display LCD message\nM900 K0.05 ;linear advance factor, ive only seen this set to k0.05\n;START HEADER\nG21 ; set units to millimeters\nG90 ; use absolute coordinates\nM83 ; use relative distances for extrusion\nT0 ;set or report the current extruder or other tool\nM107 ; turn fan off" },
 	"machine_end_gcode": { "default_value": "M104 S0\nM140 S0\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG27 P2 ;Park toolhead\nM84" }	
     }
 }
