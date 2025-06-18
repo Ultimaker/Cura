@@ -16,23 +16,6 @@
             }
         }
     },
-    "BlackBeltPlugin": {
-        "package_info": {
-            "package_id": "BlackBeltPlugin",
-            "package_type": "plugin",
-            "display_name": "BlackBelt plugin",
-            "description": "Adds support for BlackBelt and other printers with slanted gantries.",
-            "package_version": "3.6.0",
-            "sdk_version": 5,
-            "website": "https://blackbelt-3d.com",
-            "author": {
-                "author_id": "Blackbelt3d",
-                "display_name": "BLACKBELT 3D",
-                "email": "info@blackbelt-3d.com",
-                "website": "https://blackbelt-3d.com"
-            }
-        }
-    },
     "3MFReader": {
         "package_info": {
             "package_id": "3MFReader",
