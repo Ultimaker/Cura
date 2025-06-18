@@ -39,7 +39,8 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.CuraContainerStack import CuraContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
-from plugins.BlackBeltPlugin.BlackBeltDecorator import BlackBeltDecorator
+from .BlackBeltDecorator import BlackBeltDecorator
+from .SupportMeshCreator import SupportMeshCreator
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
 
@@ -515,8 +516,6 @@ class StartSliceJob(Job):
                         extruder_stack.setProperty(key, "value", current_value * math.sin(gantry_angle))
 
             self._buildExtruderMessage(extruder_stack)
-
-        from plugins.BlackBeltPlugin.SupportMeshCreator import SupportMeshCreator
 
         bottom_cutting_meshes = []
         raft_meshes = []
