@@ -137,16 +137,25 @@ class PaintTool(Tool):
 
         # find unit direction vector for line C, which is perpendicular to lines A and B
         udir_res = numpy.cross(udir_b, udir_a)
-        udir_res /= numpy.linalg.norm(udir_res)
+        udir_res_len = numpy.linalg.norm(udir_res)
+        if udir_res_len == 0:
+            return 1.0
+        udir_res /= udir_res_len
 
         # solve system of equations
         rhs = b - a
         lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        solved = numpy.linalg.solve(lhs, rhs)
+        try:
+            solved = numpy.linalg.solve(lhs, rhs)
+        except numpy.linalg.LinAlgError:
+            return 1.0
 
         # get the ratio
         intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        return numpy.linalg.norm(pt - intersect) / numpy.linalg.norm(a - intersect)
+        a_intersect_dist = numpy.linalg.norm(a - intersect)
+        if a_intersect_dist == 0:
+            return 1.0
+        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
@@ -167,6 +176,8 @@ class PaintTool(Tool):
         wb = PaintTool._get_intersect_ratio_via_pt(vb, pt, vc, va)
         wc = PaintTool._get_intersect_ratio_via_pt(vc, pt, va, vb)
         wt = wa + wb + wc
+        if wt == 0:
+            return face_id, None
         wa /= wt
         wb /= wt
         wc /= wt
