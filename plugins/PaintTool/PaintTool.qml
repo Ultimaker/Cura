@@ -139,7 +139,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", "A")
+                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 0)
             }
 
             UM.ToolbarButton
@@ -156,7 +156,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", "B")
+                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 1)
             }
 
             UM.Slider

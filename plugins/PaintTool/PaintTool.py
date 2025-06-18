@@ -1,6 +1,7 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QImage, QPainter, QColor, QBrush, QPen
@@ -20,6 +21,10 @@ from .PaintView import PaintView
 class PaintTool(Tool):
     """Provides the tool to paint meshes."""
 
+    class BrushShape(IntEnum):
+        SQUARE = 0
+        CIRCLE = 1
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -31,6 +36,7 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
+        # TODO: Colors will need to be replaced on a 'per type of painting' basis.
         self._color_str_to_rgba: Dict[str, List[int]] = {
             "A": [192, 0, 192, 255],
             "B": [232, 128, 0, 255],
@@ -40,7 +46,7 @@ class PaintTool(Tool):
 
         self._brush_size: int = 10
         self._brush_color: str = "A"
-        self._brush_shape: str = "A"
+        self._brush_shape: PaintTool.BrushShape = PaintTool.BrushShape.SQUARE
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
@@ -56,9 +62,9 @@ class PaintTool(Tool):
         color = self._color_str_to_rgba[self._brush_color]
         pen.setColor(QColor(color[0], color[1], color[2], color[3]))
         match self._brush_shape:
-            case "A":
+            case PaintTool.BrushShape.SQUARE:
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
-            case "B":
+            case PaintTool.BrushShape.CIRCLE:
                 pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         return pen
 
@@ -98,7 +104,7 @@ class PaintTool(Tool):
             self._brush_color = brush_color
             self._brush_pen = self._createBrushPen()
 
-    def setBrushShape(self, brush_shape: str) -> None:
+    def setBrushShape(self, brush_shape: int) -> None:
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
             self._brush_pen = self._createBrushPen()
