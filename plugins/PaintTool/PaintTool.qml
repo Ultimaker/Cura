@@ -2,6 +2,7 @@
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 
 import UM 1.7 as UM
@@ -12,6 +13,20 @@ Item
     width: childrenRect.width
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
+
+    Action
+    {
+        id: undoAction
+        shortcut: "Ctrl+L"
+        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+    }
+
+    Action
+    {
+        id: redoAction
+        shortcut: "Ctrl+Shift+L"
+        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+    }
 
     ColumnLayout
     {
@@ -192,7 +207,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("undoStackAction", false)
+                onClicked: undoAction.trigger()
             }
 
             UM.ToolbarButton
@@ -208,7 +223,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("undoStackAction", true)
+                onClicked: redoAction.trigger()
             }
         }
     }

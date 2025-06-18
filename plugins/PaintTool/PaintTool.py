@@ -208,16 +208,6 @@ class PaintTool(Tool):
             controller.setActiveView("SolidView")
             return True
 
-        if event.type == Event.KeyReleaseEvent:
-            key_release = cast(KeyEvent, event)
-            modifiers = QtWidgets.QApplication.keyboardModifiers()
-            ctrl_held = modifiers & Qt.KeyboardModifier.ControlModifier != Qt.KeyboardModifier.NoModifier
-            if key_release.key == Qt.Key.Key_L and ctrl_held:
-                # NOTE: Ctrl-L is used here instead of Ctrl-Z, as the latter is the application-wide one that takes precedence.
-                shift_held = modifiers & Qt.KeyboardModifier.ShiftModifier != Qt.KeyboardModifier.NoModifier
-                return self.undoStackAction(shift_held)
-            return False
-
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
