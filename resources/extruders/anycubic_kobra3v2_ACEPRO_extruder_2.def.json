@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "ACE Pro Colour 3",
+    "name": "ACE Pro Color 3",
     "inherits": "fdmextruder",
     "metadata":
     {

@@ -8,7 +8,7 @@
         "author": "Sam Bonnekamp",
         "manufacturer": "Anycubic",
         "file_formats": "text/x-gcode",
-        "platform": "anycubic_kobra3v2_buildplate.STL",
+        "platform": "anycubic_kobra3v2_buildplate.stl",
         "machine_extruder_trains": {
 	    "0": "anycubic_kobra3v2_ACEPRO_extruder_0",
 	    "1": "anycubic_kobra3v2_ACEPRO_extruder_1",
@@ -37,23 +37,13 @@
         "material_print_temp_wait": { "value": true },
 	"machine_center_is_zero": { "default_value": false },
 	"layer_height": { "default_value": 0.2 },
-        "speed_slowdown_layers": { "value": 2 },
 	"material_diameter": { "default_value": 1.75 },
 	"material_initial_print_temperature":
         {
             "maximum_value_warning": 295,
             "value": "material_print_temperature + 5"
-        },	
-        "default_material_print_temperature":
-	{
-	    "maximum_value": 300,
-	    "default_value": 210
-	},
-        "material_print_temperature":
-	{
-	    "maximum_value": 300,
-	    "default_value": 210
-	},
+        },
+        "material_print_temperature": { "maximum_value": 300 },
 	"material_standby_temperature" : {"default_value": "material_print_temperature"},
         "material_print_temperature_layer_0":
         {
