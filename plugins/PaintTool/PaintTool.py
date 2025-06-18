@@ -53,6 +53,7 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_text_coords: Optional[numpy.ndarray] = None
+        self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
 
     def _createBrushPen(self) -> QPen:
@@ -213,6 +214,7 @@ class PaintTool(Tool):
                 return False
             self._mouse_held = False
             self._last_text_coords = None
+            self._last_mouse_coords = None
             self._last_face_id = None
             return True
 
@@ -263,26 +265,32 @@ class PaintTool(Tool):
                 return False
             if self._last_text_coords is None:
                 self._last_text_coords = texcoords
+                self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
                 self._last_face_id = face_id
 
-            if face_id != self._last_face_id:
-                # TODO: draw two strokes in this case, for the two faces involved
-                #       ... it's worse, for smaller faces we may genuinely require the patch -- and it may even go over _multiple_ patches if the user paints fast enough
-                #       -> for now; make a lookup table for which faces are connected to which, don't split if they are connected, and solve the connection issue(s) later
+            substrokes_per_face = {}
+            if face_id == self._last_face_id:
+                substrokes_per_face[face_id] = (self._last_text_coords, texcoords)
+            else:
+                # TODO: In case the stroke doesn't begin and end within the same face:
+                #   Iteratively get the face-id's and texture coordinates of mid-point between the previous-mouse position and this one, ...
                 self._last_text_coords = texcoords
+                self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
                 self._last_face_id = face_id
                 return True
 
             w, h = paintview.getUvTexDimensions()
-            sub_image, (start_x, start_y) = self._createStrokeImage(
-                self._last_text_coords[0] * w,
-                self._last_text_coords[1] * h,
-                texcoords[0] * w,
-                texcoords[1] * h
-            )
-            paintview.addStroke(sub_image, start_x, start_y)
+            for faceid, (start_coords, end_coords) in substrokes_per_face.items():
+                sub_image, (start_x, start_y) = self._createStrokeImage(
+                    start_coords[0] * w,
+                    start_coords[1] * h,
+                    end_coords[0] * w,
+                    end_coords[1] * h
+                )
+                paintview.addStroke(sub_image, start_x, start_y)
 
             self._last_text_coords = texcoords
+            self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
             self._last_face_id = face_id
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
             return True
