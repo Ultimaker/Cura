@@ -4,7 +4,8 @@
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QImage, QPainter, QColor, QBrush, QPen
+from PyQt6.QtGui import QImage, QPainter, QColor, QPen
+from PyQt6 import QtWidgets
 from typing import cast, Dict, List, Optional, Tuple
 
 from UM.Application import Application
@@ -50,8 +51,6 @@ class PaintTool(Tool):
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
-        self._ctrl_held: bool = False
-        self._shift_held: bool = False
 
         self._last_text_coords: Optional[numpy.ndarray] = None
         self._last_face_id: Optional[int] = None
@@ -209,27 +208,14 @@ class PaintTool(Tool):
             controller.setActiveView("SolidView")
             return True
 
-        if event.type == Event.KeyPressEvent:
-            evt = cast(KeyEvent, event)
-            if evt.key == KeyEvent.ControlKey:
-                self._ctrl_held = True
-                return True
-            if evt.key == KeyEvent.ShiftKey:
-                self._shift_held = True
-                return True
-            return False
-
         if event.type == Event.KeyReleaseEvent:
-            evt = cast(KeyEvent, event)
-            if evt.key == KeyEvent.ControlKey:
-                self._ctrl_held = False
-                return True
-            if evt.key == KeyEvent.ShiftKey:
-                self._shift_held = False
-                return True
-            if evt.key == Qt.Key.Key_L and self._ctrl_held:
+            key_release = cast(KeyEvent, event)
+            modifiers = QtWidgets.QApplication.keyboardModifiers()
+            ctrl_held = modifiers & Qt.KeyboardModifier.ControlModifier != Qt.KeyboardModifier.NoModifier
+            if key_release.key == Qt.Key.Key_L and ctrl_held:
                 # NOTE: Ctrl-L is used here instead of Ctrl-Z, as the latter is the application-wide one that takes precedence.
-                return self.undoStackAction(self._shift_held)
+                shift_held = modifiers & Qt.KeyboardModifier.ShiftModifier != Qt.KeyboardModifier.NoModifier
+                return self.undoStackAction(shift_held)
             return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
@@ -246,9 +232,9 @@ class PaintTool(Tool):
             if is_moved and not self._mouse_held:
                 return False
 
-            evt = cast(MouseEvent, event)
+            mouse_evt = cast(MouseEvent, event)
             if is_pressed:
-                if MouseEvent.LeftButton not in evt.buttons:
+                if MouseEvent.LeftButton not in mouse_evt.buttons:
                     return False
                 else:
                     self._mouse_held = True
@@ -276,15 +262,13 @@ class PaintTool(Tool):
             if not self._mesh_transformed_cache:
                 return False
 
-            evt = cast(MouseEvent, event)
-
             if not self._picking_pass:
                 self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
             self._picking_pass.render()
 
             self._selection_pass.renderFacesMode()
 
-            face_id, texcoords = self._getTexCoordsFromClick(node, evt.x, evt.y)
+            face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
             if texcoords is None:
                 return False
             if self._last_text_coords is None:
