@@ -49,6 +49,6 @@
 	
 	"layer_height": { "default_value": 0.2 },
 	"adhesion_type": { "value": "'skirt'" },
-	"relative_extrusion" : {"default_value": true}
+	"relative_extrusion" : {"value": true}
     }
 }
