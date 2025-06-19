@@ -1,10 +1,14 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QImage, QPainter, QColor, QBrush, QPen
+from PyQt6.QtGui import QImage, QPainter, QColor, QPen
+from PyQt6 import QtWidgets
 from typing import cast, Dict, List, Optional, Tuple
+
+from numpy import ndarray
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
@@ -20,6 +24,10 @@ from .PaintView import PaintView
 class PaintTool(Tool):
     """Provides the tool to paint meshes."""
 
+    class BrushShape(IntEnum):
+        SQUARE = 0
+        CIRCLE = 1
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -31,6 +39,7 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
+        # TODO: Colors will need to be replaced on a 'per type of painting' basis.
         self._color_str_to_rgba: Dict[str, List[int]] = {
             "A": [192, 0, 192, 255],
             "B": [232, 128, 0, 255],
@@ -40,14 +49,13 @@ class PaintTool(Tool):
 
         self._brush_size: int = 10
         self._brush_color: str = "A"
-        self._brush_shape: str = "A"
+        self._brush_shape: PaintTool.BrushShape = PaintTool.BrushShape.SQUARE
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
-        self._ctrl_held: bool = False
-        self._shift_held: bool = False
 
         self._last_text_coords: Optional[numpy.ndarray] = None
+        self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
 
     def _createBrushPen(self) -> QPen:
@@ -56,9 +64,9 @@ class PaintTool(Tool):
         color = self._color_str_to_rgba[self._brush_color]
         pen.setColor(QColor(color[0], color[1], color[2], color[3]))
         match self._brush_shape:
-            case "A":
+            case PaintTool.BrushShape.SQUARE:
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
-            case "B":
+            case PaintTool.BrushShape.CIRCLE:
                 pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         return pen
 
@@ -98,7 +106,7 @@ class PaintTool(Tool):
             self._brush_color = brush_color
             self._brush_pen = self._createBrushPen()
 
-    def setBrushShape(self, brush_shape: str) -> None:
+    def setBrushShape(self, brush_shape: int) -> None:
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
             self._brush_pen = self._createBrushPen()
@@ -131,21 +139,30 @@ class PaintTool(Tool):
 
         # find unit direction vector for line C, which is perpendicular to lines A and B
         udir_res = numpy.cross(udir_b, udir_a)
-        udir_res /= numpy.linalg.norm(udir_res)
+        udir_res_len = numpy.linalg.norm(udir_res)
+        if udir_res_len == 0:
+            return 1.0
+        udir_res /= udir_res_len
 
         # solve system of equations
         rhs = b - a
         lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        solved = numpy.linalg.solve(lhs, rhs)
+        try:
+            solved = numpy.linalg.solve(lhs, rhs)
+        except numpy.linalg.LinAlgError:
+            return 1.0
 
         # get the ratio
         intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        return numpy.linalg.norm(pt - intersect) / numpy.linalg.norm(a - intersect)
+        a_intersect_dist = numpy.linalg.norm(a - intersect)
+        if a_intersect_dist == 0:
+            return 1.0
+        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getTexCoordsFromClick(self, node: SceneNode, x: int, y: int) -> Tuple[int, Optional[numpy.ndarray]]:
+    def _getTexCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray]]:
         face_id = self._selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
             return face_id, None
@@ -161,11 +178,41 @@ class PaintTool(Tool):
         wb = PaintTool._get_intersect_ratio_via_pt(vb, pt, vc, va)
         wc = PaintTool._get_intersect_ratio_via_pt(vc, pt, va, vb)
         wt = wa + wb + wc
+        if wt == 0:
+            return face_id, None
         wa /= wt
         wb /= wt
         wc /= wt
         texcoords = wa * ta + wb * tb + wc * tc
         return face_id, texcoords
+
+    def _iteratateSplitSubstroke(self, node, substrokes,
+                                 info_a: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]],
+                                 info_b: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]]) -> None:
+        click_a, (face_a, texcoords_a) = info_a
+        click_b, (face_b, texcoords_b) = info_b
+
+        if (abs(click_a[0] - click_b[0]) < 0.0001 and abs(click_a[1] - click_b[1]) < 0.0001) or (face_a < 0 and face_b < 0):
+            return
+        if face_b < 0 or face_a == face_b:
+            substrokes.append((self._last_text_coords, texcoords_a))
+            return
+        if face_a < 0:
+            substrokes.append((self._last_text_coords, texcoords_b))
+            return
+
+        mouse_mid = (click_a[0] + click_b[0]) / 2.0, (click_a[1] + click_b[1]) / 2.0
+        face_mid, texcoords_mid = self._getTexCoordsFromClick(node, mouse_mid[0], mouse_mid[1])
+        mid_struct = (mouse_mid, (face_mid, texcoords_mid))
+        if face_mid == face_a:
+            substrokes.append((texcoords_a, texcoords_mid))
+            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
+        elif face_mid == face_b:
+            substrokes.append((texcoords_mid, texcoords_b))
+            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
+        else:
+            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
+            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -192,34 +239,12 @@ class PaintTool(Tool):
             controller.setActiveView("SolidView")
             return True
 
-        if event.type == Event.KeyPressEvent:
-            evt = cast(KeyEvent, event)
-            if evt.key == KeyEvent.ControlKey:
-                self._ctrl_held = True
-                return True
-            if evt.key == KeyEvent.ShiftKey:
-                self._shift_held = True
-                return True
-            return False
-
-        if event.type == Event.KeyReleaseEvent:
-            evt = cast(KeyEvent, event)
-            if evt.key == KeyEvent.ControlKey:
-                self._ctrl_held = False
-                return True
-            if evt.key == KeyEvent.ShiftKey:
-                self._shift_held = False
-                return True
-            if evt.key == Qt.Key.Key_L and self._ctrl_held:
-                # NOTE: Ctrl-L is used here instead of Ctrl-Z, as the latter is the application-wide one that takes precedence.
-                return self.undoStackAction(self._shift_held)
-            return False
-
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
             self._mouse_held = False
             self._last_text_coords = None
+            self._last_mouse_coords = None
             self._last_face_id = None
             return True
 
@@ -229,9 +254,9 @@ class PaintTool(Tool):
             if is_moved and not self._mouse_held:
                 return False
 
-            evt = cast(MouseEvent, event)
+            mouse_evt = cast(MouseEvent, event)
             if is_pressed:
-                if MouseEvent.LeftButton not in evt.buttons:
+                if MouseEvent.LeftButton not in mouse_evt.buttons:
                     return False
                 else:
                     self._mouse_held = True
@@ -259,39 +284,40 @@ class PaintTool(Tool):
             if not self._mesh_transformed_cache:
                 return False
 
-            evt = cast(MouseEvent, event)
-
             if not self._picking_pass:
                 self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
             self._picking_pass.render()
 
             self._selection_pass.renderFacesMode()
 
-            face_id, texcoords = self._getTexCoordsFromClick(node, evt.x, evt.y)
+            face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
             if texcoords is None:
                 return False
             if self._last_text_coords is None:
                 self._last_text_coords = texcoords
+                self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
                 self._last_face_id = face_id
 
-            if face_id != self._last_face_id:
-                # TODO: draw two strokes in this case, for the two faces involved
-                #       ... it's worse, for smaller faces we may genuinely require the patch -- and it may even go over _multiple_ patches if the user paints fast enough
-                #       -> for now; make a lookup table for which faces are connected to which, don't split if they are connected, and solve the connection issue(s) later
-                self._last_text_coords = texcoords
-                self._last_face_id = face_id
-                return True
+            substrokes = []
+            if face_id == self._last_face_id:
+                substrokes.append((self._last_text_coords, texcoords))
+            else:
+                self._iteratateSplitSubstroke(node, substrokes,
+                                              (self._last_mouse_coords, (self._last_face_id, self._last_text_coords)),
+                                              ((mouse_evt.x, mouse_evt.y), (face_id, texcoords)))
 
             w, h = paintview.getUvTexDimensions()
-            sub_image, (start_x, start_y) = self._createStrokeImage(
-                self._last_text_coords[0] * w,
-                self._last_text_coords[1] * h,
-                texcoords[0] * w,
-                texcoords[1] * h
-            )
-            paintview.addStroke(sub_image, start_x, start_y)
+            for start_coords, end_coords in substrokes:
+                sub_image, (start_x, start_y) = self._createStrokeImage(
+                    start_coords[0] * w,
+                    start_coords[1] * h,
+                    end_coords[0] * w,
+                    end_coords[1] * h
+                )
+                paintview.addStroke(sub_image, start_x, start_y)
 
             self._last_text_coords = texcoords
+            self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
             self._last_face_id = face_id
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
             return True
