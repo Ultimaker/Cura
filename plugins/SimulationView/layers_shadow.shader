@@ -48,8 +48,10 @@ fragment =
 
     void main()
     {
-        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5))
-        {  // actually, 8 and 9
+        // travel moves: 8, 9, 12, 13
+        if ((u_show_travel_moves == 0) && (((v_line_type >= 7.5) && (v_line_type <= 9.5)) ||
+                                           ((v_line_type >= 11.5) && (v_line_type <= 13.5)))) {
+        {
             // discard movements
             discard;
         }
@@ -124,7 +126,9 @@ fragment41core =
 
     void main()
     {
-        if ((u_show_travel_moves == 0) && (v_line_type >= 7.5) && (v_line_type <= 9.5)) {  // actually, 8 and 9
+        // travel moves: 8, 9, 12, 13
+        if ((u_show_travel_moves == 0) && (((v_line_type >= 7.5) && (v_line_type <= 9.5)) ||
+                                           ((v_line_type >= 11.5) && (v_line_type <= 13.5)))) {
             // discard movements
             discard;
         }

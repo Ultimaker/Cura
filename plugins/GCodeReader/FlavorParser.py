@@ -133,7 +133,10 @@ class FlavorParser:
             if i > 0:
                 line_feedrates[i - 1] = point[3]
                 line_types[i - 1] = point[5]
-                if point[5] in [LayerPolygon.MoveCombingType, LayerPolygon.MoveRetractionType]:
+                if point[5] in [LayerPolygon.MoveUnretractedType,
+                                LayerPolygon.MoveRetractedType,
+                                LayerPolygon.MoveWhileRetractingType,
+                                LayerPolygon.MoveWhileUnretractingType]:
                     line_widths[i - 1] = 0.1
                     line_thicknesses[i - 1] = 0.0 # Travels are set as zero thickness lines
                 else:
@@ -196,7 +199,7 @@ class FlavorParser:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
                 self._previous_extrusion_value = new_extrusion_value
             else:
-                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
+                path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractedType])  # retraction
             e[self._extruder_number] = new_extrusion_value
 
             # Only when extruding we can determine the latest known "layer height" which is the difference in height between extrusions
@@ -205,9 +208,9 @@ class FlavorParser:
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
         elif self._previous_extrusion_value > e[self._extruder_number]:
-            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractedType])
         else:
-            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveUnretractedType])
         return self._position(x, y, z, f, e)
 
 
@@ -419,7 +422,7 @@ class FlavorParser:
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
                     # Start the new layer at the end position of the last layer
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
 
                     # When using a raft, the raft layers are stored as layers < 0, it mimics the same behavior
                     # as in ProcessSlicedLayersJob
@@ -461,9 +464,9 @@ class FlavorParser:
 
                     # When changing tool, store the end point of the previous path, then process the code and finally
                     # add another point with the new position of the head.
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
                     current_position = self.processTCode(global_stack, T, line, current_position, current_path)
-                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveCombingType])
+                    current_path.append([current_position.x, current_position.y, current_position.z, current_position.f, current_position.e[self._extruder_number], LayerPolygon.MoveUnretractedType])
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
