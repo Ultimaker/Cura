@@ -27,11 +27,13 @@ vertex =
 
 fragment =
     uniform mediump vec4 u_ambientColor;
-    uniform mediump vec4 u_diffuseColor;
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
     uniform mediump float u_opacity;
     uniform sampler2D u_texture;
+    uniform mediump int u_bitsRangesStart;
+    uniform mediump int u_bitsRangesEnd;
+    uniform mediump vec3 u_renderColors[16];
 
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
@@ -48,15 +50,17 @@ fragment =
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
         /* Diffuse Component */
+        ivec4 texture = ivec4(texture(u_texture, v_uvs) * 255.0);
+        uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
+        color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
+
+        vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
         highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
-        final_color += (n_dot_l * u_diffuseColor);
+        final_color += (n_dot_l * diffuse_color);
 
         final_color.a = u_opacity;
 
-        lowp vec4 texture = texture2D(u_texture, v_uvs);
-        final_color = mix(final_color, texture, texture.a);
-
-        gl_FragColor = final_color;
+        frag_color = final_color;
     }
 
 vertex41core =
@@ -89,11 +93,13 @@ vertex41core =
 fragment41core =
     #version 410
     uniform mediump vec4 u_ambientColor;
-    uniform mediump vec4 u_diffuseColor;
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
     uniform mediump float u_opacity;
     uniform sampler2D u_texture;
+    uniform mediump int u_bitsRangesStart;
+    uniform mediump int u_bitsRangesEnd;
+    uniform mediump vec3 u_renderColors[16];
 
     in highp vec3 v_vertex;
     in highp vec3 v_normal;
@@ -111,20 +117,21 @@ fragment41core =
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
         /* Diffuse Component */
+        ivec4 texture = ivec4(texture(u_texture, v_uvs) * 255.0);
+        uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
+        color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
+
+        vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
         highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
-        final_color += (n_dot_l * u_diffuseColor);
+        final_color += (n_dot_l * diffuse_color);
 
         final_color.a = u_opacity;
-
-        lowp vec4 texture = texture(u_texture, v_uvs);
-        final_color = mix(final_color, texture, texture.a);
 
         frag_color = final_color;
     }
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
-u_diffuseColor = [1.0, 1.0, 1.0, 1.0]
 u_opacity = 0.5
 u_texture = 0
 
