@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+from PyQt6.QtCore import QRect
 from typing import Optional, List, Tuple, Dict
 
 from PyQt6.QtGui import QImage, QColor, QPainter
@@ -85,22 +86,35 @@ class PaintView(View):
 
         bit_range_start, bit_range_end = self._current_bits_ranges
         set_value = self._paint_modes[self._current_paint_type].types[brush_color].value << self._current_bits_ranges[0]
-        clear_mask = 0xffffffff ^ (((0xffffffff << (32 - 1 - (bit_range_end - bit_range_start))) & 0xffffffff) >> (32 - 1 - bit_range_end))
+        full_int32 = 0xffffffff
+        clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
+        image_rect = QRect(0, 0, stroke_image.width(), stroke_image.height())
 
-        for x in range(stroke_image.width()):
-            for y in range(stroke_image.height()):
-                stroke_pixel = stroke_image.pixel(x, y)
-                actual_pixel = actual_image.pixel(start_x + x, start_y + y)
-                if stroke_pixel != 0:
-                    new_pixel = (actual_pixel & clear_mask) | set_value
-                else:
-                    new_pixel = actual_pixel
-                stroke_image.setPixel(x, y, new_pixel)
+        clear_bits_image = stroke_image.copy()
+        clear_bits_image.invertPixels()
+        painter = QPainter(clear_bits_image)
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Lighten)
+        painter.fillRect(image_rect, clear_mask)
+        painter.end()
+
+        set_value_image = stroke_image.copy()
+        painter = QPainter(set_value_image)
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Multiply)
+        painter.fillRect(image_rect, set_value)
+        painter.end()
+
+        stroked_image = actual_image.copy(start_x, start_y, stroke_image.width(), stroke_image.height())
+        painter = QPainter(stroked_image)
+        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
+        painter.drawImage(0, 0, clear_bits_image)
+        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
+        painter.drawImage(0, 0, set_value_image)
+        painter.end()
 
         self._stroke_redo_stack.clear()
         if len(self._stroke_undo_stack) >= PaintView.UNDO_STACK_SIZE:
             self._stroke_undo_stack.pop(0)
-        undo_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(stroke_image, start_x, start_y))
+        undo_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(stroked_image, start_x, start_y))
         if undo_image is not None:
             self._stroke_undo_stack.append((undo_image, start_x, start_y))
 
