@@ -78,8 +78,8 @@ message Polygon {
         SkirtType = 5;
         InfillType = 6;
         SupportInfillType = 7;
-        MoveCombingType = 8;
-        MoveRetractionType = 9;
+        MoveUnretractedType = 8;
+        MoveRetractedType = 9;
         SupportInterfaceType = 10;
         PrimeTowerType = 11;
     }
