@@ -36,7 +36,6 @@ class SolidView(View):
 
     _show_xray_warning_preference = "view/show_xray_warning"
     _show_overhang_preference = "view/show_overhang"
-    _paint_active_preference = "view/paint_active"
 
     def __init__(self):
         super().__init__()
