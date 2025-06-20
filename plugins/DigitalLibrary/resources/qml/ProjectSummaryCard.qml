@@ -14,7 +14,7 @@ Cura.RoundedRectangle
     border.color: enabled ? UM.Theme.getColor("lining") : UM.Theme.getColor("action_button_disabled_border")
     border.width: UM.Theme.getSize("default_lining").width
     radius: UM.Theme.getSize("default_radius").width
-    color: getBackgoundColor()
+    color: getBackgroundColor()
     signal clicked()
     property alias imageSource: projectImage.source
     property alias projectNameText: displayNameLabel.text
