@@ -17,6 +17,7 @@ class DigitalFactoryProjectModel(ListModel):
     ThumbnailUrlRole = Qt.ItemDataRole.UserRole + 5
     UsernameRole = Qt.ItemDataRole.UserRole + 6
     LastUpdatedRole = Qt.ItemDataRole.UserRole + 7
+    ActiveRole = Qt.ItemDataRole.UserRole + 8
 
     dfProjectModelChanged = pyqtSignal()
 
@@ -28,6 +29,7 @@ class DigitalFactoryProjectModel(ListModel):
         self.addRoleName(self.ThumbnailUrlRole, "thumbnailUrl")
         self.addRoleName(self.UsernameRole, "username")
         self.addRoleName(self.LastUpdatedRole, "lastUpdated")
+        self.addRoleName(self.ActiveRole, "active")
         self._projects = []  # type: List[DigitalFactoryProjectResponse]
 
     def setProjects(self, df_projects: List[DigitalFactoryProjectResponse]) -> None:
@@ -59,5 +61,6 @@ class DigitalFactoryProjectModel(ListModel):
                 "thumbnailUrl": project.thumbnail_url,
                 "username": project.username,
                 "lastUpdated": project.last_updated.strftime(PROJECT_UPDATED_AT_DATETIME_FORMAT) if project.last_updated else "",
+                "active": project.active,
             })
         self.dfProjectModelChanged.emit()

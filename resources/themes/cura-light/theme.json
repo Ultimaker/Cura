@@ -498,6 +498,7 @@
         "monitor_carousel_dot_current": [119, 119, 119, 255],
 
         "cloud_unavailable": [153, 153, 153, 255],
+        "cloud_inactive": [253, 209, 58, 255],
         "connection_badge_background": [255, 255, 255, 255],
         "warning_badge_background": [0, 0, 0, 255],
         "error_badge_background": [255, 255, 255, 255],
