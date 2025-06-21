@@ -8,6 +8,8 @@ on:
         required: true
         type: string
 
+permissions: {}
+
 jobs:
   find-packages:
     name: Find packages for Jira ticket
