@@ -12,7 +12,8 @@ on:
         required: false
         type: boolean
 
-permissions: {}
+permissions:
+  contents: read
 
 jobs:
   find-packages:
