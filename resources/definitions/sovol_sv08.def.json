@@ -5,7 +5,7 @@
     "metadata":
     {
         "visible": true,
-        "author": "See voron2_base",
+        "author": "Steinar H. Gunderson",
         "manufacturer": "Sovol 3D",
         "preferred_variant_name": "0.4mm Nozzle",
         "quality_definition": "sovol_sv08",
@@ -17,7 +17,7 @@
         "has_machine_quality": true,
         "has_materials": true,
         "has_variants": true,
-        "machine_extruder_trains": { "0": "voron2_extruder_0" },
+        "machine_extruder_trains": { "0": "sovol_sv08_extruder" },
         "preferred_material": "generic_abs",
         "preferred_quality_type": "fast"
     },
