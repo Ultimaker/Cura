@@ -6,6 +6,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import UM 1.7 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -154,7 +155,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 0)
+                onClicked: UM.Controller.triggerActionWithData("setBrushShape", Cura.PaintToolBrush.SQUARE)
             }
 
             UM.ToolbarButton
@@ -171,7 +172,7 @@ Item
 
                 z: 2
 
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 1)
+                onClicked: UM.Controller.triggerActionWithData("setBrushShape", Cura.PaintToolBrush.CIRCLE)
             }
 
             UM.Slider
