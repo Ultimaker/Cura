@@ -229,7 +229,7 @@ Cura.ExpandableComponent
                 {
                     const travelsTypesModel = [
                         {
-                            label: catalog.i18nc("@label", "Unretracted"),
+                            label: catalog.i18nc("@label", "Not retracted"),
                             colorId: "layerview_move_combing"
                         },
                         {
@@ -241,7 +241,7 @@ Cura.ExpandableComponent
                             colorId: "layerview_move_while_retracting"
                         },
                         {
-                            label: catalog.i18nc("@label", "Unretracting"),
+                            label: catalog.i18nc("@label", "Priming"),
                             colorId: "layerview_move_while_unretracting"
                         }
                     ];
@@ -339,7 +339,7 @@ Cura.ExpandableComponent
 
                                         height: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                                         width: UM.Theme.getSize("layerview_menu_size").width
-                                        color: UM.Theme.getColor("setting_control_text")
+                                        color: UM.Theme.getColor("tooltip_text")
                                         Rectangle
                                         {
                                             anchors.verticalCenter: parent.verticalCenter
