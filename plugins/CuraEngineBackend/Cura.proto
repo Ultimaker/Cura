@@ -53,6 +53,8 @@ message Object
     bytes indices = 4; //An array of ints.
     repeated Setting settings = 5; // Setting override per object, overruling the global settings.
     string name = 6; //Mesh name
+    bytes uv_coordinates = 7; //An array of 2 floats.
+    bytes texture = 8; //PNG-encoded texture data
 }
 
 message Progress
