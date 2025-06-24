@@ -20,13 +20,14 @@ from ..BaseModel import BaseModel
 class ClusterPrinterStatus(BaseModel):
     """Class representing a cluster printer"""
 
-    def __init__(self, enabled: bool, firmware_version: str, friendly_name: str, ip_address: str, machine_variant: str,
-                 status: str, unique_name: str, uuid: str,
-                 configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
-                 reserved_by: Optional[str] = None, maintenance_required: Optional[bool] = None,
+    def __init__(self, enabled: Optional[bool] = True, friendly_name: Optional[str] = "", machine_variant: Optional[str] = "",
+                 status: Optional[str] = "unknown", unique_name: Optional[str] = "", uuid: Optional[str] = "",
+                 configuration: Optional[List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]]] = None,
+                 firmware_version: Optional[str] = None, ip_address: Optional[str] = None,
+                 reserved_by: Optional[str] = None, maintenance_required: Optional[bool] = False,
                  firmware_update_status: Optional[str] = None, latest_available_firmware: Optional[str] = None,
-                 build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
-                 material_station: Union[Dict[str, Any], ClusterPrinterMaterialStation] = None, **kwargs) -> None:
+                 build_plate: Optional[Union[Dict[str, Any], ClusterBuildPlate]] = None,
+                 material_station: Optional[Union[Dict[str, Any], ClusterPrinterMaterialStation]] = None, **kwargs) -> None:
         """
         Creates a new cluster printer status
         :param enabled: A printer can be disabled if it should not receive new jobs. By default, every printer is enabled.
@@ -47,7 +48,7 @@ class ClusterPrinterStatus(BaseModel):
         :param material_station: The material station that is on the printer.
         """
 
-        self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
+        self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration) if configuration else []
         self.enabled = enabled
         self.firmware_version = firmware_version
         self.friendly_name = friendly_name
@@ -70,7 +71,7 @@ class ClusterPrinterStatus(BaseModel):
 
         :param controller: - The controller of the model.
         """
-        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
+        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version or "")
         self.updateOutputModel(model)
         return model
 
@@ -80,13 +81,14 @@ class ClusterPrinterStatus(BaseModel):
         :param model: - The output model to update.
         """
 
-        model.updateKey(self.uuid)
-        model.updateName(self.friendly_name)
-        model.updateUniqueName(self.unique_name)
-        model.updateType(self.machine_variant)
+        model.updateKey(self.uuid or "")
+        model.updateName(self.friendly_name or "")
+        model.updateUniqueName(self.unique_name or "")
+        model.updateType(self.machine_variant or "")
         model.updateState(self.status if self.enabled else "disabled")
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
-        model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
+        if self.ip_address:
+            model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
         if not model.printerConfiguration:
             # Prevent accessing printer configuration when not available.
