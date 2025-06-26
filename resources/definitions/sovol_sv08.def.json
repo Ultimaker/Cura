@@ -95,7 +95,6 @@
         "retraction_combing_max_distance": { "default_value": 10 },
         "retraction_hop": { "default_value": 0.4 },
         "retraction_hop_enabled": { "default_value": true },
-        "retraction_min_travel": { "default_value": 1 },
         "retraction_prime_speed":
         {
             "maximum_value_warning": 130,
