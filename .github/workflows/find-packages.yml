@@ -38,7 +38,7 @@ jobs:
   installers:
     name: Create installers
     needs: find-packages
-    if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
+    if: ${{ github.event.inputs.start_builds == 'true' && needs.find-packages.outputs.discovered_packages != '' }}
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ needs.find-packages.outputs.cura_package }}
