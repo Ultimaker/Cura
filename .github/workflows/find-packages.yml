@@ -35,20 +35,10 @@ jobs:
       jira_ticket_number: ${{ inputs.jira_ticket_number }}
     secrets: inherit
 
-  debug-outputs:
-    name: Debug Outputs
-    needs: find-packages
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "discovered_packages: '${{ needs.find-packages.outputs.discovered_packages }}'"
-          echo "cura_package: '${{ needs.find-packages.outputs.cura_package }}'"
-          echo "package_overrides: '${{ needs.find-packages.outputs.package_overrides }}'"
-
   installers:
     name: Create installers
     needs: find-packages
-    if: ${{ needs.find-packages.outputs.discovered_packages != '' }}
+    if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ needs.find-packages.outputs.cura_package }}
