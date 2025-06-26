@@ -33,7 +33,6 @@ jobs:
     uses: ultimaker/cura-workflows/.github/workflows/find-package-by-ticket.yml@jira_find_package
     with:
       jira_ticket_number: ${{ inputs.jira_ticket_number }}
-      start_builds: ${{ inputs.start_builds }}
     secrets: inherit
 
   installers:
