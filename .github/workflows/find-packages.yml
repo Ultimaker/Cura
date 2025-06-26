@@ -11,6 +11,18 @@ on:
         default: false
         required: false
         type: boolean
+      conan_args:
+        description: 'Conan args'
+        default: ''
+        type: string
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        type: boolean
+      staging:
+        description: 'Use staging API'
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -23,3 +35,17 @@ jobs:
       jira_ticket_number: ${{ inputs.jira_ticket_number }}
       start_builds: ${{ inputs.start_builds }}
     secrets: inherit
+
+  installers:
+    name: Create installers
+    needs: find-packages
+    if: ${{ inputs.start_builds == true && needs.find-packages.outputs.cura_conan_version != '' }}
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
+    with:
+      cura_conan_version: ${{ needs.find-packages.outputs.cura_conan_version }}
+      package_overrides: ${{ needs.find-packages.outputs.package_overrides }}
+      conan_args: ${{ inputs.conan_args }}
+      enterprise: ${{ inputs.enterprise }}
+      staging: ${{ inputs.staging  }}
+    secrets: inherit
+
