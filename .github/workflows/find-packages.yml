@@ -1,4 +1,4 @@
-name: Conan Package Discovery by Jira Ticket
+name: Find packages for Jira ticket and create installers
 
 on:
   workflow_dispatch:
@@ -30,7 +30,7 @@ permissions:
 jobs:
   find-packages:
     name: Find packages for Jira ticket
-    uses: ultimaker/cura-workflows/.github/workflows/find-package-by-ticket.yml@jira_find_package
+    uses: ultimaker/cura-workflows/.github/workflows/find-package-by-ticket.yml@main
     with:
       jira_ticket_number: ${{ inputs.jira_ticket_number }}
     secrets: inherit
@@ -38,7 +38,7 @@ jobs:
   installers:
     name: Create installers
     needs: find-packages
-    if: ${{ github.event.inputs.start_builds == 'true' && needs.find-packages.outputs.discovered_packages != '' }}
+    if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ needs.find-packages.outputs.cura_package }}
@@ -47,4 +47,3 @@ jobs:
       enterprise: ${{ inputs.enterprise }}
       staging: ${{ inputs.staging  }}
     secrets: inherit
-
