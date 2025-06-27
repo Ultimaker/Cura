@@ -27,9 +27,11 @@ from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOut
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
 from ..Messages.PrintJobUploadQueueFullMessage import PrintJobUploadQueueFullMessage
+from ..Messages.PrintJobUploadPrinterInactiveMessage import PrintJobUploadPrinterInactiveMessage
 from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudError import CloudError
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from ..Models.Http.CloudPrintResponse import CloudPrintResponse
 from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
@@ -62,6 +64,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore, we create a private signal used to trigger the printersChanged signal.
     _cloudClusterPrintersChanged = pyqtSignal()
+
+    cloudActiveChanged = pyqtSignal()
 
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
         """Creates a new cloud output device
@@ -110,6 +114,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._tool_path = None  # type: Optional[bytes]
         self._pre_upload_print_job = None  # type: Optional[CloudPrintJobResponse]
         self._uploaded_print_job = None  # type: Optional[CloudPrintJobResponse]
+
+        # Whether the printer is active, i.e. authorized for use i.r.t to workspace limitations
+        self._active = cluster.display_status != "inactive"
 
         CuraApplication.getInstance().getBackend().backendDone.connect(self._resetPrintJob)
         CuraApplication.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
@@ -189,6 +196,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if status.print_jobs != self._received_print_jobs:
             self._received_print_jobs = status.print_jobs
             self._updatePrintJobs(status.print_jobs)
+
+        if status.active != self._active:
+            self._active = status.active
+            self.cloudActiveChanged.emit()
 
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional[FileHandler] = None, filter_by_machine: bool = False, **kwargs) -> None:
@@ -291,19 +302,21 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         self.writeFinished.emit()
 
-    def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):
+    def _onPrintUploadSpecificError(self, error: CloudError, _: "QNetworkReply.NetworkError", http_error: int):
         """
         Displays a message when an error occurs specific to uploading print job (i.e. queue is full).
         """
-        error_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
-        if error_code == 409:
-            PrintJobUploadQueueFullMessage().show()
+        if http_error == 409:
+            if error.code == "printerInactive":
+                PrintJobUploadPrinterInactiveMessage().show()
+            else:
+                PrintJobUploadQueueFullMessage().show()
         else:
             PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send",
                                                           "Unknown error code when uploading print job: {0}",
-                                                          error_code)).show()
+                                                          http_error)).show()
 
-        Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
+        Logger.log("w", "Upload of print job failed specifically with error code {}".format(http_error))
 
         self._progress.hide()
         self._pre_upload_print_job = None
@@ -431,6 +444,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         root_url_prefix = "-staging" if self._account.is_staging else ""
         return f"https://digitalfactory{root_url_prefix}.ultimaker.com/app/jobs/{self.clusterData.cluster_id}"
+
+    @pyqtProperty(bool, notify = cloudActiveChanged)
+    def cloudActive(self) -> bool:
+        return self._active
 
     def __del__(self):
         CuraApplication.getInstance().getBackend().backendDone.disconnect(self._resetPrintJob)
