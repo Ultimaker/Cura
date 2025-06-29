@@ -582,7 +582,7 @@ class CuraConan(ConanFile):
                     continue
                 with theme_path.open("r") as theme_file:
                     theme = json.load(theme_file)
-                    if theme["colors"]:
+                    if "colors" in theme:
                         theme["colors"]["main_window_header_background"] = test_colors[biweekly_day]
                 with theme_path.open("w") as theme_file:
                     json.dump(theme, theme_file)
