@@ -16,7 +16,7 @@ Cura.ExpandablePopup
     property bool isConnectedCloudPrinter: machineManager.activeMachineHasCloudConnection
     property bool isCloudRegistered: machineManager.activeMachineHasCloudRegistration
     property bool isGroup: machineManager.activeMachineIsGroup
-    property bool isCloudActive: machineManager.activeMachineIsCloudActive
+    property bool isActive: machineManager.activeMachineIsActive
     property string machineName: {
         if (isNetworkPrinter && machineManager.activeMachineNetworkGroupName != "")
         {
@@ -41,7 +41,7 @@ Cura.ExpandablePopup
         }
         else if (isConnectedCloudPrinter && Cura.API.connectionStatus.isInternetReachable)
         {
-            if (isCloudActive)
+            if (isActive)
             {
                 return "printer_cloud_connected"
             }

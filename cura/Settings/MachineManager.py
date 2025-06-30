@@ -184,15 +184,13 @@ class MachineManager(QObject):
 
     def _onOutputDevicesChanged(self) -> None:
         for printer_output_device in self._printer_output_devices:
-            if hasattr(printer_output_device, "cloudActiveChanged"):
-                printer_output_device.cloudActiveChanged.disconnect(self.printerConnectedStatusChanged)
+            printer_output_device.activeChanged.disconnect(self.printerConnectedStatusChanged)
 
         self._printer_output_devices = []
         for printer_output_device in self._application.getOutputDeviceManager().getOutputDevices():
             if isinstance(printer_output_device, PrinterOutputDevice):
                 self._printer_output_devices.append(printer_output_device)
-                if hasattr(printer_output_device, "cloudActiveChanged"):
-                    printer_output_device.cloudActiveChanged.connect(self.printerConnectedStatusChanged)
+                printer_output_device.activeChanged.connect(self.printerConnectedStatusChanged)
 
         self.outputDevicesChanged.emit()
 
@@ -576,12 +574,11 @@ class MachineManager(QObject):
         return self.activeMachineHasCloudConnection and not self.activeMachineHasNetworkConnection
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    def activeMachineIsCloudActive(self) -> bool:
+    def activeMachineIsActive(self) -> bool:
         if not self._printer_output_devices:
             return True
 
-        first_printer = self._printer_output_devices[0]
-        return True if not hasattr(first_printer, 'cloudActive') else first_printer.cloudActive
+        return self._printer_output_devices[0].active
 
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
