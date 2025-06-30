@@ -86,6 +86,9 @@ class PaintView(View):
 
         bit_range_start, bit_range_end = self._current_bits_ranges
         set_value = self._paint_modes[self._current_paint_type].types[brush_color].value << self._current_bits_ranges[0]
+
+        # Create a bitmask to only change the relevant bits, by rotating the value left then right, which will leave the
+        # value at position 0 and set 0s everywhere else
         full_int32 = 0xffffffff
         clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
         image_rect = QRect(0, 0, stroke_image.width(), stroke_image.height())
