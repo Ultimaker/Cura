@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "UltiMaker S5 🌈",
+    "name": "UltiMaker S5 \ud83c\udf08",
     "inherits": "ultimaker_s5",
     "metadata":
     {
@@ -40,7 +40,7 @@
     },
     "overrides":
     {
-        "prime_tower_enable": { "value": "True" },
-        "machine_extruder_count": { "default_value": 6 }
+        "machine_extruder_count": { "default_value": 6 },
+        "prime_tower_enable": { "value": "True" }
     }
 }
