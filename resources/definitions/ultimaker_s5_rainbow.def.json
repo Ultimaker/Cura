@@ -1,0 +1,46 @@
+{
+    "version": 2,
+    "name": "UltiMaker S5 🌈",
+    "inherits": "ultimaker_s5",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_s5_platform.obj",
+        "bom_numbers": [
+            9051,
+            214475,
+            214476,
+            214477
+        ],
+        "firmware_update_info":
+        {
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version" ],
+            "id": 9051,
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variant_buildplates": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_s5_rainbow_extruder_left0",
+            "1": "ultimaker_s5_rainbow_extruder_left1",
+            "2": "ultimaker_s5_rainbow_extruder_left2",
+            "3": "ultimaker_s5_rainbow_extruder_left3",
+            "4": "ultimaker_s5_rainbow_extruder_left4",
+            "5": "ultimaker_s5_rainbow_extruder_left5"
+        },
+        "preferred_variant_buildplate_name": "Glass",
+        "preferred_variant_name": "AA 0.4"
+    },
+    "overrides":
+    {
+        "prime_tower_enable": { "value": "True" },
+        "machine_extruder_count": { "default_value": 6 }
+    }
+}
