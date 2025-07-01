@@ -29,6 +29,7 @@ Display Filename and Layer on the LCD by Amanda de Castilho on August 28, 2018
            - 'Add M118 Line' is available with either option.  M118 will bounce the message back to a remote print server through the USB connection.
            - 'Add M73 Line' is used by 'Display Progress' only.  There are options to incluse M73 P(percent) and M73 R(time remaining)
            - Enable 'Finish-Time' Message - when enabled, takes the Print Time and calculates when the print will end.  It uses the Time Fudge Factor.  The user may enter a print start time.
+Date:  June 30, 2025 Cost of electricity added to the other print statistics in '_add_stats'.
 """
 
 from ..Script import Script
@@ -37,6 +38,7 @@ from UM.Qt.Duration import DurationFormat
 import time
 import datetime
 import math
+from UM.Preferences import Preferences
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
@@ -234,7 +236,26 @@ class DisplayInfoOnLCD(Script):
                     "default_value": "",
                     "unit": "hrs  ",
                     "enabled": "enable_end_message"
+                },
+                "electricity_cost":
+                {
+                    "label": "Electricity Cost per kWh",
+                    "description": "Cost of electricity per kilowatt-hour.  This should be on your electric utility bill.",
+                    "type": "float",
+                    "default_value": 0.151,
+                    "minimum_value": 0,
+                    "unit": "€/kWh  "
+                },
+                "printer_power_usage":
+                {
+                    "label": "Printer Power Usage",
+                    "description": "Average power usage of the 3D printer in Watts.  The actual wattage has many variables.  50% of the power supply rating would be a ballpark figure.",
+                    "type": "float",
+                    "default_value": 175,
+                    "minimum_value": 0,
+                    "unit": "Watts  "
                 }
+
             }
         }"""
 
@@ -249,6 +270,11 @@ class DisplayInfoOnLCD(Script):
         self.add_m73_time = self.getSettingValueByKey("add_m73_time")
         self.add_m73_percent = self.getSettingValueByKey("add_m73_percent")
         self.m73_str = ""
+        para_1 = data[0].split("\n")
+        for line in para_1:
+            if line.startswith(";TIME:"):
+                self.time_total = int(line.split(":")[1])
+                break
         if display_option == "filename_layer":
             data = self._display_filename_layer(data)
         else:
@@ -337,7 +363,6 @@ class DisplayInfoOnLCD(Script):
             data[len(data)-1] += "M77\n"
         # Initialize some variables
         first_layer_index = 0
-        time_total = int(data[0].split(";TIME:")[1].split("\n")[0])
         number_of_layers = 0
         time_elapsed = 0
 
@@ -418,8 +443,6 @@ class DisplayInfoOnLCD(Script):
                         for lay in range(2,len(data)-1,1):
                             if ";LAYER:" in data[lay]:
                                 number_of_layers += 1
-                    elif line.startswith(";TIME:"):
-                        time_total = int(line.split(":")[1])
         # for all layers...
         current_layer = 0
         for layer_counter in range(len(data)-2):
@@ -438,7 +461,7 @@ class DisplayInfoOnLCD(Script):
             # if display_remaining_time is checked, it is calculated in this loop
             if display_remaining_time:
                 time_remaining_display = " | ET "  # initialize the time display
-                m = (time_total - time_elapsed) // 60  # estimated time in minutes
+                m = (self.time_total - time_elapsed) // 60  # estimated time in minutes
                 m *= speed_factor  # correct for printing time
                 m = int(m)
                 h, m = divmod(m, 60)  # convert to hours and minutes
@@ -640,7 +663,8 @@ class DisplayInfoOnLCD(Script):
                         model_list.append(model_name)
         # Filament stats
         extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        init_layer_hgt_line = ";Initial Layer Height: " + str(global_stack.getProperty("layer_height_0", "value"))
+        layheight_0 = global_stack.getProperty("layer_height_0", "value")
+        init_layer_hgt_line = ";Initial Layer Height: " + f"{layheight_0:.2f}".format(layheight_0)
         filament_line_t0 = ";Extruder 1 (T0)\n"
         filament_amount = Application.getInstance().getPrintInformation().materialLengths
         filament_line_t0 += f";  Filament used: {filament_amount[0]}m\n"
@@ -659,16 +683,23 @@ class DisplayInfoOnLCD(Script):
             filament_line_t1 += f";  Filament Dia.: {global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
             filament_line_t1 += f";  Nozzle Size  : {global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
             filament_line_t1 += f";  Print Temp.  : {global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
-
+        
+        # Calculate the cost of electricity for the print
+        electricity_cost = self.getSettingValueByKey("electricity_cost")
+        printer_power_usage = self.getSettingValueByKey("printer_power_usage")
+        currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
+        total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
+        
         # Add the stats to the gcode file
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
             if line.startswith(";Layer height:"):
+                lines[index] = ";Layer height: " + f"{float(line.split(":")[1]):.2f}".format(float(line.split(":")[1]))
                 lines[index] += f"\n{init_layer_hgt_line}"
                 lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
                 lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
             if line.startswith(";Filament used"):
-                lines[index] = filament_line_t0 + filament_line_t1
+                lines[index] = filament_line_t0 + filament_line_t1 + f"\n;Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
             # The target machine "machine_name" is actually the printer model.  This adds the user defined printer name to the "TARGET_MACHINE" line.
             if line.startswith(";TARGET_MACHINE"):
                 machine_model = str(global_stack.getProperty("machine_name", "value"))
