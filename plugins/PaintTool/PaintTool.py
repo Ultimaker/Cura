@@ -42,7 +42,7 @@ class PaintTool(Tool):
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
-        self._brush_color: str = "A"
+        self._brush_color: str = ""
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.SQUARE
         self._brush_pen: QPen = self._createBrushPen()
 
@@ -121,6 +121,18 @@ class PaintTool(Tool):
 
         self._updateScene()
         return True
+
+    def clear(self) -> None:
+        paintview = self._get_paint_view()
+        if paintview is None:
+            return
+
+        width, height = paintview.getUvTexDimensions()
+        clear_image = QImage(width, height, QImage.Format.Format_RGB32)
+        clear_image.fill(Qt.GlobalColor.white)
+        paintview.addStroke(clear_image, 0, 0, "none")
+
+        self._updateScene()
 
     @staticmethod
     def _get_paint_view() -> Optional[PaintView]:
@@ -265,10 +277,9 @@ class PaintTool(Tool):
                 else:
                     self._mouse_held = True
 
-            paintview = controller.getActiveView()
-            if paintview is None or paintview.getPluginId() != "PaintTool":
+            paintview = self._get_paint_view()
+            if paintview is None:
                 return False
-            paintview = cast(PaintView, paintview)
 
             if not self._selection_pass:
                 return False
