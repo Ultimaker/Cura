@@ -789,6 +789,16 @@
                     "description": "For any travel move longer than this value, the material flow is reset to the paths target flow",
                     "unit": "s",
                     "type": "float"
+                },
+                "machine_use_material_station":
+                {
+                    "label": "Use Material Station",
+                    "description": "Use filaments from different bays of the Material Station instead of actually changing extruders.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },
