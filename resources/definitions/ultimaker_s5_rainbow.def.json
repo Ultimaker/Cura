@@ -41,7 +41,7 @@
     "overrides":
     {
         "machine_extruder_count": { "default_value": 6 },
-        "prime_tower_enable": { "value": "True" },
-        "machine_use_material_station": { "value": "True" }
+        "machine_use_material_station": { "value": "True" },
+        "prime_tower_enable": { "value": "True" }
     }
 }
