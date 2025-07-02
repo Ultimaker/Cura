@@ -578,14 +578,14 @@
         "support_bottom_distance":
         {
             "maximum_value_warning": "3*layer_height",
-            "value": "2*layer_height"
+            "value": "support_z_distance"
         },
         "support_bottom_offset": { "value": 0 },
         "support_brim_width": { "value": 10 },
         "support_interface_enable": { "value": true },
         "support_interface_offset": { "value": "support_offset" },
         "support_line_width": { "value": "1.25*line_width" },
-        "support_offset": { "value": "0.4 if support_structure == 'tree' else 0.8" },
+        "support_offset": { "value": 0.8 },
         "support_pattern": { "value": "'gyroid' if support_structure == 'tree' else 'lines'" },
         "support_roof_height": { "minimum_value_warning": 0 },
         "support_structure": { "value": "'normal'" },
@@ -600,7 +600,7 @@
         "support_tree_top_rate": { "value": 10 },
         "support_xy_distance": { "value": 1.2 },
         "support_xy_distance_overhang": { "value": "1.5*machine_nozzle_size" },
-        "support_z_distance": { "value": "1.75*layer_height" },
+        "support_z_distance": { "value": "2*layer_height" },
         "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
