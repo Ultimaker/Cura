@@ -54,6 +54,7 @@ class PaintView(View):
         self._paint_modes = {
             "seam":    usual_types,
             "support": usual_types,
+            "extruder": usual_types,
         }
 
     def _checkSetup(self):

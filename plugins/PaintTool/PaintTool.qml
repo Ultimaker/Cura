@@ -58,6 +58,14 @@ Item
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
             }
+
+            PaintModeButton
+            {
+                text: catalog.i18nc("@action:button", "Material")
+                icon: "Extruder"
+                tooltipText: catalog.i18nc("@tooltip", "Paint on model to select the material to be used")
+                mode: "extruder"
+            }
         }
 
         //Line between the sections.
