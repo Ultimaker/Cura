@@ -203,9 +203,9 @@ class SimulationPass(RenderPass):
                     self._layer_shader.setUniformValue("u_next_vertex", not_a_vector)
                     self._layer_shader.setUniformValue("u_last_line_ratio", 1.0)
 
-                    # The first line does not have a previous line: add a MoveCombingType in front for start detection
+                    # The first line does not have a previous line: add a MoveUnretractedType in front for start detection
                     # this way the first start of the layer can also be drawn
-                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
+                    prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveUnretractedType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
                     # Remove the last element
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
