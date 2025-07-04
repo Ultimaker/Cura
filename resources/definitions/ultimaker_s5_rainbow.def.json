@@ -44,8 +44,8 @@
         "machine_extruders_share_heater": { "default_value": true },
         "machine_use_material_station": { "default_value": true },
         "prime_tower_enable": { "default_value": true },
-        "speed_prime_tower": { "value": "speed_infill" },
+        "prime_tower_line_width": { "value": "line_width * 1.5" },
         "prime_tower_min_volume": { "default_value": 250 },
-        "prime_tower_line_width": { "value": "line_width * 1.5" }
+        "speed_prime_tower": { "value": "speed_infill" }
     }
 }
