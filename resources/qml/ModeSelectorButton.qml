@@ -17,7 +17,7 @@ Rectangle
     color: mouseArea.containsMouse || selected ? UM.Theme.getColor("background_3") : UM.Theme.getColor("background_1")
 
     property bool selected: false
-    property string profileName: ""
+    property alias text: mainLabel.text
     property string icon: ""
     property string custom_icon: ""
     property alias tooltipText: tooltip.text
@@ -42,18 +42,18 @@ Rectangle
 
     Item
     {
-        width: intentIcon.width
+        width: mainIcon.width
         anchors
         {
             top: parent.top
-            bottom: qualityLabel.top
+            bottom: mainLabel.top
             horizontalCenter: parent.horizontalCenter
             topMargin: UM.Theme.getSize("narrow_margin").height
         }
 
         Item
         {
-            id: intentIcon
+            id: mainIcon
             width: UM.Theme.getSize("recommended_button_icon").width
             height: UM.Theme.getSize("recommended_button_icon").height
 
@@ -90,7 +90,7 @@ Rectangle
                 {
                     id: initialLabel
                     anchors.centerIn: parent
-                    text: profileName.charAt(0).toUpperCase()
+                    text: base.text.charAt(0).toUpperCase()
                     font: UM.Theme.getFont("small_bold")
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -102,8 +102,7 @@ Rectangle
 
     UM.Label
     {
-        id: qualityLabel
-        text: profileName
+        id: mainLabel
         anchors
         {
             bottom: parent.bottom

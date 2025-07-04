@@ -1,0 +1,8 @@
+{
+    "name": "Paint Tools",
+    "author": "UltiMaker",
+    "version": "1.0.0",
+    "description": "Provides the paint tools.",
+    "api": 8,
+    "i18n-catalog": "cura"
+}
