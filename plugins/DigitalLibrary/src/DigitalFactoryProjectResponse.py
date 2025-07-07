@@ -28,6 +28,7 @@ class DigitalFactoryProjectResponse(BaseModel):
                  team_ids: Optional[List[str]] = None,
                  status: Optional[str] = None,
                  technical_requirements: Optional[Dict[str, Any]] = None,
+                 is_inactive: bool = False,
                  **kwargs) -> None:
         """
         Creates a new digital factory project response object
@@ -56,6 +57,7 @@ class DigitalFactoryProjectResponse(BaseModel):
         self.last_updated = datetime.strptime(last_updated, DIGITAL_FACTORY_RESPONSE_DATETIME_FORMAT) if last_updated else None
         self.status = status
         self.technical_requirements = technical_requirements
+        self.active = not is_inactive
         super().__init__(**kwargs)
 
     def __str__(self) -> str:

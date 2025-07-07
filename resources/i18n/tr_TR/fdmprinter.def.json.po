@@ -5860,3 +5860,383 @@ msgstr "Raft yüzeyinin ilk katmanını yazdırırken arayüz ve yüzey arasınd
 msgctxt "z_seam_on_vertex label"
 msgid "Z Seam On Vertex"
 msgstr "Tepe Noktasında Z Dikiş İzi"
+
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr "Yukarıdaki kaplamaları desteklemek için dolgu desenine ekstra hatlar ekleyin. Bu seçenek, karmaşık şekilli kaplamalarda alttaki dolgunun üstte basılan kaplama katmanını doğru şekilde desteklememesi nedeniyle bazen ortaya çıkan delikleri veya plastik lekeleri önler. \"Duvarlar\" sadece kaplamanın ana hatlarını desteklerken, \"Duvarlar ve Hatlar\" kaplamayı oluşturan hatların uçlarını da destekler."
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr "Yükseklikteki Yapı Fan Hızı"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr "Katmandaki Yapı Fan Hızı"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "Yapı hacmi fan sayısı"
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "Atkı dikişi boyunca kalıptan geçirirken akış değişimindeki her adımın uzunluğunu belirler. Daha küçük bir mesafe, daha hassas ama aynı zamanda daha karmaşık bir G koduna sebep olacaktır."
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "Z dikişini daha az görünür hâle getirmesi gereken bir dikiş türü olan atkı dikişinin uzunluğunu belirler. Etkili olması için 0'dan büyük olmalıdır."
+
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "Kademeli akış değişimindeki her adımın süresi"
+
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "Kademeli akış değişikliklerini etkinleştirin. Etkinleştirildiğinde akış, hedef akışa doğru kademeli olarak artırılır/azaltılır. Bu, akışın ekstrüder motoru çalıştığında/durduğunda hemen değişmediği bowden tüplü yazıcılar için kullanışlıdır."
+
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr "Kaplamaları Desteklemek İçin Ekstra Dolgu Hatları"
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "Bu değerden daha uzun herhangi bir seyahat hareketi için malzeme akışı, hedef akış yollarına sıfırlanır"
+
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "Kademeli akış ayrıklaştırma adım boyutu"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "Kademeli akış etkinleştirildi"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "Kademeli akış maksimum ivme"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "İlk katman maksimum akış ivmesi"
+
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "Kademeli akış değişiklikleri için maksimum ivme"
+
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "İlk katman için kademeli akış değişiklikleri için minimum hız"
+
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr "Hiçbiri"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Acceleration"
+msgstr "Dış Duvar Hızlanması"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall Deceleration"
+msgstr "Dış Duvar Yavaşlaması"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "Dış Duvar Bitiş Hız Oranı"
+
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "Dış Duvar Hızı Bölünme Mesafesi"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "Dış Duvar Başlangıç Hız Oranı"
+
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "Akış süresini sıfırla"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "Atkı Dikişi Uzunluğu"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "Atkı Dikişi Başlangıç Yüksekliği"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "Atkı Dikişi Adım Uzunluğu"
+
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "Fanların normal fan hızında döndüğü yükseklik. Aşağıdaki katmanlarda fan hızı, Başlangıç Fan Hızından Normal Fan Hızına doğru kademeli olarak artar."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Yapı fanlarının tam fan hızında döndüğü katman. Bu değer hesaplanır ve bir tam sayıya yuvarlanır."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "Yapı hacmini soğutan fan sayısı. Bu, 0 olarak ayarlanırsa hiç yapı hacmi fanı olmadığı anlamına gelir"
+
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "Atkı dikişinin başlatılacağı, seçilen katman yüksekliğinin oranı. Daha düşük bir sayı, daha büyük bir dikiş yüksekliği ile sonuçlanacaktır. Etkili olması için 100'den düşük olmalıdır."
+
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "Bu değer, bir dış duvar yazdırılırken en yüksek hıza ulaşmak için gereken hızlanmayı ifade eder."
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "Bu değer, bir dış duvar yazdırma işleminin sonlandırılacağı yavaşlamayı ifade eder."
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "Bu değer, dış duvar hızlanmasını/yavaşlamasını uygulamak için daha uzun bir yolu bölerken bir kalıptan basma yolunun maksimum uzunluğudur. Daha küçük bir mesafe daha hassas ama aynı zamanda daha karmaşık bir G Kodu oluşturacaktır."
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "Bu değer, bir dış duvar yazdırılırken işlemin sonlandırılacağı en yüksek hızın oranını ifade eder."
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "Bu değer, bir dış duvar yazdırılırken işlemin başlayacağı en yüksek hızın oranını ifade eder."
+
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr "Sadece Duvarlar"
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr "Duvarlar ve Hatlar"
+
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "Bu açıdan daha fazla çıkıntı yapan duvarlar, çıkıntılı duvar ayarları kullanılarak yazdırılacaktır. Değer 90 olduğunda, hiçbir duvar çıkıntı olarak değerlendirilmeyecektir. Dayanak tarafından desteklenen çıkıntılar da çıkıntı olarak değerlendirilmeyecektir. Ayrıca, çıkıntının yarısından az olan herhangi bir hat da çıkıntı olarak değerlendirilmeyecektir."
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "Alt yüzey kabuk katmanları çizgi veya zikzak desenini kullandığında kullanılacak tam sayı çizgi yönlerinin listesi. Katmanlar ilerledikçe listedeki elemanlar sırayla kullanılır ve listenin sonuna ulaşıldığında tekrar baştan başlanır. Liste ögeleri virgülle ayrılır ve listenin tamamı köşeli parantez içinde yer alır. Liste ögeleri virgülle ayrılır ve listenin tamamı köşeli parantez içinde yer alır. Varsayılan, geleneksel varsayılan açıları (45 ve 135 derece) kullanmak anlamına gelen boş bir listedir."
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr "Alt Yüzey İç Duvar İvmesi"
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr "Alt Yüzey İç Duvar Sarsıntısı"
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr "Alt Yüzey İç Duvar Hızı"
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr "Alt Yüzey İç Duvar(lar) Akışı"
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr "Alt Yüzey Dış Duvar İvmesi"
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr "Alt Yüzey Dış Duvar Akışı"
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr "Alt Yüzey Dış Duvar Sarsıntısı"
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr "Alt Yüzey Dış Duvar Hızı"
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr "Alt Yüzey Kabuk İvmesi"
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr "Alt Yüzey Kabuk Ekstruderi"
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr "Alt Yüzey Kabuk Akışı"
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr "Alt Yüzey Kabuk Sarsıntısı"
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr "Alt Yüzey Kabuk Katmanları"
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr "Alt Yüzey Kabuk Çizgisi Yönleri"
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr "Alt Yüzey Kabuk Çizgisi Genişliği"
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr "Alt Yüzey Kabuk Deseni"
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr "Alt Yüzey Kabuk Hızı"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr "Eş merkezli"
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr "Ekstruder"
+
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr "En dıştaki hariç tüm duvar hatları için alt yüzey duvar hatlarında akış dengelemesi."
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr "Baskının alt kısmındaki alanların çizgilerinde akış dengelemesi."
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr "Alt yüzey dış duvar hattında akış dengelemesi."
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr "Griffin+Çita"
+
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr "İç Seyahat Mesafeden Kaçın"
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr "Hatlar"
+
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr "Çıkıntı ile Minimum Katman Süresi"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr "Minimum Çıkıntı Segment Uzunluğu"
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr "Monotonik Alt Yüzey Düzeni"
+
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr "Dış Duvar Sonu Yavaşlaması"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr "Dış Duvar Başlangıç ​​İvmesi"
+
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
+msgstr "Sarkık Duvar Hızları"
+
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr "Duvarların sarkması durumunda baskı normal baskı hızının belirli bir yüzdesi oranında yapılacaktır. Örneğin [75, 50, 25] ayarlayarak birden fazla değer belirtebilirsiniz, böylece daha fazla sarkan duvar daha da yavaş yazdırılır."
+
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr "Basınç ilerleme faktörü"
+
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr "Baskı Çekirdeği"
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "Alt yüzey çizgilerini, her zaman aynı yöndeki bitişik çizgilerle örtüşecek şekilde sıralayın. Bu, baskı için biraz daha fazla zaman alır ama düz yüzeylerin daha tutarlı görünmesini sağlar."
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr "GCode'u Başlat, ilk sırada olmalıdır"
+
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr "Alt yüzey kabuk katmanlarının basıldığı ivme."
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr "Alt yüzey iç duvarlarının basıldığı ivme."
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr "Alt yüzeyin en dış duvarlarının basıldığı ivme."
+
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr "'Birer Birer' yazdırırken 'Güvenli Model Mesafesi'ni belirlemek için kullanılan baskı başlığının boyutları. Bu sayılar, ilk ekstruder nozülünün merkez hattına aittir. Nozülün solu 'X Min'dir ve negatif olmalı. Nozülün arkası 'Y Min'dir ve negatif olmalı. X Max (sağ) ve Y Max (ön) pozitif sayılardır. Vinç yüksekliği, yapı plakasından X vinci kirişine kadar olan boyuttur."
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr "Bir modelin içinde hareket ederken nozül ile önceden basılmış dış duvarlar arasındaki mesafe."
+
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr "En alttaki kabuğu basmak için kullanılan ekstruder treni. Çoklu ekstrüzyonda kullanılır."
+
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr "Alt yüzey kabuk katmanlarının basıldığı maksimum anlık hız değişimi."
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr "Alt yüzey iç duvarlarının basıldığı maksimum anlık hız değişimi."
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr "Alt yüzeyin en dış duvarlarının basıldığı maksimum anlık hız değişimi."
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr "Sarkan ekstrüzyonlar içeren bir katmanda harcanan minimum süre. Bu, yazıcının yavaşlamasına, en azından burada ayarlanan süreyi tek katmanda geçirmesine neden olur. Bu, bir sonraki katmanın basılmasından önce basılı malzemenin düzgün bir şekilde soğumasını sağlar. Kaldırma Başlığı devre dışı bırakılmışsa ve aksi takdirde Minimum Hız ihlal edilecekse, katmanlar yine de minimum katman süresinden daha kısa sürebilir."
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr "Kabuğun en alt katmanlarının sayısı. Genellikle daha kaliteli alt yüzeyler elde etmek için sadece en alttaki tek bir katman yeterlidir."
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr "En alttaki katmanların deseni."
+
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr "Alt yüzey kabuk katmanlarının basılma hızı."
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr "Alt yüzey iç duvarlarının basılma hızı."
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr "Alt yüzeyin en dış duvarının basılma hızı."
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
+msgstr "Bu ayar, başlangıç ​​g kodunun her zaman ilk g kodu olmaya zorlanıp zorlanmayacağını kontrol eder. Bu seçenek olmadan başlangıç ​​g-kodundan önce T0 gibi başka bir g kodu eklenebilir."
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr "Ekstrüzyonu hareketle senkronize etmeyi amaçlayan basınç avansı için ayar faktörü"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr "Sarkan katmanlara özgü minimum katman süresi uygulanmaya çalışıldığı zaman yalnızca en az bir ardışık sarkan ekstrüzyon hareketi bu değerden daha uzunsa uygulanacaktır."
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr "Baskının alt kısmındaki alanların tek bir çizgisinin genişliği."
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Zikzak"

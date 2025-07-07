@@ -463,6 +463,8 @@
         "layerview_support_infill": [0, 230, 230, 127],
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 127, 255, 255],
+        "layerview_move_while_retracting": [127, 255, 255, 255],
+        "layerview_move_while_unretracting": [255, 127, 255, 255],
         "layerview_support_interface": [63, 127, 255, 127],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [224, 192, 16, 64],
@@ -496,6 +498,7 @@
         "monitor_carousel_dot_current": [119, 119, 119, 255],
 
         "cloud_unavailable": [153, 153, 153, 255],
+        "cloud_inactive": [253, 209, 58, 255],
         "connection_badge_background": [255, 255, 255, 255],
         "warning_badge_background": [0, 0, 0, 255],
         "error_badge_background": [255, 255, 255, 255],
@@ -567,7 +570,7 @@
         "section_icon_column": [2.5, 2.5],
 
         "setting": [25.0, 1.8],
-        "setting_control": [11.0, 2.0],
+        "setting_control": [9.0, 2.0],
         "setting_control_radius": [0.15, 0.15],
         "setting_control_depth_margin": [1.4, 0.0],
         "setting_unit_margin": [0.5, 0.5],
@@ -642,11 +645,11 @@
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
         "welcome_wizard_window": [46, 50],
-        "modal_window_minimum": [60.0, 45],
+        "modal_window_minimum": [60.0, 50.0],
         "wizard_progress": [10.0, 0.0],
 
         "message": [30.0, 5.0],
-        "message_close": [1, 1],
+        "message_close": [2, 2],
         "message_radius": [0.25, 0.25],
         "message_action_button": [0, 2.5],
         "message_image": [15.0, 10.0],

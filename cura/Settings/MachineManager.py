@@ -183,10 +183,14 @@ class MachineManager(QObject):
             self.setActiveMachine(active_machine_id)
 
     def _onOutputDevicesChanged(self) -> None:
+        for printer_output_device in self._printer_output_devices:
+            printer_output_device.activeChanged.disconnect(self.printerConnectedStatusChanged)
+
         self._printer_output_devices = []
         for printer_output_device in self._application.getOutputDeviceManager().getOutputDevices():
             if isinstance(printer_output_device, PrinterOutputDevice):
                 self._printer_output_devices.append(printer_output_device)
+                printer_output_device.activeChanged.connect(self.printerConnectedStatusChanged)
 
         self.outputDevicesChanged.emit()
 
@@ -398,7 +402,8 @@ class MachineManager(QObject):
                 self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
                 variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
 
-            material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
+            material_node = variant_node.materials.get(
+                extruder.material.getMetaDataEntry("base_file")) if variant_node else None
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
                 if not self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material):
@@ -567,6 +572,13 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsUsingCloudConnection(self) -> bool:
         return self.activeMachineHasCloudConnection and not self.activeMachineHasNetworkConnection
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsActive(self) -> bool:
+        if not self._printer_output_devices:
+            return True
+
+        return self._printer_output_devices[0].active
 
     def activeMachineNetworkKey(self) -> str:
         if self._global_container_stack:
@@ -1678,7 +1690,7 @@ class MachineManager(QObject):
             intent_category = self.activeIntentCategory,
             intent_name = IntentCategoryModel.translation(self.activeIntentCategory, "name", self.activeIntentCategory.title()),
             custom_profile = self.activeQualityOrQualityChangesName if global_stack.qualityChanges is not empty_quality_changes_container else None,
-            layer_height = self.activeQualityLayerHeight if self.isActiveQualitySupported else None,
+            layer_height = float("{:.2f}".format(self.activeQualityLayerHeight)) if self.isActiveQualitySupported else None,
             is_experimental = self.isActiveQualityExperimental and self.isActiveQualitySupported
         )
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2024-07-08 09:05+0000\n"
+"POT-Creation-Date: 2025-02-21 15:37+0000\n"
 "PO-Revision-Date: 2019-11-15 15:34+0100\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -34,6 +34,10 @@ msgstr "Odległość utrzymywana od krawędzi modelu. Prasowanie do końca kraw�
 
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr ""
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
 msgstr ""
 
 msgctxt "roofing_angles description"
@@ -95,6 +99,10 @@ msgstr "Krok zmian zmiennych warstw"
 msgctxt "adaptive_layer_height_enabled description"
 msgid "Adaptive layers computes the layer heights depending on the shape of the model."
 msgstr "Zmienne warstwy obliczają wysokości warstw w zależności od kształtu modelu."
+
+msgctxt "extra_infill_lines_to_support_skins description"
+msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgstr ""
 
 msgctxt "infill_wall_line_count description"
 msgid ""
@@ -300,6 +308,74 @@ msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
 msgstr "Szer. Usuwania Dolnej Skóry"
 
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr ""
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr ""
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr ""
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr ""
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr ""
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr ""
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr ""
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr ""
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr ""
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr ""
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr ""
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr ""
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr ""
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr ""
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr ""
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr ""
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr ""
+
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
 msgstr "Grubość Dołu"
@@ -444,6 +520,14 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Szerokość Obrysu"
 
+msgctxt "build_fan_full_at_height label"
+msgid "Build Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Fan Speed at Layer"
+msgstr ""
+
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Popraw Przycz. Stołu"
@@ -482,6 +566,10 @@ msgstr ""
 
 msgctxt "bv_temp_warn_limit label"
 msgid "Build Volume temperature Warning"
+msgstr ""
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
 msgstr ""
 
 msgctxt "prime_tower_brim_enable description"
@@ -523,6 +611,10 @@ msgstr "Combing utrzymuje dyszę w obszarach wydruku podczas poruszania. Powoduj
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Ustawienia Wiersza Polecenia"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr ""
 
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
@@ -720,6 +812,14 @@ msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "Wykryj mosty i modyfikuj prędkość drukowania, przepływ i ustawienia wentylatora podczas drukowania mostó."
 
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr ""
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr ""
@@ -844,6 +944,10 @@ msgctxt "dual label"
 msgid "Dual Extrusion"
 msgstr "Podwójna ekstruzja"
 
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr ""
+
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
 msgstr "Eliptyczny"
@@ -936,6 +1040,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "Włączyć zewnętrzną osłonę. Powstanie powłoka wokół modelu, która będzie czyściła drugą dyszę, jeśli jest na tej samej wysokości, co pierwsza dysza."
 
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr ""
+
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
 msgstr ""
@@ -1000,6 +1108,10 @@ msgctxt "meshfix_extensive_stitching description"
 msgid "Extensive stitching tries to stitch up open holes in the mesh by closing the hole with touching polygons. This option can introduce a lot of processing time."
 msgstr "Szerokie szwy próbują zszywać otwarte otwory w siatce przez zamknięcie otworów stykającymi się wielokątami. Ta opcja może znacznie wydłużyć czas przetwarzania."
 
+msgctxt "extra_infill_lines_to_support_skins label"
+msgid "Extra Infill Lines To Support Skins"
+msgstr ""
+
 msgctxt "infill_wall_line_count label"
 msgid "Extra Infill Wall Count"
 msgstr "Ilość Dodatkowych Ścianek Wypełnienia"
@@ -1011,6 +1123,10 @@ msgstr "Liczba Dod. Ścian na Skórze"
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "Ilość dodatkowego materiału do podania po zmianie dyszy."
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr ""
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -1108,6 +1224,10 @@ msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
 msgstr ""
 
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr ""
+
 msgctxt "infill_material_flow description"
 msgid "Flow compensation on infill lines."
 msgstr "Ustawienie przepływu wypełnienia."
@@ -1115,6 +1235,10 @@ msgstr "Ustawienie przepływu wypełnienia."
 msgctxt "support_interface_material_flow description"
 msgid "Flow compensation on lines of support roof or floor."
 msgstr "Ustawienie przepływu podłoża podpór."
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr ""
 
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
@@ -1139,6 +1263,10 @@ msgstr "Ustawienie przepływu podłoża ostatniej warstwy podpór."
 msgctxt "support_material_flow description"
 msgid "Flow compensation on support structure lines."
 msgstr "Ustawienie przepływu podpór."
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr ""
 
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
@@ -1194,6 +1322,10 @@ msgstr ""
 
 msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
+msgstr ""
+
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
 msgstr ""
 
 msgctxt "min_wall_line_width description"
@@ -1316,6 +1448,18 @@ msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
 msgstr "Stopnie Stopniowego Wypełn. Podpór"
 
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr ""
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr ""
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr ""
+
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr ""
@@ -1343,6 +1487,10 @@ msgstr "Kratka"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr ""
 
 msgctxt "group_outer_walls label"
 msgid "Group Outer Walls"
@@ -1708,6 +1856,10 @@ msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Początkowa Temp. Druku"
 
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr ""
+
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
 msgstr "Przyspieszenie Ściany Wew"
@@ -1742,6 +1894,10 @@ msgstr ""
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
+msgstr ""
+
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
 msgstr ""
 
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
@@ -1931,6 +2087,10 @@ msgstr "Ograniczona"
 msgctxt "line_width label"
 msgid "Line Width"
 msgstr "Szerokość Linii"
+
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr ""
 
 msgctxt "infill_pattern option lines"
 msgid "Lines"
@@ -2150,6 +2310,10 @@ msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
 msgstr "Maksymalna Rozdzielczość Ruchów Jałowych"
 
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr ""
+
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
 msgstr "Maksymalne przyspieszenie dla silnika osi X"
@@ -2254,8 +2418,16 @@ msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
 msgstr "Minimalny Czas Warstwy"
 
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr ""
+
 msgctxt "min_odd_wall_line_width label"
 msgid "Minimum Odd Wall Line Width"
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
 msgstr ""
 
 msgctxt "minimum_polygon_circumference label"
@@ -2318,6 +2490,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "Minimalny rozmiar obszaru dla dachu podpór. Obszary, które mają powierzchnię mniejszą od tej wartości, zostaną wydrukowane jako normalne podpory."
 
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr ""
+
 msgctxt "min_feature_size description"
 msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
 msgstr ""
@@ -2337,6 +2513,10 @@ msgstr "Kąt Formy"
 msgctxt "mold_roof_height label"
 msgid "Mold Roof Height"
 msgstr "Wysokość Dachu Formy"
+
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr ""
 
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
@@ -2382,6 +2562,10 @@ msgctxt "adhesion_type option none"
 msgid "None"
 msgstr "Brak"
 
+msgctxt "extra_infill_lines_to_support_skins option none"
+msgid "None"
+msgstr ""
+
 msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr "Brak"
@@ -2425,10 +2609,6 @@ msgstr "Niedozwolone Obszary Dyszy"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID Dyszy"
-
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Długość dyszy"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2558,6 +2738,14 @@ msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
 msgstr "Przyspieszenie Ściany Zew"
 
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr ""
+
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "Esktruder Zew. Ściany"
@@ -2582,6 +2770,18 @@ msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
 msgstr "Prędkość Zew. Ściany"
 
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr ""
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr ""
+
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "Długość Czyszczenia Zew. Ściana"
@@ -2602,13 +2802,13 @@ msgctxt "wall_overhang_angle label"
 msgid "Overhanging Wall Angle"
 msgstr "Kąt Nawisającej Ścianki"
 
-msgctxt "wall_overhang_speed_factor label"
-msgid "Overhanging Wall Speed"
-msgstr "Prędkość Ścianki Nawisającej"
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
+msgstr ""
 
-msgctxt "wall_overhang_speed_factor description"
-msgid "Overhanging walls will be printed at this percentage of their normal print speed."
-msgstr "Nawisające ścianki będą drukowane z taką procentową wartością względem normalnej prędkości druku."
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr ""
 
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
@@ -2640,6 +2840,10 @@ msgstr "Wieloboki w pociętych warstwach mające obwód mniejszy, niż podany, b
 
 msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
+msgstr ""
+
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
 msgstr ""
 
 msgctxt "wall_transition_filter_deviation description"
@@ -2718,6 +2922,10 @@ msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "Przyspieszenie Druku"
 
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr ""
+
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "Zryw Druku"
@@ -2745,6 +2953,10 @@ msgstr ""
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "Wydrukuj wieżę obok wydruku, która służy do zmiany materiału po każdym przełączeniu dyszy."
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr ""
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -3154,6 +3366,10 @@ msgctxt "ppr description"
 msgid "Reporting events that go out of set thresholds"
 msgstr ""
 
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr ""
+
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
 msgstr ""
@@ -3216,6 +3432,18 @@ msgstr ""
 
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr ""
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr ""
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
 msgstr ""
 
 msgctxt "support_meshes_present label"
@@ -3445,6 +3673,10 @@ msgstr "Temperatura Czuwania"
 msgctxt "machine_start_gcode label"
 msgid "Start G-code"
 msgstr "Początkowy G-code"
+
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr ""
 
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
@@ -3866,6 +4098,10 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "Przyspieszenie, z jakim drukowane są ściany wewn."
 
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr ""
+
 msgctxt "acceleration_infill description"
 msgid "The acceleration with which infill is printed."
 msgstr "Przyspieszenie, z którym drukowane jest wypełnienie."
@@ -3881,6 +4117,14 @@ msgstr "Przyspieszenie, z jakim odbywa się drukowanie."
 msgctxt "raft_base_acceleration description"
 msgid "The acceleration with which the base raft layer is printed."
 msgstr "Przyspieszenie, z jakim drukowana jest podstawowa warstwa tratwy."
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr ""
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr ""
 
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
@@ -4098,12 +4342,20 @@ msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
 msgstr "Różnica w wysokości pomiędzy następną wysokością warstwy i poprzednią."
 
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr ""
+
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "Odległość pomiędzy liniami prasowania."
 
 msgctxt "support_z_seam_min_distance description"
 msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr ""
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
 msgstr ""
 
 msgctxt "travel_avoid_distance description"
@@ -4214,6 +4466,10 @@ msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
 msgstr "Ekstruder używany do drukowania wypełnienia. Używane w multi-ekstruzji."
 
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr ""
+
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
 msgstr "Ekstruder używany do drukowania wenw. ściany. Używane w multi-ekstruzji."
@@ -4274,6 +4530,10 @@ msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
 msgstr "Wysokość nad poziomymi częściami w modelu, które będą drukowanie jako formy."
 
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr ""
+
 msgctxt "cool_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
 msgstr "Wysokość na jakiej wentylatory będą obracać się z regularną prędkością. Na niższych warstwach prędkość wentylatorów będzie stopniowo zwiększać się z Początk. Pręd. Wentylatora do Regularnej Pręd. Wentylatora."
@@ -4281,10 +4541,6 @@ msgstr "Wysokość na jakiej wentylatory będą obracać się z regularną pręd
 msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "Różnica wysokości między wierzchołkiem dyszy a suwnicą (gantry) (osie X i Y)."
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "Różnica w wysokości pomiędzy końcówką dyszy a najniższą częścą głowicy drukującej."
 
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
@@ -4386,6 +4642,10 @@ msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
 msgstr "Największa szerokość górnej pow. skóry, które mają zostać usunięte. Każda pow. skóry mniejsza niż ta wartość zniknie. Może to pomóc w ograniczeniu ilości czasu i materiału zużywanego na drukowanie górnych skór na pochyłych powierzchniach modelu."
 
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr ""
+
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
 msgstr "Warstwa, na której wentylatory obracają się z normalną prędkością. Jeśli ustawiona jest Regularna Pręd. Went. na Wysokości, wartość ta jest obliczana i zaokrąglana do liczby całkowitej."
@@ -4458,9 +4718,21 @@ msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są wewnętrzne ściany."
 
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr ""
+
 msgctxt "jerk_infill description"
 msgid "The maximum instantaneous velocity change with which infill is printed."
 msgstr "Maksymalna zmiana prędkości chwilowej, z którą jest drukowane wypełnienie."
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr ""
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr ""
 
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
@@ -4602,6 +4874,10 @@ msgctxt "prime_tower_min_shell_thickness description"
 msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
 msgstr ""
 
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr ""
+
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
 msgstr "Minimalny czas spędzony na warstwie. Zmusza to drukarkę do spowolnienia, aby spędzić przynajmniej ten czas na jednej warstwie. Pozwala to na właściwe schłodzenie materiału przed wydrukowaniem następnej warstwy. Warstwy mogą nadal trwać krócej niż minimalny czas warstwy, jeśli Unieś Głowicę jest wyłączone, a jeśli Minimalna Prędkość zostanie w jakiś sposób zmieniona."
@@ -4633,6 +4909,10 @@ msgstr "Dysza będzie omijała już wydrukowane podpory podczas ruchu jałowego.
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "Liczba dolnych warstw. Przy obliczaniu grubości dołu ta wartość jest zaokrąglana do liczby całkowitej."
+
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr ""
 
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
@@ -4669,6 +4949,10 @@ msgstr "Liczba linii używana dla obrysu. Więcej linii obrysu poprawia przyczep
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
 msgstr "Liczba linii używanych do obrysu podpór. Większa ilość linii obrysu to większa przyczepność do stołu, kosztem zużytego materiału."
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr ""
 
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
@@ -4709,6 +4993,10 @@ msgstr "Liczba ścian. Przy obliczaniu za pomocą grubości ściany, ta wartoś�
 msgctxt "machine_nozzle_tip_outer_diameter description"
 msgid "The outer diameter of the tip of the nozzle."
 msgstr "Zewnętrzna średnica końcówki dyszy."
+
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr ""
 
 msgctxt "infill_pattern description"
 msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
@@ -4762,13 +5050,13 @@ msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
 msgstr "Maksymalna zmiana chwilowej prędkości dla pierwszej warstwy."
 
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr ""
+
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
 msgstr "Kształt stołu bez uwzględniania obszarów niedrukowalnych."
-
-msgctxt "machine_head_with_fans_polygon description"
-msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
-msgstr ""
 
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
@@ -4790,6 +5078,10 @@ msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "Szybkość, z jaką drukowane są ściany wewnętrzne. Drukowanie wewnętrznej ściany szybciej niż zewn. pozwoli skrócić czas druku. Zaleca się, aby ustawić to pomiędzy prędkością zewn. ściany, a prędkością wypełnienia."
 
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr ""
+
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
 msgstr "Prędkość z jaką drukowane są obszary skóry mostu."
@@ -4805,6 +5097,14 @@ msgstr "Prędkość druku."
 msgctxt "raft_base_speed description"
 msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "Prędkość, z jaką drukowana jest podstawowa warstwa tratwy. Powinna być drukowana dość wolno, ponieważ objętość materiału wydobywającego się z dyszy jest dość duża."
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr ""
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr ""
 
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
@@ -5090,6 +5390,26 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "Określa odległość, na jakiej ekstruder powinien wykonać rozbieg natychmiast przed rozpoczęciem ściany mostu. Rozbieg przed rozpoczęciem mostu może zredukować ciśnienie w dyszy i może stworzyć bardziej płaski most."
 
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr ""
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr ""
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr ""
+
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr ""
@@ -5104,6 +5424,10 @@ msgstr "To ustawienie kontroluje jak bardzo wewn. narożniki w zewn. krawędzi t
 
 msgctxt "raft_surface_smoothing description"
 msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
+msgstr ""
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
 msgstr ""
 
 msgctxt "retraction_count_max description"
@@ -5338,6 +5662,10 @@ msgctxt "seam_overhang_angle description"
 msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
 msgstr ""
 
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr ""
+
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
@@ -5470,9 +5798,17 @@ msgctxt "shell label"
 msgid "Walls"
 msgstr ""
 
+msgctxt "extra_infill_lines_to_support_skins option walls"
+msgid "Walls Only"
+msgstr ""
+
+msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+msgid "Walls and Lines"
+msgstr ""
+
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "Ściany, które wystają więcej niż zadany kont, zostaną wydrukowane przy użyciu ustawień wystających ścian. Gdy wartość wynosi 90, żadne ściany nie będą traktowane jako wystające. Zwis, który jest obsługiwany przez podpory, nie będzie również traktowany jako zwis."
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr ""
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
@@ -5540,6 +5876,10 @@ msgstr ""
 
 msgctxt "wall_transition_length description"
 msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
 msgstr ""
 
 msgctxt "wipe_hop_enable description"
@@ -5637,6 +5977,10 @@ msgstr "Szerokość pojedynczej linii wypełniania."
 msgctxt "support_interface_line_width description"
 msgid "Width of a single line of support roof or floor."
 msgstr "Szerokość pojedynczej linii dachu lub podłogi podpory."
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr ""
 
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
@@ -5838,6 +6182,10 @@ msgctxt "support_xy_overrides_z option z_overrides_xy"
 msgid "Z overrides X/Y"
 msgstr "Z nadpisuje X/Y"
 
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr ""
+
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zygzak"
@@ -5890,13 +6238,37 @@ msgstr "ruch jałowy"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "Niech pierwsza i druga warstwa nachodzą na siebie w osi Z, aby skompensować stratę filamentu w szczelinie powietrznej. Wszystkie modele powyżej pierwszej warstwy modelu będą obniżone o tą wartość."
 
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle Length"
+#~ msgstr "Długość dyszy"
+
+#~ msgctxt "variant_name"
+#~ msgid "Nozzle Size"
+#~ msgstr "Rozmiar dyszy"
+
 #~ msgctxt "brim_outside_only description"
 #~ msgid "Only print the brim on the outside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
 #~ msgstr "Drukuj obrys tylko na zewnątrz modelu. Zmniejsza to liczbę obrysu, który trzeba usunąć po wydruku, podczas gdy nie zmniejsza znacząco przyczepności do stołu."
 
+#~ msgctxt "wall_overhang_speed_factor label"
+#~ msgid "Overhanging Wall Speed"
+#~ msgstr "Prędkość Ścianki Nawisającej"
+
+#~ msgctxt "wall_overhang_speed_factor description"
+#~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
+#~ msgstr "Nawisające ścianki będą drukowane z taką procentową wartością względem normalnej prędkości druku."
+
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"
 #~ msgstr "Rozdzielczość Połączenia Podpory"
+
+#~ msgctxt "machine_nozzle_head_distance description"
+#~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+#~ msgstr "Różnica w wysokości pomiędzy końcówką dyszy a najniższą częścą głowicy drukującej."
+
+#~ msgctxt "wall_overhang_angle description"
+#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+#~ msgstr "Ściany, które wystają więcej niż zadany kont, zostaną wydrukowane przy użyciu ustawień wystających ścian. Gdy wartość wynosi 90, żadne ściany nie będą traktowane jako wystające. Zwis, który jest obsługiwany przez podpory, nie będzie również traktowany jako zwis."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."

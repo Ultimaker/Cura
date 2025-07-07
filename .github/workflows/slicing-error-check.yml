@@ -1,0 +1,65 @@
+name: Slicing Error Check
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+    issues: write
+
+jobs:
+  processSlicingError:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for project file and set output
+        id: check_issue_details
+        uses: actions/github-script@v7
+        with:
+          script: |
+              const issue = context.payload.issue;
+              const issueNumber = issue.number;
+
+              console.log(`Processing issue #${issueNumber}: "${issue.title}"`);
+
+              const hasSlicingErrorLabel = issue.labels.some(label => label.name.toLowerCase().includes('slicing error'));
+              const titleContainsSliceFailed = issue.title.toLowerCase().includes('slice failed');
+              const bodyText = issue.body || "";
+              const bodyContainsSliceFailed = bodyText.toLowerCase().includes('slice failed');
+              let setNeedsInfoOutput = false;
+
+              if (hasSlicingErrorLabel || titleContainsSliceFailed || bodyContainsSliceFailed) {
+                console.log(`Issue #${issueNumber} matches slicing error criteria.`);
+
+                const zipRegex = /(\[[^\]]*?\]\(.*?\.zip\)|https?:\/\/[^\s]*?\.zip)/i;
+                let hasZipAttachment = zipRegex.test(bodyText);
+
+                if (hasZipAttachment) {
+                  console.log(`Issue #${issueNumber} appears to have a .zip file linked in the body.`);
+                } else {
+                  console.log(`Issue #${issueNumber} does not appear to have a .zip file linked in the body. Flagging for further action.`);
+                  setNeedsInfoOutput = true;
+                }
+              } else {
+                console.log(`Issue #${issueNumber} does not match slicing error criteria. No action needed.`);
+              }
+              core.setOutput('needs_info', setNeedsInfoOutput.toString());
+
+      - name: Add comment if project file is missing
+        if: ${{ steps.check_issue_details.outputs.needs_info == 'true' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            This issue is related to a slicing error, but it seems a project file (`.zip`) is missing.
+            Please attach a `.zip` file containing your project (including models and profiles) so we can reproduce the issue.
+            This will help us investigate and resolve the problem more effectively.
+            Have Cura open with your project that fails to slice, go to `Help` > `Export Package For Technical Support`, and save the package.
+            Then create a .zip file with the package, attach the `.zip` file to this issue.
+            If you have already attached a `.zip` file, please ensure it is correctly linked in the issue body.
+
+      - name: Add Status Needs Info Label
+        if: ${{ steps.check_issue_details.outputs.needs_info == 'true' }}
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: |
+            Status: Needs Info

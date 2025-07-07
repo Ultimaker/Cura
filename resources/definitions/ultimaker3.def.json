@@ -21,7 +21,9 @@
             "generic_hips",
             "generic_petcf",
             "structur3d_",
-            "ultimaker_petcf"
+            "ultimaker_petcf",
+            "generic_cffpps",
+            "ultimaker_ppscf"
         ],
         "firmware_update_info":
         {
@@ -49,7 +51,8 @@
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_network_connection": true,
         "supports_usb_connection": false,
-        "variants_name": "Print core"
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true
     },
     "overrides":
     {

@@ -42,7 +42,7 @@ class CloudApiClient:
     CLUSTER_API_ROOT = f"{ROOT_PATH}/connect/v1"
     CURA_API_ROOT = f"{ROOT_PATH}/cura/v1"
 
-    DEFAULT_REQUEST_TIMEOUT = 10  # seconds
+    DEFAULT_REQUEST_TIMEOUT = 30  # seconds
 
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[Any], None]]
@@ -163,7 +163,7 @@ class CloudApiClient:
                         scope=self._scope,
                         data=b"",
                         callback=self._parseCallback(on_finished, CloudPrintResponse),
-                        error_callback=on_error,
+                        error_callback=self._parseError(on_error),
                         timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
@@ -256,7 +256,6 @@ class CloudApiClient:
         """Creates a callback function so that it includes the parsing of the response into the correct model.
 
         The callback is added to the 'finished' signal of the reply.
-        :param reply: The reply that should be listened to.
         :param on_finished: The callback in case the response is successful. Depending on the endpoint it will be either
         a list or a single item.
         :param model: The type of the model to convert the response to.
@@ -277,6 +276,25 @@ class CloudApiClient:
                 on_error()
             else:
                 self._parseResponse(response, on_finished, model)
+
+        self._anti_gc_callbacks.append(parse)
+        return parse
+
+    def _parseError(self,
+                    on_error: Callable[[CloudError, "QNetworkReply.NetworkError", int], None]) -> Callable[[QNetworkReply, "QNetworkReply.NetworkError"], None]:
+
+        """Creates a callback function so that it includes the parsing of an explicit error response into the correct model.
+
+        :param on_error: The callback in case the response gives an explicit error
+        """
+
+        def parse(reply: QNetworkReply, error: "QNetworkReply.NetworkError") -> None:
+
+            self._anti_gc_callbacks.remove(parse)
+
+            http_code, response = self._parseReply(reply)
+            result = CloudError(**response["errors"][0])
+            on_error(result, error, http_code)
 
         self._anti_gc_callbacks.append(parse)
         return parse

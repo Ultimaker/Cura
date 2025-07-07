@@ -36,16 +36,16 @@
         "preferred_variant_name": "AA 0.4",
         "quality_definition": "ultimaker_s5",
         "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_abstract_color": true,
         "supports_material_export": true,
         "supports_network_connection": true,
         "supports_usb_connection": false,
-        "variants_name": "Print core",
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true,
         "weight": -2
     },
     "overrides":
     {
-        "default_material_print_temperature": { "maximum_value_warning": "320" },
-        "machine_name": { "default_value": "Ultimaker S7" },
-        "material_print_temperature_layer_0": { "maximum_value_warning": "320" }
+        "machine_name": { "default_value": "Ultimaker S7" }
     }
 }

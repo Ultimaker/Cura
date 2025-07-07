@@ -1,4 +1,4 @@
-# Copyright (c) 2023 UltiMaker
+# Copyright (c) 2024 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 from io import StringIO, BufferedIOBase
 import json
@@ -18,6 +18,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.FormatMaps import FormatMaps
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 from cura.CuraVersion import ConanInstalls
@@ -41,6 +42,13 @@ class MakerbotWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name="application/x-makerbot-sketch",
+                comment="Makerbot Toolpath Package",
+                suffixes=["makerbot"]
+            )
+        )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-makerbot-replicator_plus",
                 comment="Makerbot Toolpath Package",
                 suffixes=["makerbot"]
             )
@@ -83,7 +91,7 @@ class MakerbotWriter(MeshWriter):
 
         return None
 
-    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode) -> bool:
+    def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode=MeshWriter.OutputMode.BinaryMode, **kwargs) -> bool:
         metadata, file_format  = self._getMeta(nodes)
         if mode != MeshWriter.OutputMode.BinaryMode:
             Logger.log("e", "MakerbotWriter does not support text mode.")
@@ -111,15 +119,15 @@ class MakerbotWriter(MeshWriter):
         match file_format:
             case "application/x-makerbot-sketch":
                 filename, filedata = "print.gcode", gcode_text_io.getvalue()
-                self._PNG_FORMATS = self._PNG_FORMAT
             case "application/x-makerbot":
                 filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue())
-                self._PNG_FORMATS = self._PNG_FORMAT + self._PNG_FORMAT_METHOD
+            case "application/x-makerbot-replicator_plus":
+                filename, filedata = "print.jsontoolpath", du.gcode_2_miracle_jtp(gcode_text_io.getvalue(), nb_extruders=1)
             case _:
                 raise Exception("Unsupported Mime type")
 
         png_files = []
-        for png_format in self._PNG_FORMATS:
+        for png_format in (self._PNG_FORMAT + self._PNG_FORMAT_METHOD):
             width, height, prefix = png_format["width"], png_format["height"], png_format["prefix"]
             thumbnail_buffer = self._createThumbnail(width, height)
             if thumbnail_buffer is None:
@@ -137,6 +145,30 @@ class MakerbotWriter(MeshWriter):
                 for png_file in png_files:
                     file, data = png_file["file"], png_file["data"]
                     zip_stream.writestr(file, data)
+                api = CuraApplication.getInstance().getCuraAPI()
+                metadata_json = api.interface.settings.getSliceMetadata()
+
+                # All the mapping stuff we have to do:
+                product_to_id_map = FormatMaps.getProductIdMap()
+                printer_name_map = FormatMaps.getInversePrinterNameMap()
+                extruder_type_map = FormatMaps.getInverseExtruderTypeMap()
+                material_map = FormatMaps.getInverseMaterialMap()
+                for key, value in metadata_json.items():
+                    if "all_settings" in value:
+                        if "machine_name" in value["all_settings"]:
+                            machine_name = value["all_settings"]["machine_name"]
+                            if machine_name in product_to_id_map:
+                                machine_name = product_to_id_map[machine_name][0]
+                            value["all_settings"]["machine_name"] = printer_name_map.get(machine_name, machine_name)
+                        if "machine_nozzle_id" in value["all_settings"]:
+                            extruder_type = value["all_settings"]["machine_nozzle_id"]
+                            value["all_settings"]["machine_nozzle_id"] = extruder_type_map.get(extruder_type, extruder_type)
+                        if "material_type" in value["all_settings"]:
+                            material_type = value["all_settings"]["material_type"]
+                            value["all_settings"]["material_type"] = material_map.get(material_type, material_type)
+
+                slice_metadata = json.dumps(metadata_json, separators=(", ", ": "), indent=4)
+                zip_stream.writestr("slicemetadata.json", slice_metadata)
         except (IOError, OSError, BadZipFile) as ex:
             Logger.log("e", f"Could not write to (.makerbot) file because: '{ex}'.")
             self.setInformation(catalog.i18nc("@error", "MakerbotWriter could not save to the designated path."))
@@ -226,10 +258,86 @@ class MakerbotWriter(MeshWriter):
 
         meta["preferences"] = dict()
         bounds = application.getBuildVolume().getBoundingBox()
+        intent = CuraApplication.getInstance().getIntentManager().currentIntentCategory
         meta["preferences"]["instance0"] = {
-            "machineBounds": [bounds.right, bounds.back, bounds.left, bounds.front] if bounds is not None else None,
-            "printMode": CuraApplication.getInstance().getIntentManager().currentIntentCategory,
+            "machineBounds": [bounds.right, bounds.front, bounds.left, bounds.back] if bounds is not None else None,
+            "printMode": intent
         }
+
+        if file_format == "application/x-makerbot":
+            accel_overrides = meta["accel_overrides"] = {}
+            if intent in ['highspeed', 'highspeedsolid']:
+                accel_overrides['do_input_shaping'] = True
+                accel_overrides['do_corner_rounding'] = True
+            bead_mode_overrides = accel_overrides["bead_mode"] = {}
+
+            accel_enabled = global_stack.getProperty('acceleration_enabled', 'value')
+
+            if accel_enabled:
+                global_accel_setting = global_stack.getProperty('acceleration_print', 'value')
+                accel_overrides["rate_mm_per_s_sq"] = {
+                    "x": global_accel_setting,
+                    "y": global_accel_setting
+                }
+
+                if global_stack.getProperty('acceleration_travel_enabled', 'value'):
+                    travel_accel_setting = global_stack.getProperty('acceleration_travel', 'value')
+                    bead_mode_overrides['Travel Move'] = {
+                        "rate_mm_per_s_sq": {
+                            "x": travel_accel_setting,
+                            "y": travel_accel_setting
+                        }
+                    }
+
+            jerk_enabled = global_stack.getProperty('jerk_enabled', 'value')
+            if jerk_enabled:
+                global_jerk_setting = global_stack.getProperty('jerk_print', 'value')
+                accel_overrides["max_speed_change_mm_per_s"] = {
+                    "x": global_jerk_setting,
+                    "y": global_jerk_setting
+                }
+
+                if global_stack.getProperty('jerk_travel_enabled', 'value'):
+                    travel_jerk_setting = global_stack.getProperty('jerk_travel', 'value')
+                    if 'Travel Move' not in bead_mode_overrides:
+                        bead_mode_overrides['Travel Move' ] = {}
+                    bead_mode_overrides['Travel Move'].update({
+                        "max_speed_change_mm_per_s": {
+                            "x": travel_jerk_setting,
+                            "y": travel_jerk_setting
+                        }
+                    })
+
+
+            # Get bead mode settings per extruder
+            available_bead_modes = {
+                "infill": "FILL",
+                "prime_tower": "PRIME_TOWER",
+                "roofing": "TOP_SURFACE",
+                "support_infill": "SUPPORT",
+                "support_interface": "SUPPORT_INTERFACE",
+                "wall_0": "WALL_OUTER",
+                "wall_x": "WALL_INNER",
+                "skirt_brim": "SKIRT"
+            }
+            for idx, extruder in enumerate(extruders):
+                for bead_mode_setting, bead_mode_tag in available_bead_modes.items():
+                    ext_specific_tag = "%s_%s" % (bead_mode_tag, idx)
+                    if accel_enabled or jerk_enabled:
+                        bead_mode_overrides[ext_specific_tag] = {}
+
+                    if accel_enabled:
+                        accel_val = extruder.getProperty('acceleration_%s' % bead_mode_setting, 'value')
+                        bead_mode_overrides[ext_specific_tag]["rate_mm_per_s_sq"] = {
+                            "x": accel_val,
+                            "y": accel_val
+                        }
+                    if jerk_enabled:
+                        jerk_val = extruder.getProperty('jerk_%s' % bead_mode_setting, 'value')
+                        bead_mode_overrides[ext_specific_tag][ "max_speed_change_mm_per_s"] = {
+                            "x": jerk_val,
+                            "y": jerk_val
+                        }
 
         meta["miracle_config"] = {"gaggles": {"instance0": {}}}
 
