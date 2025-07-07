@@ -333,7 +333,7 @@ class CuraConan(ConanFile):
 
         if self.options.internal:
             extra_build_identifiers.append("internal")
-        if cura_version.pre.startswith("alpha") and self.conan_data["commmit"] != "unknown":
+        if str(cura_version.pre).startswith("alpha") and self.conan_data["commmit"] != "unknown":
             extra_build_identifiers.append(self.conan_data["commmit"])
 
         if extra_build_identifiers:
