@@ -164,16 +164,21 @@ Item
             width: parent.width
             indicatorVisible: false
 
-            from: 1
-            to: 40
-            value: 10
+            from: 10
+            to: 1000
+            value: 200
 
             onPressedChanged: function(pressed)
             {
                 if(! pressed)
                 {
-                    UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
+                    setBrushSize()
                 }
+            }
+
+            function setBrushSize()
+            {
+                UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
             }
         }
 
@@ -233,5 +238,6 @@ Item
         rowPaintMode.children[0].setMode()
         rowBrushColor.children[1].setColor()
         rowBrushShape.children[1].setShape()
+        shapeSizeSlider.setBrushSize()
     }
 }
