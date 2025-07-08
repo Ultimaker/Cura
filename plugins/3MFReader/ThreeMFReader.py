@@ -153,8 +153,6 @@ class ThreeMFReader(MeshReader):
             # It is only set for the root node of the 3mf file
             mesh_builder.setFileName(file_name)
 
-        mesh_builder.unwrapNewUvs()
-
         mesh_data = mesh_builder.build()
 
         if len(mesh_data.getVertices()):
