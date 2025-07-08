@@ -158,32 +158,25 @@ class ThreeMFWriter(MeshWriter):
             else:
                 savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
 
-            texture = um_node.callDecoration("getPaintTexture")
+            packed_texture = um_node.callDecoration("packTexture") 
             uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
-            if texture is not None and archive is not None and uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
-                texture_image = texture.getImage()
-                if texture_image is not None:
-                    texture_path = f"{TEXTURES_PATH}/{id(um_node)}.png"
+            if packed_texture is not None and archive is not None and uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
+                texture_path = f"{TEXTURES_PATH}/{id(um_node)}.png"
+                texture_file = zipfile.ZipInfo(texture_path)
+                # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
+                archive.writestr(texture_file, packed_texture)
 
-                    texture_buffer = QBuffer()
-                    texture_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
-                    texture_image.save(texture_buffer, "PNG")
+                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
 
-                    texture_file = zipfile.ZipInfo(texture_path)
-                    # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
-                    archive.writestr(texture_file, texture_buffer.data())
+                # Add texture relation to model relations file
+                if model_relations_element is not None:
+                    ET.SubElement(model_relations_element, "Relationship",
+                                  Target=texture_path, Id=f"rel{len(model_relations_element)+1}",
+                                  Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dtexture")
 
-                    savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
-
-                    # Add texture relation to model relations file
-                    if model_relations_element is not None:
-                        ET.SubElement(model_relations_element, "Relationship",
-                                      Target=texture_path, Id=f"rel{len(model_relations_element)+1}",
-                                      Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dtexture")
-
-                    if content_types_element is not None:
-                        ET.SubElement(content_types_element, "Override", PartName=texture_path,
-                                      ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
+                if content_types_element is not None:
+                    ET.SubElement(content_types_element, "Override", PartName=texture_path,
+                                  ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
 
 
         # Handle per object settings (if any)

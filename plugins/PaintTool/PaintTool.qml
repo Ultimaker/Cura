@@ -6,6 +6,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import UM 1.7 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -13,6 +14,10 @@ Item
     width: childrenRect.width
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
+
+    property string selectedMode: ""
+    property string selectedColor: ""
+    property int selectedShape: 0
 
     Action
     {
@@ -28,168 +33,156 @@ Item
         onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
     }
 
-    ColumnLayout
+    Column
     {
+        id: mainColumn
+        spacing: UM.Theme.getSize("default_margin").height
+
         RowLayout
         {
-            UM.ToolbarButton
+            id: rowPaintMode
+            width: parent.width
+
+            PaintModeButton
             {
-                id: paintTypeA
-
-                text: catalog.i18nc("@action:button", "Paint Type A")
-                toolItem: UM.ColorImage
-                {
-                    source: UM.Theme.getIcon("Buildplate")
-                    color: UM.Theme.getColor("icon")
-                }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setPaintType", "A")
+                text: catalog.i18nc("@action:button", "Seam")
+                icon: "Seam"
+                tooltipText: catalog.i18nc("@tooltip", "Refine seam placement by defining preferred/avoidance areas")
+                mode: "seam"
             }
 
-            UM.ToolbarButton
+            PaintModeButton
             {
-                id: paintTypeB
+                text: catalog.i18nc("@action:button", "Support")
+                icon: "Support"
+                tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
+                mode: "support"
+            }
+        }
 
-                text: catalog.i18nc("@action:button", "Paint Type B")
+        //Line between the sections.
+        Rectangle
+        {
+            width: parent.width
+            height: UM.Theme.getSize("default_lining").height
+            color: UM.Theme.getColor("lining")
+        }
+
+        RowLayout
+        {
+            id: rowBrushColor
+
+            UM.Label
+            {
+                text: catalog.i18nc("@label", "Mark as")
+            }
+
+            BrushColorButton
+            {
+                id: buttonPreferredArea
+                color: "preferred"
+
+                text: catalog.i18nc("@action:button", "Preferred")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("BlackMagic")
+                    source: UM.Theme.getIcon("CheckBadge", "low")
+                    color: UM.Theme.getColor("paint_preferred_area")
+                }
+            }
+
+            BrushColorButton
+            {
+                id: buttonAvoidArea
+                color: "avoid"
+
+                text: catalog.i18nc("@action:button", "Avoid")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("CancelBadge", "low")
+                    color: UM.Theme.getColor("paint_avoid_area")
+                }
+            }
+
+            BrushColorButton
+            {
+                id: buttonEraseArea
+                color: "none"
+
+                text: catalog.i18nc("@action:button", "Erase")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("Eraser")
                     color: UM.Theme.getColor("icon")
                 }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setPaintType", "B")
             }
         }
 
         RowLayout
         {
-            UM.ToolbarButton
+            id: rowBrushShape
+
+            UM.Label
             {
-                id: colorButtonA
-
-                text: catalog.i18nc("@action:button", "Color A")
-                toolItem: UM.ColorImage
-                {
-                    source: UM.Theme.getIcon("Eye")
-                    color: "purple"
-                }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushColor", "A")
+                text: catalog.i18nc("@label", "Brush Shape")
             }
 
-            UM.ToolbarButton
+            BrushShapeButton
             {
-                id: colorButtonB
+                id: buttonBrushCircle
+                shape: Cura.PaintToolBrush.CIRCLE
 
-                text: catalog.i18nc("@action:button", "Color B")
+                text: catalog.i18nc("@action:button", "Circle")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("Eye")
-                    color: "orange"
+                    source: UM.Theme.getIcon("Circle")
+                    color: UM.Theme.getColor("icon")
                 }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushColor", "B")
             }
 
-            UM.ToolbarButton
+            BrushShapeButton
             {
-                id: colorButtonC
+                id: buttonBrushSquare
+                shape: Cura.PaintToolBrush.SQUARE
 
-                text: catalog.i18nc("@action:button", "Color C")
-                toolItem: UM.ColorImage
-                {
-                    source: UM.Theme.getIcon("Eye")
-                    color: "green"
-                }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushColor", "C")
-            }
-
-            UM.ToolbarButton
-            {
-                id: colorButtonD
-
-                text: catalog.i18nc("@action:button", "Color D")
-                toolItem: UM.ColorImage
-                {
-                    source: UM.Theme.getIcon("Eye")
-                    color: "ghostwhite"
-                }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushColor", "D")
-            }
-        }
-
-        RowLayout
-        {
-            UM.ToolbarButton
-            {
-                id: shapeSquareButton
-
-                text: catalog.i18nc("@action:button", "Square Brush")
+                text: catalog.i18nc("@action:button", "Square")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("MeshTypeNormal")
                     color: UM.Theme.getColor("icon")
                 }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 0)
             }
+        }
 
-            UM.ToolbarButton
+        UM.Label
+        {
+            text: catalog.i18nc("@label", "Brush Size")
+        }
+
+        UM.Slider
+        {
+            id: shapeSizeSlider
+            width: parent.width
+            indicatorVisible: false
+
+            from: 1
+            to: 40
+            value: 10
+
+            onPressedChanged: function(pressed)
             {
-                id: shapeCircleButton
-
-                text: catalog.i18nc("@action:button", "Round Brush")
-                toolItem: UM.ColorImage
+                if(! pressed)
                 {
-                    source: UM.Theme.getIcon("CircleOutline")
-                    color: UM.Theme.getColor("icon")
-                }
-                property bool needBorder: true
-
-                z: 2
-
-                onClicked: UM.Controller.triggerActionWithData("setBrushShape", 1)
-            }
-
-            UM.Slider
-            {
-                id: shapeSizeSlider
-
-                from: 1
-                to: 40
-                value: 10
-
-                onPressedChanged: function(pressed)
-                {
-                    if(! pressed)
-                    {
-                        UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
-                    }
+                    UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
                 }
             }
+        }
+
+        //Line between the sections.
+        Rectangle
+        {
+            width: parent.width
+            height: UM.Theme.getSize("default_lining").height
+            color: UM.Theme.getColor("lining")
         }
 
         RowLayout
@@ -202,10 +195,8 @@ Item
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
+                    color: UM.Theme.getColor("icon")
                 }
-                property bool needBorder: true
-
-                z: 2
 
                 onClicked: undoAction.trigger()
             }
@@ -217,14 +208,30 @@ Item
                 text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
-                    source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                    source: UM.Theme.getIcon("ArrowReset")
+                    color: UM.Theme.getColor("icon")
+                    transform: [
+                        Scale { xScale: -1; origin.x: width/2 }
+                    ]
                 }
-                property bool needBorder: true
-
-                z: 2
 
                 onClicked: redoAction.trigger()
             }
+
+            Cura.SecondaryButton
+            {
+                id: clearButton
+                text: catalog.i18nc("@button", "Clear all")
+                onClicked: UM.Controller.triggerAction("clear")
+            }
         }
+    }
+
+    Component.onCompleted:
+    {
+        // Force first types for consistency, otherwise UI may become different from controller
+        rowPaintMode.children[0].setMode()
+        rowBrushColor.children[1].setColor()
+        rowBrushShape.children[1].setShape()
     }
 }

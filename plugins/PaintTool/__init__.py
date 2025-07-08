@@ -4,6 +4,8 @@
 from . import PaintTool
 from . import PaintView
 
+from PyQt6.QtQml import qmlRegisterUncreatableType
+
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
@@ -24,6 +26,7 @@ def getMetaData():
     }
 
 def register(app):
+    qmlRegisterUncreatableType(PaintTool.PaintTool.Brush, "Cura", 1, 0, "This is an enumeration class", "PaintToolBrush")
     return {
         "tool": PaintTool.PaintTool(),
         "view": PaintView.PaintView()

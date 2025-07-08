@@ -3,7 +3,7 @@
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QObject, pyqtEnum
 from PyQt6.QtGui import QImage, QPainter, QColor, QPen
 from PyQt6 import QtWidgets
 from typing import cast, Dict, List, Optional, Tuple
@@ -24,9 +24,11 @@ from .PaintView import PaintView
 class PaintTool(Tool):
     """Provides the tool to paint meshes."""
 
-    class BrushShape(IntEnum):
-        SQUARE = 0
-        CIRCLE = 1
+    class Brush(QObject):
+        @pyqtEnum
+        class Shape(IntEnum):
+            SQUARE = 0
+            CIRCLE = 1
 
     def __init__(self) -> None:
         super().__init__()
@@ -40,8 +42,8 @@ class PaintTool(Tool):
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
-        self._brush_color: str = "A"
-        self._brush_shape: PaintTool.BrushShape = PaintTool.BrushShape.SQUARE
+        self._brush_color: str = ""
+        self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.SQUARE
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
@@ -56,9 +58,9 @@ class PaintTool(Tool):
         pen.setColor(Qt.GlobalColor.white)
 
         match self._brush_shape:
-            case PaintTool.BrushShape.SQUARE:
+            case PaintTool.Brush.Shape.SQUARE:
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
-            case PaintTool.BrushShape.CIRCLE:
+            case PaintTool.Brush.Shape.CIRCLE:
                 pen.setCapStyle(Qt.PenCapStyle.RoundCap)
         return pen
 
@@ -119,6 +121,18 @@ class PaintTool(Tool):
 
         self._updateScene()
         return True
+
+    def clear(self) -> None:
+        paintview = self._get_paint_view()
+        if paintview is None:
+            return
+
+        width, height = paintview.getUvTexDimensions()
+        clear_image = QImage(width, height, QImage.Format.Format_RGB32)
+        clear_image.fill(Qt.GlobalColor.white)
+        paintview.addStroke(clear_image, 0, 0, "none")
+
+        self._updateScene()
 
     @staticmethod
     def _get_paint_view() -> Optional[PaintView]:
@@ -263,10 +277,9 @@ class PaintTool(Tool):
                 else:
                     self._mouse_held = True
 
-            paintview = controller.getActiveView()
-            if paintview is None or paintview.getPluginId() != "PaintTool":
+            paintview = self._get_paint_view()
+            if paintview is None:
                 return False
-            paintview = cast(PaintView, paintview)
 
             if not self._selection_pass:
                 return False

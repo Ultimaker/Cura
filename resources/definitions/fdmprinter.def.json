@@ -9324,6 +9324,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "keep_retracting_during_travel":
+                {
+                    "label": "Keep Retracting During Travel",
+                    "description": "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\" and retraction_during_travel_ratio > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "prime_during_travel_ratio":
                 {
                     "label": "Prime During Travel Move",

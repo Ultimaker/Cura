@@ -26,15 +26,9 @@ class PaintView(View):
     UNDO_STACK_SIZE = 1024
 
     class PaintType:
-        def __init__(self, icon: str, display_color: Color, value: int):
-            self.icon: str = icon
+        def __init__(self, display_color: Color, value: int):
             self.display_color: Color = display_color
             self.value: int = value
-
-    class PaintMode:
-        def __init__(self, icon: str, types: Dict[str, "PaintView.PaintType"]):
-            self.icon: str = icon
-            self.types = types
 
     def __init__(self) -> None:
         super().__init__()
@@ -42,7 +36,7 @@ class PaintView(View):
         self._current_paint_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
-        self._paint_modes: Dict[str, PaintView.PaintMode] = {}
+        self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
 
         self._stroke_undo_stack: List[Tuple[QImage, int, int]] = []
         self._stroke_redo_stack: List[Tuple[QImage, int, int]] = []
@@ -54,12 +48,12 @@ class PaintView(View):
 
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()
-        usual_types = {"A": self.PaintType("Buildplate", Color(*theme.getColor("paint_normal_area").getRgb()), 0),
-                       "B": self.PaintType("BlackMagic", Color(*theme.getColor("paint_preferred_area").getRgb()), 1),
-                       "C": self.PaintType("Eye", Color(*theme.getColor("paint_avoid_area").getRgb()), 2)}
+        usual_types = {"none":      self.PaintType(Color(*theme.getColor("paint_normal_area").getRgb()), 0),
+                       "preferred": self.PaintType(Color(*theme.getColor("paint_preferred_area").getRgb()), 1),
+                       "avoid":     self.PaintType(Color(*theme.getColor("paint_avoid_area").getRgb()), 2)}
         self._paint_modes = {
-            "A": self.PaintMode("MeshTypeNormal", usual_types),
-            "B": self.PaintMode("CircleOutline", usual_types),
+            "seam":    usual_types,
+            "support": usual_types,
         }
 
     def _checkSetup(self):
@@ -78,32 +72,32 @@ class PaintView(View):
         res.setAlphaChannel(self._force_opaque_mask.scaled(image.width(), image.height()))
         return res
 
-    def addStroke(self, stroke_image: QImage, start_x: int, start_y: int, brush_color: str) -> None:
+    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
 
         actual_image = self._current_paint_texture.getImage()
 
         bit_range_start, bit_range_end = self._current_bits_ranges
-        set_value = self._paint_modes[self._current_paint_type].types[brush_color].value << self._current_bits_ranges[0]
+        set_value = self._paint_modes[self._current_paint_type][brush_color].value << self._current_bits_ranges[0]
         full_int32 = 0xffffffff
         clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
-        image_rect = QRect(0, 0, stroke_image.width(), stroke_image.height())
+        image_rect = QRect(0, 0, stroke_mask.width(), stroke_mask.height())
 
-        clear_bits_image = stroke_image.copy()
+        clear_bits_image = stroke_mask.copy()
         clear_bits_image.invertPixels()
         painter = QPainter(clear_bits_image)
         painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Lighten)
         painter.fillRect(image_rect, clear_mask)
         painter.end()
 
-        set_value_image = stroke_image.copy()
+        set_value_image = stroke_mask.copy()
         painter = QPainter(set_value_image)
         painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Multiply)
         painter.fillRect(image_rect, set_value)
         painter.end()
 
-        stroked_image = actual_image.copy(start_x, start_y, stroke_image.width(), stroke_image.height())
+        stroked_image = actual_image.copy(start_x, start_y, stroke_mask.width(), stroke_mask.height())
         painter = QPainter(stroked_image)
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
         painter.drawImage(0, 0, clear_bits_image)
@@ -149,7 +143,7 @@ class PaintView(View):
         paint_data_mapping = node.callDecoration("getTextureDataMapping")
 
         if paint_type not in paint_data_mapping:
-            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[paint_type].types))
+            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[paint_type]))
             paint_data_mapping[paint_type] = new_mapping
             node.callDecoration("setTextureDataMapping", paint_data_mapping)
 
@@ -177,12 +171,12 @@ class PaintView(View):
             return
 
         if self._current_paint_type == "":
-            self.setPaintType("A")
+            return
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
 
-        colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].types.values()]
+        colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
 

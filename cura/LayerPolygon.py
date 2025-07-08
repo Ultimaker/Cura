@@ -25,7 +25,8 @@ class LayerPolygon:
     PrimeTowerType = 11
     MoveWhileRetractingType = 12
     MoveWhileUnretractingType = 13
-    __number_of_types = 14
+    StationaryRetractUnretract = 14
+    __number_of_types = 15
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.logical_or(
                                                    numpy.arange(__number_of_types) == NoneType,
@@ -281,6 +282,7 @@ class LayerPolygon:
                 theme.getColor("layerview_prime_tower").getRgbF(),   # PrimeTowerType
                 theme.getColor("layerview_move_while_retracting").getRgbF(),  # MoveWhileRetracting
                 theme.getColor("layerview_move_while_unretracting").getRgbF(),  # MoveWhileUnretracting
+                theme.getColor("layerview_move_retraction").getRgbF(),  # StationaryRetractUnretract
             ])
 
         return cls.__color_map

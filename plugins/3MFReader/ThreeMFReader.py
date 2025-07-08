@@ -1,13 +1,14 @@
 #  Copyright (c) 2021-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
-
+import json
 import os.path
 import zipfile
 from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import pySavitar as Savitar
 import numpy
-from PyQt6.QtGui import QImage
+from PyQt6.QtCore import QBuffer
+from PyQt6.QtGui import QImage, QImageReader
 
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
@@ -235,10 +236,26 @@ class ThreeMFReader(MeshReader):
 
             if texture_path != "" and archive is not None:
                 texture_data = archive.open(texture_path).read()
-                texture_image = QImage.fromData(texture_data, "PNG")
+                texture_buffer = QBuffer()
+                texture_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
+                texture_buffer.write(texture_data)
+
+                image_reader = QImageReader(texture_buffer, b"png")
+
+                texture_buffer.seek(0)
+                texture_image = image_reader.read()
                 texture = Texture(OpenGL.getInstance())
                 texture.setImage(texture_image)
                 sliceable_decorator.setPaintTexture(texture)
+
+                texture_buffer.seek(0)
+                data_mapping_desc = image_reader.text("Description")
+                if data_mapping_desc != "":
+                    data_mapping = json.loads(data_mapping_desc)
+                    for key, value in data_mapping.items():
+                        # Tuples are stored as lists in json, restore them back to tuples
+                        data_mapping[key] = tuple(value)
+                    sliceable_decorator.setTextureDataMapping(data_mapping)
 
         return um_node
 
