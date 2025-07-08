@@ -38,6 +38,7 @@
         },
         "acceleration_infill":
         {
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -50,7 +51,7 @@
         },
         "acceleration_prime_tower":
         {
-            "enabled": "acceleration_enabled and prime_tower_enable and extruders_enabled_count > 1",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -58,7 +59,7 @@
         },
         "acceleration_print":
         {
-            "enabled": "acceleration_enabled",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -71,6 +72,7 @@
         },
         "acceleration_roofing":
         {
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -78,7 +80,7 @@
         },
         "acceleration_skirt_brim":
         {
-            "enabled": "acceleration_enabled and (adhesion_type == 'skirt' or adhesion_type == 'brim')",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -86,6 +88,7 @@
         },
         "acceleration_support":
         {
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -98,6 +101,7 @@
         },
         "acceleration_support_infill":
         {
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -105,6 +109,7 @@
         },
         "acceleration_support_interface":
         {
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -122,7 +127,7 @@
         },
         "acceleration_travel":
         {
-            "enabled": "acceleration_enabled",
+            "enabled": false,
             "maximum_value": 5000,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -140,7 +145,7 @@
         },
         "acceleration_wall":
         {
-            "enabled": "acceleration_enabled",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -148,7 +153,7 @@
         },
         "acceleration_wall_0":
         {
-            "enabled": "acceleration_enabled",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -161,7 +166,7 @@
         },
         "acceleration_wall_x":
         {
-            "enabled": "acceleration_enabled",
+            "enabled": false,
             "maximum_value": 3500,
             "minimum_value": 200,
             "minimum_value_warning": 750,
@@ -391,7 +396,7 @@
         "machine_heated_bed": { "default_value": false },
         "machine_heated_build_volume": { "default_value": true },
         "machine_height": { "default_value": 196.749 },
-        "machine_min_cool_heat_time_window": { "value": 15 },
+        "machine_min_cool_heat_time_window": { "value": 0 },
         "machine_name": { "default_value": "UltiMaker Method" },
         "machine_nozzle_cool_down_speed": { "value": 0.8 },
         "machine_nozzle_heat_up_speed": { "value": 3.5 },

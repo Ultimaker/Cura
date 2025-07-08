@@ -100,8 +100,9 @@ class RemovableDriveOutputDevice(OutputDevice):
             if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
                 self._stream = open(file_name, "wt", buffering=1, encoding="utf-8")
             else: #Binary mode.
-                self._stream = open(file_name, "wb", buffering=1)
-            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"])
+                self._stream = open(file_name, "wb", buffering = 1)
+            writer_args = {"mime_type": preferred_format["mime_type"]}
+            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"], writer_args)
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)

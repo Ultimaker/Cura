@@ -52,7 +52,7 @@ class UFPWriter(MeshWriter):
     # Qt thread. The File read/write operations right now are executed on separated threads because they are scheduled
     # by the Job class.
     @call_on_qt_thread
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, **kwargs):
         archive = VirtualFile()
         archive.openStream(stream, "application/x-ufp", OpenMode.WriteOnly)
 

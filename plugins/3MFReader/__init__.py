@@ -24,7 +24,7 @@ def getMetaData() -> Dict:
     if "3MFReader.ThreeMFReader" in sys.modules:
         metaData["mesh_reader"] = [
             {
-                "extension": "3mf",
+                "extension": workspace_extension,
                 "description": catalog.i18nc("@item:inlistbox", "3MF File")
             }
         ]

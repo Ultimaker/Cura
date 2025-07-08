@@ -56,7 +56,7 @@ class GCodeWriter(MeshWriter):
 
         self._application = Application.getInstance()
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode, **kwargs):
         """Writes the g-code for the entire scene to a stream.
 
         Note that even though the function accepts a collection of nodes, the
