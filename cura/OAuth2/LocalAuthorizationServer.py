@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import sys
 import threading
 from typing import Any, Callable, Optional, TYPE_CHECKING
@@ -72,7 +73,7 @@ class LocalAuthorizationServer:
             self._web_server.setState(state)
 
             # Start the server on a new thread.
-            self._web_server_thread = threading.Thread(None, self._serve_forever, daemon = self._daemon)
+            self._web_server_thread = threading.Thread(None, self._serve_forever, daemon=self._daemon)
             self._web_server_thread.start()
 
     def stop(self) -> None:

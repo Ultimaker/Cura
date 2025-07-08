@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Optional, Dict
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
 from UM.Qt.ListModel import ListModel
-from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
+from UM.Settings.ContainerRegistry import ContainerRegistry  # To update the list if anything changes.
 from PyQt6.QtCore import pyqtSignal
 import cura.CuraApplication
 if TYPE_CHECKING:
@@ -130,7 +130,7 @@ class IntentCategoryModel(ListModel):
                 "weight": weight,
                 "qualities": qualities
             })
-        result.sort(key = lambda k: k["weight"])
+        result.sort(key=lambda k: k["weight"])
         self.setItems(result)
 
     @staticmethod

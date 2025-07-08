@@ -11,13 +11,13 @@ def getMetaData():
 def register(app):
     if Platform.isWindows():
         from . import WindowsRemovableDrivePlugin
-        return { "output_device": WindowsRemovableDrivePlugin.WindowsRemovableDrivePlugin() }
+        return {"output_device": WindowsRemovableDrivePlugin.WindowsRemovableDrivePlugin()}
     elif Platform.isOSX():
         from . import OSXRemovableDrivePlugin
-        return { "output_device": OSXRemovableDrivePlugin.OSXRemovableDrivePlugin() }
+        return {"output_device": OSXRemovableDrivePlugin.OSXRemovableDrivePlugin()}
     elif Platform.isLinux():
         from . import LinuxRemovableDrivePlugin
-        return { "output_device": LinuxRemovableDrivePlugin.LinuxRemovableDrivePlugin() }
+        return {"output_device": LinuxRemovableDrivePlugin.LinuxRemovableDrivePlugin()}
     else:
         Logger.log("e", "Unsupported system, thus no removable device hotplugging support available.")
-        return { }
+        return {}

@@ -1,5 +1,6 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import threading
 from datetime import datetime
@@ -124,10 +125,10 @@ class CreateBackupJob(Job):
                               }).encode()
         HttpRequestManager.getInstance().put(
             self._api_backup_url,
-            data = payload,
-            callback = self._onUploadSlotCompleted,
-            error_callback = self._onUploadSlotCompleted,
-            scope = self._json_cloud_scope)
+            data=payload,
+            callback=self._onUploadSlotCompleted,
+            error_callback=self._onUploadSlotCompleted,
+            scope=self._json_cloud_scope)
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if HttpRequestManager.safeHttpStatus(reply) >= 300:

@@ -26,10 +26,10 @@ class XRayPass(RenderPass):
         if not self._shader:
             self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
-        batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, backface_cull = False, blend_mode = RenderBatch.BlendMode.Additive)
+        batch = RenderBatch(self._shader, type=RenderBatch.RenderType.NoType, backface_cull=False, blend_mode=RenderBatch.BlendMode.Additive)
         for node in DepthFirstIterator(self._scene.getRoot()):
             if isinstance(node, CuraSceneNode) and node.getMeshData() and node.isVisible():
-                batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
+                batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
 
         self.bind()
 

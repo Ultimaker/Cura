@@ -187,7 +187,7 @@ class ThreeMFWriter(MeshWriter):
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
             savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
-                                                                           exported_settings = exported_settings)
+                                                                           exported_settings=exported_settings)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -213,6 +213,7 @@ class ThreeMFWriter(MeshWriter):
 
         painter.end()
 
+        
     def _getVariant(self, mime_type: str) -> ThreeMFVariant:
         """Get the appropriate variant for the given MIME type.
 
@@ -229,6 +230,7 @@ class ThreeMFWriter(MeshWriter):
         # Determine which variant to use based on mime type in kwargs
         mime_type = kwargs.get("mime_type", Cura3mfVariant(self).mime_type)
         variant = self._getVariant(mime_type)
+
 
         try:
             model_file = zipfile.ZipInfo(MODEL_PATH)

@@ -102,7 +102,7 @@ class SyncOrchestrator(Extension):
             try:
                 os.remove(item["package_path"])
             except EnvironmentError as e:  # File was already removed, no access rights, etc.
-                Logger.error("Can't delete temporary package file: {err}".format(err = str(e)))
+                Logger.error("Can't delete temporary package file: {err}".format(err=str(e)))
 
         if has_changes:
             self._restart_presenter.present()
@@ -111,4 +111,4 @@ class SyncOrchestrator(Extension):
         """Logs an error and shows it to the user"""
 
         Logger.error(text)
-        Message(text, lifetime = 0, message_type = Message.MessageType.ERROR).show()
+        Message(text, lifetime=0, message_type=Message.MessageType.ERROR).show()

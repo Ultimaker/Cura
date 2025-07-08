@@ -43,7 +43,7 @@ class CuraProfileReader(ProfileReader):
                 for profile_id in archive.namelist():
                     with archive.open(profile_id) as f:
                         serialized = f.read()
-                    upgraded_profiles = self._upgradeProfile(serialized.decode("utf-8"), profile_id) #After upgrading it may split into multiple profiles.
+                    upgraded_profiles = self._upgradeProfile(serialized.decode("utf-8"), profile_id)  # After upgrading it may split into multiple profiles.
                     for upgraded_profile in upgraded_profiles:
                         serialization, new_id = upgraded_profile
                         profile = self._loadProfile(serialization, new_id)
@@ -53,7 +53,7 @@ class CuraProfileReader(ProfileReader):
 
         except zipfile.BadZipFile:
             # It must be an older profile from Cura 2.1.
-            with open(file_name, encoding = "utf-8") as fhandle:
+            with open(file_name, encoding="utf-8") as fhandle:
                 serialized_bytes = fhandle.read()
             return [self._loadProfile(serialized, profile_id) for serialized, profile_id in self._upgradeProfile(serialized_bytes, file_name)]
 
@@ -65,7 +65,7 @@ class CuraProfileReader(ProfileReader):
         :return: List of serialized profile strings and matching profile names.
         """
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
         if "general" not in parser:
@@ -95,7 +95,7 @@ class CuraProfileReader(ProfileReader):
         profile = InstanceContainer(profile_id)
         profile.setMetaDataEntry("type", "quality_changes")
         try:
-            profile.deserialize(serialized, file_name = profile_id)
+            profile.deserialize(serialized, file_name=profile_id)
         except ContainerFormatError as e:
             Logger.log("e", "Error in the format of a container: %s", str(e))
             return None
@@ -130,7 +130,7 @@ class CuraProfileReader(ProfileReader):
 
         serialized = results.files_data[0]
 
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
         if "general" not in parser:
             Logger.log("w", "Missing required section 'general'.")

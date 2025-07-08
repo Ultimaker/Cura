@@ -50,9 +50,9 @@ class RestoreBackupJob(Job):
         assert url is not None
 
         HttpRequestManager.getInstance().get(
-            url = url,
-            callback = self._onRestoreRequestCompleted,
-            error_callback = self._onRestoreRequestCompleted
+            url=url,
+            callback=self._onRestoreRequestCompleted,
+            error_callback=self._onRestoreRequestCompleted
         )
 
         # Note: Just to be sure, use the same structure here as in CreateBackupJob.
@@ -183,5 +183,5 @@ class RestoreBackupJob(Job):
         """
 
         with open(file_path, "rb") as read_backup:
-            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
+            local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars=b"_-").decode("utf-8")
             return known_hash == local_md5_hash

@@ -108,7 +108,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         self.printersChanged.connect(self._onPrintersChanged)
         QtApplication.getInstance().getOutputDeviceManager().outputDevicesChanged.connect(self._updateUniqueConfigurations)
 
-    @pyqtProperty(str, notify = connectionTextChanged)
+    @pyqtProperty(str, notify=connectionTextChanged)
     def address(self) -> str:
         return self._address
 
@@ -148,11 +148,11 @@ class PrinterOutputDevice(QObject, OutputDevice):
                     global_stack.setMetaDataEntry("is_online", self.isConnected())
             self.connectionStateChanged.emit(self._id)
 
-    @pyqtProperty(int, constant = True)
+    @pyqtProperty(int, constant=True)
     def connectionType(self) -> "ConnectionType":
         return self._connection_type
 
-    @pyqtProperty(int, notify = connectionStateChanged)
+    @pyqtProperty(int, notify=connectionStateChanged)
     def connectionState(self) -> "ConnectionState":
         """
         Get the connection state of the printer, e.g. whether it is connected, still connecting, error state, etc.
@@ -174,17 +174,17 @@ class PrinterOutputDevice(QObject, OutputDevice):
                      file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
-    @pyqtProperty(QObject, notify = printersChanged)
+    @pyqtProperty(QObject, notify=printersChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
         if self._printers:
             return self._printers[0]
         return None
 
-    @pyqtProperty("QVariantList", notify = printersChanged)
+    @pyqtProperty("QVariantList", notify=printersChanged)
     def printers(self) -> List["PrinterOutputModel"]:
         return self._printers
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def monitorItem(self) -> QObject:
         # Note that we specifically only check if the monitor component is created.
         # It could be that it failed to actually create the qml item! If we check if the item was created, it will try
@@ -193,7 +193,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
             self._createMonitorViewFromQML()
         return self._monitor_item
 
-    @pyqtProperty(QObject, constant = True)
+    @pyqtProperty(QObject, constant=True)
     def controlItem(self) -> QObject:
         if not self._control_component:
             self._createControlViewFromQML()
@@ -229,7 +229,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
         self.close()
 
-    @pyqtProperty(bool, notify = acceptsCommandsChanged)
+    @pyqtProperty(bool, notify=acceptsCommandsChanged)
     def acceptsCommands(self) -> bool:
         return self._accepts_commands
 
@@ -241,7 +241,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
             self.acceptsCommandsChanged.emit()
 
-    @pyqtProperty("QVariantList", notify = uniqueConfigurationsChanged)
+    @pyqtProperty("QVariantList", notify=uniqueConfigurationsChanged)
     def uniqueConfigurations(self) -> List["PrinterConfigurationModel"]:
         """ Returns the unique configurations of the printers within this output device """
         return self._unique_configurations
@@ -257,12 +257,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
             # List could end up empty!
             Logger.log("e", "Found a broken configuration in the synced list!")
             all_configurations.remove(None)
-        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "", reverse = True)
+        new_configurations = sorted(all_configurations, key=lambda config: config.printerType or "", reverse=True)
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations
             self.uniqueConfigurationsChanged.emit()
 
-    @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
+    @pyqtProperty("QStringList", notify=uniqueConfigurationsChanged)
     def uniquePrinterTypes(self) -> List[str]:
         """ Returns the unique configurations of the printers within this output device """
         return list(sorted(set([configuration.printerType or "" for configuration in self._unique_configurations])))

@@ -20,7 +20,7 @@ class DiscrepanciesPresenter(QObject):
     def __init__(self, app: QtApplication) -> None:
         super().__init__()
 
-        self.packageMutations = Signal()  #  Emits SubscribedPackagesModel
+        self.packageMutations = Signal()  # Emits SubscribedPackagesModel
 
         self._app = app
         self._package_manager = app.getPackageManager()

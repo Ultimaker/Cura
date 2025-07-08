@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Dict, Any, List, Union
 from copy import deepcopy
 from cura.OAuth2.KeyringAttribute import KeyringAttribute
@@ -84,7 +85,7 @@ class ResponseData(BaseModel):
 HTTP_STATUS = {
 """Possible HTTP responses."""
 
-    "OK": ResponseStatus(code = 200, message = "OK"),
-    "NOT_FOUND": ResponseStatus(code = 404, message = "NOT FOUND"),
-    "REDIRECT": ResponseStatus(code = 302, message = "REDIRECT")
+    "OK": ResponseStatus(code=200, message="OK"),
+    "NOT_FOUND": ResponseStatus(code=404, message="NOT FOUND"),
+    "REDIRECT": ResponseStatus(code=302, message="REDIRECT")
 }  # type: Dict[str, ResponseStatus]

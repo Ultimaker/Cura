@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Dict, Any, Set, List
 
 from PyQt6.QtCore import Qt, QObject, pyqtProperty, pyqtSignal, QTimer
@@ -53,7 +54,7 @@ class IntentModel(ListModel):
             self.intentCategoryChanged.emit()
             self._update()
 
-    @pyqtProperty(str, fset = setIntentCategory, notify = intentCategoryChanged)
+    @pyqtProperty(str, fset=setIntentCategory, notify=intentCategoryChanged)
     def intentCategory(self) -> str:
         return self._intent_category
 
@@ -95,7 +96,7 @@ class IntentModel(ListModel):
                                   "available": False})
                 added_quality_type_set.add(quality_type)
 
-        new_items = sorted(new_items, key = lambda x: x["layer_height"])
+        new_items = sorted(new_items, key=lambda x: x["layer_height"])
         self.setItems(new_items)
 
     def _getActiveMaterials(self) -> Set["MaterialNode"]:

@@ -22,14 +22,14 @@ class QualityProfilesDropDownMenuModel(ListModel):
     QualityChangesGroupRole = Qt.ItemDataRole.UserRole + 7
     IsExperimentalRole = Qt.ItemDataRole.UserRole + 8
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.LayerHeightRole, "layer_height")
         self.addRoleName(self.LayerHeightUnitRole, "layer_height_unit")
-        self.addRoleName(self.AvailableRole, "available") #Whether the quality profile is available in our current nozzle + material.
+        self.addRoleName(self.AvailableRole, "available")  # Whether the quality profile is available in our current nozzle + material.
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
         self.addRoleName(self.IsExperimentalRole, "is_experimental")
@@ -55,7 +55,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self._update_timer.start()
 
     def _update(self):
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name=self.__class__.__name__))
 
         # CURA-6836
         # LabelBar is a repeater that creates labels for quality layer heights. Because of an optimization in
@@ -99,6 +99,6 @@ class QualityProfilesDropDownMenuModel(ListModel):
             item_list.append(item)
 
         # Sort items based on layer_height
-        item_list = sorted(item_list, key = lambda x: x["layer_height"])
+        item_list = sorted(item_list, key=lambda x: x["layer_height"])
 
         self.setItems(item_list)

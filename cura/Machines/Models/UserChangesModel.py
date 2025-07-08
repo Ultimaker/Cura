@@ -22,8 +22,8 @@ class UserChangesModel(ListModel):
     UserValueRole = Qt.ItemDataRole.UserRole + 6
     CategoryRole = Qt.ItemDataRole.UserRole + 7
 
-    def __init__(self, parent = None):
-        super().__init__(parent = parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.addRoleName(self.KeyRole, "key")
         self.addRoleName(self.LabelRole, "label")
         self.addRoleName(self.ExtruderRole, "extruder")
@@ -94,7 +94,7 @@ class UserChangesModel(ListModel):
                     else:
                         category_label = category.label
                 else:  # Setting is not in any category. Shouldn't happen, but it do. See https://sentry.io/share/issue/d735884370154166bc846904d9b812ff/
-                    Logger.error("Setting {key} is not in any setting category.".format(key = setting_key))
+                    Logger.error("Setting {key} is not in any setting category.".format(key=setting_key))
                     category_label = ""
 
                 if self._i18n_catalog:

@@ -15,12 +15,12 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
     def checkRemovableDrives(self):
         drives = {}
-        p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         plist = plistlib.loads(p.communicate()[0])
 
         result = self._recursiveSearch(plist, "removable_media")
 
-        p = subprocess.Popen(["system_profiler", "SPCardReaderDataType", "-xml"], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+        p = subprocess.Popen(["system_profiler", "SPCardReaderDataType", "-xml"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         plist = plistlib.loads(p.communicate()[0])
 
         result.extend(self._recursiveSearch(plist, "removable_media"))
@@ -50,7 +50,7 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         return drives
 
     def performEjectDevice(self, device):
-        p = subprocess.Popen(["diskutil", "eject", device.getId()], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+        p = subprocess.Popen(["diskutil", "eject", device.getId()], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.communicate()
 
         return_code = p.wait()

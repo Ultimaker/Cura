@@ -53,7 +53,7 @@ class MachineAction(QObject, PluginObject):
 
         return True
 
-    @pyqtProperty(str, notify = labelChanged)
+    @pyqtProperty(str, notify=labelChanged)
     def label(self) -> str:
         return self._label
 
@@ -97,7 +97,7 @@ class MachineAction(QObject, PluginObject):
         self._reset()
         self.onFinished.emit()
 
-    @pyqtProperty(bool, notify = onFinished)
+    @pyqtProperty(bool, notify=onFinished)
     def finished(self) -> bool:
         return self._finished
 
@@ -114,7 +114,7 @@ class MachineAction(QObject, PluginObject):
         view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         return view
 
-    @pyqtProperty(QUrl, constant = True)
+    @pyqtProperty(QUrl, constant=True)
     def qmlPath(self) -> "QUrl":
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
@@ -123,7 +123,7 @@ class MachineAction(QObject, PluginObject):
         path = os.path.join(plugin_path, self._qml_url)
         return QUrl.fromLocalFile(path)
 
-    @pyqtSlot(result = QObject)
+    @pyqtSlot(result=QObject)
     def getDisplayItem(self) -> Optional["QObject"]:
         return self._createViewFromQML()
 
@@ -143,7 +143,7 @@ class MachineAction(QObject, PluginObject):
             self._visible = visible
             self.visibilityChanged.emit()
     
-    @pyqtProperty(bool, notify = visibilityChanged)
+    @pyqtProperty(bool, notify=visibilityChanged)
     def visible(self) -> bool:
         """Whether this action button will be visible.
 

@@ -13,10 +13,10 @@ from PyQt6.QtCore import QObject, pyqtSlot
 class NetworkingUtil(QObject):
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent = parent)
+        super().__init__(parent=parent)
 
     # Checks if the given string is a valid IPv4 address.
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str, result=bool)
     def isIPv4(self, address: str) -> bool:
         try:
             socket.inet_pton(socket.AF_INET, address)
@@ -26,7 +26,7 @@ class NetworkingUtil(QObject):
         return result
 
     # Checks if the given string is a valid IPv6 address.
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str, result=bool)
     def isIPv6(self, address: str) -> bool:
         try:
             socket.inet_pton(socket.AF_INET6, address)
@@ -36,7 +36,7 @@ class NetworkingUtil(QObject):
         return result
 
     # Checks if the given string is a valid IPv4 or IPv6 address.
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str, result=bool)
     def isValidIP(self, address: str) -> bool:
         return self.isIPv4(address) or self.isIPv6(address)
 

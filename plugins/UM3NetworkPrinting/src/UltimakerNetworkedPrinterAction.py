@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, cast
 
 from PyQt6.QtCore import pyqtSlot, pyqtSignal, pyqtProperty, QObject
@@ -34,33 +35,33 @@ class UltimakerNetworkedPrinterAction(MachineAction):
 
         return False
 
-    @pyqtSlot(name = "startDiscovery")
+    @pyqtSlot(name="startDiscovery")
     def startDiscovery(self) -> None:
         """Start listening to network discovery events via the plugin."""
 
         self._networkPlugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
         self.discoveredDevicesChanged.emit()  # trigger at least once to populate the list
 
-    @pyqtSlot(name = "reset")
+    @pyqtSlot(name="reset")
     def reset(self) -> None:
         """Reset the discovered devices."""
 
         self.discoveredDevicesChanged.emit()  # trigger to reset the list
 
-    @pyqtSlot(name = "restartDiscovery")
+    @pyqtSlot(name="restartDiscovery")
     def restartDiscovery(self) -> None:
         """Reset the discovered devices."""
 
         self._networkPlugin.startDiscovery()
         self.discoveredDevicesChanged.emit()  # trigger to reset the list
 
-    @pyqtSlot(str, str, name = "removeManualDevice")
+    @pyqtSlot(str, str, name="removeManualDevice")
     def removeManualDevice(self, key: str, address: str) -> None:
         """Remove a manually added device."""
 
         self._networkPlugin.removeManualDevice(key, address)
 
-    @pyqtSlot(str, str, name = "setManualDevice")
+    @pyqtSlot(str, str, name="setManualDevice")
     def setManualDevice(self, key: str, address: str) -> None:
         """Add a new manual device. Can replace an existing one by key."""
 
@@ -69,15 +70,15 @@ class UltimakerNetworkedPrinterAction(MachineAction):
         if address != "":
             self._networkPlugin.addManualDevice(address)
 
-    @pyqtProperty("QVariantList", notify = discoveredDevicesChanged)
+    @pyqtProperty("QVariantList", notify=discoveredDevicesChanged)
     def foundDevices(self):
         """Get the devices discovered in the local network sorted by name."""
 
         discovered_devices = list(self._networkPlugin.getDiscoveredDevices().values())
-        discovered_devices.sort(key = lambda d: d.name)
+        discovered_devices.sort(key=lambda d: d.name)
         return discovered_devices
 
-    @pyqtSlot(QObject, name = "associateActiveMachineWithPrinterDevice")
+    @pyqtSlot(QObject, name="associateActiveMachineWithPrinterDevice")
     def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
         """Connect a device selected in the list with the active machine."""
 

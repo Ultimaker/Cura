@@ -46,5 +46,3 @@ class MissingPackageList(RemotePackageList):
                 self.appendItem({"package": package})
 
         self.itemsChanged.emit()
-
-

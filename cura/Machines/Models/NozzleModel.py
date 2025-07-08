@@ -14,7 +14,7 @@ class NozzleModel(ListModel):
     HotendNameRole = Qt.ItemDataRole.UserRole + 2
     ContainerNodeRole = Qt.ItemDataRole.UserRole + 3
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
 
         self.addRoleName(self.IdRole, "id")
@@ -25,7 +25,7 @@ class NozzleModel(ListModel):
         self._update()
 
     def _update(self):
-        Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
+        Logger.log("d", "Updating {model_class_name}.".format(model_class_name=self.__class__.__name__))
 
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
@@ -38,7 +38,7 @@ class NozzleModel(ListModel):
             return
 
         item_list = []
-        for hotend_name, container_node in sorted(machine_node.variants.items(), key = lambda i: i[0].upper()):
+        for hotend_name, container_node in sorted(machine_node.variants.items(), key=lambda i: i[0].upper()):
             item = {"id": hotend_name,
                     "hotend_name": hotend_name,
                     "container_node": container_node

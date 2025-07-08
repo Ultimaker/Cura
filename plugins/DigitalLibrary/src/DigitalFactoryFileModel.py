@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List, Dict, Callable
 
 from PyQt6.QtCore import Qt, pyqtSignal

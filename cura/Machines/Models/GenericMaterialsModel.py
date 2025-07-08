@@ -5,7 +5,7 @@ from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 class GenericMaterialsModel(BaseMaterialsModel):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self._onChanged()
 
@@ -30,6 +30,6 @@ class GenericMaterialsModel(BaseMaterialsModel):
                 item_list.append(item)
 
         # Sort the item list alphabetically by name
-        item_list = sorted(item_list, key = lambda d: d["name"].upper())
+        item_list = sorted(item_list, key=lambda d: d["name"].upper())
 
         self.setItems(item_list)

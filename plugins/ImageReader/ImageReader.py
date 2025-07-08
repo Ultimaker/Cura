@@ -68,7 +68,6 @@ class ImageReader(MeshReader):
         height_from_base = max(height_from_base, 0)
         base_height = max(base_height, 0)
 
-
         xz_size = max(xz_size, 1)
         scale_vector = Vector(xz_size, height_from_base, xz_size)
 
@@ -94,7 +93,7 @@ class ImageReader(MeshReader):
         texel_width = 1.0 / width_minus_one * scale_vector.x
         texel_height = 1.0 / height_minus_one * scale_vector.z
 
-        height_data = numpy.zeros((height, width), dtype = numpy.float32)
+        height_data = numpy.zeros((height, width), dtype=numpy.float32)
 
         for x in range(0, width):
             for y in range(0, height):
@@ -102,7 +101,7 @@ class ImageReader(MeshReader):
                 if use_transparency_model:
                     height_data[y, x] = (0.299 * math.pow(qRed(qrgb) / 255.0, 2.2) + 0.587 * math.pow(qGreen(qrgb) / 255.0, 2.2) + 0.114 * math.pow(qBlue(qrgb) / 255.0, 2.2))
                 else:
-                    height_data[y, x] = (0.212655 * qRed(qrgb) + 0.715158 * qGreen(qrgb) + 0.072187 * qBlue(qrgb)) / 255 # fast computation ignoring gamma and degamma
+                    height_data[y, x] = (0.212655 * qRed(qrgb) + 0.715158 * qGreen(qrgb) + 0.072187 * qBlue(qrgb)) / 255  # fast computation ignoring gamma and degamma
 
         Job.yieldThread()
 
@@ -110,7 +109,7 @@ class ImageReader(MeshReader):
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):
-            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode = "edge")
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode="edge")
 
             height_data += copy[1:-1, 2:]
             height_data += copy[1:-1, :-2]
@@ -148,7 +147,7 @@ class ImageReader(MeshReader):
 
         # initialize to texel space vertex offsets.
         # 6 is for 6 vertices for each texel quad.
-        heightmap_vertices = numpy.zeros((width_minus_one * height_minus_one, 6, 3), dtype = numpy.float32)
+        heightmap_vertices = numpy.zeros((width_minus_one * height_minus_one, 6, 3), dtype=numpy.float32)
         heightmap_vertices = heightmap_vertices + numpy.array([[
             [0, base_height, 0],
             [0, base_height, texel_height],
@@ -156,14 +155,14 @@ class ImageReader(MeshReader):
             [texel_width, base_height, texel_height],
             [texel_width, base_height, 0],
             [0, base_height, 0]
-        ]], dtype = numpy.float32)
+        ]], dtype=numpy.float32)
 
         offsetsz, offsetsx = numpy.mgrid[0: height_minus_one, 0: width - 1]
         offsetsx = numpy.array(offsetsx, numpy.float32).reshape(-1, 1) * texel_width
         offsetsz = numpy.array(offsetsz, numpy.float32).reshape(-1, 1) * texel_height
 
         # offsets for each texel quad
-        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype = numpy.float32), offsetsz], 1)
+        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype=numpy.float32), offsetsz], 1)
         heightmap_vertices += heightmap_vertex_offsets.repeat(6, 0).reshape(-1, 6, 3)
 
         # apply height data to y values
@@ -172,7 +171,7 @@ class ImageReader(MeshReader):
         heightmap_vertices[:, 2, 1] = heightmap_vertices[:, 3, 1] = height_data[1:, 1:].reshape(-1)
         heightmap_vertices[:, 4, 1] = height_data[:-1, 1:].reshape(-1)
 
-        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype = numpy.int32).reshape(-1, 3)
+        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype=numpy.int32).reshape(-1, 3)
 
         mesh._vertices[0:(heightmap_vertices.size // 3), :] = heightmap_vertices.reshape(-1, 3)
         mesh._indices[0:(heightmap_indices.size // 3), :] = heightmap_indices
@@ -221,7 +220,7 @@ class ImageReader(MeshReader):
             mesh.addFaceByPoints(geo_width, 0, y, geo_width, 0, ny, geo_width, he1, ny)
             mesh.addFaceByPoints(geo_width, he1, ny, geo_width, he0, y, geo_width, 0, y)
 
-        mesh.calculateNormals(fast = True)
+        mesh.calculateNormals(fast=True)
 
         scene_node.setMeshData(mesh.build())
 

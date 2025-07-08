@@ -29,7 +29,7 @@ class NotUniqueMachineActionError(Exception):
 
 class MachineActionManager(QObject):
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent = parent)
+        super().__init__(parent=parent)
         self._application = application
         self._container_registry = self._application.getContainerRegistry()
 
@@ -120,7 +120,7 @@ class MachineActionManager(QObject):
         else:
             raise NotUniqueMachineActionError("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
-    @pyqtSlot(str, result = "QVariantList")
+    @pyqtSlot(str, result="QVariantList")
     def getSupportedActions(self, definition_id: str) -> List["MachineAction"]:
         """Get all actions supported by given machine
 
@@ -143,7 +143,7 @@ class MachineActionManager(QObject):
         else:
             return list()
 
-    @pyqtSlot(str, result = "QVariantList")
+    @pyqtSlot(str, result="QVariantList")
     def getFirstStartActions(self, definition_id: str) -> List["MachineAction"]:
         """Get all actions that need to be performed upon first start of a given machine.
 

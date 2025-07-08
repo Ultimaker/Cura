@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Logger import Logger
 import re
 from typing import Dict, List, Optional, Union
@@ -172,7 +173,7 @@ class ObjectsModel(ListModel):
                 # Keep track of 2 things:
                 #  - known indices for nodes which doesn't need to be renamed
                 #  - a list of nodes that need to be renamed. When renaming then, we should avoid using the known indices.
-                name_to_node_info_dict[original_name] = _NodeInfo(is_group = is_group)
+                name_to_node_info_dict[original_name] = _NodeInfo(is_group=is_group)
             node_info = name_to_node_info_dict[original_name]
             if not force_rename and name_index not in node_info.index_to_node:
                 node_info.index_to_node[name_index] = node
@@ -236,7 +237,7 @@ class ObjectsModel(ListModel):
             if not user_defined_print_order_enabled:
                 name = node.getName()
             else:
-                name = "{print_order}. {name}".format(print_order = node.printOrder, name = node.getName())
+                name = "{print_order}. {name}".format(print_order=node.printOrder, name=node.getName())
 
             nodes.append({
                 "name": name,

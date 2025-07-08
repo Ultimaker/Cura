@@ -1,5 +1,6 @@
 #  Copyright (c) 2024 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
+
 import uuid
 
 import os
@@ -16,14 +17,14 @@ from PyQt6.QtCore import QCoreApplication
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
-from UM.Settings.ContainerStack import ContainerStack #For typing.
+from UM.Settings.ContainerStack import ContainerStack  # For typing.
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingDefinition import SettingDefinition
-from UM.Settings.SettingRelation import SettingRelation #For typing.
+from UM.Settings.SettingRelation import SettingRelation  # For typing.
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.Scene import Scene #For typing.
+from UM.Scene.Scene import Scene  # For typing.
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
 from UM.Settings.SettingFunction import SettingFunction
@@ -45,7 +46,7 @@ class StartJobResult(IntEnum):
     NothingToSlice = 4
     MaterialIncompatible = 5
     BuildPlateError = 6
-    ObjectSettingError = 7 #When an error occurs in per-object settings.
+    ObjectSettingError = 7  # When an error occurs in per-object settings.
     ObjectsWithDisabledExtruder = 8
 
 
