@@ -1,13 +1,12 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import os.path
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt6.QtGui import QOpenGLContext, QDesktopServices, QImage
-from PyQt6.QtCore import QSize, QUrl
+from PyQt6.QtGui import QDesktopServices, QImage
+from PyQt6.QtCore import QUrl
 
 import numpy as np
 import time
@@ -36,11 +35,12 @@ class SolidView(View):
     """Standard view for mesh models."""
 
     _show_xray_warning_preference = "view/show_xray_warning"
+    _show_overhang_preference = "view/show_overhang"
 
     def __init__(self):
         super().__init__()
         application = Application.getInstance()
-        application.getPreferences().addPreference("view/show_overhang", True)
+        application.getPreferences().addPreference(self._show_overhang_preference, True)
         application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._enabled_shader = None
         self._disabled_shader = None
@@ -212,7 +212,7 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            if Application.getInstance().getPreferences().getValue("view/show_overhang"):
+            if Application.getInstance().getPreferences().getValue(self._show_overhang_preference):
                 # Make sure the overhang angle is valid before passing it to the shader
                 if self._support_angle >= 0 and self._support_angle <= 90:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
