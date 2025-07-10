@@ -5,9 +5,9 @@
         ~The user can opt to change just the print speed or both print and travel speeds.  The 'F' parameters are re-calculated line-by-line using the percentage that the user inputs.  Speeds can now be changed 'per extruder'.  M220 is no longer used to change speeds as it affected all speeds.
         ~Changing the print speed no longer affects retraction or unretract speeds.
         ~The Z-hop speed is never affected.
-        ~Output to LCD is obsolete to avoid flooding the screen with messages that were quickly over-written.
+        ~The 'Output to LCD' setting is obsolete to avoid flooding the screen with messages that were quickly over-written.
         ~Allows the user to select a Range of Layers (rather than just 'Single Layer' or 'To the End'.)
-        ~Added support for single fan control.  This might be a Build Volume Fan, Auxilliary Fan, or a Layer Cooling Fan.  It would depend on the fan circuit number that the user inputs.
+        ~Added support for control of a single fan.  This might be a Build Volume Fan, Auxilliary Fan, or a Layer Cooling Fan.  It would depend on the fan circuit number that the user inputs.
         ~Added support for Relative Extrusion
         ~Added support for Firmware Retraction
         ~Added support for 'G2' and 'G3' moves.
@@ -350,14 +350,14 @@ class ChangeAtZ(Script):
     def execute(self, data):
         # Exit if the script isn't enabled
         if not bool(self.getSettingValueByKey("caz_enabled")):
-            data[0] += ";    [Change at Z] is not enabled\n"
+            data[0] += ";  [Change at Z] is not enabled\n"
             Logger.log("i", "[Change at Z] is not enabled")
             return data
 
         # Message the user and exit if the print sequence is 'One at a Time'
         if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             Message(title = "[Change at Z]", text = "One-at-a-Time mode is not supported.  The script will exit without making any changes.").show()
-            data[0] += ";    [Change at Z] Did not run (One at a Time mode is not supported)\n"
+            data[0] += ";  [Change at Z] Did not run (One at a Time mode is not supported)\n"
             Logger.log("i", "ChangeAtZ does not support 'One at a Time' mode")
             return data
 
@@ -369,6 +369,7 @@ class ChangeAtZ(Script):
         self.extruder_list = self.global_stack.extruderList
         self.firmware_retraction = bool(self.global_stack.getProperty("machine_firmware_retract", "value"))
         self.relative_extrusion = bool(self.global_stack.getProperty("relative_extrusion", "value"))
+        self.initial_layer_height = self.global_stack.getProperty("layer_height_0", "value")
         self.heated_build_volume = bool(self.global_stack.getProperty("machine_heated_build_volume", "value"))
         self.heated_bed = bool(self.global_stack.getProperty("machine_heated_bed", "value"))
         self.retract_enabled = bool(self.extruder_list[0].getProperty("retraction_enable", "value"))
@@ -386,10 +387,13 @@ class ChangeAtZ(Script):
                     nbr_raft_layers += 1
                 if ";LAYER:0\n" in layer:
                     break
+        
         # Adjust the start layer to account for any raft layers
         self.start_layer -= nbr_raft_layers
+        
         # Find the indexes of the Start and End layers if 'By Layer'
         self.start_index = 0
+        
         # When retraction is enabled it adds a single line item to the data list
         self.end_index = len(data) - 1 - int(self.retract_enabled)
         if self.getSettingValueByKey("by_layer_or_height") == "by_layer":
@@ -397,16 +401,20 @@ class ChangeAtZ(Script):
                 if ";LAYER:" + str(self.start_layer) + "\n" in layer:
                     self.start_index = index
                     break
+            
             # If the changes continue to the top layer
             if end_layer == -1:
                 if self.retract_enabled:
                     self.end_index = len(data) - 2
                 else:
                     self.end_index = len(data) - 1
+            
             # If the changes end below the top layer
             else:
+                
                 # Adjust the end layer from base1 numbering to base0 numbering
                 end_layer -= 1
+                
                 # Adjust the End Layer if it is not the top layer and if bed adhesion is 'raft'
                 end_layer -= nbr_raft_layers
                 for index, layer in enumerate(data):
@@ -539,6 +547,7 @@ class ChangeAtZ(Script):
             new_flowrate_1 = f"\nM221 S{new_flow_ext_1} ; ChangeAtZ: Alter Flow Rate"
         else:
             new_flowrate_1 = ""
+        
         # For single extruder
         if self.extruder_count == 1:
             lines = data[self.start_index].splitlines()
@@ -547,6 +556,7 @@ class ChangeAtZ(Script):
             lines = data[self.end_index].splitlines()
             lines[len(lines) - 2] += reset_flowrate_0
             data[self.end_index] = "\n".join(lines) + "\n"
+        
         # For dual-extruders
         elif self.extruder_count > 1:
             for index, layer in enumerate(data):
@@ -634,12 +644,14 @@ class ChangeAtZ(Script):
                     data[2] = re.sub("M104 S", ";M104 S", data[2])
                 if "M104 S" in data[3]:
                     data[3] = re.sub("M104 S", ";M104 S", data[3])
+            
             # Add the temperature change at the beginning of the start layer
             lines = data[self.start_index].splitlines()
             for index, line in enumerate(lines):
                 lines[0] += "\n" + "M104 S" + str(self.new_hotend_temp_0) + " ; ChangeAtZ: Change Nozzle Temperature"
                 data[self.start_index] = "\n".join(lines) + "\n"
                 break
+            
             # Revert the temperature to the Cura setting at the end of the end layer
             lines = data[self.end_index].splitlines()
             for index, line in enumerate(lines):
@@ -652,6 +664,7 @@ class ChangeAtZ(Script):
             self.new_hotend_temp_1 = self.getSettingValueByKey("f_extruder_temperature_t1")
             self.orig_hot_end_temp_1 = int(self.extruder_list[1].getProperty("material_print_temperature", "value"))
             self.orig_standby_temp_1 = int(self.extruder_list[1].getProperty("material_standby_temperature", "value"))
+            
             # Track the tool number up to the start of the start layer
             self.getTool("T0")
             for index, layer in enumerate(data):
@@ -661,8 +674,10 @@ class ChangeAtZ(Script):
                         self.getTool(line)
                 if index == self.start_index - 1:
                     break
+            
             # Add the active extruder initial temperature change at the start of the starting layer
             data[self.start_index] = data[self.start_index].replace("\n", f"\nM104 S{self.active_print_temp} ; ChangeAtZ: Start Temperature Change\n",1)
+            
             # At the start layer commence making the changes
             for index, layer in enumerate(data):
                 if index < self.start_index:
@@ -671,6 +686,7 @@ class ChangeAtZ(Script):
                     break
                 lines = layer.splitlines()
                 for l_index, line in enumerate(lines):
+                    
                     # Continue to track the tool number
                     if line.startswith("T"):
                         self.getTool(line)
@@ -684,6 +700,7 @@ class ChangeAtZ(Script):
                         elif self.getValue(line, "S") == self.active_tool_orig_temp:
                             lines[l_index] = re.sub("S(\d+|\d.+)", f"S{self.active_print_temp} ; ChangeAtZ: Alter temperature", line)
                 data[index] = "\n".join(lines) + "\n"
+            
             # Revert the active extruder temperature at the end of the changes
             lines = data[self.end_index].split("\n")
             lines[len(lines) - 3] += f"\nM104 {self.active_tool} S{self.active_tool_orig_temp} ; ChangeAtZ: Original Temperature active tool"
@@ -734,23 +751,28 @@ class ChangeAtZ(Script):
         change_retract_speed = self.getSettingValueByKey("g_change_retract_speed")
         new_retract_speed = int(self.getSettingValueByKey("g_retract_speed") * 60)
         new_retract_amt = self.getSettingValueByKey("g_retract_amount")
-
+        
+        # Use M207 and M208 to adjust firmware retraction when required
         if self.firmware_retraction:
             lines = data[self.start_index].splitlines()
             firmware_start_str = "\nM207"
+            firmware_reset = ""
             if change_retract_speed:
-                firmware_start_str += " F" + str(new_retract_speed)
+                firmware_start_str += f" F{new_retract_speed} ; ChangeAtZ: Alter Firmware Retract speed"
             if change_retract_amt:
-                firmware_start_str += " S" + str(new_retract_amt)
-            firmware_start_str += f" ; ChangeAtZ: Alter Firmware Retract\nM208 F{new_retract_speed} ; ChangeAtZ: Alter Firmware Prime"
+                firmware_start_str += f" S{new_retract_amt} ; ChangeAtZ: Alter Firmware Retract amt"
+            if change_retract_speed:    
+                firmware_start_str += f"\nM208 F{new_retract_speed} ; ChangeAtZ: Alter Firmware Prime speed"
             lines[0] += firmware_start_str
             data[self.start_index] = "\n".join(lines) + "\n"
             lines = data[self.end_index].splitlines()
-            firmware_reset = f"M207 F{speed_retract_0} S{retract_amt_0} ; ChangeAtZ: Reset Firmware Retract\nM208 S{speed_retract_0} ; ChangeAtZ: Reset Firmware Prime"
+            firmware_reset = f"M207 F{speed_retract_0} S{retract_amt_0} ; ChangeAtZ: Reset Firmware Retract"
+            if change_retract_speed:
+                firmware_reset += f"\nM208 S{speed_retract_0} ; ChangeAtZ: Reset Firmware Prime"
             if len(lines) < 2:
                 lines.append(firmware_reset)
             else:
-                lines[len(lines) - 1] += "\n" + firmware_reset
+                lines[len(lines) - 2] += "\n" + firmware_reset
             data[self.end_index] = "\n".join(lines) + "\n"
             return data
 
@@ -796,6 +818,7 @@ class ChangeAtZ(Script):
                                     lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
                             lines[index] += " ; ChangeAtZ: Alter retract"
                         else:
+                            
                             # Prime line
                             if change_retract_speed:
                                 lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
@@ -897,6 +920,7 @@ class ChangeAtZ(Script):
 
         # The start height varies depending whether or not rafts are enabled and whether Z-hops are enabled.
         if str(self.global_stack.getProperty("adhesion_type", "value")) == "raft":
+            
             # If z-hops are enabled then start looking for the working Z after layer:0
             if self.z_hop_enabled:
                 for layer in data:
@@ -908,6 +932,7 @@ class ChangeAtZ(Script):
                                     starting_z = round(float(self.getValue(line, "Z")),2)
                                     the_height += starting_z
                                     break
+                                    
                             # If the layer ends without an extruder move following the Z line, then just jump out
                             except IndexError:
                                 starting_z = round(float(self.getValue(line, "Z")),2)
@@ -919,18 +944,23 @@ class ChangeAtZ(Script):
                 for layer in data:
                     lines = layer.splitlines()
                     for index, line in enumerate(lines):
+                        
                         # This try/except catches comments in the startup gcode
                         try:
                             if " Z" in line and " E" in lines[index - 1]:
                                 starting_z = float(self.getValue(line, "Z"))
                         except TypeError:
+                            
                             # Just pass beause there will be further Z values
                             pass
                         if ";LAYER:0" in line:
                             the_height += starting_z
                             break
-
+                            
+        # Initialize 'cur_z'
+        cur_z = self.initial_layer_height
         for index, layer in enumerate(data):
+            
             # Skip over the opening paragraph and StartUp Gcode
             if index < 2:
                 continue
