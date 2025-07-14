@@ -149,7 +149,7 @@ class PaintView(View):
 
         mesh = node.getMeshData()
         if not mesh.hasUVCoordinates():
-            texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates(4096)
+            texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates()
             node.callDecoration("prepareTexture", texture_width, texture_height)
             if hasattr(mesh, OpenGL.VertexBufferProperty):
                 # Force clear OpenGL buffer so that new UV coordinates will be sent
