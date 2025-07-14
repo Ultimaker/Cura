@@ -409,6 +409,7 @@ class CuraEngineBackend(QObject, Backend):
         self.determineAutoSlicing()  # Switch timer on or off if appropriate
 
         slice_message = self._socket.createMessage("cura.proto.Slice")
+
         self._start_slice_job = StartSliceJob(slice_message)
         self._start_slice_job_build_plate = build_plate_to_be_sliced
         self._start_slice_job.setBuildPlate(self._start_slice_job_build_plate)
