@@ -2,6 +2,7 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
+from cmath import isnan
 from collections import defaultdict
 import os
 from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
@@ -960,8 +961,26 @@ class CuraEngineBackend(QObject, Backend):
         """
 
         material_amounts = []
+        no_use_warnings = []
         for index in range(message.repeatedMessageCount("materialEstimates")):
-            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+            material_use_for_tool = message.getRepeatedMessage("materialEstimates", index).material_amount
+            if isnan(material_use_for_tool):
+                material_amounts.append(0.0)
+                if self._global_container_stack.extruderList[int(index)].isEnabled:
+                    no_use_warnings.append(index)
+            else:
+                material_amounts.append(material_use_for_tool)
+
+        if no_use_warnings:
+            extruder_names = [self._global_container_stack.extruderList[int(idx)].definition.getName() for idx in no_use_warnings]
+            Message(
+                text=catalog.i18nc("@message", "At least one extruder that wasn't disabled, remains unused in this print (preview). "
+                                               f"Unused extruders: '<b>{", ".join(extruder_names)}</b>'. This can sometimes become a problem "
+                                               "(for example when the bed-temperature is adjusted by the material-profile present in the unused extruder). "
+                                               "It therefore might be desirable to disable these unused extruders manually, depending on the situation. "),
+                title=catalog.i18nc("@message:title", "Unused Non-Disabled Extruder"),
+                message_type=Message.MessageType.WARNING
+            ).show()
 
         times = self._parseMessagePrintTimes(message)
         self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts)
