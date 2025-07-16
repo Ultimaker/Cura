@@ -7667,7 +7667,7 @@
                     "label": "Prime Tower Base",
                     "description": "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height.",
                     "type": "bool",
-                    "enabled": "prime_tower_enable and resolveOrValue('adhesion_type') != 'raft'",
+                    "enabled": "prime_tower_enable and resolveOrValue('adhesion_type') != 'raft' and prime_tower_size < 40",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
