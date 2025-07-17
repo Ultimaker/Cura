@@ -1,0 +1,63 @@
+{
+    "version": 2,
+    "name": "UltiMaker S6 \ud83c\udf08",
+    "inherits": "ultimaker_s6",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_s5_platform.obj",
+        "bom_numbers": [10700, 10701],
+        "firmware_update_info":
+        {
+            "check_urls": [ "https://software.ultimaker.com/releases/firmware/5078167/stable/um-update.swu.version" ],
+            "id": 5078167,
+            "update_url": "https://ultimaker.com/firmware?utm_source=cura&utm_medium=software&utm_campaign=fw-update"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_s6_rainbow_extruder_left0",
+            "1": "ultimaker_s6_rainbow_extruder_left1",
+            "2": "ultimaker_s6_rainbow_extruder_left2",
+            "3": "ultimaker_s6_rainbow_extruder_left3",
+            "4": "ultimaker_s6_rainbow_extruder_left4",
+            "5": "ultimaker_s6_rainbow_extruder_left5"
+        },
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform_offset": [
+            0,
+            -30,
+            -10
+        ],
+        "platform_texture": "UltimakerS6backplate.png",
+        "preferred_material": "ultimaker_pla_blue",
+        "preferred_variant_name": "AA+ 0.4",
+        "quality_definition": "ultimaker_s8",
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_material_export": true,
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true,
+        "weight": -2
+    },
+    "overrides":
+    {
+        "machine_extruder_count": { "default_value": 6 },
+        "machine_extruders_share_heater": { "default_value": true },
+        "machine_use_material_station": { "default_value": true },
+        "prime_tower_enable": { "value": true },
+        "prime_tower_line_width": { "value": "line_width * 1.5" },
+        "prime_tower_min_volume": { "value": 200 },
+        "prime_tower_position_x": { "value": "resolveOrValue('prime_tower_size') + (resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) + max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_y')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (resolveOrValue('machine_depth') / 2 if resolveOrValue('machine_center_is_zero') else 0)" },
+        "prime_tower_position_y": { "value": "(resolveOrValue('prime_tower_base_size') if (resolveOrValue('adhesion_type') == 'raft' or resolveOrValue('prime_tower_brim_enable')) else 0) + max(max(extruderValues('travel_avoid_distance')) + max(extruderValues('machine_nozzle_offset_y')) + max(extruderValues('support_offset')) + (extruderValue(skirt_brim_extruder_nr, 'skirt_brim_line_width') * extruderValue(skirt_brim_extruder_nr, 'skirt_line_count') * extruderValue(skirt_brim_extruder_nr, 'initial_layer_line_width_factor') / 100 + extruderValue(skirt_brim_extruder_nr, 'skirt_gap') if resolveOrValue('adhesion_type') == 'skirt' else 0) + (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0), max(map(abs, extruderValues('machine_nozzle_offset_y'))), 1) - (resolveOrValue('machine_depth') / 2 if resolveOrValue('machine_center_is_zero') else 0)" },
+        "prime_tower_size": { "default_value": 60 },
+        "speed_prime_tower": { "value": "speed_infill" }
+    }
+}
