@@ -1,4 +1,5 @@
 name: Find packages for Jira ticket and create installers
+run-name: ${{ inputs.jira_ticket_number }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
