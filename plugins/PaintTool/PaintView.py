@@ -54,7 +54,9 @@ class PaintView(View):
         self._paint_modes = {
             "seam":    usual_types,
             "support": usual_types,
+            "label":   usual_types,
         }
+        # NOTE: For the label, 'avoid' makes sense if there's a part _inside_ the label extents that's to be avoided.
 
     def _checkSetup(self):
         if not self._paint_shader:

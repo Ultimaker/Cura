@@ -58,6 +58,14 @@ Item
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
             }
+
+            PaintModeButton
+            {
+                text: catalog.i18nc("@action:button", "ID Label")
+                icon: "Information"
+                tooltipText: catalog.i18nc("@tooltip", "Define a place on the model that'll be used to print an identifier on.")
+                mode: "label"
+            }
         }
 
         //Line between the sections.
