@@ -1,4 +1,5 @@
 version: "5.11.0-alpha.0"
+commit: "unknown"
 requirements:
   - "cura_resources/5.11.0-alpha.0@ultimaker/testing"
   - "uranium/5.11.0-alpha.0@ultimaker/testing"
