@@ -61,7 +61,7 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/system".format(self.PRINTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
 
     def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
@@ -70,7 +70,7 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/materials".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterMaterial)
 
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
@@ -79,7 +79,7 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/printers".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrinterStatus)
 
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
@@ -88,26 +88,26 @@ class ClusterApiClient:
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/print_jobs".format(self.CLUSTER_API_PREFIX)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         """Move a print job to the top of the queue."""
 
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.post(self._createEmptyRequest(url, method="POST"), json.dumps({"to_position": 0, "list": "queued"}).encode())
+        self._manager.post(self.createEmptyRequest(url, method="POST"), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     def forcePrintJob(self, print_job_uuid: str) -> None:
         """Override print job configuration and force it to be printed."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.put(self._createEmptyRequest(url, method="PUT"), json.dumps({"force": True}).encode())
+        self._manager.put(self.createEmptyRequest(url, method="PUT"), json.dumps({"force": True}).encode())
 
     def deletePrintJob(self, print_job_uuid: str) -> None:
         """Delete a print job from the queue."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.deleteResource(self._createEmptyRequest(url))
+        self._manager.deleteResource(self.createEmptyRequest(url))
 
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the state of a print job."""
@@ -115,16 +115,16 @@ class ClusterApiClient:
         url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
-        self._manager.put(self._createEmptyRequest(url, method="PUT"), json.dumps({"action": action}).encode())
+        self._manager.put(self.createEmptyRequest(url, method="PUT"), json.dumps({"action": action}).encode())
 
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
         """Get the preview image data of a print job."""
 
         url = "{}/print_jobs/{}/preview_image".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        reply = self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished)
 
-    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json", method: str = "GET", skip_auth: bool = False) -> QNetworkRequest:
+    def createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json", method: str = "GET", skip_auth: bool = False) -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
         :param url: The URL to request
@@ -234,7 +234,7 @@ class ClusterApiClient:
                 "application": CuraApplication.getInstance().getApplicationDisplayName(),
                 "user": username,
             }).encode("utf-8")
-        reply = self._manager.post(self._createEmptyRequest(url, method="POST", skip_auth=True), request_body)
+        reply = self._manager.post(self.createEmptyRequest(url, method="POST", skip_auth=True), request_body)
 
         self._addCallback(reply, on_finished)
 
