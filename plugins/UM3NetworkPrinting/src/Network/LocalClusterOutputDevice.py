@@ -204,7 +204,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             parts.append(self._createFormPart("name=require_printer_name", bytes(unique_name, "utf-8"), "text/plain"))
         # FIXME: move form posting to API client
         self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
-                               on_progress=self._onPrintJobUploadProgress)
+                               on_progress=self._onPrintJobUploadProgress,
+                               request=self._cluster_api.createEmptyRequest("/cluster-api/v1/print_jobs/", content_type=None, method="POST"))
         self._active_exported_job = None
 
     def _onPrintJobUploadProgress(self, bytes_sent: int, bytes_total: int) -> None:
