@@ -1,6 +1,8 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import hashlib
 import json
+import secrets
 from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
@@ -8,6 +10,8 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+
+from cura.CuraApplication import CuraApplication
 
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -27,6 +31,14 @@ class ClusterApiClient:
     PRINTER_API_PREFIX = "/api/v1"
     CLUSTER_API_PREFIX = "/cluster-api/v1"
 
+    AUTH_REALM = "Jedi-API"
+    AUTH_QOP = "auth"
+    AUTH_NC = "00000001"
+    AUTH_NONCE_LEN = 16
+    AUTH_CNONCE_LEN = 8
+
+    AUTH_MAX_TRIES = 5
+
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
@@ -40,6 +52,8 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
+        self._auth_info = None
+        self._auth_tries = 0
 
     def getSystem(self, on_finished: Callable) -> None:
         """Get printer system information.
@@ -81,13 +95,13 @@ class ClusterApiClient:
         """Move a print job to the top of the queue."""
 
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+        self._manager.post(self._createEmptyRequest(url, method="POST"), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     def forcePrintJob(self, print_job_uuid: str) -> None:
         """Override print job configuration and force it to be printed."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.put(self._createEmptyRequest(url), json.dumps({"force": True}).encode())
+        self._manager.put(self._createEmptyRequest(url, method="PUT"), json.dumps({"force": True}).encode())
 
     def deletePrintJob(self, print_job_uuid: str) -> None:
         """Delete a print job from the queue."""
@@ -101,7 +115,7 @@ class ClusterApiClient:
         url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
-        self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
+        self._manager.put(self._createEmptyRequest(url, method="PUT"), json.dumps({"action": action}).encode())
 
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
         """Get the preview image data of a print job."""
@@ -110,16 +124,23 @@ class ClusterApiClient:
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished)
 
-    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
+    def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json", method: str = "GET", skip_auth: bool = False) -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
         :param url: The URL to request
         :param content_type: The type of the body contents.
+        :param method: The HTTP method to use, such as GET, POST, PUT, etc.
+        :param skip_auth: Skips the authentication step if set; prevents a loop on request of authentication token.
         """
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
         if content_type:
             request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
+        if self._auth_info:
+            digest_str = self._makeAuthDigestHeaderPart(path, method=method)
+            request.setRawHeader(b"Authorization", f"Digest {digest_str}".encode("utf-8"))
+        elif not skip_auth:
+            self._setupAuth()
         return request
 
     @staticmethod
@@ -157,6 +178,65 @@ class ClusterApiClient:
                 on_finished_item(result)
         except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
+
+    def _makeAuthDigestHeaderPart(self, url_part: str, method: str = "GET") -> str:
+        """ Make the data-part for a Digest Authentication HTTP-header.
+
+        :param url_part: The part of the URL beyond the host name.
+        :param method: The HTTP method to use, such as GET, POST, PUT, etc.
+        :return: A string with the data, can be used as in `f"Digest {return_value}".encode()`.
+        """
+
+        def sha256_utf8(x: str) -> str:
+            return hashlib.sha256(x.encode("utf-8")).hexdigest()
+
+        nonce = secrets.token_hex(ClusterApiClient.AUTH_NONCE_LEN)
+        cnonce = secrets.token_hex(ClusterApiClient.AUTH_CNONCE_LEN)
+
+        ha1 = sha256_utf8(f"{self._auth_info["id"]}:{ClusterApiClient.AUTH_REALM}:{self._auth_info["key"]}")
+        ha2 = sha256_utf8(f"{method}:{url_part}")
+        resp_digest = sha256_utf8(f"{ha1}:{nonce}:{ClusterApiClient.AUTH_NC}:{cnonce}:{ClusterApiClient.AUTH_QOP}:{ha2}")
+        return ", ".join([
+            f'username="{self._auth_info["id"]}"',
+            f'realm="{ClusterApiClient.AUTH_REALM}"',
+            f'nonce="{nonce}"',
+            f'uri="{url_part}"',
+            f'nc={ClusterApiClient.AUTH_NC}',
+            f'cnonce="{cnonce}"',
+            f'qop={ClusterApiClient.AUTH_QOP}',
+            f'response="{resp_digest}"',
+            f'algorithm="SHA-256"'
+        ])
+
+    def _setupAuth(self) -> None:
+        """ Handles the setup process for authentication by making a temporary digest-token request to the printer API.
+        """
+
+        if self._auth_tries >= ClusterApiClient.AUTH_MAX_TRIES:
+            Logger.warning("Maximum authorization temporary digest-token request tries exceeded. Is printer-firmware up to date?")
+            return
+
+        username = CuraApplication.getInstance().getCuraAPI().account.userName
+        if (not username) or username == "":
+            return
+
+        def on_finished(resp) -> None:
+            self._auth_tries += 1
+            try:
+                self._auth_info = json.loads(resp.data().decode())
+            except Exception as ex:
+                Logger.warning(f"Couldn't get temporary digest token: {str(ex)}")
+                return
+            self._auth_tries = 0
+
+        url = "{}/auth/request".format(self.PRINTER_API_PREFIX)
+        request_body = json.dumps({
+                "application": CuraApplication.getInstance().getApplicationDisplayName(),
+                "user": username,
+            }).encode("utf-8")
+        reply = self._manager.post(self._createEmptyRequest(url, method="POST", skip_auth=True), request_body)
+
+        self._addCallback(reply, on_finished)
 
     def _addCallback(self, reply: QNetworkReply, on_finished: Union[Callable[[ClusterApiClientModel], Any],
                            Callable[[List[ClusterApiClientModel]], Any]], model: Type[ClusterApiClientModel] = None,
