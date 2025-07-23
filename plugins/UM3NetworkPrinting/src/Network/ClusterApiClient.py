@@ -52,7 +52,8 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
-        self._auth_info = None
+        self._auth_id = None
+        self._auth_key = None
         self._auth_tries = 0
 
     def getSystem(self, on_finished: Callable) -> None:
@@ -136,7 +137,7 @@ class ClusterApiClient:
         request = QNetworkRequest(url)
         if content_type:
             request.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, content_type)
-        if self._auth_info:
+        if self._auth_id and self._auth_key:
             digest_str = self._makeAuthDigestHeaderPart(path, method=method)
             request.setRawHeader(b"Authorization", f"Digest {digest_str}".encode("utf-8"))
         elif not skip_auth:
@@ -193,11 +194,11 @@ class ClusterApiClient:
         nonce = secrets.token_hex(ClusterApiClient.AUTH_NONCE_LEN)
         cnonce = secrets.token_hex(ClusterApiClient.AUTH_CNONCE_LEN)
 
-        ha1 = sha256_utf8(f"{self._auth_info["id"]}:{ClusterApiClient.AUTH_REALM}:{self._auth_info["key"]}")
+        ha1 = sha256_utf8(f"{self._auth_id}:{ClusterApiClient.AUTH_REALM}:{self._auth_key}")
         ha2 = sha256_utf8(f"{method}:{url_part}")
         resp_digest = sha256_utf8(f"{ha1}:{nonce}:{ClusterApiClient.AUTH_NC}:{cnonce}:{ClusterApiClient.AUTH_QOP}:{ha2}")
         return ", ".join([
-            f'username="{self._auth_info["id"]}"',
+            f'username="{self._auth_id}"',
             f'realm="{ClusterApiClient.AUTH_REALM}"',
             f'nonce="{nonce}"',
             f'uri="{url_part}"',
@@ -223,7 +224,9 @@ class ClusterApiClient:
         def on_finished(resp) -> None:
             self._auth_tries += 1
             try:
-                self._auth_info = json.loads(resp.data().decode())
+                auth_info = json.loads(resp.data().decode())
+                self._auth_id = auth_info["id"]
+                self._auth_key = auth_info["key"]
             except Exception as ex:
                 Logger.warning(f"Couldn't get temporary digest token: {str(ex)}")
                 return
