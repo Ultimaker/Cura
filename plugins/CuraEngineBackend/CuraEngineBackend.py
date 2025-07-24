@@ -973,12 +973,13 @@ class CuraEngineBackend(QObject, Backend):
 
         if no_use_warnings:
             extruder_names = [self._global_container_stack.extruderList[int(idx)].definition.getName() for idx in no_use_warnings]
+            unused_extruders = [f"<li>{extruder_name}</li>" for extruder_name in extruder_names]
             Message(
-                text=catalog.i18nc("@message", "At least one extruder that wasn't disabled, remains unused in this print (preview). "
-                                               f"Unused extruders: '<b>{", ".join(extruder_names)}</b>'. This can sometimes become a problem "
-                                               "(for example when the bed-temperature is adjusted by the material-profile present in the unused extruder). "
-                                               "It therefore might be desirable to disable these unused extruders manually, depending on the situation. "),
-                title=catalog.i18nc("@message:title", "Unused Non-Disabled Extruder"),
+                text=catalog.i18nc("@message", "<html>At least one extruder remains unused in this print:"
+                                               f"<ul><b>{"".join(unused_extruders)}</b></ul><br/>This can sometimes become a problem, "
+                                               "for example when the bed-temperature is adjusted by the material-profile present in the unused extruder. "
+                                               "It might be desirable to disable these unused extruders.</html>"),
+                title=catalog.i18nc("@message:title", "Unused Extruder"),
                 message_type=Message.MessageType.WARNING
             ).show()
 
