@@ -21,7 +21,6 @@ class Marketplace(Extension, QObject):
     def __init__(self, parent: Optional[QObject] = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        self._window: Optional["QObject"] = None  # If the window has been loaded yet, it'll be cached in here.
         self._package_manager = CuraApplication.getInstance().getPackageManager()
 
         self._material_package_list: Optional[RemotePackageList] = None
@@ -79,20 +78,17 @@ class Marketplace(Extension, QObject):
 
         If the window hadn't been loaded yet into Qt, it will be created lazily.
         """
-        if self._window is None:
-            plugin_registry = PluginRegistry.getInstance()
-            plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
-            plugin_path = plugin_registry.getPluginPath(self.getPluginId())
-            if plugin_path is None:
-                plugin_path = os.path.dirname(__file__)
-            path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
-            self._window = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-        if self._window is None:  # Still None? Failed to load the QML then.
-            return
-        if not self._window.isVisible():
-            self.setTabShown(0)
-        self._window.show()
-        self._window.requestActivate()  # Bring window into focus, if it was already open in the background.
+
+        plugin_registry = PluginRegistry.getInstance()
+        plugin_registry.pluginsEnabledOrDisabledChanged.connect(self.checkIfRestartNeeded)
+        plugin_path = plugin_registry.getPluginPath(self.getPluginId())
+        if plugin_path is None:
+            plugin_path = os.path.dirname(__file__)
+        path = os.path.join(plugin_path, "resources", "qml", "Marketplace.qml")
+        window = CuraApplication.getInstance().createQmlSubWindow(path, {"manager": self})
+
+        if window is not None:  # Still None? Failed to load the QML then.
+            window.show()
 
     @pyqtSlot()
     def setVisibleTabToMaterials(self) -> None:
@@ -103,9 +99,6 @@ class Marketplace(Extension, QObject):
         self.setTabShown(1)
 
     def checkIfRestartNeeded(self) -> None:
-        if self._window is None:
-            return
-
         if self._package_manager.hasPackagesToRemoveOrInstall or \
                 PluginRegistry.getInstance().getCurrentSessionActivationChangedPlugins():
             self._restart_needed = True

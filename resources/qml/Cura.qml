@@ -456,45 +456,32 @@ UM.MainWindow
         }
     }
 
-    UM.PreferencesDialog
+    Component
     {
-        id: preferences
-
-        Component.onCompleted:
+        id: preferencesDialogComponent
+        Cura.PreferencesDialog
         {
-            //; Remove & re-add the general page as we want to use our own instead of uranium standard.
-            removePage(0);
-            insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
-
-            removePage(1);
-            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
-
-            insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
-
-            insertPage(3, catalog.i18nc("@title:tab", "Materials"), Qt.resolvedUrl("Preferences/Materials/MaterialsPage.qml"));
-
-            insertPage(4, catalog.i18nc("@title:tab", "Profiles"), Qt.resolvedUrl("Preferences/ProfilesPage.qml"));
-            currentPage = 0;
+            selfDestroy: true
         }
+    }
 
-        onVisibleChanged:
-        {
-            // When the dialog closes, switch to the General page.
-            // This prevents us from having a heavy page like Setting Visibility active in the background.
-            setPage(0);
-        }
+    function showPreferencesDialog()
+    {
+        var dialog = preferencesDialogComponent.createObject(base)
+        dialog.show()
+        return dialog
     }
 
     Connections
     {
         target: Cura.Actions.preferences
-        function onTriggered() { preferences.visible = true }
+        function onTriggered() { showPreferencesDialog() }
     }
 
     Connections
     {
         target: CuraApplication
-        function onShowPreferencesWindow() { preferences.visible = true }
+        function onShowPreferencesWindow() { showPreferencesDialog() }
     }
 
     Connections
@@ -511,8 +498,8 @@ UM.MainWindow
         target: Cura.Actions.configureMachines
         function onTriggered()
         {
-            preferences.visible = true;
-            preferences.setPage(2);
+            var dialog = showPreferencesDialog()
+            dialog.currentPage = 2;
         }
     }
 
@@ -521,8 +508,8 @@ UM.MainWindow
         target: Cura.Actions.manageProfiles
         function onTriggered()
         {
-            preferences.visible = true;
-            preferences.setPage(4);
+            var dialog = showPreferencesDialog()
+            dialog.currentPage = 4;
         }
     }
 
@@ -531,8 +518,8 @@ UM.MainWindow
         target: Cura.Actions.manageMaterials
         function onTriggered()
         {
-            preferences.visible = true;
-            preferences.setPage(3)
+            var dialog = showPreferencesDialog()
+            dialog.currentPage = 3;
         }
     }
 
@@ -541,11 +528,11 @@ UM.MainWindow
         target: Cura.Actions.configureSettingVisibility
         function onTriggered(source)
         {
-            preferences.visible = true;
-            preferences.setPage(1);
+            var dialog = showPreferencesDialog()
+            dialog.currentPage = 1;
             if(source && source.key)
             {
-                preferences.getCurrentItem().scrollToSection(source.key);
+                dialog.currentItem.scrollToSection(source.key);
             }
         }
     }

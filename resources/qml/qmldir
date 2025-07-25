@@ -52,3 +52,7 @@ NumericTextFieldWithUnit    1.0 NumericTextFieldWithUnit.qml
 PrintHeadMinMaxTextField    1.0 PrintHeadMinMaxTextField.qml
 SimpleCheckBox              1.0 SimpleCheckBox.qml
 RenameDialog                1.0 RenameDialog.qml
+
+# Cura/Preferences
+
+PreferencesDialog 1.0 PreferencesDialog.qml
