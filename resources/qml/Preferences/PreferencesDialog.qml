@@ -19,21 +19,15 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("modal_window_minimum").height
     width: minimumWidth
     height: minimumHeight
+    backgroundColor: UM.Theme.getColor("background_2")
 
     property alias currentPage: pagesList.currentIndex
     property alias currentItem: pagesList.currentItem
-
-    Rectangle
-    {
-        anchors.fill: parent
-        color: UM.Theme.getColor("background_2")
-    }
 
     Item
     {
         id: test
         anchors.fill: parent
-        anchors.margins: UM.Theme.getSize("default_margin").width
 
         ListView
         {
@@ -46,23 +40,23 @@ UM.Dialog
             clip: true
             model: [
                 {
-                    name: catalog.i18nc("@title:tab","General"),
+                    name: catalog.i18nc("@title:tab", "General"),
                     item: Qt.resolvedUrl("GeneralPage.qml")
                 },
                 {
-                    name: catalog.i18nc("@title:tab","Settings"),
+                    name: catalog.i18nc("@title:tab", "Settings"),
                     item: Qt.resolvedUrl("SettingVisibilityPage.qml")
                 },
                 {
-                    name: catalog.i18nc("@title:tab","Printers"),
+                    name: catalog.i18nc("@title:tab", "Printers"),
                     item: Qt.resolvedUrl("MachinesPage.qml")
                 },
                 {
-                    name: catalog.i18nc("@title:tab","Materials"),
+                    name: catalog.i18nc("@title:tab", "Materials"),
                     item: Qt.resolvedUrl("Materials/MaterialsPage.qml")
                 },
                 {
-                    name: catalog.i18nc("@title:tab","Profiles"),
+                    name: catalog.i18nc("@title:tab", "Profiles"),
                     item: Qt.resolvedUrl("ProfilesPage.qml")
                 }
             ]
