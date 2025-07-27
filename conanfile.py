@@ -338,7 +338,7 @@ class CuraConan(ConanFile):
 
         if extra_build_identifiers:
             separator = "+" if not cura_version.build else "."
-            cura_version = Version(f"{cura_version}{separator}{".".join(extra_build_identifiers)}")
+            cura_version = Version(f"{cura_version}{separator}{'.'.join(extra_build_identifiers)}")
 
         self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 
