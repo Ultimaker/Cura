@@ -58,6 +58,9 @@ class CuraContainerRegistry(ContainerRegistry):
         :param kwargs: A dictionary of keyword arguments containing
         keys and values that need to match the metadata of the GlobalStack.
         An asterisk in the values can be used to denote a wildcard.
+        :note There are currently a lot of calls to findContainerStacks with a type="machine" filter, which technically
+        returns the very same result, except that the result has to be explicitly converted to GlobalStack class and
+        is slightly less self-explicit. They can be converted by calling this method instead.
         """
 
         return cast(List[GlobalStack.GlobalStack], self.findContainers(container_type = GlobalStack.GlobalStack, **kwargs))
