@@ -99,6 +99,7 @@ pyinstaller:
         - "pyArcus"
         - "pyDulcificum"
         - "pynest2d"
+        - "pyUvula"
         - "PyQt6"
         - "PyQt6.QtNetwork"
         - "PyQt6.sip"
