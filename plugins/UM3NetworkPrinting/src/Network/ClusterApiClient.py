@@ -3,6 +3,7 @@
 import hashlib
 import json
 import secrets
+from enum import StrEnum
 from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
@@ -22,6 +23,18 @@ from ..Models.Http.ClusterMaterial import ClusterMaterial
 
 ClusterApiClientModel = TypeVar("ClusterApiClientModel", bound=BaseModel)
 """The generic type variable used to document the methods below."""
+
+
+class HttpRequestMethod(StrEnum):
+    GET = "GET",
+    HEAD = "HEAD",
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE",
+    CONNECT = "CONNECT",
+    OPTIONS = "OPTIONS",
+    TRACE = "TRACE",
+    PATCH = "PATCH",
 
 
 class ClusterApiClient:
@@ -96,13 +109,13 @@ class ClusterApiClient:
         """Move a print job to the top of the queue."""
 
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.post(self.createEmptyRequest(url, method="POST"), json.dumps({"to_position": 0, "list": "queued"}).encode())
+        self._manager.post(self.createEmptyRequest(url, method=HttpRequestMethod.POST), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     def forcePrintJob(self, print_job_uuid: str) -> None:
         """Override print job configuration and force it to be printed."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.put(self.createEmptyRequest(url, method="PUT"), json.dumps({"force": True}).encode())
+        self._manager.put(self.createEmptyRequest(url, method=HttpRequestMethod.PUT), json.dumps({"force": True}).encode())
 
     def deletePrintJob(self, print_job_uuid: str) -> None:
         """Delete a print job from the queue."""
@@ -116,7 +129,7 @@ class ClusterApiClient:
         url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
-        self._manager.put(self.createEmptyRequest(url, method="PUT"), json.dumps({"action": action}).encode())
+        self._manager.put(self.createEmptyRequest(url, method=HttpRequestMethod.PUT), json.dumps({"action": action}).encode())
 
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
         """Get the preview image data of a print job."""
@@ -125,10 +138,10 @@ class ClusterApiClient:
         reply = self._manager.get(self.createEmptyRequest(url))
         self._addCallback(reply, on_finished)
 
-    def createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json", method: str = "GET", skip_auth: bool = False) -> QNetworkRequest:
+    def createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json", method: HttpRequestMethod = HttpRequestMethod.GET, skip_auth: bool = False) -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
 
-        :param url: The URL to request
+        :param path: Part added to the base-endpoint forming the total request URL (the path from the endpoint to the requested resource).
         :param content_type: The type of the body contents.
         :param method: The HTTP method to use, such as GET, POST, PUT, etc.
         :param skip_auth: Skips the authentication step if set; prevents a loop on request of authentication token.
@@ -180,7 +193,7 @@ class ClusterApiClient:
         except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
-    def _makeAuthDigestHeaderPart(self, url_part: str, method: str = "GET") -> str:
+    def _makeAuthDigestHeaderPart(self, url_part: str, method: HttpRequestMethod = HttpRequestMethod.GET) -> str:
         """ Make the data-part for a Digest Authentication HTTP-header.
 
         :param url_part: The part of the URL beyond the host name.
@@ -237,7 +250,7 @@ class ClusterApiClient:
                 "application": CuraApplication.getInstance().getApplicationDisplayName(),
                 "user": username,
             }).encode("utf-8")
-        reply = self._manager.post(self.createEmptyRequest(url, method="POST", skip_auth=True), request_body)
+        reply = self._manager.post(self.createEmptyRequest(url, method=HttpRequestMethod.POST, skip_auth=True), request_body)
 
         self._addCallback(reply, on_finished)
 
