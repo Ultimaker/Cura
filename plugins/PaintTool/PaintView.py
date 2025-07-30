@@ -8,10 +8,13 @@ from typing import Optional, List, Tuple, Dict
 from PyQt6.QtGui import QImage, QColor, QPainter
 
 from cura.CuraApplication import CuraApplication
+from cura.BuildVolume import BuildVolume
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
 from UM.View.View import View
+from UM.View.SelectionPass import SelectionPass
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
@@ -163,6 +166,11 @@ class PaintView(View):
     def beginRendering(self) -> None:
         renderer = self.getRenderer()
         self._checkSetup()
+
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if isinstance(node, BuildVolume):
+                node.render(renderer)
+
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
