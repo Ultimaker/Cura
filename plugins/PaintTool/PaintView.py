@@ -3,7 +3,7 @@
 
 import os
 from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict
+from typing import Optional, List, Tuple, Dict, cast
 
 from PyQt6.QtGui import QImage, QColor, QPainter
 
@@ -47,7 +47,9 @@ class PaintView(View):
         self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
         self._force_opaque_mask.fill(1)
 
-        CuraApplication.getInstance().engineCreatedSignal.connect(self._makePaintModes)
+        application = CuraApplication.getInstance()
+        application.engineCreatedSignal.connect(self._makePaintModes)
+        self._scene = application.getController().getScene()
 
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()
@@ -164,6 +166,9 @@ class PaintView(View):
         return start_index, end_index
 
     def beginRendering(self) -> None:
+        if self._current_paint_type == "":
+            return
+
         renderer = self.getRenderer()
         self._checkSetup()
 
@@ -174,12 +179,20 @@ class PaintView(View):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        node = Selection.getSelectedObject(0)
-        if node is None:
-            return
+        display_objects = Selection.getAllSelectedObjects().copy()
+        if display_objects:
+            selection_pass = cast(SelectionPass, renderer.getRenderPass("selection"))
+            if selection_pass is not None:
+                selection_pass.setIgnoreUnselectedObjectsDuringNextRender()
+        else:
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                if node.callDecoration("isSliceable"):
+                    display_objects.append(node)
 
-        if self._current_paint_type == "":
-            return
+        for node in display_objects:
+            paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
+            self._current_paint_texture = node.callDecoration("getPaintTexture")
+            self._paint_shader.setTexture(0, self._current_paint_texture)
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
@@ -187,8 +200,3 @@ class PaintView(View):
         colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
-
-        self._current_paint_texture = node.callDecoration("getPaintTexture")
-        self._paint_shader.setTexture(0, self._current_paint_texture)
-
-        paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
