@@ -300,7 +300,9 @@ class PaintTool(Tool):
                 return False
 
             if not self._picking_pass:
-                self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
+                self._picking_pass = PickingPass(camera.getViewportWidth(),
+                                                 camera.getViewportHeight(),
+                                                 only_selected_objects = True)
             self._picking_pass.render()
 
             self._selection_pass.renderFacesMode()
