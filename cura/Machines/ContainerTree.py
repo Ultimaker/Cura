@@ -77,7 +77,7 @@ class ContainerTree:
 
     def _onStartupFinished(self) -> None:
         """Ran after completely starting up the application."""
-        from Settings.CuraContainerRegistry import CuraContainerRegistry
+        from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         currently_added_stacks = CuraContainerRegistry.getInstance().findGlobalStacks()
         definitions_ids = set([stack.definition.getId() for stack in currently_added_stacks])
         JobQueue.getInstance().add(self._MachineNodeLoadJob(self, definitions_ids))
