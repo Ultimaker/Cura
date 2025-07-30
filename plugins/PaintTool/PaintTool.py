@@ -293,6 +293,7 @@ class PaintTool(Tool):
                     self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
                 self._node_cache = node
                 self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
+                self._cache_dirty = True
             if self._cache_dirty:
                 self._cache_dirty = False
                 self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
