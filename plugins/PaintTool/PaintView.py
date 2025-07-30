@@ -9,10 +9,10 @@ from PyQt6.QtGui import QImage, QColor, QPainter
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
+from plugins.SolidView.SolidView import SolidView
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
-from UM.View.View import View
 from UM.View.SelectionPass import SelectionPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
@@ -23,7 +23,7 @@ from UM.Math.Color import Color
 catalog = i18nCatalog("cura")
 
 
-class PaintView(View):
+class PaintView(SolidView):
     """View for model-painting."""
 
     UNDO_STACK_SIZE = 1024
@@ -62,6 +62,8 @@ class PaintView(View):
         }
 
     def _checkSetup(self):
+        super()._checkSetup()
+        
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
@@ -169,8 +171,14 @@ class PaintView(View):
         if self._current_paint_type == "":
             return
 
-        renderer = self.getRenderer()
+        display_objects = Selection.getAllSelectedObjects().copy()
+        if not display_objects:
+            # Display the classic view until an object is selected
+            super().beginRendering()
+            return
+
         self._checkSetup()
+        renderer = self.getRenderer()
 
         for node in DepthFirstIterator(self._scene.getRoot()):
             if isinstance(node, BuildVolume):
@@ -179,15 +187,9 @@ class PaintView(View):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        display_objects = Selection.getAllSelectedObjects().copy()
-        if display_objects:
-            selection_pass = cast(SelectionPass, renderer.getRenderPass("selection"))
-            if selection_pass is not None:
-                selection_pass.setIgnoreUnselectedObjectsDuringNextRender()
-        else:
-            for node in DepthFirstIterator(self._scene.getRoot()):
-                if node.callDecoration("isSliceable"):
-                    display_objects.append(node)
+        selection_pass = cast(SelectionPass, renderer.getRenderPass("selection"))
+        if selection_pass is not None:
+            selection_pass.setIgnoreUnselectedObjectsDuringNextRender()
 
         for node in display_objects:
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
