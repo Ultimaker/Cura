@@ -208,7 +208,7 @@
             "unit": "mm/s",
             "value": 35
         },
-        "bridge_skin_speed_2": { "value": 100 },
+        "bridge_skin_speed_2": { "value": "speed_print*2/3" },
         "bridge_sparse_infill_max_density": { "value": 50 },
         "bridge_wall_material_flow": { "value": 200 },
         "bridge_wall_min_length": { "value": 2 },
@@ -442,10 +442,11 @@
         "retraction_hop": { "value": 1 },
         "retraction_hop_after_extruder_switch_height": { "value": 2 },
         "retraction_hop_enabled": { "value": true },
-        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2.5" },
+        "retraction_min_travel": { "value": "2.5 if support_enable and support_structure=='tree' else line_width * 2.5" },
         "retraction_prime_speed": { "value": 15 },
         "skin_edge_support_thickness": { "value": 0 },
-        "skin_material_flow": { "value": 95 },
+        "skin_material_flow": { "value": 93 },
+        "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
         "skirt_brim_minimal_length": { "value": 1000 },
@@ -572,7 +573,7 @@
         "speed_wall_x_roofing":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "speed_wall * 0.8"
         },
         "support_angle": { "value": 60 },
         "support_bottom_distance":
@@ -590,7 +591,7 @@
         "support_roof_height": { "minimum_value_warning": 0 },
         "support_structure": { "value": "'normal'" },
         "support_top_distance": { "maximum_value_warning": "3*layer_height" },
-        "support_tree_angle": { "value": 40 },
+        "support_tree_angle": { "value": 45 },
         "support_tree_angle_slow": { "value": 25 },
         "support_tree_bp_diameter": { "value": 20 },
         "support_tree_branch_diameter": { "value": 5 },
