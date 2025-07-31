@@ -608,8 +608,10 @@ class SimulationView(CuraView):
             visible_line_types.append(LayerPolygon.SupportInterfaceType)
         visible_line_types_with_extrusion = visible_line_types.copy()  # Copy before travel moves are added
         if self.getShowTravelMoves():
-            visible_line_types.append(LayerPolygon.MoveCombingType)
-            visible_line_types.append(LayerPolygon.MoveRetractionType)
+            visible_line_types.append(LayerPolygon.MoveUnretractedType)
+            visible_line_types.append(LayerPolygon.MoveRetractedType)
+            visible_line_types.append(LayerPolygon.MoveWhileRetractingType)
+            visible_line_types.append(LayerPolygon.MoveWhileUnretractingType)
 
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             layer_data = node.callDecoration("getLayerData")

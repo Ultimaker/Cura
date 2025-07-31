@@ -1,7 +1,8 @@
 name: Nightly build - stable release
 run-name: Nightly build - stable release
 
-# on:
+on:
+  workflow_dispatch:
 #   schedule:
 #     # Daily at 5:15 CET
 #     - cron: '15 4 * * *'

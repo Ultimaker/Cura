@@ -710,6 +710,14 @@ class StartSliceJob(Job):
 
                 obj.vertices = flat_verts
 
+                uv_coordinates = mesh_data.getUVCoordinates()
+                if uv_coordinates is not None:
+                    obj.uv_coordinates = uv_coordinates.flatten()
+
+                packed_texture = object.callDecoration("packTexture")
+                if packed_texture is not None:
+                    obj.texture = packed_texture
+
                 if object.getName() in raft_meshes:
                     self._addSettingsMessage(obj, {
                         "wall_line_count": 99999999,

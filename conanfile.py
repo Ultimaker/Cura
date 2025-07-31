@@ -16,7 +16,7 @@ from conan import ConanFile
 from conan.tools.files import copy, rmdir, save, mkdir, rm, update_conandata
 from conan.tools.microsoft import unix_path
 from conan.tools.env import VirtualRunEnv, Environment, VirtualBuildEnv
-from conan.tools.scm import Version
+from conan.tools.scm import Version, Git
 from conan.errors import ConanInvalidConfiguration, ConanException
 
 required_conan_version = ">=2.7.0" # When changing the version, also change the one in conandata.yml/extra_dependencies
@@ -329,10 +329,16 @@ class CuraConan(ConanFile):
         # If you want a specific Cura version to show up on the splash screen add the user configuration `user.cura:version=VERSION`
         # the global.conf, profile, package_info (of dependency) or via the cmd line `-c user.cura:version=VERSION`
         cura_version = Version(self.conf.get("user.cura:version", default = self.version, check_type = str))
-        pre_tag = f"-{cura_version.pre}" if cura_version.pre else ""
-        build_tag = f"+{cura_version.build}" if cura_version.build else ""
-        internal_tag = f"+internal" if self.options.internal else ""
-        cura_version = f"{cura_version.major}.{cura_version.minor}.{cura_version.patch}{pre_tag}{build_tag}{internal_tag}"
+        extra_build_identifiers = []
+
+        if self.options.internal:
+            extra_build_identifiers.append("internal")
+        if str(cura_version.pre).startswith("alpha") and self.conan_data["commit"] != "unknown":
+            extra_build_identifiers.append(self.conan_data["commit"][:6])
+
+        if extra_build_identifiers:
+            separator = "+" if not cura_version.build else "."
+            cura_version = Version(f"{cura_version}{separator}{'.'.join(extra_build_identifiers)}")
 
         self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 
@@ -340,7 +346,7 @@ class CuraConan(ConanFile):
             f.write(cura_version_py.render(
                 cura_app_name = self.name,
                 cura_app_display_name = self._app_name,
-                cura_version = cura_version,
+                cura_version = str(cura_version),
                 cura_version_full = self.version,
                 cura_build_type = "Enterprise" if self.options.enterprise else "",
                 cura_debug_mode = self.options.cura_debug_mode,
@@ -527,7 +533,7 @@ class CuraConan(ConanFile):
             ))
 
     def export(self):
-        update_conandata(self, {"version": self.version})
+        update_conandata(self, {"version": self.version, "commit": Git(self).get_commit()})
 
     def export_sources(self):
         copy(self, "*", os.path.join(self.recipe_folder, "plugins"), os.path.join(self.export_sources_folder, "plugins"))

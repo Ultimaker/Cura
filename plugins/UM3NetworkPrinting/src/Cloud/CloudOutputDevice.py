@@ -27,9 +27,11 @@ from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOut
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
 from ..Messages.PrintJobUploadQueueFullMessage import PrintJobUploadQueueFullMessage
+from ..Messages.PrintJobUploadPrinterInactiveMessage import PrintJobUploadPrinterInactiveMessage
 from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudError import CloudError
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
 from ..Models.Http.CloudPrintResponse import CloudPrintResponse
 from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
@@ -87,7 +89,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             address="",
             connection_type=ConnectionType.CloudConnection,
             properties=properties,
-            parent=parent
+            parent=parent,
+            active=cluster.display_status != "inactive"
         )
 
         self._api = api_client
@@ -190,6 +193,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             self._received_print_jobs = status.print_jobs
             self._updatePrintJobs(status.print_jobs)
 
+        self._setActive(status.active)
+
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional[FileHandler] = None, filter_by_machine: bool = False, **kwargs) -> None:
 
@@ -291,19 +296,21 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         self.writeFinished.emit()
 
-    def _onPrintUploadSpecificError(self, reply: "QNetworkReply", _: "QNetworkReply.NetworkError"):
+    def _onPrintUploadSpecificError(self, error: CloudError, _: "QNetworkReply.NetworkError", http_error: int):
         """
         Displays a message when an error occurs specific to uploading print job (i.e. queue is full).
         """
-        error_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
-        if error_code == 409:
-            PrintJobUploadQueueFullMessage().show()
+        if http_error == 409:
+            if error.code == "printerInactive":
+                PrintJobUploadPrinterInactiveMessage().show()
+            else:
+                PrintJobUploadQueueFullMessage().show()
         else:
             PrintJobUploadErrorMessage(I18N_CATALOG.i18nc("@error:send",
                                                           "Unknown error code when uploading print job: {0}",
-                                                          error_code)).show()
+                                                          http_error)).show()
 
-        Logger.log("w", "Upload of print job failed specifically with error code {}".format(error_code))
+        Logger.log("w", "Upload of print job failed specifically with error code {}".format(http_error))
 
         self._progress.hide()
         self._pre_upload_print_job = None
