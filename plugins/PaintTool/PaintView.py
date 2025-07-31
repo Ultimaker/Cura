@@ -172,8 +172,8 @@ class PaintView(SolidView):
             return
 
         display_objects = Selection.getAllSelectedObjects().copy()
-        if not display_objects:
-            # Display the classic view until an object is selected
+        if len(display_objects) != 1:
+            # Display the classic view until a single object is selected
             super().beginRendering()
             return
 
