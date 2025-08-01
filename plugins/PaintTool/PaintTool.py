@@ -186,7 +186,11 @@ class PaintTool(Tool):
         pt = self._picking_pass.getPickedPosition(x, y).getData()
 
         va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
-        ta, tb, tc = node.getMeshData().getFaceUvCoords(face_id)
+
+        face_uv_coordinates = node.getMeshData().getFaceUvCoords(face_id)
+        if face_uv_coordinates is None:
+            return face_id, None
+        ta, tb, tc = face_uv_coordinates
 
         # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
         # See (also) https://mathworld.wolfram.com/BarycentricCoordinates.html
