@@ -15,10 +15,6 @@ Item
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
 
-    property string selectedMode: ""
-    property string selectedColor: ""
-    property int selectedShape: 0
-
     Action
     {
         id: undoAction
@@ -167,14 +163,18 @@ Item
 
             from: 1
             to: 40
-            value: 10
 
             onPressedChanged: function(pressed)
             {
                 if(! pressed)
                 {
-                    UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
+                    UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
+            }
+
+            Component.onCompleted:
+            {
+                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -226,13 +226,5 @@ Item
                 onClicked: UM.Controller.triggerAction("clear")
             }
         }
-    }
-
-    Component.onCompleted:
-    {
-        // Force first types for consistency, otherwise UI may become different from controller
-        rowPaintMode.children[0].setMode()
-        rowBrushColor.children[1].setColor()
-        rowBrushShape.children[1].setShape()
     }
 }

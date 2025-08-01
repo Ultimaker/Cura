@@ -45,8 +45,8 @@ class PaintTool(Tool):
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
-        self._brush_color: str = ""
-        self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.SQUARE
+        self._brush_color: str = "preferred"
+        self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
@@ -54,6 +54,8 @@ class PaintTool(Tool):
         self._last_text_coords: Optional[numpy.ndarray] = None
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
+
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape")
 
         Selection.selectionChanged.connect(self._updateIgnoreUnselectedObjects)
 
@@ -91,28 +93,51 @@ class PaintTool(Tool):
 
         return stroke_image, (start_x, start_y)
 
+    def getPaintType(self) -> str:
+        paint_view = self._get_paint_view()
+        if paint_view is None:
+            return ""
+
+        return paint_view.getPaintType()
+
     def setPaintType(self, paint_type: str) -> None:
         paint_view = self._get_paint_view()
         if paint_view is None:
             return
 
-        paint_view.setPaintType(paint_type)
+        if paint_type != self.getPaintType():
+            paint_view.setPaintType(paint_type)
 
-        self._brush_pen = self._createBrushPen()
-        self._updateScene()
+            self._brush_pen = self._createBrushPen()
+            self._updateScene()
+            self.propertyChanged.emit()
+
+    def getBrushSize(self) -> int:
+        return self._brush_size
 
     def setBrushSize(self, brush_size: float) -> None:
-        if brush_size != self._brush_size:
-            self._brush_size = int(brush_size)
+        brush_size_int = int(brush_size)
+        if brush_size_int != self._brush_size:
+            self._brush_size = brush_size_int
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
+
+    def getBrushColor(self) -> str:
+        return self._brush_color
 
     def setBrushColor(self, brush_color: str) -> None:
-        self._brush_color = brush_color
+        if brush_color != self._brush_color:
+            self._brush_color = brush_color
+            self.propertyChanged.emit()
+
+    def getBrushShape(self) -> int:
+        return self._brush_shape
 
     def setBrushShape(self, brush_shape: int) -> None:
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
 
     def undoStackAction(self, redo_instead: bool) -> bool:
         paint_view = self._get_paint_view()
@@ -251,13 +276,11 @@ class PaintTool(Tool):
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
-            controller.setActiveStage("PrepareStage")
             controller.setActiveView("PaintTool")  # Because that's the plugin-name, and the view is registered to it.
             self._updateIgnoreUnselectedObjects()
             return True
 
         if event.type == Event.ToolDeactivateEvent:
-            controller.setActiveStage("PrepareStage")
             controller.setActiveView("SolidView")
             CuraApplication.getInstance().getRenderer().getRenderPass("selection").setIgnoreUnselectedObjects(False)
             CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces").setIgnoreUnselectedObjects(False)

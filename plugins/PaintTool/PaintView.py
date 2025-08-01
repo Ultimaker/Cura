@@ -60,6 +60,8 @@ class PaintView(SolidView):
             "support": usual_types,
         }
 
+        self._current_paint_type = "seam"
+
     def _checkSetup(self):
         super()._checkSetup()
         
@@ -81,6 +83,8 @@ class PaintView(SolidView):
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
+
+        self._prepareDataMapping()
 
         actual_image = self._current_paint_texture.getImage()
 
@@ -141,20 +145,26 @@ class PaintView(SolidView):
             return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
         return 0, 0
 
+    def getPaintType(self) -> str:
+        return self._current_paint_type
+
     def setPaintType(self, paint_type: str) -> None:
+        self._current_paint_type = paint_type
+        self._prepareDataMapping()
+
+    def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
         if node is None:
             return
 
         paint_data_mapping = node.callDecoration("getTextureDataMapping")
 
-        if paint_type not in paint_data_mapping:
-            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[paint_type]))
-            paint_data_mapping[paint_type] = new_mapping
+        if self._current_paint_type not in paint_data_mapping:
+            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[self._current_paint_type]))
+            paint_data_mapping[self._current_paint_type] = new_mapping
             node.callDecoration("setTextureDataMapping", paint_data_mapping)
 
-        self._current_paint_type = paint_type
-        self._current_bits_ranges = paint_data_mapping[paint_type]
+        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
 
     @staticmethod
     def _add_mapping(actual_mapping: Dict[str, tuple[int, int]], nb_storable_values: int) -> tuple[int, int]:
@@ -167,7 +177,7 @@ class PaintView(SolidView):
         return start_index, end_index
 
     def beginRendering(self) -> None:
-        if self._current_paint_type == "":
+        if self._current_paint_type not in self._paint_modes:
             return
 
         display_objects = Selection.getAllSelectedObjects().copy()
