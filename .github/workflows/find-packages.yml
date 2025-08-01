@@ -1,15 +1,16 @@
-name: Find packages for Jira ticket and create installers
+name: All installers (based on Jira ticket)
 run-name: ${{ inputs.jira_ticket_number }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
     inputs:
       jira_ticket_number:
-        description: 'Jira ticket number for Conan package discovery (e.g., cura_12345)'
+        description: 'Jira ticket number (e.g. CURA-15432 or cura_12345)'
         required: true
         type: string
       start_builds:
-        default: false
+        description: 'Start installers build based on found packages'
+        default: true
         required: false
         type: boolean
       conan_args:
