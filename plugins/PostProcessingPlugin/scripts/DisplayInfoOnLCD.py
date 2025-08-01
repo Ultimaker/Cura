@@ -40,6 +40,7 @@ import datetime
 import math
 from UM.Preferences import Preferences
 from UM.Message import Message
+from UM.Logger import Logger
 
 class DisplayInfoOnLCD(Script):
 
@@ -272,7 +273,7 @@ class DisplayInfoOnLCD(Script):
         self.m73_str = ""
         para_1 = data[0].split("\n")
         for line in para_1:
-            if line.startswith(";TIME:"):
+            if line.startswith(";TIME:") or line.startswith(";PRINT.TIME:"):
                 self.time_total = int(line.split(":")[1])
                 break
         if display_option == "filename_layer":
@@ -693,8 +694,8 @@ class DisplayInfoOnLCD(Script):
         # Add the stats to the gcode file
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
-            if line.startswith(";Layer height:"):
-                lines[index] = ";Layer height: " + f"{float(line.split(":")[1]):.2f}".format(float(line.split(":")[1]))
+            if line.startswith(";Layer height:") or line.startswith(";TARGET_MACHINE.NAME:"):
+                lines[index] = ";Layer height: " + f"{global_stack.getProperty("layer_height", "value")}"
                 lines[index] += f"\n{init_layer_hgt_line}"
                 lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
                 lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
