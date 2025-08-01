@@ -17,7 +17,9 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
 
+from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
+from UM.View.SelectionPass import SelectionPass
 from .PaintView import PaintView
 
 
@@ -34,6 +36,7 @@ class PaintTool(Tool):
         super().__init__()
 
         self._picking_pass: Optional[PickingPass] = None
+        self._faces_selection_pass: Optional[SelectionPass] = None
 
         self._shortcut_key: Qt.Key = Qt.Key.Key_P
 
@@ -51,6 +54,8 @@ class PaintTool(Tool):
         self._last_text_coords: Optional[numpy.ndarray] = None
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
+
+        Selection.selectionChanged.connect(self._updateIgnoreUnselectedObjects)
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
@@ -179,7 +184,7 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     def _getTexCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray]]:
-        face_id = self._selection_pass.getFaceIdAtPosition(x, y)
+        face_id = self._faces_selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
             return face_id, None
 
@@ -248,11 +253,14 @@ class PaintTool(Tool):
         if event.type == Event.ToolActivateEvent:
             controller.setActiveStage("PrepareStage")
             controller.setActiveView("PaintTool")  # Because that's the plugin-name, and the view is registered to it.
+            self._updateIgnoreUnselectedObjects()
             return True
 
         if event.type == Event.ToolDeactivateEvent:
             controller.setActiveStage("PrepareStage")
             controller.setActiveView("SolidView")
+            CuraApplication.getInstance().getRenderer().getRenderPass("selection").setIgnoreUnselectedObjects(False)
+            CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces").setIgnoreUnselectedObjects(False)
             return True
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
@@ -281,8 +289,15 @@ class PaintTool(Tool):
             if paintview is None:
                 return False
 
-            if not self._selection_pass:
-                return False
+            if not self._faces_selection_pass:
+                self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
+                if not self._faces_selection_pass:
+                    return False
+
+            if not self._picking_pass:
+                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
+                if not self._picking_pass:
+                    return False
 
             camera = self._controller.getScene().getActiveCamera()
             if not camera:
@@ -299,14 +314,6 @@ class PaintTool(Tool):
                 self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
             if not self._mesh_transformed_cache:
                 return False
-
-            if not self._picking_pass:
-                self._picking_pass = PickingPass(camera.getViewportWidth(),
-                                                 camera.getViewportHeight(),
-                                                 only_selected_objects = True)
-            self._picking_pass.render()
-
-            self._selection_pass.renderFacesMode()
 
             face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
             if texcoords is None:
@@ -348,3 +355,12 @@ class PaintTool(Tool):
             node = Selection.getSelectedObject(0)
         if node is not None:
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+    def getRequiredExtraRenderingPasses(self) -> list[str]:
+        return ["selection_faces", "picking_selected"]
+
+    def _updateIgnoreUnselectedObjects(self):
+        if self._controller.getActiveTool() is self:
+            ignore_unselected_objects = len(Selection.getAllSelectedObjects()) == 1
+            CuraApplication.getInstance().getRenderer().getRenderPass("selection").setIgnoreUnselectedObjects(ignore_unselected_objects)
+            CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces").setIgnoreUnselectedObjects(ignore_unselected_objects)

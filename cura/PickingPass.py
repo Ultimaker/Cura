@@ -29,7 +29,7 @@ class PickingPass(RenderPass):
     """
 
     def __init__(self, width: int, height: int, only_selected_objects: bool = False) -> None:
-        super().__init__("picking", width, height)
+        super().__init__("picking" if not only_selected_objects else "picking_selected", width, height)
 
         self._renderer = QtApplication.getInstance().getRenderer()
 

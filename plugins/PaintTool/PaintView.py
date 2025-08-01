@@ -13,7 +13,6 @@ from plugins.SolidView.SolidView import SolidView
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
-from UM.View.SelectionPass import SelectionPass
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.View.GL.OpenGL import OpenGL
@@ -186,10 +185,6 @@ class PaintView(SolidView):
 
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
-
-        selection_pass = cast(SelectionPass, renderer.getRenderPass("selection"))
-        if selection_pass is not None:
-            selection_pass.setIgnoreUnselectedObjectsDuringNextRender()
 
         for node in display_objects:
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
