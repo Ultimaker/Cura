@@ -38,9 +38,7 @@ from UM.Qt.Duration import DurationFormat
 import time
 import datetime
 import math
-from UM.Preferences import Preferences
 from UM.Message import Message
-from UM.Logger import Logger
 
 class DisplayInfoOnLCD(Script):
 
@@ -286,6 +284,7 @@ class DisplayInfoOnLCD(Script):
     def _display_filename_layer(self, data: str) -> str:
         data[0] = self._add_stats(data)
         max_layer = 0
+        format_option = self.getSettingValueByKey("format_option")
         lcd_text = "M117 "
         octo_text = "M118 "
         if self.getSettingValueByKey("file_name") != "":
@@ -295,7 +294,7 @@ class DisplayInfoOnLCD(Script):
         if self.getSettingValueByKey("addPrefixPrinting"):
             lcd_text += "Printing "
             octo_text += "Printing "
-        if not self.getSettingValueByKey("scroll"):
+        if not format_option:
             lcd_text += "Lay "
             octo_text += "Layer "
         else:
@@ -317,11 +316,11 @@ class DisplayInfoOnLCD(Script):
                     if self.getSettingValueByKey("maxlayer"):
                         display_text += "/" + max_layer
                         self.m118_text += "/" + max_layer
-                        if not self.getSettingValueByKey("scroll"):
+                        if not format_option:
                             display_text += "|" + file_name
                             self.m118_text += " | " + file_name
                     else:
-                        if not self.getSettingValueByKey("scroll"):
+                        if not format_option:
                             display_text += "|" + file_name + "!"
                             self.m118_text += " | " + file_name + "!"
                         else:
