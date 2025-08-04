@@ -1,3 +1,10 @@
+[5.10.2]
+
+* UltiMaker S6 and S8 improvements:
+- Introduced the CC+ 0.6 core to the UltiMaker S6 and S8. This core delivers better results for demanding applications and will be replacing the CC+ 0.4 core.
+- Added new profiles for PC and CPE+ on UltiMaker S6 and S8
+- Updated the default support type for the PETG material for UltiMaker S6 and S8
+
 [5.10.1]
 
 * New features and improvements:

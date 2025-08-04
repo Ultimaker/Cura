@@ -16,6 +16,7 @@ Cura.ExpandablePopup
     property bool isConnectedCloudPrinter: machineManager.activeMachineHasCloudConnection
     property bool isCloudRegistered: machineManager.activeMachineHasCloudRegistration
     property bool isGroup: machineManager.activeMachineIsGroup
+    property bool isActive: machineManager.activeMachineIsActive
     property string machineName: {
         if (isNetworkPrinter && machineManager.activeMachineNetworkGroupName != "")
         {
@@ -40,7 +41,14 @@ Cura.ExpandablePopup
         }
         else if (isConnectedCloudPrinter && Cura.API.connectionStatus.isInternetReachable)
         {
-            return "printer_cloud_connected"
+            if (isActive)
+            {
+                return "printer_cloud_connected"
+            }
+            else
+            {
+                return "printer_cloud_inactive"
+            }
         }
         else if (isCloudRegistered)
         {
@@ -53,7 +61,7 @@ Cura.ExpandablePopup
     }
 
     function getConnectionStatusMessage() {
-        if (connectionStatus == "printer_cloud_not_available")
+        if (connectionStatus === "printer_cloud_not_available")
         {
             if(Cura.API.connectionStatus.isInternetReachable)
             {
@@ -77,6 +85,10 @@ Cura.ExpandablePopup
             {
                 return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
             }
+        }
+        else if(connectionStatus === "printer_cloud_inactive")
+        {
+            return catalog.i18nc("@status", "This printer is deactivated and can not accept commands or jobs.")
         }
         else
         {
@@ -130,13 +142,17 @@ Cura.ExpandablePopup
 
             source:
             {
-                if (connectionStatus == "printer_connected")
+                if (connectionStatus === "printer_connected")
                 {
                     return UM.Theme.getIcon("CheckBlueBG", "low")
                 }
-                else if (connectionStatus == "printer_cloud_connected" || connectionStatus == "printer_cloud_not_available")
+                else if (connectionStatus === "printer_cloud_connected" || connectionStatus === "printer_cloud_not_available")
                 {
                     return UM.Theme.getIcon("CloudBadge", "low")
+                }
+                else if (connectionStatus === "printer_cloud_inactive")
+                {
+                    return UM.Theme.getIcon("WarningBadge", "low")
                 }
                 else
                 {
@@ -147,7 +163,21 @@ Cura.ExpandablePopup
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+            color:
+            {
+                if (connectionStatus === "printer_cloud_not_available")
+                {
+                    return UM.Theme.getColor("cloud_unavailable")
+                }
+                else if(connectionStatus === "printer_cloud_inactive")
+                {
+                    return UM.Theme.getColor("cloud_inactive")
+                }
+                else
+                {
+                    return UM.Theme.getColor("primary")
+                }
+            }
 
             visible: (isNetworkPrinter || isCloudRegistered) && source != ""
 
