@@ -3,15 +3,17 @@
 
 import os
 from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict
+from typing import Optional, List, Tuple, Dict, cast
 
 from PyQt6.QtGui import QImage, QColor, QPainter, QUndoStack
 
 from cura.CuraApplication import CuraApplication
+from cura.BuildVolume import BuildVolume
 from UM.PluginRegistry import PluginRegistry
+from UM.View.View import View
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
-from UM.View.View import View
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
@@ -44,7 +46,11 @@ class PaintView(View):
         self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
         self._force_opaque_mask.fill(1)
 
-        CuraApplication.getInstance().engineCreatedSignal.connect(self._makePaintModes)
+        application = CuraApplication.getInstance()
+        application.engineCreatedSignal.connect(self._makePaintModes)
+        self._scene = application.getController().getScene()
+
+        self._solid_view = None
 
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()
@@ -56,6 +62,8 @@ class PaintView(View):
             "support": usual_types,
         }
 
+        self._current_paint_type = "seam"
+
     def _checkSetup(self):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
@@ -64,6 +72,8 @@ class PaintView(View):
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
+
+        self._prepareDataMapping()
 
         current_image = self._current_paint_texture.getImage()
         texture_rect = QRect(0, 0, current_image.width(), current_image.height())
@@ -100,30 +110,25 @@ class PaintView(View):
             return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
         return 0, 0
 
+    def getPaintType(self) -> str:
+        return self._current_paint_type
+
     def setPaintType(self, paint_type: str) -> None:
+        self._current_paint_type = paint_type
+
+    def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
         if node is None:
             return
 
         paint_data_mapping = node.callDecoration("getTextureDataMapping")
 
-        if paint_type not in paint_data_mapping:
-            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[paint_type]))
-            paint_data_mapping[paint_type] = new_mapping
+        if self._current_paint_type not in paint_data_mapping:
+            new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[self._current_paint_type]))
+            paint_data_mapping[self._current_paint_type] = new_mapping
             node.callDecoration("setTextureDataMapping", paint_data_mapping)
 
-        mesh = node.getMeshData()
-        if not mesh.hasUVCoordinates():
-            texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates()
-            if texture_width > 0 and texture_height > 0:
-                node.callDecoration("prepareTexture", texture_width, texture_height)
-
-            if hasattr(mesh, OpenGL.VertexBufferProperty):
-                # Force clear OpenGL buffer so that new UV coordinates will be sent
-                delattr(mesh, OpenGL.VertexBufferProperty)
-
-        self._current_paint_type = paint_type
-        self._current_bits_ranges = paint_data_mapping[paint_type]
+        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
 
     @staticmethod
     def _add_mapping(actual_mapping: Dict[str, tuple[int, int]], nb_storable_values: int) -> tuple[int, int]:
@@ -136,17 +141,35 @@ class PaintView(View):
         return start_index, end_index
 
     def beginRendering(self) -> None:
-        renderer = self.getRenderer()
+        if self._current_paint_type not in self._paint_modes:
+            return
+
+        if self._solid_view is None:
+            plugin_registry = PluginRegistry.getInstance()
+            solid_view = plugin_registry.getPluginObject("SolidView")
+            if isinstance(solid_view, View):
+                self._solid_view = solid_view
+
+        display_objects = Selection.getAllSelectedObjects().copy()
+        if len(display_objects) != 1 and self._solid_view is not None:
+            # Display the classic view until a single object is selected
+            self._solid_view.beginRendering()
+            return
+
         self._checkSetup()
+        renderer = self.getRenderer()
+
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if isinstance(node, BuildVolume):
+                node.render(renderer)
+
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        node = Selection.getSelectedObject(0)
-        if node is None:
-            return
-
-        if self._current_paint_type == "":
-            return
+        for node in display_objects:
+            paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
+            self._current_paint_texture = node.callDecoration("getPaintTexture")
+            self._paint_shader.setTexture(0, self._current_paint_texture)
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
@@ -154,8 +177,3 @@ class PaintView(View):
         colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
-
-        self._current_paint_texture = node.callDecoration("getPaintTexture")
-        self._paint_shader.setTexture(0, self._current_paint_texture)
-
-        paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())

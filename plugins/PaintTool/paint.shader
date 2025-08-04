@@ -55,7 +55,7 @@ fragment =
         color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
         vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
         final_color.a = u_opacity;
@@ -122,7 +122,7 @@ fragment41core =
         color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
         vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
         final_color.a = u_opacity;
