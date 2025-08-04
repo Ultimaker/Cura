@@ -7,7 +7,6 @@ import QtQuick.Layouts 2.10
 
 import UM 1.5 as UM
 import Cura 1.7 as Cura
-import ".."
 
 Item
 {
@@ -28,9 +27,9 @@ Item
             id: intentSelectionRepeater
             model: Cura.IntentSelectionModel {}
 
-            RecommendedQualityProfileSelectorButton
+            Cura.ModeSelectorButton
             {
-                profileName: model.name
+                text: model.name
                 icon: model.icon ? model.icon : ""
                 custom_icon: model.custom_icon ? model.custom_icon : ""
                 tooltipText: model.description ? model.description : ""

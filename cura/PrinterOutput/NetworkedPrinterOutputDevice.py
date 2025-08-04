@@ -33,8 +33,8 @@ class AuthState(IntEnum):
 class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     authenticationStateChanged = pyqtSignal()
 
-    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None) -> None:
-        super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
+    def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None, active: bool = True) -> None:
+        super().__init__(device_id = device_id, connection_type = connection_type, parent = parent, active = active)
         self._manager = None    # type: Optional[QNetworkAccessManager]
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
 
