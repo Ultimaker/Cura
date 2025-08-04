@@ -9,8 +9,8 @@ from PyQt6.QtGui import QImage, QColor, QPainter
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
-from plugins.SolidView.SolidView import SolidView
 from UM.PluginRegistry import PluginRegistry
+from UM.View.View import View
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -22,7 +22,7 @@ from UM.Math.Color import Color
 catalog = i18nCatalog("cura")
 
 
-class PaintView(SolidView):
+class PaintView(View):
     """View for model-painting."""
 
     UNDO_STACK_SIZE = 1024
@@ -50,6 +50,8 @@ class PaintView(SolidView):
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
 
+        self._solid_view = None
+
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()
         usual_types = {"none":      self.PaintType(Color(*theme.getColor("paint_normal_area").getRgb()), 0),
@@ -63,8 +65,6 @@ class PaintView(SolidView):
         self._current_paint_type = "seam"
 
     def _checkSetup(self):
-        super()._checkSetup()
-        
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
@@ -180,10 +180,16 @@ class PaintView(SolidView):
         if self._current_paint_type not in self._paint_modes:
             return
 
+        if self._solid_view is None:
+            plugin_registry = PluginRegistry.getInstance()
+            solid_view = plugin_registry.getPluginObject("SolidView")
+            if isinstance(solid_view, View):
+                self._solid_view = solid_view
+
         display_objects = Selection.getAllSelectedObjects().copy()
-        if len(display_objects) != 1:
+        if len(display_objects) != 1 and self._solid_view is not None:
             # Display the classic view until a single object is selected
-            super().beginRendering()
+            self._solid_view.beginRendering()
             return
 
         self._checkSetup()
