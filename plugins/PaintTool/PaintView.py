@@ -2,10 +2,10 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict, cast
+from PyQt6.QtCore import QRect, pyqtSignal
+from typing import Optional, Dict
 
-from PyQt6.QtGui import QImage, QColor, QPainter, QUndoStack
+from PyQt6.QtGui import QImage, QUndoStack
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
@@ -42,15 +42,23 @@ class PaintView(View):
 
         self._paint_undo_stack: QUndoStack = QUndoStack()
         self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
-
-        self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
-        self._force_opaque_mask.fill(1)
+        self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
+        self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
 
         self._solid_view = None
+
+    canUndoChanged = pyqtSignal(bool)
+    canRedoChanged = pyqtSignal(bool)
+
+    def canUndo(self):
+        return self._paint_undo_stack.canUndo()
+
+    def canRedo(self):
+        return self._paint_undo_stack.canRedo()
 
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()

@@ -19,14 +19,14 @@ Item
     {
         id: undoAction
         shortcut: "Ctrl+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+        onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
     Action
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+        onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
     Column
@@ -192,6 +192,7 @@ Item
             {
                 id: undoButton
 
+                enabled: undoAction.enabled
                 text: catalog.i18nc("@action:button", "Undo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -206,6 +207,7 @@ Item
             {
                 id: redoButton
 
+                enabled: redoAction.enabled
                 text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -226,5 +228,19 @@ Item
                 onClicked: UM.Controller.triggerAction("clear")
             }
         }
+    }
+
+    Binding
+    {
+        target: undoAction
+        property: "enabled"
+        value: UM.Controller.properties.getValue("CanUndo")
+    }
+
+    Binding
+    {
+        target: redoAction
+        property: "enabled"
+        value: UM.Controller.properties.getValue("CanRedo")
     }
 }
