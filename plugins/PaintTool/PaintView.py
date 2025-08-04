@@ -147,6 +147,16 @@ class PaintView(View):
             paint_data_mapping[paint_type] = new_mapping
             node.callDecoration("setTextureDataMapping", paint_data_mapping)
 
+        mesh = node.getMeshData()
+        if not mesh.hasUVCoordinates():
+            texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates()
+            if texture_width > 0 and texture_height > 0:
+                node.callDecoration("prepareTexture", texture_width, texture_height)
+
+            if hasattr(mesh, OpenGL.VertexBufferProperty):
+                # Force clear OpenGL buffer so that new UV coordinates will be sent
+                delattr(mesh, OpenGL.VertexBufferProperty)
+
         self._current_paint_type = paint_type
         self._current_bits_ranges = paint_data_mapping[paint_type]
 
