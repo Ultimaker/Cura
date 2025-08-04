@@ -19,6 +19,7 @@ Item
     {
         id: undoAction
         shortcut: "Ctrl+L"
+        enabled: UM.Controller.properties.getValue("CanUndo")
         onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
@@ -26,6 +27,7 @@ Item
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
+        enabled: UM.Controller.properties.getValue("CanRedo")
         onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
@@ -53,7 +55,7 @@ Item
                 icon: "Support"
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
-                visible: false
+                // visible: false
             }
         }
 
@@ -163,6 +165,7 @@ Item
 
             from: 10
             to: 1000
+            value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
             {
@@ -170,11 +173,6 @@ Item
                 {
                     UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
-            }
-
-            Component.onCompleted:
-            {
-                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -228,19 +226,5 @@ Item
                 onClicked: UM.Controller.triggerAction("clear")
             }
         }
-    }
-
-    Binding
-    {
-        target: undoAction
-        property: "enabled"
-        value: UM.Controller.properties.getValue("CanUndo")
-    }
-
-    Binding
-    {
-        target: redoAction
-        property: "enabled"
-        value: UM.Controller.properties.getValue("CanRedo")
     }
 }
