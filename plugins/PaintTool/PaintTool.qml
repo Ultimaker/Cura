@@ -161,8 +161,8 @@ Item
             width: parent.width
             indicatorVisible: false
 
-            from: 1
-            to: 40
+            from: 10
+            to: 1000
 
             onPressedChanged: function(pressed)
             {

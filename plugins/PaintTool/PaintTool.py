@@ -16,6 +16,7 @@ from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
+from UM.View.GL.OpenGL import OpenGL
 
 from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
@@ -44,7 +45,7 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
-        self._brush_size: int = 10
+        self._brush_size: int = 200
         self._brush_color: str = "preferred"
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
@@ -264,6 +265,23 @@ class PaintTool(Tool):
             self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
             self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
 
+    def _setupNodeForPainting(self, node: SceneNode) -> bool:
+        mesh = node.getMeshData()
+        if mesh.hasUVCoordinates():
+            return True
+
+        texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates()
+        if texture_width <= 0 or texture_height <= 0:
+            return False
+
+        node.callDecoration("prepareTexture", texture_width, texture_height)
+
+        if hasattr(mesh, OpenGL.VertexBufferProperty):
+            # Force clear OpenGL buffer so that new UV coordinates will be sent
+            delattr(mesh, OpenGL.VertexBufferProperty)
+
+        return True
+
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
 
@@ -340,6 +358,9 @@ class PaintTool(Tool):
                 self._cache_dirty = False
                 self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
             if not self._mesh_transformed_cache:
+                return False
+
+            if not self._setupNodeForPainting(node):
                 return False
 
             face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
