@@ -130,7 +130,7 @@ class PaintTool(Tool):
         width, height = paintview.getUvTexDimensions()
         clear_image = QImage(width, height, QImage.Format.Format_RGB32)
         clear_image.fill(Qt.GlobalColor.white)
-        paintview.addStroke(clear_image, 0, 0, "none")
+        paintview.addStroke(clear_image, 0, 0, "none", False)
 
         self._updateScene()
 
@@ -333,7 +333,7 @@ class PaintTool(Tool):
                     end_coords[0] * w,
                     end_coords[1] * h
                 )
-                paintview.addStroke(sub_image, start_x, start_y, self._brush_color)
+                paintview.addStroke(sub_image, start_x, start_y, self._brush_color, is_moved)
 
             self._last_text_coords = texcoords
             self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
