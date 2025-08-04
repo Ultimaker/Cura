@@ -67,7 +67,7 @@ class AnnealingOrDrying(Script):
                     {
                         "anneal_cycle": "Anneal Print",
                         "dry_cycle": "Dry Filament"
-                     },
+                    },
                     "default_value": "anneal_cycle",
                     "enabled": true,
                     "enabled": "enable_script"
@@ -80,7 +80,8 @@ class AnnealingOrDrying(Script):
                     "options":
                     {
                         "bed_only": "Bed",
-                        "bed_chamber": "Bed and Chamber"},
+                        "bed_chamber": "Bed and Chamber"
+                    },
                     "default_value": "bed_only",
                     "enabled": "enable_script"
                 },
@@ -244,13 +245,13 @@ class AnnealingOrDrying(Script):
         extruders = self.global_stack.extruderList
         bed_temperature = int(self.getSettingValueByKey("startout_temp"))
         heated_chamber = bool(self.global_stack.getProperty("machine_heated_build_volume", "value"))
-        anneal_type = self.getSettingValueByKey("heating_zone_selection")
+        heating_zone = self.getSettingValueByKey("heating_zone_selection")
 
         # Get the heated chamber temperature or set to 0 if no chamber
         if heated_chamber:
             chamber_temp = str(self.getSettingValueByKey("build_volume_temp"))
         else:
-            anneal_type = "bed_only"
+            heating_zone = "bed_only"
             chamber_temp = "0"
 
         # Beep line
@@ -270,7 +271,7 @@ class AnnealingOrDrying(Script):
                 speed_bv_fan = 0
 
             if bool(extruders[0].getProperty("machine_scale_fan_speed_zero_to_one", "value")) and has_bv_fan:
-                speed_bv_fan = round(speed_bv_fan * .01)
+                speed_bv_fan = round(speed_bv_fan * 0.01)
             else:
                 speed_bv_fan = round(speed_bv_fan * 2.55)
 
@@ -300,15 +301,45 @@ class AnnealingOrDrying(Script):
         add_messages = bool(self.getSettingValueByKey("add_messages"))
 
         if cycle_type == "anneal_cycle":
-            data = self._anneal_print(data, park_xy, park_z, bed_temperature, lowest_temp, heated_chamber, chamber_temp, max_y, max_x, max_z, speed_travel, add_messages, anneal_type)
+            data = self._anneal_print(add_messages, data, bed_temperature, chamber_temp, heated_chamber, heating_zone, lowest_temp, max_x, max_y, max_z, park_xy, park_z, speed_travel)
         elif cycle_type == "dry_cycle":
-            data = self._dry_filament_only(data, anneal_type, heated_chamber, chamber_temp, bed_temperature, max_z, max_y, speed_travel)
+            data = self._dry_filament_only(data, bed_temperature, chamber_temp, heated_chamber, heating_zone, max_y, max_z, speed_travel)
         
         return data
 
-    def _anneal_print(self, anneal_data: str, park_xy: bool, park_z: bool, bed_temperature:int, lowest_temp: int, heated_chamber: bool, chamber_temp: str, max_x: str, max_y: str, max_z: str, speed_travel: str, add_messages: bool, anneal_type: str):
+    def _anneal_print(
+            self,
+            add_messages: bool,
+            anneal_data: str,
+            bed_temperature: int,
+            chamber_temp: str,
+            heated_chamber: bool,
+            heating_zone: str,
+            lowest_temp: int,
+            max_x: str,
+            max_y: str,
+            max_z: str,
+            park_xy: bool,
+            park_z: bool,
+            speed_travel: str) -> str:
         """
-        The procedure disables the M140 (and M141) lines at the end of the print, and adds additional bed (and chamber) temperature commands to the end of the G-Code file.  The bed is allowed to cool down over a period of time.
+        The procedure disables the M140 (and M141) lines at the end of the print, and adds additional bed (and chamber) temperature commands to the end of the G-Code file.
+        The bed is allowed to cool down over a period of time.
+                
+        :param add_messages: Whether to include M117 and M118 messages for LCD and print server
+        :param anneal_data: The G-code data to be modified with annealing commands
+        :param bed_temperature: Starting bed temperature in degrees Celsius
+        :param chamber_temp: Chamber/build volume temperature in degrees Celsius as string
+        :param heated_chamber: Whether the printer has a heated build volume/chamber
+        :param heating_zone: Zone selection - "bed_only" or "bed_chamber"
+        :param lowest_temp: Final shutdown temperature in degrees Celsius
+        :param max_x: Maximum X axis position for parking as string
+        :param max_y: Maximum Y axis position for parking as string
+        :param max_z: Maximum Z axis position (machine height - 20mm) as string
+        :param park_xy: Whether to park the print head at max X and Y positions
+        :param park_z: Whether to raise Z to maximum safe height
+        :param speed_travel: Travel speed for positioning moves in mm/min as string
+        :return: Modified G-code data with annealing cooldown sequence
         """
         # Put the head parking string together
         bed_temp_during_print = int(self.global_stack.getProperty("material_bed_temperature", "value"))
@@ -326,7 +357,7 @@ class AnnealingOrDrying(Script):
         # Calculate the temperature differential
         hysteresis = bed_temperature - lowest_temp
 
-        # if the bed temp is below the shutoff temp then exit
+        # Exit if the bed temp is below the shutoff temp
         if hysteresis <= 0:
             anneal_data[0] += ";  Anneal or Dry Filament did not run.  Bed Temp < Shutoff Temp\n"
             Message(title = "Anneal or Dry Filament", text = "Did not run because the Bed Temp < Shutoff Temp.").show()
@@ -351,9 +382,9 @@ class AnnealingOrDrying(Script):
         if wait_time > 0:
             # Add the parking string BEFORE the M190
             anneal_string += park_string
-            if anneal_type == "bed_only":
+            if heating_zone == "bed_only":
                 anneal_string += f"M190 S{bed_temperature} ; Set the bed temp\n{self.beep_string}"
-            if anneal_type == "bed_chamber":
+            if heating_zone == "bed_chamber":
                 anneal_string += f"M190 S{bed_temperature} ; Set the bed temp\nM141 S{chamber_temp} ; Set the chamber temp\n{self.beep_string}"
             anneal_string += f"G4 S{wait_time} ; Hold for {round(wait_time / 3600,2)} hrs\n"
         else:
@@ -368,7 +399,7 @@ class AnnealingOrDrying(Script):
         # Step the bed/chamber temps down and add each step to the anneal string.  The chamber remains at it's temperature until the bed gets down to that temperature.
         for num in range(bed_temperature, lowest_temp, -3):
             anneal_string += f"M140 S{step_down} ; Step down bed\n"
-            if anneal_type == "bed_chamber" and int(step_down) < int(chamber_temp):
+            if heating_zone == "bed_chamber" and int(step_down) < int(chamber_temp):
                 anneal_string += f"M141 S{step_down} ; Step down chamber\n"
             anneal_string += f"G4 S{time_per_step} ; Wait\n"
             if time_remaining >= 1.00:
@@ -388,7 +419,7 @@ class AnnealingOrDrying(Script):
 
         # Close out the anneal string
         anneal_string += "M140 S0 ; Shut off the bed heater" + "\n"
-        if anneal_type == "bed_chamber":
+        if heating_zone == "bed_chamber":
             anneal_string += "M141 S0 ; Shut off the chamber heater\n"
         anneal_string += self.bv_fan_off_str
         anneal_string += self.beep_string
@@ -416,7 +447,7 @@ class AnnealingOrDrying(Script):
                 anneal_data[-1] = "\n".join(end_lines)
 
         # If there is a Heated Chamber and it's included then comment out the M141 S0 line
-        if anneal_type == "bed_chamber" and heated_chamber:
+        if heating_zone == "bed_chamber" and heated_chamber:
             for num in range(0,len(end_lines)-1):
                 if end_lines[num].startswith("M141 S0"):
                     end_lines[num] = ";M141 S0 ; Shutoff Overide - Anneal or Dry Filament"
@@ -438,9 +469,30 @@ class AnnealingOrDrying(Script):
         anneal_data[-1] = anneal_data[-1].replace(";End of Gcode", anneal_string + disable_string + ";End of Gcode")
         return anneal_data
 
-    def _dry_filament_only(self, drydata: str, anneal_type: str, heated_chamber: bool, chamber_temp: int, bed_temperature: int, max_z:str, max_y:str, speed_travel: str) -> str:
+    def _dry_filament_only(
+            self,
+            bed_temperature: int,
+            chamber_temp: int,
+            drydata: str,
+            heated_chamber: bool,
+            heating_zone: str,
+            max_y: str,
+            max_z: str,
+            speed_travel: str) -> str:
         """
-        This procedure turns the bed on, homes the printer, parks the head.  After the time period the bed is turned off.  There is no actual print in the generated gcode, just a couple of moves to get the nozzle out of the way, and the bed heat (and possibly chamber heat) control.  It allows a user to use the bed to warm up and hopefully dry a filament roll.
+        This procedure turns the bed on, homes the printer, parks the head.  After the time period the bed is turned off.
+        There is no actual print in the generated gcode, just a couple of moves to get the nozzle out of the way, and the bed heat (and possibly chamber heat) control.
+        It allows a user to use the bed to warm up and hopefully dry a filament roll.
+                
+        :param bed_temperature: Bed temperature for drying in degrees Celsius
+        :param chamber_temp: Chamber/build volume temperature for drying in degrees Celsius
+        :param drydata: The G-code data to be replaced with filament drying commands
+        :param heated_chamber: Whether the printer has a heated build volume/chamber
+        :param heating_zone: Zone selection - "bed_only" or "bed_chamber"
+        :param max_y: Maximum Y axis position for parking as string
+        :param max_z: Maximum Z axis position (machine height - 20mm) as string
+        :param speed_travel: Travel speed for positioning moves in mm/min as string
+        :return: Modified G-code data containing only filament drying sequence
         """
         for num in range(2, len(drydata)):
             drydata[num] = ""
@@ -461,7 +513,7 @@ class AnnealingOrDrying(Script):
         drying_string += f"M84 S{round(dry_time)} ; Set stepper timeout\n"
         drying_string += f"M140 S{bed_temperature} ; Heat bed\n"
         drying_string += self.bv_fan_on_str
-        if heated_chamber and anneal_type == "bed_chamber":
+        if heated_chamber and heating_zone == "bed_chamber":
             drying_string += f"M141 S{chamber_temp} ; Chamber temp\n"
         if pause_cmd == "M0":
             pause_cmd = "M0 Clear bed and click...; Pause"
@@ -489,7 +541,7 @@ class AnnealingOrDrying(Script):
                     drying_string += f"M117 {temp_time/3600} hr remaining ; Message\n"
                     drying_string += f"M118 {temp_time/3600} hr remaining ; Message\n"
                 drying_string += f"G4 S{temp_time} ; Dry time\n"
-        if heated_chamber and anneal_type == "bed_chamber":
+        if heated_chamber and heating_zone == "bed_chamber":
             drying_string += f"M141 S0 ; Shut off chamber\n"
         drying_string += "M140 S0 ; Shut off bed\n"
         drying_string += self.bv_fan_off_str
@@ -512,7 +564,7 @@ class AnnealingOrDrying(Script):
         drydata[1] = "\n".join(lines) + "\n"
         dry_txt = "; Drying time ...................... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
         dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "°\n"
-        if heated_chamber and anneal_type == "bed_chamber":
+        if heated_chamber and heating_zone == "bed_chamber":
             dry_txt += "; Chamber temperature ... " + str(chamber_temp) + "°\n"
         Message(title = "[Dry Filament]", text = dry_txt).show()
         drydata[0] = "; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
