@@ -189,6 +189,7 @@ class PaintView(View):
 
     def setPaintType(self, paint_type: str) -> None:
         self._current_paint_type = paint_type
+        self._prepareDataMapping()
 
     def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
