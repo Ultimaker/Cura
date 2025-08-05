@@ -132,7 +132,7 @@ fragment41core =
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
-u_opacity = 0.5
+u_opacity = 1.0
 u_texture = 0
 
 [bindings]
