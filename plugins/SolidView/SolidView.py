@@ -289,8 +289,9 @@ class SolidView(View):
 
     def endRendering(self):
         # check whether the xray overlay is showing badness
-        if time.time() > self._next_xray_checking_time\
-                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+        if (time.time() > self._next_xray_checking_time
+                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference)
+                and self._xray_pass is not None):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()

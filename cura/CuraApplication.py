@@ -59,6 +59,7 @@ from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.CuraRenderer import CuraRenderer
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -360,6 +361,9 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager(self)
         self._machine_action_manager.initialize()
+
+    def makeRenderer(self) -> CuraRenderer:
+        return CuraRenderer(self)
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open, self._urls_to_open)

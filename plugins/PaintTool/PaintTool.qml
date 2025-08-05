@@ -15,10 +15,6 @@ Item
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
 
-    property string selectedMode: ""
-    property string selectedColor: ""
-    property int selectedShape: 0
-
     Action
     {
         id: undoAction
@@ -57,6 +53,7 @@ Item
                 icon: "Support"
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
+                visible: false
             }
 
             PaintModeButton
@@ -174,19 +171,18 @@ Item
 
             from: 10
             to: 1000
-            value: 200
 
             onPressedChanged: function(pressed)
             {
                 if(! pressed)
                 {
-                    setBrushSize()
+                    UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
             }
 
-            function setBrushSize()
+            Component.onCompleted:
             {
-                UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
+                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -238,14 +234,5 @@ Item
                 onClicked: UM.Controller.triggerAction("clear")
             }
         }
-    }
-
-    Component.onCompleted:
-    {
-        // Force first types for consistency, otherwise UI may become different from controller
-        rowPaintMode.children[0].setMode()
-        rowBrushColor.children[1].setColor()
-        rowBrushShape.children[1].setShape()
-        shapeSizeSlider.setBrushSize()
     }
 }
