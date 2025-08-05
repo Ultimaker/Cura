@@ -9,6 +9,7 @@ from PyQt6.QtGui import QImage, QColor, QPainter
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
+from Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
 from UM.View.View import View
 from UM.View.GL.ShaderProgram import ShaderProgram
@@ -52,18 +53,55 @@ class PaintView(View):
 
         self._solid_view = None
 
+        self._extruders_model: Optional[ExtrudersModel] = None
+
     def _makePaintModes(self):
-        theme = CuraApplication.getInstance().getTheme()
+        application = CuraApplication.getInstance()
+
+        self._extruders_model = application.getExtrudersModel()
+        self._extruders_model.modelChanged.connect(self._onExtrudersChanged)
+
+        theme = application.getTheme()
         usual_types = {"none":      self.PaintType(Color(*theme.getColor("paint_normal_area").getRgb()), 0),
                        "preferred": self.PaintType(Color(*theme.getColor("paint_preferred_area").getRgb()), 1),
                        "avoid":     self.PaintType(Color(*theme.getColor("paint_avoid_area").getRgb()), 2)}
         self._paint_modes = {
             "seam":    usual_types,
             "support": usual_types,
-            "extruder": usual_types,
+            "extruder": self._makeExtrudersColors(),
         }
 
         self._current_paint_type = "seam"
+
+    def _makeExtrudersColors(self) -> Dict[str, "PaintView.PaintType"]:
+        extruders_colors: Dict[str, "PaintView.PaintType"] = {}
+
+        for extruder_item in self._extruders_model.items:
+            if "color" in extruder_item:
+                material_color = extruder_item["color"]
+            else:
+                material_color = self._extruders_model.defaultColors[0]
+
+            index = extruder_item["index"]
+            extruders_colors[str(index)] = self.PaintType(Color(*QColor(material_color).getRgb()), index)
+
+        return extruders_colors
+
+    def _onExtrudersChanged(self) -> None:
+        if self._paint_modes is None:
+            return
+
+        self._paint_modes["extruder"] = self._makeExtrudersColors()
+
+        controller = CuraApplication.getInstance().getController()
+        if controller.getActiveView() != self:
+            return
+
+        selected_objects = Selection.getAllSelectedObjects()
+        if len(selected_objects) != 1:
+            return
+
+        controller.getScene().sceneChanged.emit(selected_objects[0])
 
     def _checkSetup(self):
         if not self._paint_shader:

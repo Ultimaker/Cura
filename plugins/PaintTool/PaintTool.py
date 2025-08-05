@@ -47,6 +47,7 @@ class PaintTool(Tool):
 
         self._brush_size: int = 200
         self._brush_color: str = "preferred"
+        self._brush_extruder: int = 0
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
 
@@ -56,7 +57,7 @@ class PaintTool(Tool):
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape")
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder")
 
         Selection.selectionChanged.connect(self._updateIgnoreUnselectedObjects)
 
@@ -129,6 +130,14 @@ class PaintTool(Tool):
     def setBrushColor(self, brush_color: str) -> None:
         if brush_color != self._brush_color:
             self._brush_color = brush_color
+            self.propertyChanged.emit()
+
+    def getBrushExtruder(self) -> int:
+        return self._brush_extruder
+
+    def setBrushExtruder(self, brush_extruder: int) -> None:
+        if brush_extruder != self._brush_extruder:
+            self._brush_extruder = brush_extruder
             self.propertyChanged.emit()
 
     def getBrushShape(self) -> int:
@@ -379,6 +388,7 @@ class PaintTool(Tool):
                                               (self._last_mouse_coords, (self._last_face_id, self._last_text_coords)),
                                               ((mouse_evt.x, mouse_evt.y), (face_id, texcoords)))
 
+            brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
             w, h = paintview.getUvTexDimensions()
             for start_coords, end_coords in substrokes:
                 sub_image, (start_x, start_y) = self._createStrokeImage(
@@ -387,7 +397,7 @@ class PaintTool(Tool):
                     end_coords[0] * w,
                     end_coords[1] * h
                 )
-                paintview.addStroke(sub_image, start_x, start_y, self._brush_color)
+                paintview.addStroke(sub_image, start_x, start_y, brush_color)
 
             self._last_text_coords = texcoords
             self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
