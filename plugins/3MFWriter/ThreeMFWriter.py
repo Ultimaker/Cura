@@ -58,6 +58,8 @@ catalog = i18nCatalog("cura")
 
 MODEL_PATH = "3D/3dmodel.model"
 PACKAGE_METADATA_PATH = "Cura/packages.json"
+TEXTURES_PATH = "3D/Textures"
+MODEL_RELATIONS_PATH = "3D/_rels/3dmodel.model.rels"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -109,7 +111,11 @@ class ThreeMFWriter(MeshWriter):
     def _convertUMNodeToSavitarNode(um_node,
                                     transformation = Matrix(),
                                     exported_settings: Optional[Dict[str, Set[str]]] = None,
-                                    center_mesh = False):
+                                    center_mesh = False,
+                                    scene: Savitar.Scene = None,
+                                    archive: zipfile.ZipFile = None,
+                                    model_relations_element: ET.Element = None,
+                                    content_types_element: ET.Element = None):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -150,7 +156,28 @@ class ThreeMFWriter(MeshWriter):
             if indices_array is not None:
                 savitar_node.getMeshData().setFacesFromBytes(indices_array)
             else:
-                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tostring())
+                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
+
+            packed_texture = um_node.callDecoration("packTexture") 
+            uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
+            if packed_texture is not None and archive is not None and uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
+                texture_path = f"{TEXTURES_PATH}/{id(um_node)}.png"
+                texture_file = zipfile.ZipInfo(texture_path)
+                # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
+                archive.writestr(texture_file, packed_texture)
+
+                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
+
+                # Add texture relation to model relations file
+                if model_relations_element is not None:
+                    ET.SubElement(model_relations_element, "Relationship",
+                                  Target=texture_path, Id=f"rel{len(model_relations_element)+1}",
+                                  Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dtexture")
+
+                if content_types_element is not None:
+                    ET.SubElement(content_types_element, "Override", PartName=texture_path,
+                                  ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
+
 
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")
@@ -187,7 +214,11 @@ class ThreeMFWriter(MeshWriter):
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
             savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
-                                                                           exported_settings = exported_settings)
+                                                                           exported_settings = exported_settings,
+                                                                           scene = scene,
+                                                                           archive = archive,
+                                                                           model_relations_element = model_relations_element,
+                                                                           content_types_element = content_types_element)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -248,6 +279,9 @@ class ThreeMFWriter(MeshWriter):
 
             # Create Metadata/_rels/model_settings.config.rels
             metadata_relations_element = self._makeRelationsTree()
+
+            # Create model relations
+            model_relations_element = self._makeRelationsTree()
 
             # Let the variant add its specific files
             variant.add_extra_files(archive, metadata_relations_element)
@@ -320,13 +354,21 @@ class ThreeMFWriter(MeshWriter):
                         savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child,
                                                                                  transformation_matrix,
                                                                                  exported_model_settings,
-                                                                                 center_mesh = True)
+                                                                                 center_mesh = True,
+                                                                                 scene = savitar_scene,
+                                                                                 archive = archive,
+                                                                                 model_relations_element = model_relations_element,
+                                                                                 content_types_element = content_types)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
                     savitar_node = self._convertUMNodeToSavitarNode(node,
                                                                     transformation_matrix,
-                                                                    exported_model_settings)
+                                                                    exported_model_settings,
+                                                                    scene = savitar_scene,
+                                                                    archive = archive,
+                                                                    model_relations_element = model_relations_element,
+                                                                    content_types_element = content_types)
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
@@ -338,6 +380,8 @@ class ThreeMFWriter(MeshWriter):
             self._storeElementTree(archive, "_rels/.rels", relations_element)
             if len(metadata_relations_element) > 0:
                 self._storeElementTree(archive, "Metadata/_rels/model_settings.config.rels", metadata_relations_element)
+            if len(model_relations_element) > 0:
+                self._storeElementTree(archive, MODEL_RELATIONS_PATH, model_relations_element)
         except Exception as error:
             Logger.logException("e", "Error writing zip file")
             self.setInformation(str(error))
@@ -500,7 +544,7 @@ class ThreeMFWriter(MeshWriter):
     def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
         savitar_scene = Savitar.Scene()
         for scene_node in scene_nodes:
-            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True)
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True, scene = savitar_scene)
             savitar_scene.addSceneNode(savitar_node)
         parser = Savitar.ThreeMFParser()
         scene_string = parser.sceneToString(savitar_scene)
