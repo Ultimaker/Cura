@@ -1,6 +1,5 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from UM.Job import Job  # For our background task of loading MachineNodes lazily.
 from UM.JobQueue import JobQueue  # For our background task of loading MachineNodes lazily.
 from UM.Logger import Logger
@@ -10,7 +9,7 @@ import cura.CuraApplication  # Imported like this to prevent circular dependenci
 from cura.Machines.MachineNode import MachineNode
 from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
 
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, Optional, Any, Set, TYPE_CHECKING
 import time
 
 if TYPE_CHECKING:
@@ -78,9 +77,10 @@ class ContainerTree:
 
     def _onStartupFinished(self) -> None:
         """Ran after completely starting up the application."""
-
-        currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
-        JobQueue.getInstance().add(self._MachineNodeLoadJob(self, currently_added))
+        from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+        currently_added_stacks = CuraContainerRegistry.getInstance().findGlobalStacks()
+        definitions_ids = set([stack.definition.getId() for stack in currently_added_stacks])
+        JobQueue.getInstance().add(self._MachineNodeLoadJob(self, definitions_ids))
 
     class _MachineNodeMap:
         """Dictionary-like object that contains the machines.
@@ -153,17 +153,17 @@ class ContainerTree:
         faster.
         """
 
-        def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]) -> None:
+        def __init__(self, tree_root: "ContainerTree", definitions_ids: Set[str]) -> None:
             """Creates a new background task.
 
             :param tree_root: The container tree instance. This cannot be obtained through the singleton static
             function since the instance may not yet be constructed completely.
-            :param container_stacks: All of the stacks to pre-load the container trees for. This needs to be provided
-            from here because the stacks need to be constructed on the main thread because they are QObject.
+            :param definitions_ids: The IDs of all the definitions to pre-load the container trees for. This needs to be
+            provided from here because the stacks need to be constructed on the main thread because they are QObject.
             """
 
             self.tree_root = tree_root
-            self.container_stacks = container_stacks
+            self.definitions_ids: Set[str] = definitions_ids
             super().__init__()
 
         def run(self) -> None:
@@ -172,14 +172,12 @@ class ContainerTree:
             The ``JobQueue`` will schedule this on a different thread.
             """
             Logger.log("d", "Started background loading of MachineNodes")
-            for stack in self.container_stacks:  # Load all currently-added containers.
-                if not isinstance(stack, GlobalStack):
-                    continue
+            for definition_id in self.definitions_ids:  # Load all currently-added containers.
                 # Allow a thread switch after every container.
                 # Experimentally, sleep(0) didn't allow switching. sleep(0.1) or sleep(0.2) neither.
                 # We're in no hurry though. Half a second is fine.
                 time.sleep(0.5)
-                definition_id = stack.definition.getId()
+
                 if not self.tree_root.machines.is_loaded(definition_id):
                     _ = self.tree_root.machines[definition_id]
             Logger.log("d", "All MachineNode loading completed")
