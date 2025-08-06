@@ -9,9 +9,9 @@ from PyQt6.QtGui import QImage, QColor, QPainter
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
+from cura.CuraView import CuraView
 from Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
-from UM.View.View import View
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -23,7 +23,7 @@ from UM.Math.Color import Color
 catalog = i18nCatalog("cura")
 
 
-class PaintView(View):
+class PaintView(CuraView):
     """View for model-painting."""
 
     UNDO_STACK_SIZE = 1024
@@ -34,7 +34,7 @@ class PaintView(View):
             self.value: int = value
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
         self._current_paint_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
@@ -50,8 +50,6 @@ class PaintView(View):
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
-
-        self._solid_view = None
 
         self._extruders_model: Optional[ExtrudersModel] = None
 
@@ -219,18 +217,6 @@ class PaintView(View):
         if self._current_paint_type not in self._paint_modes:
             return
 
-        if self._solid_view is None:
-            plugin_registry = PluginRegistry.getInstance()
-            solid_view = plugin_registry.getPluginObject("SolidView")
-            if isinstance(solid_view, View):
-                self._solid_view = solid_view
-
-        display_objects = Selection.getAllSelectedObjects().copy()
-        if len(display_objects) != 1 and self._solid_view is not None:
-            # Display the classic view until a single object is selected
-            self._solid_view.beginRendering()
-            return
-
         self._checkSetup()
         renderer = self.getRenderer()
 
@@ -241,7 +227,7 @@ class PaintView(View):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        for node in display_objects:
+        for node in Selection.getAllSelectedObjects():
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
             self._current_paint_texture = node.callDecoration("getPaintTexture")
             self._paint_shader.setTexture(0, self._current_paint_texture)
