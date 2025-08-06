@@ -858,7 +858,7 @@ class CuraApplication(QtApplication):
 
         # Since it's possible to get crashes in code before the sentrylogger is loaded, we want to start this plugin
         # as quickly as possible, as we might get unsolvable crash reports without it.
-        self._plugin_registry.preloaded_plugins.append("SentryLogger")
+        ### self._plugin_registry.preloaded_plugins.append("SentryLogger")
         self._plugin_registry.loadPlugins()
 
         if self.getBackend() is None:

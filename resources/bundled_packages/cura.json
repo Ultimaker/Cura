@@ -1,21 +1,4 @@
 {
-    "3DConnexion": {
-        "package_info": {
-            "package_id": "3DConnexion",
-            "package_type": "plugin",
-            "display_name": "3DConnexion mouses",
-            "description": "Allows working with 3D mouses inside Cura.\nOnly available on Windows and MacOS.",
-            "package_version": "1.0.0",
-            "sdk_version": "8.6.0",
-            "website": "https://3dconnexion.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "3DConnexion",
-                "email": "plugins@ultimaker.com",
-                "website": "https://3dconnexion.com"
-            }
-        }
-    },
     "3MFReader": {
         "package_info": {
             "package_id": "3MFReader",
@@ -458,46 +441,12 @@
             }
         }
     },
-    "SentryLogger": {
-        "package_info": {
-            "package_id": "SentryLogger",
-            "package_type": "plugin",
-            "display_name": "Sentry Logger",
-            "description": "Logs certain events so that they can be used by the crash reporter",
-            "package_version": "1.0.0",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
     "SimulationView": {
         "package_info": {
             "package_id": "SimulationView",
             "package_type": "plugin",
             "display_name": "Simulation View",
             "description": "Provides the Simulation view.",
-            "package_version": "1.0.1",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SliceInfoPlugin": {
-        "package_info": {
-            "package_id": "SliceInfoPlugin",
-            "package_type": "plugin",
-            "display_name": "Slice Info",
-            "description": "Submits anonymous slice info. Can be disabled through preferences.",
             "package_version": "1.0.1",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com",
@@ -635,23 +584,6 @@
             "display_name": "UM3 Network Printing",
             "description": "Manages network connections to Ultimaker 3 printers.",
             "package_version": "1.0.1",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "USBPrinting": {
-        "package_info": {
-            "package_id": "USBPrinting",
-            "package_type": "plugin",
-            "display_name": "USB Printing",
-            "description": "Accepts G-Code and sends them to a printer. Plugin can also update firmware.",
-            "package_version": "1.0.2",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com",
             "author": {
