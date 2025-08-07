@@ -12,6 +12,7 @@ from numpy import ndarray
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -22,6 +23,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
 from UM.View.SelectionPass import SelectionPass
 from .PaintView import PaintView
+from .PrepareTextureJob import PrepareTextureJob
 
 
 class PaintTool(Tool):
@@ -32,6 +34,13 @@ class PaintTool(Tool):
         class Shape(IntEnum):
             SQUARE = 0
             CIRCLE = 1
+
+    class Paint(QObject):
+        @pyqtEnum
+        class State(IntEnum):
+            MULTIPLE_SELECTION = 0 # Multiple objects are selected, wait until there is only one
+            PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
+            READY = 2              # Ready to paint !
 
     def __init__(self, view: PaintView) -> None:
         super().__init__()
@@ -60,10 +69,13 @@ class PaintTool(Tool):
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "CanUndo", "CanRedo")
+        self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
+        self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        Selection.selectionChanged.connect(self._updateActiveView)
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State", "CanUndo", "CanRedo")
+
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
+        self._controller.activeToolChanged.connect(self._updateState)
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
@@ -139,6 +151,9 @@ class PaintTool(Tool):
 
     def getCanUndo(self) -> bool:
         return self._view.canUndo()
+
+    def getState(self) -> int:
+        return self._state
 
     def _onCanUndoChanged(self):
         self.propertyChanged.emit()
@@ -258,23 +273,6 @@ class PaintTool(Tool):
             self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
             self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
 
-    def _setupNodeForPainting(self, node: SceneNode) -> bool:
-        mesh = node.getMeshData()
-        if mesh.hasUVCoordinates():
-            return True
-
-        texture_width, texture_height = mesh.calculateUnwrappedUVCoordinates()
-        if texture_width <= 0 or texture_height <= 0:
-            return False
-
-        node.callDecoration("prepareTexture", texture_width, texture_height)
-
-        if hasattr(mesh, OpenGL.VertexBufferProperty):
-            # Force clear OpenGL buffer so that new UV coordinates will be sent
-            delattr(mesh, OpenGL.VertexBufferProperty)
-
-        return True
-
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
 
@@ -295,6 +293,9 @@ class PaintTool(Tool):
 
         if event.type == Event.ToolDeactivateEvent:
             return True
+
+        if self._state != PaintTool.Paint.State.READY:
+            return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
@@ -344,9 +345,6 @@ class PaintTool(Tool):
             if not self._mesh_transformed_cache:
                 return False
 
-            if not self._setupNodeForPainting(node):
-                return False
-
             face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
             if texcoords is None:
                 return False
@@ -391,8 +389,34 @@ class PaintTool(Tool):
         if node is not None:
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
 
-    def _updateActiveView(self):
+    def _onSelectionChanged(self):
+        super()._onSelectionChanged()
+
         self.setActiveView("PaintTool" if len(Selection.getAllSelectedObjects()) == 1 else None)
+        self._updateState()
+
+    def _updateState(self):
+        if len(Selection.getAllSelectedObjects()) == 1 and self._controller.getActiveTool() == self:
+            selected_object = Selection.getSelectedObject(0)
+            if selected_object.callDecoration("getPaintTexture") is not None:
+                new_state = PaintTool.Paint.State.READY
+            else:
+                new_state = PaintTool.Paint.State.PREPARING_MODEL
+                self._prepare_texture_job = PrepareTextureJob(selected_object)
+                self._prepare_texture_job.finished.connect(self._onPrepareTextureFinished)
+                self._prepare_texture_job.start()
+        else:
+            new_state = PaintTool.Paint.State.MULTIPLE_SELECTION
+
+        if new_state != self._state:
+            self._state = new_state
+            self.propertyChanged.emit()
+
+    def _onPrepareTextureFinished(self, job: Job):
+        if job == self._prepare_texture_job:
+            self._prepare_texture_job = None
+            self._state = PaintTool.Paint.State.READY
+            self.propertyChanged.emit()
 
     def _updateIgnoreUnselectedObjects(self):
         ignore_unselected_objects = self._controller.getActiveView().name == "PaintTool"
