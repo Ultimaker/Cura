@@ -13,27 +13,6 @@ UM.ToolbarButton
 
     property int shape
 
-    onClicked: setShape()
-
-    function setShape()
-    {
-        UM.Controller.setProperty("BrushShape", buttonBrushShape.shape)
-    }
-
-    function isChecked()
-    {
-        return UM.Controller.properties.getValue("BrushShape") === buttonBrushShape.shape;
-    }
-
-    Component.onCompleted:
-    {
-        buttonBrushShape.checked = isChecked();
-    }
-
-    Binding
-    {
-        target: buttonBrushShape
-        property: "checked"
-        value: isChecked()
-    }
+    checked: UM.Controller.properties.getValue("BrushShape") === buttonBrushShape.shape
+    onClicked: UM.Controller.setProperty("BrushShape", buttonBrushShape.shape)
 }

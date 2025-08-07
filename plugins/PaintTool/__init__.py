@@ -28,7 +28,8 @@ def getMetaData():
 def register(app):
     qmlRegisterUncreatableType(PaintTool.PaintTool.Brush, "Cura", 1, 0, "This is an enumeration class", "PaintToolBrush")
     qmlRegisterUncreatableType(PaintTool.PaintTool.Paint, "Cura", 1, 0, "This is an enumeration class", "PaintToolState")
+    view = PaintView.PaintView()
     return {
-        "tool": PaintTool.PaintTool(),
-        "view": PaintView.PaintView()
+        "tool": PaintTool.PaintTool(view),
+        "view": view
     }

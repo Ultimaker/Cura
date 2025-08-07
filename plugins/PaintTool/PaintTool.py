@@ -42,8 +42,12 @@ class PaintTool(Tool):
             PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
             READY = 2              # Ready to paint !
 
-    def __init__(self) -> None:
+    def __init__(self, view: PaintView) -> None:
         super().__init__()
+
+        self._view: PaintView = view
+        self._view.canUndoChanged.connect(self._onCanUndoChanged)
+        self._view.canRedoChanged.connect(self._onCanRedoChanged)
 
         self._picking_pass: Optional[PickingPass] = None
         self._faces_selection_pass: Optional[SelectionPass] = None
@@ -68,7 +72,7 @@ class PaintTool(Tool):
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State")
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State", "CanUndo", "CanRedo")
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
@@ -108,19 +112,11 @@ class PaintTool(Tool):
         return stroke_image, (start_x, start_y)
 
     def getPaintType(self) -> str:
-        paint_view = self._get_paint_view()
-        if paint_view is None:
-            return ""
-
-        return paint_view.getPaintType()
+        return self._view.getPaintType()
 
     def setPaintType(self, paint_type: str) -> None:
-        paint_view = self._get_paint_view()
-        if paint_view is None:
-            return
-
         if paint_type != self.getPaintType():
-            paint_view.setPaintType(paint_type)
+            self._view.setPaintType(paint_type)
 
             self._brush_pen = self._createBrushPen()
             self._updateScene()
@@ -153,40 +149,36 @@ class PaintTool(Tool):
             self._brush_pen = self._createBrushPen()
             self.propertyChanged.emit()
 
+    def getCanUndo(self) -> bool:
+        return self._view.canUndo()
+
     def getState(self) -> int:
         return self._state
 
-    def undoStackAction(self, redo_instead: bool) -> bool:
-        paint_view = self._get_paint_view()
-        if paint_view is None:
-            return False
+    def _onCanUndoChanged(self):
+        self.propertyChanged.emit()
 
-        if redo_instead:
-            paint_view.redoStroke()
-        else:
-            paint_view.undoStroke()
+    def getCanRedo(self) -> bool:
+        return self._view.canRedo()
 
+    def _onCanRedoChanged(self):
+        self.propertyChanged.emit()
+
+    def undoStackAction(self) -> None:
+        self._view.undoStroke()
         self._updateScene()
-        return True
+
+    def redoStackAction(self) -> None:
+        self._view.redoStroke()
+        self._updateScene()
 
     def clear(self) -> None:
-        paintview = self._get_paint_view()
-        if paintview is None:
-            return
-
-        width, height = paintview.getUvTexDimensions()
+        width, height = self._view.getUvTexDimensions()
         clear_image = QImage(width, height, QImage.Format.Format_RGB32)
         clear_image.fill(Qt.GlobalColor.white)
-        paintview.addStroke(clear_image, 0, 0, "none")
+        self._view.addStroke(clear_image, 0, 0, "none", False)
 
         self._updateScene()
-
-    @staticmethod
-    def _get_paint_view() -> Optional[PaintView]:
-        paint_view = Application.getInstance().getController().getActiveView()
-        if paint_view is None or paint_view.getPluginId() != "PaintTool":
-            return None
-        return cast(PaintView, paint_view)
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -327,10 +319,6 @@ class PaintTool(Tool):
                 else:
                     self._mouse_held = True
 
-            paintview = self._get_paint_view()
-            if paintview is None:
-                return False
-
             if not self._faces_selection_pass:
                 self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
                 if not self._faces_selection_pass:
@@ -373,7 +361,7 @@ class PaintTool(Tool):
                                               (self._last_mouse_coords, (self._last_face_id, self._last_text_coords)),
                                               ((mouse_evt.x, mouse_evt.y), (face_id, texcoords)))
 
-            w, h = paintview.getUvTexDimensions()
+            w, h = self._view.getUvTexDimensions()
             for start_coords, end_coords in substrokes:
                 sub_image, (start_x, start_y) = self._createStrokeImage(
                     start_coords[0] * w,
@@ -381,7 +369,7 @@ class PaintTool(Tool):
                     end_coords[0] * w,
                     end_coords[1] * h
                 )
-                paintview.addStroke(sub_image, start_x, start_y, self._brush_color)
+                self._view.addStroke(sub_image, start_x, start_y, self._brush_color, is_moved)
 
             self._last_text_coords = texcoords
             self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
