@@ -20,14 +20,16 @@ Item
     {
         id: undoAction
         shortcut: "Ctrl+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+        enabled: UM.Controller.properties.getValue("CanUndo")
+        onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
     Action
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+        enabled: UM.Controller.properties.getValue("CanRedo")
+        onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
     Column
@@ -197,6 +199,7 @@ Item
 
             from: 10
             to: 1000
+            value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
             {
@@ -204,11 +207,6 @@ Item
                 {
                     UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
-            }
-
-            Component.onCompleted:
-            {
-                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -226,6 +224,7 @@ Item
             {
                 id: undoButton
 
+                enabled: undoAction.enabled
                 text: catalog.i18nc("@action:button", "Undo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -240,6 +239,7 @@ Item
             {
                 id: redoButton
 
+                enabled: redoAction.enabled
                 text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -259,6 +259,77 @@ Item
                 text: catalog.i18nc("@button", "Clear all")
                 onClicked: UM.Controller.triggerAction("clear")
             }
+        }
+    }
+
+    Rectangle
+    {
+        id: waitPrepareItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.PREPARING_MODEL
+
+        ColumnLayout
+        {
+            anchors.fill: parent
+
+            UM.Label
+            {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.verticalStretchFactor: 2
+
+                text: catalog.i18nc("@label", "Preparing model for painting...")
+                verticalAlignment: Text.AlignBottom
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Item
+            {
+                Layout.preferredWidth: loadingIndicator.width
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.verticalStretchFactor: 1
+
+                UM.ColorImage
+                {
+                    id: loadingIndicator
+
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    width: UM.Theme.getSize("card_icon").width
+                    height: UM.Theme.getSize("card_icon").height
+                    source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                    color: UM.Theme.getColor("text_default")
+
+                    RotationAnimator
+                    {
+                        target: loadingIndicator
+                        from: 0
+                        to: 360
+                        duration: 2000
+                        loops: Animation.Infinite
+                        running: true
+                        alwaysRunToEnd: true
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle
+    {
+        id: selectSingleMessageItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.MULTIPLE_SELECTION
+
+        UM.Label
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@label", "Select a single model to start painting")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
         }
     }
 }
