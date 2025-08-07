@@ -185,7 +185,7 @@ class PaintTool(Tool):
         width, height = self._view.getUvTexDimensions()
         clear_image = QImage(width, height, QImage.Format.Format_RGB32)
         clear_image.fill(Qt.GlobalColor.white)
-        self._view.addStroke(clear_image, 0, 0, "none", False)
+        self._view.addStroke(clear_image, 0, 0, "none" if self.getPaintType() != "extruder" else "0", False)
 
         self._updateScene()
 
