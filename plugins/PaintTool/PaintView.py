@@ -10,7 +10,7 @@ from PyQt6.QtGui import QImage, QUndoStack, QColor
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
-from Machines.Models.ExtrudersModel import ExtrudersModel
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
