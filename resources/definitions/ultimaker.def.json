@@ -16,7 +16,6 @@
     {
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_travel_enabled": { "value": false },
-        "bottom_layers": { "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))" },
         "bridge_enable_more_layers": { "value": false },
         "bridge_fan_speed": { "value": "cool_fan_speed_max" },
         "bridge_fan_speed_2": { "value": "cool_fan_speed_min" },
@@ -219,7 +218,6 @@
         "support_wall_count": { "value": "1 if support_structure == 'tree' else 0" },
         "support_xy_distance_overhang": { "value": "0.2" },
         "support_z_distance": { "value": "0" },
-        "top_layers": { "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))" },
         "wall_0_material_flow_layer_0": { "value": "1.10 * material_flow_layer_0" },
         "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
         "wall_x_material_flow_layer_0": { "value": "0.95 * material_flow_layer_0" },
