@@ -24,25 +24,6 @@ class PreviewStage(CuraStage):
         super().__init__(parent)
         self._application = application
         self._application.engineCreatedSignal.connect(self._engineCreated)
-        self._previously_active_view = None  # type: Optional[View]
-
-    def onStageSelected(self) -> None:
-        """When selecting the stage, remember which was the previous view so that
-
-        we can revert to that view when we go out of the stage later.
-        """
-        self._previously_active_view = self._application.getController().getActiveView()
-
-    def onStageDeselected(self) -> None:
-        """Called when going to a different stage (away from the Preview Stage).
-
-        When going to a different stage, the view should be reverted to what it
-        was before. Normally, that just reverts it to solid view.
-        """
-
-        if self._previously_active_view is not None:
-            self._application.getController().setActiveView(self._previously_active_view.getPluginId())
-        self._previously_active_view = None
 
     def _engineCreated(self) -> None:
         """Delayed load of the QML files.

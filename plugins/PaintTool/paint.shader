@@ -29,7 +29,6 @@ fragment =
     uniform mediump vec4 u_ambientColor;
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
-    uniform mediump float u_opacity;
     uniform sampler2D u_texture;
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
@@ -55,10 +54,10 @@ fragment =
         color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
         vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
-        final_color.a = u_opacity;
+        final_color.a = 1.0;
 
         frag_color = final_color;
     }
@@ -95,7 +94,6 @@ fragment41core =
     uniform mediump vec4 u_ambientColor;
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
-    uniform mediump float u_opacity;
     uniform sampler2D u_texture;
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
@@ -122,17 +120,16 @@ fragment41core =
         color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
         vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
-        final_color.a = u_opacity;
+        final_color.a = 1.0;
 
         frag_color = final_color;
     }
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
-u_opacity = 0.5
 u_texture = 0
 
 [bindings]

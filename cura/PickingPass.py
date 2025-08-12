@@ -7,6 +7,7 @@ from UM.Qt.QtApplication import QtApplication
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from UM.Resources import Resources
+from UM.Scene.Selection import Selection
 
 from UM.View.RenderPass import RenderPass
 from UM.View.GL.OpenGL import OpenGL
@@ -27,13 +28,14 @@ class PickingPass(RenderPass):
     .. note:: that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
     """
 
-    def __init__(self, width: int, height: int) -> None:
-        super().__init__("picking", width, height)
+    def __init__(self, width: int, height: int, only_selected_objects: bool = False) -> None:
+        super().__init__("picking" if not only_selected_objects else "picking_selected", width, height)
 
         self._renderer = QtApplication.getInstance().getRenderer()
 
         self._shader = None #type: Optional[ShaderProgram]
         self._scene = QtApplication.getInstance().getController().getScene()
+        self._only_selected_objects = only_selected_objects
 
     def render(self) -> None:
         if not self._shader:
@@ -53,7 +55,7 @@ class PickingPass(RenderPass):
 
         # Fill up the batch with objects that can be sliced. `
         for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
+            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and (not self._only_selected_objects or Selection.isSelected(node)):
                 batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
 
         self.bind()

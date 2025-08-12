@@ -16,7 +16,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 class XRayPass(RenderPass):
     def __init__(self, width, height):
-        super().__init__("xray", width, height)
+        super().__init__("xray", width, height, -100)
 
         self._shader = None
         self._gl = OpenGL.getInstance().getBindingsObject()

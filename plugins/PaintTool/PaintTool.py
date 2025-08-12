@@ -12,13 +12,18 @@ from numpy import ndarray
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent, KeyEvent
+from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
+from UM.View.GL.OpenGL import OpenGL
 
+from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
+from UM.View.SelectionPass import SelectionPass
 from .PaintView import PaintView
+from .PrepareTextureJob import PrepareTextureJob
 
 
 class PaintTool(Tool):
@@ -30,10 +35,18 @@ class PaintTool(Tool):
             SQUARE = 0
             CIRCLE = 1
 
+    class Paint(QObject):
+        @pyqtEnum
+        class State(IntEnum):
+            MULTIPLE_SELECTION = 0 # Multiple objects are selected, wait until there is only one
+            PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
+            READY = 2              # Ready to paint !
+
     def __init__(self) -> None:
         super().__init__()
 
         self._picking_pass: Optional[PickingPass] = None
+        self._faces_selection_pass: Optional[SelectionPass] = None
 
         self._shortcut_key: Qt.Key = Qt.Key.Key_P
 
@@ -41,9 +54,9 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
-        self._brush_size: int = 10
-        self._brush_color: str = ""
-        self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.SQUARE
+        self._brush_size: int = 200
+        self._brush_color: str = "preferred"
+        self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
 
         self._mouse_held: bool = False
@@ -51,6 +64,14 @@ class PaintTool(Tool):
         self._last_text_coords: Optional[numpy.ndarray] = None
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
+
+        self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
+        self._prepare_texture_job: Optional[PrepareTextureJob] = None
+
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State")
+
+        self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
+        self._controller.activeToolChanged.connect(self._updateState)
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
@@ -86,28 +107,54 @@ class PaintTool(Tool):
 
         return stroke_image, (start_x, start_y)
 
+    def getPaintType(self) -> str:
+        paint_view = self._get_paint_view()
+        if paint_view is None:
+            return ""
+
+        return paint_view.getPaintType()
+
     def setPaintType(self, paint_type: str) -> None:
         paint_view = self._get_paint_view()
         if paint_view is None:
             return
 
-        paint_view.setPaintType(paint_type)
+        if paint_type != self.getPaintType():
+            paint_view.setPaintType(paint_type)
 
-        self._brush_pen = self._createBrushPen()
-        self._updateScene()
+            self._brush_pen = self._createBrushPen()
+            self._updateScene()
+            self.propertyChanged.emit()
+
+    def getBrushSize(self) -> int:
+        return self._brush_size
 
     def setBrushSize(self, brush_size: float) -> None:
-        if brush_size != self._brush_size:
-            self._brush_size = int(brush_size)
+        brush_size_int = int(brush_size)
+        if brush_size_int != self._brush_size:
+            self._brush_size = brush_size_int
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
+
+    def getBrushColor(self) -> str:
+        return self._brush_color
 
     def setBrushColor(self, brush_color: str) -> None:
-        self._brush_color = brush_color
+        if brush_color != self._brush_color:
+            self._brush_color = brush_color
+            self.propertyChanged.emit()
+
+    def getBrushShape(self) -> int:
+        return self._brush_shape
 
     def setBrushShape(self, brush_shape: int) -> None:
         if brush_shape != self._brush_shape:
             self._brush_shape = brush_shape
             self._brush_pen = self._createBrushPen()
+            self.propertyChanged.emit()
+
+    def getState(self) -> int:
+        return self._state
 
     def undoStackAction(self, redo_instead: bool) -> bool:
         paint_view = self._get_paint_view()
@@ -179,7 +226,7 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     def _getTexCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray]]:
-        face_id = self._selection_pass.getFaceIdAtPosition(x, y)
+        face_id = self._faces_selection_pass.getFaceIdAtPosition(x, y)
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
             return face_id, None
 
@@ -250,14 +297,13 @@ class PaintTool(Tool):
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
         if event.type == Event.ToolActivateEvent:
-            controller.setActiveStage("PrepareStage")
-            controller.setActiveView("PaintTool")  # Because that's the plugin-name, and the view is registered to it.
             return True
 
         if event.type == Event.ToolDeactivateEvent:
-            controller.setActiveStage("PrepareStage")
-            controller.setActiveView("SolidView")
             return True
+
+        if self._state != PaintTool.Paint.State.READY:
+            return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
@@ -285,8 +331,15 @@ class PaintTool(Tool):
             if paintview is None:
                 return False
 
-            if not self._selection_pass:
-                return False
+            if not self._faces_selection_pass:
+                self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
+                if not self._faces_selection_pass:
+                    return False
+
+            if not self._picking_pass:
+                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
+                if not self._picking_pass:
+                    return False
 
             camera = self._controller.getScene().getActiveCamera()
             if not camera:
@@ -297,17 +350,12 @@ class PaintTool(Tool):
                     self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
                 self._node_cache = node
                 self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
+                self._cache_dirty = True
             if self._cache_dirty:
                 self._cache_dirty = False
                 self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
             if not self._mesh_transformed_cache:
                 return False
-
-            if not self._picking_pass:
-                self._picking_pass = PickingPass(camera.getViewportWidth(), camera.getViewportHeight())
-            self._picking_pass.render()
-
-            self._selection_pass.renderFacesMode()
 
             face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
             if texcoords is None:
@@ -343,9 +391,46 @@ class PaintTool(Tool):
 
         return False
 
+    def getRequiredExtraRenderingPasses(self) -> list[str]:
+        return ["selection_faces", "picking_selected"]
+
     @staticmethod
     def _updateScene(node: SceneNode = None):
         if node is None:
             node = Selection.getSelectedObject(0)
         if node is not None:
             Application.getInstance().getController().getScene().sceneChanged.emit(node)
+
+    def _onSelectionChanged(self):
+        super()._onSelectionChanged()
+
+        self.setActiveView("PaintTool" if len(Selection.getAllSelectedObjects()) == 1 else None)
+        self._updateState()
+
+    def _updateState(self):
+        if len(Selection.getAllSelectedObjects()) == 1 and self._controller.getActiveTool() == self:
+            selected_object = Selection.getSelectedObject(0)
+            if selected_object.callDecoration("getPaintTexture") is not None:
+                new_state = PaintTool.Paint.State.READY
+            else:
+                new_state = PaintTool.Paint.State.PREPARING_MODEL
+                self._prepare_texture_job = PrepareTextureJob(selected_object)
+                self._prepare_texture_job.finished.connect(self._onPrepareTextureFinished)
+                self._prepare_texture_job.start()
+        else:
+            new_state = PaintTool.Paint.State.MULTIPLE_SELECTION
+
+        if new_state != self._state:
+            self._state = new_state
+            self.propertyChanged.emit()
+
+    def _onPrepareTextureFinished(self, job: Job):
+        if job == self._prepare_texture_job:
+            self._prepare_texture_job = None
+            self._state = PaintTool.Paint.State.READY
+            self.propertyChanged.emit()
+
+    def _updateIgnoreUnselectedObjects(self):
+        ignore_unselected_objects = self._controller.getActiveView().name == "PaintTool"
+        CuraApplication.getInstance().getRenderer().getRenderPass("selection").setIgnoreUnselectedObjects(ignore_unselected_objects)
+        CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces").setIgnoreUnselectedObjects(ignore_unselected_objects)
