@@ -3,16 +3,14 @@
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum
-from PyQt6.QtGui import QImage, QPainter, QColor, QPen
-from PyQt6 import QtWidgets
-from typing import cast, Dict, List, Optional, Tuple
-
-from numpy import ndarray
+from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPoint
+from PyQt6.QtGui import QImage, QPainter, QPen, QPolygon
+from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
-from UM.Event import Event, MouseEvent, KeyEvent
+from UM.Event import Event, MouseEvent
 from UM.Logger import Logger
+from UM.Math.Polygon import Polygon
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
@@ -52,7 +50,7 @@ class PaintTool(Tool):
 
         self._mouse_held: bool = False
 
-        self._last_text_coords: Optional[numpy.ndarray] = None
+        self._last_world_coords: Optional[numpy.ndarray] = None
         self._last_mouse_coords: Optional[Tuple[int, int]] = None
         self._last_face_id: Optional[int] = None
 
@@ -70,39 +68,40 @@ class PaintTool(Tool):
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
             case PaintTool.Brush.Shape.CIRCLE:
                 pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+            case _:
+                Logger.error(f"Unknown brush shape '{self._brush_shape}', painting may not work.")
         return pen
 
-    def _createStrokeImage(self, x0: float, y0: float, x1: float, y1: float) -> Tuple[QImage, Tuple[int, int]]:
-        xdiff = int(x1 - x0)
-        ydiff = int(y1 - y0)
+    def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
+        min_pt = numpy.array([numpy.inf, numpy.inf])
+        max_pt = numpy.array([-numpy.inf, -numpy.inf])
+        for poly in polys:
+            for pt in poly:
+                min_pt = numpy.minimum(min_pt, pt)
+                max_pt = numpy.maximum(max_pt, pt)
 
-        half_brush_size = self._brush_size // 2
-        start_x = int(min(x0, x1) - half_brush_size)
-        start_y = int(min(y0, y1) - half_brush_size)
-
-        stroke_image = QImage(abs(xdiff) + self._brush_size, abs(ydiff) + self._brush_size, QImage.Format.Format_RGB32)
+        stroke_image = QImage(int(max_pt[0] - min_pt[0]), int(max_pt[1] - min_pt[1]), QImage.Format.Format_RGB32)
         stroke_image.fill(0)
 
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setPen(self._brush_pen)
-        if xdiff == 0 and ydiff == 0:
-            painter.drawPoint(int(x0 - start_x), int(y0 - start_y))
-        else:
-            painter.drawLine(int(x0 - start_x), int(y0 - start_y), int(x1 - start_x), int(y1 - start_y))
+        painter.setPen(self._brush_pen)  # <-- TODO!: Wrong in the current context.
+        for poly in polys:
+            qpoly = QPolygon([QPoint(int(pt[0] - min_pt[0]), int(pt[1] - min_pt[1])) for pt in poly])
+            painter.drawPolygon(qpoly)
         painter.end()
 
-        return stroke_image, (start_x, start_y)
+        return stroke_image, (int(min_pt[0]), int(min_pt[1]))
 
     def getPaintType(self) -> str:
-        paint_view = self._get_paint_view()
+        paint_view = self._getPaintView()
         if paint_view is None:
             return ""
 
         return paint_view.getPaintType()
 
     def setPaintType(self, paint_type: str) -> None:
-        paint_view = self._get_paint_view()
+        paint_view = self._getPaintView()
         if paint_view is None:
             return
 
@@ -141,7 +140,7 @@ class PaintTool(Tool):
             self.propertyChanged.emit()
 
     def undoStackAction(self, redo_instead: bool) -> bool:
-        paint_view = self._get_paint_view()
+        paint_view = self._getPaintView()
         if paint_view is None:
             return False
 
@@ -154,7 +153,7 @@ class PaintTool(Tool):
         return True
 
     def clear(self) -> None:
-        paintview = self._get_paint_view()
+        paintview = self._getPaintView()
         if paintview is None:
             return
 
@@ -166,17 +165,31 @@ class PaintTool(Tool):
         self._updateScene()
 
     @staticmethod
-    def _get_paint_view() -> Optional[PaintView]:
+    def _getPaintView() -> Optional[PaintView]:
         paint_view = Application.getInstance().getController().getActiveView()
         if paint_view is None or paint_view.getPluginId() != "PaintTool":
             return None
         return cast(PaintView, paint_view)
 
     @staticmethod
-    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
+    def _getIntersectRatioViaPt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
+        """ Gets a single Barycentric coordinate of a point on a line segment.
+
+        :param a: The start point of the line segment (one of the points of the triangle).
+        :param pt: The point to find the Barycentric coordinate of (the one for point c, w.r.t. the ab line segment).
+        :param b: The end point of the line segment (one of the points of the triangle).
+        :param c: The third point of the triangle.
+        :return: The Barycentric coordinate of pt, w.r.t. point c in the abc triangle, or 1.0 if outside that triangle.
+        """
+
         # compute the intersection of (param) A - pt with (param) B - (param) C
-        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
+        if (a == pt).all() or (b == c).all() or (a == c).all() or (a == b).all():
             return 1.0
+
+        # force points to be 3d
+        def force3d(pt_: numpy.ndarray) -> numpy.ndarray:
+            return pt_ if pt_.size == 3 else numpy.array([pt_[0], pt_[1], 1.0])
+        a, pt, b, c = force3d(a), force3d(pt), force3d(b), force3d(c)
 
         # compute unit vectors of directions of lines A and B
         udir_a = a - pt
@@ -209,10 +222,22 @@ class PaintTool(Tool):
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getTexCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray]]:
+    def _getCoordsFromClick(self, node: SceneNode, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray], Optional[numpy.ndarray]]:
+        """ Retrieves coordinates based on a user's click on a 3D scene node.
+
+        This function calculates and returns the face identifier, texture coordinates, and real-world coordinates
+        derived from a click on the scene associated with the provided node.
+
+        :param node: The node in the 3D scene from which the clicks' interaction information is derived.
+        :param x: The horizontal position of the click.
+        :param y: The vertical position of the click.
+        :return: A tuple containing; face-id, texture (UV) coordinates, and real-world (3D) coordinates.
+        """
+
         face_id = self._faces_selection_pass.getFaceIdAtPosition(x, y)
+
         if face_id < 0 or face_id >= node.getMeshData().getFaceCount():
-            return face_id, None
+            return face_id, None, None
 
         pt = self._picking_pass.getPickedPosition(x, y).getData()
 
@@ -220,50 +245,124 @@ class PaintTool(Tool):
 
         face_uv_coordinates = node.getMeshData().getFaceUvCoords(face_id)
         if face_uv_coordinates is None:
-            return face_id, None
+            return face_id, None, None
         ta, tb, tc = face_uv_coordinates
 
         # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
         # See (also) https://mathworld.wolfram.com/BarycentricCoordinates.html
-        wa = PaintTool._get_intersect_ratio_via_pt(va, pt, vb, vc)
-        wb = PaintTool._get_intersect_ratio_via_pt(vb, pt, vc, va)
-        wc = PaintTool._get_intersect_ratio_via_pt(vc, pt, va, vb)
+        wa = PaintTool._getIntersectRatioViaPt(va, pt, vb, vc)
+        wb = PaintTool._getIntersectRatioViaPt(vb, pt, vc, va)
+        wc = PaintTool._getIntersectRatioViaPt(vc, pt, va, vb)
         wt = wa + wb + wc
         if wt == 0:
-            return face_id, None
+            return face_id, None, None
         wa /= wt
         wb /= wt
         wc /= wt
         texcoords = wa * ta + wb * tb + wc * tc
-        return face_id, texcoords
+        realcoords = wa * va + wb * vb + wc * vc
+        return face_id, texcoords, realcoords
 
-    def _iteratateSplitSubstroke(self, node, substrokes,
-                                 info_a: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]],
-                                 info_b: Tuple[Tuple[float, float], Tuple[int, Optional[numpy.ndarray]]]) -> None:
-        click_a, (face_a, texcoords_a) = info_a
-        click_b, (face_b, texcoords_b) = info_b
+    @staticmethod
+    def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon) -> numpy.ndarray:
+        wa = PaintTool._getIntersectRatioViaPt(triangle_a[0], pt, triangle_a[1], triangle_a[2])
+        wb = PaintTool._getIntersectRatioViaPt(triangle_a[1], pt, triangle_a[2], triangle_a[0])
+        wc = PaintTool._getIntersectRatioViaPt(triangle_a[2], pt, triangle_a[0], triangle_a[1])
+        wt = wa + wb + wc
+        if wt == 0:
+            return triangle_b[0]  # Shouldn't happen!
+        return wa/wt * triangle_b[0] + wb/wt * triangle_b[1] + wc/wt * triangle_b[2]
 
-        if (abs(click_a[0] - click_b[0]) < 0.0001 and abs(click_a[1] - click_b[1]) < 0.0001) or (face_a < 0 and face_b < 0):
-            return
-        if face_b < 0 or face_a == face_b:
-            substrokes.append((self._last_text_coords, texcoords_a))
-            return
-        if face_a < 0:
-            substrokes.append((self._last_text_coords, texcoords_b))
-            return
+    def _getStrokePolygon(self, mouse_a, mouse_b) -> Polygon:
+        a_x, a_y = mouse_a
+        b_x, b_y = mouse_b
+        shape = None
+        match self._brush_shape:
+            case PaintTool.Brush.Shape.SQUARE:
+                shape = Polygon.approximatedCircle(self._brush_size, 4)
+            case PaintTool.Brush.Shape.CIRCLE:
+                shape = Polygon.approximatedCircle(self._brush_size, 16)
+            case _:
+                Logger.error(f"Unknown brush shape '{self._brush_shape}'.")
+        if shape is None:
+            return Polygon()
+        return shape.translate(a_x, a_y).intersectionConvexHulls(shape.translate(b_x, b_y))
 
-        mouse_mid = (click_a[0] + click_b[0]) / 2.0, (click_a[1] + click_b[1]) / 2.0
-        face_mid, texcoords_mid = self._getTexCoordsFromClick(node, mouse_mid[0], mouse_mid[1])
-        mid_struct = (mouse_mid, (face_mid, texcoords_mid))
-        if face_mid == face_a:
-            substrokes.append((texcoords_a, texcoords_mid))
-            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
-        elif face_mid == face_b:
-            substrokes.append((texcoords_mid, texcoords_b))
-            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
+    # NOTE: Currently, this probably won't work 100% for non-convex brush-shapes.
+    def _getUvAreasForStroke(self, node: SceneNode, mouse_a, mouse_b, face_id_a, face_id_b, world_coords_a, world_coords_b) -> List[Polygon]:
+        """ Fetches all texture-coordinate areas within the provided stroke on the mesh (of the given node).
+
+        Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
+
+        :param node: The 3D scene node containing mesh data to evaluate.
+        :param mouse_a: The starting point of the stroke in screen-space.
+        :param mouse_b: The ending point of the stroke in screen-space.
+        :param face_id_a: ID of the face where the stroke starts.
+        :param face_id_b: ID of the face where the stroke ends.
+        :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
+        :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
+        :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
+        """
+
+        if face_id_a == face_id_b:
+            mid, norm = self._mesh_transformed_cache.getFacePlane(face_id_a)
+            norm /= numpy.linalg.norm(norm)
+            perp = mid.cross(world_coords_a - mid)
+            perp /= numpy.linalg.norm(perp)
         else:
-            self._iteratateSplitSubstroke(node, substrokes, mid_struct, info_b)
-            self._iteratateSplitSubstroke(node, substrokes, info_a, mid_struct)
+            vec_ab = world_coords_b - world_coords_a
+            _, norm_a = self._mesh_transformed_cache.getFacePlane(face_id_a)
+            _, norm_b = self._mesh_transformed_cache.getFacePlane(face_id_b)
+            norm = (norm_a + norm_b) * 0.5
+            norm /= numpy.linalg.norm(norm)
+            perp = numpy.cross(norm, vec_ab)
+
+        def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
+            proj_pt = (pt - numpy.dot(norm, pt - world_coords_a) * norm) - world_coords_a
+            x_coord = numpy.dot(vec_ab, proj_pt)
+            y_coord = numpy.dot(perp, proj_pt)
+            return numpy.array([x_coord, y_coord])
+
+        def get_tri_in_stroke(a: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> Polygon:
+            return Polygon([
+                get_projected_on_plane(a),
+                get_projected_on_plane(b),
+                get_projected_on_plane(c)])
+
+        def remap_polygon_to_uv(original_tri: Polygon, poly: Polygon, face_id: int) -> Polygon:
+            face_uv_coordinates = node.getMeshData().getFaceUvCoords(face_id)
+            if face_uv_coordinates is None:
+                return Polygon()
+            ta, tb, tc = face_uv_coordinates
+            original_uv_poly = Polygon([ta, tb, tc])
+            return poly.map(lambda pt: PaintTool._remapBarycentric(original_tri, pt, original_uv_poly))
+
+        stroke_poly = self._getStrokePolygon(mouse_a, mouse_b)
+
+        def get_stroke_intersect_with_tri(face_id: int) -> Polygon:
+            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
+            stroke_tri = get_tri_in_stroke(va, vb, vc)
+            return remap_polygon_to_uv(stroke_tri, stroke_poly.intersection(stroke_tri), face_id)
+
+        candidates = set()
+        def add_candidates_for(face_id: int) -> None:
+            [candidates.add(x) for x in self._mesh_transformed_cache.getFaceNeighbourIDs(face_id)]
+        add_candidates_for(face_id_a)
+        add_candidates_for(face_id_b)
+
+        res = []
+        seen = set()
+        while candidates:
+            candidate = candidates.pop()
+            if candidate in seen or candidate < 0:
+                continue
+            uv_area = get_stroke_intersect_with_tri(candidate)
+            if not uv_area.isValid():
+                continue
+            res.append(uv_area)
+            add_candidates_for(candidate)
+            seen.add(candidate)
+        return res
 
     def _setupNodeForPainting(self, node: SceneNode) -> bool:
         mesh = node.getMeshData()
@@ -312,7 +411,7 @@ class PaintTool(Tool):
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
             self._mouse_held = False
-            self._last_text_coords = None
+            self._last_world_coords = None
             self._last_mouse_coords = None
             self._last_face_id = None
             return True
@@ -330,7 +429,7 @@ class PaintTool(Tool):
                 else:
                     self._mouse_held = True
 
-            paintview = self._get_paint_view()
+            paintview = self._getPaintView()
             if paintview is None:
                 return False
 
@@ -363,33 +462,21 @@ class PaintTool(Tool):
             if not self._setupNodeForPainting(node):
                 return False
 
-            face_id, texcoords = self._getTexCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
-            if texcoords is None:
+            face_id, _, world_coords = self._getCoordsFromClick(node, mouse_evt.x, mouse_evt.y)
+            if face_id < 0:
                 return False
-            if self._last_text_coords is None:
-                self._last_text_coords = texcoords
+            if self._last_world_coords is None:
+                self._last_world_coords = world_coords
                 self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
                 self._last_face_id = face_id
 
-            substrokes = []
-            if face_id == self._last_face_id:
-                substrokes.append((self._last_text_coords, texcoords))
-            else:
-                self._iteratateSplitSubstroke(node, substrokes,
-                                              (self._last_mouse_coords, (self._last_face_id, self._last_text_coords)),
-                                              ((mouse_evt.x, mouse_evt.y), (face_id, texcoords)))
+            uv_areas = self._getUvAreasForStroke(node, self._last_mouse_coords, (mouse_evt.x, mouse_evt.y), self._last_face_id, face_id, self._last_world_coords, world_coords)
+            if len(uv_areas) == 0:
+                return False
+            stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
+            paintview.addStroke(stroke_img, start_x, start_y, self._brush_color)
 
-            w, h = paintview.getUvTexDimensions()
-            for start_coords, end_coords in substrokes:
-                sub_image, (start_x, start_y) = self._createStrokeImage(
-                    start_coords[0] * w,
-                    start_coords[1] * h,
-                    end_coords[0] * w,
-                    end_coords[1] * h
-                )
-                paintview.addStroke(sub_image, start_x, start_y, self._brush_color)
-
-            self._last_text_coords = texcoords
+            self._last_world_coords = world_coords
             self._last_mouse_coords = (mouse_evt.x, mouse_evt.y)
             self._last_face_id = face_id
             self._updateScene(node)
