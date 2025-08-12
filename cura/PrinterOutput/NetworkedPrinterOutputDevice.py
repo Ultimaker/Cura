@@ -288,9 +288,11 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def postFormWithParts(self, target: str, parts: List[QHttpPart],
                           on_finished: Optional[Callable[[QNetworkReply], None]],
-                          on_progress: Optional[Callable[[int, int], None]] = None) -> QNetworkReply:
+                          on_progress: Optional[Callable[[int, int], None]] = None,
+                          request: Optional[QNetworkRequest] = None) -> QNetworkReply:
         self._validateManager()
-        request = self._createEmptyRequest(target, content_type=None)
+        if request is None:
+            request = self._createEmptyRequest(target, content_type=None)
         multi_post_part = QHttpMultiPart(QHttpMultiPart.ContentType.FormDataType)
         for part in parts:
             multi_post_part.append(part)
