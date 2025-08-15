@@ -1,0 +1,81 @@
+{
+    "version": 2,
+    "name": "Comgrow3D-T500",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Comgrow",
+        "manufacturer": "Comgrow 3D",
+        "file_formats": "text/x-gcode",
+        "has_variants": false,
+        "has_machine_quality": false,
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains": {
+            "0": "Comgrow3D_extruder_0"
+        }
+    },
+	
+    "overrides": {
+        "machine_name": { "default_value": "Comgrow3D T500" },
+        "machine_width": { "default_value": 500 },
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 500 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_start_gcode": { "default_value": "G28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
+        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 Z10 ;Raise Z more\nG90 ;Absolute positioning\n\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n" },
+        
+        "line_width": { "value": 0.48 },
+        "initial_layer_line_width_factor": { "value": 150 },
+
+        "wall_thickness": { "value": 1.2 },
+        "top_bottom_pattern": { "value": "'zigzag'" },
+        "skin_overlap": { "value": 30.0 },
+        "z_seam_relative": {"value": true },
+        "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_corner": { "value": "'z_seam_corner_inner'" },
+
+        "infill_pattern": { "value": "'gyroid'" },
+        "infill_sparse_density": { "value": 8 },
+        "zig_zaggify_infill": { "value": true },
+
+        "material_print_temperature": { "value": 200 },
+
+        "speed_print": { "value": 180.0 } ,
+        "speed_infill": { "value": "speed_print" },
+        "speed_wall": { "value": "speed_print" },
+        "speed_wall_0": { "value": "speed_wall * 7 / 9" },
+        "speed_wall_x": { "value": "speed_wall * 8 / 9" },
+        "speed_topbottom": {"value": "speed_print * 5 / 9"},
+        "speed_travel": { "value": "speed_print" } ,
+        "speed_layer_0": { "value": "speed_print * 7 / 36" },
+        "speed_travel_layer_0": { "value": "speed_layer_0 * 20 / 7" },
+
+        "skirt_brim_speed": { "value": "speed_layer_0" },
+
+	"acceleration_enabled": {"value": true },
+        "acceleration_print": {"value": 8000 },
+        "acceleration_wall": {"value": "acceleration_print"},
+        "acceleration_topbottom": {"value": "acceleration_print"},
+        "acceleration_travel": {"value": "acceleration_print"},
+        "acceleration_layer_0": {"value": "acceleration_print / 8"},
+
+	"jerk_enabled": {"value": false },
+	"jerk_print": { "value": 5 },
+	"jerk_travel": { "value": 10 },
+
+        "retract_at_layer_change": {"value": false },
+        "retraction_hop": { "value": 0.2 },
+        "retraction_hop_enabled": { "value": true },
+        "retraction_amount": {"value":0.5 },
+        "retraction_speed": { "value": 30 },
+
+        "support_angle": {"value": 75 },
+        "support_brim_enable": {"value": true },
+        "support_interface_enable": {"value": true },
+        "support_z_distance": {"value": 0.25 },
+		
+        "brim_width": { "value": 2 },
+        "skirt_line_count": { "value": 3 },
+        "raft_margin": { "value": 5 }
+    }
+}
