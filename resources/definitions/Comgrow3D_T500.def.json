@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Comgrow3D-T500",
+    "name": "Comgrow3D T500",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -79,3 +79,4 @@
         "raft_margin": { "value": 5 }
     }
 }
+
