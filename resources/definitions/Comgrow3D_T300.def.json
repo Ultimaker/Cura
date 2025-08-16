@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Comgrow3D-T300",
+    "name": "Comgrow3D T300",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -63,3 +63,4 @@
         "bridge_wall_min_length": { "value": 5 }
     }
 }
+
