@@ -96,20 +96,20 @@ class PaintTool(Tool):
                 min_pt = numpy.minimum(min_pt, w * pt)
                 max_pt = numpy.maximum(max_pt, h * pt)
 
-        stroke_image = QImage(int(max_pt[0] - min_pt[0]), int(max_pt[1] - min_pt[1]), QImage.Format.Format_RGB32)
+        stroke_image = QImage(int(max_pt[0] - min_pt[0]) + 1, int(max_pt[1] - min_pt[1]) + 1, QImage.Format.Format_RGB32)
         stroke_image.fill(0)
 
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
         path = QPainterPath()
         for poly in polys:
-            path.moveTo(int(w * poly[0][0] - min_pt[0]), int(h * poly[0][1] - min_pt[1]))
+            path.moveTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
             for pt in poly[1:]:
-                path.lineTo(int(w * pt[0] - min_pt[0]), int(h * pt[1] - min_pt[1]))
+                path.lineTo(int(0.5 + w * pt[0] - min_pt[0]), int(0.5 + h * pt[1] - min_pt[1]))
         painter.fillPath(path, self._brush_pen.color())
         painter.end()
 
-        return stroke_image, (int(min_pt[0]), int(min_pt[1]))
+        return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
 
     def getPaintType(self) -> str:
         paint_view = self._getPaintView()
