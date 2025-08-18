@@ -321,25 +321,22 @@ class PaintTool(Tool):
         :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
         """
 
+        # TODO: Cache this until the camera moves again.
         camera = Application.getInstance().getController().getScene().getActiveCamera()
+        cam_pos = camera.getPosition().getData()
         cam_ray = camera.getRay(0, 0)
-        cam_norm = cam_ray.direction.getData()
-        cam_norm /= numpy.linalg.norm(cam_norm)
-
-        if (world_coords_a == world_coords_b).all():
-            world_coords_b = world_coords_a + numpy.array([0.01, -0.01, 0.01])
-
-        vec_ab = world_coords_b - world_coords_a
-        stroke_dir = vec_ab / numpy.linalg.norm(vec_ab)
-        norm = -cam_norm
-        norm /= numpy.linalg.norm(norm)
-        perp = numpy.cross(norm, stroke_dir)
-        perp /= numpy.linalg.norm(perp)
+        norm = cam_ray.direction.getData()
+        norm /= -numpy.linalg.norm(norm)
+        axis_up = numpy.array([0.0, -1.0, 0.0]) if abs(norm[1]) < abs(norm[2]) else numpy.array([0.0, 0.0, 1.0])
+        axis_q = numpy.cross(norm, axis_up)
+        axis_q /= numpy.linalg.norm(axis_q)
+        axis_r = numpy.cross(axis_q, norm)
+        axis_r /= numpy.linalg.norm(axis_r)
 
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
-            proj_pt = (pt - numpy.dot(norm, pt - world_coords_a) * norm) - world_coords_a
-            y_coord = numpy.dot(stroke_dir, proj_pt)
-            x_coord = numpy.dot(perp, proj_pt)
+            proj_pt = (pt - numpy.dot(norm, pt - cam_pos) * norm) - cam_pos
+            y_coord = numpy.dot(axis_r, proj_pt)
+            x_coord = numpy.dot(axis_q, proj_pt)
             return numpy.array([x_coord, y_coord])
 
         def get_tri_in_stroke(a: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> Polygon:
