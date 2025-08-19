@@ -50,10 +50,10 @@
             "ultimaker_asa",
             "ultimaker_abs",
             "ultimaker_nylon",
+            "ultimaker_pet",
             "ultimaker_pva",
             "ultimaker_rapidrinse",
             "ultimaker_sr30",
-            "ultimaker_petg",
             "ultimaker_pc-abs",
             "ultimaker_pc-abs-fr"
         ],
@@ -95,6 +95,7 @@
         "acceleration_wall_x_roofing": { "value": "acceleration_wall * 2/5" },
         "adhesion_type": { "value": "'none'" },
         "bottom_layers": { "value": 3 },
+        "bridge_fan_speed": { "value": 100 },
         "bridge_skin_density": { "value": 100 },
         "bridge_skin_density_2": { "value": 75 },
         "bridge_skin_density_3": { "value": 80 },
@@ -118,7 +119,7 @@
         "default_material_print_temperature":
         {
             "maximum_value": 280,
-            "maximum_value_warning": 240
+            "maximum_value_warning": 265
         },
         "gantry_height": { "value": 27.5 },
         "gradual_infill_steps": { "value": 0 },
@@ -144,7 +145,7 @@
             "value": false
         },
         "jerk_travel_enabled": { "enabled": false },
-        "layer_height_0": { "value": "layer_height if adhesion_type == 'raft' else layer_height * 1.25" },
+        "layer_height_0": { "value": "layer_height if adhesion_type == 'raft' or layer_height > 0.2 else layer_height * 1.25" },
         "line_width": { "value": 0.42 },
         "machine_center_is_zero": { "default_value": true },
         "machine_depth": { "default_value": 221.5 },
@@ -175,8 +176,8 @@
         "material_flow": { "default_value": 100 },
         "material_print_temperature":
         {
-            "maximum_value": 260,
-            "maximum_value_warning": 240
+            "maximum_value": 280,
+            "maximum_value_warning": 265
         },
         "min_bead_width": { "value": 0.3 },
         "multiple_mesh_overlap": { "value": "0" },
@@ -397,6 +398,8 @@
         "z_seam_corner": { "value": "'z_seam_corner_inner'" },
         "z_seam_position": { "value": "'backleft'" },
         "z_seam_type": { "value": "'sharpest_corner'" },
+        "z_seam_x": { "value": 150 },
+        "z_seam_y": { "value": 180 },
         "zig_zaggify_infill": { "value": true }
     }
 }
