@@ -77,7 +77,7 @@ class PaintTool(Tool):
         self._cam_axis_q: numpy.ndarray = numpy.array([1.0, 0.0, 0.0])
         self._cam_axis_r: numpy.ndarray = numpy.array([0.0, -1.0, 0.0])
 
-    def _updateCamera(self) -> None:
+    def _updateCamera(self, *args) -> None:
         if self._camera is None:
             self._camera = Application.getInstance().getController().getScene().getActiveCamera()
             self._camera.transformationChanged.connect(self._updateCamera)
@@ -264,7 +264,7 @@ class PaintTool(Tool):
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
-    def _getCoordsFromClick(self, mesh: MeshData, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray], Optional[numpy.ndarray]]:
+    def _getCoordsFromClick(self, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray], Optional[numpy.ndarray]]:
         """ Retrieves coordinates based on a user's click on a 3D scene node.
 
         This function calculates and returns the face identifier, texture coordinates, and real-world coordinates
@@ -278,14 +278,14 @@ class PaintTool(Tool):
 
         face_id = self._faces_selection_pass.getFaceIdAtPosition(x, y)
 
-        if face_id < 0 or face_id >= mesh.getFaceCount():
+        if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
             return face_id, None, None
 
         pt = self._picking_pass.getPickedPosition(x, y).getData()
 
         va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
 
-        face_uv_coordinates = mesh.getFaceUvCoords(face_id)
+        face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(face_id)
         if face_uv_coordinates is None:
             return face_id, None, None
         ta, tb, tc = face_uv_coordinates
@@ -329,12 +329,11 @@ class PaintTool(Tool):
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
-    def _getUvAreasForStroke(self, mesh: MeshData, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+    def _getUvAreasForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
 
-        :param mesh: The 3D mesh data, pre-transformed.
         :param face_id_a: ID of the face where the stroke starts.
         :param face_id_b: ID of the face where the stroke ends.
         :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
@@ -348,8 +347,8 @@ class PaintTool(Tool):
             x_coord = numpy.dot(self._cam_axis_q, proj_pt)
             return numpy.array([x_coord, y_coord])
 
-        uv_a0, uv_a1, _ = mesh.getFaceUvCoords(face_id_a)
-        w_a0, w_a1, _ = mesh.getFaceNodes(face_id_a)
+        uv_a0, uv_a1, _ = self._node_cache.getMeshData().getFaceUvCoords(face_id_a)
+        w_a0, w_a1, _ = self._mesh_transformed_cache.getFaceNodes(face_id_a)
         world_to_uv_size_factor = numpy.linalg.norm(uv_a1 - uv_a0) / numpy.linalg.norm(w_a1 - w_a0)
 
         stroke_poly = self._getStrokePolygon(
@@ -367,16 +366,16 @@ class PaintTool(Tool):
             candidate = candidates.pop()
             if candidate in seen or candidate < 0:
                 continue
-            _, fnorm = mesh.getFacePlane(candidate)
+            _, fnorm = self._mesh_transformed_cache.getFacePlane(candidate)
             if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
                 continue
 
-            va, vb, vc = mesh.getFaceNodes(candidate)
+            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(candidate)
             stroke_tri = Polygon([
                 get_projected_on_plane(va),
                 get_projected_on_plane(vb),
                 get_projected_on_plane(vc)])
-            face_uv_coordinates = mesh.getFaceUvCoords(candidate)
+            face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(candidate)
             if face_uv_coordinates is None:
                 continue
             ta, tb, tc = face_uv_coordinates
@@ -466,14 +465,14 @@ class PaintTool(Tool):
             if not self._mesh_transformed_cache:
                 return False
 
-            face_id, _, world_coords = self._getCoordsFromClick(self._mesh_transformed_cache, mouse_evt.x, mouse_evt.y)
+            face_id, _, world_coords = self._getCoordsFromClick(mouse_evt.x, mouse_evt.y)
             if face_id < 0:
                 return False
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
                 self._last_face_id = face_id
 
-            uv_areas = self._getUvAreasForStroke(self._mesh_transformed_cache, self._last_face_id, face_id, self._last_world_coords, world_coords)
+            uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
             if len(uv_areas) == 0:
                 return False
             stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
