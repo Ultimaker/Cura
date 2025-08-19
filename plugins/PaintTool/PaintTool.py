@@ -13,6 +13,7 @@ from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
 from UM.Mesh.MeshData import MeshData
+from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
@@ -69,6 +70,26 @@ class PaintTool(Tool):
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
+
+        self._camera: Optional[Camera] = None
+        self._cam_pos: numpy.ndarray = numpy.array([0.0, 0.0, 0.0])
+        self._cam_norm: numpy.ndarray = numpy.array([0.0, 0.0, 1.0])
+        self._cam_axis_q: numpy.ndarray = numpy.array([1.0, 0.0, 0.0])
+        self._cam_axis_r: numpy.ndarray = numpy.array([0.0, -1.0, 0.0])
+
+    def _updateCamera(self) -> None:
+        if self._camera is None:
+            self._camera = Application.getInstance().getController().getScene().getActiveCamera()
+            self._camera.transformationChanged.connect(self._updateCamera)
+        self._cam_pos = self._camera.getPosition().getData()
+        cam_ray = self._camera.getRay(0, 0)
+        self._cam_norm = cam_ray.direction.getData()
+        self._cam_norm /= -numpy.linalg.norm(self._cam_norm)
+        axis_up = numpy.array([0.0, -1.0, 0.0]) if abs(self._cam_norm[1]) < abs(self._cam_norm[2]) else numpy.array([0.0, 0.0, 1.0])
+        self._cam_axis_q = numpy.cross(self._cam_norm, axis_up)
+        self._cam_axis_q /= numpy.linalg.norm(self._cam_axis_q)
+        self._cam_axis_r = numpy.cross(self._cam_axis_q, self._cam_norm)
+        self._cam_axis_r /= numpy.linalg.norm(self._cam_axis_r)
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
@@ -321,37 +342,11 @@ class PaintTool(Tool):
         :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
         """
 
-        # TODO: Cache this until the camera moves again.
-        camera = Application.getInstance().getController().getScene().getActiveCamera()
-        cam_pos = camera.getPosition().getData()
-        cam_ray = camera.getRay(0, 0)
-        norm = cam_ray.direction.getData()
-        norm /= -numpy.linalg.norm(norm)
-        axis_up = numpy.array([0.0, -1.0, 0.0]) if abs(norm[1]) < abs(norm[2]) else numpy.array([0.0, 0.0, 1.0])
-        axis_q = numpy.cross(norm, axis_up)
-        axis_q /= numpy.linalg.norm(axis_q)
-        axis_r = numpy.cross(axis_q, norm)
-        axis_r /= numpy.linalg.norm(axis_r)
-
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
-            proj_pt = (pt - numpy.dot(norm, pt - cam_pos) * norm) - cam_pos
-            y_coord = numpy.dot(axis_r, proj_pt)
-            x_coord = numpy.dot(axis_q, proj_pt)
+            proj_pt = (pt - numpy.dot(self._cam_norm, pt - self._cam_pos) * self._cam_norm) - self._cam_pos
+            y_coord = numpy.dot(self._cam_axis_r, proj_pt)
+            x_coord = numpy.dot(self._cam_axis_q, proj_pt)
             return numpy.array([x_coord, y_coord])
-
-        def get_tri_in_stroke(a: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> Polygon:
-            return Polygon([
-                get_projected_on_plane(a),
-                get_projected_on_plane(b),
-                get_projected_on_plane(c)])
-
-        def remap_polygon_to_uv(original_tri: Polygon, poly: Polygon, face_id: int) -> Polygon:
-            face_uv_coordinates = mesh.getFaceUvCoords(face_id)
-            if face_uv_coordinates is None:
-                return Polygon()
-            ta, tb, tc = face_uv_coordinates
-            original_uv_poly = Polygon([ta, tb, tc])
-            return poly.map(lambda pt: PaintTool._remapBarycentric(original_tri, pt, original_uv_poly))
 
         uv_a0, uv_a1, _ = mesh.getFaceUvCoords(face_id_a)
         w_a0, w_a1, _ = mesh.getFaceNodes(face_id_a)
@@ -362,33 +357,36 @@ class PaintTool(Tool):
             get_projected_on_plane(world_coords_a),
             get_projected_on_plane(world_coords_b))
 
-        def get_stroke_intersect_with_tri(face_id: int) -> Polygon:
-            va, vb, vc = mesh.getFaceNodes(face_id)
-            stroke_tri = get_tri_in_stroke(va, vb, vc)
-            return remap_polygon_to_uv(stroke_tri, stroke_poly.intersection(stroke_tri), face_id)
-
         candidates = set()
         candidates.add(face_id_a)
         candidates.add(face_id_b)
-
-        def add_adjacent_candidates(face_id: int) -> None:
-            [candidates.add(x) for x in self._mesh_transformed_cache.getFaceNeighbourIDs(face_id)]
-
-        def wrong_face_normal(face_id: int) -> bool:
-            _, fnorm = mesh.getFacePlane(face_id)
-            return numpy.dot(fnorm, norm) < 0
 
         res = []
         seen = set()
         while candidates:
             candidate = candidates.pop()
-            if candidate in seen or candidate < 0 or wrong_face_normal(candidate):
+            if candidate in seen or candidate < 0:
                 continue
-            uv_area = get_stroke_intersect_with_tri(candidate)
+            _, fnorm = mesh.getFacePlane(candidate)
+            if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
+                continue
+
+            va, vb, vc = mesh.getFaceNodes(candidate)
+            stroke_tri = Polygon([
+                get_projected_on_plane(va),
+                get_projected_on_plane(vb),
+                get_projected_on_plane(vc)])
+            face_uv_coordinates = mesh.getFaceUvCoords(candidate)
+            if face_uv_coordinates is None:
+                continue
+            ta, tb, tc = face_uv_coordinates
+            original_uv_poly = Polygon([ta, tb, tc])
+            uv_area = stroke_poly.intersection(stroke_tri).map(lambda pt: PaintTool._remapBarycentric(stroke_tri, pt, original_uv_poly))
+
             if not uv_area.isValid():
                 continue
             res.append(uv_area)
-            add_adjacent_candidates(candidate)
+            [candidates.add(x) for x in self._mesh_transformed_cache.getFaceNeighbourIDs(candidate)]
             seen.add(candidate)
         return res
 
@@ -451,8 +449,9 @@ class PaintTool(Tool):
                 if not self._picking_pass:
                     return False
 
-            camera = self._controller.getScene().getActiveCamera()
-            if not camera:
+            if self._camera is None:
+                self._updateCamera()
+            if self._camera is None:
                 return False
 
             if node != self._node_cache:
