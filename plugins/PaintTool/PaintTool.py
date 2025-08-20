@@ -228,9 +228,9 @@ class PaintTool(Tool):
         if (a == pt).all() or (b == c).all() or (a == c).all() or (a == b).all():
             return 1.0
 
-        # force points to be 3d
+        # force points to be 3d (and double-precision)
         def force3d(pt_: numpy.ndarray) -> numpy.ndarray:
-            return pt_ if pt_.size == 3 else numpy.array([pt_[0], pt_[1], 1.0])
+            return pt_.astype(dtype=numpy.float64) if pt_.size >= 3 else numpy.array([pt_[0], pt_[1], 0.0], dtype=numpy.float64)
         a, pt, b, c = force3d(a), force3d(pt), force3d(b), force3d(c)
 
         # compute unit vectors of directions of lines A and B
@@ -263,47 +263,6 @@ class PaintTool(Tool):
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
-
-    def _getCoordsFromClick(self, x: float, y: float) -> Tuple[int, Optional[numpy.ndarray], Optional[numpy.ndarray]]:
-        """ Retrieves coordinates based on a user's click on a 3D scene node.
-
-        This function calculates and returns the face identifier, texture coordinates, and real-world coordinates
-        derived from a click on the scene associated with the provided node.
-
-        :param node: The node in the 3D scene from which the clicks' interaction information is derived.
-        :param x: The horizontal position of the click.
-        :param y: The vertical position of the click.
-        :return: A tuple containing; face-id, texture (UV) coordinates, and real-world (3D) coordinates.
-        """
-
-        face_id = self._faces_selection_pass.getFaceIdAtPosition(x, y)
-
-        if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
-            return face_id, None, None
-
-        pt = self._picking_pass.getPickedPosition(x, y).getData()
-
-        va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face_id)
-
-        face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(face_id)
-        if face_uv_coordinates is None:
-            return face_id, None, None
-        ta, tb, tc = face_uv_coordinates
-
-        # 'Weight' of each vertex that would produce point pt, so we can generate the texture coordinates from the uv ones of the vertices.
-        # See (also) https://mathworld.wolfram.com/BarycentricCoordinates.html
-        wa = PaintTool._getIntersectRatioViaPt(va, pt, vb, vc)
-        wb = PaintTool._getIntersectRatioViaPt(vb, pt, vc, va)
-        wc = PaintTool._getIntersectRatioViaPt(vc, pt, va, vb)
-        wt = wa + wb + wc
-        if wt == 0:
-            return face_id, None, None
-        wa /= wt
-        wb /= wt
-        wc /= wt
-        texcoords = wa * ta + wb * tb + wc * tc
-        realcoords = wa * va + wb * vb + wc * vc
-        return face_id, texcoords, realcoords
 
     @staticmethod
     def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon) -> numpy.ndarray:
@@ -366,6 +325,8 @@ class PaintTool(Tool):
             candidate = candidates.pop()
             if candidate in seen or candidate < 0:
                 continue
+            seen.add(candidate)
+
             _, fnorm = self._mesh_transformed_cache.getFacePlane(candidate)
             if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
                 continue
@@ -386,7 +347,6 @@ class PaintTool(Tool):
                 continue
             res.append(uv_area)
             [candidates.add(x) for x in self._mesh_transformed_cache.getFaceNeighbourIDs(candidate)]
-            seen.add(candidate)
         return res
 
     def event(self, event: Event) -> bool:
@@ -465,9 +425,11 @@ class PaintTool(Tool):
             if not self._mesh_transformed_cache:
                 return False
 
-            face_id, _, world_coords = self._getCoordsFromClick(mouse_evt.x, mouse_evt.y)
-            if face_id < 0:
+            face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
+            if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 return False
+            world_coords = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y).getData()
+
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
                 self._last_face_id = face_id
