@@ -213,66 +213,35 @@ class PaintTool(Tool):
             return None
         return cast(PaintView, paint_view)
 
-    @staticmethod
-    def _getIntersectRatioViaPt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
-        """ Gets a single Barycentric coordinate of a point on a line segment.
-
-        :param a: The start point of the line segment (one of the points of the triangle).
-        :param pt: The point to find the Barycentric coordinate of (the one for point c, w.r.t. the ab line segment).
-        :param b: The end point of the line segment (one of the points of the triangle).
-        :param c: The third point of the triangle.
-        :return: The Barycentric coordinate of pt, w.r.t. point c in the abc triangle, or 1.0 if outside that triangle.
-        """
-
-        # compute the intersection of (param) A - pt with (param) B - (param) C
-        if (a == pt).all() or (b == c).all() or (a == c).all() or (a == b).all():
-            return 1.0
-
-        # force points to be 3d (and double-precision)
-        def force3d(pt_: numpy.ndarray) -> numpy.ndarray:
-            return pt_.astype(dtype=numpy.float64) if pt_.size >= 3 else numpy.array([pt_[0], pt_[1], 0.0], dtype=numpy.float64)
-        a, pt, b, c = force3d(a), force3d(pt), force3d(b), force3d(c)
-
-        # compute unit vectors of directions of lines A and B
-        udir_a = a - pt
-        udir_a /= numpy.linalg.norm(udir_a)
-        udir_b = b - c
-        udir_b /= numpy.linalg.norm(udir_b)
-
-        # find unit direction vector for line C, which is perpendicular to lines A and B
-        udir_res = numpy.cross(udir_b, udir_a)
-        udir_res_len = numpy.linalg.norm(udir_res)
-        if udir_res_len == 0:
-            return 1.0
-        udir_res /= udir_res_len
-
-        # solve system of equations
-        rhs = b - a
-        lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        try:
-            solved = numpy.linalg.solve(lhs, rhs)
-        except numpy.linalg.LinAlgError:
-            return 1.0
-
-        # get the ratio
-        intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        a_intersect_dist = numpy.linalg.norm(a - intersect)
-        if a_intersect_dist == 0:
-            return 1.0
-        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
-
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
     @staticmethod
     def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon) -> numpy.ndarray:
-        wa = PaintTool._getIntersectRatioViaPt(triangle_a[0], pt, triangle_a[1], triangle_a[2])
-        wb = PaintTool._getIntersectRatioViaPt(triangle_a[1], pt, triangle_a[2], triangle_a[0])
-        wc = PaintTool._getIntersectRatioViaPt(triangle_a[2], pt, triangle_a[0], triangle_a[1])
-        wt = wa + wb + wc
-        if wt == 0:
-            return triangle_b[0]  # Shouldn't happen!
-        return wa/wt * triangle_b[0] + wb/wt * triangle_b[1] + wc/wt * triangle_b[2]
+        a1, b1, c1 = triangle_a
+        a2, b2, c2 = triangle_b
+
+        area_full = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, c1 - a1))
+
+        if area_full < 1e-6:  # Degenerate triangle
+            return a2
+
+        # Area of sub-triangle opposite to vertex [a,b,c]1
+        area_a = 0.5 * numpy.linalg.norm(numpy.cross(b1 - pt, c1 - pt))
+        area_b = 0.5 * numpy.linalg.norm(numpy.cross(pt - a1, c1 - a1))
+        area_c = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, pt - a1))
+
+        u = area_a / area_full
+        v = area_b / area_full
+        w = area_c / area_full
+
+        total = u + v + w
+        if abs(total - 1.0) > 1e-6:
+            u /= total
+            v /= total
+            w /= total
+
+        return u * a2 + v * b2 + w * c2
 
     def _getStrokePolygon(self, size_adjust: float, stroke_a: numpy.ndarray, stroke_b: numpy.ndarray) -> Polygon:
         shape = None
