@@ -4,7 +4,7 @@
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum
-from PyQt6.QtGui import QImage, QPainter, QPen, QPainterPath
+from PyQt6.QtGui import QImage, QPainter, QPen, QPainterPath, QPainterPathStroker
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
@@ -12,7 +12,6 @@ from UM.Event import Event, MouseEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Polygon import Polygon
-from UM.Mesh.MeshData import MeshData
 from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -127,7 +126,10 @@ class PaintTool(Tool):
             path.moveTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
             for pt in poly[1:]:
                 path.lineTo(int(0.5 + w * pt[0] - min_pt[0]), int(0.5 + h * pt[1] - min_pt[1]))
-        painter.fillPath(path, self._brush_pen.color())
+            path.lineTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
+        stroker = QPainterPathStroker()
+        stroker.setWidth(2)
+        painter.fillPath(stroker.createStroke(path).united(path), self._brush_pen.color())
         painter.end()
 
         return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
