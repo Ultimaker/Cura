@@ -237,7 +237,9 @@
         "default_material_print_temperature": { "maximum_value_warning": 320 },
         "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
         "flooring_layer_count": { "value": 1 },
-        "gradual_flow_enabled": { "value": false },
+        "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
+        "gradual_flow_discretisation_step_size": { "value": 1 },
+        "gradual_flow_enabled": { "value": true },
         "hole_xy_offset": { "value": 0.075 },
         "infill_material_flow": { "value": "material_flow if infill_sparse_density < 95 else 95" },
         "infill_overlap": { "value": 10 },
@@ -428,7 +430,7 @@
         },
         "material_print_temperature": { "maximum_value_warning": 320 },
         "material_print_temperature_layer_0": { "maximum_value_warning": 320 },
-        "max_flow_acceleration": { "value": 8.0 },
+        "max_flow_acceleration": { "value": 1.5 },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
         "min_infill_area": { "default_value": 10 },
@@ -444,6 +446,7 @@
         "retraction_hop_enabled": { "value": true },
         "retraction_min_travel": { "value": "2.5 if support_enable and support_structure=='tree' else line_width * 2.5" },
         "retraction_prime_speed": { "value": 15 },
+        "seam_overhang_angle": { "value": 35 },
         "skin_edge_support_thickness": { "value": 0 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
@@ -543,12 +546,12 @@
         "speed_wall":
         {
             "maximum_value_warning": 300,
-            "value": "speed_print*2/3"
+            "value": "speed_print*1/2"
         },
         "speed_wall_0":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "speed_wall*60/75"
         },
         "speed_wall_0_flooring":
         {
