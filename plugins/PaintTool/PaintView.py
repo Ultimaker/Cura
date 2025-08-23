@@ -2,11 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+
 from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict, cast
+from typing import Optional, List, Tuple, Dict
 
 from PyQt6.QtGui import QImage, QColor, QPainter
 
+from UM.Math.Vector import Vector
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
@@ -46,6 +48,10 @@ class PaintView(CuraView):
         self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
         self._force_opaque_mask.fill(1)
 
+        self._cursor_position: Vector = Vector(0.0, 0.0, 0.0)
+        self._cursor_size: float = 0.0
+        self._cursor_color: List[float] = [0.0, 0.0, 0.0, 1.0]
+
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
@@ -77,6 +83,11 @@ class PaintView(CuraView):
         painter.end()
         res.setAlphaChannel(self._force_opaque_mask.scaled(image.width(), image.height()))
         return res
+
+    def setCursor(self, position: Optional[Vector] = None, size: float = -1, color: Optional[str] = None) -> None:
+        self._cursor_position = position if position is not None else self._cursor_position
+        self._cursor_size = size if size >= 0 else self._cursor_size
+        self._cursor_color = self._paint_modes[self._current_paint_type][color].display_color if color is not None else self._cursor_color
 
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
@@ -194,6 +205,10 @@ class PaintView(CuraView):
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
+
+        self._paint_shader.setUniformValue("u_cursorPos", self._cursor_position)
+        self._paint_shader.setUniformValue("u_cursorSize", self._cursor_size)
+        self._paint_shader.setUniformValue("u_cursorColor", self._cursor_color)
 
         colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
