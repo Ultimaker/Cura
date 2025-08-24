@@ -59,6 +59,7 @@ from cura import ApplicationMetadata
 from cura.API import CuraAPI
 from cura.API.Account import Account
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
+from cura.CuraRenderer import CuraRenderer
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -360,6 +361,9 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager(self)
         self._machine_action_manager.initialize()
+
+    def makeRenderer(self) -> CuraRenderer:
+        return CuraRenderer(self)
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open, self._urls_to_open)
@@ -1034,7 +1038,6 @@ class CuraApplication(QtApplication):
 
         # Initialize UI state
         controller.setActiveStage("PrepareStage")
-        controller.setActiveView("SolidView")
         controller.setCameraTool("CameraTool")
         controller.setSelectionTool("SelectionTool")
 
@@ -2085,9 +2088,7 @@ class CuraApplication(QtApplication):
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
 
             if is_non_sliceable:
-                # Need to switch first to the preview stage and then to layer view
-                self.callLater(lambda: (self.getController().setActiveStage("PreviewStage"),
-                                        self.getController().setActiveView("SimulationView")))
+                self.callLater(lambda: (self.getController().setActiveStage("PreviewStage")))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)
