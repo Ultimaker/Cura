@@ -13,27 +13,6 @@ UM.ToolbarButton
 
     property string color
 
-    onClicked: setColor()
-
-    function setColor()
-    {
-        UM.Controller.setProperty("BrushColor", buttonBrushColor.color);
-    }
-
-    function isChecked()
-    {
-        return UM.Controller.properties.getValue("BrushColor") === buttonBrushColor.color;
-    }
-
-    Component.onCompleted:
-    {
-        buttonBrushColor.checked = isChecked();
-    }
-
-    Binding
-    {
-        target: buttonBrushColor
-        property: "checked"
-        value: isChecked()
-    }
+    checked: UM.Controller.properties.getValue("BrushColor") === buttonBrushColor.color
+    onClicked: UM.Controller.setProperty("BrushColor", buttonBrushColor.color)
 }

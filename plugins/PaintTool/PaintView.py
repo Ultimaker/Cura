@@ -2,10 +2,10 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict, cast
+from PyQt6.QtCore import QRect, pyqtSignal
+from typing import Optional, Dict
 
-from PyQt6.QtGui import QImage, QColor, QPainter
+from PyQt6.QtGui import QImage, QUndoStack
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
@@ -19,13 +19,13 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 
+from .PaintUndoCommand import PaintUndoCommand
+
 catalog = i18nCatalog("cura")
 
 
 class PaintView(CuraView):
     """View for model-painting."""
-
-    UNDO_STACK_SIZE = 1024
 
     class PaintType:
         def __init__(self, display_color: Color, value: int):
@@ -40,15 +40,23 @@ class PaintView(CuraView):
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
 
-        self._stroke_undo_stack: List[Tuple[QImage, int, int]] = []
-        self._stroke_redo_stack: List[Tuple[QImage, int, int]] = []
-
-        self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
-        self._force_opaque_mask.fill(1)
+        self._paint_undo_stack: QUndoStack = QUndoStack()
+        self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
+        self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
+        self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
+
+    canUndoChanged = pyqtSignal(bool)
+    canRedoChanged = pyqtSignal(bool)
+
+    def canUndo(self):
+        return self._paint_undo_stack.canUndo()
+
+    def canRedo(self):
+        return self._paint_undo_stack.canRedo()
 
     def _makePaintModes(self):
         theme = CuraApplication.getInstance().getTheme()
@@ -67,76 +75,41 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
-    def _forceOpaqueDeepCopy(self, image: QImage):
-        res = QImage(image.width(), image.height(), QImage.Format.Format_RGBA8888)
-        res.fill(QColor(255, 255, 255, 255))
-        painter = QPainter(res)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceOver)
-        painter.drawImage(0, 0, image)
-        painter.end()
-        res.setAlphaChannel(self._force_opaque_mask.scaled(image.width(), image.height()))
-        return res
-
-    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str) -> None:
+    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
 
         self._prepareDataMapping()
 
-        actual_image = self._current_paint_texture.getImage()
+        current_image = self._current_paint_texture.getImage()
+        texture_rect = QRect(0, 0, current_image.width(), current_image.height())
+        stroke_rect = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
+        intersect_rect = texture_rect.intersected(stroke_rect)
+        if intersect_rect != stroke_rect:
+            # Stroke doesn't fully fit into the image, we have to crop it
+            stroke_mask = stroke_mask.copy(intersect_rect.x() - start_x,
+                                           intersect_rect.y() - start_y,
+                                           intersect_rect.width(),
+                                           intersect_rect.height())
+            start_x = intersect_rect.x()
+            start_y = intersect_rect.y()
 
         bit_range_start, bit_range_end = self._current_bits_ranges
-        set_value = self._paint_modes[self._current_paint_type][brush_color].value << self._current_bits_ranges[0]
-        full_int32 = 0xffffffff
-        clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
-        image_rect = QRect(0, 0, stroke_mask.width(), stroke_mask.height())
+        set_value = self._paint_modes[self._current_paint_type][brush_color].value << bit_range_start
 
-        clear_bits_image = stroke_mask.copy()
-        clear_bits_image.invertPixels()
-        painter = QPainter(clear_bits_image)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Lighten)
-        painter.fillRect(image_rect, clear_mask)
-        painter.end()
+        self._paint_undo_stack.push(PaintUndoCommand(self._current_paint_texture,
+                                                     stroke_mask,
+                                                     start_x,
+                                                     start_y,
+                                                     set_value,
+                                                     (bit_range_start, bit_range_end),
+                                                     merge_with_previous))
 
-        set_value_image = stroke_mask.copy()
-        painter = QPainter(set_value_image)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Multiply)
-        painter.fillRect(image_rect, set_value)
-        painter.end()
+    def undoStroke(self) -> None:
+        self._paint_undo_stack.undo()
 
-        stroked_image = actual_image.copy(start_x, start_y, stroke_mask.width(), stroke_mask.height())
-        painter = QPainter(stroked_image)
-        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
-        painter.drawImage(0, 0, clear_bits_image)
-        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
-        painter.drawImage(0, 0, set_value_image)
-        painter.end()
-
-        self._stroke_redo_stack.clear()
-        if len(self._stroke_undo_stack) >= PaintView.UNDO_STACK_SIZE:
-            self._stroke_undo_stack.pop(0)
-        undo_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(stroked_image, start_x, start_y))
-        if undo_image is not None:
-            self._stroke_undo_stack.append((undo_image, start_x, start_y))
-
-    def _applyUndoStacksAction(self, from_stack: List[Tuple[QImage, int, int]], to_stack: List[Tuple[QImage, int, int]]) -> bool:
-        if len(from_stack) <= 0 or self._current_paint_texture is None:
-            return False
-        from_image, x, y = from_stack.pop()
-        to_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(from_image, x, y))
-        if to_image is None:
-            return False
-        if len(to_stack) >= PaintView.UNDO_STACK_SIZE:
-            to_stack.pop(0)
-        to_stack.append((to_image, x, y))
-        return True
-
-    def undoStroke(self) -> bool:
-        return self._applyUndoStacksAction(self._stroke_undo_stack, self._stroke_redo_stack)
-
-    def redoStroke(self) -> bool:
-        return self._applyUndoStacksAction(self._stroke_redo_stack, self._stroke_undo_stack)
+    def redoStroke(self) -> None:
+        self._paint_undo_stack.redo()
 
     def getUvTexDimensions(self):
         if self._current_paint_texture is not None:
