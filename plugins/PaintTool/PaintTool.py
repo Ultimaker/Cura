@@ -355,10 +355,23 @@ class PaintTool(Tool):
         is_moved = event.type == Event.MouseMoveEvent
         is_pressed = event.type == Event.MousePressEvent
         if (is_moved or is_pressed) and self._controller.getToolsEnabled():
-            if is_moved and not self._mouse_held:
-                return False
-
             mouse_evt = cast(MouseEvent, event)
+
+            if not self._picking_pass:
+                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
+                if not self._picking_pass:
+                    return False
+
+            brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
+
+            world_coords_vec = None
+            if is_moved:
+                world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
+                self._view.setCursor(world_coords_vec, self._brush_size / 128.0, brush_color)
+                if not self._mouse_held:
+                    self._updateScene(node)
+                    return False
+
             if is_pressed:
                 if MouseEvent.LeftButton not in mouse_evt.buttons:
                     return False
@@ -368,11 +381,6 @@ class PaintTool(Tool):
             if not self._faces_selection_pass:
                 self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
                 if not self._faces_selection_pass:
-                    return False
-
-            if not self._picking_pass:
-                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
-                if not self._picking_pass:
                     return False
 
             if self._camera is None:
@@ -395,8 +403,10 @@ class PaintTool(Tool):
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 return False
-            world_coords = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y).getData()
 
+            if world_coords_vec is None:
+                world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
+            world_coords = world_coords_vec.getData()
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
                 self._last_face_id = face_id
@@ -405,7 +415,6 @@ class PaintTool(Tool):
             if len(uv_areas) == 0:
                 return False
             stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-            brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
             self._view.addStroke(stroke_img, start_x, start_y, brush_color, is_moved)
 
             self._last_world_coords = world_coords

@@ -2,11 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from PyQt6.QtCore import QRect, pyqtSignal
-from typing import Optional, Dict
+from typing import Optional, List, Dict
 
+from PyQt6.QtCore import QRect, pyqtSignal
 from PyQt6.QtGui import QImage, QUndoStack, QColor
 
+from UM.Math.Vector import Vector
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
@@ -45,6 +46,10 @@ class PaintView(CuraView):
         self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
         self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
         self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
+
+        self._cursor_position: Vector = Vector(0.0, 0.0, 0.0)
+        self._cursor_size: float = 0.0
+        self._cursor_color: List[float] = [0.0, 0.0, 0.0, 1.0]
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
@@ -113,6 +118,11 @@ class PaintView(CuraView):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
+
+    def setCursor(self, position: Optional[Vector] = None, size: float = -1, color: Optional[str] = None) -> None:
+        self._cursor_position = position if position is not None else self._cursor_position
+        self._cursor_size = size if size >= 0 else self._cursor_size
+        self._cursor_color = self._paint_modes[self._current_paint_type][color].display_color if color is not None else self._cursor_color
 
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
@@ -207,6 +217,10 @@ class PaintView(CuraView):
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
+
+        self._paint_shader.setUniformValue("u_cursorPos", self._cursor_position)
+        self._paint_shader.setUniformValue("u_cursorSize", self._cursor_size)
+        self._paint_shader.setUniformValue("u_cursorColor", self._cursor_color)
 
         colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
