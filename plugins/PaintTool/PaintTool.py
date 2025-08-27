@@ -461,12 +461,14 @@ class PaintTool(Tool):
     def getRequiredExtraRenderingPasses(self) -> list[str]:
         return ["selection_faces", "picking_selected"]
 
-    @staticmethod
-    def _updateScene(node: SceneNode = None):
+    def _updateScene(self, node: SceneNode = None):
         if node is None:
             node = Selection.getSelectedObject(0)
         if node is not None:
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            if self._mouse_held:
+                Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            else:
+                self._view.rerenderFull()
 
     def _onSelectionChanged(self):
         super()._onSelectionChanged()
