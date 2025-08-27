@@ -225,7 +225,7 @@ Item
                 id: undoButton
 
                 enabled: undoAction.enabled
-                text: catalog.i18nc("@action:button", "Undo Stroke")
+                text: catalog.i18nc("@action:button", "Undo Stroke (Ctrl+L)")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
@@ -240,7 +240,7 @@ Item
                 id: redoButton
 
                 enabled: redoAction.enabled
-                text: catalog.i18nc("@action:button", "Redo Stroke")
+                text: catalog.i18nc("@action:button", "Redo Stroke (Ctrl+Shift+L)")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
