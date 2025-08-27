@@ -74,6 +74,7 @@ class PaintTool(Tool):
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
+        self._controller.activeStageChanged.connect(self._updateStage)
 
         self._camera: Optional[Camera] = None
         self._cam_pos: numpy.ndarray = numpy.array([0.0, 0.0, 0.0])
@@ -456,6 +457,12 @@ class PaintTool(Tool):
         if new_state != self._state:
             self._state = new_state
             self.propertyChanged.emit()
+
+    def _updateStage(self):
+        # Other tools are mostly just superimposing toolhandles, but the paint-view blocks all else, so:
+        # If the stage is preview, just force the painting tool to be off.
+        if self._controller.getActiveStage().getPluginId().lower() == "previewstage":
+            self._controller.setActiveTool(None)
 
     def _onPrepareTextureFinished(self, job: Job):
         if job == self._prepare_texture_job:
