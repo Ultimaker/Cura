@@ -251,7 +251,13 @@ class PaintTool(Tool):
         shape = None
         match self._brush_shape:
             case PaintTool.Brush.Shape.SQUARE:
-                shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 4)
+                half_edge_size = self._brush_size * size_adjust / 2.0
+                shape = Polygon([
+                    [half_edge_size, half_edge_size],
+                    [half_edge_size, -half_edge_size],
+                    [-half_edge_size, -half_edge_size],
+                    [-half_edge_size, half_edge_size],
+                ])
             case PaintTool.Brush.Shape.CIRCLE:
                 shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 16)
             case _:
