@@ -56,7 +56,7 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
-        self._brush_size: int = 200
+        self._brush_size: int = 50
         self._brush_color: str = "preferred"
         self._brush_extruder: int = 0
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE

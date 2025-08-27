@@ -198,7 +198,7 @@ Item
             indicatorVisible: false
 
             from: 10
-            to: 1000
+            to: 300
             value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
