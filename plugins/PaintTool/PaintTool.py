@@ -369,7 +369,7 @@ class PaintTool(Tool):
                 world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
                 self._view.setCursor(world_coords_vec, self._brush_size / 128.0, brush_color)
                 if not self._mouse_held:
-                    self._updateScene(node)
+                    self._view.rerenderFull()
                     return False
 
             if is_pressed:
