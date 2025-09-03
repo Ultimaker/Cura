@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import hashlib
 import json
+import platform
 import re
 import secrets
 from enum import StrEnum
@@ -235,10 +236,6 @@ class ClusterApiClient:
             Logger.warning("Maximum authorization temporary digest-token request tries exceeded. Is printer-firmware up to date?")
             return
 
-        username = CuraApplication.getInstance().getCuraAPI().account.userName
-        if (not username) or username == "":
-            return
-
         def on_finished(resp) -> None:
             self._auth_tries += 1
             try:
@@ -253,7 +250,7 @@ class ClusterApiClient:
         url = "{}/auth/request".format(self.PRINTER_API_PREFIX)
         request_body = json.dumps({
                 "application": CuraApplication.getInstance().getApplicationDisplayName(),
-                "user": username,
+                "user": f"user@{platform.node()}",
             }).encode("utf-8")
         reply = self._manager.post(self.createEmptyRequest(url, method=HttpRequestMethod.POST, skip_auth=True), request_body)
 
