@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import hashlib
 import json
+import re
 import secrets
 from enum import StrEnum
 from json import JSONDecodeError
@@ -46,7 +47,6 @@ class ClusterApiClient:
 
     AUTH_REALM = "Jedi-API"
     AUTH_QOP = "auth"
-    AUTH_NC = "00000001"
     AUTH_NONCE_LEN = 16
     AUTH_CNONCE_LEN = 8
 
@@ -68,6 +68,9 @@ class ClusterApiClient:
         self._auth_id = None
         self._auth_key = None
         self._auth_tries = 0
+
+        self._nonce_count = 1
+        self._nonce = None
 
     def getSystem(self, on_finished: Callable) -> None:
         """Get printer system information.
@@ -153,6 +156,7 @@ class ClusterApiClient:
         if self._auth_id and self._auth_key:
             digest_str = self._makeAuthDigestHeaderPart(path, method=method)
             request.setRawHeader(b"Authorization", f"Digest {digest_str}".encode("utf-8"))
+            self._nonce_count += 1
         elif not skip_auth:
             self._setupAuth()
         return request
@@ -204,18 +208,19 @@ class ClusterApiClient:
         def sha256_utf8(x: str) -> str:
             return hashlib.sha256(x.encode("utf-8")).hexdigest()
 
-        nonce = secrets.token_hex(ClusterApiClient.AUTH_NONCE_LEN)
+        nonce = secrets.token_hex(ClusterApiClient.AUTH_NONCE_LEN) if self._nonce is None else self._nonce
         cnonce = secrets.token_hex(ClusterApiClient.AUTH_CNONCE_LEN)
+        auth_nc = f"{self._nonce_count:08x}"
 
         ha1 = sha256_utf8(f"{self._auth_id}:{ClusterApiClient.AUTH_REALM}:{self._auth_key}")
         ha2 = sha256_utf8(f"{method}:{url_part}")
-        resp_digest = sha256_utf8(f"{ha1}:{nonce}:{ClusterApiClient.AUTH_NC}:{cnonce}:{ClusterApiClient.AUTH_QOP}:{ha2}")
+        resp_digest = sha256_utf8(f"{ha1}:{nonce}:{auth_nc}:{cnonce}:{ClusterApiClient.AUTH_QOP}:{ha2}")
         return ", ".join([
             f'username="{self._auth_id}"',
             f'realm="{ClusterApiClient.AUTH_REALM}"',
             f'nonce="{nonce}"',
             f'uri="{url_part}"',
-            f'nc={ClusterApiClient.AUTH_NC}',
+            f'nc={auth_nc}',
             f'cnonce="{cnonce}"',
             f'qop={ClusterApiClient.AUTH_QOP}',
             f'response="{resp_digest}"',
@@ -275,6 +280,11 @@ class ClusterApiClient:
                 return
 
             if reply.error() != QNetworkReply.NetworkError.NoError:
+                if reply.error() == QNetworkReply.NetworkError.AuthenticationRequiredError:
+                    nonce_match = re.search(r'nonce="([^"]+)', str(reply.rawHeader(b"WWW-Authenticate")))
+                    if nonce_match:
+                        self._nonce = nonce_match.group(1)
+                        self._nonce_count = 1
                 self._on_error(reply.errorString())
                 return
 
