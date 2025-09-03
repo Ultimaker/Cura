@@ -152,6 +152,7 @@ class ThreeMFReader(MeshReader):
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
             mesh_builder.setFileName(file_name)
+
         mesh_data = mesh_builder.build()
 
         if len(mesh_data.getVertices()):

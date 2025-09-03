@@ -15,22 +15,20 @@ Item
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
 
-    property string selectedMode: ""
-    property string selectedColor: ""
-    property int selectedShape: 0
-
     Action
     {
         id: undoAction
         shortcut: "Ctrl+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+        enabled: UM.Controller.properties.getValue("CanUndo")
+        onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
     Action
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+        enabled: UM.Controller.properties.getValue("CanRedo")
+        onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
     Column
@@ -57,6 +55,7 @@ Item
                 icon: "Support"
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
+                visible: false
             }
         }
 
@@ -164,15 +163,15 @@ Item
             width: parent.width
             indicatorVisible: false
 
-            from: 1
-            to: 40
-            value: 10
+            from: 10
+            to: 1000
+            value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
             {
                 if(! pressed)
                 {
-                    UM.Controller.triggerActionWithData("setBrushSize", shapeSizeSlider.value)
+                    UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
             }
         }
@@ -191,6 +190,7 @@ Item
             {
                 id: undoButton
 
+                enabled: undoAction.enabled
                 text: catalog.i18nc("@action:button", "Undo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -205,6 +205,7 @@ Item
             {
                 id: redoButton
 
+                enabled: redoAction.enabled
                 text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -227,11 +228,74 @@ Item
         }
     }
 
-    Component.onCompleted:
+    Rectangle
     {
-        // Force first types for consistency, otherwise UI may become different from controller
-        rowPaintMode.children[0].setMode()
-        rowBrushColor.children[1].setColor()
-        rowBrushShape.children[1].setShape()
+        id: waitPrepareItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.PREPARING_MODEL
+
+        ColumnLayout
+        {
+            anchors.fill: parent
+
+            UM.Label
+            {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.verticalStretchFactor: 2
+
+                text: catalog.i18nc("@label", "Preparing model for painting...")
+                verticalAlignment: Text.AlignBottom
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Item
+            {
+                Layout.preferredWidth: loadingIndicator.width
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillHeight: true
+                Layout.verticalStretchFactor: 1
+
+                UM.ColorImage
+                {
+                    id: loadingIndicator
+
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    width: UM.Theme.getSize("card_icon").width
+                    height: UM.Theme.getSize("card_icon").height
+                    source: UM.Theme.getIcon("ArrowDoubleCircleRight")
+                    color: UM.Theme.getColor("text_default")
+
+                    RotationAnimator
+                    {
+                        target: loadingIndicator
+                        from: 0
+                        to: 360
+                        duration: 2000
+                        loops: Animation.Infinite
+                        running: true
+                        alwaysRunToEnd: true
+                    }
+                }
+            }
+        }
+    }
+
+    Rectangle
+    {
+        id: selectSingleMessageItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.MULTIPLE_SELECTION
+
+        UM.Label
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@label", "Select a single model to start painting")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
     }
 }

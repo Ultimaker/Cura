@@ -13,13 +13,6 @@ UM.ToolbarButton
 
     property string color
 
-    checked: base.selectedColor === buttonBrushColor.color
-
-    onClicked: setColor()
-
-    function setColor()
-    {
-        base.selectedColor = buttonBrushColor.color
-        UM.Controller.triggerActionWithData("setBrushColor", buttonBrushColor.color)
-    }
+    checked: UM.Controller.properties.getValue("BrushColor") === buttonBrushColor.color
+    onClicked: UM.Controller.setProperty("BrushColor", buttonBrushColor.color)
 }
