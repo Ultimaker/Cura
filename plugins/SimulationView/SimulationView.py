@@ -172,13 +172,20 @@ class SimulationView(CuraView):
         self._updateSliceWarningVisibility()
         self.activityChanged.emit()
 
-    def getSimulationPass(self) -> SimulationPass:
+    def getSimulationPass(self) -> Optional[SimulationPass]:
         if not self._layer_pass:
+            renderer = self.getRenderer()
+            if renderer is None:
+                return None
+
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             self._layer_pass = SimulationPass(1, 1)
             self._compatibility_mode = self._evaluateCompatibilityMode()
             self._layer_pass.setSimulationView(self)
+            self._layer_pass.setEnabled(False)
+            renderer.addRenderPass(self._layer_pass)
+
         return self._layer_pass
 
     def getCurrentLayer(self) -> int:
@@ -608,8 +615,10 @@ class SimulationView(CuraView):
             visible_line_types.append(LayerPolygon.SupportInterfaceType)
         visible_line_types_with_extrusion = visible_line_types.copy()  # Copy before travel moves are added
         if self.getShowTravelMoves():
-            visible_line_types.append(LayerPolygon.MoveCombingType)
-            visible_line_types.append(LayerPolygon.MoveRetractionType)
+            visible_line_types.append(LayerPolygon.MoveUnretractedType)
+            visible_line_types.append(LayerPolygon.MoveRetractedType)
+            visible_line_types.append(LayerPolygon.MoveWhileRetractingType)
+            visible_line_types.append(LayerPolygon.MoveWhileUnretractingType)
 
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             layer_data = node.callDecoration("getLayerData")
@@ -732,11 +741,14 @@ class SimulationView(CuraView):
 
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
+            if layer_pass is None:
+                return False
+
             renderer = self.getRenderer()
             if renderer is None:
                 return False
 
-            renderer.addRenderPass(layer_pass)
+            layer_pass.setEnabled(True)
 
             # Make sure the NozzleNode is add to the root
             nozzle = self.getNozzleNode()
@@ -776,7 +788,7 @@ class SimulationView(CuraView):
                 return False
 
             if self._layer_pass is not None:
-                renderer.removeRenderPass(self._layer_pass)
+                self._layer_pass.setEnabled(False)
             if self._composite_pass:
                 self._composite_pass.setLayerBindings(cast(List[str], self._old_layer_bindings))
                 self._composite_pass.setCompositeShader(cast(ShaderProgram, self._old_composite_shader))
