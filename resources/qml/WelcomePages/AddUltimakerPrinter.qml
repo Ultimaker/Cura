@@ -129,7 +129,6 @@ Control
                     text: catalog.i18nc("@button", "Sign in to Digital Factory")
                     onClicked: function()
                     {
-                        Qt.openUrlExternally("https://digitalfactory.ultimaker.com/app/printers?add_printer=true&utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
                         text = catalog.i18nc("@button", "Waiting for new printers")
                         busy = true;
                         enabled = false;
