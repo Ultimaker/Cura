@@ -74,8 +74,8 @@
         {
             "maximum_value": "max(35, min((material_bed_temperature + 20) / 2, 70))",
             "maximum_value_warning": "max(30, min((material_bed_temperature + 10) / 2, 70))",
-            "minimum_value": "max((material_bed_temperature - 30) / 2, 30)",
-            "minimum_value_warning": "max((material_bed_temperature - 20) / 2, 30)"
+            "minimum_value": "max((material_bed_temperature - 40) / 1.5, 30)",
+            "minimum_value_warning": "max((material_bed_temperature - 35) / 1.5, 30)"
         },
         "cool_min_layer_time": { "value": 3 },
         "cool_min_layer_time_fan_speed_max": { "value": "cool_min_layer_time + 12" },
