@@ -158,7 +158,7 @@
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_min_cool_heat_time_window": { "value": "15" },
         "machine_name": { "default_value": "MakerBot Sketch Sprint" },
-        "machine_start_gcode": { "default_value": "G28\nM132 X Y Z A B\nG1 Z50.000 F420\nG161 X Y F3300\nM7 T0\nM6 T0\nM651 S255\nG1 Z0.25 F6000\nG1 E-1.5 F800\nG1 E2 F800\nG1 X111 Y111 Z0.25 F4800\nG1 X111 Y-111 E25 F1200" },
+        "machine_start_gcode": { "default_value": "G28\nM132 X Y Z A B\nG1 Z50.000 F420\nG161 X Y F3300\nM7 T0\nM6 T0\nM651 S255\nSET_SERVO SERVO=my_servo ANGLE=180\nSET_FAN_SPEED FAN=external_fan SPEED=1\nSET_FAN_SPEED FAN=internal_fan SPEED=1\nG1 Z0.25 F6000\nG1 E-1.5 F800\nG1 E2 F800\nG1 X111 Y111 Z0.25 F4800\nG1 X111 Y-111 E25 F1200" },
         "machine_width": { "default_value": 221.5 },
         "material_bed_temp_wait": { "value": "False" },
         "material_bed_temperature":
