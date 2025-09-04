@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
+
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import QApplication
 
@@ -35,6 +37,7 @@ class SupportEraser(Tool):
         self._controller = self.getController()
 
         self._selection_pass = None
+        self._picking_pass: Optional[PickingPass] = None
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._updateEnabled)
 
         # Note: if the selection is cleared with this tool active, there is no way to switch to
@@ -84,12 +87,13 @@ class SupportEraser(Tool):
                     # Only "normal" meshes can have anti_overhang_meshes added to them
                     return
 
-            # Create a pass for picking a world-space location from the mouse location
-            active_camera = self._controller.getScene().getActiveCamera()
-            picking_pass = PickingPass(active_camera.getViewportWidth(), active_camera.getViewportHeight())
-            picking_pass.render()
+            # Get the pass for picking a world-space location from the mouse location
+            if self._picking_pass is None:
+                self._picking_pass = Application.getInstance().getRenderer().getRenderPass("picking_selected")
+                if not self._picking_pass:
+                    return
 
-            picked_position = picking_pass.getPickedPosition(event.x, event.y)
+            picked_position = self._picking_pass.getPickedPosition(event.x, event.y)
 
             # Add the anti_overhang_mesh cube at the picked location
             self._createEraserMesh(picked_node, picked_position)
@@ -189,3 +193,6 @@ class SupportEraser(Tool):
 
         mesh.calculateNormals()
         return mesh
+
+    def getRequiredExtraRenderingPasses(self) -> list[str]:
+        return ["picking_selected"]

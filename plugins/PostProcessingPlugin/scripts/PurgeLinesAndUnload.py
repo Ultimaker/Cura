@@ -35,8 +35,9 @@ class Position(tuple, Enum):
 
 class PurgeLinesAndUnload(Script):
 
-    def __init__(self):
-        super().__init__()
+    def initialize(self) -> None:
+        super().initialize()
+        # Get required values from the global stack and set default values for the script
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         self.extruder = self.global_stack.extruderList
         self.end_purge_location = None
@@ -56,9 +57,6 @@ class PurgeLinesAndUnload(Script):
         self.machine_back = self.machine_depth - 1.0
         self.start_x = None
         self.start_y = None
-
-    def initialize(self) -> None:
-        super().initialize()
         # Get the StartUp Gcode from Cura and attempt to catch if it contains purge lines.  Message the user if an extrusion is in the startup.
         startup_gcode = self.global_stack.getProperty("machine_start_gcode", "value")
         start_lines = startup_gcode.splitlines()
@@ -496,7 +494,7 @@ class PurgeLinesAndUnload(Script):
             """Generates G-code lines for prime blob adjustment."""
             gcode_lines = [
                 f"G1 F{retract_speed} E{retract_distance} ; Unretract",
-                "G92 E0 ; Reset extruder"
+                "G92 E0 ; Reset extruder\n"
             ]
             return "\n".join(gcode_lines)
 

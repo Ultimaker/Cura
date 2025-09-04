@@ -61,6 +61,7 @@ class MachineErrorChecker(QObject):
         self._machine_manager.globalContainerChanged.connect(self.startErrorCheck)
 
         self._onMachineChanged()
+        self.startErrorCheck()
 
     def _setCheckTimer(self) -> None:
         """A QTimer to regulate error check frequency
