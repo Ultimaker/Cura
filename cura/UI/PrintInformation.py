@@ -166,6 +166,15 @@ class PrintInformation(QObject):
     def printTimes(self) -> Dict[str, Duration]:
         return self._print_times_per_feature[self._active_build_plate]
 
+    def _getTimeEstimationFactor(self) -> Optional[float]:
+        """Called when the global container stack changes to emit timeEstimationFactorChanged signal"""
+        global_stack = self._application.getGlobalContainerStack()
+        
+        if global_stack is None:
+            return None
+        factor = global_stack.getProperty("machine_time_estimation_factor", "value")
+        return float(factor) / 100
+
     def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
         self.currentPrintTimeChanged.emit()
@@ -175,6 +184,7 @@ class PrintInformation(QObject):
 
     def _updateTotalPrintTimePerFeature(self, build_plate_number: int, print_times_per_feature: Dict[str, int]) -> None:
         total_estimated_time = 0
+        time_estimation_factor = self._getTimeEstimationFactor()
 
         if build_plate_number not in self._print_times_per_feature:
             self._initPrintTimesPerFeature(build_plate_number)
@@ -188,6 +198,9 @@ class PrintInformation(QObject):
                 duration.setDuration(0)
                 Logger.warning("Received NaN for print duration message")
                 continue
+
+            if time_estimation_factor is not None:
+                time = int(time * time_estimation_factor)
 
             total_estimated_time += time
             duration.setDuration(time)
