@@ -55,7 +55,7 @@ Column
             Cura.IconWithText
             {
                 id: estimatedTime
-                width: parent.width
+                width: parent.width - printInformationPanel.width
                 
                 text:
                 {
