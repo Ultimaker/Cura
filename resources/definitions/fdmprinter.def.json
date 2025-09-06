@@ -486,6 +486,19 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_time_estimation_factor":
+                {
+                    "label": "Print Time Estimation Factor",
+                    "description": "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times.",
+                    "default_value": 100,
+                    "minimum_value": "1",
+                    "maximum_value": "1000",
+                    "type": "float",
+                    "unit": "%",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_nozzle_id":
                 {
                     "label": "Nozzle ID",

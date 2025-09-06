@@ -280,6 +280,23 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
+            Cura.NumericTextFieldWithUnit  // "Print Time Estimation Factor"
+            {
+                id: machineTimeEstimationFactorField
+                containerStackId: machineStackId
+                settingKey: "machine_time_estimation_factor"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Print Time Estimation Factor")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                controlWidth: base.controlWidth
+                unitText: catalog.i18nc("@label", "%")
+                decimals: 1
+                minimum: 1
+                maximum: 1000
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
             Cura.ComboBoxWithOptions  // "Number of Extruders"
             {
                 id: numberOfExtrudersComboBox
