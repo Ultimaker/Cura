@@ -175,16 +175,45 @@ class PrintInformation(QObject):
         return self._print_times_per_feature[self._active_build_plate]
 
     def _getTimeEstimationFactor(self) -> Optional[float]:
-        """Called when the global container stack changes to emit timeEstimationFactorChanged signal"""
+        """Returns the time estimation factor as set by the user in the machine settings, or None if not set.
+        If a factor is found and differs from 1.0 (100%), the userTimeAdjusted property is set to True.
+        This factor is used to adjust the estimated print time received from the backend.
+        Note that the factor is converted from percentage to decimal (e.g., 80% becomes 0.8).
+        """
         global_stack = self._application.getGlobalContainerStack()
-        
         if global_stack is None:
+            self._resetUserTimeAdjustment()
             return None
-        factor = float(global_stack.getProperty("machine_time_estimation_factor", "value"))
-        if factor != 100:
-            self._user_time_estimation_adjusted = True
+
+        factor_value = global_stack.getProperty("machine_time_estimation_factor", "value")
+        if factor_value is None:
+            self._resetUserTimeAdjustment()
+            return None
+
+        try:
+            factor = float(factor_value) / 100.0
+        except (ValueError, TypeError):
+            Logger.warning(f"Invalid time estimation factor value: {factor_value}")
+            self._resetUserTimeAdjustment()
+            return None
+
+        # Check if factor is significantly different from 1.0 to avoid floating point precision issues
+        if abs(factor - 1.0) > 1e-6:
+            self._setUserTimeAdjustment(True)
+            return factor
+        
+        self._resetUserTimeAdjustment()
+        return None
+
+    def _setUserTimeAdjustment(self, adjusted: bool) -> None:
+        """Sets the user time adjustment state and emits signal if changed."""
+        if self._user_time_estimation_adjusted != adjusted:
+            self._user_time_estimation_adjusted = adjusted
             self.userTimeAdjustedChanged.emit()
-        return factor / 100
+
+    def _resetUserTimeAdjustment(self) -> None:
+        """Resets the user time adjustment state to False."""
+        self._setUserTimeAdjustment(False)
 
     def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
