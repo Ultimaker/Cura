@@ -55,8 +55,9 @@ Column
             {
                 id: estimatedTime
                 width: parent.width
+                var userAdjusted = PrintInformation.userTimeAdjusted == true ? catalog.i18nc("@label", "*User Adjusted") : ""
 
-                text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
+                text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long) + userAdjusted
                 source: UM.Theme.getIcon("Clock")
                 font: UM.Theme.getFont("medium_bold")
             }

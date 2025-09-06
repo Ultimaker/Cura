@@ -48,6 +48,8 @@ class PrintInformation(QObject):
 
         self._pre_sliced = False
 
+        self._user_time_estimation_adjusted = False
+
         self._backend = self._application.getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
@@ -128,6 +130,12 @@ class PrintInformation(QObject):
     def preSliced(self) -> bool:
         return self._pre_sliced
 
+    userTimeAdjustedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=userTimeAdjustedChanged)
+    def userTimeAdjusted(self) -> bool:
+        return self._user_time_estimation_adjusted
+
     def setPreSliced(self, pre_sliced: bool) -> None:
         if self._pre_sliced != pre_sliced:
             self._pre_sliced = pre_sliced
@@ -172,8 +180,11 @@ class PrintInformation(QObject):
         
         if global_stack is None:
             return None
-        factor = global_stack.getProperty("machine_time_estimation_factor", "value")
-        return float(factor) / 100
+        factor = float(global_stack.getProperty("machine_time_estimation_factor", "value"))
+        if factor != 100:
+            self._user_time_estimation_adjusted = True
+            self.userTimeAdjustedChanged.emit()
+        return factor / 100
 
     def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
