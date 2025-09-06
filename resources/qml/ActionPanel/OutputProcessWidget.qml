@@ -19,6 +19,7 @@ Column
 
     spacing: UM.Theme.getSize("thin_margin").height
     property bool preSlicedData: PrintInformation.preSliced
+    property bool userTimeAdjusted: PrintInformation.userTimeAdjusted
     property alias hasPreviewButton: previewStageShortcut.visible
 
     UM.I18nCatalog
@@ -55,9 +56,21 @@ Column
             {
                 id: estimatedTime
                 width: parent.width
-                var userAdjusted = PrintInformation.userTimeAdjusted == true ? catalog.i18nc("@label", "*User Adjusted") : ""
+                
+                text:
+                {
+                    if (preSlicedData)
+                    {
+                        return catalog.i18nc("@label", "No time estimation available")
+                    }
 
-                text: preSlicedData ? catalog.i18nc("@label", "No time estimation available") : PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long) + userAdjusted
+                    if (userTimeAdjusted)
+                    {
+                        return PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long) + " " + catalog.i18nc("@label", "*User Adjusted")
+                    }
+
+                    return PrintInformation.currentPrintTime.getDisplayString(UM.DurationFormat.Long)
+                }
                 source: UM.Theme.getIcon("Clock")
                 font: UM.Theme.getFont("medium_bold")
             }
