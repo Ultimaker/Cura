@@ -38,7 +38,6 @@ from UM.Qt.Duration import DurationFormat
 import time
 import datetime
 import math
-from UM.Preferences import Preferences
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
@@ -48,7 +47,7 @@ class DisplayInfoOnLCD(Script):
         try:
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
                 enable_countdown = True
-                self._instance.setProperty("enable_countdown", "value", enable_countdown)                
+                self._instance.setProperty("enable_countdown", "value", enable_countdown)
             cura_adjust_percent = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
             self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
         except AttributeError:
@@ -274,7 +273,7 @@ class DisplayInfoOnLCD(Script):
         self.m73_str = ""
         para_1 = data[0].split("\n")
         for line in para_1:
-            if line.startswith(";TIME:"):
+            if line.startswith(";TIME:") or line.startswith(";PRINT.TIME:"):
                 self.time_total = int(line.split(":")[1])
                 break
         if display_option == "filename_layer":
@@ -287,6 +286,7 @@ class DisplayInfoOnLCD(Script):
     def _display_filename_layer(self, data: str) -> str:
         data[0] = self._add_stats(data)
         max_layer = 0
+        format_option = self.getSettingValueByKey("format_option")
         lcd_text = "M117 "
         octo_text = "M118 "
         if self.getSettingValueByKey("file_name") != "":
@@ -296,7 +296,7 @@ class DisplayInfoOnLCD(Script):
         if self.getSettingValueByKey("addPrefixPrinting"):
             lcd_text += "Printing "
             octo_text += "Printing "
-        if not self.getSettingValueByKey("scroll"):
+        if not format_option:
             lcd_text += "Lay "
             octo_text += "Layer "
         else:
@@ -318,11 +318,11 @@ class DisplayInfoOnLCD(Script):
                     if self.getSettingValueByKey("maxlayer"):
                         display_text += "/" + max_layer
                         self.m118_text += "/" + max_layer
-                        if not self.getSettingValueByKey("scroll"):
+                        if not format_option:
                             display_text += "|" + file_name
                             self.m118_text += " | " + file_name
                     else:
-                        if not self.getSettingValueByKey("scroll"):
+                        if not format_option:
                             display_text += "|" + file_name + "!"
                             self.m118_text += " | " + file_name + "!"
                         else:
@@ -699,8 +699,8 @@ class DisplayInfoOnLCD(Script):
         # Add the stats to the gcode file
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
-            if line.startswith(";Layer height:"):
-                lines[index] = ";Layer height: " + f"{float(line.split(":")[1]):.2f}".format(float(line.split(":")[1]))
+            if line.startswith(";Layer height:") or line.startswith(";TARGET_MACHINE.NAME:"):
+                lines[index] = ";Layer height: " + f"{global_stack.getProperty("layer_height", "value")}"
                 lines[index] += f"\n{init_layer_hgt_line}"
                 lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
                 lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
