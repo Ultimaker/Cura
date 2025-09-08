@@ -395,7 +395,7 @@
             "enabled": false,
             "value": "acceleration_print"
         },
-        "raft_airgap": { "value": 0.3 },
+        "raft_airgap": { "value": 0.33 },
         "raft_base_acceleration":
         {
             "enabled": false,
@@ -451,7 +451,7 @@
             "maximum_value_warning": 2.5,
             "value": 1.0
         },
-        "retraction_combing": { "value": "'infill'" },
+        "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_count_max":
         {
             "maximum_value": 700,
