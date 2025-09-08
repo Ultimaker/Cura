@@ -260,7 +260,8 @@ class DisplayInfoOnLCD(Script):
             }
         }"""
 
-    def execute(self, data):
+    def execute(self, data):        
+        self.global_stack = Application.getInstance().getGlobalContainerStack()
         display_option = self.getSettingValueByKey("display_option")
         self.add_m117_line = self.getSettingValueByKey("add_m117_line")
         self.add_m118_line = self.getSettingValueByKey("add_m118_line")
@@ -654,7 +655,6 @@ class DisplayInfoOnLCD(Script):
         return time_to_go
 
     def _add_stats(self, data: str) -> str:
-        global_stack = Application.getInstance().getGlobalContainerStack()
         """
         Make a list of the models in the file.
         Add some of the filament stats to the first section of the gcode.
@@ -668,27 +668,27 @@ class DisplayInfoOnLCD(Script):
                     if not model_name in model_list:
                         model_list.append(model_name)
         # Filament stats
-        extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        layheight_0 = global_stack.getProperty("layer_height_0", "value")
+        extruder_count = self.global_stack.getProperty("machine_extruder_count", "value")
+        layheight_0 = self.global_stack.getProperty("layer_height_0", "value")
         init_layer_hgt_line = ";Initial Layer Height: " + f"{layheight_0:.2f}".format(layheight_0)
         filament_line_t0 = ";Extruder 1 (T0)\n"
         filament_amount = Application.getInstance().getPrintInformation().materialLengths
         filament_line_t0 += f";  Filament used: {filament_amount[0]}m\n"
-        filament_line_t0 += f";  Filament Type: {global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
-        filament_line_t0 += f";  Filament Dia.: {global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
-        filament_line_t0 += f";  Nozzle Size  : {global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
-        filament_line_t0 += f";  Print Temp.  : {global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°\n"
-        filament_line_t0 += f";  Bed Temp.    : {global_stack.extruderList[0].getProperty("material_bed_temperature", "value")}°"
+        filament_line_t0 += f";  Filament Type: {self.global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
+        filament_line_t0 += f";  Filament Dia.: {self.global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
+        filament_line_t0 += f";  Nozzle Size  : {self.global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
+        filament_line_t0 += f";  Print Temp.  : {self.global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°\n"
+        filament_line_t0 += f";  Bed Temp.    : {self.global_stack.extruderList[0].getProperty("material_bed_temperature", "value")}°"
 
         # if there is more than one extruder then get the stats for the second one.
         filament_line_t1 = ""
         if extruder_count > 1:
             filament_line_t1 = "\n;Extruder 2 (T1)\n"
             filament_line_t1 += f";  Filament used: {filament_amount[1]}m\n"
-            filament_line_t1 += f";  Filament Type: {global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
-            filament_line_t1 += f";  Filament Dia.: {global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
-            filament_line_t1 += f";  Nozzle Size  : {global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
-            filament_line_t1 += f";  Print Temp.  : {global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
+            filament_line_t1 += f";  Filament Type: {self.global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
+            filament_line_t1 += f";  Filament Dia.: {self.global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
+            filament_line_t1 += f";  Nozzle Size  : {self.global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
+            filament_line_t1 += f";  Print Temp.  : {self.global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
         
         # Calculate the cost of electricity for the print
         electricity_cost = self.getSettingValueByKey("electricity_cost")
@@ -700,16 +700,16 @@ class DisplayInfoOnLCD(Script):
         lines = data[0].split("\n")
         for index, line in enumerate(lines):
             if line.startswith(";Layer height:") or line.startswith(";TARGET_MACHINE.NAME:"):
-                lines[index] = ";Layer height: " + f"{global_stack.getProperty("layer_height", "value")}"
+                lines[index] = ";Layer height: " + f"{self.global_stack.getProperty("layer_height", "value")}"
                 lines[index] += f"\n{init_layer_hgt_line}"
-                lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
-                lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
+                lines[index] += f"\n;Base Quality Name  : '{self.global_stack.quality.getMetaDataEntry("name", "")}'"
+                lines[index] += f"\n;Custom Quality Name: '{self.global_stack.qualityChanges.getMetaDataEntry("name")}'"
             if line.startswith(";Filament used"):
                 lines[index] = filament_line_t0 + filament_line_t1 + f"\n;Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
             # The target machine "machine_name" is actually the printer model.  This adds the user defined printer name to the "TARGET_MACHINE" line.
             if line.startswith(";TARGET_MACHINE"):
-                machine_model = str(global_stack.getProperty("machine_name", "value"))
-                machine_name = str(global_stack.getName())
+                machine_model = str(self.global_stack.getProperty("machine_name", "value"))
+                machine_name = str(self.global_stack.getName())
                 lines[index] += f" / {machine_name}"
             if "MINX" in line or "MIN.X" in line:
                 # Add the Object List
