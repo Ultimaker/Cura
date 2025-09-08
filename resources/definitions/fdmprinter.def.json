@@ -4767,6 +4767,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "layer_start_at_z_seam":
+                {
+                    "label": "Layer Start at Z Seam",
+                    "description": "Start printing at the Z seam position.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": true
+                },
                 "layer_start_x":
                 {
                     "label": "Layer Start X",
