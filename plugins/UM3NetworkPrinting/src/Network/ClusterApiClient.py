@@ -125,7 +125,7 @@ class ClusterApiClient:
         """Delete a print job from the queue."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
-        self._manager.deleteResource(self.createEmptyRequest(url))
+        self._manager.deleteResource(self.createEmptyRequest(url, method=HttpRequestMethod.DELETE))
 
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the state of a print job."""
