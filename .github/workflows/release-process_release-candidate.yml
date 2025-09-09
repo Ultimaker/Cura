@@ -119,7 +119,7 @@ jobs:
 
   create-installers:
     name: Create installers
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@5.10
     needs: [parse-version, create-packages]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}
