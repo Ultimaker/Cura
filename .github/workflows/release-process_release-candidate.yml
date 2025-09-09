@@ -124,6 +124,7 @@ jobs:
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}
       conan_args: "-c user.sentry:environment=production"
+      lockfile_repository_branch: ${{ needs.parse-version.outputs.branch_name }}
     secrets: inherit
 
   create-release-draft:

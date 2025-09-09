@@ -35,6 +35,11 @@ on:
         options:
           - ubuntu-22.04
           - self-hosted-Ubuntu22-X64
+      lockfile_repository_branch:
+        description: 'Branch where to get the conan lockfile from'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   linux-installer:
@@ -46,4 +51,5 @@ jobs:
       enterprise: ${{ inputs.enterprise }}
       staging: ${{ inputs.staging }}
       operating_system: ${{ inputs.operating_system }}
+      lockfile_repository_branch: ${{ inputs.lockfile_repository_branch }}
     secrets: inherit
