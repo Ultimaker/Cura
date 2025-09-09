@@ -122,7 +122,7 @@ class FilamentChange(Script):
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
-                    "enabled": "false"
+                    "enabled": false
                 },
                 "enable_before_macro":
                 {
