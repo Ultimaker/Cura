@@ -79,11 +79,13 @@
         "m4/1.4.19#b38ced39a01e31fef5435bc634461fd2",
         "meson/1.2.2#21b73818ba96d9eea465b310b5bbc993",
         "meson/1.4.0#2262941cc8fbb0099dd0c196ca2a6c01",
+        "nasm/2.16.01#31e26f2ee3c4346ecd347911bd126904",
         "msys2/cci.latest#5b73b10144f73cc5bfe0572ed9be39e1",
         "ninja/1.13.1#294f8721dbcde145674f7ba44994700e",
         "pkgconf/2.1.0#27f44583701117b571307cf5b5fe5605",
         "pkgconf/2.2.0#6462942a22803086372db44689ba825f",
         "protobuf/3.21.12#d927114e28de9f4691a6bbcdd9a529d1",
+        "strawberryperl/5.32.1.1#8d114504d172cfea8ea1662d09b6333e",
         "zlib/1.3.1#b8bc2603263cf7eccbd6e17e66b0ed76"
     ],
     "python_requires": [
