@@ -535,7 +535,6 @@ class CuraConan(ConanFile):
         copy(self, "*", os.path.join(self.recipe_folder, "packaging"), os.path.join(self.export_sources_folder, "packaging"))
         copy(self, "*", os.path.join(self.recipe_folder, ".run_templates"), os.path.join(self.export_sources_folder, ".run_templates"))
         copy(self, "cura_app.py", self.recipe_folder, self.export_sources_folder)
-        copy(self, "conan.lock", self.recipe_folder, self.export_sources_folder)
 
     def validate(self):
         if self.options.i18n_extract and self.settings.os == "Windows" and not self.conf.get("tools.microsoft.bash:path", check_type=str):
