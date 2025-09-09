@@ -33,6 +33,7 @@
         "mapbox-variant/1.2.0#e0533cc4c1625d48a0238760e6c85e35",
         "mapbox-wagyu/0.5.0@ultimaker/stable#e6cb299485b686893e07209fea6d5a0b",
         "mpdecimal/2.5.1#cad87046d76460b8e2fc159194e50e7e",
+        "msys2/cci.latest#5b73b10144f73cc5bfe0572ed9be39e1",
         "neargye-semver/0.3.0#799b2e371d5be985a073214e029ea6cd",
         "nest2d/5.10.0#6f430e9fa21c308e0e6234649a6116ed",
         "nlohmann_json/3.11.2#1ded6ae5d200a68ac17c51d528b945e2",
