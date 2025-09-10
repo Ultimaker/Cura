@@ -98,7 +98,7 @@
         {
             "maximum_value": "machine_max_acceleration_x",
             "maximum_value_warning": "machine_max_acceleration_x*0.8",
-            "value": "acceleration_wall_0"
+            "value": "acceleration_topbottom / 2"
         },
         "acceleration_skirt_brim":
         {
@@ -199,15 +199,19 @@
         },
         "adhesion_type": { "value": "'brim' if support_enable and support_structure=='tree' else 'skirt'" },
         "bottom_thickness": { "value": "3*layer_height if top_layers==4 and not support_enable else top_bottom_thickness" },
-        "bridge_skin_material_flow": { "value": 200 },
+        "bridge_enable_more_layers": { "value": true },
+        "bridge_skin_density": { "value": 70 },
+        "bridge_skin_material_flow": { "value": 150 },
+        "bridge_skin_material_flow_2": { "value": 70 },
         "bridge_skin_speed":
         {
             "unit": "mm/s",
-            "value": "bridge_wall_speed"
+            "value": 35
         },
+        "bridge_skin_speed_2": { "value": "speed_print*2/3" },
         "bridge_sparse_infill_max_density": { "value": 50 },
-        "bridge_wall_material_flow": { "value": "bridge_skin_material_flow" },
-        "bridge_wall_min_length": { "value": 10 },
+        "bridge_wall_material_flow": { "value": 200 },
+        "bridge_wall_min_length": { "value": 2 },
         "bridge_wall_speed":
         {
             "unit": "mm/s",
@@ -221,23 +225,26 @@
             ]
         },
         "cool_during_extruder_switch": { "value": "'all_fans'" },
-        "cool_min_layer_time": { "value": 5 },
-        "cool_min_layer_time_overhang": { "value": 9 },
-        "cool_min_layer_time_overhang_min_segment_length": { "value": 2 },
+        "cool_min_layer_time": { "value": 6 },
+        "cool_min_layer_time_overhang": { "value": 11 },
+        "cool_min_layer_time_overhang_min_segment_length": { "value": 1.5 },
         "cool_min_speed": { "value": 6 },
         "cool_min_temperature":
         {
-            "minimum_value_warning": "material_print_temperature-15",
+            "minimum_value_warning": "material_print_temperature-20",
             "value": "material_print_temperature-15"
         },
         "default_material_print_temperature": { "maximum_value_warning": 320 },
         "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
         "flooring_layer_count": { "value": 1 },
-        "gradual_flow_enabled": { "value": false },
+        "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
+        "flooring_monotonic": { "value": false },
+        "gradual_flow_discretisation_step_size": { "value": 1 },
+        "gradual_flow_enabled": { "value": true },
         "hole_xy_offset": { "value": 0.075 },
-        "infill_material_flow": { "value": "material_flow" },
+        "infill_material_flow": { "value": "material_flow if infill_sparse_density < 95 else 95" },
         "infill_overlap": { "value": 10 },
-        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'grid'" },
         "infill_sparse_density": { "value": 15 },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
         "initial_bottom_layers": { "value": 2 },
@@ -281,7 +288,7 @@
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
             "unit": "m/s\u00b3",
-            "value": "jerk_wall_0"
+            "value": "jerk_print"
         },
         "jerk_skirt_brim":
         {
@@ -424,7 +431,7 @@
         },
         "material_print_temperature": { "maximum_value_warning": 320 },
         "material_print_temperature_layer_0": { "maximum_value_warning": 320 },
-        "max_flow_acceleration": { "value": 8.0 },
+        "max_flow_acceleration": { "value": 1.5 },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
         "min_infill_area": { "default_value": 10 },
@@ -438,11 +445,15 @@
         "retraction_hop": { "value": 1 },
         "retraction_hop_after_extruder_switch_height": { "value": 2 },
         "retraction_hop_enabled": { "value": true },
-        "retraction_min_travel": { "value": "5 if support_enable and support_structure=='tree' else line_width * 2.5" },
+        "retraction_min_travel": { "value": "2.5 if support_enable and support_structure=='tree' else line_width * 2.5" },
         "retraction_prime_speed": { "value": 15 },
+        "roofing_monotonic": { "value": false },
+        "roofing_pattern": { "value": "'zigzag'" },
+        "seam_overhang_angle": { "value": 35 },
         "skin_edge_support_thickness": { "value": 0 },
-        "skin_material_flow": { "value": 95 },
-        "skin_overlap": { "value": 0 },
+        "skin_material_flow": { "value": 93 },
+        "skin_outline_count": { "value": 0 },
+        "skin_overlap": { "value": 20 },
         "skin_preshrink": { "value": 0 },
         "skirt_brim_minimal_length": { "value": 1000 },
         "skirt_brim_speed":
@@ -538,12 +549,12 @@
         "speed_wall":
         {
             "maximum_value_warning": 300,
-            "value": "speed_print*2/3"
+            "value": "speed_print*1/2"
         },
         "speed_wall_0":
         {
             "maximum_value_warning": 300,
-            "value": "speed_wall"
+            "value": "speed_wall*60/75"
         },
         "speed_wall_0_flooring":
         {
@@ -571,38 +582,46 @@
             "value": "speed_wall"
         },
         "support_angle": { "value": 60 },
-        "support_bottom_distance": { "maximum_value_warning": "3*layer_height" },
+        "support_bottom_distance":
+        {
+            "maximum_value_warning": "3*layer_height",
+            "value": "support_z_distance"
+        },
         "support_bottom_offset": { "value": 0 },
         "support_brim_width": { "value": 10 },
         "support_interface_enable": { "value": true },
         "support_interface_offset": { "value": "support_offset" },
         "support_line_width": { "value": "1.25*line_width" },
-        "support_offset": { "value": "1.2 if support_structure == 'tree' else 0.8" },
+        "support_offset": { "value": 0.8 },
         "support_pattern": { "value": "'gyroid' if support_structure == 'tree' else 'lines'" },
         "support_roof_height": { "minimum_value_warning": 0 },
         "support_structure": { "value": "'normal'" },
         "support_top_distance": { "maximum_value_warning": "3*layer_height" },
         "support_tree_angle": { "value": 50 },
         "support_tree_angle_slow": { "value": 35 },
-        "support_tree_bp_diameter": { "value": 15 },
-        "support_tree_branch_diameter": { "value": 8 },
-        "support_tree_tip_diameter": { "value": 1.0 },
-        "support_tree_top_rate": { "value": 20 },
-        "support_xy_distance_overhang": { "value": "machine_nozzle_size" },
-        "support_z_distance": { "value": "0.4*material_shrinkage_percentage_z/100.0" },
-        "top_bottom_thickness": { "value": "round(4*layer_height, 2)" },
+        "support_tree_bp_diameter": { "value": 20 },
+        "support_tree_branch_diameter": { "value": 5 },
+        "support_tree_branch_diameter_angle": { "value": 5 },
+        "support_tree_max_diameter": { "value": 15 },
+        "support_tree_tip_diameter": { "value": 2.0 },
+        "support_tree_top_rate": { "value": 10 },
+        "support_xy_distance": { "value": 1.2 },
+        "support_xy_distance_overhang": { "value": "1.5*machine_nozzle_size" },
+        "support_z_distance": { "value": "2*layer_height" },
+        "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
         "wall_0_acceleration": { "value": 1000 },
         "wall_0_deceleration": { "value": 1000 },
         "wall_0_end_speed_ratio": { "value": 100 },
+        "wall_0_inset": { "value": 0.05 },
         "wall_0_speed_split_distance": { "value": 0.2 },
         "wall_0_start_speed_ratio": { "value": 100 },
         "wall_0_wipe_dist": { "value": 0 },
         "wall_material_flow": { "value": 95 },
         "wall_overhang_angle": { "value": 45 },
         "wall_x_material_flow": { "value": 100 },
-        "xy_offset": { "value": 0.05 },
+        "xy_offset": { "value": 0.075 },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backright'" },
         "z_seam_type": { "value": "'sharpest_corner'" }
