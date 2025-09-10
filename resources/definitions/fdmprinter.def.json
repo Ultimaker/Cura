@@ -1681,7 +1681,7 @@
                                     "maximum_value": "999999",
                                     "type": "int",
                                     "minimum_value_warning": "2",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -1711,7 +1711,7 @@
                                     "default_value": 6,
                                     "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 and not magic_spiralize else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4568,7 +4568,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_speed":
@@ -4658,7 +4658,7 @@
                     "maximum_value": 999999999,
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_extrusion_window":
@@ -4672,7 +4672,7 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_combing":
@@ -9310,6 +9310,42 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
+                },
+                "retraction_during_travel_ratio":
+                {
+                    "label": "Retraction During Travel Move",
+                    "description": "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "keep_retracting_during_travel":
+                {
+                    "label": "Keep Retracting During Travel",
+                    "description": "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\" and retraction_during_travel_ratio > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_during_travel_ratio":
+                {
+                    "label": "Prime During Travel Move",
+                    "description": "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "scarf_joint_seam_length":
                 {

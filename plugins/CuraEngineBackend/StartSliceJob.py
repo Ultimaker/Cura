@@ -531,6 +531,14 @@ class StartSliceJob(Job):
 
                 obj.vertices = flat_verts
 
+                uv_coordinates = mesh_data.getUVCoordinates()
+                if uv_coordinates is not None:
+                    obj.uv_coordinates = uv_coordinates.flatten()
+
+                packed_texture = object.callDecoration("packTexture")
+                if packed_texture is not None:
+                    obj.texture = packed_texture
+
                 self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                 Job.yieldThread()
