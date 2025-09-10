@@ -278,6 +278,13 @@ S2000
 '''MT0={material_temperature, 0} MT1={material_temperature, 1}''',
 '''MT0=190.0 MT1=210.0'''
     ),
+
+    (
+        'Formula with commas',
+        None,
+'''G123 {min(bed_temperature, material_temperature)*2, 0} T55''',
+'''G123 100.0 T55'''
+    ),
 ]
 
 def pytest_generate_tests(metafunc):
