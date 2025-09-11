@@ -210,7 +210,13 @@ Item
         anchors.bottom: parent.bottom
 
         text: catalog.i18nc("@button", "Sign in")
-        onClicked: Cura.API.account.login()
+        onClicked: function()
+        {
+            text = catalog.i18nc("@button", "Waiting for new printers")
+            busy = true;
+            enabled = false;
+            Cura.API.account.isLoggedIn? Cura.API.account.sync():Cura.API.account.login();
+        }
         // Content Item is used in order to align the text inside the button. Without it, when resizing the
         // button, the text will be aligned on the left
         contentItem: Text {
