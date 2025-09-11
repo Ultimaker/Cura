@@ -73,6 +73,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("usb_printing/enabled")
+        usbPrintCheckbox.checked = boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+
         UM.Preferences.resetPreference("general/use_tray_icon")
         trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
 
@@ -357,6 +360,36 @@ UM.PreferencesPage
                     onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
 
                     text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                }
+            }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").width
+            }
+
+            UM.Label
+            {
+                font: UM.Theme.getFont("medium_bold")
+                text: catalog.i18nc("@label", "Slice-Output")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "Printing via USB-cable isn't automatically enabled for new installs anymore, as the scanning of ports to find connected printers can give trouble on some systems.")
+
+                UM.CheckBox
+                {
+                    id: usbPrintCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+                    onClicked: UM.Preferences.setValue("usb_printing/enabled", checked)
+
+                    text: catalog.i18nc("@option:check", "Enable printing via USB-cable (restart required)")
                 }
             }
 
