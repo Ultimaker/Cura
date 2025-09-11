@@ -40,7 +40,7 @@ class PaintUndoCommand(QUndoCommand):
 
         bit_range_start, bit_range_end = self._bit_range
         full_int32 = 0xffffffff
-        clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
+        clear_texture_bit_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
                     32 - 1 - bit_range_end))
         image_rect = QRect(0, 0, self._stroke_mask.width(), self._stroke_mask.height())
 
@@ -48,7 +48,7 @@ class PaintUndoCommand(QUndoCommand):
         clear_bits_image.invertPixels()
         painter = QPainter(clear_bits_image)
         painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Lighten)
-        painter.fillRect(image_rect, clear_mask)
+        painter.fillRect(image_rect, clear_texture_bit_mask)
         painter.end()
 
         set_value_image = self._stroke_mask.copy()

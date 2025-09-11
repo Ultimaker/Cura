@@ -463,6 +463,8 @@
         "layerview_support_infill": [0, 230, 230, 127],
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 127, 255, 255],
+        "layerview_move_while_retracting": [127, 255, 255, 255],
+        "layerview_move_while_unretracting": [255, 127, 255, 255],
         "layerview_support_interface": [63, 127, 255, 127],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [224, 192, 16, 64],
