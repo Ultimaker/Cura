@@ -75,10 +75,6 @@
             "Extrudr_GreenTECPro_Silver_175",
             "Extrudr_GreenTECPro_White_175",
             "verbatim_bvoh_175",
-            "Vertex_Delta_ABS",
-            "Vertex_Delta_PET",
-            "Vertex_Delta_PLA",
-            "Vertex_Delta_TPU",
             "chromatik_pla",
             "dsm_arnitel2045_175",
             "dsm_novamid1070_175",
@@ -186,9 +182,7 @@
         "machine_extruder_trains": { "0": "zyyx_plus_extruder_0" },
         "machine_x3g_variant": "z",
         "preferred_material": "generic_pla",
-        "preferred_quality_type": "normal",
-        "quality_definition": "zyyx_plus",
-        "setting_version": 3
+        "preferred_quality_type": "normal"
     },
     "overrides":
     {
