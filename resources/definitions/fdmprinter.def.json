@@ -6355,7 +6355,7 @@
                 },
                 "bridge_settings_enabled":
                 {
-                    "label": "Enable Bridge Settings",
+                    "label": "Enable Bridging",
                     "description": "Detect bridges and modify print speed, flow and fan settings while bridges are printed.",
                     "type": "bool",
                     "default_value": false,
