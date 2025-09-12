@@ -74,8 +74,8 @@
         {
             "maximum_value": "max(35, min((material_bed_temperature + 20) / 2, 70))",
             "maximum_value_warning": "max(30, min((material_bed_temperature + 10) / 2, 70))",
-            "minimum_value": "max((material_bed_temperature - 30) / 2, 30)",
-            "minimum_value_warning": "max((material_bed_temperature - 20) / 2, 30)"
+            "minimum_value": "max((material_bed_temperature - 40) / 1.5, 30)",
+            "minimum_value_warning": "max((material_bed_temperature - 35) / 1.5, 30)"
         },
         "cool_min_layer_time": { "value": 3 },
         "cool_min_layer_time_fan_speed_max": { "value": "cool_min_layer_time + 12" },
@@ -86,6 +86,7 @@
         "gantry_height": { "value": 35 },
         "gradual_support_infill_steps": { "value": "3 if support_interface_enable and support_structure != 'tree' else 0" },
         "group_outer_walls": { "value": "False" },
+        "infill_angles": { "value": "[-40, 50] if infill_pattern in ('grid', 'lines', 'zigzag')  else [ ]" },
         "infill_before_walls": { "value": "False if infill_sparse_density > 50 else True" },
         "infill_enable_travel_optimization": { "value": "True" },
         "infill_material_flow":
@@ -94,7 +95,7 @@
             "value": "(1 + (skin_material_flow-infill_sparse_density) / 100 if infill_sparse_density > skin_material_flow else 1) * material_flow"
         },
         "infill_overlap": { "value": "0" },
-        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'triangles'" },
+        "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'gyroid' if 15 < speed_infill / ( infill_line_width * 300 / infill_sparse_density ) < 25 else 'triangles'" },
         "infill_sparse_density": { "maximum_value": "100" },
         "infill_wipe_dist": { "value": "0" },
         "inset_direction": { "value": "'inside_out'" },
@@ -199,6 +200,7 @@
             "value": "skin_material_flow"
         },
         "roofing_monotonic": { "value": "True" },
+        "skin_angles": { "value": "[-40, 50]" },
         "skin_material_flow":
         {
             "maximum_value": "100",
