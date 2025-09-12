@@ -103,9 +103,10 @@ jobs:
           body-path: 'printer-linter-result/comment.md'
 
       - name: Run clang-tidy-pr-comments action
-        uses: platisd/clang-tidy-pr-comments@v1
+        uses: platisd/clang-tidy-pr-comments@v1.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           clang_tidy_fixes: printer-linter-result/fixes.yml
           pull_request_id: ${{ env.PR_ID }}
           request_changes: true
+          auto_resolve_conversations: true
