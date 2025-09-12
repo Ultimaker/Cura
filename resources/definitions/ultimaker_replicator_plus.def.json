@@ -424,11 +424,7 @@
             "value": "jerk_print"
         },
         "raft_interface_wall_count": { "value": "raft_wall_count" },
-        "raft_jerk":
-        {
-            "enabled": false,
-            "value": "jerk_print"
-        },
+        "raft_jerk": { "enabled": false },
         "raft_margin": { "value": 6.5 },
         "raft_surface_acceleration":
         {
