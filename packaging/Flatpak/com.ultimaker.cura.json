@@ -1,0 +1,125 @@
+{
+    "app-id": "com.ultimaker.cura",
+    "runtime": "org.kde.Platform",
+    "runtime-version": "6.7",
+    "sdk": "org.kde.Sdk",
+    "command": "cura-wrapper",
+    "separate-locales": false,
+    "rename-desktop-file": "cura.desktop",
+    "rename-appdata-file": "cura.appdata.xml",
+    "rename-icon": "cura-icon",
+    "finish-args": [
+        "--device=dri",
+        "--share=ipc",
+        "--socket=x11",
+        "--socket=wayland",
+        "--filesystem=home",
+        "--filesystem=xdg-desktop:rw",
+        "--filesystem=xdg-documents:rw",
+        "--filesystem=xdg-download:rw",
+        "--filesystem=/media:rw",
+        "--filesystem=/mnt:rw",
+        "--filesystem=/run/media:rw",
+        "--filesystem=/tmp:rw",
+        "--talk-name=org.freedesktop.FileManager1",
+        "--talk-name=org.freedesktop.portal.Desktop",
+        "--talk-name=org.freedesktop.portal.FileChooser",
+        "--env=QT_QPA_PLATFORMTHEME=kde",
+        "--env=QT_QPA_PLATFORM=xcb;wayland",
+        "--env=PYTHONPATH=/app/lib/python3.12/site-packages",
+        "--env=QT_PLUGIN_PATH=/app/lib/qt6/plugins",
+        "--env=QML2_IMPORT_PATH=/app/lib/qt6/qml",
+        "--env=GDK_PIXBUF_MODULEDIR=/app/lib/gdk-pixbuf-2.0/2.10.0/loaders",
+        "--env=LD_LIBRARY_PATH=/app/lib"
+    ],
+    "add-extensions": {
+        "org.freedesktop.Platform.ffmpeg-full": {
+            "directory": "lib/ffmpeg",
+            "version": "23.08",
+            "add-ld-path": "."
+        }
+    },
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/lib/cmake",
+        "/share/man",
+        "/share/doc",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "python3-pip",
+            "buildsystem": "simple",
+            "build-commands": [
+                "python3 -m pip install --upgrade pip setuptools wheel"
+            ],
+            "cleanup": [
+                "*"
+            ]
+        },
+        {
+            "name": "imagemagick",
+            "config-opts": [
+                "--enable-shared",
+                "--disable-static",
+                "--disable-docs",
+                "--with-quantum-depth=16",
+                "--with-modules"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://imagemagick.org/archive/ImageMagick-7.1.1-15.tar.xz",
+                    "sha256": "f8004dd15dc0c3a61b20c9c5b7bb8ad8bf78a5fe58b897b5e7aa3b7ce2b7b938"
+                }
+            ]
+        },
+        {
+            "name": "python3-requirements",
+            "buildsystem": "simple",
+            "build-commands": [
+                "python3 -m pip install --prefix=/app PyQt6 PyQt6-Qt6",
+                "python3 -m pip install --prefix=/app numpy scipy",
+                "python3 -m pip install --prefix=/app requests",
+                "python3 -m pip install --prefix=/app keyring",
+                "python3 -m pip install --prefix=/app cryptography",
+                "python3 -m pip install --prefix=/app pynest2d",
+                "python3 -m pip install --prefix=/app trimesh"
+            ]
+        },
+        {
+            "name": "cura",
+            "buildsystem": "simple",
+            "build-options": {
+                "env": {
+                    "PYTHONPATH": "/app/lib/python3.12/site-packages"
+                }
+            },
+            "build-commands": [
+                "mkdir -p /app/lib/python3.12/site-packages",
+                "mkdir -p /app/share/cura",
+                "cp -r cura /app/lib/python3.12/site-packages/",
+                "cp -r plugins /app/share/cura/plugins",
+                "cp -r resources /app/share/cura/resources",
+                "cp cura_app.py /app/",
+                "cp cura.sharedmimeinfo /app/share/cura/",
+                "install -Dm644 packaging/Flatpak/cura.desktop /app/share/applications/cura.desktop",
+                "install -Dm644 packaging/Flatpak/cura.appdata.xml /app/share/appdata/cura.appdata.xml",
+                "install -Dm644 packaging/icons/cura-icon.svg /app/share/icons/hicolor/scalable/apps/cura-icon.svg",
+                "install -Dm644 packaging/icons/cura-icon_64x64.png /app/share/icons/hicolor/64x64/apps/cura-icon.png",
+                "install -Dm644 packaging/icons/cura-icon_128x128.png /app/share/icons/hicolor/128x128/apps/cura-icon.png",
+                "install -Dm644 packaging/icons/cura-icon_256x256.png /app/share/icons/hicolor/256x256/apps/cura-icon.png",
+                "install -Dm755 packaging/Flatpak/cura-wrapper /app/bin/cura-wrapper",
+                "ln -sf /app/bin/cura-wrapper /app/bin/UltiMaker-Cura"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../../"
+                }
+            ]
+        }
+    ]
+}
