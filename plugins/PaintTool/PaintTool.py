@@ -40,8 +40,12 @@ class PaintTool(Tool):
             PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
             READY = 2              # Ready to paint !
 
-    def __init__(self) -> None:
+    def __init__(self, view: PaintView) -> None:
         super().__init__()
+
+        self._view: PaintView = view
+        self._view.canUndoChanged.connect(self._onCanUndoChanged)
+        self._view.canRedoChanged.connect(self._onCanRedoChanged)
 
         self._picking_pass: Optional[PickingPass] = None
         self._faces_selection_pass: Optional[SelectionPass] = None
@@ -65,7 +69,7 @@ class PaintTool(Tool):
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State")
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State", "CanUndo", "CanRedo")
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
@@ -135,19 +139,11 @@ class PaintTool(Tool):
         return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
 
     def getPaintType(self) -> str:
-        paint_view = self._getPaintView()
-        if paint_view is None:
-            return ""
-
-        return paint_view.getPaintType()
+        return self._view.getPaintType()
 
     def setPaintType(self, paint_type: str) -> None:
-        paint_view = self._getPaintView()
-        if paint_view is None:
-            return
-
         if paint_type != self.getPaintType():
-            paint_view.setPaintType(paint_type)
+            self._view.setPaintType(paint_type)
 
             self._brush_pen = self._createBrushPen()
             self._updateScene()
@@ -180,40 +176,70 @@ class PaintTool(Tool):
             self._brush_pen = self._createBrushPen()
             self.propertyChanged.emit()
 
+    def getCanUndo(self) -> bool:
+        return self._view.canUndo()
+
+    def getCanRedo(self) -> bool:
+        return self._view.canRedo()
+
     def getState(self) -> int:
         return self._state
 
-    def undoStackAction(self, redo_instead: bool) -> bool:
-        paint_view = self._getPaintView()
-        if paint_view is None:
-            return False
+    def _onCanUndoChanged(self):
+        self.propertyChanged.emit()
 
-        if redo_instead:
-            paint_view.redoStroke()
-        else:
-            paint_view.undoStroke()
+    def _onCanRedoChanged(self):
+        self.propertyChanged.emit()
 
+    def undoStackAction(self) -> None:
+        self._view.undoStroke()
         self._updateScene()
-        return True
+
+    def redoStackAction(self) -> None:
+        self._view.redoStroke()
+        self._updateScene()
 
     def clear(self) -> None:
-        paintview = self._getPaintView()
-        if paintview is None:
-            return
-
-        width, height = paintview.getUvTexDimensions()
+        width, height = self._view.getUvTexDimensions()
         clear_image = QImage(width, height, QImage.Format.Format_RGB32)
         clear_image.fill(Qt.GlobalColor.white)
-        paintview.addStroke(clear_image, 0, 0, "none")
+        self._view.addStroke(clear_image, 0, 0, "none", False)
 
         self._updateScene()
 
     @staticmethod
-    def _getPaintView() -> Optional[PaintView]:
-        paint_view = Application.getInstance().getController().getActiveView()
-        if paint_view is None or paint_view.getPluginId() != "PaintTool":
-            return None
-        return cast(PaintView, paint_view)
+    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
+        # compute the intersection of (param) A - pt with (param) B - (param) C
+        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
+            return 1.0
+
+        # compute unit vectors of directions of lines A and B
+        udir_a = a - pt
+        udir_a /= numpy.linalg.norm(udir_a)
+        udir_b = b - c
+        udir_b /= numpy.linalg.norm(udir_b)
+
+        # find unit direction vector for line C, which is perpendicular to lines A and B
+        udir_res = numpy.cross(udir_b, udir_a)
+        udir_res_len = numpy.linalg.norm(udir_res)
+        if udir_res_len == 0:
+            return 1.0
+        udir_res /= udir_res_len
+
+        # solve system of equations
+        rhs = b - a
+        lhs = numpy.array([udir_a, -udir_b, udir_res]).T
+        try:
+            solved = numpy.linalg.solve(lhs, rhs)
+        except numpy.linalg.LinAlgError:
+            return 1.0
+
+        # get the ratio
+        intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
+        a_intersect_dist = numpy.linalg.norm(a - intersect)
+        if a_intersect_dist == 0:
+            return 1.0
+        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
@@ -365,10 +391,6 @@ class PaintTool(Tool):
                 else:
                     self._mouse_held = True
 
-            paintview = self._getPaintView()
-            if paintview is None:
-                return False
-
             if not self._faces_selection_pass:
                 self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
                 if not self._faces_selection_pass:
@@ -409,7 +431,7 @@ class PaintTool(Tool):
             if len(uv_areas) == 0:
                 return False
             stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-            paintview.addStroke(stroke_img, start_x, start_y, self._brush_color)
+            self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
 
             self._last_world_coords = world_coords
             self._last_face_id = face_id
