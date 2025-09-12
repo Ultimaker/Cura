@@ -33,6 +33,9 @@ fragment =
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
+    uniform highp vec3 u_cursorPos;
+    uniform highp float u_cursorSize;
+    uniform lowp vec4 u_cursorColor;
 
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
@@ -57,8 +60,16 @@ fragment =
         highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
-        final_color.a = 1.0;
+        /* Cursor */
+        vec3 diff = v_vertex - u_cursorPos;
+        float squared_dist = dot(diff, diff);
+        if (squared_dist <= (u_cursorSize * u_cursorSize))
+        {
+            final_color.rgb = mix(final_color.rgb / 2.0, u_cursorColor.rgb, u_cursorColor.a);
+        }
 
+        /* Output */
+        final_color.a = 1.0;
         frag_color = final_color;
     }
 
@@ -98,6 +109,9 @@ fragment41core =
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
+    uniform highp vec3 u_cursorPos;
+    uniform highp float u_cursorSize;
+    uniform lowp vec4 u_cursorColor;
 
     in highp vec3 v_vertex;
     in highp vec3 v_normal;
@@ -123,14 +137,24 @@ fragment41core =
         highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
         final_color += (n_dot_l * diffuse_color);
 
-        final_color.a = 1.0;
+        /* Cursor */
+        vec3 diff = v_vertex - u_cursorPos;
+        float squared_dist = dot(diff, diff);
+        if (squared_dist <= (u_cursorSize * u_cursorSize))
+        {
+            final_color.rgb = mix(final_color.rgb / 2.0, u_cursorColor.rgb, u_cursorColor.a);
+        }
 
+        /* Output */
+        final_color.a = 1.0;
         frag_color = final_color;
     }
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
 u_texture = 0
+u_cursorSize = 0.0
+u_cursorColor = [0.0, 0.0, 0.0, 0.0]
 
 [bindings]
 u_modelMatrix = model_matrix
