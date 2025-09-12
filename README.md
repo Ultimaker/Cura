@@ -29,6 +29,14 @@
 **Contribute Printer Profiles?** -- Please [look here](https://github.com/Ultimaker/Cura/wiki/Adding-new-machine-profiles-to-Cura) first. <br>
 **Contribute Translations?** -- Please [look here](https://github.com/Ultimaker/Cura/wiki/Translating-Cura) first.
 
+## Installation & Packaging
+
+Cura supports multiple packaging formats for different platforms:
+- **Windows**: MSI installers and NSIS packages (`/packaging/msi`, `/packaging/NSIS`)  
+- **macOS**: Native macOS applications (`/packaging/MacOS`)
+- **Linux**: AppImage packages (`/packaging/AppImage`, `/packaging/AppImage-builder`)
+- **Linux**: Flatpak packages (`/packaging/Flatpak`) - *New!*
+
 <br>
 
 [![Button Building]][Building]   

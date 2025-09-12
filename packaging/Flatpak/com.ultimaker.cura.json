@@ -106,7 +106,7 @@
                 "cp cura_app.py /app/",
                 "cp cura.sharedmimeinfo /app/share/cura/",
                 "install -Dm644 packaging/Flatpak/cura.desktop /app/share/applications/cura.desktop",
-                "install -Dm644 packaging/Flatpak/cura.appdata.xml /app/share/appdata/cura.appdata.xml",
+                "install -Dm644 packaging/Flatpak/cura.appdata.xml /app/share/metainfo/cura.appdata.xml",
                 "install -Dm644 packaging/icons/cura-icon.svg /app/share/icons/hicolor/scalable/apps/cura-icon.svg",
                 "install -Dm644 packaging/icons/cura-icon_64x64.png /app/share/icons/hicolor/64x64/apps/cura-icon.png",
                 "install -Dm644 packaging/icons/cura-icon_128x128.png /app/share/icons/hicolor/128x128/apps/cura-icon.png",
