@@ -109,7 +109,7 @@ class PaintTool(Tool):
         return pen
 
     def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
-        w, h = self._getPaintView().getUvTexDimensions()
+        w, h = self._view.getUvTexDimensions()
         if w == 0 or h == 0 or len(polys) == 0:
             return QImage(w, h, QImage.Format.Format_RGB32), (0, 0)
 
@@ -427,11 +427,14 @@ class PaintTool(Tool):
                 self._last_world_coords = world_coords
                 self._last_face_id = face_id
 
-            uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
-            if len(uv_areas) == 0:
-                return False
-            stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-            self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
+            try:
+                uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                if len(uv_areas) == 0:
+                    return False
+                stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
+                self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
+            except:
+                Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
             self._last_face_id = face_id
