@@ -97,8 +97,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)
 
-        CuraApplication.getInstance().getPreferences().addPreference("usb_printing/enabled", False)
-
     # This is a callback function that checks if there is any printing in progress via USB when the application tries
     # to exit. If so, it will show a confirmation before
     def _checkActivePrintingUponAppExit(self) -> None:
@@ -145,8 +143,6 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         controller.stopPreheatTimers()
 
         CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
-
-        CuraApplication.getInstance().getPreferences().setValue("usb_printing/enabled", True)
 
         #Find the g-code to print.
         gcode_textio = StringIO()
