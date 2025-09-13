@@ -70,7 +70,7 @@ class ZHopOnTravel(Script):
                     "unit": "Lay# ",
                     "type": "int",
                     "default_value": 1,
-                    "minimum_value": "1",
+                    "minimum_value": 1,
                     "enabled": "zhop_travel_enabled and list_or_range == 'range_of_layers'"
                 },
                 "end_layer": {
@@ -79,16 +79,16 @@ class ZHopOnTravel(Script):
                     "unit": "Lay# ",
                     "type": "int",
                     "default_value": -1,
-                    "minimum_value": "-1",
+                    "minimum_value": -1,
                     "enabled": "zhop_travel_enabled and list_or_range == 'range_of_layers'"
                 },
                 "hop_height": {
                     "label": "Z-Hop Height",
-                    "description": "I refuse to provide a description for this.",
+                    "description": "The relative 'Height' that the nozzle will 'Hop' in the 'Z'.",
                     "unit": "mm  ",
                     "type": "float",
                     "default_value": 0.5,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "maximum_value_warning": 5,
                     "enabled": "zhop_travel_enabled"
                 },
@@ -98,8 +98,8 @@ class ZHopOnTravel(Script):
                     "unit": "mm  ",
                     "type": "int",
                     "default_value": 10,
-                    "minimum_value": "1",
-                    "maximum_value": "200",
+                    "minimum_value": 1,
+                    "maximum_value": 200,
                     "enabled": "zhop_travel_enabled"
                 },
                 "add_retract": {
@@ -111,7 +111,7 @@ class ZHopOnTravel(Script):
                 },
                 "infill_only": {
                     "label": "Add Z-hops to Infill Only",
-                    "description": "Only add Z-hops to 'Infill' within the layer range.",
+                    "description": "Only add Z-hops to 'Infill' within the layer range.  (NOTE: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'cross infill'.)",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "zhop_travel_enabled"
@@ -210,7 +210,7 @@ class ZHopOnTravel(Script):
                         end_layer = data[num].splitlines()[0].split(":")[1]
                         end_index = num
                         break
-            if end_index == None:
+            if end_index is None:
                 end_index = len(data)-1
             for num in range(start_index, end_index):
                 index_list.append(num)
@@ -290,7 +290,7 @@ class ZHopOnTravel(Script):
                     if line[0:3] in ["G1 ", "G2 ", "G3 "] and "X" in line and "Y" in line and "E" in line:
                         self._is_retracted = False
                         self._cur_e = self.getValue(line, "E")
-                    elif (line.startswith("G1") and "F" in line and "E" in line and not "X" in line or not "Y" in line) or "G10" in line:
+                    elif (line.startswith("G1") and "F" in line and "E" in line and (not "X" in line or not "Y" in line)) or "G10" in line:
                         if self.getValue(line, "E"):
                             self._cur_e = self.getValue(line, "E")
                         if not relative_extrusion:
@@ -329,7 +329,7 @@ class ZHopOnTravel(Script):
                         # If there is no 'F' in the next line then add one to reinstate the Travel Speed (so the z-hop speed doesn't carry over through the travel moves)
                         if not " F" in lines[index] and lines[index].startswith("G0"):
                             lines[index] = lines[index].replace("G0", f"G0 F{speed_travel}")
-                        hop_down_lines = self.get_hop_down_lines(retraction_amount, speed_zhop, retract_speed, prime_speed, extra_prime_dist, firmware_retract, relative_extrusion, hop_height, lines[index])
+                        hop_down_lines = self.get_hop_down_lines(retraction_amount, speed_zhop, prime_speed, extra_prime_dist, firmware_retract, relative_extrusion, lines[index])
                         lines[index] = hop_down_lines + lines[index]
                         self._is_retracted = False
                         hop_end = 0
@@ -357,10 +357,10 @@ class ZHopOnTravel(Script):
 
     def _total_travel_length(self, l_index: int, lines: str) -> int:
         """
-        This function gets the cummulative total travel distance of each individual travel move.
+        This function gets the cumulative total travel distance of each individual travel move.
         :parameters:
             g_num: is the line index as passed from the calling function and when returned indicates the end of travel
-            travel_total: is the cummulative travel distance
+            travel_total: is the cumulative travel distance
         """
         g_num = l_index
         travel_total = 0.0
@@ -402,7 +402,13 @@ class ZHopOnTravel(Script):
         hop_retraction = not self._is_retracted
         if not self._add_retract:
             hop_retraction = False
-        reset_type = 0 # no other options
+        # 'reset_type' is a bitmask representing the combination of retraction and related options:
+        # Bit 0 (1): Retraction is required
+        # Bit 1 (2): Firmware retraction is enabled
+        # Bit 2 (4): Relative extrusion is enabled
+        # Bit 3 (8): Extra prime amount is greater than 0
+        # The value of 'reset_type' determines which G-code lines are inserted for the Z-hop.
+        reset_type = 0
         if hop_retraction:
             reset_type += 1
         if firmware_retract and hop_retraction:
@@ -436,8 +442,7 @@ class ZHopOnTravel(Script):
         return up_lines
 
     # The Zhop down may require different kinds of primes depending on the Cura settings.
-    def get_hop_down_lines(self, retraction_amount: float, speed_zhop: str, retract_speed: str, prime_speed: str, extra_prime_dist: str, firmware_retract: bool, relative_extrusion: bool, hop_height: str, next_line: str) -> str:
-
+    def get_hop_down_lines(self, retraction_amount: float, speed_zhop: str, prime_speed: str, extra_prime_dist: str, firmware_retract: bool, relative_extrusion: bool, next_line: str) -> str:
         """
         Determine if the hop will require a prime
         :parameters:
