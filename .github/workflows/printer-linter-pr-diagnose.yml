@@ -45,10 +45,3 @@ jobs:
         with:
           name: printer-linter-result
           path: printer-linter-result/
-
-      - name: Run clang-tidy-pr-comments action
-        uses: platisd/clang-tidy-pr-comments@v1.8.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          clang_tidy_fixes: result.yml
-          request_changes: true
