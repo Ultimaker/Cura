@@ -90,6 +90,7 @@ class ZHopOnTravel(Script):
                     "default_value": 0.5,
                     "minimum_value": 0,
                     "maximum_value_warning": 5,
+                    "maximum_value": 10,
                     "enabled": "zhop_travel_enabled"
                 },
                 "min_travel_dist": {
@@ -417,7 +418,12 @@ class ZHopOnTravel(Script):
             reset_type += 4
         if extra_prime_dist > 0 and hop_retraction:
             reset_type += 8
-        up_lines = f"G1 F{speed_zhop} Z{round(self._cur_z + hop_height,2)} ; Hop Up"
+
+        machine_height = Application.getInstance().getGlobalContainerStack().getProperty("machine_height", "value")
+        if self._cur_z + hop_height < machine_height:
+            up_lines = f"G1 F{speed_zhop} Z{round(self._cur_z + hop_height,2)} ; Hop Up"
+        else:
+            up_lines = f"G1 F{speed_zhop} Z{round(machine_height, 2)} ; Hop Up"
         if reset_type in [1, 9] and hop_retraction: # add retract only when necessary
             up_lines = f"G1 F{retract_speed} E{round(self._cur_e - retraction_amount, 5)} ; Retract\n" + up_lines
             self._cur_e = round(self._cur_e - retraction_amount, 5)
