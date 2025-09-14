@@ -90,11 +90,10 @@ class TweakAtZ(Script):
                 "a_start_layer": {
                     "label": "Start Layer",
                     "description": "Layer number to start the changes at.  Use the Cura preview layer numbers.  The changes will start at the beginning of the layer.",
-                    "unit": "",
                     "type": "int",
                     "default_value": 1,
-                    "minimum_value": "-7",
-                    "minimum_value_warning": "1",
+                    "minimum_value": -7,
+                    "minimum_value_warning": 1,
                     "unit": "Layer #",
                     "enabled": "taz_enabled and by_layer_or_height == 'by_layer'"
                 },
@@ -121,7 +120,7 @@ class TweakAtZ(Script):
                     "default_value": 0,
                     "unit": "mm",
                     "enabled": "taz_enabled and by_layer_or_height == 'by_height'"
-                }       ,
+                },
                 "b_change_speed": {
                     "label": "Change Speeds",
                     "description": "Check to enable a speed change for the Print Speeds.",
@@ -153,9 +152,9 @@ class TweakAtZ(Script):
                     "unit": "%  ",
                     "type": "int",
                     "default_value": 100,
-                    "minimum_value": "10",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "200",
+                    "minimum_value": 10,
+                    "minimum_value_warning": 50,
+                    "maximum_value_warning": 200,
                     "enabled": "b_change_speed and taz_enabled"
                 },
                 "c_change_flowrate": {
@@ -171,10 +170,10 @@ class TweakAtZ(Script):
                     "unit": "%  ",
                     "type": "int",
                     "default_value": 100,
-                    "minimum_value": "25",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "maximum_value": "200",
+                    "minimum_value": 25,
+                    "minimum_value_warning": 50,
+                    "maximum_value_warning": 150,
+                    "maximum_value": 200,
                     "enabled": "c_change_flowrate and taz_enabled"
                 },
                 "multi_extruder": {
@@ -191,9 +190,9 @@ class TweakAtZ(Script):
                     "unit": "%  ",
                     "type": "int",
                     "default_value": 100,
-                    "minimum_value": "1",
-                    "minimum_value_warning": "10",
-                    "maximum_value_warning": "200",
+                    "minimum_value": 1,
+                    "minimum_value_warning": 10,
+                    "maximum_value_warning": 200,
                     "enabled": "multi_extruder and c_change_flowrate and taz_enabled"
                 },
                 "d_change_bed_temp": {
@@ -209,9 +208,9 @@ class TweakAtZ(Script):
                     "unit": "°C  ",
                     "type": "int",
                     "default_value": 60,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "30",
-                    "maximum_value_warning": "120",
+                    "minimum_value": 0,
+                    "minimum_value_warning": 30,
+                    "maximum_value_warning": 120,
                     "enabled": "d_change_bed_temp and taz_enabled"
                 },
                 "heated_build_volume": {
@@ -234,9 +233,9 @@ class TweakAtZ(Script):
                     "unit": "°C  ",
                     "type": "int",
                     "default_value": 20,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "15",
-                    "maximum_value_warning": "80",
+                    "minimum_value": 0,
+                    "minimum_value_warning": 15,
+                    "maximum_value_warning": 80,
                     "enabled": "heated_build_volume and e_change_build_volume_temperature and taz_enabled"
                 },
                 "f_change_extruder_temperature": {
@@ -252,9 +251,9 @@ class TweakAtZ(Script):
                     "unit": "°C  ",
                     "type": "int",
                     "default_value": 190,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "160",
-                    "maximum_value_warning": "250",
+                    "minimum_value": 0,
+                    "minimum_value_warning": 160,
+                    "maximum_value_warning": 250,
                     "enabled": "f_change_extruder_temperature and taz_enabled"
                 },
                 "f_extruder_temperature_t1": {
@@ -263,9 +262,9 @@ class TweakAtZ(Script):
                     "unit": "°C  ",
                     "type": "int",
                     "default_value": 190,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "160",
-                    "maximum_value_warning": "250",
+                    "minimum_value": 0,
+                    "minimum_value_warning": 160,
+                    "maximum_value_warning": 250,
                     "enabled": "multi_extruder and f_change_extruder_temperature and taz_enabled"
                 },
                 "g_change_retract": {
@@ -288,9 +287,9 @@ class TweakAtZ(Script):
                     "unit": "mm/s  ",
                     "type": "float",
                     "default_value": 40,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
+                    "minimum_value": 1,
+                    "minimum_value_warning": 0,
+                    "maximum_value_warning": 100,
                     "enabled": "g_change_retract and g_change_retract_speed and taz_enabled and not multi_extruder"
                 },
                 "g_change_retract_amount": {
@@ -306,9 +305,8 @@ class TweakAtZ(Script):
                     "unit": "mm  ",
                     "type": "float",
                     "default_value": 6.5,
-                    "minimum_value": "0",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "20",
+                    "minimum_value": 0,
+                    "maximum_value_warning": 20,
                     "enabled": "g_change_retract and g_change_retract_amount and taz_enabled and not multi_extruder"
                 },
                 "enable_bv_fan_change": {
@@ -387,13 +385,13 @@ class TweakAtZ(Script):
                     nbr_raft_layers += 1
                 if ";LAYER:0\n" in layer:
                     break
-        
+
         # Adjust the start layer to account for any raft layers
         self.start_layer -= nbr_raft_layers
-        
+
         # Find the indexes of the Start and End layers if 'By Layer'
         self.start_index = 0
-        
+
         # When retraction is enabled it adds a single line item to the data list
         self.end_index = len(data) - 1 - int(self.retract_enabled)
         if self.getSettingValueByKey("by_layer_or_height") == "by_layer":
@@ -401,20 +399,20 @@ class TweakAtZ(Script):
                 if ";LAYER:" + str(self.start_layer) + "\n" in layer:
                     self.start_index = index
                     break
-            
+
             # If the changes continue to the top layer
             if end_layer == -1:
                 if self.retract_enabled:
                     self.end_index = len(data) - 2
                 else:
                     self.end_index = len(data) - 1
-            
+
             # If the changes end below the top layer
             else:
-                
+
                 # Adjust the end layer from base1 numbering to base0 numbering
                 end_layer -= 1
-                
+
                 # Adjust the End Layer if it is not the top layer and if bed adhesion is 'raft'
                 end_layer -= nbr_raft_layers
                 for index, layer in enumerate(data):
@@ -476,7 +474,7 @@ class TweakAtZ(Script):
                 if index >= self.start_index and index <= self.end_index:
                     lines = layer.splitlines()
                     for l_index, line in enumerate(lines):
-                        if " F" in line and " X" in line and " Y" in line and not " Z" in line:
+                        if self._f_x_y_not_z(line):
                             f_value = self.getValue(line, "F")
                             if line.startswith(("G1", "G2", "G3")):
                                 lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
@@ -512,7 +510,7 @@ class TweakAtZ(Script):
                     lines = layer.splitlines()
                     for l_index, line in enumerate(lines):
                         if active_tool == target_extruder:
-                            if " F" in line and " X" in line and " Y" in line and not " Z" in line:
+                            if self._f_x_y_not_z(line):
                                 f_value = self.getValue(line, "F")
                                 if line.startswith(("G1", "G2", "G3")):
                                     lines[l_index] = line.replace("F" + str(f_value), "F" + str(round(f_value * speed_x)))
@@ -547,7 +545,7 @@ class TweakAtZ(Script):
             new_flowrate_1 = f"\nM221 S{new_flow_ext_1} ; TweakAtZ: Alter Flow Rate"
         else:
             new_flowrate_1 = ""
-        
+
         # For single extruder
         if self.extruder_count == 1:
             lines = data[self.start_index].splitlines()
@@ -556,7 +554,7 @@ class TweakAtZ(Script):
             lines = data[self.end_index].splitlines()
             lines[len(lines) - 2] += reset_flowrate_0
             data[self.end_index] = "\n".join(lines) + "\n"
-        
+
         # For dual-extruders
         elif self.extruder_count > 1:
             for index, layer in enumerate(data):
@@ -644,14 +642,14 @@ class TweakAtZ(Script):
                     data[2] = re.sub("M104 S", ";M104 S", data[2])
                 if "M104 S" in data[3]:
                     data[3] = re.sub("M104 S", ";M104 S", data[3])
-            
+
             # Add the temperature change at the beginning of the start layer
             lines = data[self.start_index].splitlines()
             for index, line in enumerate(lines):
                 lines[0] += "\n" + "M104 S" + str(self.new_hotend_temp_0) + " ; TweakAtZ: Change Nozzle Temperature"
                 data[self.start_index] = "\n".join(lines) + "\n"
                 break
-            
+
             # Revert the temperature to the Cura setting at the end of the end layer
             lines = data[self.end_index].splitlines()
             for index, line in enumerate(lines):
@@ -664,7 +662,7 @@ class TweakAtZ(Script):
             self.new_hotend_temp_1 = self.getSettingValueByKey("f_extruder_temperature_t1")
             self.orig_hot_end_temp_1 = int(self.extruder_list[1].getProperty("material_print_temperature", "value"))
             self.orig_standby_temp_1 = int(self.extruder_list[1].getProperty("material_standby_temperature", "value"))
-            
+
             # Track the tool number up to the start of the start layer
             self.getTool("T0")
             for index, layer in enumerate(data):
@@ -674,10 +672,10 @@ class TweakAtZ(Script):
                         self.getTool(line)
                 if index == self.start_index - 1:
                     break
-            
+
             # Add the active extruder initial temperature change at the start of the starting layer
             data[self.start_index] = data[self.start_index].replace("\n", f"\nM104 S{self.active_print_temp} ; TweakAtZ: Start Temperature Change\n",1)
-            
+
             # At the start layer commence making the changes
             for index, layer in enumerate(data):
                 if index < self.start_index:
@@ -686,7 +684,7 @@ class TweakAtZ(Script):
                     break
                 lines = layer.splitlines()
                 for l_index, line in enumerate(lines):
-                    
+
                     # Continue to track the tool number
                     if line.startswith("T"):
                         self.getTool(line)
@@ -700,7 +698,7 @@ class TweakAtZ(Script):
                         elif self.getValue(line, "S") == self.active_tool_orig_temp:
                             lines[l_index] = re.sub("S(\d+|\d.+)", f"S{self.active_print_temp} ; TweakAtZ: Alter temperature", line)
                 data[index] = "\n".join(lines) + "\n"
-            
+
             # Revert the active extruder temperature at the end of the changes
             lines = data[self.end_index].split("\n")
             lines[len(lines) - 3] += f"\nM104 {self.active_tool} S{self.active_tool_orig_temp} ; TweakAtZ: Original Temperature active tool"
@@ -745,23 +743,30 @@ class TweakAtZ(Script):
         """
         if not self.retract_enabled:
             return
+
+        # Exit if neither child setting is checked.
+        if not (change_retract_amt or change_retract_speed):
+            return
+
         speed_retract_0 = int(self.extruder_list[0].getProperty("retraction_speed", "value") * 60)
         retract_amt_0 = self.extruder_list[0].getProperty("retraction_amount", "value")
         change_retract_amt = self.getSettingValueByKey("g_change_retract_amount")
         change_retract_speed = self.getSettingValueByKey("g_change_retract_speed")
         new_retract_speed = int(self.getSettingValueByKey("g_retract_speed") * 60)
         new_retract_amt = self.getSettingValueByKey("g_retract_amount")
-        
+
         # Use M207 and M208 to adjust firmware retraction when required
         if self.firmware_retraction:
             lines = data[self.start_index].splitlines()
             firmware_start_str = "\nM207"
             firmware_reset = ""
             if change_retract_speed:
-                firmware_start_str += f" F{new_retract_speed} ; TweakAtZ: Alter Firmware Retract speed"
+                firmware_start_str += f" F{new_retract_speed}"
             if change_retract_amt:
-                firmware_start_str += f" S{new_retract_amt} ; TweakAtZ: Alter Firmware Retract amt"
-            if change_retract_speed:    
+                firmware_start_str += f" S{new_retract_amt}"
+            if change_retract_speed or change_retract_amt:
+                firmware_start_str += " ; TweakAtZ: Alter Firmware Retract speed/amt"
+            if change_retract_speed:
                 firmware_start_str += f"\nM208 F{new_retract_speed} ; TweakAtZ: Alter Firmware Prime speed"
             lines[0] += firmware_start_str
             data[self.start_index] = "\n".join(lines) + "\n"
@@ -818,7 +823,7 @@ class TweakAtZ(Script):
                                     lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
                             lines[index] += " ; TweakAtZ: Alter retract"
                         else:
-                            
+
                             # Prime line
                             if change_retract_speed:
                                 lines[index] = lines[index].replace("F" + str(cur_speed), "F" + str(new_retract_speed))
@@ -920,7 +925,7 @@ class TweakAtZ(Script):
 
         # The start height varies depending whether or not rafts are enabled and whether Z-hops are enabled.
         if str(self.global_stack.getProperty("adhesion_type", "value")) == "raft":
-            
+
             # If z-hops are enabled then start looking for the working Z after layer:0
             if self.z_hop_enabled:
                 for layer in data:
@@ -932,7 +937,7 @@ class TweakAtZ(Script):
                                     starting_z = round(float(self.getValue(line, "Z")),2)
                                     the_height += starting_z
                                     break
-                                    
+
                             # If the layer ends without an extruder move following the Z line, then just jump out
                             except IndexError:
                                 starting_z = round(float(self.getValue(line, "Z")),2)
@@ -944,29 +949,29 @@ class TweakAtZ(Script):
                 for layer in data:
                     lines = layer.splitlines()
                     for index, line in enumerate(lines):
-                        
+
                         # This try/except catches comments in the startup gcode
                         try:
                             if " Z" in line and " E" in lines[index - 1]:
                                 starting_z = float(self.getValue(line, "Z"))
                         except TypeError:
-                            
+
                             # Just pass beause there will be further Z values
                             pass
                         if ";LAYER:0" in line:
                             the_height += starting_z
                             break
-                            
+
         # Initialize 'cur_z'
         cur_z = self.initial_layer_height
         for index, layer in enumerate(data):
-            
+
             # Skip over the opening paragraph and StartUp Gcode
             if index < 2:
                 continue
             lines = layer.splitlines()
             for z_index, line in enumerate(lines):
-                if line[0:3] in ["G0 ", "G1 ", "G2 ", "G3 "] and index <= self.end_index:
+                if len(line) >= 3 and line[0:3] in ['G0 ', 'G1 ', 'G2 ', 'G3 '] and index <= self.end_index:
                     if " Z" in line:
                         cur_z = float(self.getValue(line, "Z"))
                     if cur_z >= the_height and lines[z_index - 1].startswith(";TYPE:"):
@@ -979,3 +984,6 @@ class TweakAtZ(Script):
         if the_height >= max_z:
             the_index = len(data) - 2
         return the_index
+
+    def _f_x_y_not_z(self, line):
+        return " F" in line and " X" in line and " Y" in line and not " Z" in line
