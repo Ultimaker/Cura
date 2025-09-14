@@ -3,6 +3,7 @@
 import os.path
 from UM.Application import Application
 from cura.Stages.CuraStage import CuraStage
+from .GrblController import GrblController # New import
 
 
 class MonitorStage(CuraStage):
@@ -14,6 +15,7 @@ class MonitorStage(CuraStage):
         # Wait until QML engine is created, otherwise creating the new QML components will fail
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
         self._printer_output_device = None
+        self._grbl_controller = None # New member variable
 
         self._active_print_job = None
         self._active_printer = None
@@ -53,6 +55,10 @@ class MonitorStage(CuraStage):
                         pass
 
                 self._printer_output_device = new_output_device
+
+                # Instantiate GrblController and connect
+                self._grbl_controller = GrblController(self._printer_output_device)
+                self._grbl_controller.connect()
 
                 self._printer_output_device.printersChanged.connect(self._onActivePrinterChanged)
                 self._setActivePrinter(self._printer_output_device.activePrinter)
