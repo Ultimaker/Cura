@@ -8,9 +8,12 @@ from io import StringIO
 from threading import Lock
 import zipfile
 from typing import Dict, Any
+from pathlib import Path
+from zipfile import ZipFile
 
 from UM.Application import Application
 from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
@@ -33,7 +36,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         if self._ucp_model != model:
             self._ucp_model = model
 
-    def _write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
+    def _write(self, stream, nodes, mode, include_log):
         application = Application.getInstance()
         machine_manager = application.getMachineManager()
 
@@ -79,6 +82,11 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             if self._ucp_model is not None:
                 user_settings_data = self._getUserSettings(self._ucp_model)
                 ThreeMFWriter._storeMetadataJson(user_settings_data, archive, USER_SETTINGS_PATH)
+
+            # Write log file
+            if include_log:
+                ThreeMFWorkspaceWriter._writeLogFile(archive)
+
         except PermissionError:
             self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
@@ -125,8 +133,8 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         return True
 
-    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode):
-        success = self._write(stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode)
+    def write(self, stream, nodes, mode=WorkspaceWriter.OutputMode.BinaryMode, **kwargs):
+        success = self._write(stream, nodes, WorkspaceWriter.OutputMode.BinaryMode, kwargs.get("include_log", False))
         self._ucp_model = None
         return success
 
@@ -190,6 +198,17 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         except (FileNotFoundError, EnvironmentError):
             Logger.error("File became inaccessible while writing to it: {archive_filename}".format(archive_filename = archive.fp.name))
             return
+
+    @staticmethod
+    def _writeLogFile(archive: ZipFile) -> None:
+        """Helper function that writes the Cura log file to the archive.
+
+        :param archive: The archive to write to.
+        """
+        file_logger = PluginRegistry.getInstance().getPluginObject("FileLogger")
+        file_logger.flush()
+        for file_path in file_logger.getFilesPaths():
+            archive.write(file_path, arcname=f"log/{Path(file_path).name}")
 
     @staticmethod
     def _getUserSettings(model: SettingsExportModel) -> Dict[str, Dict[str, Any]]:

@@ -9,8 +9,8 @@
         "manufacturer": "Eazao",
         "file_formats": "text/x-gcode",
         "has_machine_quality": false,
-        "has_materials": false,
         "machine_extruder_trains": { "0": "eazao_m700_extruder_0" },
+        "preferred_material": "eazao_clay",
         "preferred_quality_type": "normal"
     },
     "overrides":
@@ -19,7 +19,6 @@
         "acceleration_travel": { "value": 300 },
         "adhesion_type": { "default_value": "none" },
         "bottom_layers": { "value": 2 },
-        "cool_fan_enabled": { "value": false },
         "infill_sparse_density": { "value": 0 },
         "initial_bottom_layers": { "value": 2 },
         "jerk_print": { "value": 10 },
@@ -58,7 +57,6 @@
         "retraction_amount": { "value": 7 },
         "retraction_combing": { "value": "'noskin'" },
         "retraction_count_max": { "value": 100 },
-        "retraction_enable": { "value": false },
         "retraction_extrusion_window": { "value": 10 },
         "retraction_hop": { "value": 0.2 },
         "speed_print": { "value": 20.0 },

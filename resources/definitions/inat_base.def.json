@@ -16,7 +16,8 @@
         "preferred_material": "generic_pla",
         "preferred_quality_type": "standard",
         "preferred_variant_name": "0.4mm",
-        "variants_name": "Extruder:"
+        "variants_name": "Extruder",
+        "variants_name_has_translation": true
     },
     "overrides":
     {

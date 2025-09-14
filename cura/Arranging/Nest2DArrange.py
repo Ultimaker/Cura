@@ -54,22 +54,6 @@ class Nest2DArrange(Arranger):
         machine_depth = self._build_volume.getDepth() - (edge_disallowed_size * 2)
         build_plate_bounding_box = Box(int(machine_width * self._factor), int(machine_depth * self._factor))
 
-        if self._fixed_nodes is None:
-            self._fixed_nodes = []
-
-        # Add all the items we want to arrange
-        node_items = []
-        for node in self._nodes_to_arrange:
-            hull_polygon = node.callDecoration("getConvexHull")
-            if not hull_polygon or hull_polygon.getPoints is None:
-                Logger.log("w", "Object {} cannot be arranged because it has no convex hull.".format(node.getName()))
-                continue
-            converted_points = []
-            for point in hull_polygon.getPoints():
-                converted_points.append(Point(int(point[0] * self._factor), int(point[1] * self._factor)))
-            item = Item(converted_points)
-            node_items.append(item)
-
         # Use a tiny margin for the build_plate_polygon (the nesting doesn't like overlapping disallowed areas)
         half_machine_width = 0.5 * machine_width - 1
         half_machine_depth = 0.5 * machine_depth - 1
@@ -80,40 +64,66 @@ class Nest2DArrange(Arranger):
             [half_machine_width, half_machine_depth]
         ], numpy.float32))
 
-        disallowed_areas = self._build_volume.getDisallowedAreas()
-        for area in disallowed_areas:
-            converted_points = []
+        def _convert_points(points):
+            if points is not None and len(points) > 2:  # numpy array has to be explicitly checked against None
+                converted_points = []
+                for point in points:
+                    converted_points.append(Point(int(point[0] * self._factor), int(point[1] * self._factor)))
+                return [converted_points]
+            else:
+                return []
 
+        polygons_nodes_to_arrange = []
+        for node in self._nodes_to_arrange:
+            hull_polygon = node.callDecoration("getConvexHull")
+            if not hull_polygon or hull_polygon.getPoints is None:
+                Logger.log("w", "Object {} cannot be arranged because it has no convex hull.".format(node.getName()))
+                continue
+
+            polygons_nodes_to_arrange += _convert_points(hull_polygon.getPoints())
+
+        polygons_disallowed_areas = []
+        for area in self._build_volume.getDisallowedAreas():
             # Clip the disallowed areas so that they don't overlap the bounding box (The arranger chokes otherwise)
             clipped_area = area.intersectionConvexHulls(build_plate_polygon)
 
-            if clipped_area.getPoints() is not None and len(
-                    clipped_area.getPoints()) > 2:  # numpy array has to be explicitly checked against None
-                for point in clipped_area.getPoints():
-                    converted_points.append(Point(int(point[0] * self._factor), int(point[1] * self._factor)))
+            polygons_disallowed_areas += _convert_points(clipped_area.getPoints())
 
-                disallowed_area = Item(converted_points)
+        polygons_fixed_nodes = []
+        if self._fixed_nodes is None:
+            self._fixed_nodes = []
+        for node in self._fixed_nodes:
+            hull_polygon = node.callDecoration("getConvexHull")
+
+            if hull_polygon is not None:
+                polygons_fixed_nodes += _convert_points(hull_polygon.getPoints())
+
+        strategies = [NfpConfig.Alignment.CENTER,
+                      NfpConfig.Alignment.BOTTOM_LEFT,
+                      NfpConfig.Alignment.BOTTOM_RIGHT,
+                      NfpConfig.Alignment.TOP_LEFT,
+                      NfpConfig.Alignment.TOP_RIGHT]
+        found_solution_for_all = False
+        while not found_solution_for_all and len(strategies) > 0:
+
+            # Add all the items we want to arrange
+            node_items = []
+            for polygon in polygons_nodes_to_arrange:
+                node_items.append(Item(polygon))
+
+            for polygon in polygons_disallowed_areas:
+                disallowed_area = Item(polygon)
                 disallowed_area.markAsDisallowedAreaInBin(0)
                 node_items.append(disallowed_area)
 
-        for node in self._fixed_nodes:
-            converted_points = []
-            hull_polygon = node.callDecoration("getConvexHull")
-
-            if hull_polygon is not None and hull_polygon.getPoints() is not None and len(
-                    hull_polygon.getPoints()) > 2:  # numpy array has to be explicitly checked against None
-                for point in hull_polygon.getPoints():
-                    converted_points.append(Point(int(point[0] * self._factor), int(point[1] * self._factor)))
-                item = Item(converted_points)
+            for polygon in polygons_fixed_nodes:
+                item = Item(polygon)
                 item.markAsFixedInBin(0)
                 node_items.append(item)
 
-        strategies = [NfpConfig.Alignment.CENTER] * 3 + [NfpConfig.Alignment.BOTTOM_LEFT] * 3
-        found_solution_for_all = False
-        while not found_solution_for_all and len(strategies) > 0:
             config = NfpConfig()
             config.accuracy = 1.0
-            config.alignment = NfpConfig.Alignment.CENTER
+            config.alignment = NfpConfig.Alignment.DONT_ALIGN
             config.starting_point = strategies[0]
             strategies = strategies[1:]
 

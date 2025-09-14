@@ -1,11 +1,13 @@
-#  Copyright (c) 2015-2022 Ultimaker B.V.
+#  Copyright (c) 2015-2025 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 import re
 import threading
 
-from typing import Optional, cast, List, Dict, Pattern, Set
+from typing import Optional, cast, List, Dict, Set
 
+from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
@@ -19,7 +21,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.CuraPackageManager import CuraPackageManager
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from cura.Settings import CuraContainerStack
+from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Utils.Threading import call_on_qt_thread
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Snapshot import Snapshot
@@ -45,13 +49,17 @@ import UM.Application
 
 from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
+from .ThreeMFVariant import ThreeMFVariant
+from .Cura3mfVariant import Cura3mfVariant
+from .BambuLabVariant import BambuLabVariant
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-THUMBNAIL_PATH = "Metadata/thumbnail.png"
 MODEL_PATH = "3D/3dmodel.model"
 PACKAGE_METADATA_PATH = "Cura/packages.json"
+TEXTURES_PATH = "3D/Textures"
+MODEL_RELATIONS_PATH = "3D/_rels/3dmodel.model.rels"
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -67,6 +75,12 @@ class ThreeMFWriter(MeshWriter):
         self._archive: Optional[zipfile.ZipFile] = None
         self._store_archive = False
         self._lock = threading.Lock()
+
+        # Register available variants
+        self._variants = {
+            Cura3mfVariant(self).mime_type: Cura3mfVariant,
+            BambuLabVariant(self).mime_type: BambuLabVariant
+        }
 
     @staticmethod
     def _convertMatrixToString(matrix):
@@ -97,7 +111,11 @@ class ThreeMFWriter(MeshWriter):
     def _convertUMNodeToSavitarNode(um_node,
                                     transformation = Matrix(),
                                     exported_settings: Optional[Dict[str, Set[str]]] = None,
-                                    center_mesh = False):
+                                    center_mesh = False,
+                                    scene: Savitar.Scene = None,
+                                    archive: zipfile.ZipFile = None,
+                                    model_relations_element: ET.Element = None,
+                                    content_types_element: ET.Element = None):
         """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
 
         :returns: Uranium Scene node.
@@ -138,7 +156,28 @@ class ThreeMFWriter(MeshWriter):
             if indices_array is not None:
                 savitar_node.getMeshData().setFacesFromBytes(indices_array)
             else:
-                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tostring())
+                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
+
+            packed_texture = um_node.callDecoration("packTexture") 
+            uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
+            if packed_texture is not None and archive is not None and uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
+                texture_path = f"{TEXTURES_PATH}/{id(um_node)}.png"
+                texture_file = zipfile.ZipInfo(texture_path)
+                # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
+                archive.writestr(texture_file, packed_texture)
+
+                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
+
+                # Add texture relation to model relations file
+                if model_relations_element is not None:
+                    ET.SubElement(model_relations_element, "Relationship",
+                                  Target=texture_path, Id=f"rel{len(model_relations_element)+1}",
+                                  Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dtexture")
+
+                if content_types_element is not None:
+                    ET.SubElement(content_types_element, "Override", PartName=texture_path,
+                                  ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
+
 
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")
@@ -175,7 +214,11 @@ class ThreeMFWriter(MeshWriter):
             if child_node.callDecoration("getBuildPlateNumber") != active_build_plate_nr:
                 continue
             savitar_child_node = ThreeMFWriter._convertUMNodeToSavitarNode(child_node,
-                                                                           exported_settings = exported_settings)
+                                                                           exported_settings = exported_settings,
+                                                                           scene = scene,
+                                                                           archive = archive,
+                                                                           model_relations_element = model_relations_element,
+                                                                           content_types_element = content_types_element)
             if savitar_child_node is not None:
                 savitar_node.addChild(savitar_child_node)
 
@@ -201,26 +244,51 @@ class ThreeMFWriter(MeshWriter):
 
         painter.end()
 
-    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None) -> bool:
+    def _getVariant(self, mime_type: str) -> ThreeMFVariant:
+        """Get the appropriate variant for the given MIME type.
+
+        :param mime_type: The MIME type to get the variant for
+        :return: An instance of the variant for the given MIME type
+        """
+        variant_class = self._variants.get(mime_type, Cura3mfVariant)
+        return variant_class(self)
+
+    def write(self, stream, nodes, mode = MeshWriter.OutputMode.BinaryMode, export_settings_model = None, **kwargs) -> bool:
         self._archive = None # Reset archive
         archive = zipfile.ZipFile(stream, "w", compression = zipfile.ZIP_DEFLATED)
+
+        # Determine which variant to use based on mime type in kwargs
+        mime_type = kwargs.get("mime_type", Cura3mfVariant(self).mime_type)
+        variant = self._getVariant(mime_type)
+
         try:
             model_file = zipfile.ZipInfo(MODEL_PATH)
             # Because zipfile is stupid and ignores archive-level compression settings when writing with ZipInfo.
             model_file.compress_type = zipfile.ZIP_DEFLATED
 
             # Create content types file
-            content_types_file = zipfile.ZipInfo("[Content_Types].xml")
-            content_types_file.compress_type = zipfile.ZIP_DEFLATED
             content_types = ET.Element("Types", xmlns = self._namespaces["content-types"])
             rels_type = ET.SubElement(content_types, "Default", Extension = "rels", ContentType = "application/vnd.openxmlformats-package.relationships+xml")
             model_type = ET.SubElement(content_types, "Default", Extension = "model", ContentType = "application/vnd.ms-package.3dmanufacturing-3dmodel+xml")
 
             # Create _rels/.rels file
-            relations_file = zipfile.ZipInfo("_rels/.rels")
-            relations_file.compress_type = zipfile.ZIP_DEFLATED
-            relations_element = ET.Element("Relationships", xmlns = self._namespaces["relationships"])
-            model_relation_element = ET.SubElement(relations_element, "Relationship", Target = "/" + MODEL_PATH, Id = "rel0", Type = "http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
+            relations_element = self._makeRelationsTree()
+            model_relation_element = ET.SubElement(relations_element, "Relationship", Target="/" + MODEL_PATH,
+                                                   Id="rel0",
+                                                   Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel")
+
+            # Create Metadata/_rels/model_settings.config.rels
+            metadata_relations_element = self._makeRelationsTree()
+
+            # Create model relations
+            model_relations_element = self._makeRelationsTree()
+
+            # Let the variant add its specific files
+            variant.add_extra_files(archive, metadata_relations_element)
+
+            # Let the variant prepare content types and relations
+            variant.prepare_content_types(content_types)
+            variant.prepare_relations(relations_element)
 
             # Attempt to add a thumbnail
             snapshot = self._createSnapshot()
@@ -233,16 +301,11 @@ class ThreeMFWriter(MeshWriter):
                 thumbnail_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
                 snapshot.save(thumbnail_buffer, "PNG")
 
-                thumbnail_file = zipfile.ZipInfo(THUMBNAIL_PATH)
-                # Don't try to compress snapshot file, because the PNG is pretty much as compact as it will get
-                archive.writestr(thumbnail_file, thumbnail_buffer.data())
-
                 # Add PNG to content types file
                 thumbnail_type = ET.SubElement(content_types, "Default", Extension="png", ContentType="image/png")
-                # Add thumbnail relation to _rels/.rels file
-                thumbnail_relation_element = ET.SubElement(relations_element, "Relationship",
-                                                           Target="/" + THUMBNAIL_PATH, Id="rel1",
-                                                           Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail")
+
+                # Let the variant process the thumbnail
+                variant.process_thumbnail(snapshot, thumbnail_buffer, archive, relations_element)
 
             # Write material metadata
             packages_metadata = self._getMaterialPackageMetadata() + self._getPluginPackageMetadata()
@@ -291,13 +354,21 @@ class ThreeMFWriter(MeshWriter):
                         savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(root_child,
                                                                                  transformation_matrix,
                                                                                  exported_model_settings,
-                                                                                 center_mesh = True)
+                                                                                 center_mesh = True,
+                                                                                 scene = savitar_scene,
+                                                                                 archive = archive,
+                                                                                 model_relations_element = model_relations_element,
+                                                                                 content_types_element = content_types)
                         if savitar_node:
                             savitar_scene.addSceneNode(savitar_node)
                 else:
                     savitar_node = self._convertUMNodeToSavitarNode(node,
                                                                     transformation_matrix,
-                                                                    exported_model_settings)
+                                                                    exported_model_settings,
+                                                                    scene = savitar_scene,
+                                                                    archive = archive,
+                                                                    model_relations_element = model_relations_element,
+                                                                    content_types_element = content_types)
                     if savitar_node:
                         savitar_scene.addSceneNode(savitar_node)
 
@@ -305,8 +376,12 @@ class ThreeMFWriter(MeshWriter):
             scene_string = parser.sceneToString(savitar_scene)
 
             archive.writestr(model_file, scene_string)
-            archive.writestr(content_types_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(content_types))
-            archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
+            self._storeElementTree(archive, "[Content_Types].xml", content_types)
+            self._storeElementTree(archive, "_rels/.rels", relations_element)
+            if len(metadata_relations_element) > 0:
+                self._storeElementTree(archive, "Metadata/_rels/model_settings.config.rels", metadata_relations_element)
+            if len(model_relations_element) > 0:
+                self._storeElementTree(archive, MODEL_RELATIONS_PATH, model_relations_element)
         except Exception as error:
             Logger.logException("e", "Error writing zip file")
             self.setInformation(str(error))
@@ -318,6 +393,25 @@ class ThreeMFWriter(MeshWriter):
                 self._archive = archive
 
         return True
+
+    @staticmethod
+    def _storeElementTree(archive: zipfile.ZipFile, file_path: str, root_element: ET.Element):
+        file = zipfile.ZipInfo(file_path)
+        file.compress_type = zipfile.ZIP_DEFLATED
+        archive.writestr(file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(root_element))
+
+    def _makeRelationsTree(self):
+        return ET.Element("Relationships", xmlns=self._namespaces["relationships"])
+
+    @staticmethod
+    def _getMaterialColor(extruder: "ExtruderStack") -> str:
+        position = int(extruder.getMetaDataEntry("position", default="0"))
+        try:
+            default_color = ExtrudersModel.defaultColors[position]
+        except IndexError:
+            default_color = "#e0e000"
+        color_code = extruder.material.getMetaDataEntry("color_code", default=default_color)
+        return color_code.upper()
 
     @staticmethod
     def _storeMetadataJson(metadata: Dict[str, List[Dict[str, str]]], archive: zipfile.ZipFile, path: str) -> None:
@@ -450,7 +544,7 @@ class ThreeMFWriter(MeshWriter):
     def sceneNodesToString(scene_nodes: [SceneNode]) -> str:
         savitar_scene = Savitar.Scene()
         for scene_node in scene_nodes:
-            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True)
+            savitar_node = ThreeMFWriter._convertUMNodeToSavitarNode(scene_node, center_mesh = True, scene = savitar_scene)
             savitar_scene.addSceneNode(savitar_node)
         parser = Savitar.ThreeMFParser()
         scene_string = parser.sceneToString(savitar_scene)

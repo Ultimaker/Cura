@@ -1,0 +1,17 @@
+name: Nightly build - stable release
+run-name: Nightly build - stable release
+
+on:
+  workflow_dispatch:
+#   schedule:
+#     # Daily at 5:15 CET
+#     - cron: '15 4 * * *'
+
+jobs:
+  build-nightly:
+    uses: ./.github/workflows/nightly.yml
+    with:
+      cura_conan_version: "cura/[*]"
+      release_tag: "nightly-stable"
+      caller_workflow: "nightly-stable.yml"
+    secrets: inherit

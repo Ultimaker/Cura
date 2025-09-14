@@ -1,3 +1,178 @@
+[5.10.2]
+
+* UltiMaker S6 and S8 improvements:
+- Introduced the CC+ 0.6 core to the UltiMaker S6 and S8. This core delivers better results for demanding applications and will be replacing the CC+ 0.4 core.
+- Added new profiles for PC and CPE+ on UltiMaker S6 and S8
+- Updated the default support type for the PETG material for UltiMaker S6 and S8
+
+[5.10.1]
+
+* New features and improvements:
+- Introduced the UltiMaker S6, the newest addition to the S series of UltiMaker printers that carry forward the award-winning legacy of the S5.
+- Introduced Visual Intent profiles for PLA and Tough PLA for the UltiMaker S8 
+- Introduced High-Speed Intents for ABSR for Method X and Method XL
+
+* Bug fixes:
+- Updated UltiMaker S8 profiles to significantly improve the quality of PC, CPE, CPE+, PETG, support structures, and dual extrusion prints
+- Support brims no longer listen to the Brim Distance setting, so the brims will always be attached to the support
+- Fixed a bug affecting multi-extruder printers where the initial temperature was not set correctly at the start of a print if all features used an extruder other than T0
+
+[5.10]
+
+* New features and improvements:
+- UltiMaker S8 Support: Added compatibility for the UltiMaker S8 printer.
+- Cheetah Gcode Flavor: Introduced a new Marlin-like Gcode flavor called Cheetah.
+- SpaceMouse support: Navigate the view seamlessly with a 3D mouse, thanks to a collaboration with 3Dconnexion.
+- Cloud Printing for Sketch Sprint: Enabled printing over cloud with Digital Factory for Sketch Sprint users.
+- Interlocking Settings: Moved Interlocking settings from "Experimental" to "Dual Extrusion" category and placed under "Expert" setting visibility preset.
+- Build System Upgrade: Upgraded the build system from Conan 1 to Conan 2. Updated documentation is available.
+- Preview Looping: When the last layer is played in the preview, the first layer will now play again instead of stopping.
+- Updated About Page: The About Page now shows the used sources, their licenses, and their versions in a clearer way
+- Flip Y-axis Translate Tool Handle: Added an option to flip the Y-axis translate tool handle in preferences contributed by @GregValiant.
+- Rotation by Input & Snap Angle Input: Introduced rotation by input & snap angle input contributed by @HellAholic and @GregValiant.
+- Improved the speed when interacting with the Settings Visiblity window contributed by @HellAholic
+- Purge Lines And Unload Filament Post Processing Script: Added a Purge Lines and Unload Filament Post Processing Script contributed by @GregValiant and @HellAholic
+- Thingiverse "Open in Cura" Button Linux Support: Enabled the "Open in Cura" button from Thingiverse to open files in Linux contributed by @hadess.
+- Multitool Printer Configuration Options: Introduced 3 new configuration options in machine settings for multitool printers contributed by @TheSin-.
+- Search and Replace Post-Processing Plug-In: Significantly improved the Search and Replace post-processing plug-in with features like replacing only the first instance, limiting search to a layer range, and ignoring start-up or ending G-code contributed by @GregValiant
+- Enabled Relative extrusion (M82 and M83 commands) for Marlin-flavored GCode, contributed by @EmJay276
+
+
+* New settings:
+- Overhanging Wall Speeds, now gives you the ability to tune multiple values. Don’t forget to adjust the Overhanging Wall Angle to start using the setting. 
+- Minimum Layer Time with Overhang and Minimum Overhang Segment Length: Fine-tune the minimum layer time for overhangs.
+Try it for yourself <a href="https://www.thingiverse.com/thing:6975650?utm_source=changelog&utm_medium=cura&utm_campaign=510">with this Overhanging Wall Angle Test</a>.
+- Inside Travel Avoid Distance: Finetune combing movements.
+- Pressure Advance Factor Setting: New setting for machine definitions.
+- You can now tune the Bottom Surface Skin, like you can tune the Top Surface Skin! You can now tune Extruder, Layers, Line Width, Pattern, Line Directions, Outer Wall Flow, Inner Wall(s) Flow, Flow, Outer Wall Speed, Inner Wall Speed, Skin Speed, Inner Wall Acceleration, Skin Acceleration, Outer Wall Jerk, Inner Wall Jerk, Skin Jerk, and Monotonic Bottom Surface Order
+- Enable/Disable USB Printing: A hidden preference setting to indicate that you are using the printer over USB functionality. This setting lays the groundwork for automatically disabling USB printing in the next release when it’s not being used.
+
+
+* Bug fixes:
+- Resolved a crash that occurred when switching materials on Sovol printers.
+- Random Seam no longer favors one side and not is truly random again
+- Reduced the slicing time when no support needs to be generated 
+- Fixed a bug where Seam on Vertex with a User Defined seam position was not working correctly.
+- Gcode replacement with a single line of code no longer produces values in separate lines
+- Setting names that become too long after translation are now truncated.
+- Updated UltiMaker printer logos to align with the current style.
+- The number of decimal places displayed for layer height in the top bar has been reduced.
+- Fixed a bug that caused incorrect retracting and hopping on printers with more than 2 extruders.
+- Improved how fast the settings are loaded in the Settings Visibility window when scrolling
+- Improved how disallowed areas and other models are taken into account when arranging models on the buildplate, including other models
+- Preview playback now only shows visible parts. Infill lines, shell, and helpers are always hidden if disabled in preview's color scheme
+
+
+* Bugs resolved since the Beta release
+- Fixed a bug where the inner wall was bridging incorrectly
+- Fixed a bug where support meshes were not printing if they had nothing to support
+- Fixed a bug where project names would get mixed up when switching between projects
+- Improved the UltiMaker S8 profiles to boost reliability and quality
+- Updated Nylon CF Slide settings to reduce under extrusion
+- Reduced the chance of a filament jam on Method series printers with dual extrusion prints with small layertimes
+- The Bottom Surface Skin settings introduced in this release are now only enabled if 'Bottom Surface Skin layers' is more than zero
+- Fixed the translations for the drop-downs in the Print Setting recommended view
+- Columns in the Profile Description Screen can now be resized so long setting names can be read
+- Two non-critical security fixes were implemented to align with security best practices in OAuth2 and the printer-linter
+- Resolved top reported crashes coming in via the analyzing tool Sentry
+
+* Printer definitions, profiles, and materials:
+- Introduced Visual Intents for the Sketch Sprint
+- Introduced new Extra Fast and Draft profiles for the Sketch Sprint
+- Introduced profiles for Sketch printers for Metallic PLA with improved surface quality (matte vs shiny)
+- Introduced PC ABS and PC ABS FR materials for Method X and Method XL
+- Introduced Nylon Slide for UltiMaker S Series Printers
+- Updated the Breakaway Build Volume Temperature for UltiMaker Factor 4
+- Introduced Makerbot Replicator +
+- Updated Voron2 printers to include TPU ASA and PVA, contributed by @WCEngineer
+- Enabled Relative extrusion (M82 and M83 commands) for Marlin-flavored GCode, contributed by @EmJay276
+
+Cura 5.10 supports macOS 12 Monterey or higher. This is because the tools that we use to create Cura builds no longer support previous versions of macOS.
+
+[5.9.1]
+
+* New features and improvements:
+The About Page now shows some of the used sources, their licenses, and their versions in a clearer way. This will be even more complete in Cura 5.10.
+
+[5.9]
+
+* New features and improvements:
+- Introduced scarf seam settings in experimental, Scarf Seam Length, Scarf Seam Start Height, and Scarf Seam Split Distance
+- Updated the Start and End G-code edit options (for both Machine and Extruder) to include If/Else statements and formulas
+- Introduced Build Fan Speed at Height, Build Fan Speed at Layer, and Build Volume Fan Number to control extra fans, like those controlling the build volume separately
+- Added the "Extra Infill Lines to Support Skins" setting and other improvements to help make printing over sparse infill more reliable, contributed by @Hello1024
+- Significant UI speed improvements interacting with custom settings especially if your printer has multiple extruders
+- Introduced an Anycolor option for the UltiMaker S and F series enabling you to print with any UltiMaker color loaded in the material station that is compatible with the printjobs. Note that it’s only compatible with the latest version of the firmware (for Factor 4 >=10.1  and for S-series >=9.0, and it does not include the UltiMaker S3)
+- Added an option to Export Package for Technical Support to the help menu, it includes a project file with the settings but also the logs
+- Improved the way materials are selected when using multiple extruders to print the build plate adhesion so it doesn't default to the first extruder but the best option instead.
+- Improved processes so not only installers but also executables inside installers are signed for Windows
+- Introduced improvements to how models and projects with large file size (500MB) slice. A message was also added to inform the user when a file size is too big to slice.
+- Made it possible for multiple Engine plugins that are registered to the same slot to be used together. (Only for Modify plugins, and Plugins will be addressed alphabetically)
+- Moved the Gradual Flow Engine Plug-in to CuraEngine, this also resolved slicing crashes when the plugin was used in combination with large number of smaller models that were printed at once.
+- Improved and expanded the Insert at Layer Change post-processing script, contributed by @GregValiant
+- Improved and expanded the Time Lapse Post Processing script, contributed by @GregValiant
+- Added a registry entry to provide the option to silent uninstall on Windows, contributed by @Rotzbua
+
+* Bug fixes:
+- Fixed a crash that would occur when renaming profile names that would result in changing the order of the profiles
+- Fixed a bug so objects in a 3MF reload in the same position as they were saved again, contributed by @nilsiism
+- Fixed an issue where overhanging walls and walls that were adjacent to overhanging walls were not printed at the correct speed
+- Fixed a bug that prevented the "Sync materials with printers" page from displaying when accessed immediately after starting Cura or signing in
+- Fixed a bug where reloading an updated model would not update the duplicates of the model on the build plate
+- Fixed a bug that showed incompatible materials when switching between printers with a different filament diameter. 
+- Fixed a bug where tree support in enclosed holes has missing layers
+- Made improvements in the G-codePathModify slot for Engine Plugins, contributed by @ThomasRahm
+- Fixed a bug that prevented changes to the initial layer diameter from being applied properly in tree support, contributed by @ThomasRahm
+- Fixed a rounding issue in the engine math, @0x5844
+
+* Bugs resolved since the Beta release
+- Spiralize outer contour no longer adds unnecessary seams to the model
+- When coasting is enabled the printhead no longer drops down 
+- Fixed coasting strategy so it's only applied to outer/inner walls, and not to skin, top-bottom, or infill
+- Fixed wiping direction when printing a single wall
+- Improved wiping in combination with the scarf seam
+- Significantly improved the strategy for sharpest corner - smart hiding seam location combination
+- Fixed a bug where long scarf seam length and short scarf seam steps would result in the seam being moved outward
+- Fixed a bug where seam acceleration and deceleration around seam were not working
+- Fixed a bug where infill was wrongly removed from narrow spaces 
+- Triple-clicking values and searches that you entered now has you select everything so you can edit it in the field similar to other desktop applications
+- Updated dependencies and improved how unwanted and unused binaries are excluded from the building process. 
+- Added Eazao material for the new Eazao printers
+- Updated the urls schemes to make them more robust when attempting to open files in Cura
+- Retract before outer wall now works correctly on all layers
+- Resolved top reported crashes coming in via the analyzing tool Sentry
+- Removed an unwanted Z-hop when starting a new layer
+- Layer starts are more visible in the print preview with the scarf seam
+- Made the X to close floating and pop up windows a little bigger
+- Improved the visuals of printers with a build plate texture, they now render more consistently regardless of zoom or angle of view
+- The UI now displays correctly on Wayland, with this fix we noticed some performance drop compared to X11
+
+* Printer definitions, profiles, and materials:
+- Introduced Makerbot Sketch Sprint
+- Introduced Makerbot Sketch and Sketch Large
+- Introduced new materials to the UltiMaker Method series, ABS, PETG, Nylon-CF, and Tough PLA
+- Introduced new materials for Labs Extruder of the UltiMaker Method series, BASF Ultrafuse 316L, TPE SEBS 1300 95A, and Polymax PC. Except BASF Ultrafuse 316L is not available on the Method XL.
+- Various setting improvements for ABS and Nylon for UltiMaker Method series
+- Various setting improvements for dual extrusion support for the UltiMaker Method series
+- Implemented a hard limit so the bed temperature cannot be more than 120°C on all UltiMaker printers.
+- Fixed an error in the profile Ultimaker 2 profile naming
+- Introduced the Creality CR-M4, contributed by @kixell
+- Introduced Eazao M500, M600, M700, and Potter, and updated the Eazao Zero, contributed by @Eazo
+- Introduced ZYYX+ and ZYYX Pro, contributed by @theodorhansson
+- Updated acceleration settings for the Creality Ender-2 V3 SE, contributed by @T9Air
+
+* Community Translations
+- Updated Japanese translations by @h1data
+- Brazilian Portuguese by @Patola
+
+[5.8.1]
+
+* Bug fixes:
+- Fixed an issue where materials could not be synced to UltiMaker Printers
+
+* Profile Improvements
+- Significant improvements for PVA and TPU 95A profiles for UltiMaker Factor 4
+
 [5.8]
 
 * New Z Seam Settings:

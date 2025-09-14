@@ -10,6 +10,7 @@
         "file_formats": "text/x-gcode",
         "platform": "ankermake_m5_platform.obj",
         "has_machine_quality": true,
+        "has_textured_buildplate": true,
         "machine_extruder_trains": { "0": "ankermake_m5_extruder_0" },
         "platform_texture": "ankermake_m5.png",
         "preferred_material": "generic_pla",
@@ -119,7 +120,12 @@
         "support_z_distance": { "value": "layer_height * 2" },
         "top_bottom_thickness": { "value": "layer_height * 4" },
         "wall_overhang_angle": { "value": 55 },
-        "wall_overhang_speed_factor": { "value": 55 },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                55
+            ]
+        },
         "zig_zaggify_infill": { "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'lines'" }
     }
 }

@@ -12,6 +12,7 @@ on:
       - 'resources/quality/**'
       - 'resources/variants/**'
       - 'resources/conanfile.py'
+      - 'resources/conandata.yml'
     branches:
       - 'main'
       - 'CURA-*'
@@ -20,21 +21,22 @@ on:
       - '[0-9].[0-9]*'
       - '[0-9].[0-9][0-9]*'
 
-env:
-  CONAN_LOGIN_USERNAME_CURA: ${{ secrets.CONAN_USER }}
-  CONAN_PASSWORD_CURA: ${{ secrets.CONAN_PASS }}
-
 jobs:
-  conan-recipe-version:
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-version.yml@main
+  conan-package:
+    uses: ultimaker/cura-workflows/.github/workflows/conan-package.yml@main
     with:
-      project_name: cura_resources
-
-  conan-package-export:
-    needs: [ conan-recipe-version ]
-    uses: ultimaker/cura-workflows/.github/workflows/conan-recipe-export.yml@main
-    with:
-      recipe_id_full: ${{ needs.conan-recipe-version.outputs.recipe_id_full }}
-      recipe_id_latest: ${{ needs.conan-recipe-version.outputs.recipe_id_latest }}
       conan_recipe_root: "./resources/"
+      platform_windows: false
+      platform_mac: false
+      install_system_dependencies: false
     secrets: inherit
+
+  signal-curator:
+    needs: conan-package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger Curator Workflow
+      run: |
+        gh workflow run --repo ultimaker/curator -r main package.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.CURATOR_TRIGGER_PAT_C3PO }}

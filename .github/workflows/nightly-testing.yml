@@ -1,0 +1,17 @@
+name: Nightly build - dev release
+run-name: Nightly build - dev release
+
+on:
+  workflow_dispatch:
+#   schedule:
+#     # Daily at 5:15 CET
+#     - cron: '15 4 * * *'
+
+jobs:
+  build-nightly:
+    uses: ./.github/workflows/nightly.yml
+    with:
+      cura_conan_version: "cura/[*]@ultimaker/testing"
+      release_tag: "nightly-testing" # Fixed version, we reuse the same tag forever
+      caller_workflow: "nightly-testing.yml"
+    secrets: inherit

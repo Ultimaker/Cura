@@ -2,6 +2,7 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To run the engine in debug mode if the front-end is in debug mode.
+from cmath import isnan
 from collections import defaultdict
 import os
 from PyQt6.QtCore import QObject, QTimer, QUrl, pyqtSlot
@@ -68,6 +69,9 @@ class CuraEngineBackend(QObject, Backend):
         """
 
         super().__init__()
+        self._init_done = False
+        self._immediate_slice_after_init = False
+
         # Find out where the engine is located, and how it is called.
         # This depends on how Cura is packaged and which OS we are running on.
         executable_name = "CuraEngine"
@@ -155,6 +159,7 @@ class CuraEngineBackend(QObject, Backend):
 
         self._backend_log_max_lines: int = 20000  # Maximum number of lines to buffer
         self._error_message: Optional[Message] = None  # Pop-up message that shows errors.
+        self._unused_extruders: list[int] = [] # Extruder numbers of found unused extruders
 
         # Count number of objects to see if there is something changed
         self._last_num_objects: Dict[int, int] = defaultdict(int)
@@ -197,7 +202,8 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
         self._resetLastSliceTimeStats()
-        self._snapshot: Optional[QImage] = None 
+        self._snapshot: Optional[QImage] = None
+        self._last_socket_error: Optional[Arcus.Error] = None
 
         application.initializationFinished.connect(self.initialize)
 
@@ -266,6 +272,10 @@ class CuraEngineBackend(QObject, Backend):
 
         self._machine_error_checker = application.getMachineErrorChecker()
         self._machine_error_checker.errorCheckFinished.connect(self._onStackErrorCheckFinished)
+
+        self._init_done = True
+        if self._immediate_slice_after_init:
+            self.slice()
 
     def close(self) -> None:
         """Terminate the engine process.
@@ -340,6 +350,11 @@ class CuraEngineBackend(QObject, Backend):
 
     def slice(self) -> None:
         """Perform a slice of the scene."""
+
+        if not self._init_done:
+            self._immediate_slice_after_init = True
+            return
+        self._immediate_slice_after_init = False
 
         self._createSnapshot()
 
@@ -569,7 +584,20 @@ class CuraEngineBackend(QObject, Backend):
             return
 
         # Preparation completed, send it to the backend.
-        self._socket.sendMessage(job.getSliceMessage())
+        immediate_success = self._socket.sendMessage(job.getSliceMessage())
+        if (not CuraApplication.getInstance().getUseExternalBackend()) and (not immediate_success):
+            if self._last_socket_error is not None and self._last_socket_error.getErrorCode() == Arcus.ErrorCode.MessageTooBigError:
+                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances.")
+            else:
+                error_txt = catalog.i18nc("@info:status", "Unable to send the model data to the engine. Please try again, or contact support.")
+
+            self._error_message = Message(error_txt,
+                                          title=catalog.i18nc("@info:title", "Unable to slice"),
+                                          message_type=Message.MessageType.WARNING)
+            self._error_message.show()
+            self.setState(BackendState.Error)
+            self.backendError.emit(job)
+            return
 
         # Notify the user that it's now up to the backend to do its job
         self.setState(BackendState.Processing)
@@ -691,6 +719,7 @@ class CuraEngineBackend(QObject, Backend):
         if error.getErrorCode() == Arcus.ErrorCode.Debug:
             return
 
+        self._last_socket_error = error
         self._terminate()
         self._createSocket()
 
@@ -933,11 +962,43 @@ class CuraEngineBackend(QObject, Backend):
         """
 
         material_amounts = []
+        self._unused_extruders = []
         for index in range(message.repeatedMessageCount("materialEstimates")):
-            material_amounts.append(message.getRepeatedMessage("materialEstimates", index).material_amount)
+            material_use_for_tool = message.getRepeatedMessage("materialEstimates", index).material_amount
+            if isnan(material_use_for_tool):
+                material_amounts.append(0.0)
+                if self._global_container_stack.extruderList[int(index)].isEnabled:
+                    self._unused_extruders.append(index)
+            else:
+                material_amounts.append(material_use_for_tool)
+
+        if self._unused_extruders:
+            extruder_names = [self._global_container_stack.extruderList[int(idx)].definition.getName() for idx in self._unused_extruders]
+            unused_extruders = [f"<li>{extruder_name}</li>" for extruder_name in extruder_names]
+            warning_message = Message(
+                text=catalog.i18nc("@message", "<html>At least one extruder remains unused in this print:"
+                                               f"<ul><b>{"".join(unused_extruders)}</b></ul><br/>This can sometimes become a problem, "
+                                               "for example when the bed temperature is adjusted for the material present in the unused extruder. "
+                                               "It might be desirable to disable these unused extruders.</html>"),
+                title=catalog.i18nc("@message:title", "Unused Extruder(s)"),
+                message_type=Message.MessageType.WARNING
+            )
+            warning_message.addAction("disable_extruders",
+                name=catalog.i18nc("@button", "Disable unused extruder(s)"),
+                icon="",
+                description=catalog.i18nc("@label", "Automatically disable the unused extruder(s)")
+            )
+            warning_message.actionTriggered.connect(self._onMessageActionTriggered)
+            warning_message.show()
 
         times = self._parseMessagePrintTimes(message)
         self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts)
+
+    def _onMessageActionTriggered(self, message: Message, message_action: str) -> None:
+        if message_action == "disable_extruders":
+            message.hide()
+            for unused_extruder in self._unused_extruders:
+                CuraApplication.getInstance().getMachineManager().setExtruderEnabled(unused_extruder, False)
 
     def _parseMessagePrintTimes(self, message: Arcus.PythonMessage) -> Dict[str, float]:
         """Called for parsing message to retrieve estimated time per feature
