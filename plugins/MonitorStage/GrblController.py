@@ -1,4 +1,6 @@
 import time
+import serial
+import serial.tools.list_ports
 from UM.Logger import Logger
 from PyQt6.QtCore import QObject, pyqtSignal
 
@@ -12,79 +14,75 @@ class GrblController(QObject):
     JOG_DISTANCE = 40  # mm
     RECONNECT_INTERVAL = 5 # seconds
 
-    def __init__(self, printer_output_device):
+    def __init__(self): # No printer_output_device
         super().__init__()
-        self._printer_output_device = printer_output_device
-        self._active_printer = None
+        self._serial_port = None # New: Serial port object
         self.is_connected = False
         self.last_reconnect_attempt = 0
         self._received_data_buffer = []
-        self.target_temperatures = {"T0": 20, "T1": 20} # New
-        self.current_temperatures = {"T0": 0.0, "T1": 0.0} # New
+        self.target_temperatures = {"T0": 20, "T1": 20}
+        self.current_temperatures = {"T0": 0.0, "T1": 0.0}
         Logger.log("d", "GrblController initialized.")
 
-        if self._printer_output_device:
-            self._printer_output_device.printersChanged.connect(self._onPrintersChanged)
-            self._onPrintersChanged()
-
-    def _onPrintersChanged(self):
-        if self._active_printer and hasattr(self._active_printer, "dataReceived"):
-            try:
-                self._active_printer.dataReceived.disconnect(self._onDataReceived)
-            except TypeError:
-                pass
-
-        self._active_printer = self._printer_output_device.activePrinter
-
-        if self._active_printer and hasattr(self._active_printer, "dataReceived"):
-            self._active_printer.dataReceived.connect(self._onDataReceived)
-
-        self.connect()
-
     def connect(self):
-        Logger.log("d", "Attempting to connect to GRBL device via Cura's active printer.")
-        if self._active_printer:
-            if hasattr(self._active_printer, "connectionState") and self._active_printer.connectionState == "Connected":
-                self.is_connected = True
-                Logger.log("d", "GrblController connected.")
+        Logger.log("d", "Attempting to connect to GRBL device via serial port.")
+        if self._serial_port and self._serial_port.is_open:
+            Logger.log("d", "Already connected to a serial port.")
+            self.is_connected = True
+            self.connection_status_changed.emit(self.is_connected)
+            return
 
-                # Send GRBL initialization commands and wait for 'ok'
-                self.send_gcode("$22=0")  # disable homing
-                self.wait_for_ok()
-                self.send_gcode("$X")
-                self.wait_for_ok()
-                self.send_gcode("$21=0")
-                self.wait_for_ok()
-                self.send_gcode("$3=4")  # invert Z axis
-                self.wait_for_ok()
-                self.send_gcode("G21")  # mm
-                self.wait_for_ok()
-                self.send_gcode("G90")  # absolute coords
-                self.wait_for_ok()
-
-            else:
-                Logger.log("w", "Active printer not reported as connected by Cura.")
-                self.is_connected = False
-        else:
+        ports = serial.tools.list_ports.comports()
+        if not ports:
+            Logger.log("w", "No serial ports found.")
             self.is_connected = False
-            Logger.log("d", "GrblController not connected: No active printer.")
+            self.connection_status_changed.emit(self.is_connected)
+            return
+
+        for p in ports:
+            Logger.log("d", f"Found port: {p.device}")
+            try:
+                self._serial_port = serial.Serial(p.device, 115200, timeout=1) # 115200 baud rate, 1 second timeout
+                time.sleep(2) # Wait for GRBL to initialize
+                self._serial_port.flushInput() # Clear input buffer
+                Logger.log("d", f"Successfully connected to {p.device}")
+                self.is_connected = True
+                break
+            except serial.SerialException as e:
+                Logger.log("e", f"Failed to connect to {p.device}: {e}")
+                self.is_connected = False
+        
+        if self.is_connected:
+            Logger.log("d", "GrblController connected.")
+            # Send GRBL initialization commands and wait for 'ok'
+            self.send_gcode("$22=0")  # disable homing
+            self.wait_for_ok()
+            self.send_gcode("$X")
+            self.wait_for_ok()
+            self.send_gcode("$21=0")
+            self.wait_for_ok()
+            self.send_gcode("$3=4")  # invert Z axis
+            self.wait_for_ok()
+            self.send_gcode("G21")  # mm
+            self.wait_for_ok()
+            self.send_gcode("G90")  # absolute coords
+            self.wait_for_ok()
+        else:
+            Logger.log("w", "Could not establish a serial connection to any GRBL device.")
 
         self.connection_status_changed.emit(self.is_connected)
 
     def send_gcode(self, command):
-        if self.is_connected and self._active_printer:
+        if self.is_connected and self._serial_port and self._serial_port.is_open:
             Logger.log("d", f"Sending G-code: {command.strip()}")
-            if hasattr(self._active_printer, "sendGCodeCommand"):
-                self._active_printer.sendGCodeCommand(command.strip())
-            else:
-                Logger.log("e", "Active printer does not have a known method to send G-code.")
+            try:
+                self._serial_port.write(f"{command.strip()}\n".encode('utf-8'))
+            except serial.SerialException as e:
+                Logger.log("e", f"Failed to send G-code: {e}")
+                self.is_connected = False
+                self.connection_status_changed.emit(self.is_connected)
         else:
             Logger.log("w", f"Cannot send G-code, GrblController not connected: {command.strip()}")
-
-    def _onDataReceived(self, data):
-        Logger.log("d", f"Data received from printer: {data.strip()}")
-        self._received_data_buffer.append(data) # Add data to buffer
-        self.data_received.emit(data)
 
     def get_connection_status(self):
         return self.is_connected
@@ -109,12 +107,34 @@ class GrblController(QObject):
                 self.connect()
             return
 
+        # Read data from serial port
+        try:
+            while self._serial_port and self._serial_port.in_waiting:
+                line = self._serial_port.readline().decode('utf-8').strip()
+                if line:
+                    Logger.log("d", f"Data received from serial: {line}")
+                    self._received_data_buffer.append(line)
+                    self.data_received.emit(line)
+        except serial.SerialException as e:
+            Logger.log("e", f"Error reading from serial port: {e}")
+            self.is_connected = False
+            self.connection_status_changed.emit(self.is_connected)
+            return
+
+        # Process received data for 'ok' and temperature
+        # This part remains largely the same, but now it's processing data from the serial port directly.
         # Request temperatures
         self.send_gcode("M105")
 
         t_0 = time.time()
         while time.time() - t_0 < self.SERIAL_TIMEOUT:
             for i, line in enumerate(self._received_data_buffer):
+                if "ok" in line: # Check for 'ok' in the buffer
+                    del self._received_data_buffer[:i+1]
+                    Logger.log("d", "Received 'ok'.")
+                    # If 'ok' is received, we can proceed with other commands or just return
+                    # For now, we'll continue to check for M105 response in the same loop
+                    pass
                 if "$M105=" in line:
                     # Parse tuple response: $M105=T0:200.000,T1:180.000
                     payload = line.split("=")[-1].strip()

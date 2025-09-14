@@ -11,7 +11,7 @@ Rectangle
     property var activeMachine: machineManager.activeMachine
     property bool isMachineConnected: activeMachine ? activeMachine.is_connected : false
 
-    color: "black"
+    color: "#FAFAFA"
     anchors.fill: parent
 
     UM.I18nCatalog

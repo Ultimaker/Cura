@@ -14,56 +14,13 @@ class MonitorStage(CuraStage):
 
         # Wait until QML engine is created, otherwise creating the new QML components will fail
         Application.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
-        self._printer_output_device = None
         self._grbl_controller = None # New member variable
 
-        self._active_print_job = None
-        self._active_printer = None
-
-    def _setActivePrintJob(self, print_job):
-        if self._active_print_job != print_job:
-            self._active_print_job = print_job
-
-    def _setActivePrinter(self, printer):
-        if self._active_printer != printer:
-            if self._active_printer:
-                self._active_printer.activePrintJobChanged.disconnect(self._onActivePrintJobChanged)
-            self._active_printer = printer
-            if self._active_printer:
-                self._setActivePrintJob(self._active_printer.activePrintJob)
-                # Jobs might change, so we need to listen to it's changes.
-                self._active_printer.activePrintJobChanged.connect(self._onActivePrintJobChanged)
-            else:
-                self._setActivePrintJob(None)
-
-    def _onActivePrintJobChanged(self):
-        self._setActivePrintJob(self._active_printer.activePrintJob)
-
-    def _onActivePrinterChanged(self):
-        self._setActivePrinter(self._printer_output_device.activePrinter)
-
     def _onOutputDevicesChanged(self):
-        try:
-            # We assume that you are monitoring the device with the highest priority.
-            new_output_device = Application.getInstance().getMachineManager().printerOutputDevices[0]
-            if new_output_device != self._printer_output_device:
-                if self._printer_output_device:
-                    try:
-                        self._printer_output_device.printersChanged.disconnect(self._onActivePrinterChanged)
-                    except TypeError:
-                        # Ignore stupid "Not connected" errors.
-                        pass
-
-                self._printer_output_device = new_output_device
-
-                # Instantiate GrblController and connect
-                self._grbl_controller = GrblController(self._printer_output_device)
-                self._grbl_controller.connect()
-
-                self._printer_output_device.printersChanged.connect(self._onActivePrinterChanged)
-                self._setActivePrinter(self._printer_output_device.activePrinter)
-        except IndexError:
-            pass
+        # Instantiate GrblController and connect
+        if self._grbl_controller is None: # Only instantiate once
+            self._grbl_controller = GrblController()
+            self._grbl_controller.connect()
 
     def _onEngineCreated(self):
         # We can only connect now, as we need to be sure that everything is loaded (plugins get created quite early)
