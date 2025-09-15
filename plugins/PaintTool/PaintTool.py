@@ -382,10 +382,6 @@ class PaintTool(Tool):
         if (is_moved or is_pressed) and self._controller.getToolsEnabled():
             mouse_evt = cast(MouseEvent, event)
 
-            paintview = self._getPaintView()
-            if paintview is None:
-                return False
-
             if not self._picking_pass:
                 self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
                 if not self._picking_pass:
@@ -394,7 +390,7 @@ class PaintTool(Tool):
             world_coords_vec = None
             if is_moved:
                 world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
-                paintview.setCursor(world_coords_vec, self._brush_size / 128.0, self._brush_color)
+                self._view.setCursor(world_coords_vec, self._brush_size / 128.0, self._brush_color)
                 if not self._mouse_held:
                     self._updateScene(node)
                     return False
