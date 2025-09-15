@@ -4,9 +4,8 @@
 import os
 
 from PyQt6.QtCore import QRect, pyqtSignal
+from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor
 from typing import Optional, List, Tuple, Dict
-
-from PyQt6.QtGui import QImage, QUndoStack
 
 from UM.Math.Vector import Vector
 from cura.CuraApplication import CuraApplication
@@ -38,6 +37,8 @@ class PaintView(CuraView):
         super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
         self._current_paint_texture: Optional[Texture] = None
+        self._previous_paint_texture_stroke: Optional[QRect] = None
+        self._cursor_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
@@ -46,10 +47,6 @@ class PaintView(CuraView):
         self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
         self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
         self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
-
-        self._cursor_position: Vector = Vector(0.0, 0.0, 0.0)
-        self._cursor_size: float = 0.0
-        self._cursor_color: List[float] = [0.0, 0.0, 0.0, 1.0]
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
@@ -81,10 +78,45 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
-    def setCursor(self, position: Optional[Vector] = None, size: float = -1, color: Optional[str] = None) -> None:
-        self._cursor_position = position if position is not None else self._cursor_position
-        self._cursor_size = size if size >= 0 else self._cursor_size
-        self._cursor_color = self._paint_modes[self._current_paint_type][color].display_color if color is not None else self._cursor_color
+    def setCursorStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str):
+        if self._cursor_texture is None or self._cursor_texture.getImage() is None:
+            return
+
+        self.clearCursorStroke()
+
+        stroke_image = stroke_mask.copy()
+        alpha_mask = stroke_image.convertedTo(QImage.Format.Format_Mono)
+        stroke_image.setAlphaChannel(alpha_mask)
+
+        painter = QPainter(stroke_image)
+
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceAtop)
+        display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
+        paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
+        paint_color.setAlpha(255)
+        painter.fillRect(0, 0, stroke_mask.width(), stroke_mask.height(), paint_color)
+
+        painter.end()
+
+        self._cursor_texture.setSubImage(stroke_image, start_x, start_y)
+
+        self._previous_paint_texture_stroke = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
+
+    def clearCursorStroke(self) -> bool:
+        if (self._previous_paint_texture_stroke is None or
+                self._cursor_texture is None or self._cursor_texture.getImage() is None):
+            return False
+
+        clear_image = QImage(self._previous_paint_texture_stroke.width(),
+                             self._previous_paint_texture_stroke.height(),
+                             QImage.Format.Format_ARGB32)
+        clear_image.fill(0)
+        self._cursor_texture.setSubImage(clear_image,
+                                         self._previous_paint_texture_stroke.x(),
+                                         self._previous_paint_texture_stroke.y())
+        self._previous_paint_texture_stroke = None
+
+        return True
 
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
@@ -173,15 +205,20 @@ class PaintView(CuraView):
 
         for node in Selection.getAllSelectedObjects():
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
-            self._current_paint_texture = node.callDecoration("getPaintTexture")
-            self._paint_shader.setTexture(0, self._current_paint_texture)
+            paint_texture = node.callDecoration("getPaintTexture")
+            if paint_texture != self._current_paint_texture:
+                self._current_paint_texture = paint_texture
+                self._paint_shader.setTexture(0, self._current_paint_texture)
+
+                self._cursor_texture = OpenGL.getInstance().createTexture(paint_texture.getWidth(), paint_texture.getHeight())
+                image = QImage(paint_texture.getWidth(), paint_texture.getHeight(), QImage.Format.Format_ARGB32)
+                image.fill(0)
+                self._cursor_texture.setImage(image)
+                self._paint_shader.setTexture(1, self._cursor_texture)
+                self._previous_paint_texture_stroke = None
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
-
-        self._paint_shader.setUniformValue("u_cursorPos", self._cursor_position)
-        self._paint_shader.setUniformValue("u_cursorSize", self._cursor_size)
-        self._paint_shader.setUniformValue("u_cursorColor", self._cursor_color)
 
         colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]

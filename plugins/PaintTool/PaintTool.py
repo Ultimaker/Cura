@@ -387,14 +387,6 @@ class PaintTool(Tool):
                 if not self._picking_pass:
                     return False
 
-            world_coords_vec = None
-            if is_moved:
-                world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
-                self._view.setCursor(world_coords_vec, self._brush_size / 128.0, self._brush_color)
-                if not self._mouse_held:
-                    self._updateScene(node)
-                    return False
-
             if is_pressed:
                 if MouseEvent.LeftButton not in mouse_evt.buttons:
                     return False
@@ -425,21 +417,31 @@ class PaintTool(Tool):
 
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
+                if self._view.clearCursorStroke():
+                    self._updateScene(node)
+                    return True
                 return False
 
-            if world_coords_vec is None:
-                world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
+            world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
             world_coords = world_coords_vec.getData()
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
                 self._last_face_id = face_id
 
             try:
-                uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
-                if len(uv_areas) == 0:
-                    return False
-                stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-                self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
+                uv_areas_cursor = self._getUvAreasForStroke(self._last_face_id, face_id, world_coords, world_coords)
+                if len(uv_areas_cursor) > 0:
+                    cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
+                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, self._brush_color)
+                else:
+                    self._view.clearCursorStroke()
+
+                if self._mouse_held:
+                    uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                    if len(uv_areas) == 0:
+                        return False
+                    stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
+                    self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
