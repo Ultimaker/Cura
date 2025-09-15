@@ -13,27 +13,6 @@ Cura.ModeSelectorButton
 
     property string mode
 
-    onClicked: setMode()
-
-    function setMode()
-    {
-        UM.Controller.setProperty("PaintType", modeSelectorButton.mode);
-    }
-
-    function isSelected()
-    {
-        return UM.Controller.properties.getValue("PaintType") === modeSelectorButton.mode;
-    }
-
-    Component.onCompleted:
-    {
-        modeSelectorButton.selected = isSelected();
-    }
-
-    Binding
-    {
-        target: modeSelectorButton
-        property: "selected"
-        value: isSelected()
-    }
+    selected: UM.Controller.properties.getValue("PaintType") === modeSelectorButton.mode
+    onClicked: UM.Controller.setProperty("PaintType", modeSelectorButton.mode)
 }

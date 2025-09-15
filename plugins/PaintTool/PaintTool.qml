@@ -19,14 +19,16 @@ Item
     {
         id: undoAction
         shortcut: "Ctrl+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+        enabled: UM.Controller.properties.getValue("CanUndo")
+        onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
     Action
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+        enabled: UM.Controller.properties.getValue("CanRedo")
+        onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
     Column
@@ -163,6 +165,7 @@ Item
 
             from: 10
             to: 1000
+            value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
             {
@@ -170,11 +173,6 @@ Item
                 {
                     UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
-            }
-
-            Component.onCompleted:
-            {
-                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -192,7 +190,8 @@ Item
             {
                 id: undoButton
 
-                text: catalog.i18nc("@action:button", "Undo Stroke (Ctrl+L)")
+                enabled: undoAction.enabled
+                text: catalog.i18nc("@action:button", "Undo Stroke")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
@@ -206,7 +205,8 @@ Item
             {
                 id: redoButton
 
-                text: catalog.i18nc("@action:button", "Redo Stroke (Ctrl+Shift+L)")
+                enabled: redoAction.enabled
+                text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
