@@ -39,6 +39,7 @@ import time
 import datetime
 import math
 from UM.Message import Message
+from UM.Logger import Logger
 
 class DisplayInfoOnLCD(Script):
 
@@ -48,8 +49,8 @@ class DisplayInfoOnLCD(Script):
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
                 enable_countdown = True
                 self._instance.setProperty("enable_countdown", "value", enable_countdown)
-            cura_adjust_percent = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
-            self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
+            cura_adjust_percentage = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
+            self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percentage)
         except AttributeError:
             # Handle cases where the global container stack or its properties are not accessible
             pass
@@ -620,11 +621,18 @@ class DisplayInfoOnLCD(Script):
         else:
             print_start_str = "Print Start Time.................Now"
         estimate_str = "Cura Time Estimate.........." + str(print_time)
-        cura_adjust_percent = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
-        if cura_adjust_percent == 100:
-            adjusted_str = "Adjusted Time Estimate..." + str(time_change)
+        # Set a default value for 'cura_adjust_percentage' compatibility with earlier versions that do not have 'machine_time_estimation_factor'
+        try:            
+            cura_adjust_percentage = 100
+            cura_adjust_percentage = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
+        except (NameError, ValueError):
+            cura_adjust_percentage = 100
+        if cura_adjust_percentage == 100:
+            adjusted_str = f"Adjusted Time Estimate...{time_change} (Post Process Setting {time_adj_percentage*100}%)"
         else:
-            adjusted_str = f"(Time adjusted to {cura_adjust_percent}% per Cura Machine Settings)"
+            adjusted_str = f"(Time adjusted to {cura_adjust_percentage}% per Cura Machine Settings)"
+            if time_adj_percentage * 100 != cura_adjust_percentage:
+                adjusted_str += f"\n(Gcode was adjusted by the script setting of {time_adj_percentage * 100}%)"
         finish_str = f"{week_day} {mo_str} {new_time.strftime('%d')}, {new_time.strftime('%Y')} at {show_hr}{new_time.strftime('%M')}{show_ampm}"
 
         # If there are pauses and if countdown is enabled, then add the time-to-pause to the message.
