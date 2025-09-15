@@ -4,7 +4,7 @@
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum
-from PyQt6.QtGui import QImage, QPainter, QPen, QPainterPath, QPainterPathStroker
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPainterPath, QPainterPathStroker
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
@@ -96,7 +96,7 @@ class PaintTool(Tool):
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
-        pen.setWidth(self._brush_size)
+        pen.setWidth(2)
         pen.setColor(Qt.GlobalColor.white)
 
         match self._brush_shape:
@@ -125,15 +125,17 @@ class PaintTool(Tool):
 
         painter = QPainter(stroke_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        path = QPainterPath()
+        painter.setPen(self._brush_pen)
+        painter.setBrush(QBrush(self._brush_pen.color()))
+
         for poly in polys:
+            path = QPainterPath()
             path.moveTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
             for pt in poly[1:]:
                 path.lineTo(int(0.5 + w * pt[0] - min_pt[0]), int(0.5 + h * pt[1] - min_pt[1]))
-            path.lineTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
-        stroker = QPainterPathStroker()
-        stroker.setWidth(2)
-        painter.fillPath(stroker.createStroke(path).united(path), self._brush_pen.color())
+            path.closeSubpath()
+            painter.drawPath(path)
+
         painter.end()
 
         return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
@@ -277,7 +279,7 @@ class PaintTool(Tool):
             case PaintTool.Brush.Shape.SQUARE:
                 shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 4)
             case PaintTool.Brush.Shape.CIRCLE:
-                shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 16)
+                shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 32)
             case _:
                 Logger.error(f"Unknown brush shape '{self._brush_shape}'.")
         if shape is None:
