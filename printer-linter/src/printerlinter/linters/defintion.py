@@ -145,17 +145,18 @@ class Definition(Linter):
         if "overrides" not in self._definitions[inherits_from]:
             return self._isDefinedInParent(key, value_dict, self._definitions[inherits_from]["inherits"])
 
-        parent = self._definitions[inherits_from]["overrides"]
+        parent = self._definitions[inherits_from]
+        parent_overrides = self._definitions[inherits_from]["overrides"]
         if key not in self._definitions[self.base_def]["overrides"]:
             is_number = False
         else:
             is_number = self._definitions[self.base_def]["overrides"][key]["type"] in ("float", "int")
         for child_key, child_value in value_dict.items():
-            if key in parent:
+            if key in parent_overrides:
                 if child_key in ("default_value", "value"):
-                    check_values = [cv for cv in [parent[key].get("default_value", None), parent[key].get("value", None)] if cv is not None]
+                    check_values = [cv for cv in [parent_overrides[key].get("default_value", None), parent_overrides[key].get("value", None)] if cv is not None]
                 else:
-                    check_values = [parent[key].get(child_key, None)]
+                    check_values = [parent_overrides[key].get(child_key, None)]
                 for check_value in check_values:
                     if is_number and child_key in ("default_value", "value"):
                         try:
@@ -170,10 +171,10 @@ class Definition(Linter):
                         v = child_value
                         cv = check_value
                     if v == cv:
-                        return True, child_key, child_value, parent, inherits_from
+                        return True, child_key, child_value, parent_overrides, inherits_from
 
-                if "inherits" in parent:
-                    return self._isDefinedInParent(key, value_dict, parent["inherits"])
+            if "inherits" in parent:
+                return self._isDefinedInParent(key, value_dict, parent["inherits"])
         return False, None, None, None, None
 
     def _loadExperimentalSettings(self):

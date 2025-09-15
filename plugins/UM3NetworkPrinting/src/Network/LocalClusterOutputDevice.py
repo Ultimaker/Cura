@@ -94,15 +94,15 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
-        self._getApiClient().movePrintJobToTop(print_job_uuid)
+        self.getApiClient().movePrintJobToTop(print_job_uuid)
 
     @pyqtSlot(str, name="deleteJobFromQueue")
     def deleteJobFromQueue(self, print_job_uuid: str) -> None:
-        self._getApiClient().deletePrintJob(print_job_uuid)
+        self.getApiClient().deletePrintJob(print_job_uuid)
 
     @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
-        self._getApiClient().forcePrintJob(print_job_uuid)
+        self.getApiClient().forcePrintJob(print_job_uuid)
 
     def setJobState(self, print_job_uuid: str, action: str) -> None:
         """Set the remote print job state.
@@ -111,20 +111,20 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         :param action: The action to undertake ('pause', 'resume', 'abort').
         """
 
-        self._getApiClient().setPrintJobState(print_job_uuid, action)
+        self.getApiClient().setPrintJobState(print_job_uuid, action)
 
     def _update(self) -> None:
         super()._update()
         if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cluster too often
-        self._getApiClient().getPrinters(self._updatePrinters)
-        self._getApiClient().getPrintJobs(self._updatePrintJobs)
+        self.getApiClient().getPrinters(self._updatePrinters)
+        self.getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
 
     def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
         """Get a list of materials that are installed on the cluster host."""
 
-        self._getApiClient().getMaterials(on_finished = on_finished)
+        self.getApiClient().getMaterials(on_finished = on_finished)
 
     def sendMaterialProfiles(self) -> None:
         """Sync the material profiles in Cura with the printer.
@@ -204,7 +204,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             parts.append(self._createFormPart("name=require_printer_name", bytes(unique_name, "utf-8"), "text/plain"))
         # FIXME: move form posting to API client
         self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
-                               on_progress=self._onPrintJobUploadProgress)
+                               on_progress=self._onPrintJobUploadProgress,
+                               request=self.getApiClient().createEmptyRequest("/cluster-api/v1/print_jobs/", content_type=None, method="POST"))
         self._active_exported_job = None
 
     def _onPrintJobUploadProgress(self, bytes_sent: int, bytes_total: int) -> None:
@@ -236,9 +237,9 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         for print_job in self._print_jobs:
             if print_job.getPreviewImage() is None:
-                self._getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
+                self.getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
 
-    def _getApiClient(self) -> ClusterApiClient:
+    def getApiClient(self) -> ClusterApiClient:
         """Get the API client instance."""
 
         if not self._cluster_api:
