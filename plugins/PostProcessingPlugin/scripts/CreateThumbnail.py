@@ -70,7 +70,7 @@ class CreateThumbnail(Script):
                     "unit": "px",
                     "type": "int",
                     "default_value": 32,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "12",
                     "maximum_value_warning": "800"
                 },
@@ -81,7 +81,7 @@ class CreateThumbnail(Script):
                     "unit": "px",
                     "type": "int",
                     "default_value": 32,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "12",
                     "maximum_value_warning": "600"
                 },
