@@ -4,14 +4,15 @@ import math
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF, QRect, QPoint
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPainterPath
+from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from UM.Scene.Camera import Camera
@@ -111,36 +112,7 @@ class PaintTool(Tool):
         return pen
 
     def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
-        w, h = self._view.getUvTexDimensions()
-        if w == 0 or h == 0 or len(polys) == 0:
-            return QImage(w, h, QImage.Format.Format_RGB32), (0, 0)
-
-        min_pt = numpy.array([numpy.inf, numpy.inf])
-        max_pt = numpy.array([-numpy.inf, -numpy.inf])
-        for poly in polys:
-            for pt in poly:
-                min_pt = numpy.minimum(min_pt, w * pt)
-                max_pt = numpy.maximum(max_pt, h * pt)
-
-        stroke_image = QImage(int(max_pt[0] - min_pt[0]) + 1, int(max_pt[1] - min_pt[1]) + 1, QImage.Format.Format_RGB32)
-        stroke_image.fill(0)
-
-        painter = QPainter(stroke_image)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setPen(self._brush_pen)
-        painter.setBrush(QBrush(self._brush_pen.color()))
-
-        for poly in polys:
-            path = QPainterPath()
-            path.moveTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
-            for pt in poly[1:]:
-                path.lineTo(int(0.5 + w * pt[0] - min_pt[0]), int(0.5 + h * pt[1] - min_pt[1]))
-            path.closeSubpath()
-            painter.drawPath(path)
-
-        painter.end()
-
-        return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
+        return PaintTool._rasterizePolygons(polys, self._brush_pen, QBrush(self._brush_pen.color()))
 
     def getPaintType(self) -> str:
         return self._view.getPaintType()
@@ -249,7 +221,7 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     @staticmethod
-    def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon) -> numpy.ndarray:
+    def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon, texture_dimensions: Tuple[int, int]) -> numpy.ndarray:
         a1, b1, c1 = triangle_a
         a2, b2, c2 = triangle_b
 
@@ -273,7 +245,7 @@ class PaintTool(Tool):
             v /= total
             w /= total
 
-        return u * a2 + v * b2 + w * c2
+        return (u * a2 + v * b2 + w * c2) * numpy.array(texture_dimensions)
 
     def _getStrokePolygon(self, stroke_a: numpy.ndarray, stroke_b: numpy.ndarray) -> Polygon:
         shape = None
@@ -288,6 +260,35 @@ class PaintTool(Tool):
         if shape is None:
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
+
+    @staticmethod
+    def _rasterizePolygons(polygons: List[Polygon], pen: QPen, brush: QBrush) -> Tuple[QImage, Tuple[int, int]]:
+        if not polygons:
+            return QImage(), (0, 0)
+
+        bounding_box = polygons[0].getBoundingBox()
+        for polygon in polygons[1:]:
+            bounding_box += polygon.getBoundingBox()
+
+        bounding_box = AxisAlignedBox2D(numpy.array([math.floor(bounding_box.left), math.floor(bounding_box.top)]),
+                                        numpy.array([math.ceil(bounding_box.right), math.ceil(bounding_box.bottom)]))
+
+        # Use RGB32 which is more optimized for drawing to
+        image = QImage(int(bounding_box.width), int(bounding_box.height), QImage.Format.Format_RGB32)
+        image.fill(0)
+
+        painter = QPainter(image)
+        painter.translate(-bounding_box.left, -bounding_box.bottom)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.setPen(pen)
+        painter.setBrush(brush)
+
+        for polygon in polygons:
+            painter.drawPolygon(QPolygonF([QPointF(point[0], point[1]) for point in polygon]))
+
+        painter.end()
+
+        return image, (int(bounding_box.left), int(bounding_box.bottom))
 
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
     def _getUvAreasForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
@@ -305,34 +306,21 @@ class PaintTool(Tool):
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
             return numpy.array([*self._camera.projectToViewport(Vector(*pt))], dtype=numpy.float32)
 
-        def get_projected_on_viewport_image(pt: numpy) -> QPointF:
-            return QPointF(pt[0] + self._camera.getViewportWidth() / 2.0,
-                           self._camera.getViewportHeight() - (pt[1] + self._camera.getViewportHeight() / 2.0))
+        def get_projected_on_viewport_image(pt: numpy) -> numpy.ndarray:
+            return numpy.array([pt[0] + self._camera.getViewportWidth() / 2.0,
+                                self._camera.getViewportHeight() - (pt[1] + self._camera.getViewportHeight() / 2.0)],
+                               dtype=numpy.float32)
 
         stroke_poly = self._getStrokePolygon(get_projected_on_plane(world_coords_a), get_projected_on_plane(world_coords_b))
+        stroke_poly_viewport = Polygon([get_projected_on_viewport_image(point) for point in stroke_poly])
 
-        stroke_path = QPainterPath(get_projected_on_viewport_image(stroke_poly[0]))
-        for point in stroke_poly[1:]:
-            stroke_path.lineTo(get_projected_on_viewport_image(point))
-        stroke_path.closeSubpath()
-        stroke_path_bb = stroke_path.boundingRect()
-        stroke_path_bb = QRect(QPoint(math.floor(stroke_path_bb.x()), math.floor(stroke_path_bb.y())),
-                               QPoint(math.ceil(stroke_path_bb.right()), math.ceil(stroke_path_bb.bottom())))
+        faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
+                                                                       QPen(Qt.PenStyle.NoPen),
+                                                                       QBrush(Qt.GlobalColor.white))
 
-        # Use RGB32 which is more optimized for drawing to
-        faces_image = QImage(stroke_path_bb.size(), QImage.Format.Format_RGB32)
-        faces_image.fill(0)
+        faces = self._faces_selection_pass.getFacesIdsUnderMask(faces_image, faces_x, faces_y)
 
-        faces_image_painter = QPainter(faces_image)
-        faces_image_painter.translate(-stroke_path_bb.topLeft())
-        faces_image_painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        faces_image_painter.setPen(QPen(Qt.PenStyle.NoPen))
-        faces_image_painter.setBrush(QBrush(Qt.GlobalColor.white))
-        faces_image_painter.drawPath(stroke_path)
-
-        faces_image_painter.end()
-
-        faces = self._faces_selection_pass.getFacesIdsUnderMask(stroke_path_bb.x(), stroke_path_bb.y(), faces_image)
+        texture_dimensions = self._view.getUvTexDimensions()
 
         res = []
         for face in faces:
@@ -350,7 +338,7 @@ class PaintTool(Tool):
                 continue
             ta, tb, tc = face_uv_coordinates
             original_uv_poly = Polygon([ta, tb, tc])
-            uv_area = stroke_poly.intersection(stroke_tri).map(lambda pt: PaintTool._remapBarycentric(stroke_tri, pt, original_uv_poly))
+            uv_area = stroke_poly.intersection(stroke_tri).map(lambda pt: PaintTool._remapBarycentric(stroke_tri, pt, original_uv_poly, texture_dimensions))
 
             if uv_area.isValid():
                 res.append(uv_area)
