@@ -209,7 +209,8 @@
             "value": 35
         },
         "bridge_skin_speed_2": { "value": "speed_print*2/3" },
-        "bridge_sparse_infill_max_density": { "value": 50 },
+        "bridge_skin_support_threshold": { "value": 20 },
+        "bridge_sparse_infill_max_density": { "value": 20 },
         "bridge_wall_material_flow": { "value": 200 },
         "bridge_wall_min_length": { "value": 2 },
         "bridge_wall_speed":
@@ -235,7 +236,7 @@
             "value": "material_print_temperature-15"
         },
         "default_material_print_temperature": { "maximum_value_warning": 320 },
-        "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
+        "extra_infill_lines_to_support_skins": { "value": "'walls'" },
         "flooring_layer_count": { "value": 1 },
         "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
         "flooring_monotonic": { "value": false },
@@ -453,7 +454,7 @@
         "roofing_monotonic": { "value": false },
         "roofing_pattern": { "value": "'zigzag'" },
         "seam_overhang_angle": { "value": 35 },
-        "skin_edge_support_thickness": { "value": 0 },
+        "skin_edge_support_thickness": { "value": 0.8 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 20 },
