@@ -8806,7 +8806,7 @@
                     "value": "line_width + support_xy_distance + 1.0",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "bridge_skin_support_threshold":
                 {
