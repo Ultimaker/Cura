@@ -288,7 +288,7 @@ UM.PreferencesPage
                 UM.Label
                 {
                     id: themeLabel
-                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme*:")
+                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme (* restart required):")
                 }
 
                 ListModel
@@ -359,7 +359,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("general/use_tray_icon"))
                     onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
 
-                    text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                    text: catalog.i18nc("@option:check", "Add icon to system tray (* restart required)");
                 }
             }
 
@@ -373,7 +373,7 @@ UM.PreferencesPage
             UM.Label
             {
                 font: UM.Theme.getFont("medium_bold")
-                text: catalog.i18nc("@label", "Slice-Output")
+                text: catalog.i18nc("@label", "Output To Device")
             }
 
             UM.TooltipArea
@@ -381,7 +381,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip", "Printing via USB-cable isn't automatically enabled for new installs anymore, as the scanning of ports to find connected printers can give trouble on some systems.")
+                text: catalog.i18nc("@info:tooltip", "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't.")
 
                 UM.CheckBox
                 {
@@ -389,7 +389,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
                     onClicked: UM.Preferences.setValue("usb_printing/enabled", checked)
 
-                    text: catalog.i18nc("@option:check", "Enable printing via USB-cable (restart required)")
+                    text: catalog.i18nc("@option:check", "Enable/disable USB-cable printing (* restart required)")
                 }
             }
 
@@ -569,7 +569,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: forceLayerViewCompatibilityModeCheckbox
-                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
+                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (* restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
                 }
@@ -696,7 +696,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: flipToolhandleYCheckbox
-                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (restart required)")
+                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (* restart required)")
                     checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
                     onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
                 }
@@ -727,7 +727,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura *")
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura (* restart required)")
 
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
@@ -1135,7 +1135,7 @@ UM.PreferencesPage
                 id: languageCaption
 
                 //: Language change warning
-                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                text: catalog.i18nc("@label", "*) You will need to restart the application for these changes to have effect.")
                 wrapMode: Text.WordWrap
                 font.italic: true
             }
