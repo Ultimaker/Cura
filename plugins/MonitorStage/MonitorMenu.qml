@@ -7,27 +7,20 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-Item
+Rectangle
 {
-    signal showTooltip(Item item, point location, string text)
-    signal hideTooltip()
+    id: root
 
-    Cura.MachineSelector
-    {
-        id: machineSelection
-        headerCornerSide: Cura.RoundedRectangle.Direction.All
-        width: UM.Theme.getSize("machine_selector_widget").width
-        height: parent.height
+    property var machineManager: Cura.MachineManager
+    property var activeMachine: machineManager.activeMachine
+    property bool isMachineConnected: activeMachine ? activeMachine.is_connected : false
+
+    color: isMachineConnected ? "green" : "red"
+
+    Label {
+        id: machineStatusLabel
+        text: isMachineConnected ? qsTr("Connected") : qsTr("Disconnected")
         anchors.centerIn: parent
-
-        machineListModel: Cura.MachineListModel {}
-
-        machineManager: Cura.MachineManager
-
-        onSelectPrinter: function(machine)
-        {
-            toggleContent();
-            Cura.MachineManager.setActiveMachine(machine.id);
-        }
+        color: "white"
     }
 }
