@@ -3,8 +3,8 @@
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPainterPath, QPainterPathStroker
+from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPainterPath, QPainterPathStroker, QPolygonF
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
@@ -22,7 +22,7 @@ from cura.PickingPass import PickingPass
 from UM.View.SelectionPass import SelectionPass
 from .PaintView import PaintView
 from .PrepareTextureJob import PrepareTextureJob
-
+from .UvConnectivity import UvConnectivity
 
 class PaintTool(Tool):
     """Provides the tool to paint meshes."""
@@ -54,6 +54,7 @@ class PaintTool(Tool):
 
         self._node_cache: Optional[SceneNode] = None
         self._mesh_transformed_cache = None
+        self._uv_connectivity_cache = None
         self._cache_dirty: bool = True
 
         self._brush_size: int = 200
@@ -209,40 +210,6 @@ class PaintTool(Tool):
 
         self._updateScene()
 
-    @staticmethod
-    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
-        # compute the intersection of (param) A - pt with (param) B - (param) C
-        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
-            return 1.0
-
-        # compute unit vectors of directions of lines A and B
-        udir_a = a - pt
-        udir_a /= numpy.linalg.norm(udir_a)
-        udir_b = b - c
-        udir_b /= numpy.linalg.norm(udir_b)
-
-        # find unit direction vector for line C, which is perpendicular to lines A and B
-        udir_res = numpy.cross(udir_b, udir_a)
-        udir_res_len = numpy.linalg.norm(udir_res)
-        if udir_res_len == 0:
-            return 1.0
-        udir_res /= udir_res_len
-
-        # solve system of equations
-        rhs = b - a
-        lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        try:
-            solved = numpy.linalg.solve(lhs, rhs)
-        except numpy.linalg.LinAlgError:
-            return 1.0
-
-        # get the ratio
-        intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        a_intersect_dist = numpy.linalg.norm(a - intersect)
-        if a_intersect_dist == 0:
-            return 1.0
-        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
-
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
@@ -285,6 +252,31 @@ class PaintTool(Tool):
         if shape is None:
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
+
+    #def _getUvIslandsForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[QPolygonF]:
+    def _getUvIslandsForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+        res = []
+
+        uv_a0, uv_a1, _ = self._node_cache.getMeshData().getFaceUvCoords(face_id_a)
+        w_a0, w_a1, _ = self._mesh_transformed_cache.getFaceNodes(face_id_a)
+        world_to_uv_size_factor = numpy.linalg.norm(uv_a1 - uv_a0) / numpy.linalg.norm(w_a1 - w_a0)
+
+        for island_idx in range(self._uv_connectivity_cache.islandCount()):
+
+            uv_a = self._uv_connectivity_cache.pointToIslandUv(island_idx, world_coords_a)
+            uv_b = self._uv_connectivity_cache.pointToIslandUv(island_idx, world_coords_b)
+
+            stroke_poly = self._getStrokePolygon(world_to_uv_size_factor, uv_a, uv_b)
+            stroke_poly = QPolygonF([QPointF(pt[0], pt[1]) for pt in stroke_poly.getPoints()])
+
+            paint_polygon = stroke_poly.intersected(self._uv_connectivity_cache.islandUvPolygon(island_idx))
+
+            if paint_polygon.size() <= 3:
+                continue
+
+            res.append(Polygon([numpy.array([paint_polygon[i].x(), paint_polygon[i].y()]) for i in range(paint_polygon.size())]))
+
+        return res
 
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
     def _getUvAreasForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
@@ -417,6 +409,7 @@ class PaintTool(Tool):
             if self._cache_dirty:
                 self._cache_dirty = False
                 self._mesh_transformed_cache = self._node_cache.getMeshDataTransformed()
+                self._uv_connectivity_cache = UvConnectivity(self._mesh_transformed_cache, self._node_cache.getMeshData())
             if not self._mesh_transformed_cache:
                 return False
 
@@ -430,7 +423,8 @@ class PaintTool(Tool):
                 self._last_face_id = face_id
 
             try:
-                uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                #uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                uv_areas = self._getUvIslandsForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
                 if len(uv_areas) == 0:
                     return False
                 stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
