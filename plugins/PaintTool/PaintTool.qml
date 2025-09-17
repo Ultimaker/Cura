@@ -163,8 +163,8 @@ Item
             width: parent.width
             indicatorVisible: false
 
-            from: 10
-            to: 1000
+            from: 1
+            to: 100
             value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
