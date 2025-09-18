@@ -61,6 +61,7 @@ class PaintTool(Tool):
 
         self._brush_size: int = 10
         self._brush_color: str = "preferred"
+        self._brush_extruder: int = 0
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
 
@@ -71,7 +72,7 @@ class PaintTool(Tool):
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
-        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "State", "CanUndo", "CanRedo")
+        self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
@@ -142,6 +143,14 @@ class PaintTool(Tool):
             self._brush_color = brush_color
             self.propertyChanged.emit()
 
+    def getBrushExtruder(self) -> int:
+        return self._brush_extruder
+
+    def setBrushExtruder(self, brush_extruder: int) -> None:
+        if brush_extruder != self._brush_extruder:
+            self._brush_extruder = brush_extruder
+            self.propertyChanged.emit()
+
     def getBrushShape(self) -> int:
         return self._brush_shape
 
@@ -178,7 +187,7 @@ class PaintTool(Tool):
         width, height = self._view.getUvTexDimensions()
         clear_image = QImage(width, height, QImage.Format.Format_RGB32)
         clear_image.fill(Qt.GlobalColor.white)
-        self._view.addStroke(clear_image, 0, 0, "none", False)
+        self._view.addStroke(clear_image, 0, 0, "none" if self.getPaintType() != "extruder" else "0", False)
 
         self._updateScene()
 
@@ -422,10 +431,12 @@ class PaintTool(Tool):
                 self._last_world_coords = world_coords
 
             try:
+                brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
+
                 uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
                 if len(uv_areas_cursor) > 0:
                     cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
-                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, self._brush_color)
+                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, brush_color)
                 else:
                     self._view.clearCursorStroke()
 
@@ -434,7 +445,7 @@ class PaintTool(Tool):
                     if len(uv_areas) == 0:
                         return False
                     stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-                    self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
+                    self._view.addStroke(stroke_img, start_x, start_y, brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
