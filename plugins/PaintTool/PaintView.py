@@ -3,7 +3,7 @@
 
 import os
 from PyQt6.QtCore import QRect, pyqtSignal
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple
 
 from PyQt6.QtGui import QImage, QUndoStack
 
@@ -111,7 +111,7 @@ class PaintView(CuraView):
     def redoStroke(self) -> None:
         self._paint_undo_stack.redo()
 
-    def getUvTexDimensions(self):
+    def getUvTexDimensions(self) -> Tuple[int, int]:
         if self._current_paint_texture is not None:
             return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
         return 0, 0

@@ -67,7 +67,6 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
-        self._last_face_id: Optional[int] = None
 
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
@@ -221,31 +220,27 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     @staticmethod
-    def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon, texture_dimensions: Tuple[int, int]) -> numpy.ndarray:
-        a1, b1, c1 = triangle_a
-        a2, b2, c2 = triangle_b
+    def _getBarycentricCoordinates(points: numpy.array, triangle: numpy.array) -> Optional[numpy.array]:
+        v0 = triangle[1] - triangle[0]
+        v1 = triangle[2] - triangle[0]
+        v2 = points - triangle[0]
 
-        area_full = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, c1 - a1))
+        d00 = numpy.sum(v0 * v0, axis=0)
+        d01 = numpy.sum(v0 * v1, axis=0)
+        d11 = numpy.sum(v1 * v1, axis=0)
+        d20 = numpy.sum(v2 * v0, axis=1)
+        d21 = numpy.sum(v2 * v1, axis=1)
 
-        if area_full < 1e-6:  # Degenerate triangle
-            return a2
+        denominator = d00 * d11 - d01 ** 2
 
-        # Area of sub-triangle opposite to vertex [a,b,c]1
-        area_a = 0.5 * numpy.linalg.norm(numpy.cross(b1 - pt, c1 - pt))
-        area_b = 0.5 * numpy.linalg.norm(numpy.cross(pt - a1, c1 - a1))
-        area_c = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, pt - a1))
+        if denominator < 1e-6:  # Degenerate triangle
+            return None
 
-        u = area_a / area_full
-        v = area_b / area_full
-        w = area_c / area_full
+        v = (d11 * d20 - d01 * d21) / denominator
+        w = (d00 * d21 - d01 * d20) / denominator
+        u = 1 - v - w
 
-        total = u + v + w
-        if abs(total - 1.0) > 1e-6:
-            u /= total
-            v /= total
-            w /= total
-
-        return (u * a2 + v * b2 + w * c2) * numpy.array(texture_dimensions)
+        return numpy.column_stack((u, v, w))
 
     def _getStrokePolygon(self, stroke_a: numpy.ndarray, stroke_b: numpy.ndarray) -> Polygon:
         shape = None
@@ -291,7 +286,7 @@ class PaintTool(Tool):
         return image, (int(bounding_box.left), int(bounding_box.bottom))
 
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
-    def _getUvAreasForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
@@ -317,10 +312,9 @@ class PaintTool(Tool):
         faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
                                                                        QPen(Qt.PenStyle.NoPen),
                                                                        QBrush(Qt.GlobalColor.white))
-
         faces = self._faces_selection_pass.getFacesIdsUnderMask(faces_image, faces_x, faces_y)
 
-        texture_dimensions = self._view.getUvTexDimensions()
+        texture_dimensions = numpy.array(list(self._view.getUvTexDimensions()))
 
         res = []
         for face in faces:
@@ -337,11 +331,14 @@ class PaintTool(Tool):
             if face_uv_coordinates is None:
                 continue
             ta, tb, tc = face_uv_coordinates
-            original_uv_poly = Polygon([ta, tb, tc])
-            uv_area = stroke_poly.intersection(stroke_tri).map(lambda pt: PaintTool._remapBarycentric(stroke_tri, pt, original_uv_poly, texture_dimensions))
+            original_uv_poly = numpy.array([ta, tb, tc])
+            uv_area = stroke_poly.intersection(stroke_tri)
 
             if uv_area.isValid():
-                res.append(uv_area)
+                uv_area_barycentric = PaintTool._getBarycentricCoordinates(uv_area.getPoints(), stroke_tri.getPoints())
+                if uv_area_barycentric is not None:
+                    res.append(Polygon((uv_area_barycentric @ original_uv_poly) * texture_dimensions))
+
         return res
 
     def event(self, event: Event) -> bool:
@@ -372,7 +369,6 @@ class PaintTool(Tool):
                 return False
             self._mouse_held = False
             self._last_world_coords = None
-            self._last_face_id = None
             return True
 
         is_moved = event.type == Event.MouseMoveEvent
@@ -422,10 +418,9 @@ class PaintTool(Tool):
 
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
-                self._last_face_id = face_id
 
             try:
-                uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
                 if len(uv_areas) == 0:
                     return False
                 stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
@@ -434,7 +429,6 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._last_face_id = face_id
             self._updateScene(node)
             return True
 
