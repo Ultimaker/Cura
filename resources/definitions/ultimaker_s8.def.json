@@ -236,7 +236,7 @@
             "value": "material_print_temperature-15"
         },
         "default_material_print_temperature": { "maximum_value_warning": 320 },
-        "extra_infill_lines_to_support_skins": { "value": "'walls'" },
+        "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
         "flooring_layer_count": { "value": 1 },
         "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
         "flooring_monotonic": { "value": false },
