@@ -215,7 +215,6 @@
         "bridge_wall_min_length": { "value": 2 },
         "bridge_wall_speed":
         {
-            "unit": "mm/s",
             "value": 50
         },
         "build_volume_temperature":
