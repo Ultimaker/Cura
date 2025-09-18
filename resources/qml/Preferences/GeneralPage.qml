@@ -373,7 +373,7 @@ UM.PreferencesPage
             UM.Label
             {
                 font: UM.Theme.getFont("medium_bold")
-                text: catalog.i18nc("@label", "Output To Device")
+                text: catalog.i18nc("@label", "Connection and Control")
             }
 
             UM.TooltipArea
@@ -389,7 +389,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
                     onClicked: UM.Preferences.setValue("usb_printing/enabled", checked)
 
-                    text: catalog.i18nc("@option:check", "Enable/disable USB-cable printing (* restart required)")
+                    text: catalog.i18nc("@option:check", "Enable USB-cable printing (* restart required)")
                 }
             }
 
