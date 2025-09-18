@@ -1,17 +1,20 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import math
 
 from enum import IntEnum
 import numpy
-from PyQt6.QtCore import Qt, QObject, pyqtEnum
-from PyQt6.QtGui import QImage, QPainter, QPen, QPainterPath, QPainterPathStroker
+from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
+from UM.Math.Vector import Vector
 from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -56,7 +59,7 @@ class PaintTool(Tool):
         self._mesh_transformed_cache = None
         self._cache_dirty: bool = True
 
-        self._brush_size: int = 200
+        self._brush_size: int = 10
         self._brush_color: str = "preferred"
         self._brush_shape: PaintTool.Brush.Shape = PaintTool.Brush.Shape.CIRCLE
         self._brush_pen: QPen = self._createBrushPen()
@@ -64,7 +67,6 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
-        self._last_face_id: Optional[int] = None
 
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
@@ -96,7 +98,7 @@ class PaintTool(Tool):
 
     def _createBrushPen(self) -> QPen:
         pen = QPen()
-        pen.setWidth(self._brush_size)
+        pen.setWidth(2)
         pen.setColor(Qt.GlobalColor.white)
 
         match self._brush_shape:
@@ -109,34 +111,7 @@ class PaintTool(Tool):
         return pen
 
     def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
-        w, h = self._view.getUvTexDimensions()
-        if w == 0 or h == 0 or len(polys) == 0:
-            return QImage(w, h, QImage.Format.Format_RGB32), (0, 0)
-
-        min_pt = numpy.array([numpy.inf, numpy.inf])
-        max_pt = numpy.array([-numpy.inf, -numpy.inf])
-        for poly in polys:
-            for pt in poly:
-                min_pt = numpy.minimum(min_pt, w * pt)
-                max_pt = numpy.maximum(max_pt, h * pt)
-
-        stroke_image = QImage(int(max_pt[0] - min_pt[0]) + 1, int(max_pt[1] - min_pt[1]) + 1, QImage.Format.Format_RGB32)
-        stroke_image.fill(0)
-
-        painter = QPainter(stroke_image)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        path = QPainterPath()
-        for poly in polys:
-            path.moveTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
-            for pt in poly[1:]:
-                path.lineTo(int(0.5 + w * pt[0] - min_pt[0]), int(0.5 + h * pt[1] - min_pt[1]))
-            path.lineTo(int(0.5 + w * poly[0][0] - min_pt[0]), int(0.5 + h * poly[0][1] - min_pt[1]))
-        stroker = QPainterPathStroker()
-        stroker.setWidth(2)
-        painter.fillPath(stroker.createStroke(path).united(path), self._brush_pen.color())
-        painter.end()
-
-        return stroke_image, (int(min_pt[0] + 0.5), int(min_pt[1] + 0.5))
+        return PaintTool._rasterizePolygons(polys, self._brush_pen, QBrush(self._brush_pen.color()))
 
     def getPaintType(self) -> str:
         return self._view.getPaintType()
@@ -245,47 +220,73 @@ class PaintTool(Tool):
         self._cache_dirty = True
 
     @staticmethod
-    def _remapBarycentric(triangle_a: Polygon, pt: numpy.ndarray, triangle_b: Polygon) -> numpy.ndarray:
-        a1, b1, c1 = triangle_a
-        a2, b2, c2 = triangle_b
+    def _getBarycentricCoordinates(points: numpy.array, triangle: numpy.array) -> Optional[numpy.array]:
+        v0 = triangle[1] - triangle[0]
+        v1 = triangle[2] - triangle[0]
+        v2 = points - triangle[0]
 
-        area_full = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, c1 - a1))
+        d00 = numpy.sum(v0 * v0, axis=0)
+        d01 = numpy.sum(v0 * v1, axis=0)
+        d11 = numpy.sum(v1 * v1, axis=0)
+        d20 = numpy.sum(v2 * v0, axis=1)
+        d21 = numpy.sum(v2 * v1, axis=1)
 
-        if area_full < 1e-6:  # Degenerate triangle
-            return a2
+        denominator = d00 * d11 - d01 ** 2
 
-        # Area of sub-triangle opposite to vertex [a,b,c]1
-        area_a = 0.5 * numpy.linalg.norm(numpy.cross(b1 - pt, c1 - pt))
-        area_b = 0.5 * numpy.linalg.norm(numpy.cross(pt - a1, c1 - a1))
-        area_c = 0.5 * numpy.linalg.norm(numpy.cross(b1 - a1, pt - a1))
+        if denominator < 1e-6:  # Degenerate triangle
+            return None
 
-        u = area_a / area_full
-        v = area_b / area_full
-        w = area_c / area_full
+        v = (d11 * d20 - d01 * d21) / denominator
+        w = (d00 * d21 - d01 * d20) / denominator
+        u = 1 - v - w
 
-        total = u + v + w
-        if abs(total - 1.0) > 1e-6:
-            u /= total
-            v /= total
-            w /= total
+        return numpy.column_stack((u, v, w))
 
-        return u * a2 + v * b2 + w * c2
-
-    def _getStrokePolygon(self, size_adjust: float, stroke_a: numpy.ndarray, stroke_b: numpy.ndarray) -> Polygon:
+    def _getStrokePolygon(self, stroke_a: numpy.ndarray, stroke_b: numpy.ndarray) -> Polygon:
         shape = None
+        side = self._brush_size
         match self._brush_shape:
             case PaintTool.Brush.Shape.SQUARE:
-                shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 4)
+                shape = Polygon([(side, side), (-side, side), (-side, -side), (side, -side)])
             case PaintTool.Brush.Shape.CIRCLE:
-                shape = Polygon.approximatedCircle(self._brush_size * size_adjust, 16)
+                shape = Polygon.approximatedCircle(side, 32)
             case _:
                 Logger.error(f"Unknown brush shape '{self._brush_shape}'.")
         if shape is None:
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
+    @staticmethod
+    def _rasterizePolygons(polygons: List[Polygon], pen: QPen, brush: QBrush) -> Tuple[QImage, Tuple[int, int]]:
+        if not polygons:
+            return QImage(), (0, 0)
+
+        bounding_box = polygons[0].getBoundingBox()
+        for polygon in polygons[1:]:
+            bounding_box += polygon.getBoundingBox()
+
+        bounding_box = AxisAlignedBox2D(numpy.array([math.floor(bounding_box.left), math.floor(bounding_box.top)]),
+                                        numpy.array([math.ceil(bounding_box.right), math.ceil(bounding_box.bottom)]))
+
+        # Use RGB32 which is more optimized for drawing to
+        image = QImage(int(bounding_box.width), int(bounding_box.height), QImage.Format.Format_RGB32)
+        image.fill(0)
+
+        painter = QPainter(image)
+        painter.translate(-bounding_box.left, -bounding_box.bottom)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.setPen(pen)
+        painter.setBrush(brush)
+
+        for polygon in polygons:
+            painter.drawPolygon(QPolygonF([QPointF(point[0], point[1]) for point in polygon]))
+
+        painter.end()
+
+        return image, (int(bounding_box.left), int(bounding_box.bottom))
+
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
-    def _getUvAreasForStroke(self, face_id_a: int, face_id_b: int, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
@@ -298,52 +299,46 @@ class PaintTool(Tool):
         """
 
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
-            proj_pt = (pt - numpy.dot(self._cam_norm, pt - self._cam_pos) * self._cam_norm) - self._cam_pos
-            y_coord = numpy.dot(self._cam_axis_r, proj_pt)
-            x_coord = numpy.dot(self._cam_axis_q, proj_pt)
-            return numpy.array([x_coord, y_coord])
+            return numpy.array([*self._camera.projectToViewport(Vector(*pt))], dtype=numpy.float32)
 
-        uv_a0, uv_a1, _ = self._node_cache.getMeshData().getFaceUvCoords(face_id_a)
-        w_a0, w_a1, _ = self._mesh_transformed_cache.getFaceNodes(face_id_a)
-        world_to_uv_size_factor = numpy.linalg.norm(uv_a1 - uv_a0) / numpy.linalg.norm(w_a1 - w_a0)
+        def get_projected_on_viewport_image(pt: numpy) -> numpy.ndarray:
+            return numpy.array([pt[0] + self._camera.getViewportWidth() / 2.0,
+                                self._camera.getViewportHeight() - (pt[1] + self._camera.getViewportHeight() / 2.0)],
+                               dtype=numpy.float32)
 
-        stroke_poly = self._getStrokePolygon(
-            world_to_uv_size_factor,
-            get_projected_on_plane(world_coords_a),
-            get_projected_on_plane(world_coords_b))
+        stroke_poly = self._getStrokePolygon(get_projected_on_plane(world_coords_a), get_projected_on_plane(world_coords_b))
+        stroke_poly_viewport = Polygon([get_projected_on_viewport_image(point) for point in stroke_poly])
 
-        candidates = set()
-        candidates.add(face_id_a)
-        candidates.add(face_id_b)
+        faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
+                                                                       QPen(Qt.PenStyle.NoPen),
+                                                                       QBrush(Qt.GlobalColor.white))
+        faces = self._faces_selection_pass.getFacesIdsUnderMask(faces_image, faces_x, faces_y)
+
+        texture_dimensions = numpy.array(list(self._view.getUvTexDimensions()))
 
         res = []
-        seen = set()
-        while candidates:
-            candidate = candidates.pop()
-            if candidate in seen or candidate < 0:
-                continue
-            seen.add(candidate)
-
-            _, fnorm = self._mesh_transformed_cache.getFacePlane(candidate)
+        for face in faces:
+            _, fnorm = self._mesh_transformed_cache.getFacePlane(face)
             if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
                 continue
 
-            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(candidate)
+            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face)
             stroke_tri = Polygon([
                 get_projected_on_plane(va),
                 get_projected_on_plane(vb),
                 get_projected_on_plane(vc)])
-            face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(candidate)
+            face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(face)
             if face_uv_coordinates is None:
                 continue
             ta, tb, tc = face_uv_coordinates
-            original_uv_poly = Polygon([ta, tb, tc])
-            uv_area = stroke_poly.intersection(stroke_tri).map(lambda pt: PaintTool._remapBarycentric(stroke_tri, pt, original_uv_poly))
+            original_uv_poly = numpy.array([ta, tb, tc])
+            uv_area = stroke_poly.intersection(stroke_tri)
 
-            if not uv_area.isValid():
-                continue
-            res.append(uv_area)
-            [candidates.add(x) for x in self._mesh_transformed_cache.getFaceNeighbourIDs(candidate)]
+            if uv_area.isValid():
+                uv_area_barycentric = PaintTool._getBarycentricCoordinates(uv_area.getPoints(), stroke_tri.getPoints())
+                if uv_area_barycentric is not None:
+                    res.append(Polygon((uv_area_barycentric @ original_uv_poly) * texture_dimensions))
+
         return res
 
     def event(self, event: Event) -> bool:
@@ -374,7 +369,6 @@ class PaintTool(Tool):
                 return False
             self._mouse_held = False
             self._last_world_coords = None
-            self._last_face_id = None
             return True
 
         is_moved = event.type == Event.MouseMoveEvent
@@ -426,10 +420,9 @@ class PaintTool(Tool):
             world_coords = world_coords_vec.getData()
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
-                self._last_face_id = face_id
 
             try:
-                uv_areas_cursor = self._getUvAreasForStroke(self._last_face_id, face_id, world_coords, world_coords)
+                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
                 if len(uv_areas_cursor) > 0:
                     cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, self._brush_color)
@@ -437,7 +430,7 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_face_id, face_id, self._last_world_coords, world_coords)
+                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
                     if len(uv_areas) == 0:
                         return False
                     stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
@@ -446,7 +439,6 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._last_face_id = face_id
             self._updateScene(node)
             return True
 
