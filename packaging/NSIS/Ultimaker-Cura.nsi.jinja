@@ -158,12 +158,10 @@ RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
 !endif
 
 !ifndef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
-Delete "$SMPROGRAMS\Uninstall ${APP_NAME}.lnk"
 !endif
 
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
