@@ -213,10 +213,7 @@
         "bridge_sparse_infill_max_density": { "value": 20 },
         "bridge_wall_material_flow": { "value": 200 },
         "bridge_wall_min_length": { "value": 2 },
-        "bridge_wall_speed":
-        {
-            "value": 50
-        },
+        "bridge_wall_speed": { "value": 50 },
         "build_volume_temperature":
         {
             "force_depends_on_settings": [
