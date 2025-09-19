@@ -2,9 +2,10 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+import math
 
-from PyQt6.QtCore import QRect, pyqtSignal
-from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor
+from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
+from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
 from typing import Optional, List, Tuple, Dict
 
 from cura.CuraApplication import CuraApplication
@@ -37,7 +38,7 @@ class PaintView(CuraView):
         super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
         self._current_paint_texture: Optional[Texture] = None
-        self._previous_paint_texture_stroke: Optional[QRect] = None
+        self._previous_paint_texture_rect: Optional[QRect] = None
         self._cursor_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
@@ -116,72 +117,63 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
-    def setCursorStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str):
+    def setCursorStroke(self, cursor_path: QPainterPath, brush_color: str):
         if self._cursor_texture is None or self._cursor_texture.getImage() is None:
             return
 
         self.clearCursorStroke()
 
-        stroke_image = stroke_mask.copy()
-        alpha_mask = stroke_image.convertedTo(QImage.Format.Format_Mono)
-        stroke_image.setAlphaChannel(alpha_mask)
+        bounding_rect = cursor_path.boundingRect()
+        bounding_rect_rounded = QRect(
+            QPoint(math.floor(bounding_rect.left()), math.floor(bounding_rect.top())),
+            QPoint(math.ceil(bounding_rect.right()), math.ceil(bounding_rect.bottom())))
 
-        painter = QPainter(stroke_image)
+        cursor_image = QImage(bounding_rect_rounded.width(), bounding_rect_rounded.height(), QImage.Format.Format_ARGB32)
+        cursor_image.fill(0)
 
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceAtop)
+        painter = QPainter(cursor_image)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.translate(-bounding_rect.left(), -bounding_rect.top())
         display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
         paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
         paint_color.setAlpha(255)
-        painter.fillRect(0, 0, stroke_mask.width(), stroke_mask.height(), paint_color)
+        painter.setBrush(QBrush(paint_color))
+        painter.setPen(QPen(Qt.PenStyle.NoPen))
+        painter.drawPath(cursor_path)
 
         painter.end()
 
-        self._cursor_texture.setSubImage(stroke_image, start_x, start_y)
+        self._cursor_texture.setSubImage(cursor_image, bounding_rect_rounded.left(), bounding_rect_rounded.top())
 
-        self._previous_paint_texture_stroke = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
+        self._previous_paint_texture_rect = bounding_rect_rounded
 
     def clearCursorStroke(self) -> bool:
-        if (self._previous_paint_texture_stroke is None or
+        if (self._previous_paint_texture_rect is None or
                 self._cursor_texture is None or self._cursor_texture.getImage() is None):
             return False
 
-        clear_image = QImage(self._previous_paint_texture_stroke.width(),
-                             self._previous_paint_texture_stroke.height(),
+        clear_image = QImage(self._previous_paint_texture_rect.width(),
+                             self._previous_paint_texture_rect.height(),
                              QImage.Format.Format_ARGB32)
         clear_image.fill(0)
         self._cursor_texture.setSubImage(clear_image,
-                                         self._previous_paint_texture_stroke.x(),
-                                         self._previous_paint_texture_stroke.y())
-        self._previous_paint_texture_stroke = None
+                                         self._previous_paint_texture_rect.left(),
+                                         self._previous_paint_texture_rect.top())
+        self._previous_paint_texture_rect = None
 
         return True
 
-    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
+    def addStroke(self, stroke_path: QPainterPath, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
 
         self._prepareDataMapping()
 
-        current_image = self._current_paint_texture.getImage()
-        texture_rect = QRect(0, 0, current_image.width(), current_image.height())
-        stroke_rect = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
-        intersect_rect = texture_rect.intersected(stroke_rect)
-        if intersect_rect != stroke_rect:
-            # Stroke doesn't fully fit into the image, we have to crop it
-            stroke_mask = stroke_mask.copy(intersect_rect.x() - start_x,
-                                           intersect_rect.y() - start_y,
-                                           intersect_rect.width(),
-                                           intersect_rect.height())
-            start_x = intersect_rect.x()
-            start_y = intersect_rect.y()
-
         bit_range_start, bit_range_end = self._current_bits_ranges
         set_value = self._paint_modes[self._current_paint_type][brush_color].value << bit_range_start
 
         self._paint_undo_stack.push(PaintUndoCommand(self._current_paint_texture,
-                                                     stroke_mask,
-                                                     start_x,
-                                                     start_y,
+                                                     stroke_path,
                                                      set_value,
                                                      (bit_range_start, bit_range_end),
                                                      merge_with_previous))

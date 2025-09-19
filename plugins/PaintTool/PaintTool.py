@@ -5,7 +5,7 @@ import math
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF, QPainterPath
 from typing import cast, Optional, Tuple, List
 
 from UM.Application import Application
@@ -111,8 +111,16 @@ class PaintTool(Tool):
                 Logger.error(f"Unknown brush shape '{self._brush_shape}', painting may not work.")
         return pen
 
-    def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
-        return PaintTool._rasterizePolygons(polys, self._brush_pen, QBrush(self._brush_pen.color()))
+    def _createStrokePath(self, polygons: List[Polygon]) -> QPainterPath:
+        path = QPainterPath()
+
+        for polygon in polygons:
+            path.moveTo(polygon[0][0], polygon[0][1])
+            for point in polygon:
+                path.lineTo(point[0], point[1])
+            path.closeSubpath()
+
+        return path
 
     def getPaintType(self) -> str:
         return self._view.getPaintType()
@@ -434,8 +442,8 @@ class PaintTool(Tool):
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
                 uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
                 if len(uv_areas_cursor) > 0:
-                    cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
-                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, brush_color)
+                    cursor_path = self._createStrokePath(uv_areas_cursor)
+                    self._view.setCursorStroke(cursor_path, brush_color)
                 else:
                     self._view.clearCursorStroke()
 
@@ -443,8 +451,8 @@ class PaintTool(Tool):
                     uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
                     if len(uv_areas) == 0:
                         return False
-                    stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-                    self._view.addStroke(stroke_img, start_x, start_y, brush_color, is_moved)
+                    stroke_path = self._createStrokePath(uv_areas)
+                    self._view.addStroke(stroke_path, brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
