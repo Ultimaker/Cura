@@ -237,7 +237,7 @@ class PaintView(CuraView):
         for node in Selection.getAllSelectedObjects():
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
             paint_texture = node.callDecoration("getPaintTexture")
-            if paint_texture != self._current_paint_texture:
+            if paint_texture != self._current_paint_texture and paint_texture is not None:
                 self._current_paint_texture = paint_texture
                 self._paint_shader.setTexture(0, self._current_paint_texture)
 
