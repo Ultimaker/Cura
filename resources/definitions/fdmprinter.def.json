@@ -7913,6 +7913,35 @@
                     "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "multi_material_paint_resolution":
+                {
+                    "label": "Multi-material Precision",
+                    "description": "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 0.2,
+                    "value": "min(line_width / 2, layer_height)",
+                    "minimum_value": "0.05",
+                    "maximum_value": "5",
+                    "maximum_value_warning": "line_width * 2",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "multi_material_paint_deepness":
+                {
+                    "label": "Multi-material Deepness",
+                    "description": "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 4,
+                    "value": "line_width * 10",
+                    "minimum_value": "line_width",
+                    "minimum_value_warning": "line_width * 2",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
