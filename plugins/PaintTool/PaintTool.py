@@ -374,10 +374,13 @@ class PaintTool(Tool):
         is_moved = event.type == Event.MouseMoveEvent
         is_pressed = event.type == Event.MousePressEvent
         if (is_moved or is_pressed) and self._controller.getToolsEnabled():
-            if is_moved and not self._mouse_held:
-                return False
-
             mouse_evt = cast(MouseEvent, event)
+
+            if not self._picking_pass:
+                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
+                if not self._picking_pass:
+                    return False
+
             if is_pressed:
                 if MouseEvent.LeftButton not in mouse_evt.buttons:
                     return False
@@ -387,11 +390,6 @@ class PaintTool(Tool):
             if not self._faces_selection_pass:
                 self._faces_selection_pass = CuraApplication.getInstance().getRenderer().getRenderPass("selection_faces")
                 if not self._faces_selection_pass:
-                    return False
-
-            if not self._picking_pass:
-                self._picking_pass = CuraApplication.getInstance().getRenderer().getRenderPass("picking_selected")
-                if not self._picking_pass:
                     return False
 
             if self._camera is None:
@@ -413,18 +411,30 @@ class PaintTool(Tool):
 
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
+                if self._view.clearCursorStroke():
+                    self._updateScene(node)
+                    return True
                 return False
-            world_coords = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y).getData()
 
+            world_coords_vec = self._picking_pass.getPickedPosition(mouse_evt.x, mouse_evt.y)
+            world_coords = world_coords_vec.getData()
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
             try:
-                uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
-                if len(uv_areas) == 0:
-                    return False
-                stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-                self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
+                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
+                if len(uv_areas_cursor) > 0:
+                    cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
+                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, self._brush_color)
+                else:
+                    self._view.clearCursorStroke()
+
+                if self._mouse_held:
+                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
+                    if len(uv_areas) == 0:
+                        return False
+                    stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
+                    self._view.addStroke(stroke_img, start_x, start_y, self._brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
