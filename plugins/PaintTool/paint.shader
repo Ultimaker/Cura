@@ -46,7 +46,7 @@ fragment =
         highp vec3 normal = normalize(v_normal);
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
-        vec4 cursor_color = texture2D(u_texture_cursor, v_uvs);
+        vec4 cursor_color = texture(u_texture_cursor, v_uvs);
         if (cursor_color.a > 0.5)
         {
             /* Cursor */
@@ -58,8 +58,8 @@ fragment =
         {
             final_color += u_ambientColor;
 
-            ivec4 texture = ivec4(texture2D(u_texture, v_uvs) * 255.0);
-            uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
+            ivec4 texture_color = ivec4(texture(u_texture, v_uvs) * 255.0);
+            uint color_index = (texture_color.r << 16) | (texture_color.g << 8) | texture_color.b;
             color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
             vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
@@ -122,7 +122,7 @@ fragment41core =
         highp vec3 normal = normalize(v_normal);
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
-        vec4 cursor_color = texture2D(u_texture_cursor, v_uvs);
+        vec4 cursor_color = texture(u_texture_cursor, v_uvs);
         if (cursor_color.a > 0.5)
         {
             /* Cursor */
@@ -134,8 +134,8 @@ fragment41core =
         {
             final_color += u_ambientColor;
 
-            ivec4 texture = ivec4(texture2D(u_texture, v_uvs) * 255.0);
-            uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
+            ivec4 texture_color = ivec4(texture(u_texture, v_uvs) * 255.0);
+            uint color_index = (texture_color.r << 16) | (texture_color.g << 8) | texture_color.b;
             color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
             vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
