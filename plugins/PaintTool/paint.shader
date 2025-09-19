@@ -30,6 +30,7 @@ fragment =
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
     uniform sampler2D u_texture;
+    uniform sampler2D u_texture_cursor;
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
@@ -42,24 +43,33 @@ fragment =
     {
         mediump vec4 final_color = vec4(0.0);
 
-        /* Ambient Component */
-        final_color += u_ambientColor;
-
         highp vec3 normal = normalize(v_normal);
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
-        /* Diffuse Component */
-        ivec4 texture = ivec4(texture(u_texture, v_uvs) * 255.0);
-        uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
-        color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
+        vec4 cursor_color = texture(u_texture_cursor, v_uvs);
+        if (cursor_color.a > 0.5)
+        {
+            /* Cursor */
+            final_color.rgb = cursor_color.rgb;
+            highp float n_dot_l = mix(0.7, 1.0, dot(normal, light_dir));
+            final_color = (n_dot_l * final_color);
+        }
+        else
+        {
+            final_color += u_ambientColor;
 
-        vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
-        final_color += (n_dot_l * diffuse_color);
+            ivec4 texture_color = ivec4(texture(u_texture, v_uvs) * 255.0);
+            uint color_index = (texture_color.r << 16) | (texture_color.g << 8) | texture_color.b;
+            color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
+            vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
+            highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
+            final_color += (n_dot_l * diffuse_color);
+        }
+
+        /* Output */
         final_color.a = 1.0;
-
-        frag_color = final_color;
+        gl_FragColor = final_color;
     }
 
 vertex41core =
@@ -95,6 +105,7 @@ fragment41core =
     uniform highp vec3 u_lightPosition;
     uniform highp vec3 u_viewPosition;
     uniform sampler2D u_texture;
+    uniform sampler2D u_texture_cursor;
     uniform mediump int u_bitsRangesStart;
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
@@ -108,29 +119,39 @@ fragment41core =
     {
         mediump vec4 final_color = vec4(0.0);
 
-        /* Ambient Component */
-        final_color += u_ambientColor;
-
         highp vec3 normal = normalize(v_normal);
         highp vec3 light_dir = normalize(u_lightPosition - v_vertex);
 
-        /* Diffuse Component */
-        ivec4 texture = ivec4(texture(u_texture, v_uvs) * 255.0);
-        uint color_index = (texture.r << 16) | (texture.g << 8) | texture.b;
-        color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
+        vec4 cursor_color = texture(u_texture_cursor, v_uvs);
+        if (cursor_color.a > 0.5)
+        {
+            /* Cursor */
+            final_color.rgb = cursor_color.rgb;
+            highp float n_dot_l = mix(0.7, 1.0, dot(normal, light_dir));
+            final_color = (n_dot_l * final_color);
+        }
+        else
+        {
+            final_color += u_ambientColor;
 
-        vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
-        highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
-        final_color += (n_dot_l * diffuse_color);
+            ivec4 texture_color = ivec4(texture(u_texture, v_uvs) * 255.0);
+            uint color_index = (texture_color.r << 16) | (texture_color.g << 8) | texture_color.b;
+            color_index = (color_index << (32 - 1 - u_bitsRangesEnd)) >> 32 - 1 - (u_bitsRangesEnd - u_bitsRangesStart);
 
+            vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
+            highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
+            final_color += (n_dot_l * diffuse_color);
+        }
+
+        /* Output */
         final_color.a = 1.0;
-
         frag_color = final_color;
     }
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
 u_texture = 0
+u_texture_cursor = 1
 
 [bindings]
 u_modelMatrix = model_matrix

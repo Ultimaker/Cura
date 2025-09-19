@@ -2,14 +2,15 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from PyQt6.QtCore import QRect, pyqtSignal
-from typing import Optional, Dict
 
-from PyQt6.QtGui import QImage, QUndoStack
+from PyQt6.QtCore import QRect, pyqtSignal
+from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor
+from typing import Optional, List, Tuple, Dict
 
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
@@ -36,6 +37,8 @@ class PaintView(CuraView):
         super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
         self._current_paint_texture: Optional[Texture] = None
+        self._previous_paint_texture_stroke: Optional[QRect] = None
+        self._cursor_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
@@ -49,6 +52,8 @@ class PaintView(CuraView):
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
 
+        self._extruders_model: Optional[ExtrudersModel] = None
+
     canUndoChanged = pyqtSignal(bool)
     canRedoChanged = pyqtSignal(bool)
 
@@ -59,21 +64,97 @@ class PaintView(CuraView):
         return self._paint_undo_stack.canRedo()
 
     def _makePaintModes(self):
-        theme = CuraApplication.getInstance().getTheme()
+        application = CuraApplication.getInstance()
+
+        self._extruders_model = application.getExtrudersModel()
+        self._extruders_model.modelChanged.connect(self._onExtrudersChanged)
+
+        theme = application.getTheme()
         usual_types = {"none":      self.PaintType(Color(*theme.getColor("paint_normal_area").getRgb()), 0),
                        "preferred": self.PaintType(Color(*theme.getColor("paint_preferred_area").getRgb()), 1),
                        "avoid":     self.PaintType(Color(*theme.getColor("paint_avoid_area").getRgb()), 2)}
         self._paint_modes = {
             "seam":    usual_types,
             "support": usual_types,
+            "extruder": self._makeExtrudersColors(),
         }
 
         self._current_paint_type = "seam"
+
+    def _makeExtrudersColors(self) -> Dict[str, "PaintView.PaintType"]:
+        extruders_colors: Dict[str, "PaintView.PaintType"] = {}
+
+        for extruder_item in self._extruders_model.items:
+            if "color" in extruder_item:
+                material_color = extruder_item["color"]
+            else:
+                material_color = self._extruders_model.defaultColors[0]
+
+            index = extruder_item["index"]
+            extruders_colors[str(index)] = self.PaintType(Color(*QColor(material_color).getRgb()), index)
+
+        return extruders_colors
+
+    def _onExtrudersChanged(self) -> None:
+        if self._paint_modes is None:
+            return
+
+        self._paint_modes["extruder"] = self._makeExtrudersColors()
+
+        controller = CuraApplication.getInstance().getController()
+        if controller.getActiveView() != self:
+            return
+
+        selected_objects = Selection.getAllSelectedObjects()
+        if len(selected_objects) != 1:
+            return
+
+        controller.getScene().sceneChanged.emit(selected_objects[0])
 
     def _checkSetup(self):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
+
+    def setCursorStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str):
+        if self._cursor_texture is None or self._cursor_texture.getImage() is None:
+            return
+
+        self.clearCursorStroke()
+
+        stroke_image = stroke_mask.copy()
+        alpha_mask = stroke_image.convertedTo(QImage.Format.Format_Mono)
+        stroke_image.setAlphaChannel(alpha_mask)
+
+        painter = QPainter(stroke_image)
+
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceAtop)
+        display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
+        paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
+        paint_color.setAlpha(255)
+        painter.fillRect(0, 0, stroke_mask.width(), stroke_mask.height(), paint_color)
+
+        painter.end()
+
+        self._cursor_texture.setSubImage(stroke_image, start_x, start_y)
+
+        self._previous_paint_texture_stroke = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
+
+    def clearCursorStroke(self) -> bool:
+        if (self._previous_paint_texture_stroke is None or
+                self._cursor_texture is None or self._cursor_texture.getImage() is None):
+            return False
+
+        clear_image = QImage(self._previous_paint_texture_stroke.width(),
+                             self._previous_paint_texture_stroke.height(),
+                             QImage.Format.Format_ARGB32)
+        clear_image.fill(0)
+        self._cursor_texture.setSubImage(clear_image,
+                                         self._previous_paint_texture_stroke.x(),
+                                         self._previous_paint_texture_stroke.y())
+        self._previous_paint_texture_stroke = None
+
+        return True
 
     def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
@@ -111,7 +192,7 @@ class PaintView(CuraView):
     def redoStroke(self) -> None:
         self._paint_undo_stack.redo()
 
-    def getUvTexDimensions(self):
+    def getUvTexDimensions(self) -> Tuple[int, int]:
         if self._current_paint_texture is not None:
             return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
         return 0, 0
@@ -121,6 +202,7 @@ class PaintView(CuraView):
 
     def setPaintType(self, paint_type: str) -> None:
         self._current_paint_type = paint_type
+        self._prepareDataMapping()
 
     def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
@@ -162,8 +244,17 @@ class PaintView(CuraView):
 
         for node in Selection.getAllSelectedObjects():
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
-            self._current_paint_texture = node.callDecoration("getPaintTexture")
-            self._paint_shader.setTexture(0, self._current_paint_texture)
+            paint_texture = node.callDecoration("getPaintTexture")
+            if paint_texture != self._current_paint_texture:
+                self._current_paint_texture = paint_texture
+                self._paint_shader.setTexture(0, self._current_paint_texture)
+
+                self._cursor_texture = OpenGL.getInstance().createTexture(paint_texture.getWidth(), paint_texture.getHeight())
+                image = QImage(paint_texture.getWidth(), paint_texture.getHeight(), QImage.Format.Format_ARGB32)
+                image.fill(0)
+                self._cursor_texture.setImage(image)
+                self._paint_shader.setTexture(1, self._cursor_texture)
+                self._previous_paint_texture_stroke = None
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
