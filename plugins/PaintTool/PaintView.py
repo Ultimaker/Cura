@@ -21,7 +21,7 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 
-from .PaintUndoCommand import PaintUndoCommand
+from .PaintStrokeCommand import PaintStrokeCommand
 from .PaintClearCommand import PaintClearCommand
 
 catalog = i18nCatalog("cura")
@@ -44,11 +44,7 @@ class PaintView(CuraView):
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
-
-        self._paint_undo_stack: QUndoStack = QUndoStack()
-        self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
-        self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
-        self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
+        self._paint_undo_stacks: Dict[str, QUndoStack] = {}
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
@@ -60,10 +56,12 @@ class PaintView(CuraView):
     canRedoChanged = pyqtSignal(bool)
 
     def canUndo(self):
-        return self._paint_undo_stack.canUndo()
+        return (self._current_paint_type in self._paint_undo_stacks and
+                self._paint_undo_stacks[self._current_paint_type].canUndo())
 
     def canRedo(self):
-        return self._paint_undo_stack.canRedo()
+        return (self._current_paint_type in self._paint_undo_stacks and
+                self._paint_undo_stacks[self._current_paint_type].canRedo())
 
     def _makePaintModes(self):
         application = CuraApplication.getInstance()
@@ -169,28 +167,34 @@ class PaintView(CuraView):
             return
 
         self._prepareDataMapping()
+        self._prepareUndoRedoStack()
 
         bit_range_start, bit_range_end = self._current_bits_ranges
         set_value = self._paint_modes[self._current_paint_type][brush_color].value << bit_range_start
 
-        self._paint_undo_stack.push(PaintUndoCommand(self._current_paint_texture,
-                                                     stroke_path,
-                                                     set_value,
-                                                     (bit_range_start, bit_range_end),
-                                                     merge_with_previous))
+        self._paint_undo_stacks[self._current_paint_type].push(
+            PaintStrokeCommand(self._current_paint_texture,
+                               stroke_path,
+                               set_value,
+                               (bit_range_start, bit_range_end),
+                               merge_with_previous))
 
     def clearPaint(self):
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
 
         self._prepareDataMapping()
-        self._paint_undo_stack.push(PaintClearCommand(self._current_paint_texture, self._current_bits_ranges))
+        self._prepareUndoRedoStack()
+        self._paint_undo_stacks[self._current_paint_type].push(
+            PaintClearCommand(self._current_paint_texture, self._current_bits_ranges))
 
     def undoStroke(self) -> None:
-        self._paint_undo_stack.undo()
+        if self._current_paint_type in self._paint_undo_stacks:
+            self._paint_undo_stacks[self._current_paint_type].undo()
 
     def redoStroke(self) -> None:
-        self._paint_undo_stack.redo()
+        if self._current_paint_type in self._paint_undo_stacks:
+            self._paint_undo_stacks[self._current_paint_type].redo()
 
     def getUvTexDimensions(self) -> Tuple[int, int]:
         if self._current_paint_texture is not None:
@@ -203,6 +207,14 @@ class PaintView(CuraView):
     def setPaintType(self, paint_type: str) -> None:
         self._current_paint_type = paint_type
         self._prepareDataMapping()
+
+    def _prepareUndoRedoStack(self):
+        if self._current_paint_type not in self._paint_undo_stacks:
+            stack: QUndoStack = QUndoStack()
+            stack.setUndoLimit(32)  # Set a quite low amount since some commands copy the full texture
+            stack.canUndoChanged.connect(self.canUndoChanged)
+            stack.canRedoChanged.connect(self.canRedoChanged)
+            self._paint_undo_stacks[self._current_paint_type] = stack
 
     def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
