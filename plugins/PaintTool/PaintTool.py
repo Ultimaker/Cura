@@ -471,7 +471,9 @@ class PaintTool(Tool):
     def _onSelectionChanged(self):
         super()._onSelectionChanged()
 
-        self.setActiveView("PaintTool" if len(Selection.getAllSelectedObjects()) == 1 else None)
+        single_selection = len(Selection.getAllSelectedObjects()) == 1
+        self.setActiveView("PaintTool" if single_selection else None)
+        self._view.setCurrentPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
         self._updateState()
 
     def _updateState(self):
