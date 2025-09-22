@@ -22,6 +22,7 @@ from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 
 from .PaintUndoCommand import PaintUndoCommand
+from .PaintClearCommand import PaintClearCommand
 
 catalog = i18nCatalog("cura")
 
@@ -177,6 +178,13 @@ class PaintView(CuraView):
                                                      set_value,
                                                      (bit_range_start, bit_range_end),
                                                      merge_with_previous))
+
+    def clearPaint(self):
+        if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
+            return
+
+        self._prepareDataMapping()
+        self._paint_undo_stack.push(PaintClearCommand(self._current_paint_texture, self._current_bits_ranges))
 
     def undoStroke(self) -> None:
         self._paint_undo_stack.undo()

@@ -4,14 +4,14 @@
 from typing import cast, Optional
 import math
 
-from PyQt6.QtCore import Qt, QRect, QPoint
+from PyQt6.QtCore import QRect, QPoint
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QPainterPath, QPen, QBrush
 
 from UM.View.GL.Texture import Texture
-from UM.Logger import Logger
 
+from .PaintCommand import PaintCommand
 
-class PaintUndoCommand(QUndoCommand):
+class PaintUndoCommand(PaintCommand):
     """Provides the command that does the actual painting on objects with undo/redo mechanisms"""
 
     PEN_OVERLAP_WIDTH = 2.5
@@ -22,18 +22,15 @@ class PaintUndoCommand(QUndoCommand):
                  set_value: int,
                  bit_range: tuple[int, int],
                  mergeable: bool) -> None:
-        super().__init__()
+        super().__init__(texture, bit_range)
 
         self._original_texture_image: Optional[QImage] = texture.getImage().copy() if not mergeable else None
-        self._texture: Texture = texture
         self._stroke_path: QPainterPath = stroke_path
         self._calculateBoundingRect()
         self._set_value: int = set_value
-        self._bit_range: tuple[int, int] = bit_range
         self._mergeable: bool = mergeable
 
     def id(self) -> int:
-        # Since the undo stack will contain only commands of this type, we can use a fixed ID
         return 0
 
     def redo(self) -> None:
@@ -43,17 +40,12 @@ class PaintUndoCommand(QUndoCommand):
         bounding_rect_rounded = QRect(QPoint(math.floor(bounding_rect.left()), math.floor(bounding_rect.top())),
                                       QPoint(math.ceil(bounding_rect.right()), math.ceil(bounding_rect.bottom())))
 
-        bit_range_start, bit_range_end = self._bit_range
-        full_int32 = 0xffffffff
-        clear_texture_bit_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
-                    32 - 1 - bit_range_end))
-
         stroked_image = actual_image.copy(bounding_rect_rounded)
         painter = QPainter(stroked_image)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
         painter.translate(-bounding_rect.left(), -bounding_rect.top())
 
-        painter.setBrush(QBrush(clear_texture_bit_mask))
+        painter.setBrush(QBrush(self._getClearTextureBitMask()))
         painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH))
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
         painter.drawPath(self._stroke_path)
