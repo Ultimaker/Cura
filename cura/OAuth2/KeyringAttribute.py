@@ -1,6 +1,7 @@
-# Copyright (c) 2021 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Type, TYPE_CHECKING, Optional, List
+
+from typing import Any, TYPE_CHECKING, Optional, List
 
 from io import BlockingIOError
 import keyring
@@ -8,9 +9,6 @@ from keyring.backend import KeyringBackend
 from keyring.errors import NoKeyringError, PasswordSetError, KeyringLocked, KeyringError
 
 from UM.Logger import Logger
-
-if TYPE_CHECKING:
-    from cura.OAuth2.Models import BaseModel
 
 # Need to do some extra workarounds on windows:
 import sys
@@ -34,7 +32,7 @@ class KeyringAttribute:
     """
     Descriptor for attributes that need to be stored in the keyring. With Fallback behaviour to the preference cfg file
     """
-    def __get__(self, instance: "BaseModel", owner: type) -> Optional[str]:
+    def __get__(self, instance: Any, owner: type) -> Optional[str]:
         if self._store_secure:  # type: ignore
             try:
                 value = keyring.get_password("cura", self._keyring_name)
@@ -45,11 +43,11 @@ class KeyringAttribute:
                 return getattr(instance, self._name)
             except (KeyringLocked, BlockingIOError):
                 self._store_secure = False
-                Logger.log("i", "Access to the keyring was denied.")
+                Logger.info("Access to the keyring was denied.")
                 return getattr(instance, self._name)
             except UnicodeDecodeError:
                 self._store_secure = False
-                Logger.log("w", "The password retrieved from the keyring cannot be used because it contains characters that cannot be decoded.")
+                Logger.warning("The password retrieved from the keyring cannot be used because it contains characters that cannot be decoded.")
                 return getattr(instance, self._name)
             except KeyringError:
                 self._store_secure = False
@@ -58,7 +56,7 @@ class KeyringAttribute:
         else:
             return getattr(instance, self._name)
 
-    def __set__(self, instance: "BaseModel", value: Optional[str]):
+    def __set__(self, instance: Any, value: Optional[str]):
         if self._store_secure:
             setattr(instance, self._name, None)
             if value is not None:
@@ -80,16 +78,17 @@ class KeyringAttribute:
                     self._store_secure = False
                     if self._name not in DONT_EVER_STORE_LOCALLY:
                         setattr(instance, self._name, value)
-                    Logger.log("w", "Keyring failed: {}".format(e))
+                    Logger.warning(f"Keyring failed: {str(e)}")
         else:
             setattr(instance, self._name, value)
 
     def __set_name__(self, owner: type, name: str):
-        self._name = "_{}".format(name)
+        self._name = f"_{name}"
         self._keyring_name = name
         self._store_secure = False
         try:
             self._store_secure = KeyringBackend.viable
+            Logger.info(f"Keyring is viable: {str(self._store_secure)}")
         except NoKeyringError:
             Logger.logException("w", "Could not use keyring")
         setattr(owner, self._name, None)
