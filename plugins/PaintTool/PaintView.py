@@ -2,11 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+import math
 
-from PyQt6.QtCore import QRect, pyqtSignal
-from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor
+from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
+from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
 from typing import Optional, List, Tuple, Dict
 
+from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
@@ -20,7 +22,8 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 
-from .PaintUndoCommand import PaintUndoCommand
+from .PaintStrokeCommand import PaintStrokeCommand
+from .PaintClearCommand import PaintClearCommand
 
 catalog = i18nCatalog("cura")
 
@@ -37,31 +40,58 @@ class PaintView(CuraView):
         super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
         self._current_paint_texture: Optional[Texture] = None
-        self._previous_paint_texture_stroke: Optional[QRect] = None
+        self._current_painted_object: Optional[SceneNode] = None
+        self._previous_paint_texture_rect: Optional[QRect] = None
         self._cursor_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
-
-        self._paint_undo_stack: QUndoStack = QUndoStack()
-        self._paint_undo_stack.setUndoLimit(32) # Set a quite low amount since every command copies the full texture
-        self._paint_undo_stack.canUndoChanged.connect(self.canUndoChanged)
-        self._paint_undo_stack.canRedoChanged.connect(self.canRedoChanged)
+        self._paint_undo_stacks: Dict[Tuple[SceneNode, str], QUndoStack] = {}
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
+        self._scene.getRoot().childrenChanged.connect(self._onChildrenChanged)
 
         self._extruders_model: Optional[ExtrudersModel] = None
 
     canUndoChanged = pyqtSignal(bool)
     canRedoChanged = pyqtSignal(bool)
 
+    def setCurrentPaintedObject(self, current_painted_object: Optional[SceneNode]):
+        self._current_painted_object = current_painted_object
+
     def canUndo(self):
-        return self._paint_undo_stack.canUndo()
+        stack = self._getUndoStack()
+        return stack.canUndo() if stack is not None else False
 
     def canRedo(self):
-        return self._paint_undo_stack.canRedo()
+        stack = self._getUndoStack()
+        return stack.canRedo() if stack is not None else False
+
+    def _getUndoStack(self):
+        if self._current_painted_object is None or self._current_paint_type == "":
+            return None
+
+        try:
+            return self._paint_undo_stacks[(self._current_painted_object, self._current_paint_type)]
+        except KeyError:
+            return None
+
+    def _onChildrenChanged(self, root_node: SceneNode):
+        # Gather all the actual nodes that have one or more undo stacks
+        stacks_keys = {}
+        for painted_object, paint_mode in self._paint_undo_stacks:
+            if painted_object in stacks_keys:
+                stacks_keys[painted_object].append(paint_mode)
+            else:
+                stacks_keys[painted_object] = [paint_mode]
+
+        # Now see if any of the nodes have been deleted, i.e. they are no more linked to the root
+        for painted_object, paint_modes in stacks_keys.items():
+            if painted_object.getDepth() == 0:
+                for paint_mode in paint_modes:
+                    del self._paint_undo_stacks[(painted_object, paint_mode)]
 
     def _makePaintModes(self):
         application = CuraApplication.getInstance()
@@ -116,81 +146,85 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
-    def setCursorStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str):
+    def setCursorStroke(self, cursor_path: QPainterPath, brush_color: str):
         if self._cursor_texture is None or self._cursor_texture.getImage() is None:
             return
 
         self.clearCursorStroke()
 
-        stroke_image = stroke_mask.copy()
-        alpha_mask = stroke_image.convertedTo(QImage.Format.Format_Mono)
-        stroke_image.setAlphaChannel(alpha_mask)
+        bounding_rect = cursor_path.boundingRect()
+        bounding_rect_rounded = QRect(
+            QPoint(math.floor(bounding_rect.left()), math.floor(bounding_rect.top())),
+            QPoint(math.ceil(bounding_rect.right()), math.ceil(bounding_rect.bottom())))
 
-        painter = QPainter(stroke_image)
+        cursor_image = QImage(bounding_rect_rounded.width(), bounding_rect_rounded.height(), QImage.Format.Format_ARGB32)
+        cursor_image.fill(0)
 
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceAtop)
+        painter = QPainter(cursor_image)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.translate(-bounding_rect.left(), -bounding_rect.top())
         display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
         paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
         paint_color.setAlpha(255)
-        painter.fillRect(0, 0, stroke_mask.width(), stroke_mask.height(), paint_color)
+        painter.setBrush(QBrush(paint_color))
+        painter.setPen(QPen(Qt.PenStyle.NoPen))
+        painter.drawPath(cursor_path)
 
         painter.end()
 
-        self._cursor_texture.setSubImage(stroke_image, start_x, start_y)
+        self._cursor_texture.setSubImage(cursor_image, bounding_rect_rounded.left(), bounding_rect_rounded.top())
 
-        self._previous_paint_texture_stroke = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
+        self._previous_paint_texture_rect = bounding_rect_rounded
 
     def clearCursorStroke(self) -> bool:
-        if (self._previous_paint_texture_stroke is None or
+        if (self._previous_paint_texture_rect is None or
                 self._cursor_texture is None or self._cursor_texture.getImage() is None):
             return False
 
-        clear_image = QImage(self._previous_paint_texture_stroke.width(),
-                             self._previous_paint_texture_stroke.height(),
+        clear_image = QImage(self._previous_paint_texture_rect.width(),
+                             self._previous_paint_texture_rect.height(),
                              QImage.Format.Format_ARGB32)
         clear_image.fill(0)
         self._cursor_texture.setSubImage(clear_image,
-                                         self._previous_paint_texture_stroke.x(),
-                                         self._previous_paint_texture_stroke.y())
-        self._previous_paint_texture_stroke = None
+                                         self._previous_paint_texture_rect.left(),
+                                         self._previous_paint_texture_rect.top())
+        self._previous_paint_texture_rect = None
 
         return True
 
-    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str, merge_with_previous: bool) -> None:
+    def addStroke(self, stroke_path: QPainterPath, brush_color: str, merge_with_previous: bool) -> None:
         if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
             return
 
         self._prepareDataMapping()
-
-        current_image = self._current_paint_texture.getImage()
-        texture_rect = QRect(0, 0, current_image.width(), current_image.height())
-        stroke_rect = QRect(start_x, start_y, stroke_mask.width(), stroke_mask.height())
-        intersect_rect = texture_rect.intersected(stroke_rect)
-        if intersect_rect != stroke_rect:
-            # Stroke doesn't fully fit into the image, we have to crop it
-            stroke_mask = stroke_mask.copy(intersect_rect.x() - start_x,
-                                           intersect_rect.y() - start_y,
-                                           intersect_rect.width(),
-                                           intersect_rect.height())
-            start_x = intersect_rect.x()
-            start_y = intersect_rect.y()
+        stack = self._prepareUndoRedoStack()
 
         bit_range_start, bit_range_end = self._current_bits_ranges
         set_value = self._paint_modes[self._current_paint_type][brush_color].value << bit_range_start
 
-        self._paint_undo_stack.push(PaintUndoCommand(self._current_paint_texture,
-                                                     stroke_mask,
-                                                     start_x,
-                                                     start_y,
-                                                     set_value,
-                                                     (bit_range_start, bit_range_end),
-                                                     merge_with_previous))
+        stack.push(PaintStrokeCommand(self._current_paint_texture,
+                                      stroke_path,
+                                      set_value,
+                                      (bit_range_start, bit_range_end),
+                                      merge_with_previous))
+
+    def clearPaint(self):
+        if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
+            return
+
+        self._prepareDataMapping()
+        stack = self._prepareUndoRedoStack()
+        stack.push(PaintClearCommand(self._current_paint_texture, self._current_bits_ranges))
 
     def undoStroke(self) -> None:
-        self._paint_undo_stack.undo()
+        stack = self._getUndoStack()
+        if stack is not None:
+            stack.undo()
 
     def redoStroke(self) -> None:
-        self._paint_undo_stack.redo()
+        stack = self._getUndoStack()
+        if stack is not None:
+            stack.redo()
 
     def getUvTexDimensions(self) -> Tuple[int, int]:
         if self._current_paint_texture is not None:
@@ -203,6 +237,18 @@ class PaintView(CuraView):
     def setPaintType(self, paint_type: str) -> None:
         self._current_paint_type = paint_type
         self._prepareDataMapping()
+
+    def _prepareUndoRedoStack(self) -> QUndoStack:
+        stack_key = (self._current_painted_object, self._current_paint_type)
+
+        if stack_key not in self._paint_undo_stacks:
+            stack: QUndoStack = QUndoStack()
+            stack.setUndoLimit(32)  # Set a quite low amount since some commands copy the full texture
+            stack.canUndoChanged.connect(self.canUndoChanged)
+            stack.canRedoChanged.connect(self.canRedoChanged)
+            self._paint_undo_stacks[stack_key] = stack
+
+        return self._paint_undo_stacks[stack_key]
 
     def _prepareDataMapping(self):
         node = Selection.getAllSelectedObjects()[0]
@@ -245,16 +291,15 @@ class PaintView(CuraView):
         for node in Selection.getAllSelectedObjects():
             paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
             paint_texture = node.callDecoration("getPaintTexture")
-            if paint_texture != self._current_paint_texture:
+            if paint_texture != self._current_paint_texture and paint_texture is not None:
                 self._current_paint_texture = paint_texture
-                self._paint_shader.setTexture(0, self._current_paint_texture)
 
                 self._cursor_texture = OpenGL.getInstance().createTexture(paint_texture.getWidth(), paint_texture.getHeight())
+                self._paint_shader.setTexture(0, self._current_paint_texture)
                 image = QImage(paint_texture.getWidth(), paint_texture.getHeight(), QImage.Format.Format_ARGB32)
                 image.fill(0)
                 self._cursor_texture.setImage(image)
                 self._paint_shader.setTexture(1, self._cursor_texture)
-                self._previous_paint_texture_stroke = None
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
