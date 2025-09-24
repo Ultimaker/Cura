@@ -20,6 +20,7 @@ from . import USBPrinterOutputDevice
 
 i18n_catalog = i18nCatalog("cura")
 
+USB_PRINT_PREFERENCE_KEY = "usb_printing/enabled"
 
 @signalemitter
 class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
@@ -43,7 +44,9 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
         self._update_thread = threading.Thread(target = self._updateThread)
         self._update_thread.daemon = True
 
-        self._check_updates = True
+        preferences = self._application.getPreferences()
+        preferences.addPreference(USB_PRINT_PREFERENCE_KEY, False)
+        self._check_updates = preferences.getValue(USB_PRINT_PREFERENCE_KEY)
 
         self._application.applicationShuttingDown.connect(self.stop)
         # Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
@@ -58,7 +61,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                 device.resetDeviceSettings()
 
     def start(self):
-        self._check_updates = True
+        self._check_updates = self._application.getPreferences().getValue(USB_PRINT_PREFERENCE_KEY)
         self._update_thread.start()
 
     def stop(self, store_data: bool = True):

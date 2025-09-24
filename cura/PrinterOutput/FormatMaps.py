@@ -37,6 +37,7 @@ class FormatMaps:
          "abs-cf10": {"name": "ABS-CF", "guid": "495a0ce5-9daf-4a16-b7b2-06856d82394d"},
          "abs-wss1": {"name": "ABS-R", "guid": "88c8919c-6a09-471a-b7b6-e801263d862d"},
          "asa": {"name": "ASA", "guid": "f79bc612-21eb-482e-ad6c-87d75bdde066"},
+         "nylon": {"name": "Nylon", "guid": "9475b03d-fd19-48a2-b7b5-be1fb46abb02"},
          "nylon12-cf": {"name": "Nylon 12 CF", "guid": "3c6f2877-71cc-4760-84e6-4b89ab243e3b"},
          "nylon-cf": {"name": "Nylon CF", "guid": "17abb865-ca73-4ccd-aeda-38e294c9c60b"},
          "pet": {"name": "PETG", "guid": "2d004bbd-d1bb-47f8-beac-b066702d5273"},

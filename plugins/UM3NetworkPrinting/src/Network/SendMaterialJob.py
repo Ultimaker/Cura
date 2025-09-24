@@ -147,7 +147,8 @@ class SendMaterialJob(Job):
 
         # FIXME: move form posting to API client
         self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
-                                      on_finished = self._sendingFinished)
+                                      on_finished = self._sendingFinished,
+                                      request=self.device.getApiClient().createEmptyRequest("/cluster-api/v1/materials/", content_type=None, method="POST"))
 
     def _sendingFinished(self, reply: QNetworkReply) -> None:
         """Check a reply from an upload to the printer and log an error when the call failed"""
