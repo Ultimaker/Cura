@@ -1,0 +1,37 @@
+# Copyright (c) 2025 UltiMaker
+# Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Optional
+
+from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QBrush
+
+from UM.View.GL.Texture import Texture
+
+from .PaintCommand import PaintCommand
+
+
+class PaintClearCommand(PaintCommand):
+    """Provides the command that clears all the painting for the current mode"""
+
+    def __init__(self, texture: Texture, bit_range: tuple[int, int]) -> None:
+        super().__init__(texture, bit_range)
+
+    def id(self) -> int:
+        return 1
+
+    def redo(self) -> None:
+        cleared_image, painter = self._makeClearedTexture()
+        painter.end()
+
+        self._texture.setSubImage(cleared_image, 0, 0)
+
+    def mergeWith(self, command: QUndoCommand) -> bool:
+        if not isinstance(command, PaintClearCommand):
+            return False
+
+        # There is actually nothing more to do here, both clear commands already have the same original texture
+        return True
+
+    def _clearTextureBits(self, painter: QPainter):
+        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_NotSourceAndDestination)
+        painter.fillRect(self._texture.getImage().rect(), QBrush(self._getBitRangeMask()))
