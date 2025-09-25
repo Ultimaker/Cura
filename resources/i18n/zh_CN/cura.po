@@ -12,258 +12,208 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#, fuzzy
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 & 材料"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "%1 / %2"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
 msgstr[0] "%1 重写"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
 msgstr[0] "%1, %2 重写"
 
-#, fuzzy
 msgctxt "@label g for grams"
 msgid "%1g"
 msgstr "%1g"
 
-#, fuzzy
 msgctxt "@label m for meter"
 msgid "%1m"
 msgstr "%1m"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "新增打印机(&A)..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
 msgstr "摄像头位置(&C)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "从当前设置 / 重写值创建配置文件(&C)..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "舍弃当前更改(&D)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
 msgstr "编辑(&E)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
 msgstr "导出(&E)..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&File"
 msgstr "文件(&F)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "绑定模型(&G)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
 msgstr "帮助(&H)"
 
-#, fuzzy
 msgctxt "@title:menu"
 msgid "&Material"
 msgstr "材料(&M)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "合并模型(&M)"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "复制模型(&M)…"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "新建项目(&N)..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "打开文件(&O)..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "打印机(&P)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "退出(&Q)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "重做(&R)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "&Save Project..."
 msgstr "保存项目(&S)..."
 
-#, fuzzy
 msgctxt "@title:menu menubar:file Don't translate 'Universal Cura Project'"
 msgid "&Save Universal Cura Project..."
 msgstr "& 保存 Universal Cura Project……"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
 msgstr "设置(&S)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "撤销(&U)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "使用当前设置 / 重写值更新配置文件(&U)"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
 msgstr "视图(&V)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "*You will need to restart the application for these changes to have effect."
 msgstr "*需重新启动该应用程序，这些更改才能生效。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
 msgstr "- 从 Marketplace 添加材料配置文件和插件"
 "- 备份和同步材料配置文件和插件"
 "- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
-#, fuzzy
 msgctxt "@heading"
 msgid "-- incomplete --"
 msgstr "-- 不完整 --"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
 msgstr "1 毫米透射率 (%)"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "3D Model Assistant"
 msgstr "三维模型的助理"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "3D 视图"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "3D 视图"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF 文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "3MF Reader"
 msgstr "3MF 读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "3MF Writer"
 msgstr "3MF 写入器"
 
-#, fuzzy
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
 msgstr "3MF 编写器插件已损坏。"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "3MF file"
 msgstr "3MF 文件"
 
-#, fuzzy
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is active and you overwrote some settings."
 msgstr "<b>%1</b> 自定义配置文件处于活动状态，并且已覆盖某些设置。"
 
-#, fuzzy
 msgctxt "@info, %1 is the name of the custom profile"
 msgid "<b>%1</b> custom profile is overriding some settings."
 msgstr "<b>%1</b> 自定义配置文件正在覆盖某些设置。"
 
-#, fuzzy
 msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>只有用户更改的设置才会保存在自定义配置文件中。</b><br/>对于支持材料，新的自定义配置文件将从 <b>%1</b> 继承属性。"
 
-#, fuzzy
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL 渲染器： {renderer}</li>"
 
-#, fuzzy
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL 供应商： {vendor}</li>"
 
-#, fuzzy
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 版本： {version}</li>"
 
-#, fuzzy
 msgctxt "@label crash message"
 msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
 msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>"
 "            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>"
 "        "
 
-#, fuzzy
 msgctxt "@label crash message"
 msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
 msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>"
@@ -272,7 +222,6 @@ msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>"
 "                    <p>请向我们发送此错误报告，以便解决问题。</p>"
 "                "
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>"
@@ -280,3467 +229,2775 @@ msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可�
 "<p>找出如何确保最好的打印质量和可靠性.</p>"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
-#, fuzzy
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "正在进行 USB 打印，关闭 Cura 将停止此打印。您确定吗？"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "某些打印机无云连接可用"
 
-#, fuzzy
 msgctxt "@text"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "高密度和高强度的部件,但打印时间较慢。非常适合用于功能部件。"
 
-#, fuzzy
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
 msgstr "正在进行打印在上一次打印完成之前，Cura 无法通过 USB 启动另一次打印。"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF 文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "AMF Reader"
 msgstr "AMF 读取器"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Abort"
 msgstr "中止"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Abort Print"
 msgstr "中止打印"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Abort print"
 msgstr "中止打印"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "已中止"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Aborting..."
 msgstr "正在中止..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "正在中止..."
 
-#, fuzzy
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
 msgstr "关于 %1"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "关于..."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Accept"
 msgstr "接受"
 
-#, fuzzy
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
 msgstr "接受 G-Code 并将其发送到一台打印机。 插件也可以更新固件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Account synced"
 msgstr "帐户已同步"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Action required"
 msgstr "需要采取行动"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "激活"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Active print"
 msgstr "正在打印"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Add"
 msgstr "添加"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add"
 msgstr "添加"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Add New"
 msgstr "新增"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "新增打印机"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add UltiMaker printer via Digital Factory"
 msgstr "通过 Digital Factory 添加 UltiMaker 打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a Cloud printer"
 msgstr "添加云打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a networked printer"
 msgstr "添加已联网打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add a non-networked printer"
 msgstr "添加未联网打印机"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Add a script"
 msgstr "添加一个脚本"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Add icon to system tray *"
 msgstr "在系统托盘中添加图标 *"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add local printer"
 msgstr "添加本地打印机"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "将机器前缀添加到作业名称中"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Add material settings and plugins from the Marketplace"
 msgstr "从 Marketplace 添加材料设置和插件"
 
-#, fuzzy
 msgctxt "@action:inmenu Marketplace is a brand name of UltiMaker's, so don't translate."
 msgid "Add more materials from Marketplace"
 msgstr "从市场添加更多材料"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add printer"
 msgstr "添加打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer"
 msgstr "添加打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer by IP"
 msgstr "按 IP 添加打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Add printer by IP address"
 msgstr "按 IP 地址添加打印机"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Add printer manually"
 msgstr "手动添加打印机"
 
-#, fuzzy
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "正在从您的帐户添加打印机 {name} ({model})"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Address"
 msgstr "地址"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adhesion"
 msgstr "附着"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "粘附信息"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Adjusts the density of infill of the print."
 msgstr "调整打印填充的密度。"
 
-#, fuzzy
 msgctxt "support_type description"
 msgid "Adjusts the placement of the support structures. The placement can be set to touching build plate or everywhere. When set to everywhere the support structures will also be printed on the model."
 msgstr "调整支撑结构的放置。 放置可以设置为支撑打印平台或全部支撑。 当设置为全部支撑时，支撑结构也将在模型上打印。"
 
-#, fuzzy
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "受影响项目"
 
-#, fuzzy
 msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "影响"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Agree"
 msgstr "同意"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "所有文件 (*)"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "所有支持的文件类型 ({0})"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
 msgstr "允许发送匿名数据"
 
-#, fuzzy
 msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "允许加载和显示 G-code 文件。"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "总是询问"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "总是询问"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "总是舍失更改的设置"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "始终导入模型"
 
-#, fuzzy
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "始终作为一个项目打开"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "总是将更改的设置传输至新配置文件"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "当模型以米而不是毫米为单位时，模型可能会在打印平台中显得非常小。在此情况下是否进行放大？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Annealing"
 msgstr "退火"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "匿名"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr "匿名崩溃报告"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Application framework"
 msgstr "应用框架"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Applies on"
 msgstr "适用于"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Apply Extruder offsets to GCode"
 msgstr "将挤出器偏移量应用于 GCode"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Are you ready for cloud printing?"
 msgstr "是否进行云打印？"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to abort %1?"
 msgstr "您确定要中止 %1 吗？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "您确定要中止打印吗？"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to delete %1?"
 msgstr "您确定要删除 %1 吗？"
 
-#, fuzzy
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
 msgstr "您确定要删除此备份吗？此操作无法撤销。"
 
-#, fuzzy
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
 msgstr "您确定要退出 %1 吗？"
 
-#, fuzzy
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "您确定要将 %1 移至队列顶部吗？"
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "是否确实要暂时删除 {printer_name}？"
 
-#, fuzzy
 msgctxt "@info:question"
 msgid "Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
 msgstr "你确定要开始一个新项目吗？这将清除打印平台及任何未保存的设置。"
 
-#, fuzzy
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "您确认要删除 %1？该操作无法恢复！"
 
-#, fuzzy
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "是否确实要删除 {0}？此操作无法撤消！"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "编位所有的模型"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models in a grid"
 msgstr "排列网格中的所有模型"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "排列选择"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Ask a question"
 msgstr "提问"
 
-#, fuzzy
 msgctxt "@checkbox:description"
 msgid "Auto Backup"
 msgstr "自动备份"
 
-#, fuzzy
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "在 Cura 每天启动时自动创建备份。"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "自动下降模型到打印平台"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr "自动升级固件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "可用的网络打印机"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
 msgstr "BMP 图像"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Back"
 msgstr "返回"
 
-#, fuzzy
 msgctxt "@button:tooltip"
 msgid "Back"
 msgstr "返回"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Backup"
 msgstr "备份"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Backup Now"
 msgstr "立即备份"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
 msgstr "备份并重置配置"
 
-#, fuzzy
 msgctxt "description"
 msgid "Backup and restore your configuration."
 msgstr "备份和还原配置。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Backup and sync your material settings and plugins"
 msgstr "备份和同步材料设置和插件"
 
-#, fuzzy
 msgctxt "@description"
 msgid "Backup and synchronize your Cura settings."
 msgstr "备份并同步您的 Cura 设置。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Backups"
 msgstr "备份"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Balanced"
 msgstr "平衡"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "底板 (mm)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Bottom View"
 msgstr "仰视图"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Brand"
 msgstr "品牌"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Build Plate Leveling"
 msgstr "打印平台调平"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "成形空间体积"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Build plate"
 msgstr "打印平台"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Build plate shape"
 msgstr "打印平台形状"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Bundled Materials"
 msgstr "已捆绑的材料"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Bundled Plugins"
 msgstr "已捆绑的插件"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Buy spool"
 msgstr "购买线轴"
 
-#, fuzzy
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr "由"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "C/C++ Binding library"
 msgstr "C / C++ 绑定库"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
 msgstr "COLLADA 数据资源交换"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "已计算"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Camera navigation:"
 msgstr "导航相机:"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Camera rendering:"
 msgstr "摄像头渲染："
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
 msgstr "摄像头视图"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Can't Find Location"
 msgstr "找不到位置"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Can't Open Project File"
 msgstr "无法打开项目文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "无法连接到 UltiMaker 打印机？"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "无法在添加打印机前从 <filename>{0}</filename> 导入配置文件。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "如果加载 G-code，则无法打开其他任何文件。{0} 已跳过导入"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
 msgstr "无法写入到 UFP 文件："
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "取消"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Cancel"
 msgstr "取消"
 
-#, fuzzy
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "取消"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "G-code 读取器中的警告信息"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "使模型居于平台中央(&N)"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected"
 msgstr "居中所选项"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "当项目被选中时，自动对中视角"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
 msgstr "更改处于活动状态的后期处理脚本。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
 msgstr "将材料 %1 从 %2 更改为 %3。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
 msgstr "将 Print Core %1 从 %2 更改为 %3。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Changes detected from your UltiMaker account"
 msgstr "检测到您的 UltiMaker 帐户有更改"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Changes from your account"
 msgstr "您的帐户有更改"
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "全部勾选"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Check for account updates"
 msgstr "检查是否存在帐户更新"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "启动时检查更新"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Checking..."
 msgstr "正在检查..."
 
-#, fuzzy
 msgctxt "description"
 msgid "Checks for firmware updates."
 msgstr "检查以进行固件更新。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Checks models and print configuration for possible printing issues and give suggestions."
 msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建议。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "在可用于产生支撑的方法之间进行选择。“普通”支撑在悬垂部分正下方形成一个支撑结构，并直接垂下这些区域。“树形”支撑形成一些分支，它们朝向在这些分支的尖端上支撑模型的悬垂区域，并使这些分支可缠绕在模型周围以尽可能多地从构建板上支撑它。"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "清空打印平台"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
 msgstr "在清理构建板后再将模型加载到单个实例中"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Click the export material archive button."
 msgstr "单击导出材料存档按钮。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Close"
 msgstr "关闭"
 
-#, fuzzy
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
 msgstr "正在关闭 %1"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
 msgstr "折叠所有类别"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Color"
 msgstr "颜色"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Color Model"
 msgstr "颜色模型"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Color scheme"
 msgstr "颜色方案"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Compare and save."
 msgstr "比较并保存。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "兼容模式"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Compatibility between Python 2 and 3"
 msgstr "Python 2 和 3 之间的兼容性"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Compatible Printers"
 msgstr "兼容的打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Compatible material diameter"
 msgstr "兼容的材料直径"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible printers"
 msgstr "兼容的打印机"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible support materials"
 msgstr "兼容的支撑材料"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Compatible with Material Station"
 msgstr "与 Material Station 兼容"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
 msgstr "压缩 COLLADA 数据资源交换"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Compressed G-code File"
 msgstr "压缩 G-code 文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "Compressed G-code Reader"
 msgstr "压缩 G-code 读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "Compressed G-code Writer"
 msgstr "压缩 G-code 写入器"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Configuration Changes"
 msgstr "配置更改"
 
-#, fuzzy
 msgctxt "@error"
 msgid "Configuration not supported"
 msgstr "配置不受支持"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Configurations"
 msgstr "配置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Configurations"
 msgstr "配置"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "配置 Cura..."
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "设置对每个模型的单独设定"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Configure group"
 msgstr "配置组"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "配置设定可见性..."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "确认直径更改"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "确认删除"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "连接"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Connect"
 msgstr "连接"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
 msgstr "连接到网络打印机"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Connect via Network"
 msgstr "通过网络连接"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "已通过网络连接"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Connected printers"
 msgstr "已连接的打印机"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "通过 USB 连接"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "通过云连接"
 
-#, fuzzy
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Consult the UltiMaker Community."
 msgstr "咨询 UltiMaker 社区。"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Convert Image"
 msgstr "转换图像"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cooling Fan Number"
 msgstr "冷却风扇数量"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "将所有修改值复制到所有挤出机"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Copy to clipboard"
 msgstr "复制到剪贴板"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "将值复制到所有挤出机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cost per Meter"
 msgstr "每米成本"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Could not access update information."
 msgstr "无法获取更新信息。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Could not connect to device."
 msgstr "无法连接到设备。"
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "不能从用户数据目录创建存档: {}"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "尝试写入到 {device} 时找不到文件名。"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "无法导入材料 <filename>%1</filename>： <message>%2</message>"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Could not interpret the server's response."
 msgstr "无法解释服务器的响应。"
 
-#, fuzzy
 msgctxt "@error:load"
 msgid "Could not load GCodeWriter plugin. Try to re-enable the plugin."
 msgstr "无法加载 GCodeWriter 插件。尝试重新启用插件。"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Could not reach Marketplace."
 msgstr "无法连接到市场。"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Could not read response."
 msgstr "无法读取响应。"
 
-#, fuzzy
 msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "未能将材料存档保存到 {}："
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "无法保存到 <filename>{0}</filename>：<message>{1}</message>"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "无法保存到可移动磁盘 {0}：{1}"
 
-#, fuzzy
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "无法将数据上传到打印机。"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
 msgstr "无法启用 EnginePlugin：{self._plugin_id}"
 "没有执行进程的权限。"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
 msgstr "无法启用 EnginePlugin：{self._plugin_id}"
 "操作系统正在阻止它（杀毒软件？）"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
 msgstr "无法启用 EnginePlugin：{self._plugin_id}"
 "资源暂时不可用"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Crash Report"
 msgstr "错误报告"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Create Profile"
 msgstr "创建配置文件"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Create a free UltiMaker Account"
 msgstr "创建免费的 UltiMaker 帐户"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Create a free UltiMaker account"
 msgstr "创建免费的 UltiMaker 帐户"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Create a volume in which supports are not printed."
 msgstr "创建一个不打印支撑的体积。"
 
-#, fuzzy
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
 msgstr "新建"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Create new"
 msgstr "新建"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Create new"
 msgstr "新建"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Create new profile from current settings/overrides"
 msgstr "使用当前设置/重写值创建新的配置文件"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Create print projects in Digital Library."
 msgstr "在 Digital Library 中创建打印项目。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Creates an eraser mesh to block the printing of support in certain places"
 msgstr "创建橡皮擦网格，以便阻止在某些位置打印支撑"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
 msgstr "正在创建您的备份..."
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura 15.04 profiles"
 msgstr "Cura 15.04 配置文件"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura Backups"
 msgstr "Cura 备份"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Backups"
 msgstr "Cura 备份"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Cura 配置文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Cura 配置文件读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "Cura Profile Writer"
 msgstr "Cura 配置文件写入器"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cura Project 3MF file"
 msgstr "Cura 项目 3MF 文件"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Cura Version"
 msgstr "Cura 版本"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura 无法启动"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura 已检测到材料配置文件尚未安装到组 {0} 中的主机打印机上。"
 
-#, fuzzy
 msgctxt "@info:credit"
 msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
 msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。"
 "Cura 使用以下开源项目："
 
-#, fuzzy
 msgctxt "@label"
 msgid "Cura language"
 msgstr "Cura 语言"
 
-#, fuzzy
 msgctxt "@label Cura version number"
 msgid "Cura version"
 msgstr "Cura 版本"
 
-#, fuzzy
 msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "CuraEngine 后端"
 
-#, fuzzy
 msgctxt "description"
 msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
 msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
 
-#, fuzzy
 msgctxt "name"
 msgid "CuraEngineGradualFlow"
 msgstr "CuraEngineGradualFlow"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Currency:"
 msgstr "币种："
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Current"
 msgstr "当前"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Current changes"
 msgstr "当前更改"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Custom"
 msgstr "自定义"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom"
 msgstr "自定义"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "自定义"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom Material"
 msgstr "自定义材料"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "自定义配置文件"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Custom profile name:"
 msgstr "自定义配置文件名称："
 
-#, fuzzy
 msgctxt "@label"
 msgid "Custom profiles"
 msgstr "自定义配置文件"
 
-#, fuzzy
 msgctxt "@label:header"
 msgid "Custom profiles"
 msgstr "自定义配置文件"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Cut"
 msgstr "剪切"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
 msgstr "切割网格"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Darker is higher"
 msgstr "颜色越深厚度越大"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "数据已发送"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Data interchange format"
 msgstr "数据交换格式"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline"
 msgstr "拒绝"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline and close"
 msgstr "拒绝并关闭"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Decline and remove from account"
 msgstr "拒绝并从帐户中删除"
 
-#, fuzzy
 msgctxt "@info:No intent profile selected"
 msgid "Default"
 msgstr "默认"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "切换到不同配置文件时对设置值更改的默认操作： "
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "打开项目文件时的默认行为"
 
-#, fuzzy
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "打开项目文件时的默认行为： "
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Defaults"
 msgstr "默认"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Defines the thickness of your part side walls, roof and floor."
 msgstr "定义零件侧壁、顶和底板的厚度。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Delete"
 msgstr "删除"
 
-#, fuzzy
 msgctxt "@dialog:title"
 msgid "Delete Backup"
 msgstr "删除备份"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "删除模型"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected"
 msgstr "删除所选项"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Delete print job"
 msgstr "删除打印作业"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Density"
 msgstr "密度"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Dependency and package manager"
 msgstr "依赖性和程序包管理器"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Depth (mm)"
 msgstr "深度 (mm)"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Derivative from"
 msgstr "衍生自"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Description"
 msgstr "描述"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Description"
 msgstr "描述"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Details"
 msgstr "详细信息"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Diameter"
 msgstr "直径"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Disable"
 msgstr "禁用"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "禁用挤出机"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "舍弃更改，并不再询问此问题"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Discard changes"
 msgstr "舍弃更改"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "舍弃当前更改"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Discard or Keep changes"
 msgstr "舍弃或保留更改"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Dismiss"
 msgstr "解除"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Display Name"
 msgstr "显示名称"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display model errors"
 msgstr "显示模型错误"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "显示悬垂（Overhang）"
 
-#, fuzzy
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
 msgstr "不再显示此消息"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
 msgstr "是否要与您的帐户同步材料和软件包?"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "保存时不再显示项目摘要"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "不再显示此设置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Don't support overlaps"
 msgstr "不支持重叠"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Done"
 msgstr "完成"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Downgrade"
 msgstr "降级"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Downgrading..."
 msgstr "正在降级..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Draft"
 msgstr "草稿"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
 msgstr "将所有模型拖放到构建板"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "复制"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "复制配置文件"
 
-#, fuzzy
 msgctxt "@backup_limit_info"
 msgid "During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
 msgstr "在预览阶段，将限制为 5 个可见备份。移除一个备份以查看更早的备份。"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "E&xtensions"
 msgstr "扩展(&X)"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Edit"
 msgstr "编辑"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Eject"
 msgstr "弹出"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "弹出可移动设备 {0}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "已弹出 {0}。现在，您可以安全地拔出磁盘。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Empty"
 msgstr "空"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Enable"
 msgstr "启用"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "启用挤出机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr "启用打印边缘或浮边。这将在物体周围或下面添加一个平坦区域，方便之后切断。默认情况下，禁用它会在对象周围形成一个裙边。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enabled"
 msgstr "已启用"
 
-#, fuzzy
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
 msgstr "支持从 2D 图像文件生成可打印几何模型的能力。"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "结束 G-code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "熔丝 3D 打印技术的的端对端解决方案。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr "EnginePlugin"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Engineering"
 msgstr "工程"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "确保每个模型都保持分离"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "请输入打印机在网络上的 IP 地址。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "输入您打印机的 IP 地址。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Error"
 msgstr "错误"
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "Error traceback"
 msgstr "错误追溯"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Estimated time left"
 msgstr "预计剩余时间"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
 msgstr "退出全屏"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Experimental"
 msgstr "实验性"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Export"
 msgstr "导出"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export All Materials"
 msgstr "导出所有材料"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "导出材料"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "导出配置文件"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "导出选择..."
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Export Universal Cura Project"
 msgstr "导出 Universal Cura Project"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Export material archive"
 msgstr "导出材料存档"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "导出成功"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "配置文件已导出至：<filename> {0} </filename>"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Extend UltiMaker Cura with plugins and material profiles."
 msgstr "用插件和材料配置文件扩展 UltiMaker Cura。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
 msgstr "扩展程序（允许用户创建脚本进行后期处理）"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder"
 msgstr "挤出机"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "挤出机 %1"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "挤出机的结束 G-code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder End G-code duration"
 msgstr "推料器结束 G 代码持续时间"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "挤出机的开始 G-code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr "推料器开始 G 代码持续时间"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr "推料器{0}"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "挤出机已禁用"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Failed"
 msgstr "失败"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory to sync materials with some of the printers."
 msgstr "无法连接 Digital Factory，不能与某些打印机同步材料。"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to connect to Digital Factory."
 msgstr "无法连接至 Digital Factory。"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "无法创建材料存档以与打印机同步。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "无法弹出 {0}，另一个程序可能正在使用磁盘。"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "无法导出材料至 <filename>%1</filename>： <message>%2</message>"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "无法将配置文件导出至<filename> {0} </filename>： <message>{1}</message>"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "无法将配置文件导出至<filename> {0} </filename>： 写入器插件报告故障。"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件："
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "无法从 <filename>{0}</filename> 导入配置文件：{1}"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Failed to load packages:"
 msgstr "无法加载包："
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "Failed to load the archive of materials to sync it with printers."
 msgstr "无法加载材料存档以与打印机同步。"
 
-#, fuzzy
 msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "未能保存材料存档"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr "无法写入特定云打印机:{0} 不在远程集群中。"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "收藏"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr "耗材成本"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament length"
 msgstr "耗材长度"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Filament weight"
 msgstr "耗材重量"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "文件已存在"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "File Saved"
 msgstr "文件已保存"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "文件 {0} 不包含任何有效的配置文件。"
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "筛选..."
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Finding Location"
 msgstr "正在寻找位置"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Finding new location for objects"
 msgstr "正在为模型寻找新位置"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Finish"
 msgstr "完成"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "已完成"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Finishes %1 at %2"
 msgstr "完成 %1 于 %2"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Firmware Update"
 msgstr "固件升级"
 
-#, fuzzy
 msgctxt "name"
 msgid "Firmware Update Checker"
 msgstr "固件更新检查程序"
 
-#, fuzzy
 msgctxt "name"
 msgid "Firmware Updater"
 msgstr "固件更新程序"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware can not be updated because the connection with the printer does not support upgrading firmware."
 msgstr "与打印机间的连接不支持固件更新，因此无法更新固件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware can not be updated because there is no connection with the printer."
 msgstr "未连接打印机，无法更新固件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware is the piece of software running directly on your 3D printer. This firmware controls the step motors, regulates the temperature and ultimately makes your printer work."
 msgstr "固件是直接在 3D 打印机上运行的一个软件。此固件控制步进电机，调节温度并最终使打印机正常工作。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update completed."
 msgstr "固件更新已完成。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an communication error."
 msgstr "由于通信错误，导致固件升级失败。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an input/output error."
 msgstr "由于输入/输出错误，导致固件升级失败。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to an unknown error."
 msgstr "由于未知错误，固件更新失败。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "由于固件丢失，导致固件升级失败。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "固件版本"
 
-#, fuzzy
 msgctxt "@label"
 msgid "First available"
 msgstr "第一个可用"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "流量"
 
-#, fuzzy
 msgctxt "@text In the UI this is followed by a list of steps the user needs to take."
 msgid "Follow the following steps to load the new material profiles to your printer."
 msgstr "请遵循以下步骤将新材料配置文件加载到打印机。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Follow the procedure to add a new printer"
 msgstr "按照步骤添加新打印机"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Following a few simple steps, you will be able to synchronize all your material profiles with your printers."
 msgstr "只需遵循几个简单步骤，您就可以将所有材料配置文件与打印机同步。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Font"
 msgstr "字体"
 
-#, fuzzy
 msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
 msgstr "在打印头停止的每一个位置下方插入一张纸，并调整平台高度。当纸张恰好被喷嘴的尖端轻微压住时，此时打印平台的高度已被正确校准。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
 msgstr "对于隐雕，提供一个用于半透明的简单对数模型。对于高度图，像素值与高度线性对应。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
 msgstr "在影像浮雕中，为了阻挡更多光源通过，深色像素应对应于较厚的位置。在高度图中，浅色像素代表着更高的地形，因此浅色像素对应于生成的 3D 模型中较厚的位置。"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "强制层视图兼容模式（需要重新启动）"
 
-#, fuzzy
 msgid "FreeCAD trackpad"
 msgstr "FreeCAD 触控板"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "正视图"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Front View"
 msgstr "正视图"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G 文件"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-code 详细信息"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "GCode 文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Profile Reader"
 msgstr "G-code 配置文件读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Reader"
 msgstr "G-code 读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "G-code Writer"
 msgstr "G-code 写入器"
 
-#, fuzzy
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-code 风格"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "G-code generator"
 msgstr "G-code 生成器"
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter 不支持文本模式。"
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "GCodeWriter 不支持非文本模式。"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF 图像"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "GUI framework"
 msgstr "GUI 框架"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "GUI framework bindings"
 msgstr "GUI 框架绑定"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "十字轴高度"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "General"
 msgstr "基本"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "在模型的悬垂（Overhangs）部分生成支撑结构。若不这样做，这些部分在打印时将倒塌。"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Generating Windows installers"
 msgstr "生成 Windows 安装程序"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Generic"
 msgstr "通用"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Get notifications for plugin updates"
 msgstr "获取插件更新通知"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Get started"
 msgstr "开始"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Global"
 msgstr "全球"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "全局设置"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Graphical user interface"
 msgstr "图形用户界面"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Grid Placement"
 msgstr "网格放置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "组 ＃{group_nr}"
 
-#, fuzzy
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the bed to heat up when you're ready to print."
 msgstr "打印前请预热热床。您可以在热床加热时继续调整相关项，让您在准备打印时不必等待热床加热完毕。"
 
-#, fuzzy
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
 msgstr "打印前请预热热端。您可以在热端加热时继续调整打印机，而不必等待热端加热完毕再做好打印准备。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "热床（官方版本或自制）"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated bed"
 msgstr "加热床"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Heated build volume"
 msgstr "加热的构建体积"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Height (mm)"
 msgstr "高度 (mm)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Helpers"
 msgstr "打印辅助结构"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Hide all connected printers"
 msgstr "隐藏所有连接的打印机"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Hide settings"
 msgstr "隐藏设置"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "隐藏此设置"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry."
 msgstr "使用警告标志突出显示模型缺少或多余的表面。刀具路径常常是要打印的几何结构缺少的部分。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "以红色突出显示模型需要增加支撑结构的区域。没有支撑，这些区域将无法正确打印。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "How to load new material profiles to my printer"
 msgstr "如何将新材料配置文件加载到打印机"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "How to update"
 msgstr "如何更新"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
 msgstr "我不想发送匿名数据"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Idle"
 msgstr "空闲"
 
-#, fuzzy
 msgctxt "@label"
 msgid "If you are trying to add a new UltiMaker printer to Cura"
 msgstr "如果您想向 Cura 添加一台新的 UltiMaker 打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "如果您的打印机未列出，请阅读<a href='%1'>网络打印故障排除指南</a>"
 
-#, fuzzy
 msgctxt "name"
 msgid "Image Reader"
 msgstr "图像读取器"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import"
 msgstr "导入"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "导入配置"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Import Profile"
 msgstr "导入配置文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import all as models"
 msgstr "导入所有模型"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Import models"
 msgstr "导入模型"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
 msgstr "维护中。请检查打印机"
 
-#, fuzzy
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
 msgstr "为了从 Cura 监控您的打印，请连接打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
 msgstr "要开始使用 Cura，您需要配置一台打印机。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "In order to use the package you will need to restart Cura"
 msgstr "要使用该包，您需要重新启动 Cura"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Include UltiMaker account name"
 msgstr "包含 UltiMaker 账户名"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Infill"
 msgstr "填充"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Infill"
 msgstr "填充"
 
-#, fuzzy
 msgctxt "infill_sparse_density description"
 msgid "Infill Density"
 msgstr "填充密度"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Infill Pattern"
 msgstr "填充图案"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
 msgstr "仅填充网格"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Infill overlapping with this model is modified."
 msgstr "修改了与该模型重叠的填充。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Information"
 msgstr "信息"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Information"
 msgstr "信息"
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
 msgstr "正在初始化当前机器..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
 msgstr "正在初始化成形空间体积..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing engine..."
 msgstr "正在初始化引擎..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
 msgstr "正在初始化机器管理器..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Inner Wall"
 msgstr "内壁"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Inner Walls"
 msgstr "内壁"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Insert the USB stick into your printer and launch the procedure to load new material profiles."
 msgstr "将 U 盘插入打印机，并启动程序以加载新材料配置文件。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Install"
 msgstr "安装"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Materials"
 msgstr "安装材料"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "安装包"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Install Packages"
 msgstr "安装程序包"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Packages"
 msgstr "安装程序包"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Install Plugins"
 msgstr "安装插件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Install missing packages"
 msgstr "安装缺失程序包"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Install missing packages"
 msgstr "安装缺失程序包"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Install missing packages from project file."
 msgstr "安装项目文件缺失的程序包。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Install pending updates"
 msgstr "安装挂起的更新"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Installed Materials"
 msgstr "已安装的材料"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Installed Plugins"
 msgstr "已安装的插件"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Installing..."
 msgstr "正在安装..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Intent"
 msgstr "目的"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Interface"
 msgstr "接口"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Interprocess communication library"
 msgstr "进程间通信交互使用库"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "IP 地址无效"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "文件 URL 无效："
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "反转视角变焦方向。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Is printed as support."
 msgstr "打印为支撑。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "It seems like you don't have any compatible printers connected to Digital Factory. Make sure your printer is connected and it's running the latest firmware."
 msgstr "您似乎没有任何兼容打印机连接到 Digital Factory。请确保打印机已连接并运行最新固件。"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "JPEG Image"
 msgstr "JPEG 图像"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG 图像"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "JSON parser"
 msgstr "JSON 解析器"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Job Name"
 msgstr "作业名"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Jog Distance"
 msgstr "垛齐距离"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Jog Position"
 msgstr "垛齐位置"
 
-#, fuzzy
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
 msgstr "保留更改，并不再询问此问题"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Keep changes"
 msgstr "保留更改"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Keep printer configurations"
 msgstr "保留打印机配置"
 
-#, fuzzy
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "保持此设置可见"
 
-#, fuzzy
 msgctxt "@label The argument is a timestamp"
 msgid "Last update: %1"
 msgstr "上次更新时间：%1"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Layer Thickness"
 msgstr "层厚度"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "分层视图"
 
-#, fuzzy
 msgctxt "@button:label"
 msgid "Learn More"
 msgstr "详细了解"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn how to connect your printer to Digital Factory"
 msgstr "了解如何将打印机连接到 Digital Factory"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Learn how to get started with UltiMaker Cura."
 msgstr "了解如何开始使用 UltiMaker Cura。"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Learn more"
 msgstr "了解详情"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Learn more"
 msgstr "详细了解"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more"
 msgstr "详细了解"
 
-#, fuzzy
 msgctxt "@button:label"
 msgid "Learn more"
 msgstr "了解详情"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Learn more about Cura print profiles"
 msgstr "了解有关 Cura 打印配置文件的更多信息"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Learn more about adding printers to Cura"
 msgstr "了解有关将打印机添加到 Cura 的更多信息"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Learn more about project packages."
 msgstr "详细了解项目程序包。"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "左视图"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Left View"
 msgstr "左视图"
 
-#, fuzzy
 msgctxt "name"
 msgid "Legacy Cura Profile Reader"
 msgstr "旧版 Cura 配置文件读取器"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Let developers know that something is going wrong."
 msgstr "向开发人员报错。"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Level build plate"
 msgstr "调平打印平台"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "颜色越浅厚度越大"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Line Type"
 msgstr "走线类型"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Line Width"
 msgstr "走线宽度"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "线性"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Linux cross-distribution application deployment"
 msgstr "Linux 交叉分布应用程序部署"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
 msgstr "将 %3 作为材料 %1 进行加载（此操作无法覆盖）。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Load more"
 msgstr "加载更多"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Loading"
 msgstr "加载"
 
-#, fuzzy
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
 msgstr "加载项目将清除打印平台上的所有模型。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
 msgstr "正在从打印机加载可用配置..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "正在载入界面..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "正在载入打印机..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Loading..."
 msgstr "正在加载..."
 
-#, fuzzy
 msgctxt "@title"
 msgid "Loading..."
 msgstr "正在加载..."
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Local printers"
 msgstr "本地打印机"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Log-in failed"
 msgstr "登录失败"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Login failed"
 msgstr "登录失败"
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "Logs"
 msgstr "日志"
 
-#, fuzzy
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
 msgstr "记录某些事件，以使其可供崩溃报告器使用"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Lost connection with the printer"
 msgstr "与打印机的连接中断"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "打印机设置"
 
-#, fuzzy
 msgctxt "name"
 msgid "Machine Settings Action"
 msgstr "打印机设置操作"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Machines"
 msgstr "机器"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Make sure all your printers are turned ON and connected to Digital Factory."
 msgstr "请确保所有打印机都已打开并连接到 Digital Factory。"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "发送文件之前，请确保 G-code 适用于当前打印机和打印机配置。当前 G-code 文件可能不准确。"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Makerbot Printfile"
 msgstr "Makerbot 打印文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
 msgstr "Makerbot 打印文件编写器"
 
-#, fuzzy
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
 msgstr "MakerbotWriter 无法保存至指定路径。"
 
-#, fuzzy
 msgctxt "@error:not supported"
 msgid "MakerbotWriter does not support text mode."
 msgstr "MakerbotWriter 不支持文本模式。"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "管理材料..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "管理打印机(&I)..."
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "管理配置文件.."
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "管理设置可见性..."
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Manage backups"
 msgstr "管理备份"
 
-#, fuzzy
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
 msgstr "请于浏览器中进行管理"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Manage packages"
 msgstr "管理包"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Manage packages"
 msgstr "管理包"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Manage print jobs"
 msgstr "管理打印作业"
 
-#, fuzzy
 msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
 msgstr "管理打印机"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "管理打印机"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Manage your UltiMaker Cura plugins and material profiles here. Make sure to keep your plugins up to date and backup your setup regularly."
 msgstr "在此处管理您的 UltiMaker Cura 插件和材料配置文件。请确保将插件保持为最新，并定期备份设置。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Manages extensions to the application and allows browsing extensions from the UltiMaker website."
 msgstr "管理应用程序扩展，允许从  UltiMaker 网站浏览扩展。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Manages network connections to UltiMaker networked printers."
 msgstr "管理  UltiMaker 联网打印机的网络连接。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Manufacturer"
 msgstr "制造商"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "市场"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Marketplace"
 msgstr "市场"
 
-#, fuzzy
 msgctxt "name"
 msgid "Marketplace"
 msgstr "市场"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Material"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Material"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Material Color"
 msgstr "材料颜色"
 
-#, fuzzy
 msgctxt "name"
 msgid "Material Profiles"
 msgstr "材料配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material Type"
 msgstr "材料类型"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Material color picker"
 msgstr "材料颜色选取器"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Material estimation"
 msgstr "预计材料"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Material profiles successfully synced with the following printers:"
 msgstr "材料配置文件与以下打印机成功同步："
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "材料设置"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Materials"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Materials"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "材料"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Materials compatible with active printer:"
 msgstr "与处于活动状态的打印机兼容的材料："
 
-#, fuzzy
 msgctxt "@label"
 msgid "Mesh Type"
 msgstr "网格类型"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "模式"
 
-#, fuzzy
 msgctxt "name"
 msgid "Model Checker"
 msgstr "模型检查器"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Model Errors"
 msgstr "模型错误"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Modify G-Code"
 msgstr "修改 G-Code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Modify settings for overlaps"
 msgstr "修改重叠设置"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "监控"
 
-#, fuzzy
 msgctxt "name"
 msgid "Monitor Stage"
 msgstr "监视阶段"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Monitor print"
 msgstr "监控打印"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Monitor print jobs and reprint from your print history."
 msgstr "监控打印作业并从打印历史记录重新打印。"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Monitor printers in Ultimaker Digital Factory."
 msgstr "在 Ultimaker Digital Factory 中监控打印机。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Monitor your printers from everywhere using Ultimaker Digital Factory"
 msgstr "使用 UltiMaker Digital Factory 随时随地监控您的打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "More information on anonymous data collection"
 msgstr "更多关于匿名数据收集的信息"
 
-#, fuzzy
 msgctxt "@window:title"
 msgid "Move print job to top"
 msgstr "将打印作业移至顶部"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Move to Next Position"
 msgstr "移动到下一个位置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Move to top"
 msgstr "移至顶部"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "当模型被选中时，视角将自动调整到最合适的观察位置（模型处于正中央）"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected"
 msgstr "复制所选项"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "复制所选模型"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Multiply selected item and place them in a grid of build plate."
 msgstr "选择多项，将它们放置在构建板的网格中。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "复制并放置模型"
 
-#, fuzzy
 msgctxt "@title"
 msgid "My Backups"
 msgstr "我的备份"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "My printers"
 msgstr "我的打印机"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Name"
 msgstr "名字"
 
-#, fuzzy
 msgctxt "@label:category menu label"
 msgid "Network enabled printers"
 msgstr "网络打印机"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Network error"
 msgstr "网络错误"
 
-#, fuzzy
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "新 %s 稳定固件可用"
 
-#, fuzzy
 msgctxt "@textfield:placeholder"
 msgid "New Custom Profile"
 msgstr "新建自定义配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "新的 UltiMaker 打印机可连接到 Digital Factory，用户可对其进行远程监控。"
 
-#, fuzzy
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "您的 {machine_name} 可能有新功能或错误修复可用！如果打印机上的固件还不是最新版本，建议将其更新为 {latest_version} 版。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "New materials installed"
 msgstr "新材料已装载"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "New printer detected from your Ultimaker account"
 msgid_plural "New printers detected from your Ultimaker account"
 msgstr[0] "从您的 Ultimaker 帐户中检测到新的打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "New project"
 msgstr "新建项目"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Next"
 msgstr "下一步"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Next"
 msgstr "下一步"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Nightly build"
 msgstr "夜间构建"
 
-#, fuzzy
 msgctxt "@info"
 msgid "No"
 msgstr "否"
 
-#, fuzzy
 msgctxt "@info"
 msgid "No compatibility information"
 msgstr "无兼容性信息"
 
-#, fuzzy
 msgctxt "@description"
 msgid "No compatible printers, that are currently online, were found."
 msgstr "没有找到当前联机的兼容打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "无可用成本估计"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "没有可导入文件 <filename>{0}</filename> 的自定义配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No items to select from"
 msgstr "没有可供选择的项目"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "No layers to show"
 msgstr "无层可显示"
 
-#, fuzzy
 msgctxt "@message"
 msgid "No more results to load"
 msgstr "没有更多的结果要加载"
 
-#, fuzzy
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
 msgstr "没有在此处写入工作区的权限。"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "No printers found"
 msgstr "未找到打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No printers found in your account?"
 msgstr "在您的帐户中未找到任何打印机？"
 
-#, fuzzy
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
 msgstr "对于所选材料/%1 配置，无可用的配置文件。请更改配置。"
 
-#, fuzzy
 msgctxt "@message"
 msgid "No results found with current filter"
 msgstr "当前筛选没有任何结果"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No specific value has been set"
 msgstr "未设置具体值"
 
-#, fuzzy
 msgctxt "@label"
 msgid "No time estimation available"
 msgstr "无可用时间估计"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Non UltiMaker printer"
 msgstr "非 UltiMaker 打印机"
 
-#, fuzzy
 msgctxt "@info No materials"
 msgid "None"
 msgstr "无"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Normal model"
 msgstr "正常模式"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Not a group host"
 msgstr "非组中的主机"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Not connected to a printer"
 msgstr "未连接至打印机"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "不在配置文件中"
 
-#, fuzzy
 msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "未覆盖"
 
-#, fuzzy
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "不支持"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Not yet initialized"
 msgstr "尚未初始化"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
 msgstr "由于需要先切片，因此未显示任何内容。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "喷嘴"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Nozzle Settings"
 msgstr "喷嘴设置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle offset X"
 msgstr "喷嘴偏移 X"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle offset Y"
 msgstr "喷嘴偏移 Y"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Nozzle size"
 msgstr "喷嘴孔径"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Number of Copies"
 msgstr "复制个数"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "挤出机数目"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "OK"
 msgstr "确定"
 
-#, fuzzy
 msgctxt "@label"
 msgid "OS language"
 msgstr "操作系统语言"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Object list"
 msgstr "对象列表"
 
-#, fuzzy
 msgctxt "@label:Should be short"
 msgid "Off"
 msgstr "关"
 
-#, fuzzy
 msgctxt "@label:Should be short"
 msgid "On"
 msgstr "开"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "只显示顶层"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一次只能加载一个 G-code 文件。{0} 已跳过导入"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Oops! We encountered an unexpected error during your slicing process. Rest assured, we've automatically received the crash logs for analysis, if you have not disabled data sharing in your preferences. To assist us further, consider sharing your project details on our issue tracker."
 msgstr "哎呀！在您的切片过程中我们遇到了意外错误。请放心,如果您没有在首选项中禁用数据共享,我们已自动收集崩溃日志进行分析。为给我们提供进一步帮助,请考虑在我们的问题跟踪器上分享您的项目详细信息。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open"
 msgstr "打开"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "打开最近使用过的文件(&R)"
 
-#, fuzzy
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
 msgstr "打开压缩三角网格"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "打开文件"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Open File(s)..."
 msgstr "打开文件..."
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open Project"
 msgstr "打开项目"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "打开项目文件"
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP)"
 msgstr "打开 Universal Cura Project（UCP）"
 
-#, fuzzy
 msgctxt "@title:window Don't translate 'Universal Cura Project'"
 msgid "Open Universal Cura Project (UCP) file"
 msgstr "打开 Universal Cura Project（UCP）文件"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Open With"
 msgstr "打开方式"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open as UCP"
 msgstr "以 UCP 打开"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open as project"
 msgstr "作为项目打开"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "打开文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Open project anyway"
 msgstr "仍要打开项目"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Open project file"
 msgstr "打开项目文件"
 
-#, fuzzy
 msgctxt "@label OpenGL version"
 msgid "OpenGL"
 msgstr "OpenGL"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "打开并保存文件"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Optimized for Air Manager"
 msgstr "已针对 Air Manager 优化"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Origin at center"
 msgstr "置中"
 
-#, fuzzy
 msgid "Orthographic"
 msgstr "正交"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
 msgstr "正交"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Other"
 msgstr "其它"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Other models overlapping with this model are modified."
 msgstr "修改了与此模型重叠的其他模型。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Other printers"
 msgstr "其他打印机"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Outer Wall"
 msgstr "外壁"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Overlaps with this model are not supported."
 msgstr "不支持与此模型重叠。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Override"
 msgstr "覆盖"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
 msgstr "覆盖将使用包含现有打印机配置的指定设置。这可能会导致打印失败。"
 
-#, fuzzy
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
 msgid_plural "Overrides %1 settings."
 msgstr[0] "覆盖 %1 设置。"
 
-#, fuzzy
 msgctxt "@title:menu menubar:toplevel"
 msgid "P&references"
 msgstr "偏好设置(&R)"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "PNG Image"
 msgstr "PNG 图像"
 
-#, fuzzy
 msgctxt "@header"
 msgid "Package details"
 msgstr "包详情"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Packaging Python-applications"
 msgstr "打包 Python 应用"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "解析 G-code"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Paste from clipboard"
 msgstr "从剪贴板粘贴"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Pause"
 msgstr "暂停"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Paused"
 msgstr "已暂停"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Paused"
 msgstr "已暂停"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Pausing..."
 msgstr "正在暂停..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Pausing..."
 msgstr "正在暂停..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Per Model Settings"
 msgstr "单一模型设置"
 
-#, fuzzy
 msgctxt "name"
 msgid "Per Model Settings Tool"
 msgstr "单一模型设置工具"
 
-#, fuzzy
 msgid "Perspective"
 msgstr "透视"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
 msgstr "透视"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Placement"
 msgstr "放置"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "放置模型"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "放置模型"
 
-#, fuzzy
 msgctxt "@label Type of platform"
 msgid "Platform"
 msgstr "平台"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please connect your printer to the network."
 msgstr "请将打印机连接到网络。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "请输入有效的 IP 地址。"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "在授权此应用程序时，须提供所需权限。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
 msgstr "请确保您的打印机已连接："
@@ -3748,37 +3005,30 @@ msgstr "请确保您的打印机已连接："
 "- 检查打印机是否连接至网络。"
 "- 检查您是否已登录查找云连接的打印机。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please name your printer"
 msgstr "请为您的打印机命名"
 
-#, fuzzy
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "导出前请先准备 G-code。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "请为此配置文件提供名称。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please provide a new name."
 msgstr "请提供一个新名称。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Please read and agree with the plugin licence."
 msgstr "请阅读并同意插件许可。"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Please remove the print"
 msgstr "请取出打印件"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
 msgstr "请检查设置并检查您的模型是否："
@@ -3786,1828 +3036,1464 @@ msgstr "请检查设置并检查您的模型是否："
 "- 分配给了已启用的挤出器"
 "- 尚未全部设置为修改器网格"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
 msgstr "请选择适用于 UltiMaker Original 的升级文件"
 
-#, fuzzy
 msgctxt "@description"
 msgid "Please sign in to get verified plugins and materials for UltiMaker Cura Enterprise"
 msgstr "请登录以获取经验证适用于 UltiMaker Cura Enterprise 的插件和材料"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Please sign in to your UltiMaker account to allow sending non-anonymous data."
 msgstr "请登录您的 UltiMaker 账户以允许发送非匿名数据。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Please sync the material profiles with your printers before starting to print."
 msgstr "请在开始打印之前将材料配置文件与您的打印机同步。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "请及时更新打印机固件以远程管理打印队列。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Please wait until the current job has been sent."
 msgstr "请等待当前作业完成发送。"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Plugin License Agreement"
 msgstr "插件许可协议"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Plugin license agreement"
 msgstr "插件许可协议"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Plugins"
 msgstr "插件"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Plugins"
 msgstr "插件"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Polygon clipping library"
 msgstr "多边形剪辑库"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Polygon packing library, developed by Prusa Research"
 msgstr "Prusa Research 开发的多边形打包库"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "后期处理"
 
-#, fuzzy
 msgctxt "name"
 msgid "Post Processing"
 msgstr "后期处理"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Post Processing Plugin"
 msgstr "后期处理插件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Post Processing Scripts"
 msgstr "后期处理脚本"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "预热"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "准备"
 
-#, fuzzy
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "准备阶段"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
 msgstr "初始化中..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Preparing..."
 msgstr "正在准备..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Preset printers"
 msgstr "预设打印机"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Preview"
 msgstr "预览"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "预览"
 
-#, fuzzy
 msgctxt "name"
 msgid "Preview Stage"
 msgstr "预览阶段"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "装填塔"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print"
 msgstr "打印"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Print After"
 msgstr "打印后"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Print Before"
 msgstr "打印前"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print Selected Model With:"
 msgid_plural "Print Selected Models With:"
 msgstr[0] "打印所选模型："
 
-#, fuzzy
 msgctxt "@label %1 is filled in with the name of an extruder"
 msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
 msgstr[0] "用 %1 打印所选模型"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print as support"
 msgstr "打印为支撑"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Print error"
 msgstr "打印错误"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "正在进行打印"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Print job queue is full. The printer can't accept a new job."
 msgstr "打印作业队列已满。打印机无法接受新作业。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "打印作业已成功发送到打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "打印作业"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Print jobs"
 msgstr "打印作业"
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "通过网络打印"
 
-#, fuzzy
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "通过网络打印"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Print over network"
 msgstr "通过网络打印"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Print settings"
 msgstr "打印设置"
 
-#, fuzzy
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
 msgstr "打印设置已禁用。无法修改 G code 文件。"
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
 msgstr "通过 USB 联机打印"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Print via USB"
 msgstr "通过 USB 联机打印"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Print via cloud"
 msgstr "通过云打印"
 
-#, fuzzy
 msgctxt "@properties:tooltip"
 msgid "Print via cloud"
 msgstr "通过云打印"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Print with"
 msgstr "打印方式"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Printer"
 msgstr "打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "打印机网络地址"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Printer Group"
 msgstr "打印机组"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Printer Settings"
 msgstr "打印机设置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer control"
 msgstr "打印机控制"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "打印机不接受命令"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer name"
 msgstr "打印机名称"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printer selection"
 msgstr "打印机选择"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Printer settings"
 msgstr "打印机设置"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Printer settings will be updated to match the settings saved with the project."
 msgstr "打印机设置将更新，以便与项目一起保存的设置相一致。"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "打印机"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "Printers added from Digital Factory:"
 msgstr "从 Digital Factory 添加的打印机："
 
-#, fuzzy
 msgctxt "@text Asking the user whether printers are missing in a list."
 msgid "Printers missing?"
 msgstr "缺少打印机？"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Printhead Settings"
 msgstr "打印头设置"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Printing"
 msgstr "打印"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "打印时间"
 
-#, fuzzy
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
 msgstr "打印中..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Privacy"
 msgstr "隐私"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Processing"
 msgstr "正在处理中"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Processing Layers"
 msgstr "正在处理层"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profile"
 msgstr "配置文件"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Profile"
 msgstr "配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profile author"
 msgstr "配置文件作者"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "配置文件缺少打印质量类型定义。"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "配置文件设置"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "配置文件设置"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "配置 {0} 文件类型未知或已损坏。"
 
-#, fuzzy
 msgctxt "@backuplist:label"
 msgid "Profiles"
 msgstr "配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profiles"
 msgstr "配置文件"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "配置文件"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "与处于活动状态的打印机兼容的配置文件："
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Programming language"
 msgstr "编程语言"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "项目文件 <filename>{0}</filename> 包含未知机器类型 <message>{1}</message>。无法导入机器。将改为导入模型。"
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "项目文件 <filename>{0}</filename> 损坏: <message>{1}</message>。"
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "项目文件 <filename>{0}</filename> 是用此 UltiMaker Cura 版本未识别的配置文件制作的。"
 
-#, fuzzy
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "突然无法访问项目文件 <filename>{0}</filename>：<message>{1}</message>。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Properties"
 msgstr "属性"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
 msgstr "为固件更新提供操作选项。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a monitor stage in Cura."
 msgstr "在 Cura 中提供监视阶段。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a normal solid mesh view."
 msgstr "提供一个基本的实体网格视图。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a prepare stage in Cura."
 msgstr "在 Cura 中提供准备阶段。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
 msgstr "在 Cura 中提供预览阶段。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
 msgstr "提供一种改变机器设置的方法（如构建体积、喷嘴大小等）。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides capabilities to read and write XML-based material profiles."
 msgstr "提供读取和写入基于 XML 的材料配置文件的功能。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
 msgstr "为 Ultimaker 车床提供机器操作（例如车床调平向导、选择升级等）。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides removable drive hotplugging and writing support."
 msgstr "提供可移动磁盘热插拔和写入文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for exporting Cura profiles."
 msgstr "提供了对导出 Cura 配置文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing Cura profiles."
 msgstr "提供了对导入 Cura 配置文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing profiles from g-code files."
 msgstr "提供了从 GCode 文件中导入配置文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
 msgstr "支持从 Cura 旧版本导入配置文件。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading 3MF files."
 msgstr "提供对读取 3MF 格式文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading AMF files."
 msgstr "提供对读取 AMF 文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
 msgstr "为读取 Ultimaker 格式包提供支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading X3D files."
 msgstr "支持读取 X3D 文件。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for reading model files."
 msgstr "提供对读取模型文件的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing 3MF and UCP files."
 msgstr "支持写为 3MF 和 UCP 文件。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing MakerBot Format Packages."
 msgstr "提供对写入 MakerBot 格式包的支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides support for writing Ultimaker Format Packages."
 msgstr "为写入 Ultimaker 格式包提供支持。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the Per Model Settings."
 msgstr "提供对每个模型的单独设置。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the X-Ray view."
 msgstr "提供透视视图。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "提供 CuraEngine 切片后端的路径。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr "提供切片层数据的预览。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt 版本"
 
-#, fuzzy
 msgctxt "@Label Description for application dependency"
 msgid "Python Error tracking library"
 msgstr "Python 错误跟踪库"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Python bindings for Clipper"
 msgstr "Clipper 的 Python 绑定"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Python bindings for libnest2d"
 msgstr "libnest2d 的 Python 绑定"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt 版本"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "质量类型“{0}”与当前有效的机器定义“{1}”不兼容。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Queue Full"
 msgstr "队列已满"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Queued"
 msgstr "已排队"
 
-#, fuzzy
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
 msgstr "退出 %1"
 
-#, fuzzy
 msgctxt "description"
 msgid "Reads g-code from a compressed archive."
 msgstr "从压缩存档文件读取 G-code。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Recommended"
 msgstr "推荐"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "推荐"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Recommended print settings"
 msgstr "建议的打印设置"
 
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr "建议的设置（适用于 <b>%1</b>）已更改。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Refresh"
 msgstr "刷新"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refresh"
 msgstr "刷新"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Refresh"
 msgstr "刷新"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refresh List"
 msgstr "刷新列表"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Refreshing..."
 msgstr "正在刷新..."
 
-#, fuzzy
 msgctxt "@label"
 msgid "Release Notes"
 msgstr "版本说明"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "重新载入所有模型"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "Remember my choice"
 msgstr "记住我的选择"
 
-#, fuzzy
 msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "可移动磁盘"
 
-#, fuzzy
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
 msgstr "可移动磁盘输出设备插件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "删除"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Remove printers"
 msgstr "删除打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Remove printers?"
 msgstr "是否删除打印机？"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "重命名"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Rename"
 msgstr "重命名"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Rename Profile"
 msgstr "重命名配置文件"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "BUG 反馈(&B)"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Report a bug"
 msgstr "报告错误"
 
-#, fuzzy
 msgctxt "@message:button"
 msgid "Report a bug"
 msgstr "报告错误"
 
-#, fuzzy
 msgctxt "@message:description"
 msgid "Report a bug on UltiMaker Cura's issue tracker."
 msgstr "在 UltiMaker Cura 问题跟踪器上报告错误。"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "需要更改配置"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "复位所有模型的位置"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "复位所有模型的变动"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Reset to defaults."
 msgstr "重置为默认值。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resolution"
 msgstr "分辨率"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Restore"
 msgstr "恢复"
 
-#, fuzzy
 msgctxt "@dialog:title"
 msgid "Restore Backup"
 msgstr "恢复备份"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Restore window position on start"
 msgstr "恢复初始窗口位置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resume"
 msgstr "恢复"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Resuming..."
 msgstr "正在恢复..."
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "正在恢复..."
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "回抽"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Retry?"
 msgstr "是否重试？"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "右视图"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "右视图"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Root Certificates for validating SSL trustworthiness"
 msgstr "用于验证 SSL 可信度的根证书"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
 msgstr "安全移除硬件"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Safety datasheet"
 msgstr "安全数据表"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save"
 msgstr "保存"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project"
 msgstr "保存 Cura 项目"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project and .makerbot print file"
 msgstr "保存 Cura 项目和 .makerbot 打印文件"
 
-#, fuzzy
 msgctxt "@option"
 msgid "Save Cura project and .ufp print file"
 msgstr "保存 Cura 项目和 .ufp 打印文件"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Custom Profile"
 msgstr "保存自定义配置文件"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Save Project"
 msgstr "保存项目"
 
-#, fuzzy
 msgctxt "@title:menu menubar:file"
 msgid "Save Project..."
 msgstr "保存项目..."
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save as new custom profile"
 msgstr "另存为新自定义配置文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save changes"
 msgstr "保存更改"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Save new profile"
 msgstr "保存新配置文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Save project"
 msgstr "保存项目"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Save the .umm file on a USB stick."
 msgstr "将 .umm文件保存到 U 盘。"
 
-#, fuzzy
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "保存至可移动磁盘"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "保存到可移动磁盘 {0}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "保存到可移动磁盘 {0} ：{1}"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Saving"
 msgstr "正在保存"
 
-#, fuzzy
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "保存到可移动磁盘 <filename> {0} </filename>"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "放大过小模型"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "缩小过大模型"
 
-#, fuzzy
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "搜索"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Search in the browser"
 msgstr "在浏览器中搜索"
 
-#, fuzzy
 msgctxt "@label:textbox"
 msgid "Search settings"
 msgstr "搜索设置"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "选择所有模型"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select Printer"
 msgstr "选择打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "选择对此模型的自定义设置"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
 msgstr "选择并安装针对您的 UltiMaker 3D 打印机经过优化的材料配置文件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Select configuration"
 msgstr "选择配置"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Select custom firmware"
 msgstr "选择自定义固件"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "选择模型时加载"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Select settings"
 msgstr "选择设置"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Select upgrades"
 msgstr "选择升级"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Select your printer from the list below:"
 msgstr "请从以下列表中选择您的打印机："
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "（匿名）发送打印信息"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Send G-code"
 msgstr "发送 G-code"
 
-#, fuzzy
 msgctxt "@tooltip of G-code command input"
 msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
 msgstr "向连接的打印机发送自定义 G-code 命令。按“Enter”发送命令。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Send crash report to UltiMaker"
 msgstr "向 UltiMaker 发送错误报告"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Send crash reports with your registered UltiMaker account name and the project name to UltiMaker Sentry. No actual model data is being send."
 msgstr "将包含您注册的 UltiMaker 账户名和项目名称的崩溃报告发送到 UltiMaker Sentry。发送内容不包括实际模型数据。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Send crash reports without any personally identifiable information or models data to UltiMaker."
 msgstr "将不带任何个人身份信息或模型数据的崩溃报告发送至 UltiMaker。"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Send engine crash reports"
 msgstr "发送引擎崩溃报告"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "发送报告"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Sending Print Job"
 msgstr "发送打印作业"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Sending materials to printer"
 msgstr "正在将材料发送到打印机"
 
-#, fuzzy
 msgctxt "name"
 msgid "Sentry Logger"
 msgstr "Sentry 日志记录"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Serial communication library"
 msgstr "串口通讯库"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "设为主要挤出机"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Setting"
 msgstr "设置"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Setting Visibility"
 msgstr "设置可见性"
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
 msgstr "正在设置偏好设置..."
 
-#, fuzzy
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "正在设置场景..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "设置可见性"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Settings"
 msgstr "设置"
 
-#, fuzzy
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "设置"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Settings Loaded from UCP file"
 msgstr "从 UCP 文件加载的设置"
 
-#, fuzzy
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "已根据挤出机的当前可用性更改设置："
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "设置已更新"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Share ideas and get help from 48,000+ users in the UltiMaker Community"
 msgstr "在 UltiMaker 社区分享观点并获取 48,000 多名用户的帮助"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Shell"
 msgstr "外壳"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Shell Thickness"
 msgstr "外壳厚度"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "当 Cura 启动时，是否自动检查更新？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should Cura open at the location it was closed?"
 msgstr "Cura 是否应该在关闭的位置打开？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "打印机名是否自动作为打印作业名称的前缀？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "保存项目文件时是否显示摘要？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
 msgstr "是否应在每次启动 Cura 时自动检查新插件？强烈建议您不要禁用此功能！"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "您愿意将关于您的打印数据以匿名形式发送到 UltiMaker 吗？注意：我们不会记录/发送任何模型、IP 地址或其他私人数据。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "层视图要强制进入兼容模式吗？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "当模型的尺寸过大时，是否将模型自动缩小至成形空间体积？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "模型是否应该在加载后被选中？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "需要转动模型，使它们接触打印平台吗？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "需要移动平台上的模型，使它们不再相交吗？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should opening files from the desktop or external applications open in the same instance of Cura?"
 msgstr "应从桌面打开文件还是在同一 Cura 实例中打开外部应用程序？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored, unless you give explicit permission."
 msgstr "切片崩溃是否会被自动报告给 Ultimaker？请注意,除非获得您的明确许可,否则我们不会发送或存储任何模型,IP 地址或其他个人身份信息。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "是否应在清理构建板后再将新模型加载到单个 Cura 实例中？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "需要令 Cura 的默认缩放操作反转吗？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "是否跟随鼠标方向进行缩放？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Show 5 Detailed Layers On Top"
 msgstr "在顶部显示 5 层打印细节"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "显示配置文件夹"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Show Custom"
 msgstr "显示自定义"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "显示在线文档(&D)"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting"
 msgstr "显示联机故障排除"
 
-#, fuzzy
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "显示全部"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Show all connected printers"
 msgstr "显示所有连接的打印机"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Show an icon and notifications in the system notification area."
 msgstr "在系统通知区域中显示图标和通知。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "在 G-code 读取器中显示警告信息。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show configuration folder"
 msgstr "显示配置文件夹"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show detailed crash report"
 msgstr "显示详细的错误报告"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Show settings"
 msgstr "显示设置"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "保存项目时显示摘要对话框"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Show your support for Cura with a donation."
 msgstr "通过捐赠表达您对 Cura 的支持。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign Out"
 msgstr "注销"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sign in"
 msgstr "登录"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in"
 msgstr "登录"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sign in"
 msgstr "登录"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Sign in into UltiMaker Digital Factory"
 msgstr "登录 UltiMaker Digital Factory"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sign in to Digital Factory"
 msgstr "登录 Digital Factory"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Sign in to the UltiMaker platform"
 msgstr "登录 UltiMaker 平台"
 
-#, fuzzy
 msgctxt "name"
 msgid "Simulation View"
 msgstr "仿真视图"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Skin"
 msgstr "表层"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Skip"
 msgstr "跳过"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Skip"
 msgstr "跳过"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Skirt"
 msgstr "Skirt"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Slice"
 msgstr "切片"
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "自动切片"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "当设置被更改时自动进行切片。"
 
-#, fuzzy
 msgctxt "name"
 msgid "Slice info"
 msgstr "切片信息"
 
-#, fuzzy
 msgctxt "@message:title"
 msgid "Slicing failed"
 msgstr "切片失败"
 
-#, fuzzy
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "正在切片..."
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "平滑"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Solid"
 msgstr "固体"
 
-#, fuzzy
 msgctxt "name"
 msgid "Solid View"
 msgstr "实体视图"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr "实体视图"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
 msgstr "一些隐藏设置正在使用有别于一般设置的计算值。"
 "单击以使这些设置可见。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
 msgstr "Cura 目前未安装项目中使用的一些程序包，这可能产生不理想的打印效果。我们强烈建议从 Marketplace 安装所有必需包。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Some required packages are not installed"
 msgstr "一些必需程序包未安装"
 
-#, fuzzy
 msgctxt "@info %1 is the name of a profile"
 msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "在 <b>%1</b> 中定义的一些设置值已被覆盖。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
 msgstr "某些设置/重写值与存储在配置文件中的值不同。"
 "点击打开配置文件管理器。"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
 msgstr "当前配置文件的一些设置已经重写。"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "尝试登录时出现意外情况，请重试。"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Something went wrong when sending the materials to the printers."
 msgstr "向打印机发送材料时出错。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Something went wrong..."
 msgstr "发生了错误..."
 
-#, fuzzy
 msgctxt "@label:listbox"
 msgid "Speed"
 msgstr "速度"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Sponsor Cura"
 msgstr "赞助 Cura"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr "赞助 Cura"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr "稳定版和测试版"
 
-#, fuzzy
 msgctxt "@option:radio"
 msgid "Stable releases only"
 msgstr "仅限稳定版"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Stanford Triangle Format"
 msgstr "斯坦福三角格式"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Start"
 msgstr "开始"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Start Build Plate Leveling"
 msgstr "开始进行打印平台调平"
 
-#, fuzzy
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "开始 G-code"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "开始切片流程"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Starts"
 msgstr "开始"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Streamline your workflow and customize your UltiMaker Cura experience with plugins contributed by our amazing community of users."
 msgstr "使用由我们卓越的用户社区提供的插件，简化您的工作流程并自定义 UltiMaker Cura 体验。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Strength"
 msgstr "强度"
 
-#, fuzzy
 msgctxt "description"
 msgid "Submits anonymous slice info. Can be disabled through preferences."
 msgstr "提交匿名切片信息。 可以通过偏好设置禁用。"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "成功导出材料至： <filename>%1</filename>"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "成功导入材料 <filename>%1</filename>"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "已成功导入配置文件 {0}。"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Suggested Material settings"
 msgstr "推荐的材料设置"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Suggested Profile settings"
 msgstr "推荐的配置文件设置"
 
-#, fuzzy
 msgctxt "@action:title"
 msgid "Summary - Cura Project"
 msgstr "摘要 - Cura 项目"
 
-#, fuzzy
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Open Universal Cura Project (UCP)"
 msgstr "概要—打开 Universal Cura Project（UCP）"
 
-#, fuzzy
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
 msgstr "概要—Universal Cura Project"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Support"
 msgstr "支持"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support"
 msgstr "支撑"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Support Blocker"
 msgstr "支撑拦截器"
 
-#, fuzzy
 msgctxt "name"
 msgid "Support Eraser"
 msgstr "支持橡皮擦"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support Infill"
 msgstr "支撑填充"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Support Interface"
 msgstr "支撑接触面"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Support Type"
 msgstr "支撑类型"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for faster math"
 msgstr "高速运算支持库"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Support library for file metadata and streaming"
 msgstr "用于文件元数据和流媒体的支持库"
 
-#, fuzzy
 msgctxt "@label Description for application component"
 msgid "Support library for handling 3MF files"
 msgstr "用于处理 3MF 文件的支持库"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling STL files"
 msgstr "用于处理 STL 文件的支持库"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for handling triangular meshes"
 msgstr "用于处理三角网格的支持库"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for scientific computing"
 msgstr "科学计算支持库"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Support library for system keyring access"
 msgstr "支持系统密钥环访问库"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync"
 msgstr "同步"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sync"
 msgstr "同步"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sync material profiles via USB"
 msgstr "通过 USB 同步材料配置文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync materials"
 msgstr "同步材料"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Sync materials with USB"
 msgstr "使用 USB 同步材料"
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "Sync materials with printers"
 msgstr "匹配材料和打印机"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "Sync materials with printers"
 msgstr "匹配材料和打印机"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Sync with Printers"
 msgstr "与打印机同步"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Syncing"
 msgstr "正在同步"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "Syncing..."
 msgstr "正在同步..."
 
-#, fuzzy
 msgctxt "@title:groupbox"
 msgid "System information"
 msgstr "系统信息"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Technical datasheet"
 msgstr "技术数据表"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "要应用到图像的平滑量。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "退火轮廓需要在打印完成后在烘箱中进行后处理。这种轮廓可在退火后保留打印部件的尺寸精度，提高强度、刚度和耐热性。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "分配的打印机 %1 需要以下配置更改："
 
-#, fuzzy
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "备份超过了最大文件大小。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "平衡配置旨在在生产力、表面质量、机械性能和尺寸精度之間取得平衡。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The base height from the build plate in millimeters."
 msgstr "距离打印平台的底板高度，以毫米为单位。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "由于“打印序列”设置的值，成形空间体积高度已被减少，以防止十字轴与打印模型相冲突。"
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please check your internet connection."
 msgstr "云连接当前不可用。请检查您的 Internet 连接。"
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer."
 msgstr "云连接当前不可用。请登录以连接到云打印机。"
 
-#, fuzzy
 msgctxt "@status"
 msgid "The cloud printer is offline. Please check if the printer is turned on and connected to the internet."
 msgstr "云打印机离线。请检查打印机是否已开启并连接到 Internet。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
 msgstr "该挤出机中材料的颜色。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The configuration of this extruder is not allowed, and prohibits slicing."
 msgstr "不允许此挤出器的配置并禁止切片。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
 msgstr "该配置不可用，因为打印机已断开连接。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The current temperature of the heated bed."
 msgstr "热床当前温度。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
 msgstr "该热端的当前温度。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "打印平台深度，以毫米为单位"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩短打印时间。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "工程參数是设计來打印較高精度和較小公差的功能性原型和实际使用零件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "用于打印支撑的挤出机组。 用于多重挤出。"
 
-#, fuzzy
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "文件 <filename>{0}</filename> 已存在。您确定要覆盖它吗？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The firmware shipping with new printers works, but new versions tend to have more features and improvements."
 msgstr "新打印机出厂配备的固件完全可以正常使用，但新版本往往具有更多的新功能和改进。"
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "The following error occurred while trying to restore a Cura backup:"
 msgstr "尝试恢复 Cura 备份时出现以下错误："
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
 msgstr "由于 Cura 版本不兼容，无法安装以下程序包："
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following packages will be added:"
 msgstr "将添加以下程序包："
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following printers in your account have been added in Cura:"
 msgstr "您帐户中的以下打印机已添加到 Cura 中："
 
-#, fuzzy
 msgctxt "@title:header"
 msgid "The following printers will receive the new material profiles:"
 msgstr "以下打印机将收到新的材料配置文件："
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
 msgstr[0] "以下脚本处于活动状态："
 
-#, fuzzy
 msgctxt "@label"
 msgid "The following settings define the strength of your part."
 msgstr "以下设置定义零件的强度。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The highlighted areas indicate either missing or extraneous surfaces. Fix your model and open it again into Cura."
 msgstr "突出显示的区域指示缺少或多余的表面。修复模型，并再次在 Cura 中打开。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The material in this extruder."
 msgstr "该挤出机中的材料。"
 
-#, fuzzy
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The material package associated with the Cura project could not be found on the Ultimaker Marketplace. Use the partial material profile definition stored in the Cura project file at your own risk."
 msgstr "在 Ultimaker Marketplace 上找不到与 Cura 项目相关的材料包。使用存储在 Cura 项目文件中的部分材料配置文件定义，风险自负。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The maximum distance of each pixel from \"Base.\""
 msgstr "每个像素与底板的最大距离"
 
-#, fuzzy
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
 msgstr "新的灯丝直径被设置为%1毫米，这与当前的挤出机不兼容。你想继续吗？"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "该挤出机所使用的喷嘴。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
 msgstr "打印的填充材料的图案："
@@ -5615,1367 +4501,1096 @@ msgstr "打印的填充材料的图案："
 "对于承压不太大的功能性零件，我们建议使用网格、三角形或三角形与六边形组合图案。"
 "对于在多个方向上需要高强度承受力的功能性 3D 打印，请使用立方体、立方体细分、四分之一立方体、八面体和螺旋形。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "穿透 1 毫米厚的打印件的光线百分比。降低此值将增大图像暗区中的对比度并减小图像亮区中的对比度。"
 
-#, fuzzy
 msgctxt "@label:label Ultimaker Marketplace is a brand name, don't translate"
 msgid "The plugin associated with the Cura project could not be found on the Ultimaker Marketplace. As the plugin may be required to slice the project it might not be possible to correctly slice the file."
 msgstr "在 Ultimaker Marketplace 上找不到与 Cura 项目关联的插件。由于可能需要插件对项目进行切片，因此可能无法正确切片文件。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "The print job was successfully submitted"
 msgstr "打印作业已成功提交"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
 msgstr "已向打印机 %1 分配作业，但作业包含未知的材料配置。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer at this address has not responded yet."
 msgstr "该网络地址的打印机尚未响应。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "该网络地址的打印机尚未响应。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "尚未连接到打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
 msgstr "无法连接到下列打印机，因为这些打印机已在组中"
 
-#, fuzzy
 msgctxt "@message"
 msgid "The provided state is not correct."
 msgstr "所提供的状态不正确。"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "The release notes could not be opened."
 msgstr "无法打开版本说明。"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "The response from Digital Factory appears to be corrupted."
 msgstr "来自 Digital Factory 的响应似乎已损坏。"
 
-#, fuzzy
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
 msgstr "来自 Digital Factory 的响应缺少重要信息。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If this is 0, the bed heating is turned off."
 msgstr "热床的目标温度。热床将加热或冷却至此温度。若设置为 0，则不使用热床。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
 msgstr "热端的目标温度。 热端将加热或冷却至此温度。 如果目标温度为 0，则热端加热将关闭。"
 
-#, fuzzy
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the bed to."
 msgstr "热床的预热温度。"
 
-#, fuzzy
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "热端的预热温度。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "视觉配置文件用于打印视觉原型和模型，可实现出色的视觉效果和表面质量。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
 msgstr "构建板宽度，以毫米为单位"
 
-#, fuzzy
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme*:"
 msgstr "主题*："
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "没有可进行写入的文件格式！"
 
-#, fuzzy
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
 msgstr "队列中无打印任务。可通过切片和发送添加任务。"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "There are no profiles matching the configuration of this extruder."
 msgstr "没有与此挤出器的配置匹配的配置文件。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "There is no active printer yet."
 msgstr "尚无处于活动状态的打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "There is no printer found over your network."
 msgstr "未找到网络内打印机。"
 
-#, fuzzy
 msgctxt "@error"
 msgid "There is no workspace yet to write. Please add a printer first."
 msgstr "没有可写入的工作区。请先添加打印机。"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error trying to restore your backup."
 msgstr "尝试恢复您的备份时出错。"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
 msgstr "创建您的备份时出错。"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "There was an error while uploading your backup."
 msgstr "上传您的备份时出错。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "此配置不可用，因为 %1 未被识别。请访问 %2 以下载正确的材料配置文件。"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
 msgstr "这是 Cura Universal 项目文件。您想将其作为 Cura 项目或 Cura Universal Project 打开还是从中导入模型？"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
 msgstr "这是一个 Cura 项目文件。您想将其作为一个项目打开还是从中导入模型？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
 msgstr "此材料与 %1 相关联，并共享其某些属性。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "这个包将在重新启动后安装。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "由于是未知打印机或不是组内主机，无法添加该打印机。"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
 msgstr[0] "这些打印机未链接到 Digital Factory："
 
-#, fuzzy
 msgctxt "@status"
 msgid "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection."
 msgstr "此打印机未链接到您的帐户。请访问 Ultimaker Digital Factory 以建立连接。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer is not set up to host a group of printers."
 msgstr "这台打印机未设置为运行一组打印机。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "这台打印机是一组共 %1 台打印机的主机。"
 
-#, fuzzy
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "此配置文件 <filename>{0}</filename> 包含错误数据，无法导入。"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
 msgstr "此配置文件使用打印机指定的默认值，因此在下面的列表中没有此设置项。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This project contains materials or plugins that are currently not installed in Cura.<br/>Install the missing packages and reopen the project."
 msgstr "此项目包含 Cura 目前未安装的材料或插件。<br/>请安装缺失程序包，然后重新打开项目。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
 msgstr "此设置的值与配置文件不同。"
 "单击以恢复配置文件的值。"
 
-#, fuzzy
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
 msgstr "该设置已被当前机器所隐藏并不可见。"
 
-#, fuzzy
 msgctxt "@item:tooltip %1 is list of setting names"
 msgid "This setting has been hidden by the value of %1. Change the value of that setting to make this setting visible."
 msgid_plural "This setting has been hidden by the values of %1. Change the values of those settings to make this setting visible."
 msgstr[0] "该设置已被 %1 的值所隐藏，若需显示，更改此值可使设置项重新可见。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "此设置始终在所有挤出机之间共享。在此处更改它将改变所有挤出机的值。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
 msgstr "此设置通常可被自动计算，但其当前已被绝对定义。"
 "单击以恢复自动计算的值。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
 msgstr "未使用此设置，因为受其影响的所有设置均已覆盖。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
 msgstr "此设置与挤出器特定值不同："
 
-#, fuzzy
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project, Users are asked to add it at their own risk."
 msgstr "导出为 Universal Cura Project 项目时,此设置可能无法正常运行,请用户自行承担添加此设置的风险。"
 
-#, fuzzy
 msgctxt "@tooltip Don't translate 'Universal Cura Project'"
 msgid "This setting may not perform well while exporting to Universal Cura Project. Users are asked to add it at their own risk."
 msgstr "导出为 Universal Cura Project 项目时,此设置可能无法正常运行。请用户自行承担添加此设置的风险。"
 
-#, fuzzy
 msgctxt "@info:warning"
 msgid "This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"
 msgstr "此版本不用作生产用途。如果您遇到任何问题，请在我们的 GitHub 页面报告，并注明完整版本 {self.getVersion()}"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Time estimation"
 msgstr "预计时间"
 
-#, fuzzy
 msgctxt "@message"
 msgid "Timeout when authenticating with the account server."
 msgstr "使用帐户服务器进行身份验证超时。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "要自动将材料配置文件与连接到 Digital Factory 的所有打印机同步，您需要登录 Cura。"
 
-#, fuzzy
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "要建立连接，请访问 {website_link}"
 
-#, fuzzy
 msgctxt "@label"
 msgid "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted."
 msgstr "为了确保打印质量出色，您现在可以开始调整您的打印平台。当您点击「移动到下一个位置」时，喷嘴将移动到可以调节的不同位置。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "欲通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接至网络。若不能连接 Cura 与打印机，亦可通过使用 USB 设备将 G-code 文件传输到打印机。"
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "要永久删除 {printer_name}，请访问 {digital_factory_link}"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "切换全屏"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Top / Bottom"
 msgstr "顶 / 底层"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "顶视图"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Top View"
 msgstr "顶视图"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Total print time"
 msgstr "总打印时间"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Track the print in Ultimaker Digital Factory"
 msgstr "在 Ultimaker Digital Factory 中跟踪打印"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Translucency"
 msgstr "半透明"
 
-#, fuzzy
 msgctxt "@tooltip"
 msgid "Travel"
 msgstr "移动"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Travels"
 msgstr "空驶"
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
 msgstr "尝试恢复的 Cura 备份版本高于当前版本。"
 
-#, fuzzy
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
 msgstr "试图在没有适当数据或元数据的情况下恢复Cura备份。"
 
-#, fuzzy
 msgctxt "name"
 msgid "Trimesh Reader"
 msgstr "Trimesh 阅读器"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Troubleshooting"
 msgstr "故障排除"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "故障排除"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Try again"
 msgstr "再试一次"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Type"
 msgstr "类型"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Type"
 msgstr "类型"
 
-#, fuzzy
 msgctxt "name"
 msgid "UFP Reader"
 msgstr "UFP 读取器"
 
-#, fuzzy
 msgctxt "name"
 msgid "UFP Writer"
 msgstr "UFP 写入器"
 
-#, fuzzy
 msgctxt "@item:inmenu"
 msgid "USB printing"
 msgstr "USB 联机打印"
 
-#, fuzzy
 msgctxt "name"
 msgid "USB printing"
 msgstr "USB 联机打印"
 
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker Account"
 msgstr "UltiMaker 帐户"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Certified Material"
 msgstr "UltiMaker 认证材料"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "UltiMaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
 msgstr "为了改善打印质量和用户体验，UltiMaker Cura 会收集匿名数据。以下是所有数据分享的示例："
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "UltiMaker Format Package"
 msgstr "UltiMaker 格式包"
 
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker Network Connection"
 msgstr "UltiMaker 网络连接"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Verified Package"
 msgstr "UltiMaker 验证包"
 
-#, fuzzy
 msgctxt "@info"
 msgid "UltiMaker Verified Plug-in"
 msgstr "UltiMaker 验证插件"
 
-#, fuzzy
 msgctxt "name"
 msgid "UltiMaker machine actions"
 msgstr "UltiMaker 车床操作"
 
-#, fuzzy
 msgctxt "@button"
 msgid "UltiMaker printer"
 msgstr "UltiMaker 打印机"
 
-#, fuzzy
 msgctxt "@label:button"
 msgid "UltiMaker support"
 msgstr "UltiMaker 支持"
 
-#, fuzzy
 msgctxt "info:name"
 msgid "Ultimaker Digital Factory"
 msgstr "Ultimaker Digital Factory"
 
-#, fuzzy
 msgctxt "name"
 msgid "Ultimaker Digital Library"
 msgstr "Ultimaker Digital Library"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to add the profile."
 msgstr "无法添加配置文件。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "无法在成形空间体积内放下全部模型"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr "无法为以下对象找到本地 EnginePlugin 服务器可执行文件：{self._plugin_id}"
 
-#, fuzzy
 msgctxt "@info:plugin_failed"
 msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
 msgstr "无法关闭正在运行的 EnginePlugin：{self._plugin_id}"
 "访问被拒。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
 msgstr "无法连接 UltiMaker 帐户服务器。"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "无法读取示例数据文件。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Unable to slice"
 msgstr "无法切片"
 
-#, fuzzy
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
 msgstr "无法切片"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "无法切片（原因：主塔或主位置无效）。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "无法切片，因为存在与已禁用挤出机 %s 相关联的对象。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "因部分特定模型设置而无法切片。 以下设置在一个或多个模型上存在错误： {error_labels}"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "无法使用当前材料进行切片，因为该材料与所选机器或配置不兼容。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "无法使用当前设置进行切片。以下设置存在错误：{0}"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "无法开始新的登录过程。请检查是否仍在尝试进行另一登录。"
 
-#, fuzzy
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr "无法写入文件:{0}"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "不可用"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "不可用的打印机"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "拆分模型"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Uninstall"
 msgstr "卸载"
 
-#, fuzzy
 msgctxt "@title:column Unit of measurement"
 msgid "Unit"
 msgstr "单位"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "Universal Cura Project"
 msgstr "Universal Cura Project"
 
-#, fuzzy
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr "Universal Cura Project 文件可以在不同的 3D 打印机上打印,同时保留位置数据和选定的设置。导出时,构建板上显示的所有模型都将包含其当前位置,方向和比例。您还可以选择需要保留哪个推料器预设置或模型预设置,以确保正确打印。"
 
-#, fuzzy
 msgctxt "@label Description for development tool"
 msgid "Universal build system configuration"
 msgstr "通用构建系统配置"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unknown"
 msgstr "未知"
 
-#, fuzzy
 msgctxt "@label unknown version of Cura"
 msgid "Unknown"
 msgstr "未知"
 
-#, fuzzy
 msgctxt "@label:property"
 msgid "Unknown Author"
 msgstr "未知作者"
 
-#, fuzzy
 msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "未知包"
 
-#, fuzzy
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "上传打印作业时出现未知错误代码：{0}"
 
-#, fuzzy
 msgctxt "@text"
 msgid "Unknown error."
 msgstr "未知错误。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Unlink Material"
 msgstr "解绑材料"
 
-#, fuzzy
 msgctxt "@label:status"
 msgid "Unreachable"
 msgstr "无法连接"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Untitled"
 msgstr "未命名"
 
-#, fuzzy
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "未命名"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Update"
 msgstr "更新"
 
-#, fuzzy
 msgctxt "@action"
 msgid "Update Firmware"
 msgstr "更新固件"
 
-#, fuzzy
 msgctxt "@title"
 msgid "Update Firmware"
 msgstr "更新固件"
 
-#, fuzzy
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
 msgstr "更新已有配置"
 
-#, fuzzy
 msgctxt "@action:tooltip"
 msgid "Update profile with current settings/overrides"
 msgstr "使用当前设置 / 重写值更新配置文件"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Update profile."
 msgstr "更新配置文件。"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Update your printer"
 msgstr "请更新升级打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Updates"
 msgstr "更新"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Updating firmware."
 msgstr "更新固件中..."
 
-#, fuzzy
 msgctxt "@button"
 msgid "Updating..."
 msgstr "正在更新..."
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.1 to Cura 2.2."
 msgstr "将配置从 Cura 2.1 版本升级至 2.2 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.2 to Cura 2.4."
 msgstr "将配置从 Cura 2.2 版本升级至 2.4 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
 msgstr "将配置从 Cura 2.5 版本升级至 2.6 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
 msgstr "将配置从 Cura 2.6 版本升级至 2.7 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.7 to Cura 3.0."
 msgstr "将配置从 Cura 2.7 版本升级至 3.0 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.0 to Cura 3.1."
 msgstr "将配置从 Cura 3.0 版本升级至 3.1 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.2 to Cura 3.3."
 msgstr "将配置从 Cura 3.2 版本升级至 3.3 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.3 to Cura 3.4."
 msgstr "从Cura 3.3升级到Cura 3.4。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.4 to Cura 3.5."
 msgstr "将配置从 Cura 3.4 版本升级至 3.5 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
 msgstr "将配置从 Cura 3.5 版本升级至 4.0 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
 msgstr "将配置从 Cura 4.0 版本升级至 4.1 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
 msgstr "请将配置从 Cura 4.1 升级至 Cura 4.2。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.11 to Cura 4.12."
 msgstr "将配置从 Cura 4.11 升级到 Cura 4.12。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.13 to Cura 5.0."
 msgstr "将配置从 Cura 4.13 升级至 Cura 5.0。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
 msgstr "请将配置从 Cura 4.2 升级至 Cura 4.3。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
 msgstr "将配置从 Cura 4.3 升级至 Cura 4.4。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
 msgstr "将配置从 Cura 4.4 升级至 Cura 4.5。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
 msgstr "将配置从 Cura 4.5 升级至 Cura 4.6。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.0 to Cura 4.6.2."
 msgstr "将配置从 Cura 4.6.0 升级到 Cura 4.6.2。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.6.2 to Cura 4.7."
 msgstr "将配置从 Cura 4.6.2 升级到 Cura 4.7。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.7 to Cura 4.8."
 msgstr "将配置从 Cura 4.7 升级到 Cura 4.8。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.8 to Cura 4.9."
 msgstr "将配置从 Cura 4.8 升级到 Cura 4.9。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.9 to Cura 4.10."
 msgstr "将配置从 Cura 4.9 升级到 Cura 4.10。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
 msgstr "将配置从 Cura 5.2 版本升级至 5.3 版本。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.3 to Cura 5.4."
 msgstr "将配置从 Cura 5.3 升级到 Cura 5.4。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.4 to Cura 5.5."
 msgstr "将配置从 Cura 5.4 升级到 Cura 5.5。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr "将配置从 Cura 5.6 升级到 Cura 5.7。"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上传自定义固件"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Uploading print job to printer."
 msgstr "正在将打印作业上传至打印机。"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Uploading your backup..."
 msgstr "正在上传您的备份..."
 
-#, fuzzy
 msgctxt "@option:check"
 msgid "Use a single instance of Cura"
 msgstr "使用单个 Cura 实例"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
 msgstr "用胶粘和此材料组合以产生更好的附着。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "用户协议"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Utility functions, including an image loader"
 msgstr "实用程序函数，包括图像加载器"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "Utility library, including Voronoi generation"
 msgstr "实用程序库，包括 Voronoi 图生成"
 
-#, fuzzy
 msgctxt "@title:column"
 msgid "Value"
 msgstr "值"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.1 to 2.2"
 msgstr "版本自 2.1 升级到 2.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
 msgstr "版本自 2.2 升级到 2.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.5 to 2.6"
 msgstr "版本自 2.5 升级到 2.6"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.6 to 2.7"
 msgstr "版本自 2.6 升级到 2.7"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 2.7 to 3.0"
 msgstr "版本自 2.7 升级到 3.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.0 to 3.1"
 msgstr "版本自 3.0 升级到 3.1"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
 msgstr "版本自 3.2 升级到 3.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
 msgstr "版本升级3.3到3.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.4 to 3.5"
 msgstr "版本自 3.4 升级到 3.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 3.5 to 4.0"
 msgstr "版本自 3.5 升级到 4.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.0 to 4.1"
 msgstr "版本自 4.0 升级到 4.1"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
 msgstr "版本自 4.1 升级到 4.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.11 to 4.12"
 msgstr "版本从 4.11 升级到 4.12"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.13 to 5.0"
 msgstr "版本从 4.13 升级到 5.0"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.2 to 4.3"
 msgstr "版本自 4.2 升级至 4.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
 msgstr "版本自 4.3 升级至 4.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
 msgstr "版本从 4.4 升级至 4.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
 msgstr "版本从 4.5 升级至 4.6"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.6.0 to 4.6.2"
 msgstr "版本从 4.6.0 升级到 4.6.2"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
 msgstr "版本从 4.6.2 升级到 4.7"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.7 to 4.8"
 msgstr "将版本从 4.7 升级到 4.8"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.8 to 4.9"
 msgstr "版本从 4.8 升级到 4.9"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 4.9 to 4.10"
 msgstr "版本从 4.9 升级到 4.10"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.2 to 5.3"
 msgstr "版本自 5.2 升级到 5.3"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.3 to 5.4"
 msgstr "版本 5.3 升级到 5.4"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr "版本 5.4 升级到 5.5"
 
-#, fuzzy
 msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
 msgstr "升级版本 5.6 至 5.7"
 
-#, fuzzy
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "在 Digital Factory 中查看打印机"
 
-#, fuzzy
 msgctxt "@label"
 msgid "View type"
 msgstr "查看类型"
 
-#, fuzzy
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
 msgstr "查看联机用户手册"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "视区行为"
 
-#, fuzzy
 msgctxt "@action:inmenu"
 msgid "Visible Settings"
 msgstr "可见设置"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Visit plug-in website"
 msgstr "访问插件网站"
 
-#, fuzzy
 msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr "访问 UltiMaker 网站。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Visual"
 msgstr "视觉"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "等待"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Waiting for Cloud response"
 msgstr "等待云响应"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Waiting for new printers"
 msgstr "等待新打印机"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Want more?"
 msgstr "想要更多？"
 
-#, fuzzy
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "警告：配置文件不可见，因为其质量类型“{0}”对当前配置不可用。请切换到可使用此质量类型的材料/喷嘴组合。"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "我们已经在您选择的文件中找到一个或多个 G-Code 文件。您一次只能打开一个 G-Code 文件。若需打开 G-Code 文件，请仅选择一个。"
 
-#, fuzzy
 msgctxt "@text:window"
 msgid "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?"
 msgstr "我们已经在您所选择的文件中找到一个或多个项目文件，但一次只能打开一个项目文件。我们建议只从那些文件中导入模型而不打开项目。您要继续操作吗?"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Webcam feeds for cloud printers cannot be viewed from UltiMaker Cura. Click \"Manage printer\" to visit Ultimaker Digital Factory and view this webcam."
 msgstr "无法从 UltiMaker Cura 中查看云打印机的网络摄像头馈送。请单击“管理打印机”以访问 Ultimaker Digital Factory 并查看此网络摄像头。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Website"
 msgstr "网站"
 
-#, fuzzy
 msgctxt "@label"
 msgid "What printer would you like to setup?"
 msgstr "您要设置什么打印机？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "What type of camera navigation should be used?"
 msgstr "应使用什么类型的导航相机？"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
 msgstr "应使用哪种类型的摄像头进行渲染？"
 
-#, fuzzy
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "新增功能"
 
-#, fuzzy
 msgctxt "@label"
 msgid "What's New"
 msgstr "新增功能"
 
-#, fuzzy
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "新增功能"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When checking for updates, check for both stable and for beta releases."
 msgstr "在检查更新时，同时检查稳定版和测试版。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When checking for updates, only check for stable releases."
 msgstr "在检查更新时，只检查稳定版。"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "当您对配置文件进行更改并切换到其他配置文件时将显示一个对话框，询问您是否要保留修改。您也可以选择一个默认行为并令其不再显示该对话框。"
 
-#, fuzzy
 msgctxt "@button"
 msgid "Why do I need to sync material profiles?"
 msgstr "为什么需要同步材料配置文件？"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Width (mm)"
 msgstr "宽度 (mm)"
 
-#, fuzzy
 msgctxt "description"
 msgid "Writes g-code to a compressed archive."
 msgstr "将 G-code 写入至压缩存档文件。"
 
-#, fuzzy
 msgctxt "description"
 msgid "Writes g-code to a file."
 msgstr "将 G-code 写入至文件。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (宽度)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X max"
 msgstr "X 最大值"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X min"
 msgstr "X 最小值"
 
-#, fuzzy
 msgctxt "name"
 msgid "X-Ray View"
 msgstr "透视视图"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X-Ray view"
 msgstr "透视视图"
 
-#, fuzzy
 msgctxt "@label"
 msgid "X/Y"
 msgstr "X/Y"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "X3D File"
 msgstr "X3D 文件"
 
-#, fuzzy
 msgctxt "name"
 msgid "X3D Reader"
 msgstr "X3D 读取器"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y (Depth)"
 msgstr "Y (深度)"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y max"
 msgstr "Y 最大值"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Y min"
 msgstr "Y 最小值"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Yes"
 msgstr "是"
 
-#, fuzzy
 msgctxt "@label"
 msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。"
 "是否确定继续？"
 
-#, fuzzy
 msgctxt "@label"
 msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
 msgstr[0] "您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n是否确实要继续？"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "您正在尝试连接未运行 UltiMaker Connect 的打印机。请将打印机升级到最新固件。"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "您正在尝试连接到 {0}，但它不是组中的主机。您可以访问网页，将其配置为组主机。"
 
-#, fuzzy
 msgctxt "@empty_state"
 msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
 msgstr "您目前没有任何备份。使用“立即备份”按钮创建一个备份。"
 
-#, fuzzy
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
 msgstr "您已经自定义了若干配置文件设置。"
 "是否要在切换配置文件后保留这些更改的设置？"
 "或者，也可舍弃更改以从“%1”加载默认值。"
 
-#, fuzzy
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
 msgstr "需要接受许可证才能安装该程序包"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
 msgstr "需要退出并重新启动 {}，然后更改才能生效。"
 
-#, fuzzy
 msgctxt "@dialog:info"
 msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
 msgstr "您需要重新启动 Cura 才能恢复备份。您要立即关闭 Cura 吗？"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "You will receive a confirmation via email when the print job is approved"
 msgstr "打印作业获得批准后，您将收到电子邮件确认信息"
 
-#, fuzzy
 msgctxt "@info:backup_status"
 msgid "Your backup has finished uploading."
 msgstr "您的备份已完成上传。"
 
-#, fuzzy
 msgctxt "@action:label"
 msgid "Your current settings match the selected profile."
 msgstr "您当前的设置与选定的配置文件相匹配。"
 
-#, fuzzy
 msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "新打印机将自动出现在 Cura 中"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
 msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。"
 "只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Z"
 msgstr "Z"
 
-#, fuzzy
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (高度)"
 
-#, fuzzy
 msgctxt "@label Description for application dependency"
 msgid "ZeroConf discovery library"
 msgstr "ZeroConf 发现库"
 
-#, fuzzy
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "跟随鼠标方向缩放"
 
-#, fuzzy
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "正交透视不支持通过鼠标进行缩放。"
 
-#, fuzzy
 msgctxt "@text Placeholder for the username if it has been deleted"
 msgid "deleted user"
 msgstr "已删除的用户"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "glTF Binary"
 msgstr "glTF 二进制"
 
-#, fuzzy
 msgctxt "@item:inlistbox"
 msgid "glTF Embedded JSON"
 msgstr "glTF 嵌入式 JSON"
 
-#, fuzzy
 msgctxt "@label"
 msgid "max"
 msgstr "最大"
 
-#, fuzzy
 msgctxt "@label"
 msgid "min"
 msgstr "最小"
 
-#, fuzzy
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
-#, fuzzy
 msgctxt "@label"
 msgid "s"
 msgstr "s"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "today"
 msgstr "今天"
 
-#, fuzzy
 msgctxt "@info:status"
 msgid "tomorrow"
 msgstr "明天"
 
-#, fuzzy
 msgctxt "@label"
 msgid "version: %1"
 msgstr "版本： %1"
 
-#, fuzzy
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "将删除 {printer_name}，直到下次帐户同步为止。"
 
-#, fuzzy
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} 个插件下载失败"
