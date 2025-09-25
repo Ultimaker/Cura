@@ -18,6 +18,8 @@ for language_dir in "$i18n_dir"/*; do
 done
 
 git rm $default_i18n_dir/uranium.po
+git rm cura.po
+git rm uranium.po
 
 
 echo "##########################################"
@@ -42,3 +44,5 @@ for language_dir in "$i18n_dir"/*; do
 done
 
 git rm $default_i18n_dir/cura.po
+git rm cura.po
+git rm uranium.po
