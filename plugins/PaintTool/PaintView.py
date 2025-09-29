@@ -3,6 +3,7 @@
 
 import os
 import math
+from weakref import WeakKeyDictionary
 
 from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
 from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
@@ -46,12 +47,11 @@ class PaintView(CuraView):
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
-        self._paint_undo_stacks: Dict[Tuple[SceneNode, str], QUndoStack] = {}
+        self._paint_undo_stacks: WeakKeyDictionary[SceneNode, Dict[str, QUndoStack]] = WeakKeyDictionary()
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
-        self._scene.getRoot().childrenChanged.connect(self._onChildrenChanged)
 
         self._extruders_model: Optional[ExtrudersModel] = None
         self._extruders_converter: Optional[MultiMaterialExtruderConverter] = None
@@ -95,28 +95,13 @@ class PaintView(CuraView):
         return stack.canRedo() if stack is not None else False
 
     def _getUndoStack(self):
-        if self._painted_object is None or self._current_paint_type == "":
+        if self._painted_object is None:
             return None
 
         try:
-            return self._paint_undo_stacks[(self._painted_object, self._current_paint_type)]
+            return self._paint_undo_stacks[self._painted_object][self._current_paint_type]
         except KeyError:
             return None
-
-    def _onChildrenChanged(self, root_node: SceneNode):
-        # Gather all the actual nodes that have one or more undo stacks
-        stacks_keys = {}
-        for painted_object, paint_mode in self._paint_undo_stacks:
-            if painted_object in stacks_keys:
-                stacks_keys[painted_object].append(paint_mode)
-            else:
-                stacks_keys[painted_object] = [paint_mode]
-
-        # Now see if any of the nodes have been deleted, i.e. they are no more linked to the root
-        for painted_object, paint_modes in stacks_keys.items():
-            if painted_object.getDepth() == 0:
-                for paint_mode in paint_modes:
-                    del self._paint_undo_stacks[(painted_object, paint_mode)]
 
     def _makePaintModes(self):
         application = CuraApplication.getInstance()
@@ -141,10 +126,11 @@ class PaintView(CuraView):
 
     def _onMainExtruderChanged(self, node: SceneNode):
         # Since the affected extruder has changed, the previous material painting commands become irrelevant,
-        # so clear the stack
-        for (painted_object, paint_mode), stack in self._paint_undo_stacks.items():
-            if painted_object == node and paint_mode == "extruder":
-                stack.clear()
+        # so clear the undo stack of the object, if any
+        try:
+            self._paint_undo_stacks[node]["extruder"].clear()
+        except KeyError:
+            pass
 
     def _makeExtrudersColors(self) -> Dict[str, "PaintView.PaintType"]:
         extruders_colors: Dict[str, "PaintView.PaintType"] = {}
@@ -243,6 +229,9 @@ class PaintView(CuraView):
         self._prepareDataMapping()
         stack = self._prepareUndoRedoStack()
 
+        if stack is None:
+            return
+
         set_value = self._shiftTextureValue(self._paint_modes[self._current_paint_type][brush_color].value)
         stack.push(PaintStrokeCommand(self._paint_texture,
                                       stroke_path,
@@ -265,6 +254,9 @@ class PaintView(CuraView):
     def clearPaint(self):
         self._prepareDataMapping()
         stack = self._prepareUndoRedoStack()
+
+        if stack is None:
+            return
 
         clear_command = self._makeClearCommand()
         if clear_command is not None:
@@ -292,17 +284,23 @@ class PaintView(CuraView):
         self._current_paint_type = paint_type
         self._prepareDataMapping()
 
-    def _prepareUndoRedoStack(self) -> QUndoStack:
-        stack_key = (self._painted_object, self._current_paint_type)
+    def _prepareUndoRedoStack(self) -> Optional[QUndoStack]:
+        if self._painted_object is None:
+            return None
 
-        if stack_key not in self._paint_undo_stacks:
+        try:
+            return self._paint_undo_stacks[self._painted_object][self._current_paint_type]
+        except KeyError:
             stack: QUndoStack = QUndoStack()
-            stack.setUndoLimit(32)  # Set a quite low amount since some commands copy the full texture
+            stack.setUndoLimit(16)  # Set a quite low amount since some commands copy the full texture
             stack.canUndoChanged.connect(self.canUndoChanged)
             stack.canRedoChanged.connect(self.canRedoChanged)
-            self._paint_undo_stacks[stack_key] = stack
 
-        return self._paint_undo_stacks[stack_key]
+            if self._painted_object not in self._paint_undo_stacks:
+                self._paint_undo_stacks[self._painted_object] = {}
+
+            self._paint_undo_stacks[self._painted_object][self._current_paint_type] = stack
+            return stack
 
     def _prepareDataMapping(self):
         if self._painted_object is None:
