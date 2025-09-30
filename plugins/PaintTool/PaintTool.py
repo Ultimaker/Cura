@@ -468,7 +468,8 @@ class PaintTool(Tool):
             if self._mouse_held:
                 Application.getInstance().getController().getScene().sceneChanged.emit(node)
             else:
-                self._view.rerenderFull()
+                scene = self.getController().getScene()
+                scene.sceneChanged.emit(scene.getRoot())
 
     def _onSelectionChanged(self):
         super()._onSelectionChanged()

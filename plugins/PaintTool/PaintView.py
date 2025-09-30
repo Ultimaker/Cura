@@ -274,13 +274,6 @@ class PaintView(CuraView):
 
         return start_index, end_index
 
-    def rerenderFull(self):
-        self._renderer.beginRendering()
-        self.beginRendering()
-        self._renderer.render()
-        self.endRendering()
-        self._renderer.endRendering()
-
     def beginRendering(self) -> None:
         if self._current_paint_type not in self._paint_modes:
             return
