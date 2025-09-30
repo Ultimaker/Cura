@@ -31,6 +31,8 @@ catalog = i18nCatalog("cura")
 class PaintView(CuraView):
     """View for model-painting."""
 
+    MAX_EXTRUDER_COUNT = 16
+
     class PaintType:
         def __init__(self, display_color: Color, value: int):
             self.display_color: Color = display_color
@@ -114,14 +116,17 @@ class PaintView(CuraView):
     def _makeExtrudersColors(self) -> Dict[str, "PaintView.PaintType"]:
         extruders_colors: Dict[str, "PaintView.PaintType"] = {}
 
-        for extruder_item in self._extruders_model.items:
-            if "color" in extruder_item:
+        for extruder_index in range(PaintView.MAX_EXTRUDER_COUNT):
+            extruder_item = self._extruders_model.getExtruderItem(extruder_index)
+            if extruder_item is None:
+                extruder_item = self._extruders_model.getExtruderItem(0)
+
+            if extruder_item is not None and "color" in extruder_item:
                 material_color = extruder_item["color"]
             else:
                 material_color = self._extruders_model.defaultColors[0]
 
-            index = extruder_item["index"]
-            extruders_colors[str(index)] = self.PaintType(Color(*QColor(material_color).getRgb()), index)
+            extruders_colors[str(extruder_index)] = self.PaintType(Color(*QColor(material_color).getRgb()), extruder_index)
 
         return extruders_colors
 
