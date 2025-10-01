@@ -7,6 +7,7 @@ import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
 from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF, QPainterPath
 from typing import cast, Optional, Tuple, List
+import pyUvula as uvula
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent
@@ -15,6 +16,7 @@ from UM.Logger import Logger
 from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
+from UM.Mesh.MeshData import MeshData
 from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -56,7 +58,7 @@ class PaintTool(Tool):
         self._shortcut_key: Qt.Key = Qt.Key.Key_P
 
         self._node_cache: Optional[SceneNode] = None
-        self._mesh_transformed_cache = None
+        self._mesh_transformed_cache: Optional[MeshData] = None
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
@@ -304,8 +306,6 @@ class PaintTool(Tool):
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
 
-        :param face_id_a: ID of the face where the stroke starts.
-        :param face_id_b: ID of the face where the stroke ends.
         :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
         :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
         :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
@@ -320,6 +320,7 @@ class PaintTool(Tool):
                                dtype=numpy.float32)
 
         stroke_poly = self._getStrokePolygon(get_projected_on_plane(world_coords_a), get_projected_on_plane(world_coords_b))
+        stroke_poly.toType(numpy.float32)
         stroke_poly_viewport = Polygon([get_projected_on_viewport_image(point) for point in stroke_poly])
 
         faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
@@ -329,29 +330,22 @@ class PaintTool(Tool):
 
         texture_dimensions = numpy.array(list(self._view.getUvTexDimensions()))
 
-        res = []
-        for face in faces:
-            _, fnorm = self._mesh_transformed_cache.getFacePlane(face)
-            if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
-                continue
+        mesh_indices = self._mesh_transformed_cache.getIndices()
+        if mesh_indices is None:
+            mesh_indices = numpy.array([], dtype=numpy.int32)
 
-            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face)
-            stroke_tri = Polygon([
-                get_projected_on_plane(va),
-                get_projected_on_plane(vb),
-                get_projected_on_plane(vc)])
-            face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(face)
-            if face_uv_coordinates is None:
-                continue
-            ta, tb, tc = face_uv_coordinates
-            original_uv_poly = numpy.array([ta, tb, tc])
-            uv_area = stroke_poly.intersection(stroke_tri)
-
-            if uv_area.isValid():
-                uv_area_barycentric = PaintTool._getBarycentricCoordinates(uv_area.getPoints(), stroke_tri.getPoints())
-                if uv_area_barycentric is not None:
-                    res.append(Polygon((uv_area_barycentric @ original_uv_poly) * texture_dimensions))
-
+        res = uvula.project(stroke_poly.getPoints(),
+                            self._mesh_transformed_cache.getVertices(),
+                            mesh_indices,
+                            self._node_cache.getMeshData().getUVCoordinates(),
+                            self._view.getUvTexDimensions()[0],
+                            self._view.getUvTexDimensions()[1],
+                            self._camera.getProjectToViewMatrix().getData(),
+                            self._camera.isPerspective(),
+                            self._camera.getViewportWidth(),
+                            self._camera.getViewportHeight(),
+                            self._cam_norm,
+                            faces)
         return res
 
     def event(self, event: Event) -> bool:
