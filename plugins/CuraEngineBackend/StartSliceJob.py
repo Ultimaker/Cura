@@ -764,21 +764,7 @@ class StartSliceJob(Job):
 
     @staticmethod
     def _getUsedExtruders(node: SceneNode) -> List[int]:
-        used_extruders = []
-
-        # Look at extruders used in painted texture
-        node_texture = node.callDecoration("getPaintTexture")
-        texture_data_mapping = node.callDecoration("getTextureDataMapping")
-        if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
-            texture_image = node_texture.getImage().copy()
-            image_ptr = texture_image.bits()
-            image_ptr.setsize(texture_image.sizeInBytes())
-            image_size = texture_image.height(), texture_image.width()
-            image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
-
-            bit_range_start, bit_range_end = texture_data_mapping["extruder"]
-            image_array = (image_array << (32 - 1 - (bit_range_end - bit_range_start))) >> (32 - 1 - bit_range_end)
-            used_extruders = numpy.unique(image_array).tolist()
+        used_extruders = ExtruderManager.getInstance().getPaintedExtruders(node)
 
         # There is no relevant painting data, just take the extruder associated to the model
         if not used_extruders:

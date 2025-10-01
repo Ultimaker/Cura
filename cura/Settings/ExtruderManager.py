@@ -19,6 +19,8 @@ from cura.Settings.ExtruderStack import ExtruderStack
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
+import numpy
+
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
 
@@ -196,6 +198,24 @@ class ExtruderManager(QObject):
         else:
             return value
 
+    @staticmethod
+    def getPaintedExtruders(node: "SceneNode") -> List[int]:
+        node_texture = node.callDecoration("getPaintTexture")
+        texture_data_mapping = node.callDecoration("getTextureDataMapping")
+        if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
+            texture_image = node_texture.getImage().copy()
+            image_ptr = texture_image.bits()
+            image_ptr.setsize(texture_image.sizeInBytes())
+            image_size = texture_image.height(), texture_image.width()
+            image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
+
+            bit_range_start, bit_range_end = texture_data_mapping["extruder"]
+            image_array = (image_array << (32 - 1 - (bit_range_end - bit_range_start))) >> (32 - 1 - bit_range_end)
+
+            return numpy.unique(image_array).tolist()
+        else:
+            return []
+
     def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         """Gets the extruder stacks that are actually being used at the moment.
 
@@ -253,6 +273,9 @@ class ExtruderManager(QObject):
                 support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
             if not support_roof_enabled:
                 support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+
+            for extruder_nr in ExtruderManager.getPaintedExtruders(node):
+                used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
 
         # Check limit to extruders
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
