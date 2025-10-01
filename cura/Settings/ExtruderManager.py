@@ -210,7 +210,7 @@ class ExtruderManager(QObject):
             image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
 
             bit_range_start, bit_range_end = texture_data_mapping["extruder"]
-            image_array = (image_array << (32 - 1 - (bit_range_end - bit_range_start))) >> (32 - 1 - bit_range_end)
+            image_array = (image_array << (32 - 1 - bit_range_end)) >> (32 - 1 - (bit_range_end - bit_range_start))
 
             return numpy.unique(image_array).tolist()
         else:
