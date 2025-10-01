@@ -271,43 +271,15 @@ class PaintTool(Tool):
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
-    @staticmethod
-    def _rasterizePolygons(polygons: List[Polygon], pen: QPen, brush: QBrush) -> Tuple[QImage, Tuple[int, int]]:
-        if not polygons:
-            return QImage(), (0, 0)
-
-        bounding_box = polygons[0].getBoundingBox()
-        for polygon in polygons[1:]:
-            bounding_box += polygon.getBoundingBox()
-
-        bounding_box = AxisAlignedBox2D(numpy.array([math.floor(bounding_box.left), math.floor(bounding_box.top)]),
-                                        numpy.array([math.ceil(bounding_box.right), math.ceil(bounding_box.bottom)]))
-
-        # Use RGB32 which is more optimized for drawing to
-        image = QImage(int(bounding_box.width), int(bounding_box.height), QImage.Format.Format_RGB32)
-        image.fill(0)
-
-        painter = QPainter(image)
-        painter.translate(-bounding_box.left, -bounding_box.bottom)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setPen(pen)
-        painter.setBrush(brush)
-
-        for polygon in polygons:
-            painter.drawPolygon(QPolygonF([QPointF(point[0], point[1]) for point in polygon]))
-
-        painter.end()
-
-        return image, (int(bounding_box.left), int(bounding_box.bottom))
-
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
-    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
 
         :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
         :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
+        :param face_id: the ID of the face at the center of the stroke
         :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
         """
 
@@ -338,6 +310,7 @@ class PaintTool(Tool):
                             self._mesh_transformed_cache.getVertices(),
                             mesh_indices,
                             self._node_cache.getMeshData().getUVCoordinates(),
+                            self._node_cache.getMeshData().getFacesConnections(),
                             self._view.getUvTexDimensions()[0],
                             self._view.getUvTexDimensions()[1],
                             self._camera.getProjectToViewMatrix().getData(),
@@ -345,7 +318,8 @@ class PaintTool(Tool):
                             self._camera.getViewportWidth(),
                             self._camera.getViewportHeight(),
                             self._cam_norm,
-                            faces)
+                            face_id)
+        Logger.debug("done")
         return res
 
     def event(self, event: Event) -> bool:
@@ -430,7 +404,7 @@ class PaintTool(Tool):
 
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
+                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -438,7 +412,8 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
+                    Logger.debug("start stroking")
+                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
                     stroke_path = self._createStrokePath(uv_areas)
