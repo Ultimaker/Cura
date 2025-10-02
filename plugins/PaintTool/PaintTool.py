@@ -388,6 +388,7 @@ class PaintTool(Tool):
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
+            event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
                 uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
@@ -401,13 +402,14 @@ class PaintTool(Tool):
                     uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
+                    event_caught = True
                     self._view.addStroke(uv_areas, brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
             self._updateScene(node)
-            return True
+            return event_caught
 
         return False
 
