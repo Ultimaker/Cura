@@ -101,7 +101,6 @@ class FilamentChange(Script):
                     "type": "enum",
                     "options": {"U": "Marlin (M600 U)", "L": "Reprap (M600 L)"},
                     "default_value": "U",
-                    "value": "\\\"L\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"U\\\"",
                     "enabled": "enabled and not firmware_config"
                 },                    
                 "machine_gcode_flavor":
@@ -122,7 +121,7 @@ class FilamentChange(Script):
                         "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
-                    "enabled": "false"
+                    "enabled": false
                 },
                 "enable_before_macro":
                 {
@@ -171,6 +170,13 @@ class FilamentChange(Script):
 
         for key in ["machine_gcode_flavor"]:
             self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
+
+        # Set retract method based on gcode flavor
+        gcode_flavor = global_container_stack.getProperty("machine_gcode_flavor", "value")
+        if gcode_flavor == "RepRap (RepRap)":
+            self._instance.setProperty("retract_method", "value", "L")
+        else:
+            self._instance.setProperty("retract_method", "value", "U")
 
     def execute(self, data: List[str]):
         """Inserts the filament change g-code at specific layer numbers.
