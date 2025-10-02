@@ -455,7 +455,7 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._updateScene(node)
+            self._updateScene(node if event_caught else None)
             return event_caught
 
         return False
