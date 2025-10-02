@@ -51,7 +51,6 @@ from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
 from .ThreeMFVariant import ThreeMFVariant
 from .Cura3mfVariant import Cura3mfVariant
-from .BambuLabVariant import BambuLabVariant
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -78,8 +77,7 @@ class ThreeMFWriter(MeshWriter):
 
         # Register available variants
         self._variants = {
-            Cura3mfVariant(self).mime_type: Cura3mfVariant,
-            BambuLabVariant(self).mime_type: BambuLabVariant
+            Cura3mfVariant(self).mime_type: Cura3mfVariant
         }
 
     @staticmethod
