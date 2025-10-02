@@ -191,10 +191,6 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 "capabilities",
                 "octoprint_api_key",
                 "is_online",
-                "cluster_api/auth_ids",
-                "cluster_api/auth_keys",
-                "cluster_api/nonce_counts",
-                "cluster_api/nonces",
             }
             serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
