@@ -434,6 +434,7 @@ class PaintTool(Tool):
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
+            event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
                 uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
@@ -447,6 +448,7 @@ class PaintTool(Tool):
                     uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
                     if len(uv_areas) == 0:
                         return False
+                    event_caught = True
                     stroke_path = self._createStrokePath(uv_areas)
                     self._view.addStroke(stroke_path, brush_color, is_moved)
             except:
@@ -454,19 +456,22 @@ class PaintTool(Tool):
 
             self._last_world_coords = world_coords
             self._updateScene(node)
-            return True
+            return event_caught
 
         return False
 
     def getRequiredExtraRenderingPasses(self) -> list[str]:
         return ["selection_faces", "picking_selected"]
 
-    @staticmethod
-    def _updateScene(node: SceneNode = None):
+    def _updateScene(self, node: SceneNode = None):
         if node is None:
             node = Selection.getSelectedObject(0)
         if node is not None:
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            if self._mouse_held:
+                Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            else:
+                scene = self.getController().getScene()
+                scene.sceneChanged.emit(scene.getRoot())
 
     def _onSelectionChanged(self):
         super()._onSelectionChanged()
