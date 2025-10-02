@@ -286,21 +286,8 @@ class PaintTool(Tool):
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
             return numpy.array([*self._camera.projectToViewport(Vector(*pt))], dtype=numpy.float32)
 
-        def get_projected_on_viewport_image(pt: numpy) -> numpy.ndarray:
-            return numpy.array([pt[0] + self._camera.getViewportWidth() / 2.0,
-                                self._camera.getViewportHeight() - (pt[1] + self._camera.getViewportHeight() / 2.0)],
-                               dtype=numpy.float32)
-
         stroke_poly = self._getStrokePolygon(get_projected_on_plane(world_coords_a), get_projected_on_plane(world_coords_b))
         stroke_poly.toType(numpy.float32)
-        stroke_poly_viewport = Polygon([get_projected_on_viewport_image(point) for point in stroke_poly])
-
-        faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
-                                                                       QPen(Qt.PenStyle.NoPen),
-                                                                       QBrush(Qt.GlobalColor.white))
-        faces = self._faces_selection_pass.getFacesIdsUnderMask(faces_image, faces_x, faces_y)
-
-        texture_dimensions = numpy.array(list(self._view.getUvTexDimensions()))
 
         mesh_indices = self._mesh_transformed_cache.getIndices()
         if mesh_indices is None:
@@ -319,8 +306,7 @@ class PaintTool(Tool):
                             self._camera.getViewportHeight(),
                             self._cam_norm,
                             face_id)
-        Logger.debug("done")
-        return res
+        return [Polygon(points) for points in res]
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -412,12 +398,10 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    Logger.debug("start stroking")
                     uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
-                    stroke_path = self._createStrokePath(uv_areas)
-                    self._view.addStroke(stroke_path, brush_color, is_moved)
+                    self._view.addStroke(uv_areas, brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 

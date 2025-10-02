@@ -20,10 +20,10 @@ class PaintClearCommand(PaintCommand):
         return 1
 
     def redo(self) -> None:
-        cleared_image, painter = self._makeClearedTexture()
+        painter = self._makeClearedTexture()
         painter.end()
 
-        self._texture.setSubImage(cleared_image, 0, 0)
+        self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:
         if not isinstance(command, PaintClearCommand):
