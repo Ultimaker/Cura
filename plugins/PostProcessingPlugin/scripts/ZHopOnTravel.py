@@ -316,7 +316,7 @@ class ZHopOnTravel(Script):
                         if hop_start > 0:
                             # For any lines that are XYZ moves right before layer change
                             if " Z" in line:
-                                lines[index] = lines[index].replace("Z" + str(self._cur_z), "Z" + str(self._cur_z + hop_height))
+                                lines[index] = lines[index].replace(f"Z{self._cur_z}", f"Z{round(self._cur_z + hop_height, 3)}")
                             # If there is no 'F' in the next line then add one at the Travel Speed so the z-hop speed doesn't carry over
                             if not " F" in lines[index] and lines[index].startswith("G0"):
                                 lines[index] = lines[index].replace("G0", f"G0 F{speed_travel}")
@@ -421,9 +421,9 @@ class ZHopOnTravel(Script):
 
         machine_height = Application.getInstance().getGlobalContainerStack().getProperty("machine_height", "value")
         if self._cur_z + hop_height < machine_height:
-            up_lines = f"G1 F{speed_zhop} Z{round(self._cur_z + hop_height,2)} ; Hop Up"
+            up_lines = f"G1 F{speed_zhop} Z{round(self._cur_z + hop_height, 3)} ; Hop Up"
         else:
-            up_lines = f"G1 F{speed_zhop} Z{round(machine_height, 2)} ; Hop Up"
+            up_lines = f"G1 F{speed_zhop} Z{round(machine_height, 3)} ; Hop Up"
         if reset_type in [1, 9] and hop_retraction: # add retract only when necessary
             up_lines = f"G1 F{retract_speed} E{round(self._cur_e - retraction_amount, 5)} ; Retract\n" + up_lines
             self._cur_e = round(self._cur_e - retraction_amount, 5)
