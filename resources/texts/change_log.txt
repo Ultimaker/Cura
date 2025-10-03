@@ -41,7 +41,7 @@
 - Cleaned up the Windows Start Menu entry after installing. It no longer is folderized and doesn't contain a link anymore, contributed by @RedBlackAka
 - Removed NSIS uninstall shortcut left behind when uninstalling, contributed by @RedBlackAka, resolves #20446 / #20302
 - Updated code quality of the PurgeLinesAndUnload Post Processing Plug-in, contributed by @hellAholic
-- Fix crash caused by race-condition in tree-support
+- Fix race condition in TreeSupportBaseCircle which may sometimes cause a crash, contributed by @ThomasRahm
 
 * Printer definitions, profiles and materials:
 - Significantly improved printed part quality for PLA, Tough PLA, ABS, and PETG on the UltiMaker S6 and S8.
