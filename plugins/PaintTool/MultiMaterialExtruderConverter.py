@@ -60,7 +60,7 @@ class MultiMaterialExtruderConverter:
         self._changeMainObjectExtruder(node)
 
     @staticmethod
-    def _getPaintedObjectExtruderNr(node: SceneNode) -> Optional[int]:
+    def getPaintedObjectExtruderNr(node: SceneNode) -> Optional[int]:
         extruder_stack = node.getPrintingExtruder()
         if extruder_stack is None:
             return None
@@ -72,7 +72,7 @@ class MultiMaterialExtruderConverter:
             return
 
         old_extruder_nr, extruder_changed_callback = self._watched_nodes[node]
-        new_extruder_nr = MultiMaterialExtruderConverter._getPaintedObjectExtruderNr(node)
+        new_extruder_nr = MultiMaterialExtruderConverter.getPaintedObjectExtruderNr(node)
         if new_extruder_nr == old_extruder_nr:
             return
 

@@ -74,6 +74,8 @@ class PaintView(CuraView):
             texture_changed_signal.connect(self._onCurrentPaintedObjectTextureChanged)
             self._onCurrentPaintedObjectTextureChanged()
 
+        self._updateCurrentBitsRanges()
+
     def _onCurrentPaintedObjectTextureChanged(self) -> None:
         paint_texture = self._painted_object.callDecoration("getPaintTexture")
         self._paint_texture = paint_texture
@@ -302,6 +304,18 @@ class PaintView(CuraView):
             self._paint_undo_stacks[self._painted_object][self._current_paint_type] = stack
             return stack
 
+    def _updateCurrentBitsRanges(self):
+        self._current_bits_ranges = (0, 0)
+
+        if self._painted_object is None:
+            return
+
+        paint_data_mapping = self._painted_object.callDecoration("getTextureDataMapping")
+        if paint_data_mapping is None or self._current_paint_type not in paint_data_mapping:
+            return
+
+        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
+
     def _prepareDataMapping(self):
         if self._painted_object is None:
             return
@@ -315,7 +329,7 @@ class PaintView(CuraView):
             self._painted_object.callDecoration("setTextureDataMapping", paint_data_mapping)
             feature_created = True
 
-        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
+        self._updateCurrentBitsRanges()
 
         if feature_created and self._current_paint_type == "extruder":
             # Fill texture extruder with actual mesh extruder
@@ -360,6 +374,13 @@ class PaintView(CuraView):
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
 
-        colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
+        if self._current_bits_ranges[0] != self._current_bits_ranges[1]:
+            colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
+        elif self._current_paint_type == "extruder":
+            object_extruder = MultiMaterialExtruderConverter.getPaintedObjectExtruderNr(self._painted_object)
+            colors = [self._paint_modes[self._current_paint_type][str(object_extruder)].display_color]
+        else:
+            colors = [self._paint_modes[self._current_paint_type]["none"].display_color]
+
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
