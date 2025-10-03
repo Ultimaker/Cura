@@ -23,9 +23,8 @@ class PaintCommand(QUndoCommand):
         self._bounding_rect = texture.getImage().rect()
 
         if make_original_image:
-            self._original_texture_image, painter = (
-                self._preparePainting(specific_source_image=self._texture.getImage().copy(),
-                                      specific_bounding_rect=self._texture.getImage().rect()))
+            self._original_texture_image = self._texture.getImage().copy()
+            painter = QPainter(self._original_texture_image)
 
             # Keep only the bits contained in the bit range, so that we won't modify anything else in the image
             painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
@@ -36,19 +35,19 @@ class PaintCommand(QUndoCommand):
         if self._original_texture_image is None:
             return
 
-        cleared_image, painter = self._makeClearedTexture()
-
+        painter = self._makeClearedTexture()
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
         painter.drawImage(0, 0, self._original_texture_image)
-
         painter.end()
 
-        self._texture.setSubImage(cleared_image, self._bounding_rect.left(), self._bounding_rect.top())
+        self._texture.updateImagePart(self._bounding_rect)
 
-    def _makeClearedTexture(self) -> Tuple[QImage, QPainter]:
-        dest_image, painter = self._preparePainting()
+    def _makeClearedTexture(self) -> QPainter:
+        painter = QPainter(self._texture.getImage())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+
         self._clearTextureBits(painter)
-        return dest_image, painter
+        return painter
 
     def _clearTextureBits(self, painter: QPainter):
         raise NotImplementedError()
@@ -61,16 +60,3 @@ class PaintCommand(QUndoCommand):
 
     def _getBitRangeMask(self) -> int:
         return PaintCommand.getBitRangeMask(self._bit_range)
-
-    def _preparePainting(self,
-                         specific_source_image: Optional[QImage] = None,
-                         specific_bounding_rect: Optional[QRect] = None) -> Tuple[QImage, QPainter]:
-        source_image = specific_source_image if specific_source_image is not None else self._texture.getImage()
-        bounding_rect = specific_bounding_rect if specific_bounding_rect is not None else self._bounding_rect
-
-        dest_image = source_image.copy(bounding_rect)
-        painter = QPainter(dest_image)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.translate(-bounding_rect.left(), -bounding_rect.top())
-
-        return dest_image, painter

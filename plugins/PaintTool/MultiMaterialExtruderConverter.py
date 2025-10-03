@@ -107,6 +107,6 @@ class MultiMaterialExtruderConverter:
         image_array &= ~bit_mask
         image_array |= ((target_bits << bit_range_start) & bit_mask)
 
-        texture.setSubImage(image, 0, 0)
+        texture.updateImagePart(image.rect())
 
         self.mainExtruderChanged.emit(node)

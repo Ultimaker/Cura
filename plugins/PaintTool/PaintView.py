@@ -7,8 +7,9 @@ from weakref import WeakKeyDictionary
 
 from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
 from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, List
 
+from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
@@ -21,6 +22,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
+from UM.Math.Polygon import Polygon
 
 from .PaintStrokeCommand import PaintStrokeCommand
 from .PaintClearCommand import PaintClearCommand
@@ -182,23 +184,17 @@ class PaintView(CuraView):
             QPoint(math.floor(bounding_rect.left()), math.floor(bounding_rect.top())),
             QPoint(math.ceil(bounding_rect.right()), math.ceil(bounding_rect.bottom())))
 
-        cursor_image = QImage(bounding_rect_rounded.width(), bounding_rect_rounded.height(), QImage.Format.Format_ARGB32)
-        cursor_image.fill(0)
-
-        painter = QPainter(cursor_image)
+        painter = QPainter(self._cursor_texture.getImage())
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.translate(-bounding_rect.left(), -bounding_rect.top())
         display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
         paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
         paint_color.setAlpha(255)
         painter.setBrush(QBrush(paint_color))
         painter.setPen(QPen(Qt.PenStyle.NoPen))
         painter.drawPath(cursor_path)
-
         painter.end()
 
-        self._cursor_texture.setSubImage(cursor_image, bounding_rect_rounded.left(), bounding_rect_rounded.top())
-
+        self._cursor_texture.updateImagePart(bounding_rect_rounded)
         self._previous_paint_texture_rect = bounding_rect_rounded
 
     def clearCursorStroke(self) -> bool:
@@ -206,13 +202,12 @@ class PaintView(CuraView):
                 self._cursor_texture is None or self._cursor_texture.getImage() is None):
             return False
 
-        clear_image = QImage(self._previous_paint_texture_rect.width(),
-                             self._previous_paint_texture_rect.height(),
-                             QImage.Format.Format_ARGB32)
-        clear_image.fill(0)
-        self._cursor_texture.setSubImage(clear_image,
-                                         self._previous_paint_texture_rect.left(),
-                                         self._previous_paint_texture_rect.top())
+        painter = QPainter(self._cursor_texture.getImage())
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Source)
+        painter.fillRect(self._previous_paint_texture_rect, QBrush(QColor(0, 0, 0, 0)))
+        painter.end()
+
+        self._cursor_texture.updateImagePart(self._previous_paint_texture_rect)
         self._previous_paint_texture_rect = None
 
         return True
@@ -224,7 +219,7 @@ class PaintView(CuraView):
         bit_range_start, _ = self._current_bits_ranges
         return value << bit_range_start
 
-    def addStroke(self, stroke_path: QPainterPath, brush_color: str, merge_with_previous: bool) -> None:
+    def addStroke(self, stroke_path: List[Polygon], brush_color: str, merge_with_previous: bool) -> None:
         if self._paint_texture is None or self._paint_texture.getImage() is None:
             return
 
