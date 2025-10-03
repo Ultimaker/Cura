@@ -361,7 +361,6 @@ class PaintView(CuraView):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        # for node in Selection.getAllSelectedObjects():
         paint_batch.addItem(self._painted_object.getWorldTransformation(copy=False),
                             self._painted_object.getMeshData(),
                             normal_transformation=self._painted_object.getCachedNormalMatrix())
