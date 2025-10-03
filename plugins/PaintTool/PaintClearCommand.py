@@ -13,14 +13,20 @@ from .PaintCommand import PaintCommand
 class PaintClearCommand(PaintCommand):
     """Provides the command that clears all the painting for the current mode"""
 
-    def __init__(self, texture: Texture, bit_range: tuple[int, int]) -> None:
+    def __init__(self, texture: Texture, bit_range: tuple[int, int], set_value: int) -> None:
         super().__init__(texture, bit_range)
+        self._set_value = set_value
 
     def id(self) -> int:
         return 1
 
     def redo(self) -> None:
         painter = self._makeClearedTexture()
+
+        if self._set_value > 0:
+            painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
+            painter.fillRect(self._texture.getImage().rect(), QBrush(self._set_value))
+
         painter.end()
 
         self._texture.updateImagePart(self._bounding_rect)

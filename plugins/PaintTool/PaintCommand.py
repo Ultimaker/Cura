@@ -52,7 +52,11 @@ class PaintCommand(QUndoCommand):
     def _clearTextureBits(self, painter: QPainter):
         raise NotImplementedError()
 
-    def _getBitRangeMask(self) -> int:
-        bit_range_start, bit_range_end = self._bit_range
+    @staticmethod
+    def getBitRangeMask(bit_range: tuple[int, int]) -> int:
+        bit_range_start, bit_range_end = bit_range
         return (((PaintCommand.FULL_INT32 << (32 - 1 - (bit_range_end - bit_range_start))) & PaintCommand.FULL_INT32) >>
                 (32 - 1 - bit_range_end))
+
+    def _getBitRangeMask(self) -> int:
+        return PaintCommand.getBitRangeMask(self._bit_range)
