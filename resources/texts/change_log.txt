@@ -13,7 +13,7 @@
 - Updated the logic for storing Cura Back-ups to download instead of store Cura plugins when restoring a back-up.
 - Updated the Splash Screen and Header to show the correct UltiMaker logo.
 - Updated local connection to UltiMaker Printers to allow for user verification.
-- If user were not using the USB-Cable Printing in the previous (5.10) version of Cura, it is automatically disabled for them. In addition, an option is added to the Cura Preferences under General where user can easily Enable or Disable the USB-cable printing by checking, unchecking the setting and restarting Cura.
+- If users were not using the USB-Cable Printing in the previous (5.10) version of Cura, it is automatically disabled for them. In addition, an option is added to the Cura Preferences under General where user can easily Enable or Disable the USB-cable printing by checking, unchecking the setting and restarting Cura.
 - Significantly updated the ChangeAtZ Script, to support relative extrusion, firmware retraction. Added "layer range" as an option and Travel moves are separated so changes in print speed don't necessarily affect them, contributed by @GregValiant
 - Introduced a Post Processing Script that allows user to use their printer for Annealing or Drying, contributed by @GregValiant
 - Updated the DisplayInfoOnLCD plug-in so it now correctly displays the Remaining time, contributed by @GregValiant, resolves https://github.com/Ultimaker/Cura/issues/18766
@@ -72,7 +72,7 @@
 - Introduced BIQU B2, contributed by @bjuraga
 - Introduced Geetech M1 and Geetech M1S Profiles, and updated the Geetech Thunder Profiles, contributed by @whoseyoung
 
-* Known Issues
+* Known Issues, but we intend to resolve them for stable
 - Painting can still be slow with very detailed models
 - Prime tower area is not displayed nor considered when using multi-material via painting
 - Painting does not work on models contained in a group
