@@ -317,8 +317,8 @@ class PaintTool(Tool):
         """
         super().event(event)
 
-        node = Selection.getSelectedObject(0)
-        if node is None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is None:
             return False
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
@@ -364,10 +364,10 @@ class PaintTool(Tool):
             if self._camera is None:
                 return False
 
-            if node != self._node_cache:
+            if painted_object != self._node_cache:
                 if self._node_cache is not None:
                     self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
-                self._node_cache = node
+                self._node_cache = painted_object
                 self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
                 self._cache_dirty = True
             if self._cache_dirty:
@@ -379,7 +379,7 @@ class PaintTool(Tool):
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 if self._view.clearCursorStroke():
-                    self._updateScene(node)
+                    self._updateScene(painted_object)
                     return True
                 return False
 
@@ -408,7 +408,7 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._updateScene(node)
+            self._updateScene(painted_object)
             return event_caught
 
         return False
@@ -418,7 +418,7 @@ class PaintTool(Tool):
 
     def _updateScene(self, node: SceneNode = None):
         if node is None:
-            node = Selection.getSelectedObject(0)
+            node = self._view.getPaintedObject()
         if node is not None:
             if self._mouse_held:
                 Application.getInstance().getController().getScene().sceneChanged.emit(node)
@@ -430,18 +430,18 @@ class PaintTool(Tool):
         super()._onSelectionChanged()
 
         single_selection = len(Selection.getAllSelectedObjects()) == 1
-        self.setActiveView("PaintTool" if single_selection else None)
-        self._view.setCurrentPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        self.setActiveView("PaintTool" if self._view.hasPaintedObject() else None)
         self._updateState()
 
     def _updateState(self):
-        if len(Selection.getAllSelectedObjects()) == 1 and self._controller.getActiveTool() == self:
-            selected_object = Selection.getSelectedObject(0)
-            if selected_object.callDecoration("getPaintTexture") is not None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is not None and self._controller.getActiveTool() == self:
+            if painted_object.callDecoration("getPaintTexture") is not None:
                 new_state = PaintTool.Paint.State.READY
             else:
                 new_state = PaintTool.Paint.State.PREPARING_MODEL
-                self._prepare_texture_job = PrepareTextureJob(selected_object)
+                self._prepare_texture_job = PrepareTextureJob(painted_object)
                 self._prepare_texture_job.finished.connect(self._onPrepareTextureFinished)
                 self._prepare_texture_job.start()
         else:
