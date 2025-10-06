@@ -187,15 +187,15 @@ class PaintTool(Tool):
 
     def undoStackAction(self) -> None:
         self._view.undoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def redoStackAction(self) -> None:
         self._view.redoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def clear(self) -> None:
         self._view.clearPaint()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -379,7 +379,7 @@ class PaintTool(Tool):
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 if self._view.clearCursorStroke():
-                    self._updateScene(painted_object)
+                    self._updateScene(painted_object, update_node = self._mouse_held)
                     return True
                 return False
 
@@ -408,7 +408,7 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._updateScene(painted_object)
+            self._updateScene(painted_object, update_node = self._mouse_held)
             return event_caught
 
         return False
@@ -416,11 +416,18 @@ class PaintTool(Tool):
     def getRequiredExtraRenderingPasses(self) -> list[str]:
         return ["selection_faces", "picking_selected"]
 
-    def _updateScene(self, node: SceneNode = None):
+    def _updateScene(self, node: SceneNode = None, update_node: bool = False):
+        """
+        Updates the current displayed scene
+        :param node: the specific scene node to be updated, otherwise the current painted object will be used
+        :param update_node: Indicates whether the specific node should be updated, which will invalidate its slicing
+                            data, or the whole scene, which will just trigger a redraw of the view
+        :return:
+        """
         if node is None:
             node = self._view.getPaintedObject()
         if node is not None:
-            if self._mouse_held:
+            if update_node:
                 Application.getInstance().getController().getScene().sceneChanged.emit(node)
             else:
                 scene = self.getController().getScene()
