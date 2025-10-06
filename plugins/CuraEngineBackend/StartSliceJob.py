@@ -770,15 +770,18 @@ class StartSliceJob(Job):
         node_texture = node.callDecoration("getPaintTexture")
         texture_data_mapping = node.callDecoration("getTextureDataMapping")
         if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
-            texture_image = node_texture.getImage().copy()
-            image_ptr = texture_image.bits()
+            texture_image = node_texture.getImage()
+            image_ptr = texture_image.constBits()
             image_ptr.setsize(texture_image.sizeInBytes())
             image_size = texture_image.height(), texture_image.width()
             image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
 
             bit_range_start, bit_range_end = texture_data_mapping["extruder"]
-            image_array = (image_array << (32 - 1 - (bit_range_end - bit_range_start))) >> (32 - 1 - bit_range_end)
-            used_extruders = numpy.unique(image_array).tolist()
+            full_int32 = 0xffffffff
+            bit_mask = (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
+                        32 - 1 - bit_range_end))
+
+            used_extruders = (numpy.unique(image_array & bit_mask) >> bit_range_start).tolist()
 
         # There is no relevant painting data, just take the extruder associated to the model
         if not used_extruders:
