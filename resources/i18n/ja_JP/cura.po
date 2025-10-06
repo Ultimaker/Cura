@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-09-22 08:45+0200\n"
-"PO-Revision-Date: 2025-03-02 04:30+0000\n"
+"PO-Revision-Date: 2025-10-06 13:55+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -136,7 +136,7 @@ msgstr "表示(&V)"
 
 msgctxt "@label"
 msgid "*) You will need to restart the application for these changes to have effect."
-msgstr ""
+msgstr "*) これらの設定を有効にするにはアプリケーションの再起動が必要です。"
 
 msgctxt "@text"
 msgid ""
@@ -206,7 +206,7 @@ msgstr "<b>ユーザーが変更した設定のみがカスタムプロファイ
 
 msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
-msgstr ""
+msgstr "<html>1つ以上のエクストルーダーがプリントに使用されません:"
 
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
@@ -375,7 +375,7 @@ msgstr "スクリプトを追加"
 
 msgctxt "@option:check"
 msgid "Add icon to system tray (* restart required)"
-msgstr ""
+msgstr "システムトレイにアイコンを追加 (* 再起動が必要)"
 
 msgctxt "@button"
 msgid "Add local printer"
@@ -411,7 +411,7 @@ msgstr "IPアドレスでプリンターを追加"
 
 msgctxt "@button"
 msgid "Add printer manually"
-msgstr "手動でプリンタを追加"
+msgstr "手動でプリンターを追加"
 
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
@@ -587,7 +587,7 @@ msgstr "Curaを起動した際、日毎にバックアップを自動生成し�
 
 msgctxt "@label"
 msgid "Automatically disable the unused extruder(s)"
-msgstr ""
+msgstr "未使用のエクストルーダーを自動的に無効化"
 
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
@@ -603,7 +603,7 @@ msgstr "ネットワークで利用可能なプリンター"
 
 msgctxt "@action:button"
 msgid "Avoid"
-msgstr ""
+msgstr "除外"
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -651,7 +651,7 @@ msgstr "バランス"
 
 msgctxt "@item:inlistbox"
 msgid "BambuLab 3MF file"
-msgstr ""
+msgstr "BambuLab 3MFファイル"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -667,11 +667,11 @@ msgstr "ブランド"
 
 msgctxt "@label"
 msgid "Brush Shape"
-msgstr ""
+msgstr "ブラシの形状"
 
 msgctxt "@label"
 msgid "Brush Size"
-msgstr ""
+msgstr "ブラシの大きさ"
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -739,7 +739,7 @@ msgstr "UltiMakerプリンターに接続できませんか？"
 
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
-msgstr "プリンタを追加する前に、<filename>{0}</filename>からプロファイルのインポートはできません。"
+msgstr "プリンターを追加する前に、<filename>{0}</filename>からプロファイルのインポートはできません。"
 
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
@@ -747,7 +747,7 @@ msgstr "G-codeを読み込み中は他のファイルを開くことができま
 
 msgctxt "@info:error"
 msgid "Can't write GCode to 3MF file"
-msgstr ""
+msgstr "GCodeを3MFファイルに書き出せません"
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -841,7 +841,7 @@ msgstr ""
 
 msgctxt "@action:button"
 msgid "Circle"
-msgstr ""
+msgstr "円形"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
@@ -849,7 +849,7 @@ msgstr "ビルドプレートをクリア"
 
 msgctxt "@button"
 msgid "Clear all"
-msgstr ""
+msgstr "すべて消去"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -1005,7 +1005,7 @@ msgstr "クラウド経由で接続"
 
 msgctxt "@label"
 msgid "Connection and Control"
-msgstr ""
+msgstr "接続とコントロール"
 
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
@@ -1089,7 +1089,7 @@ msgstr "リムーバブルドライブ{0}に保存できませんでした: {1}"
 
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
-msgstr "データをプリンタにアップロードできませんでした。"
+msgstr "データをプリンターにアップロードできませんでした。"
 
 msgctxt "@info:plugin_failed"
 msgid ""
@@ -1377,7 +1377,7 @@ msgstr "エクストルーダーを無効にする"
 
 msgctxt "@button"
 msgid "Disable unused extruder(s)"
-msgstr ""
+msgstr "未使用のエクストルーダーを無効化"
 
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
@@ -1497,7 +1497,7 @@ msgstr "エクストルーダーを有効にする"
 
 msgctxt "@option:check"
 msgid "Enable USB-cable printing (* restart required)"
-msgstr ""
+msgstr "USB接続によるプリントを有効（* 再起動が必要）"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
@@ -1541,7 +1541,7 @@ msgstr "プリンターのIPアドレスを入力します。"
 
 msgctxt "@action:button"
 msgid "Erase"
-msgstr ""
+msgstr "消しゴム"
 
 msgctxt "@info:title"
 msgid "Error"
@@ -1709,7 +1709,7 @@ msgstr "材料アーカイブの保存に失敗しました"
 
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
-msgstr "特定のクラウドプリンタへの書き込みに失敗しました:{0} はリモートクラスタにありません。"
+msgstr "特定のクラウドプリンターへの書き込みに失敗しました:{0} はリモートクラスターにありません。"
 
 msgctxt "@label:category menu label"
 msgid "Favorites"
@@ -1717,7 +1717,7 @@ msgstr "お気に入り"
 
 msgctxt "@info:backup_status"
 msgid "Fetch re-downloadable package-ids..."
-msgstr ""
+msgstr "再ダウンロード可能なパッケージIDを取得しています..."
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1821,7 +1821,7 @@ msgstr "次の空き"
 
 msgctxt "@option:check"
 msgid "Flip model's toolhandle Y axis (* restart required)"
-msgstr ""
+msgstr "モデルツールハンドルのY軸を反転（* 再起動が必要）"
 
 msgctxt "@label:listbox"
 msgid "Flow"
@@ -1849,11 +1849,11 @@ msgstr "リトフェインの場合、半透明性を示す単純な対数モデ
 
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
-msgstr "リトフェインの場合、暗いピクセルは、より多くの光を通すために厚い場所に対応する必要があります。高さマップの場合、明るいピクセルは高い地形を表しているため、明るいピクセルは生成された3D モデルの厚い位置に対応する必要があります。"
+msgstr "リトフェインの場合、暗いピクセルはより多くの光を通すために厚い場所に対応する必要があります。高さマップの場合、明るいピクセルは高い地形を表しているため、明るいピクセルは生成された3Dモデルの厚い位置に対応する必要があります。"
 
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (* restart required)"
-msgstr ""
+msgstr "レイヤービュー互換モードを強制（* 再起動が必要）"
 
 msgid "FreeCAD trackpad"
 msgstr "FreeCADトラックパッド"
@@ -2048,7 +2048,7 @@ msgstr "メンテナンス中です。プリンターをチェックしてくだ
 
 msgctxt "@info"
 msgid "In order to monitor your print from Cura, please connect the printer."
-msgstr "Curaから印刷を監視するには、プリンタを接続してください。"
+msgstr "Curaから印刷を監視するには、プリンターを接続してください。"
 
 msgctxt "@label"
 msgid "In order to start using Cura you will need to configure a printer."
@@ -2348,7 +2348,7 @@ msgstr "プロジェクトを読み込むとビルドプレートにあるすべ
 
 msgctxt "@label"
 msgid "Loading available configurations from the printer..."
-msgstr "プリンタから利用可能な構成を読み込んでいます..."
+msgstr "プリンターから利用可能な構成を読み込んでいます..."
 
 msgctxt "@info:progress"
 msgid "Loading interface..."
@@ -2496,7 +2496,7 @@ msgstr "製造元"
 
 msgctxt "@label"
 msgid "Mark as"
-msgstr ""
+msgstr "マーク"
 
 msgctxt "@action:button"
 msgid "Marketplace"
@@ -2512,7 +2512,7 @@ msgstr "マーケットプレイス"
 
 msgctxt "@action:button"
 msgid "Material"
-msgstr ""
+msgstr "材料"
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2806,7 +2806,7 @@ msgstr "上書きできません"
 
 msgctxt "@label"
 msgid "Not retracted"
-msgstr ""
+msgstr "引き戻しなし"
 
 msgctxt "@info:not supported profile"
 msgid "Not supported"
@@ -2989,7 +2989,7 @@ msgstr "上書き"
 
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
-msgstr "上書きは、既存のプリンタ構成で指定された設定を使用します。これにより、印刷が失敗する場合があります。"
+msgstr "上書きは、既存のプリンター構成で指定された設定を使用します。これにより、印刷が失敗する場合があります。"
 
 msgctxt "@label %1 is the number of settings it overrides."
 msgid "Overrides %1 setting."
@@ -3010,23 +3010,23 @@ msgstr "パッケージの詳細"
 
 msgctxt "@action:button"
 msgid "Paint"
-msgstr ""
+msgstr "ペイント"
 
 msgctxt "@info:tooltip"
 msgid "Paint Model"
-msgstr ""
+msgstr "ペイントモデル"
 
 msgctxt "name"
 msgid "Paint Tools"
-msgstr ""
+msgstr "ペイントツール"
 
 msgctxt "@tooltip"
 msgid "Paint on model to select the material to be used"
-msgstr ""
+msgstr "使用する材料をモデルにペイントして選択します"
 
 msgctxt "@item:inmenu"
 msgid "Paint view"
-msgstr ""
+msgstr "ペイントビュー"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
@@ -3106,10 +3106,10 @@ msgid ""
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr ""
-"プリンタが接続されているか、以下を確認してください:\n"
-"- プリンタの電源が入っていること。\n"
-"- プリンタがネットワークに接続されていること。\n"
-"- クラウドに接続されたプリンタを検出するためにサインインしていること。"
+"プリンターが接続されているか、以下を確認してください:\n"
+"- プリンターの電源が入っていること。\n"
+"- プリンターがネットワークに接続されていること。\n"
+"- クラウドに接続されたプリンターを検出するためにサインインしていること。"
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -3209,11 +3209,11 @@ msgstr "プレヒート"
 
 msgctxt "@title:window"
 msgid "Preferences"
-msgstr ""
+msgstr "環境設定"
 
 msgctxt "@action:button"
 msgid "Preferred"
-msgstr ""
+msgstr "優先"
 
 msgctxt "@item:inmenu"
 msgid "Prepare"
@@ -3225,7 +3225,7 @@ msgstr "ステージの準備"
 
 msgctxt "@label"
 msgid "Preparing model for painting..."
-msgstr ""
+msgstr "ペイント用のモデルを準備中です..."
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3257,7 +3257,7 @@ msgstr "プライムタワー"
 
 msgctxt "@label"
 msgid "Priming"
-msgstr ""
+msgstr "事前充填"
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3371,11 +3371,11 @@ msgstr "プリンターコントロール"
 
 msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
-msgstr "今プリンタはコマンドを処理できません"
+msgstr "プリンターはコマンドを処理できません"
 
 msgctxt "@info:title"
 msgid "Printer inactive"
-msgstr ""
+msgstr "非アクティブなプリンター"
 
 msgctxt "@label"
 msgid "Printer name"
@@ -3419,7 +3419,7 @@ msgstr "プリント時間"
 
 msgctxt "@info:tooltip"
 msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
-msgstr ""
+msgstr "USBを経由したプリントはすべてのプリンターでは機能せず、ポートのスキャンはイヤホンなど他のシリアル機器と干渉する場合があります。新規にCuraをインストールする場合、この設定は「自動的に有効」にはなりません。もしUSBプリントを行いたい場合、チェックボックスを有効にしてCuraを再起動してください。ご注意：USBプリント機能は今後維持管理されません。お使いのコンピューターとプリンターの組み合わせで今後も使用できるかもしれませんし、使用できなくなる場合もあります。"
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3599,7 +3599,7 @@ msgstr "CuraEngineスライシングバックエンドとのリンクを提供�
 
 msgctxt "description"
 msgid "Provides the paint tools."
-msgstr ""
+msgstr "ペイントツール機能を提供します。"
 
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
@@ -3651,15 +3651,15 @@ msgstr "推奨設定(<b>%1</b>)が変更されました。"
 
 msgctxt "@action:button"
 msgid "Redo Stroke"
-msgstr ""
+msgstr "描画のやり直し"
 
 msgctxt "@tooltip"
 msgid "Refine seam placement by defining preferred/avoidance areas"
-msgstr ""
+msgstr "優先または除外する領域を指定してシームの位置を改善します"
 
 msgctxt "@tooltip"
 msgid "Refine support placement by defining preferred/avoidance areas"
-msgstr ""
+msgstr "優先または除外する領域を指定してサポートの位置を改善します"
 
 msgctxt "@action:button"
 msgid "Refresh"
@@ -3787,11 +3787,11 @@ msgstr "再開しています..."
 
 msgctxt "@label"
 msgid "Retracted"
-msgstr ""
+msgstr "引き戻し後"
 
 msgctxt "@label"
 msgid "Retracting"
-msgstr ""
+msgstr "引き戻し中"
 
 msgctxt "@tooltip"
 msgid "Retractions"
@@ -3895,7 +3895,7 @@ msgstr "大きなモデルを縮小"
 
 msgctxt "@action:button"
 msgid "Seam"
-msgstr ""
+msgstr "シーム"
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3927,7 +3927,7 @@ msgstr "このモデルをカスタマイズする設定を選択する"
 
 msgctxt "@label"
 msgid "Select a single model to start painting"
-msgstr ""
+msgstr "ペイントを始めるにはモデルを1つだけ選択してください"
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -3955,7 +3955,7 @@ msgstr "アップグレードを選択する"
 
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr "以下のリストからプリンタを選択します:"
+msgstr "以下のリストからプリンターを選択します:"
 
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
@@ -4075,7 +4075,7 @@ msgstr "プロジェクトファイル保存時に概要を表示するかどう
 
 msgctxt "@info:tooltip"
 msgid "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!"
-msgstr "Curaを起動するたびに、新しいプラグインの自動チェックを実行するかどうか。この設定は無効にしないことを強くお勧めします！"
+msgstr "Curaを起動するたびに、新しいプラグインの自動チェックを実行するかどうか。この設定を無効にしないことを強く推奨します！"
 
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to UltiMaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
@@ -4277,7 +4277,7 @@ msgstr ""
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
-msgstr "現在、プロジェクトファイルで使用されているパッケージの一部がCuraにインストールされていないため、印刷が望ましくないものになる可能性があります。必要なすべてのパッケージをマーケットプレイスからインストールすることを強くお勧めします。"
+msgstr "現在、プロジェクトファイルで使用されているパッケージの一部がCuraにインストールされていないため、印刷が望ましくないものになる可能性があります。必要なすべてのパッケージをマーケットプレイスからインストールすることを強く推奨します。"
 
 msgctxt "@info:title"
 msgid "Some required packages are not installed"
@@ -4327,7 +4327,7 @@ msgstr "スポンサーになる"
 
 msgctxt "@action:button"
 msgid "Square"
-msgstr ""
+msgstr "四角形"
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4411,7 +4411,7 @@ msgstr "概要 - Universal Cura Project"
 
 msgctxt "@action:button"
 msgid "Support"
-msgstr ""
+msgstr "サポート"
 
 msgctxt "@label"
 msgid "Support"
@@ -4435,11 +4435,11 @@ msgstr "サポートイルフィル"
 
 msgctxt "@tooltip"
 msgid "Support Interface"
-msgstr "サポートインターフェイス"
+msgstr "サポート境界面"
 
 msgctxt "@action:label"
 msgid "Support Structure"
-msgstr ""
+msgstr "サポート構造"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4540,7 +4540,7 @@ msgstr "このエクストルーダーの構成が許可されておらず、ス
 
 msgctxt "@label"
 msgid "The configurations are not available because the printer is disconnected."
-msgstr "プリンタが接続されていないため、構成は利用できません。"
+msgstr "プリンターが接続されていないため、構成は利用できません。"
 
 msgctxt "@tooltip"
 msgid "The current temperature of the heated bed."
@@ -4641,7 +4641,7 @@ msgstr ""
 "\n"
 "非機能モデルを手早くプリントする場合は、ライン、ジグザグ、ライトニングインフィルから選択します。\n"
 "\n"
-"応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンをお勧めします。\n"
+"応力があまりかからない機能部品の場合は、グリッド、トライアングル、トライヘキサゴンを推奨します。\n"
 "\n"
 "複数の方向に高い強度を必要とする機能的な3Dプリントの場合は、キュービック、キュービックサブディビジョン、クォーターキュービック、オクテット、ジャイロイドを使用します。"
 
@@ -4671,7 +4671,7 @@ msgstr "このアドレスのプリンターは応答していません。"
 
 msgctxt "@info:status"
 msgid "The printer is inactive and cannot accept a new print job."
-msgstr ""
+msgstr "プリンターはアクティブではないため新規のプリントジョブを受け付けられません。"
 
 msgctxt "@info:status"
 msgid "The printer is not connected."
@@ -4723,7 +4723,7 @@ msgstr "ビルドプレート上の幅（ミリメートル）"
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme (* restart required):"
-msgstr ""
+msgstr "テーマ（* 再起動が必要）："
 
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
@@ -4787,11 +4787,11 @@ msgstr "このパッケージは再起動後にインストールされます。
 
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
-msgstr "このプリンタは不明なプリンタであるか、またはグループのホストではないため、追加できません。"
+msgstr "このプリンターは不明なプリンターであるか、またはグループのホストではないため、追加できません。"
 
 msgctxt "@status"
 msgid "This printer is deactivated and can not accept commands or jobs."
-msgstr ""
+msgstr "このプリンターは無効になっており、コマンドやジョブを受け付けられません。"
 
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
@@ -4897,7 +4897,7 @@ msgstr "プリントの成功率を上げるために、ビルドプレートを
 
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "印刷ジョブをネットワーク上のプリンターに直接送信するため、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターをWiFiネットワークに接続されていることを確認してください。Curaをプリンタに接続していない場合でも、USBドライブを使用してg-codeファイルをプリンターに転送できます。"
+msgstr "印刷ジョブをネットワーク上のプリンターに直接送信するため、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターがWiFiネットワークに接続されていることを確認してください。Curaをプリンターに接続していない場合でも、USBドライブを使用してg-codeファイルをプリンターに転送できます。"
 
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
@@ -5117,7 +5117,7 @@ msgstr "利用できないプリンター"
 
 msgctxt "@action:button"
 msgid "Undo Stroke"
-msgstr ""
+msgstr "描画を元に戻す"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5137,7 +5137,7 @@ msgstr "Universal Cura Project"
 
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
-msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンタで印刷できます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択できます。"
+msgstr "Universal Cura Projectファイルは座標情報と選択した設定を保持し、さまざまな3Dプリンターで印刷できます。エクスポートすると、ビルドプレート上に存在するすべてのモデルに、現在の位置、方向、拡大率が含まれます。適切な印刷を保証するために、エクストルーダーごとまたはモデルごとにどの設定を含めるかを選択できます。"
 
 msgctxt "@label"
 msgid "Unknown"
@@ -5181,7 +5181,7 @@ msgstr "無題"
 
 msgctxt "@message:title"
 msgid "Unused Extruder(s)"
-msgstr ""
+msgstr "未使用のエクストルーダー"
 
 msgctxt "@button"
 msgid "Update"
@@ -5353,7 +5353,7 @@ msgstr "バックアップをアップロードしています..."
 
 msgctxt "@option:check"
 msgid "Use a single instance of Cura (* restart required)"
-msgstr ""
+msgstr "単一のCuraインスタンスを使用（* 再起動が必要）"
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5684,7 +5684,7 @@ msgstr "{0}に接続を試みていますが、これはグループのホスト
 
 msgctxt "@empty_state"
 msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
-msgstr "現在バックアップは存在しません。[今すぐバックアップする] を使用して作成してください。"
+msgstr "現在バックアップは存在しません。\"今すぐバックアップする\" を用いてバックアップを作成してください。"
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
