@@ -1405,11 +1405,11 @@ msgstr "Modifier"
 
 msgctxt "@action:button"
 msgid "Eject"
-msgstr "Ejecter"
+msgstr "Éjecter"
 
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Ejecter le lecteur amovible {0}"
+msgstr "Éjecter le lecteur amovible {0}"
 
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
@@ -1800,7 +1800,7 @@ msgstr "Générateur de G-Code"
 
 msgctxt "@label"
 msgid "G-code flavor"
-msgstr "Parfum G-Code"
+msgstr "Variante G-Code"
 
 msgctxt "@label Description for application component"
 msgid "G-code generator"
@@ -2352,7 +2352,7 @@ msgstr "Fichier d'impression Makerbot"
 
 msgctxt "name"
 msgid "Makerbot Printfile Writer"
-msgstr "Écrivain de fichier d'impression Makerbot"
+msgstr "Exporteur de fichier d'impression Makerbot"
 
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
