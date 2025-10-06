@@ -2684,7 +2684,7 @@ msgstr "Aucune imprimante trouvée dans votre compte ?"
 
 msgctxt "@message:text %1 is the name the printer uses for 'nozzle'."
 msgid "No profiles are available for the selected material/%1 configuration. Please change your configuration."
-msgstr "Nessun profilo disponibile per la configurazione del materiale /%1 selezionato/a. Modifica la configurazione."
+msgstr "Aucun profil disponible pour le matériau sélectionné sur %1. Veuillez modifier votre configuration."
 
 msgctxt "@message"
 msgid "No results found with current filter"
