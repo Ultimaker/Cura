@@ -78,6 +78,7 @@ class PaintTool(Tool):
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
+        self._controller.activeStageChanged.connect(self._updateActiveView)
 
         self._camera: Optional[Camera] = None
         self._cam_pos: numpy.ndarray = numpy.array([0.0, 0.0, 0.0])
@@ -331,6 +332,9 @@ class PaintTool(Tool):
         if self._state != PaintTool.Paint.State.READY:
             return False
 
+        if self._controller.getActiveView() is not self._view:
+            return False
+
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
             if MouseEvent.LeftButton not in cast(MouseEvent, event).buttons:
                 return False
@@ -433,13 +437,18 @@ class PaintTool(Tool):
                 scene = self.getController().getScene()
                 scene.sceneChanged.emit(scene.getRoot())
 
-    def _onSelectionChanged(self):
+    def _onSelectionChanged(self) -> None:
         super()._onSelectionChanged()
 
         single_selection = len(Selection.getAllSelectedObjects()) == 1
         self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
-        self.setActiveView("PaintTool" if self._view.hasPaintedObject() else None)
+        self._updateActiveView()
         self._updateState()
+
+    def _updateActiveView(self) -> None:
+        has_painted_object = self._view.hasPaintedObject()
+        stage_is_prepare = self._controller.getActiveStage().stageId == "PrepareStage"
+        self.setActiveView("PaintTool" if has_painted_object and stage_is_prepare else None)
 
     def _updateState(self):
         painted_object = self._view.getPaintedObject()
