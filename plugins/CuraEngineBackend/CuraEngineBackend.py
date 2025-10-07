@@ -160,6 +160,7 @@ class CuraEngineBackend(QObject, Backend):
         self._backend_log_max_lines: int = 20000  # Maximum number of lines to buffer
         self._error_message: Optional[Message] = None  # Pop-up message that shows errors.
         self._unused_extruders: list[int] = [] # Extruder numbers of found unused extruders
+        self._required_extruders: list[int] = []  # Extruder numbers of found required but disabled extruders
 
         # Count number of objects to see if there is something changed
         self._last_num_objects: Dict[int, int] = defaultdict(int)
@@ -558,11 +559,25 @@ class CuraEngineBackend(QObject, Backend):
                 self.setState(BackendState.NotStarted)
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
-            self._error_message = Message(catalog.i18nc("@info:status",
-                                                        "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getAssociatedDisabledExtruders(),
-                                          title = catalog.i18nc("@info:title", "Unable to slice"),
-                                          message_type = Message.MessageType.WARNING)
+            self._required_extruders = job.getAssociatedDisabledExtruders()
+            extruder_names = [self._global_container_stack.extruderList[int(idx)].definition.getName() for idx in
+                              self._required_extruders]
+            disabled_extruders = [f"<li>{extruder_name}</li>" for extruder_name in extruder_names]
+            self._error_message = Message(
+                text=catalog.i18nc("@message", "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+                                               f"<ul><b>{"".join(disabled_extruders)}</b></ul></html>"),
+                title=catalog.i18nc("@info:title", "Unable to slice"),
+                message_type=Message.MessageType.WARNING
+            )
+            self._error_message.addAction("enable_extruders",
+                                      name=catalog.i18nc("@button", "Enable required extruder(s)"),
+                                      icon="",
+                                      description=catalog.i18nc("@label",
+                                                                "Automatically enable the required extruder(s)")
+                                      )
+            self._error_message.actionTriggered.connect(self._onMessageActionTriggered)
             self._error_message.show()
+
             self.setState(BackendState.Error)
             self.backendError.emit(job)
             return
@@ -999,6 +1014,10 @@ class CuraEngineBackend(QObject, Backend):
             message.hide()
             for unused_extruder in self._unused_extruders:
                 CuraApplication.getInstance().getMachineManager().setExtruderEnabled(unused_extruder, False)
+        elif message_action == "enable_extruders":
+            message.hide()
+            for required_extruder in self._required_extruders:
+                CuraApplication.getInstance().getMachineManager().setExtruderEnabled(required_extruder, True)
 
     def _parseMessagePrintTimes(self, message: Arcus.PythonMessage) -> Dict[str, float]:
         """Called for parsing message to retrieve estimated time per feature
