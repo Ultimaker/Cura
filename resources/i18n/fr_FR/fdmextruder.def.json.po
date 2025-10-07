@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-13 09:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,10 +36,6 @@ msgctxt "extruder_nr label"
 msgid "Extruder"
 msgstr "Extrudeuse"
 
-msgctxt "machine_extruder_change_duration label"
-msgid "Extruder Change duration"
-msgstr "Durée du changement de l’extrudeuse"
-
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
 msgstr "Extrudeuse G-Code de fin"
@@ -59,10 +55,6 @@ msgstr "Extrudeuse Position de fin X"
 msgctxt "machine_extruder_end_pos_y label"
 msgid "Extruder End Position Y"
 msgstr "Extrudeuse Position de fin Y"
-
-msgctxt "machine_extruder_prestart_code label"
-msgid "Extruder Prestart G-Code"
-msgstr "Prestart G-code de l’extrudeuse"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -132,10 +124,6 @@ msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "ID buse"
 
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "Longueur de la buse"
-
 msgctxt "machine_nozzle_offset_x label"
 msgid "Nozzle X Offset"
 msgstr "Buse Décalage X"
@@ -143,10 +131,6 @@ msgstr "Buse Décalage X"
 msgctxt "machine_nozzle_offset_y label"
 msgid "Nozzle Y Offset"
 msgstr "Buse Décalage Y"
-
-msgctxt "machine_extruder_prestart_code description"
-msgid "Prestart g-code to execute before switching to this extruder."
-msgstr "Prestart g-code à exécuter avant de passer à cette extrudeuse."
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
@@ -167,10 +151,6 @@ msgstr "Les coordonnées Z de la position à laquelle la buse s'amorce au début
 msgctxt "extruder_nr description"
 msgid "The extruder train used for printing. This is used in multi-extrusion."
 msgstr "Le train d'extrudeuse utilisé pour l'impression. Cela est utilisé en multi-extrusion."
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "Différence de hauteur entre l'extrémité de la buse et la partie la plus basse de la tête d'impression."
 
 msgctxt "machine_nozzle_size description"
 msgid "The inner diameter of the nozzle. Change this setting when using a non-standard nozzle size."
@@ -215,6 +195,26 @@ msgstr "Les coordonnées Y du décalage de la buse."
 msgctxt "machine_extruder_start_pos_y description"
 msgid "The y-coordinate of the starting position when turning the extruder on."
 msgstr "Les coordonnées Y de la position de départ lors de la mise en marche de l'extrudeuse."
+
+msgctxt "machine_nozzle_head_distance label"
+msgid "Nozzle Length"
+msgstr "Longueur de la buse"
+
+msgctxt "machine_nozzle_head_distance description"
+msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+msgstr "Différence de hauteur entre l'extrémité de la buse et la partie la plus basse de la tête d'impression."
+
+msgctxt "machine_extruder_change_duration label"
+msgid "Extruder Change duration"
+msgstr "Durée du changement de l’extrudeuse"
+
+msgctxt "machine_extruder_prestart_code label"
+msgid "Extruder Prestart G-Code"
+msgstr "Prestart G-code de l’extrudeuse"
+
+msgctxt "machine_extruder_prestart_code description"
+msgid "Prestart g-code to execute before switching to this extruder."
+msgstr "Prestart g-code à exécuter avant de passer à cette extrudeuse."
 
 msgctxt "machine_extruder_change_duration description"
 msgid "When using a multi tool setup, this value is the tool change time in seconds.  This value will be added to the estimate time based on the number of changes that occur."
