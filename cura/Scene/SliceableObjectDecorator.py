@@ -6,10 +6,10 @@ from typing import Optional, Dict
 from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage, QImageWriter
 
-import UM.View.GL.Texture
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from UM.View.GL.OpenGL import OpenGL
 from UM.View.GL.Texture import Texture
+from UM.Signal import Signal
 
 
 class SliceableObjectDecorator(SceneNodeDecorator):
@@ -18,14 +18,20 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         self._paint_texture = None
         self._texture_data_mapping: Dict[str, tuple[int, int]] = {}
 
+        self.paintTextureChanged = Signal()
+
     def isSliceable(self) -> bool:
         return True
 
     def getPaintTexture(self) -> Optional[Texture]:
         return self._paint_texture
 
+    def getPaintTextureChangedSignal(self) -> Signal:
+        return self.paintTextureChanged
+
     def setPaintTexture(self, texture: Texture) -> None:
         self._paint_texture = texture
+        self.paintTextureChanged.emit()
 
     def getTextureDataMapping(self) -> Dict[str, tuple[int, int]]:
         return self._texture_data_mapping
@@ -39,6 +45,7 @@ class SliceableObjectDecorator(SceneNodeDecorator):
             image = QImage(width, height, QImage.Format.Format_RGB32)
             image.fill(0)
             self._paint_texture.setImage(image)
+            self.paintTextureChanged.emit()
 
     def packTexture(self) -> Optional[bytearray]:
         if self._paint_texture is None:
