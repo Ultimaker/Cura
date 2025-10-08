@@ -21,14 +21,15 @@ class PaintClearCommand(PaintCommand):
         return 1
 
     def redo(self) -> None:
-        painter = self._makeClearedTexture()
+        texel_counts_before = self._countTexels()
 
+        painter = self._makeClearedTexture()
         if self._set_value > 0:
             painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
             painter.fillRect(self._texture.getImage().rect(), QBrush(self._set_value))
-
         painter.end()
 
+        self._pushTexelDifference(texel_counts_before)
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:

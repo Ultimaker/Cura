@@ -33,6 +33,8 @@ class PaintStrokeCommand(PaintCommand):
         return 0
 
     def redo(self) -> None:
+        texel_counts_before = self._countTexels()
+
         painter = self._makeClearedTexture()
         painter.setBrush(QBrush(self._set_value))
         painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH))
@@ -40,6 +42,7 @@ class PaintStrokeCommand(PaintCommand):
         painter.drawPath(self._makePainterPath())
         painter.end()
 
+        self._pushTexelDifference(texel_counts_before)
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:

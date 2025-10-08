@@ -1,12 +1,13 @@
 # Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict
 
-from PyQt6.QtCore import QRect
+import numpy
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QBrush
 
 from UM.View.GL.Texture import Texture
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 
 class PaintCommand(QUndoCommand):
@@ -22,6 +23,8 @@ class PaintCommand(QUndoCommand):
         self._original_texture_image = None
         self._bounding_rect = texture.getImage().rect()
 
+        self._texel_count_object: Optional[SliceableObjectDecorator] = None
+
         if make_original_image:
             self._original_texture_image = self._texture.getImage().copy()
             painter = QPainter(self._original_texture_image)
@@ -31,16 +34,36 @@ class PaintCommand(QUndoCommand):
             painter.fillRect(self._original_texture_image.rect(), QBrush(self._getBitRangeMask()))
             painter.end()
 
+    def enableTexelCounting(self, texel_count_object: Optional[SliceableObjectDecorator] = None):
+        self._texel_count_object = texel_count_object
+
     def undo(self) -> None:
         if self._original_texture_image is None:
             return
+
+        texel_counts_before = self._countTexels()
 
         painter = self._makeClearedTexture()
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
         painter.drawImage(0, 0, self._original_texture_image)
         painter.end()
 
+        self._pushTexelDifference(texel_counts_before)
         self._texture.updateImagePart(self._bounding_rect)
+
+    def _pushTexelDifference(self, texel_counts_before: Dict[int, int]) -> None:
+        if self._texel_count_object is None:
+            return
+        texel_counts_changed = {}
+        texel_counts_after = self._countTexels()
+        for bit in self._bit_range:
+            texel_counts_changed[bit] = texel_counts_after.get(bit, 0) - texel_counts_before.get(bit, 0)
+        self._texel_count_object.changeExtruderTexelCounts(texel_counts_changed)
+
+    def _countTexels(self) -> Dict[int, int]:
+        if self._texel_count_object is None:
+            return {}
+        return self._texture.getTexelCountsInRect(self._bounding_rect, self._bit_range)
 
     def _makeClearedTexture(self) -> QPainter:
         painter = QPainter(self._texture.getImage())

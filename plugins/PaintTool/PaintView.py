@@ -23,6 +23,7 @@ from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 from UM.Math.Polygon import Polygon
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 from .PaintStrokeCommand import PaintStrokeCommand
 from .PaintClearCommand import PaintClearCommand
@@ -230,11 +231,14 @@ class PaintView(CuraView):
             return
 
         set_value = self._shiftTextureValue(self._paint_modes[self._current_paint_type][brush_color].value)
-        stack.push(PaintStrokeCommand(self._paint_texture,
+        res = PaintStrokeCommand(self._paint_texture,
                                       stroke_path,
                                       set_value,
                                       self._current_bits_ranges,
-                                      merge_with_previous))
+                                      merge_with_previous)
+        if self._current_paint_type == "extruder":
+            res.enableTexelCounting(self._painted_object.getDecorator(SliceableObjectDecorator))
+        stack.push(res)
 
     def _makeClearCommand(self) -> Optional[PaintClearCommand]:
         if self._painted_object is None or self._paint_texture is None or self._current_bits_ranges is None:
@@ -246,7 +250,10 @@ class PaintView(CuraView):
             if extruder_stack is not None:
                 set_value = extruder_stack.getValue("extruder_nr")
 
-        return PaintClearCommand(self._paint_texture, self._current_bits_ranges, set_value)
+        res = PaintClearCommand(self._paint_texture, self._current_bits_ranges, set_value)
+        if self._current_paint_type == "extruder":
+            res.enableTexelCounting(self._painted_object.getDecorator(SliceableObjectDecorator))
+        return res
 
     def clearPaint(self):
         self._prepareDataMapping()

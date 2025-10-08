@@ -1,4 +1,4 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
@@ -18,8 +18,6 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.ExtruderStack import ExtruderStack
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
-
-import numpy
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
@@ -203,17 +201,8 @@ class ExtruderManager(QObject):
         node_texture = node.callDecoration("getPaintTexture")
         texture_data_mapping = node.callDecoration("getTextureDataMapping")
         if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
-            texture_image = node_texture.getImage()
-            image_ptr = texture_image.constBits()
-            image_ptr.setsize(texture_image.sizeInBytes())
-            image_size = texture_image.height(), texture_image.width()
-            image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
-
-            bit_range_start, bit_range_end = texture_data_mapping["extruder"]
-            full_int32 = 0xffffffff
-            bit_mask = (((full_int32 << ( 32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
-
-            return (numpy.unique(image_array & bit_mask) >> bit_range_start).tolist()
+            texel_counts_per_extruder = node.callDecoration("getExtruderTexelCounts")
+            return [extruder_id for extruder_id, count in texel_counts_per_extruder.items() if count > 0]
         else:
             return []
 
