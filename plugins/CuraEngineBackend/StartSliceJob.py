@@ -415,11 +415,12 @@ class StartSliceJob(Job):
             for node in group:
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
-                if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
-                    skip_group = True
-                    has_model_with_disabled_extruders = True
-                    associated_disabled_extruders.add(extruder_position)
+                if not is_non_printing_mesh:
+                    for used_extruder in StartSliceJob._getUsedExtruders(node):
+                        if not extruders_enabled[used_extruder]:
+                            skip_group = True
+                            has_model_with_disabled_extruders = True
+                            associated_disabled_extruders.add(used_extruder)
             if not skip_group:
                 filtered_object_groups.append(group)
 
@@ -508,6 +509,14 @@ class StartSliceJob(Job):
                     flat_verts = numpy.array(verts)
 
                 obj.vertices = flat_verts
+
+                uv_coordinates = mesh_data.getUVCoordinates()
+                if uv_coordinates is not None:
+                    obj.uv_coordinates = uv_coordinates.flatten()
+
+                packed_texture = object.callDecoration("packTexture")
+                if packed_texture is not None:
+                    obj.texture = packed_texture
 
                 self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
@@ -752,3 +761,30 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
+
+    @staticmethod
+    def _getUsedExtruders(node: SceneNode) -> List[int]:
+        used_extruders = []
+
+        # Look at extruders used in painted texture
+        node_texture = node.callDecoration("getPaintTexture")
+        texture_data_mapping = node.callDecoration("getTextureDataMapping")
+        if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
+            texture_image = node_texture.getImage()
+            image_ptr = texture_image.constBits()
+            image_ptr.setsize(texture_image.sizeInBytes())
+            image_size = texture_image.height(), texture_image.width()
+            image_array = numpy.frombuffer(image_ptr, dtype=numpy.uint32).reshape(image_size)
+
+            bit_range_start, bit_range_end = texture_data_mapping["extruder"]
+            full_int32 = 0xffffffff
+            bit_mask = (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
+                        32 - 1 - bit_range_end))
+
+            used_extruders = (numpy.unique(image_array & bit_mask) >> bit_range_start).tolist()
+
+        # There is no relevant painting data, just take the extruder associated to the model
+        if not used_extruders:
+            used_extruders = [int(node.callDecoration("getActiveExtruderPosition"))]
+
+        return used_extruders

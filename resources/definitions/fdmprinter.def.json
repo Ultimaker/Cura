@@ -1427,11 +1427,10 @@
                 "z_seam_corner":
                 {
                     "label": "Seam Corner Preference",
-                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate.",
+                    "description": "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate.",
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none": "None",
                         "z_seam_corner_inner": "Hide Seam",
                         "z_seam_corner_outer": "Expose Seam",
                         "z_seam_corner_any": "Hide or Expose Seam",
@@ -1694,7 +1693,7 @@
                                     "maximum_value": "999999",
                                     "type": "int",
                                     "minimum_value_warning": "2",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -1724,7 +1723,7 @@
                                     "default_value": 6,
                                     "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 and not magic_spiralize else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -4626,7 +4625,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_speed":
@@ -4716,7 +4715,7 @@
                     "maximum_value": 999999999,
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_extrusion_window":
@@ -4730,7 +4729,7 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_combing":
@@ -4770,10 +4769,9 @@
                     "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0,
+                    "default_value": 0.6,
                     "value": "machine_nozzle_size * 1.5",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "machine_nozzle_size * 0.5",
+                    "minimum_value": "machine_nozzle_size * 0.5",
                     "maximum_value_warning": "machine_nozzle_size * 10",
                     "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
@@ -7973,6 +7971,35 @@
                     "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "multi_material_paint_resolution":
+                {
+                    "label": "Multi-material Precision",
+                    "description": "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 0.2,
+                    "value": "min(line_width / 2, layer_height)",
+                    "minimum_value": "0.05",
+                    "maximum_value": "5",
+                    "maximum_value_warning": "line_width * 2",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "multi_material_paint_deepness":
+                {
+                    "label": "Multi-material Deepness",
+                    "description": "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 4,
+                    "value": "line_width * 10",
+                    "minimum_value": "line_width",
+                    "minimum_value_warning": "line_width * 2",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 }
             }
         },
@@ -8866,7 +8893,7 @@
                     "value": "line_width + support_xy_distance + 1.0",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "bridge_skin_support_threshold":
                 {
@@ -9368,6 +9395,42 @@
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": true
+                },
+                "retraction_during_travel_ratio":
+                {
+                    "label": "Retraction During Travel Move",
+                    "description": "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "keep_retracting_during_travel":
+                {
+                    "label": "Keep Retracting During Travel",
+                    "description": "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\" and retraction_during_travel_ratio > 0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "prime_during_travel_ratio":
+                {
+                    "label": "Prime During Travel Move",
+                    "description": "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "enabled": "retraction_enable and not machine_firmware_retract and machine_gcode_flavor != \"UltiGCode\" and machine_gcode_flavor != \"BFB\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "scarf_joint_seam_length":
                 {

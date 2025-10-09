@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.7\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2025-09-22 08:45+0000\n"
 "PO-Revision-Date: 2025-03-23 23:56+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
 "Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
@@ -20,6 +20,14 @@ msgstr ""
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>Como gerar a torre de purga:<ul><li><b>Normal:</b> cria-se um balde em que materiais secundários são purgados</li><li><b>Intercalados:</b> cria-se uma torre de purga tão esparsa quanto possível. Isto salvará material e filamento, mas só é praticável se os materiais aderirem entre si</li></ul></html>"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr ""
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr ""
 
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
@@ -281,6 +289,10 @@ msgctxt "z_seam_position option backright"
 msgid "Back Right"
 msgstr "Atrás à Direita"
 
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr ""
+
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
 msgstr "Bits from Bytes"
@@ -521,14 +533,6 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Largura do Brim"
 
-msgctxt "build_fan_full_at_height label"
-msgid "Build Fan Speed at Height"
-msgstr "Velocidade de Construção da Ventoinha na Altura"
-
-msgctxt "build_fan_full_layer label"
-msgid "Build Fan Speed at Layer"
-msgstr "Velocidade de Construção da Ventoinha na Camada"
-
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Aderência à Mesa"
@@ -541,10 +545,6 @@ msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
 msgstr "Tipo de Aderência da Mesa de Impressão"
 
-msgctxt "machine_buildplate_type label"
-msgid "Build Plate Material"
-msgstr "Material da Plataforma de Impressão"
-
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Forma da Mesa"
@@ -556,6 +556,22 @@ msgstr "Temperatura da Mesa de Impressão"
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
 msgstr "Temperatura da Mesa de Impressão da Camada Inicial"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr ""
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr ""
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr ""
 
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
@@ -702,8 +718,8 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "Conectar caminhos de contorno da base e topo quando estiverem próximos entre si. Para o padrão concêntrico, habilitar este ajuste reduzirá bastante o tempo de percurso, mas por as conexões poderem acontecer no meio do preenchimento, este recurso pode reduzir a qualidade da superfície superior."
 
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Controla se os cantos do contorno do modelo influenciam a posição da costura. Nenhum significa que os cantos não terão influência na posição da costura. Ocultar Costura torna mais provável que a costura ocorra em um canto interior. Expôr Costura torna mais provável que a costura ocorra em um canto exterior. Ocultar ou Expôr Costura torna mais provável que a costura ocorra em um canto interior ou exterior. Ocultação Inteligente permite tanto cantos interiores quanto exteriores, mas escolhe os interiores mais frequentemente se apropriado."
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr ""
 
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
@@ -1853,6 +1869,10 @@ msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Sobreposição em Z das Camadas Iniciais"
 
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr ""
+
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Temperatura Inicial de Impressão"
@@ -1988,6 +2008,10 @@ msgstr "Flutuar movimento apenas nos contornos e não nos furos das peças."
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Manter Faces Desconectadas"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr ""
 
 msgctxt "layer_height label"
 msgid "Layer Height"
@@ -2221,6 +2245,10 @@ msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "GUID do Material"
 
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr ""
+
 msgctxt "material_type label"
 msgid "Material Type"
 msgstr "Tipo do Material"
@@ -2340,6 +2368,10 @@ msgstr "Densidade máxima do preenchimento considerado esparso. Contorno sobre o
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
 msgstr "Diâmetro máximo nas direções X e Y da pequena área que será suportada por uma torre especializada de suporte."
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr ""
 
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
@@ -2537,6 +2569,14 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr "Ordem Monotônica Superior/Inferior"
 
+msgctxt "multi_material_paint_deepness label"
+msgid "Multi-material Deepness"
+msgstr ""
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr ""
+
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "Múltiplas linhas de skirt te ajudam a fazer purga de sua extrusão melhor para pequenos modelos. Se o valor for zero o skirt é desabilitado."
@@ -2568,10 +2608,6 @@ msgstr "Nenhuma"
 msgctxt "extra_infill_lines_to_support_skins option none"
 msgid "None"
 msgstr "Nenhuma"
-
-msgctxt "z_seam_corner option z_seam_corner_none"
-msgid "None"
-msgstr "Nenhum"
 
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
@@ -2852,6 +2888,10 @@ msgstr "Factor de avanço de pressão"
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
 msgstr "Impede de alternar entre uma parede a mais e uma a menos. Esta margem estende o alcance dos comprimentos de file a seguir para [Largura Mínima de Filete de Parede - Margem, 2 * Largura Mínima de Filete de Parede + Margem]. Aumentar esta margem reduz o número de transições, que por sua vez reduz o número de paradas e inícios de extrusão e tempo de percurso. No entanto, variação de largura de filete pode levar a problemas de subextrusão ou sobre-extrusão."
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr ""
 
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
@@ -3401,6 +3441,10 @@ msgctxt "retraction_amount label"
 msgid "Retraction Distance"
 msgstr "Distância da Retração"
 
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr ""
+
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
 msgstr "Quantidade Adicional de Avanço da Retração"
@@ -3436,6 +3480,10 @@ msgstr "Usa a escala da velocidade da ventoinha como um número entre 0 e 1 ao i
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
 msgstr "Compensação de Fator de Encolhimento"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr ""
 
 msgctxt "scarf_joint_seam_length label"
 msgid "Scarf Seam Length"
@@ -4285,6 +4333,10 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr "A marca de material usado."
 
+msgctxt "multi_material_paint_deepness description"
+msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgstr ""
+
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "A aceleração default a ser usada nos eixos para o movimento da cabeça de impressão."
@@ -4493,6 +4545,14 @@ msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
 msgstr "O carro extrusor usado para imprimir paredes. Este ajuste é usado em multi-extrusão."
 
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr ""
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr ""
+
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
 msgstr "A velocidade de ventoinha para a camada base do raft."
@@ -4646,8 +4706,8 @@ msgid "The largest width of top skin areas which are to be removed. Every skin a
 msgstr "A maior largura das áreas de contorno superiores que serão removidas. Cada área de contorno menor que este valor desaparecerá. Isto pode ajudar em limitar a quantidade de tempo e material gastos em impressão de contornos superiores em superfícies inclinadas do modelo."
 
 msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
-msgstr "A camada em que as ventoinhas giram na velocidade total. Este valor é calculado e arredondado para um número inteiro."
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr ""
 
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
@@ -4664,10 +4724,6 @@ msgstr "O comprimento de filamento retornado durante uma retração."
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr "O fator de magnitude usado para a inclinação da base da torre de purga. Se você aumentar este valor, a base se tornará mais fina. Se você diminuí-lo, ela se tornará mais grossa."
-
-msgctxt "machine_buildplate_type description"
-msgid "The material of the build plate installed on the printer."
-msgstr "O material da plataforma de impressão presente na impressora."
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5041,6 +5097,10 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "A posição perto da qual se inicia a impressão de cada parte em uma camada."
 
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
+
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
 msgstr "O ângulo preferido para os galhos, quando eles não têm que evitar o modelo. Use um ângulo menor para torná-los mais verticais e estáveis. Use um ângulo maior para que os galhos se mesclem mais rapidamente."
@@ -5336,6 +5396,10 @@ msgstr "A espessura por camada de material de preenchimento. Este valor deve sem
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "A espessura por camada do material de preenchimento de suporte. Este valor deve sempre ser um múltiplo da altura de camada e é arredondado."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr ""
 
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
@@ -5865,6 +5929,10 @@ msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "Ao imprimir a terceira de contorno da ponte, a quantidade de material é multiplicada por este valor."
 
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr ""
+
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "Quando a velocidade mínima acaba sendo usada por causa do tempo mínimo de camada, levanta a cabeça para longe da impressão e espera tempo extra até que o tempo mínimo de camada seja alcançado."
@@ -5960,6 +6028,10 @@ msgstr "Decide se é preciso descarregar o filamento com uma massa de purga ante
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
 msgstr "Decide se os modelos devem ser impressos todos de uma vez só, uma camada por vez, ou se se deve esperar a cada modelo terminar antes de prosseguir para o próximo. O modo um de cada vez só é possível se a) somente um extrusor estiver habilitado e b) todos os modelos estiverem separados de modo que a cabeça de impressão pode se mover entre todos e todos os modelos estiverem em altura mais baixa que a distância entre o bico e os eixos X e Y."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr ""
 
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
@@ -6245,9 +6317,29 @@ msgstr "percurso"
 #~ msgid "Brim Only on Outside"
 #~ msgstr "Brim Somente Para Fora"
 
+#~ msgctxt "build_fan_full_at_height label"
+#~ msgid "Build Fan Speed at Height"
+#~ msgstr "Velocidade de Construção da Ventoinha na Altura"
+
+#~ msgctxt "build_fan_full_layer label"
+#~ msgid "Build Fan Speed at Layer"
+#~ msgstr "Velocidade de Construção da Ventoinha na Camada"
+
+#~ msgctxt "machine_buildplate_type label"
+#~ msgid "Build Plate Material"
+#~ msgstr "Material da Plataforma de Impressão"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+#~ msgstr "Controla se os cantos do contorno do modelo influenciam a posição da costura. Nenhum significa que os cantos não terão influência na posição da costura. Ocultar Costura torna mais provável que a costura ocorra em um canto interior. Expôr Costura torna mais provável que a costura ocorra em um canto exterior. Ocultar ou Expôr Costura torna mais provável que a costura ocorra em um canto interior ou exterior. Ocultação Inteligente permite tanto cantos interiores quanto exteriores, mas escolhe os interiores mais frequentemente se apropriado."
+
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "Faz a primeira e segunda camadas do modelo se sobreporem na direção Z para compensar pelo filamento perdido no vão aéreo. Todos os modelos acima da primeira camada de modelo serão deslocados para baixo por essa distância."
+
+#~ msgctxt "z_seam_corner option z_seam_corner_none"
+#~ msgid "None"
+#~ msgstr "Nenhum"
 
 #~ msgctxt "machine_nozzle_head_distance label"
 #~ msgid "Nozzle Length"
@@ -6284,6 +6376,14 @@ msgstr "percurso"
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 #~ msgstr "Diferença de altura entre a ponta do bico e a parte mais baixa da cabeça de impressão."
+
+#~ msgctxt "build_fan_full_layer description"
+#~ msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+#~ msgstr "A camada em que as ventoinhas giram na velocidade total. Este valor é calculado e arredondado para um número inteiro."
+
+#~ msgctxt "machine_buildplate_type description"
+#~ msgid "The material of the build plate installed on the printer."
+#~ msgstr "O material da plataforma de impressão presente na impressora."
 
 #~ msgctxt "machine_head_with_fans_polygon description"
 #~ msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
