@@ -56,8 +56,8 @@ class PaintCommand(QUndoCommand):
             return
         texel_counts_changed = {}
         texel_counts_after = self._countTexels()
-        for bit in self._bit_range:
-            texel_counts_changed[bit] = texel_counts_after.get(bit, 0) - texel_counts_before.get(bit, 0)
+        for extruder_nr in range(2 ** (self._bit_range[1] - self._bit_range[0] + 1)):
+            texel_counts_changed[extruder_nr] = texel_counts_after.get(extruder_nr, 0) - texel_counts_before.get(extruder_nr, 0)
         self._texel_count_object.changeExtruderTexelCounts(texel_counts_changed)
 
     def _countTexels(self) -> Dict[int, int]:
