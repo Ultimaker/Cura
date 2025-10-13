@@ -2,10 +2,11 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import copy
 import json
+import numpy
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
-from PyQt6.QtCore import QBuffer
+from PyQt6.QtCore import QBuffer, QTimer
 from PyQt6.QtGui import QImage, QImageWriter
 
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
@@ -20,9 +21,14 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         self._paint_texture = None
         self._texture_data_mapping: Dict[str, tuple[int, int]] = {}
 
-        self._extruder_texel_counts: Dict[int, int] = {}
+        self._painted_extruders: Optional[List[int]] = None
 
         self.paintTextureChanged = Signal()
+
+        self._texture_change_timer = QTimer()
+        self._texture_change_timer.setInterval(500) # Long interval to avoid triggering during painting
+        self._texture_change_timer.setSingleShot(True)
+        self._texture_change_timer.timeout.connect(self._onTextureChangeTimerFinished)
 
     def isSliceable(self) -> bool:
         return True
@@ -33,15 +39,31 @@ class SliceableObjectDecorator(SceneNodeDecorator):
     def getPaintTextureChangedSignal(self) -> Signal:
         return self.paintTextureChanged
 
-    def _initTexelCounts(self) -> None:
-        if "extruder" in self._texture_data_mapping:
-            full_rect = self._paint_texture.getImage().rect()
-            bit_range = self._texture_data_mapping["extruder"]
-            self._extruder_texel_counts = self._paint_texture.getTexelCountsInRect(full_rect, bit_range)
+    def setPaintedExtrudersCountDirty(self) -> None:
+        self._texture_change_timer.start()
+
+    def _onTextureChangeTimerFinished(self) -> None:
+        self._painted_extruders = None
+
+        if (self._paint_texture is None or self._paint_texture.getImage() is None or
+                "extruder" not in self._texture_data_mapping):
+            return
+
+        image = self._paint_texture.getImage()
+        image_bits = image.constBits()
+        image_bits.setsize(image.sizeInBytes())
+        image_array = numpy.frombuffer(image_bits, dtype=numpy.uint32)
+
+        bit_range_start, bit_range_end = self._texture_data_mapping["extruder"]
+        full_int32 = 0xffffffff
+        bit_mask = (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (
+                32 - 1 - bit_range_end))
+
+        texel_counts = numpy.bincount((image_array & bit_mask) >> bit_range_start)
+        self._painted_extruders = [extruder_nr for extruder_nr, count in enumerate(texel_counts) if count > 0]
 
     def setPaintTexture(self, texture: Texture) -> None:
         self._paint_texture = texture
-        self._initTexelCounts()
         self.paintTextureChanged.emit()
 
     def getTextureDataMapping(self) -> Dict[str, tuple[int, int]]:
@@ -49,14 +71,12 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
     def setTextureDataMapping(self, mapping: Dict[str, tuple[int, int]]) -> None:
         self._texture_data_mapping = mapping
-        self._initTexelCounts()
 
     def prepareTexture(self, width: int, height: int) -> None:
         if self._paint_texture is None:
             self._paint_texture = OpenGL.getInstance().createTexture(width, height)
             image = QImage(width, height, QImage.Format.Format_RGB32)
             image.fill(0)
-            self._extruder_texel_counts = {0: self._paint_texture.getWidth() * self._paint_texture.getHeight()}
             self._paint_texture.setImage(image)
             self.paintTextureChanged.emit()
 
@@ -76,14 +96,8 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         return texture_buffer.data()
 
-    def changeExtruderTexelCounts(self, texel_changes: Dict[int, int]) -> None:
-        for extruder_id, texel_count in texel_changes.items():
-            if extruder_id not in self._extruder_texel_counts:
-                self._extruder_texel_counts[extruder_id] = 0
-            self._extruder_texel_counts[extruder_id] += texel_count
-
-    def getExtruderTexelCounts(self) -> Dict[int, int]:
-        return self._extruder_texel_counts
+    def getPaintedExtruders(self) -> Optional[List[int]]:
+        return self._painted_extruders
 
     def __deepcopy__(self, memo) -> "SliceableObjectDecorator":
         copied_decorator = SliceableObjectDecorator()

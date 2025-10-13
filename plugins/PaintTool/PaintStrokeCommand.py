@@ -7,6 +7,7 @@ import math
 from PyQt6.QtCore import QRect, QRectF, QPoint
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QPainterPath, QPen, QBrush
 
+from Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from UM.View.GL.Texture import Texture
 from UM.Math.Polygon import Polygon
 
@@ -22,8 +23,9 @@ class PaintStrokeCommand(PaintCommand):
                  stroke_polygons: List[Polygon],
                  set_value: int,
                  bit_range: tuple[int, int],
-                 mergeable: bool) -> None:
-        super().__init__(texture, bit_range, make_original_image = not mergeable)
+                 mergeable: bool,
+                 sliceable_object_decorator: Optional[SliceableObjectDecorator] = None) -> None:
+        super().__init__(texture, bit_range, make_original_image = not mergeable, sliceable_object_decorator=sliceable_object_decorator)
         self._stroke_polygons: List[Polygon] = stroke_polygons
         self._calculateBoundingRect()
         self._set_value: int = set_value
@@ -33,8 +35,6 @@ class PaintStrokeCommand(PaintCommand):
         return 0
 
     def redo(self) -> None:
-        texel_counts_before = self._countTexels()
-
         painter = self._makeClearedTexture()
         painter.setBrush(QBrush(self._set_value))
         painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH))
@@ -42,7 +42,7 @@ class PaintStrokeCommand(PaintCommand):
         painter.drawPath(self._makePainterPath())
         painter.end()
 
-        self._pushTexelDifference(texel_counts_before)
+        self._setPaintedExtrudersCountDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:

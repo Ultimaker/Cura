@@ -764,7 +764,7 @@ class StartSliceJob(Job):
 
     @staticmethod
     def _getUsedExtruders(node: SceneNode) -> List[int]:
-        used_extruders = ExtruderManager.getInstance().getPaintedExtruders(node)
+        used_extruders = node.callDecoration("getPaintedExtruders")
 
         # There is no relevant painting data, just take the extruder associated to the model
         if not used_extruders:

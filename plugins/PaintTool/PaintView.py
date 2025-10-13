@@ -231,14 +231,18 @@ class PaintView(CuraView):
             return
 
         set_value = self._shiftTextureValue(self._paint_modes[self._current_paint_type][brush_color].value)
-        res = PaintStrokeCommand(self._paint_texture,
+        stack.push(PaintStrokeCommand(self._paint_texture,
                                       stroke_path,
                                       set_value,
                                       self._current_bits_ranges,
-                                      merge_with_previous)
-        if self._current_paint_type == "extruder":
-            res.enableTexelCounting(self._painted_object.getDecorator(SliceableObjectDecorator))
-        stack.push(res)
+                                      merge_with_previous,
+                                      self._getSliceableObjectDecorator()))
+
+    def _getSliceableObjectDecorator(self) -> Optional[SliceableObjectDecorator]:
+        if self._painted_object is None or self._current_paint_type != "extruder":
+            return None
+
+        return self._painted_object.getDecorator(SliceableObjectDecorator)
 
     def _makeClearCommand(self) -> Optional[PaintClearCommand]:
         if self._painted_object is None or self._paint_texture is None or self._current_bits_ranges is None:
@@ -250,10 +254,10 @@ class PaintView(CuraView):
             if extruder_stack is not None:
                 set_value = extruder_stack.getValue("extruder_nr")
 
-        res = PaintClearCommand(self._paint_texture, self._current_bits_ranges, set_value)
-        if self._current_paint_type == "extruder":
-            res.enableTexelCounting(self._painted_object.getDecorator(SliceableObjectDecorator))
-        return res
+        return PaintClearCommand(self._paint_texture,
+                                 self._current_bits_ranges,
+                                 set_value,
+                                 self._getSliceableObjectDecorator())
 
     def clearPaint(self):
         self._prepareDataMapping()

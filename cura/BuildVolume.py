@@ -117,6 +117,7 @@ class BuildVolume(SceneNode):
 
         self._has_errors = False
         self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        self._application.getController().getScene().sceneChanged.connect(self._onStackChanged)
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]

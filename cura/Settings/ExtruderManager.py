@@ -196,16 +196,6 @@ class ExtruderManager(QObject):
         else:
             return value
 
-    @staticmethod
-    def getPaintedExtruders(node: "SceneNode") -> List[int]:
-        node_texture = node.callDecoration("getPaintTexture")
-        texture_data_mapping = node.callDecoration("getTextureDataMapping")
-        if node_texture is not None and texture_data_mapping is not None and "extruder" in texture_data_mapping:
-            texel_counts_per_extruder = node.callDecoration("getExtruderTexelCounts")
-            return [extruder_id for extruder_id, count in texel_counts_per_extruder.items() if count > 0]
-        else:
-            return []
-
     def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         """Gets the extruder stacks that are actually being used at the moment.
 
@@ -264,8 +254,10 @@ class ExtruderManager(QObject):
             if not support_roof_enabled:
                 support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
 
-            for extruder_nr in ExtruderManager.getPaintedExtruders(node):
-                used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+            painted_extruders = node.callDecoration("getPaintedExtruders")
+            if painted_extruders is not None:
+                for extruder_nr in painted_extruders:
+                    used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
 
         # Check limit to extruders
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
