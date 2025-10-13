@@ -62,7 +62,7 @@ class PaintView(CuraView):
     canUndoChanged = pyqtSignal(bool)
     canRedoChanged = pyqtSignal(bool)
 
-    def setCurrentPaintedObject(self, current_painted_object: Optional[SceneNode]):
+    def setPaintedObject(self, painted_object: Optional[SceneNode]):
         if self._painted_object is not None:
             texture_changed_signal = self._painted_object.callDecoration("getPaintTextureChangedSignal")
             texture_changed_signal.disconnect(self._onCurrentPaintedObjectTextureChanged)
@@ -70,14 +70,22 @@ class PaintView(CuraView):
         self._paint_texture = None
         self._cursor_texture = None
 
-        self._painted_object = current_painted_object
+        self._painted_object = None
 
-        if self._painted_object is not None:
+        if painted_object is not None and painted_object.callDecoration("isSliceable"):
+            self._painted_object = painted_object
             texture_changed_signal = self._painted_object.callDecoration("getPaintTextureChangedSignal")
-            texture_changed_signal.connect(self._onCurrentPaintedObjectTextureChanged)
+            if texture_changed_signal is not None:
+                texture_changed_signal.connect(self._onCurrentPaintedObjectTextureChanged)
             self._onCurrentPaintedObjectTextureChanged()
 
         self._updateCurrentBitsRanges()
+
+    def getPaintedObject(self) -> Optional[SceneNode]:
+        return self._painted_object
+
+    def hasPaintedObject(self) -> bool:
+        return self._painted_object is not None
 
     def _onCurrentPaintedObjectTextureChanged(self) -> None:
         paint_texture = self._painted_object.callDecoration("getPaintTexture")

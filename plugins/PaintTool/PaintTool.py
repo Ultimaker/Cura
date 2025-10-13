@@ -78,6 +78,7 @@ class PaintTool(Tool):
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
+        self._controller.activeStageChanged.connect(self._updateActiveView)
 
         self._camera: Optional[Camera] = None
         self._cam_pos: numpy.ndarray = numpy.array([0.0, 0.0, 0.0])
@@ -187,15 +188,15 @@ class PaintTool(Tool):
 
     def undoStackAction(self) -> None:
         self._view.undoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def redoStackAction(self) -> None:
         self._view.redoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def clear(self) -> None:
         self._view.clearPaint()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -317,8 +318,8 @@ class PaintTool(Tool):
         """
         super().event(event)
 
-        node = Selection.getSelectedObject(0)
-        if node is None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is None:
             return False
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
@@ -329,6 +330,9 @@ class PaintTool(Tool):
             return True
 
         if self._state != PaintTool.Paint.State.READY:
+            return False
+
+        if self._controller.getActiveView() is not self._view:
             return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
@@ -364,10 +368,10 @@ class PaintTool(Tool):
             if self._camera is None:
                 return False
 
-            if node != self._node_cache:
+            if painted_object != self._node_cache:
                 if self._node_cache is not None:
                     self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
-                self._node_cache = node
+                self._node_cache = painted_object
                 self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
                 self._cache_dirty = True
             if self._cache_dirty:
@@ -379,7 +383,7 @@ class PaintTool(Tool):
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 if self._view.clearCursorStroke():
-                    self._updateScene(node)
+                    self._updateScene(painted_object, update_node = self._mouse_held)
                     return True
                 return False
 
@@ -408,7 +412,7 @@ class PaintTool(Tool):
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._updateScene(node if event_caught else None)
+            self._updateScene(painted_object, update_node = event_caught)
             return event_caught
 
         return False
@@ -416,32 +420,44 @@ class PaintTool(Tool):
     def getRequiredExtraRenderingPasses(self) -> list[str]:
         return ["selection_faces", "picking_selected"]
 
-    def _updateScene(self, node: SceneNode = None):
+    def _updateScene(self, node: SceneNode = None, update_node: bool = False):
+        """
+        Updates the current displayed scene
+        :param node: the specific scene node to be updated, otherwise the current painted object will be used
+        :param update_node: Indicates whether the specific node should be updated, which will invalidate its slicing
+                            data, or the whole scene, which will just trigger a redraw of the view
+        :return:
+        """
         if node is None:
-            node = Selection.getSelectedObject(0)
+            node = self._view.getPaintedObject()
         if node is not None:
-            if self._mouse_held:
+            if update_node:
                 Application.getInstance().getController().getScene().sceneChanged.emit(node)
             else:
                 scene = self.getController().getScene()
                 scene.sceneChanged.emit(scene.getRoot())
 
-    def _onSelectionChanged(self):
+    def _onSelectionChanged(self) -> None:
         super()._onSelectionChanged()
 
         single_selection = len(Selection.getAllSelectedObjects()) == 1
-        self.setActiveView("PaintTool" if single_selection else None)
-        self._view.setCurrentPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        self._updateActiveView()
         self._updateState()
 
+    def _updateActiveView(self) -> None:
+        has_painted_object = self._view.hasPaintedObject()
+        stage_is_prepare = self._controller.getActiveStage().stageId == "PrepareStage"
+        self.setActiveView("PaintTool" if has_painted_object and stage_is_prepare else None)
+
     def _updateState(self):
-        if len(Selection.getAllSelectedObjects()) == 1 and self._controller.getActiveTool() == self:
-            selected_object = Selection.getSelectedObject(0)
-            if selected_object.callDecoration("getPaintTexture") is not None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is not None and self._controller.getActiveTool() == self:
+            if painted_object.callDecoration("getPaintTexture") is not None:
                 new_state = PaintTool.Paint.State.READY
             else:
                 new_state = PaintTool.Paint.State.PREPARING_MODEL
-                self._prepare_texture_job = PrepareTextureJob(selected_object)
+                self._prepare_texture_job = PrepareTextureJob(painted_object)
                 self._prepare_texture_job.finished.connect(self._onPrepareTextureFinished)
                 self._prepare_texture_job.start()
         else:
