@@ -362,7 +362,6 @@
             "maximum_value": "100",
             "value": "(wall_material_flow + roofing_material_flow) / 2"
         },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
         "z_seam_position": { "value": "'backleft'" },
         "z_seam_type": { "value": "'sharpest_corner'" },
         "zig_zaggify_infill": { "value": "True" }
