@@ -2055,8 +2055,20 @@ class CuraApplication(QtApplication):
                 fixed_nodes.append(node_)
 
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
-        default_extruder_id = self._global_container_stack.extruderList[int(default_extruder_position)].getId()
+        
+        # Safety check: ensure the extruder list is properly initialized before accessing it
+        extruder_list = self._global_container_stack.extruderList
+        if not extruder_list:
+            Logger.log("e", "No extruders available during file loading. Cannot assign default extruder.")
+            return
 
+        extruder_index = int(default_extruder_position)
+        if extruder_index >= len(extruder_list):
+            Logger.log("w", "Default extruder position %s is not available in extruder list (length: %d). Using extruder 0 instead.", 
+                      default_extruder_position, len(extruder_list))
+            extruder_index = 0
+
+        default_extruder_id = extruder_list[extruder_index].getId()
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 
         nodes_to_arrange = []  # type: List[CuraSceneNode]
