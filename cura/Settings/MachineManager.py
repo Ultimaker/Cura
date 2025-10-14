@@ -1588,7 +1588,13 @@ class MachineManager(QObject):
         if you update an active machine, special measures have to be taken.
         """
         if global_stack is not None and global_stack != self._global_container_stack:
-            global_stack.extruderList[int(position)].material = container_node.container
+            # Safety check: ensure the extruder position is valid for the provided global stack
+            position_int = int(position)
+            if position_int >= len(global_stack.extruderList):
+                Logger.log("w", "Cannot set material for extruder position %s: position out of bounds for global stack (extruder count: %d)", 
+                          position, len(global_stack.extruderList))
+                return
+            global_stack.extruderList[position_int].material = container_node.container
             return
         position = str(position)
         self.blurSettings.emit()
