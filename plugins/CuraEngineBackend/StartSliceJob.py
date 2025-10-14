@@ -416,7 +416,7 @@ class StartSliceJob(Job):
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                 if not is_non_printing_mesh:
-                    for used_extruder in StartSliceJob._getUsedExtruders(node):
+                    for used_extruder in StartSliceJob._getMainExtruders(node):
                         if not extruders_enabled[used_extruder]:
                             skip_group = True
                             has_model_with_disabled_extruders = True
@@ -763,7 +763,7 @@ class StartSliceJob(Job):
             self._addRelations(relations_set, relation.target.relations)
 
     @staticmethod
-    def _getUsedExtruders(node: SceneNode) -> List[int]:
+    def _getMainExtruders(node: SceneNode) -> List[int]:
         used_extruders = node.callDecoration("getPaintedExtruders")
 
         # There is no relevant painting data, just take the extruder associated to the model
