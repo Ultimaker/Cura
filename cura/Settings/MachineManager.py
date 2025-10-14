@@ -1013,11 +1013,14 @@ class MachineManager(QObject):
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
                 extruder_position = max(0, limit_to_extruder)
-                extruder_stack = self._global_container_stack.extruderList[extruder_position]
-                if extruder_stack:
-                    extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
-                else:
-                    Logger.log("e", "Unable to find extruder on position %s", extruder_position)
+                try:
+                    extruder_stack = self._global_container_stack.extruderList[extruder_position]
+                    if extruder_stack:
+                        extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
+                    else:
+                        Logger.log("e", "Unable to find extruder on position %s", extruder_position)
+                except IndexError:
+                    Logger.log("e", "Extruder position %s is not available during machine setup. Skipping setting %s.", extruder_position, setting_key)
                 global_user_container.removeInstance(setting_key)
 
         # Signal that the global stack has changed
