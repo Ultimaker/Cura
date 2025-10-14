@@ -116,8 +116,9 @@ class BuildVolume(SceneNode):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
         self._has_errors = False
-        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
-        self._application.getController().getScene().sceneChanged.connect(self._onStackChanged)
+        scene = self._application.getController().getScene()
+        scene.sceneChanged.connect(self._onSceneChanged)
+        scene.sceneChanged.connect(self._onStackChanged)
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
