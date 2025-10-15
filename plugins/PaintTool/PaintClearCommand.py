@@ -35,8 +35,6 @@ class PaintClearCommand(PaintCommand):
         self._setPaintedExtrudersCountDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
-        self._signalUpdated()
-
     def mergeWith(self, command: QUndoCommand) -> bool:
         if not isinstance(command, PaintClearCommand):
             return False

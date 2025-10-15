@@ -62,6 +62,9 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         texel_counts = numpy.bincount((image_array & bit_mask) >> bit_range_start)
         self._painted_extruders = [extruder_nr for extruder_nr, count in enumerate(texel_counts) if count > 0]
 
+        from cura.CuraApplication import CuraApplication
+        CuraApplication.getInstance().globalContainerStackChanged.emit()
+
     def setPaintTexture(self, texture: Texture) -> None:
         self._paint_texture = texture
         self.paintTextureChanged.emit()

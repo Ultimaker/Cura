@@ -51,8 +51,6 @@ class PaintCommand(QUndoCommand):
         self._setPaintedExtrudersCountDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
-        self._signalUpdated()
-
     def _setPaintedExtrudersCountDirty(self) -> None:
         if self._sliceable_object_decorator is not None:
             self._sliceable_object_decorator.setPaintedExtrudersCountDirty()
@@ -75,6 +73,3 @@ class PaintCommand(QUndoCommand):
 
     def _getBitRangeMask(self) -> int:
         return PaintCommand.getBitRangeMask(self._bit_range)
-
-    def _signalUpdated(self):
-        CuraApplication.getInstance().globalContainerStackChanged.emit()
