@@ -17,6 +17,7 @@ class PaintStrokeCommand(PaintCommand):
     """Provides the command that does the actual painting on objects with undo/redo mechanisms"""
 
     PEN_OVERLAP_WIDTH = 2.5
+    PEN_OVERLAP_WIDTH_EXTENDED = PEN_OVERLAP_WIDTH + 0.5
 
     def __init__(self,
                  texture: Texture,
@@ -58,9 +59,9 @@ class PaintStrokeCommand(PaintCommand):
 
         return True
 
-    def _clearTextureBits(self, painter: QPainter):
+    def _clearTextureBits(self, painter: QPainter, extended = False):
         painter.setBrush(QBrush(self._getBitRangeMask()))
-        painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH))
+        painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH_EXTENDED if extended else self.PEN_OVERLAP_WIDTH))
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_NotSourceAndDestination)
         painter.drawPath(self._makePainterPath())
 

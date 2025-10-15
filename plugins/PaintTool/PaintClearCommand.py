@@ -42,6 +42,6 @@ class PaintClearCommand(PaintCommand):
         # There is actually nothing more to do here, both clear commands already have the same original texture
         return True
 
-    def _clearTextureBits(self, painter: QPainter):
+    def _clearTextureBits(self, painter: QPainter, extended = False):
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_NotSourceAndDestination)
         painter.fillRect(self._texture.getImage().rect(), QBrush(self._getBitRangeMask()))

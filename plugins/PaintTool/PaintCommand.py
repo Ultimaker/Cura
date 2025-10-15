@@ -43,7 +43,7 @@ class PaintCommand(QUndoCommand):
         if self._original_texture_image is None:
             return
 
-        painter = self._makeClearedTexture()
+        painter = self._makeClearedTexture(extended=True)
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
         painter.drawImage(0, 0, self._original_texture_image)
         painter.end()
@@ -55,14 +55,14 @@ class PaintCommand(QUndoCommand):
         if self._sliceable_object_decorator is not None:
             self._sliceable_object_decorator.setPaintedExtrudersCountDirty()
 
-    def _makeClearedTexture(self) -> QPainter:
+    def _makeClearedTexture(self, extended = False) -> QPainter:
         painter = QPainter(self._texture.getImage())
         painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
 
-        self._clearTextureBits(painter)
+        self._clearTextureBits(painter, extended)
         return painter
 
-    def _clearTextureBits(self, painter: QPainter):
+    def _clearTextureBits(self, painter: QPainter, extended = False):
         raise NotImplementedError()
 
     @staticmethod
