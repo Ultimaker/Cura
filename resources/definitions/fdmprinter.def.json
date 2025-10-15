@@ -2053,7 +2053,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "value": "max(-skin_preshrink, wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x)",
                     "minimum_value": "-skin_preshrink",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
