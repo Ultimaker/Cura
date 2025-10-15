@@ -7,7 +7,7 @@ import math
 from PyQt6.QtCore import QRect, QRectF, QPoint
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QPainterPath, QPen, QBrush
 
-from Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from UM.View.GL.Texture import Texture
 from UM.Math.Polygon import Polygon
 

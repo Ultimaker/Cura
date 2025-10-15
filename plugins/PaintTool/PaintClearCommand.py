@@ -5,7 +5,7 @@ from typing import Optional
 
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QBrush
 
-from Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from UM.View.GL.Texture import Texture
 
 from .PaintCommand import PaintCommand
