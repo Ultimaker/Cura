@@ -3030,10 +3030,9 @@ msgid "Please remove the print"
 msgstr "请取出打印件"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "请检查设置并检查您的模型是否："
 "- 适合构建体积"
-"- 分配给了已启用的挤出器"
 "- 尚未全部设置为修改器网格"
 
 msgctxt "@label"

@@ -3037,10 +3037,9 @@ msgid "Please remove the print"
 msgstr "Remova a impressão"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "Reveja as definições e verifique se os seus modelos:"
 "- Cabem dentro do volume de construção"
-"- Estão atribuídos a uma extrusora ativada"
 "- Não estão todos definidos como objetos modificadores"
 
 msgctxt "@label"
