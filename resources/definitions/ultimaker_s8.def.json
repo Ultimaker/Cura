@@ -244,7 +244,7 @@
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'grid'" },
         "infill_sparse_density": { "value": 15 },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
-        "initial_bottom_layers": { "value": 2 },
+        "initial_bottom_layers": { "value": "2 if extruderValueFromContainer(extruder_nr, 'bottom_layers', 2) == bottom_layers else bottom_layers" },
         "jerk_flooring":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
