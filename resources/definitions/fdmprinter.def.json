@@ -1542,6 +1542,19 @@
                             "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
+                        },
+                        "roofing_extension":
+                        {
+                            "label": "Top Surface Extension",
+                            "description": "Determines how much the top surfaces are extended beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces.",
+                            "type": "float",
+                            "default_value": "0",
+                            "value": "0",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "roofing_line_width * 10",
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
                         }
                     }
                 },
@@ -2053,7 +2066,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "value": "max(-skin_preshrink, wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x)",
                     "minimum_value": "-skin_preshrink",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
