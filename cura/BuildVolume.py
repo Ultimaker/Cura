@@ -318,16 +318,6 @@ class BuildVolume(SceneNode):
                 if node_bounding_box and node_bounding_box.top < 0 and not node.getParent().callDecoration("isGroup"):
                     node.setOutsideBuildArea(True)
                     continue
-                # Mark the node as outside build volume if the set extruder is disabled
-                extruder_position = node.callDecoration("getActiveExtruderPosition")
-                try:
-                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled and not node.callDecoration("isGroup"):
-                        node.setOutsideBuildArea(True)
-                        continue
-                except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
-                    continue
-                except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
-                    continue
 
                 node.setOutsideBuildArea(False)
 

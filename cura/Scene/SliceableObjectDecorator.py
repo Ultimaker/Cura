@@ -18,7 +18,13 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         self._paint_texture = None
         self._texture_data_mapping: Dict[str, tuple[int, int]] = {}
 
+        self._is_assigned_to_disabled_extruder: bool = False
+
         self.paintTextureChanged = Signal()
+
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+        application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
 
     def isSliceable(self) -> bool:
         return True
@@ -62,6 +68,22 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         image_writer.write(texture_image)
 
         return texture_buffer.data()
+
+    def isAssignedToDisabledExtruder(self) -> bool:
+        return self._is_assigned_to_disabled_extruder
+
+    def _updateIsAssignedToDisabledExtruder(self) -> None:
+        new_is_assigned_to_disabled_extruder = False
+        try:
+            extruder_stack = self.getNode().getPrintingExtruder()
+            new_is_assigned_to_disabled_extruder = ((extruder_stack is None or not extruder_stack.isEnabled) and
+                                              not self.getNode().callDecoration("isGroup"))
+        except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
+            pass
+        except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
+            pass
+
+        self._is_assigned_to_disabled_extruder = new_is_assigned_to_disabled_extruder
 
     def __deepcopy__(self, memo) -> "SliceableObjectDecorator":
         copied_decorator = SliceableObjectDecorator()
