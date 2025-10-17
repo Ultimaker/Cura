@@ -7939,8 +7939,8 @@
                     "minimum_value": "0.05",
                     "maximum_value": "5",
                     "maximum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 },
                 "multi_material_paint_deepness":
                 {
@@ -7953,8 +7953,8 @@
                     "value": "line_width * 10",
                     "minimum_value": "line_width",
                     "minimum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
