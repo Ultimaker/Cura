@@ -2569,8 +2569,8 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr "Ordem Monotônica Superior/Inferior"
 
-msgctxt "multi_material_paint_deepness label"
-msgid "Multi-material Deepness"
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
 msgstr ""
 
 msgctxt "multi_material_paint_resolution label"
@@ -4333,8 +4333,8 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr "A marca de material usado."
 
-msgctxt "multi_material_paint_deepness description"
-msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr ""
 
 msgctxt "machine_acceleration description"

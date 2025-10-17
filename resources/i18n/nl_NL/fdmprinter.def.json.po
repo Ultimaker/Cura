@@ -6289,8 +6289,8 @@ msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
 msgstr "Maximale stroomsnelheid die de printer voor het materiaal kan extruderen"
 
-msgctxt "multi_material_paint_deepness label"
-msgid "Multi-material Deepness"
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
 msgstr "Multi-materiële diepte"
 
 msgctxt "multi_material_paint_resolution label"
@@ -6309,8 +6309,8 @@ msgctxt "machine_scan_first_layer label"
 msgid "Scan the first layer"
 msgstr "Scan de eerste laag"
 
-msgctxt "multi_material_paint_deepness description"
-msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr "De diepte van de geverfde details in het model. Een hogere diepte zorgt voor een betere interlocking, maar verhoogt de snijtijd en het geheugen. Stel een zeer hoge waarde in om zo diep mogelijk te gaan. De werkelijk berekende diepte kan variëren."
 
 msgctxt "build_volume_fan_speed description"
