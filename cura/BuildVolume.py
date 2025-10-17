@@ -116,7 +116,8 @@ class BuildVolume(SceneNode):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
         self._has_errors = False
-        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        scene = self._application.getController().getScene()
+        scene.sceneChanged.connect(self._onSceneChanged)
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
@@ -655,7 +656,7 @@ class BuildVolume(SceneNode):
                     extra_z = retraction_hop
         return extra_z
 
-    def _onStackChanged(self):
+    def _onStackChanged(self, *args) -> None:
         self._stack_change_timer.start()
 
     def _onStackChangeTimerFinished(self) -> None:
