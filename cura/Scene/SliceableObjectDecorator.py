@@ -23,8 +23,6 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         self._is_assigned_to_disabled_extruder: bool = False
 
-        self.paintTextureChanged = Signal()
-
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
@@ -32,10 +30,7 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         self.paintTextureChanged = Signal()
 
-        self._texture_change_timer = QTimer()
-        self._texture_change_timer.setInterval(500) # Long interval to avoid triggering during painting
-        self._texture_change_timer.setSingleShot(True)
-        self._texture_change_timer.timeout.connect(self._onTextureChangeTimerFinished)
+        self._texture_change_timer: Optional[QTimer] = None
 
     def isSliceable(self) -> bool:
         return True
@@ -47,6 +42,13 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         return self.paintTextureChanged
 
     def setPaintedExtrudersCountDirty(self) -> None:
+        if self._texture_change_timer is None:
+            # Lazy initialize the timer because constructor can be called from non-Qt thread
+            self._texture_change_timer = QTimer()
+            self._texture_change_timer.setInterval(500)  # Long interval to avoid triggering during painting
+            self._texture_change_timer.setSingleShot(True)
+            self._texture_change_timer.timeout.connect(self._onTextureChangeTimerFinished)
+
         self._texture_change_timer.start()
 
     def _onTextureChangeTimerFinished(self) -> None:
