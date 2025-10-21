@@ -264,7 +264,7 @@ class PaintView(CuraView):
 
         return PaintClearCommand(self._paint_texture,
                                  self._current_bits_ranges,
-                                 set_value,
+                                 self._shiftTextureValue(set_value),
                                  self._getSliceableObjectDecorator())
 
     def clearPaint(self):
