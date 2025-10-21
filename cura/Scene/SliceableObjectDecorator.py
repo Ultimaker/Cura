@@ -21,14 +21,16 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         self._paint_texture = None
         self._texture_data_mapping: Dict[str, tuple[int, int]] = {}
 
+        self._is_assigned_to_disabled_extruder: bool = False
+
+        from cura.CuraApplication import CuraApplication
+        application = CuraApplication.getInstance()
+        application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
         self._painted_extruders: Optional[List[int]] = None
 
         self.paintTextureChanged = Signal()
 
-        self._texture_change_timer = QTimer()
-        self._texture_change_timer.setInterval(500) # Long interval to avoid triggering during painting
-        self._texture_change_timer.setSingleShot(True)
-        self._texture_change_timer.timeout.connect(self._onTextureChangeTimerFinished)
+        self._texture_change_timer: Optional[QTimer] = None
 
     def isSliceable(self) -> bool:
         return True
@@ -40,6 +42,13 @@ class SliceableObjectDecorator(SceneNodeDecorator):
         return self.paintTextureChanged
 
     def setPaintedExtrudersCountDirty(self) -> None:
+        if self._texture_change_timer is None:
+            # Lazy initialize the timer because constructor can be called from non-Qt thread
+            self._texture_change_timer = QTimer()
+            self._texture_change_timer.setInterval(500)  # Long interval to avoid triggering during painting
+            self._texture_change_timer.setSingleShot(True)
+            self._texture_change_timer.timeout.connect(self._onTextureChangeTimerFinished)
+
         self._texture_change_timer.start()
 
     def _onTextureChangeTimerFinished(self) -> None:
@@ -99,6 +108,21 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         return texture_buffer.data()
 
+    def isAssignedToDisabledExtruder(self) -> bool:
+        return self._is_assigned_to_disabled_extruder
+
+    def _updateIsAssignedToDisabledExtruder(self) -> None:
+        new_is_assigned_to_disabled_extruder = False
+        try:
+            extruder_stack = self.getNode().getPrintingExtruder()
+            new_is_assigned_to_disabled_extruder = ((extruder_stack is None or not extruder_stack.isEnabled) and
+                                              not self.getNode().callDecoration("isGroup"))
+        except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
+            pass
+        except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
+            pass
+
+        self._is_assigned_to_disabled_extruder = new_is_assigned_to_disabled_extruder
     def getPaintedExtruders(self) -> Optional[List[int]]:
         return self._painted_extruders
 
