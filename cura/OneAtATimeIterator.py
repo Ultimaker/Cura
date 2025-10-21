@@ -34,6 +34,9 @@ class OneAtATimeIterator(Iterator.Iterator):
             if getattr(node, "_outside_buildarea", False):
                 continue
 
+            if node.callDecoration("isAssignedToDisabledExtruder"):
+                continue
+
             if node.callDecoration("getConvexHull"):
                 node_list.append(node)
 

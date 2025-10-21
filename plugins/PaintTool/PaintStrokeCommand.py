@@ -7,6 +7,7 @@ import math
 from PyQt6.QtCore import QRect, QRectF, QPoint
 from PyQt6.QtGui import QUndoCommand, QImage, QPainter, QPainterPath, QPen, QBrush
 
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from UM.View.GL.Texture import Texture
 from UM.Math.Polygon import Polygon
 
@@ -16,14 +17,16 @@ class PaintStrokeCommand(PaintCommand):
     """Provides the command that does the actual painting on objects with undo/redo mechanisms"""
 
     PEN_OVERLAP_WIDTH = 2.5
+    PEN_OVERLAP_WIDTH_EXTENDED = PEN_OVERLAP_WIDTH + 0.5
 
     def __init__(self,
                  texture: Texture,
                  stroke_polygons: List[Polygon],
                  set_value: int,
                  bit_range: tuple[int, int],
-                 mergeable: bool) -> None:
-        super().__init__(texture, bit_range, make_original_image = not mergeable)
+                 mergeable: bool,
+                 sliceable_object_decorator: Optional[SliceableObjectDecorator] = None) -> None:
+        super().__init__(texture, bit_range, make_original_image = not mergeable, sliceable_object_decorator=sliceable_object_decorator)
         self._stroke_polygons: List[Polygon] = stroke_polygons
         self._calculateBoundingRect()
         self._set_value: int = set_value
@@ -40,6 +43,7 @@ class PaintStrokeCommand(PaintCommand):
         painter.drawPath(self._makePainterPath())
         painter.end()
 
+        self._setPaintedExtrudersCountDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
     def mergeWith(self, command: QUndoCommand) -> bool:
@@ -55,9 +59,9 @@ class PaintStrokeCommand(PaintCommand):
 
         return True
 
-    def _clearTextureBits(self, painter: QPainter):
+    def _clearTextureBits(self, painter: QPainter, extended = False):
         painter.setBrush(QBrush(self._getBitRangeMask()))
-        painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH))
+        painter.setPen(QPen(painter.brush(), self.PEN_OVERLAP_WIDTH_EXTENDED if extended else self.PEN_OVERLAP_WIDTH))
         painter.setCompositionMode(QPainter.CompositionMode.RasterOp_NotSourceAndDestination)
         painter.drawPath(self._makePainterPath())
 
