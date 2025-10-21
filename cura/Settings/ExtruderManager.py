@@ -257,7 +257,10 @@ class ExtruderManager(QObject):
             painted_extruders = node.callDecoration("getPaintedExtruders")
             if painted_extruders is not None:
                 for extruder_nr in painted_extruders:
-                    used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+                    try:
+                        used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+                    except KeyError:
+                        pass
 
         # Check limit to extruders
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
