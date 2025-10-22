@@ -7939,13 +7939,13 @@
                     "minimum_value": "0.05",
                     "maximum_value": "5",
                     "maximum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 },
-                "multi_material_paint_deepness":
+                "multi_material_paint_depth":
                 {
-                    "label": "Multi-material Deepness",
-                    "description": "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary.",
+                    "label": "Multi-material Depth",
+                    "description": "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary.",
                     "unit": "mm",
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1",
@@ -7953,8 +7953,8 @@
                     "value": "line_width * 10",
                     "minimum_value": "line_width",
                     "minimum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
