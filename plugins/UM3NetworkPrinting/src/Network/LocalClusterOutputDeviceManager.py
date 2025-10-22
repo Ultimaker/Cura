@@ -15,6 +15,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .LocalClusterOutputDevice import LocalClusterOutputDevice
+from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.CloudFlowMessage import CloudFlowMessage
 from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
@@ -44,6 +45,7 @@ class LocalClusterOutputDeviceManager:
         # Persistent dict containing the networked clusters.
         self._discovered_devices = {}  # type: Dict[str, LocalClusterOutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        self._output_device_manager.activeDeviceChanged.connect(self._onActiveDeviceChanged)
 
         # Hook up ZeroConf client.
         self._zero_conf_client = ZeroConfClient()
@@ -69,10 +71,17 @@ class LocalClusterOutputDeviceManager:
         self.stop()
         self.start()
 
+    def _onActiveDeviceChanged(self):
+        AuthorizationRequiredMessage.hide()
+
+    def _onAuthRequired(self, error_msg: str) -> None:
+        Logger.info(f"Authorization required: {error_msg}")
+        AuthorizationRequiredMessage.show("", error_msg)
+
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
         """Add a networked printer manually by address."""
 
-        api_client = ClusterApiClient(address, lambda error: Logger.log("e", str(error)))
+        api_client = ClusterApiClient(address, lambda error: Logger.log("e", str(error)), self._onAuthRequired)
         api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status, callback))
 
     def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
