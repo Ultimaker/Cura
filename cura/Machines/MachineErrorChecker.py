@@ -212,7 +212,6 @@ class MachineErrorChecker(QObject):
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()
-            self._machine_manager.stacksValidationChanged.emit()
         self._keys_to_check = keys_to_recheck if keys_to_recheck else set()
         self._need_to_check = False
         self._check_in_progress = False
