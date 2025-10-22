@@ -6240,3 +6240,103 @@ msgstr "인쇄 하단 영역에 있는 한 줄의 너비."
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "지그재그"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>이동 동작 후 노즐이 정지 상태인 동안 프라이밍이 완료되고, 나머지가 이동 중에 수행되는 비율<ul><li>0일 경우, 전체 프라이밍은 이동이 끝난 후 정지해 있는 동안 수행됩니다.</li><li>100일 경우, 전체 프라이밍이 이동 중에 수행되어 즉시 인쇄를 시작할 수 있습니다.</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>이동 동작 전에 노즐이 정지 상태인 동안 완료된 나머지와 함께 이동 중에 수행되는 리트랙션의 비율<ul><li>0일 경우, 이동을 시작하기 전에 정지 상태에서 전체 리트랙션을 수행합니다.</li><li>100일 경우, 이동 중에 전체 리트랙션을 수행하여 정지 단계를 우회합니다.</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "빌드 플레이트 유형"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "빌드 볼륨 팬 속도"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "높이별 빌드 볼륨 팬 속도"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "레이어별 빌드 볼륨 팬 속도"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "모델 윤곽선의 모서리가 솔기 위치에 미치는 영향을 제어합니다. '솔기 감춤' 항목은 솔기가 안쪽 모서리에 나타날 확률을 높여줍니다. '솔기 노출'은 솔기가 바깥쪽 모서리에 나타날 확률을 높여줍니다. '솔기 감춤' 또는 '솔기 노출'은 솔기가 안쪽 또는 바깥쪽 모서리에 나타날 확률을 높여줍니다. '스마트 감춤'은 안쪽과 바깥쪽 모서리를 모두 허용하지만, 필요한 경우 안쪽 모서리를 더 자주 선택하도록 합니다."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "초기 레이어 빌드 볼륨 팬 속도"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "이동 중 리트랙션 유지"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "재료 최대 유량"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "프린터가 재료를 압출할 때 허용할 최대 유량"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "다중 재료 깊이"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "다중 재료 정밀도"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "이동 동작 중 프라이밍"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "이동 동작 중 리트랙션"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "첫 레이어 스캔"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "모델 내부에 페인트되는 디테일의 깊이. 깊이 값이 높을수록 맞물림 정도가 향상되지만, 슬라이싱 시간과 메모리는 늘어납니다. 깊이를 최대한으로 표현하려면 아주 높은 값을 설정하세요. 실제 계산되는 깊이는 다를 수 있습니다."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "보조 또는 빌드 볼륨 팬의 팬 속도(백분율 기준)로서, '레이어별 빌드 볼륨 팬 속도'에서 지정한 레이어에 도달하는 순간부터 설정됩니다. 그 전에는 '초기 레이어 빌드 볼륨 팬 속도'로 팬 속도가 설정됩니다."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "보조 또는 빌드 볼륨 팬의 팬 속도(백분율 기준)로, '레이어별 빌드 볼륨 팬 속도'에서 지정한 레이어에 도달할 때까지 설정됩니다. 그 이후에는 '빌드 볼륨 팬 속도'에 따라 팬 속도가 설정('초기 레이어' 속도가 아님)됩니다."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "빌드 볼륨 팬이 최대 속도로 회전할 때의 레이어입니다. 해당 수치는 계산 후 정수로 반올림됩니다."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "페인팅 데이터를 기반으로 다중 재료 형상을 생성할 때 세부 묘사의 정밀도. 정밀도가 낮으면 디테일이 상승하지만, 슬라이싱 시간과 메모리가 증가합니다."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "프린터에 설치된 빌드 플레이트의 유형입니다."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "이동 중 리트랙션 옵션이 활성화된 상태에서 이동 중 완전한 리트랙션 시간이 충분하다면 속도를 낮추어 전체 이동에 걸쳐 리트랙션을 분산, 리트랙션하지 않는 노즐로는 이동하지 않도록 합니다. 이렇게 하면 누출 현상을 줄이는 데 도움이 될 수 있습니다."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "첫 레이어를 스캔해 레이어 접착 문제를 점검할지의 여부입니다."

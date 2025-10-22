@@ -6240,3 +6240,103 @@ msgstr "Breite einer einzelnen Zeile der Bereiche am unteren Rand des Drucks."
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zickzack"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>Das Verhältnis zwischen der Grundierung, die während der Bewegung ausgeführt wird, und der Grundierung, die nach der Bewegung bei stillstehender Düse ausgeführt wird.<ul><li>Bei 0 wird die gesamte Grundierung erst im Ruhezustand nach Beendigung der Bewegung ausgeführt.</li><li>Bei 100 wird die gesamte Grundierung während der Bewegung ausgeführt, sodass der Druckvorgang umgehend starten kann.</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>Das Verhältnis zwischen dem Einzug, der während der Bewegung durchgeführt wird, und dem Einzug, der vor der Bewegung bei stillstehender Düse durchgeführt wird.<ul><li>Bei 0 wird der gesamte Einzug bereits im Ruhezustand vor Beginn der Bewegung durchgeführt.</li><li>Bei 100 wird die Stillstandsphase übersprungen und der gesamte Einzug während der Bewegung durchgeführt.</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "Bauplattentyp"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "Bauraumlüftergeschwindigkeit"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "Bauraumlüftergeschwindigkeit bei Höhe"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "Bauraumlüftergeschwindigkeit bei Schicht"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Legen Sie fest, wie Kanten an der Außenseite des Modells die Positionierung der Nähte beeinflussen. Mit dem Verbergen der Nähte treten dieser eher an Innenecken auf, mit dem Freilegen der Nähte eher an Außenecken. Mit dem Verbergen/Freilegen treten Nähte eher an Innen-/Außenecken auf. Mit der Funktion zum smarten Verbergen werden sowohl Innen- als Außenecken genutzt, wobei Innenecken, sofern möglich, präferiert werden."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "Bauraumlüftergeschwindigkeit für erste Schichten"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "Während Bewegung weiter einziehen"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "Maximale Material-Flow-Rate"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "Die maximale Flow Rate, mit der der Drucker mit dem verwendeten Material extrudieren kann"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Multi-Material-Tiefe"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "Multi-Material-Präzision"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "Grundierung während Bewegung"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "Einzug während Bewegung"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "Erste Schicht scannen"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "Die Tiefe der bemalten Details innerhalb des Modells. Eine höhere Tiefe ermöglicht eine bessere Verzahnung, steigert jedoch die Slicing-Zeit und den Speicherbedarf. Wählen Sie einen sehr hohen Wert, um eine möglichst große Tiefe zu erreichen. Die tatsächlich berechnete Tiefe kann variieren."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "Die Lüftergeschwindigkeit (in Prozent) für den Zusatz- oder Bauvolumenlüfter, die ab dem Zeitpunkt gesetzt wird, an dem die unter „Bauraumlüftergeschwindigkeit bei Schicht\" angegebene Schicht erreicht ist. Bis dahin wird die Geschwindigkeit durch „Bauraumlüftergeschwindigkeit für erste Schichten\" festgelegt."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "Die Lüftergeschwindigkeit (in Prozent) für den Zusatz- oder Bauvolumenlüfter, die gesetzt wird, bis die unter „Bauraumlüftergeschwindigkeit bei Schicht\" angegebene Schicht erreicht wurde. Anschließend wird die Geschwindigkeit durch „Bauraumlüftergeschwindigkeit\" (also nicht durch diese „Erste-Schichten\"-Option) festgelegt."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Die Schicht, ab der die Bauraumlüfter mit voller Geschwindigkeit drehen. Dieser Wert wird berechnet und auf eine ganze Zahl gerundet."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "Die Präzision der Details bei der Erzeugung von Multi-Material-Formen auf Basis von Bemalungsdaten. Eine geringere Präzision liefert mehr Details, erhöht jedoch die Slicing-Zeit und den Speicherbedarf."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "Der in diesem Drucker montierte Bauplattentyp."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "Wenn der Einzug während der Bewegung aktiviert ist und die Bewegung länger dauert als der vollständige Einzug, empfiehlt es sich, den Einzug mit einer geringeren Einzugsgeschwindigkeit über die gesamte Bewegungsphase zu strecken, um zu vermeiden, dass die Düse während der Bewegung nicht weiter eingezogen wird. Dies kann helfen, das Auslaufen zu reduzieren."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "Wählen Sie, ob die erste Schicht auf Probleme mit der Schichthaftung gescannt werden soll."

@@ -2,30 +2,38 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-from PyQt6.QtCore import QRect
-from typing import Optional, List, Tuple, Dict, cast
+import math
+from weakref import WeakKeyDictionary
 
-from PyQt6.QtGui import QImage, QColor, QPainter
+from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
+from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
+from typing import Optional, Tuple, Dict, List
 
+from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
 from cura.CuraView import CuraView
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from UM.PluginRegistry import PluginRegistry
 from UM.View.GL.ShaderProgram import ShaderProgram
 from UM.View.GL.Texture import Texture
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
-from UM.Scene.Selection import Selection
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
+from UM.Math.Polygon import Polygon
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+
+from .PaintStrokeCommand import PaintStrokeCommand
+from .PaintClearCommand import PaintClearCommand
+from .MultiMaterialExtruderConverter import MultiMaterialExtruderConverter
 
 catalog = i18nCatalog("cura")
 
 
 class PaintView(CuraView):
     """View for model-painting."""
-
-    UNDO_STACK_SIZE = 1024
 
     class PaintType:
         def __init__(self, display_color: Color, value: int):
@@ -35,112 +43,254 @@ class PaintView(CuraView):
     def __init__(self) -> None:
         super().__init__(use_empty_menu_placeholder = True)
         self._paint_shader: Optional[ShaderProgram] = None
-        self._current_paint_texture: Optional[Texture] = None
+        self._paint_texture: Optional[Texture] = None
+        self._painted_object: Optional[SceneNode] = None
+        self._previous_paint_texture_rect: Optional[QRect] = None
+        self._cursor_texture: Optional[Texture] = None
         self._current_bits_ranges: tuple[int, int] = (0, 0)
         self._current_paint_type = ""
         self._paint_modes: Dict[str, Dict[str, "PaintView.PaintType"]] = {}
-
-        self._stroke_undo_stack: List[Tuple[QImage, int, int]] = []
-        self._stroke_redo_stack: List[Tuple[QImage, int, int]] = []
-
-        self._force_opaque_mask = QImage(2, 2, QImage.Format.Format_Mono)
-        self._force_opaque_mask.fill(1)
+        self._paint_undo_stacks: WeakKeyDictionary[SceneNode, Dict[str, QUndoStack]] = WeakKeyDictionary()
 
         application = CuraApplication.getInstance()
         application.engineCreatedSignal.connect(self._makePaintModes)
         self._scene = application.getController().getScene()
 
+        self._extruders_model: Optional[ExtrudersModel] = None
+        self._extruders_converter: Optional[MultiMaterialExtruderConverter] = None
+
+    canUndoChanged = pyqtSignal(bool)
+    canRedoChanged = pyqtSignal(bool)
+
+    def setPaintedObject(self, painted_object: Optional[SceneNode]):
+        if self._painted_object is not None:
+            texture_changed_signal = self._painted_object.callDecoration("getPaintTextureChangedSignal")
+            texture_changed_signal.disconnect(self._onCurrentPaintedObjectTextureChanged)
+
+        self._paint_texture = None
+        self._cursor_texture = None
+
+        self._painted_object = None
+
+        if painted_object is not None and painted_object.callDecoration("isSliceable"):
+            self._painted_object = painted_object
+            texture_changed_signal = self._painted_object.callDecoration("getPaintTextureChangedSignal")
+            if texture_changed_signal is not None:
+                texture_changed_signal.connect(self._onCurrentPaintedObjectTextureChanged)
+            self._onCurrentPaintedObjectTextureChanged()
+
+        self._updateCurrentBitsRanges()
+
+    def getPaintedObject(self) -> Optional[SceneNode]:
+        return self._painted_object
+
+    def hasPaintedObject(self) -> bool:
+        return self._painted_object is not None
+
+    def _onCurrentPaintedObjectTextureChanged(self) -> None:
+        paint_texture = self._painted_object.callDecoration("getPaintTexture")
+        self._paint_texture = paint_texture
+        if paint_texture is not None:
+            self._cursor_texture = OpenGL.getInstance().createTexture(paint_texture.getWidth(),
+                                                                      paint_texture.getHeight())
+            image = QImage(paint_texture.getWidth(), paint_texture.getHeight(), QImage.Format.Format_ARGB32)
+            image.fill(0)
+            self._cursor_texture.setImage(image)
+        else:
+            self._cursor_texture = None
+
+    def canUndo(self):
+        stack = self._getUndoStack()
+        return stack.canUndo() if stack is not None else False
+
+    def canRedo(self):
+        stack = self._getUndoStack()
+        return stack.canRedo() if stack is not None else False
+
+    def _getUndoStack(self):
+        if self._painted_object is None:
+            return None
+
+        try:
+            return self._paint_undo_stacks[self._painted_object][self._current_paint_type]
+        except KeyError:
+            return None
+
     def _makePaintModes(self):
-        theme = CuraApplication.getInstance().getTheme()
+        application = CuraApplication.getInstance()
+
+        self._extruders_model = application.getExtrudersModel()
+        self._extruders_model.modelChanged.connect(self._onExtrudersChanged)
+
+        self._extruders_converter = MultiMaterialExtruderConverter(self._extruders_model)
+        self._extruders_converter.mainExtruderChanged.connect(self._onMainExtruderChanged)
+
+        theme = application.getTheme()
         usual_types = {"none":      self.PaintType(Color(*theme.getColor("paint_normal_area").getRgb()), 0),
                        "preferred": self.PaintType(Color(*theme.getColor("paint_preferred_area").getRgb()), 1),
                        "avoid":     self.PaintType(Color(*theme.getColor("paint_avoid_area").getRgb()), 2)}
         self._paint_modes = {
             "seam":    usual_types,
             "support": usual_types,
+            "extruder": self._makeExtrudersColors(),
         }
 
         self._current_paint_type = "seam"
+
+    def _onMainExtruderChanged(self, node: SceneNode):
+        # Since the affected extruder has changed, the previous material painting commands become irrelevant,
+        # so clear the undo stack of the object, if any
+        try:
+            self._paint_undo_stacks[node]["extruder"].clear()
+        except KeyError:
+            pass
+
+    def _makeExtrudersColors(self) -> Dict[str, "PaintView.PaintType"]:
+        extruders_colors: Dict[str, "PaintView.PaintType"] = {}
+
+        for extruder_index in range(MultiMaterialExtruderConverter.MAX_EXTRUDER_COUNT):
+            extruder_item = self._extruders_model.getExtruderItem(extruder_index)
+            if extruder_item is None:
+                extruder_item = self._extruders_model.getExtruderItem(0)
+
+            if extruder_item is not None and "color" in extruder_item:
+                material_color = extruder_item["color"]
+            else:
+                material_color = self._extruders_model.defaultColors[0]
+
+            extruders_colors[str(extruder_index)] = self.PaintType(Color(*QColor(material_color).getRgb()), extruder_index)
+
+        return extruders_colors
+
+    def _onExtrudersChanged(self) -> None:
+        if self._paint_modes is None:
+            return
+
+        self._paint_modes["extruder"] = self._makeExtrudersColors()
+
+        controller = CuraApplication.getInstance().getController()
+        if controller.getActiveView() != self:
+            return
+
+        if self._painted_object is None:
+            return
+
+        controller.getScene().sceneChanged.emit(self._painted_object)
 
     def _checkSetup(self):
         if not self._paint_shader:
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
-    def _forceOpaqueDeepCopy(self, image: QImage):
-        res = QImage(image.width(), image.height(), QImage.Format.Format_RGBA8888)
-        res.fill(QColor(255, 255, 255, 255))
-        painter = QPainter(res)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceOver)
-        painter.drawImage(0, 0, image)
-        painter.end()
-        res.setAlphaChannel(self._force_opaque_mask.scaled(image.width(), image.height()))
-        return res
+    def setCursorStroke(self, cursor_path: QPainterPath, brush_color: str):
+        if self._cursor_texture is None or self._cursor_texture.getImage() is None:
+            return
 
-    def addStroke(self, stroke_mask: QImage, start_x: int, start_y: int, brush_color: str) -> None:
-        if self._current_paint_texture is None or self._current_paint_texture.getImage() is None:
+        self.clearCursorStroke()
+
+        bounding_rect = cursor_path.boundingRect()
+        bounding_rect_rounded = QRect(
+            QPoint(math.floor(bounding_rect.left()), math.floor(bounding_rect.top())),
+            QPoint(math.ceil(bounding_rect.right()), math.ceil(bounding_rect.bottom())))
+
+        painter = QPainter(self._cursor_texture.getImage())
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        display_color = self._paint_modes[self._current_paint_type][brush_color].display_color
+        paint_color = QColor(*[int(color_part * 255) for color_part in [display_color.r, display_color.g, display_color.b]])
+        paint_color.setAlpha(255)
+        painter.setBrush(QBrush(paint_color))
+        painter.setPen(QPen(Qt.PenStyle.NoPen))
+        painter.drawPath(cursor_path)
+        painter.end()
+
+        self._cursor_texture.updateImagePart(bounding_rect_rounded)
+        self._previous_paint_texture_rect = bounding_rect_rounded
+
+    def clearCursorStroke(self) -> bool:
+        if (self._previous_paint_texture_rect is None or
+                self._cursor_texture is None or self._cursor_texture.getImage() is None):
+            return False
+
+        painter = QPainter(self._cursor_texture.getImage())
+        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Source)
+        painter.fillRect(self._previous_paint_texture_rect, QBrush(QColor(0, 0, 0, 0)))
+        painter.end()
+
+        self._cursor_texture.updateImagePart(self._previous_paint_texture_rect)
+        self._previous_paint_texture_rect = None
+
+        return True
+
+    def _shiftTextureValue(self, value: int) -> int:
+        if self._current_bits_ranges is None:
+            return 0
+
+        bit_range_start, _ = self._current_bits_ranges
+        return value << bit_range_start
+
+    def addStroke(self, stroke_path: List[Polygon], brush_color: str, merge_with_previous: bool) -> None:
+        if self._paint_texture is None or self._paint_texture.getImage() is None:
             return
 
         self._prepareDataMapping()
+        stack = self._prepareUndoRedoStack()
 
-        actual_image = self._current_paint_texture.getImage()
+        if stack is None:
+            return
 
-        bit_range_start, bit_range_end = self._current_bits_ranges
-        set_value = self._paint_modes[self._current_paint_type][brush_color].value << self._current_bits_ranges[0]
-        full_int32 = 0xffffffff
-        clear_mask = full_int32 ^ (((full_int32 << (32 - 1 - (bit_range_end - bit_range_start))) & full_int32) >> (32 - 1 - bit_range_end))
-        image_rect = QRect(0, 0, stroke_mask.width(), stroke_mask.height())
+        set_value = self._shiftTextureValue(self._paint_modes[self._current_paint_type][brush_color].value)
+        stack.push(PaintStrokeCommand(self._paint_texture,
+                                      stroke_path,
+                                      set_value,
+                                      self._current_bits_ranges,
+                                      merge_with_previous,
+                                      self._getSliceableObjectDecorator()))
 
-        clear_bits_image = stroke_mask.copy()
-        clear_bits_image.invertPixels()
-        painter = QPainter(clear_bits_image)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Lighten)
-        painter.fillRect(image_rect, clear_mask)
-        painter.end()
+    def _getSliceableObjectDecorator(self) -> Optional[SliceableObjectDecorator]:
+        if self._painted_object is None or self._current_paint_type != "extruder":
+            return None
 
-        set_value_image = stroke_mask.copy()
-        painter = QPainter(set_value_image)
-        painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Multiply)
-        painter.fillRect(image_rect, set_value)
-        painter.end()
+        return self._painted_object.getDecorator(SliceableObjectDecorator)
 
-        stroked_image = actual_image.copy(start_x, start_y, stroke_mask.width(), stroke_mask.height())
-        painter = QPainter(stroked_image)
-        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceAndDestination)
-        painter.drawImage(0, 0, clear_bits_image)
-        painter.setCompositionMode(QPainter.CompositionMode.RasterOp_SourceOrDestination)
-        painter.drawImage(0, 0, set_value_image)
-        painter.end()
+    def _makeClearCommand(self) -> Optional[PaintClearCommand]:
+        if self._painted_object is None or self._paint_texture is None or self._current_bits_ranges is None:
+            return None
 
-        self._stroke_redo_stack.clear()
-        if len(self._stroke_undo_stack) >= PaintView.UNDO_STACK_SIZE:
-            self._stroke_undo_stack.pop(0)
-        undo_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(stroked_image, start_x, start_y))
-        if undo_image is not None:
-            self._stroke_undo_stack.append((undo_image, start_x, start_y))
+        set_value = 0
+        if self._current_paint_type == "extruder":
+            extruder_stack = self._painted_object.getPrintingExtruder()
+            if extruder_stack is not None:
+                set_value = extruder_stack.getValue("extruder_nr")
 
-    def _applyUndoStacksAction(self, from_stack: List[Tuple[QImage, int, int]], to_stack: List[Tuple[QImage, int, int]]) -> bool:
-        if len(from_stack) <= 0 or self._current_paint_texture is None:
-            return False
-        from_image, x, y = from_stack.pop()
-        to_image = self._forceOpaqueDeepCopy(self._current_paint_texture.setSubImage(from_image, x, y))
-        if to_image is None:
-            return False
-        if len(to_stack) >= PaintView.UNDO_STACK_SIZE:
-            to_stack.pop(0)
-        to_stack.append((to_image, x, y))
-        return True
+        return PaintClearCommand(self._paint_texture,
+                                 self._current_bits_ranges,
+                                 self._shiftTextureValue(set_value),
+                                 self._getSliceableObjectDecorator())
 
-    def undoStroke(self) -> bool:
-        return self._applyUndoStacksAction(self._stroke_undo_stack, self._stroke_redo_stack)
+    def clearPaint(self):
+        self._prepareDataMapping()
+        stack = self._prepareUndoRedoStack()
 
-    def redoStroke(self) -> bool:
-        return self._applyUndoStacksAction(self._stroke_redo_stack, self._stroke_undo_stack)
+        if stack is None:
+            return
 
-    def getUvTexDimensions(self):
-        if self._current_paint_texture is not None:
-            return self._current_paint_texture.getWidth(), self._current_paint_texture.getHeight()
+        clear_command = self._makeClearCommand()
+        if clear_command is not None:
+            stack.push(clear_command)
+
+    def undoStroke(self) -> None:
+        stack = self._getUndoStack()
+        if stack is not None:
+            stack.undo()
+
+    def redoStroke(self) -> None:
+        stack = self._getUndoStack()
+        if stack is not None:
+            stack.redo()
+
+    def getUvTexDimensions(self) -> Tuple[int, int]:
+        if self._paint_texture is not None:
+            return self._paint_texture.getWidth(), self._paint_texture.getHeight()
         return 0, 0
 
     def getPaintType(self) -> str:
@@ -148,20 +298,58 @@ class PaintView(CuraView):
 
     def setPaintType(self, paint_type: str) -> None:
         self._current_paint_type = paint_type
+        self._prepareDataMapping()
 
-    def _prepareDataMapping(self):
-        node = Selection.getAllSelectedObjects()[0]
-        if node is None:
+    def _prepareUndoRedoStack(self) -> Optional[QUndoStack]:
+        if self._painted_object is None:
+            return None
+
+        try:
+            return self._paint_undo_stacks[self._painted_object][self._current_paint_type]
+        except KeyError:
+            stack: QUndoStack = QUndoStack()
+            stack.setUndoLimit(16)  # Set a quite low amount since some commands copy the full texture
+            stack.canUndoChanged.connect(self.canUndoChanged)
+            stack.canRedoChanged.connect(self.canRedoChanged)
+
+            if self._painted_object not in self._paint_undo_stacks:
+                self._paint_undo_stacks[self._painted_object] = {}
+
+            self._paint_undo_stacks[self._painted_object][self._current_paint_type] = stack
+            return stack
+
+    def _updateCurrentBitsRanges(self):
+        self._current_bits_ranges = (0, 0)
+
+        if self._painted_object is None:
             return
 
-        paint_data_mapping = node.callDecoration("getTextureDataMapping")
+        paint_data_mapping = self._painted_object.callDecoration("getTextureDataMapping")
+        if paint_data_mapping is None or self._current_paint_type not in paint_data_mapping:
+            return
 
+        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
+
+    def _prepareDataMapping(self):
+        if self._painted_object is None:
+            return
+
+        paint_data_mapping = self._painted_object.callDecoration("getTextureDataMapping")
+
+        feature_created = False
         if self._current_paint_type not in paint_data_mapping:
             new_mapping = self._add_mapping(paint_data_mapping, len(self._paint_modes[self._current_paint_type]))
             paint_data_mapping[self._current_paint_type] = new_mapping
-            node.callDecoration("setTextureDataMapping", paint_data_mapping)
+            self._painted_object.callDecoration("setTextureDataMapping", paint_data_mapping)
+            feature_created = True
 
-        self._current_bits_ranges = paint_data_mapping[self._current_paint_type]
+        self._updateCurrentBitsRanges()
+
+        if feature_created and self._current_paint_type == "extruder":
+            # Fill texture extruder with actual mesh extruder
+            clear_command = self._makeClearCommand()
+            if clear_command is not None:
+                clear_command.redo()
 
     @staticmethod
     def _add_mapping(actual_mapping: Dict[str, tuple[int, int]], nb_storable_values: int) -> tuple[int, int]:
@@ -174,7 +362,7 @@ class PaintView(CuraView):
         return start_index, end_index
 
     def beginRendering(self) -> None:
-        if self._current_paint_type not in self._paint_modes:
+        if self._painted_object is None or self._current_paint_type not in self._paint_modes:
             return
 
         self._checkSetup()
@@ -187,14 +375,25 @@ class PaintView(CuraView):
         paint_batch = renderer.createRenderBatch(shader=self._paint_shader)
         renderer.addRenderBatch(paint_batch)
 
-        for node in Selection.getAllSelectedObjects():
-            paint_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData(), normal_transformation=node.getCachedNormalMatrix())
-            self._current_paint_texture = node.callDecoration("getPaintTexture")
-            self._paint_shader.setTexture(0, self._current_paint_texture)
+        paint_batch.addItem(self._painted_object.getWorldTransformation(copy=False),
+                            self._painted_object.getMeshData(),
+                            normal_transformation=self._painted_object.getCachedNormalMatrix())
+
+        if self._paint_texture is not None:
+            self._paint_shader.setTexture(0, self._paint_texture)
+        if self._cursor_texture is not None:
+            self._paint_shader.setTexture(1, self._cursor_texture)
 
         self._paint_shader.setUniformValue("u_bitsRangesStart", self._current_bits_ranges[0])
         self._paint_shader.setUniformValue("u_bitsRangesEnd", self._current_bits_ranges[1])
 
-        colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
+        if self._current_bits_ranges[0] != self._current_bits_ranges[1]:
+            colors = [paint_type_obj.display_color for paint_type_obj in self._paint_modes[self._current_paint_type].values()]
+        elif self._current_paint_type == "extruder":
+            object_extruder = MultiMaterialExtruderConverter.getPaintedObjectExtruderNr(self._painted_object)
+            colors = [self._paint_modes[self._current_paint_type][str(object_extruder)].display_color]
+        else:
+            colors = [self._paint_modes[self._current_paint_type]["none"].display_color]
+
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)

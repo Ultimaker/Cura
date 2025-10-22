@@ -11,6 +11,7 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+
     width: childrenRect.width
     height: childrenRect.height
     UM.I18nCatalog { id: catalog; name: "cura"}
@@ -19,14 +20,16 @@ Item
     {
         id: undoAction
         shortcut: "Ctrl+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", false)
+        enabled: UM.Controller.properties.getValue("CanUndo")
+        onTriggered: UM.Controller.triggerAction("undoStackAction")
     }
 
     Action
     {
         id: redoAction
         shortcut: "Ctrl+Shift+L"
-        onTriggered: UM.Controller.triggerActionWithData("undoStackAction", true)
+        enabled: UM.Controller.properties.getValue("CanRedo")
+        onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
     Column
@@ -55,6 +58,14 @@ Item
                 mode: "support"
                 visible: false
             }
+
+            PaintModeButton
+            {
+                text: catalog.i18nc("@action:button", "Material")
+                icon: "Extruder"
+                tooltipText: catalog.i18nc("@tooltip", "Paint on model to select the material to be used")
+                mode: "extruder"
+            }
         }
 
         //Line between the sections.
@@ -68,6 +79,7 @@ Item
         RowLayout
         {
             id: rowBrushColor
+            visible: !rowExtruder.visible
 
             UM.Label
             {
@@ -110,6 +122,30 @@ Item
                 {
                     source: UM.Theme.getIcon("Eraser")
                     color: UM.Theme.getColor("icon")
+                }
+            }
+        }
+
+        RowLayout
+        {
+            id: rowExtruder
+            visible: UM.Controller.properties.getValue("PaintType") === "extruder"
+
+            UM.Label
+            {
+                text: catalog.i18nc("@label", "Mark as")
+            }
+
+            Repeater
+            {
+                id: repeaterExtruders
+                model: CuraApplication.getExtrudersModel()
+                delegate: Cura.ExtruderButton
+                {
+                    extruder: model
+
+                    checked: UM.Controller.properties.getValue("BrushExtruder") === model.index
+                    onClicked: UM.Controller.setProperty("BrushExtruder", model.index)
                 }
             }
         }
@@ -161,8 +197,9 @@ Item
             width: parent.width
             indicatorVisible: false
 
-            from: 10
-            to: 1000
+            from: 1
+            to: 100
+            value: UM.Controller.properties.getValue("BrushSize")
 
             onPressedChanged: function(pressed)
             {
@@ -170,11 +207,6 @@ Item
                 {
                     UM.Controller.setProperty("BrushSize", shapeSizeSlider.value);
                 }
-            }
-
-            Component.onCompleted:
-            {
-                shapeSizeSlider.value = UM.Controller.properties.getValue("BrushSize");
             }
         }
 
@@ -192,6 +224,7 @@ Item
             {
                 id: undoButton
 
+                enabled: undoAction.enabled
                 text: catalog.i18nc("@action:button", "Undo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -206,6 +239,7 @@ Item
             {
                 id: redoButton
 
+                enabled: redoAction.enabled
                 text: catalog.i18nc("@action:button", "Redo Stroke")
                 toolItem: UM.ColorImage
                 {
@@ -293,7 +327,7 @@ Item
         UM.Label
         {
             anchors.fill: parent
-            text: catalog.i18nc("@label", "Select a single model to start painting")
+            text: catalog.i18nc("@label", "Select a single ungrouped model to start painting")
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
