@@ -302,6 +302,9 @@ class ClusterApiClient:
 
             if reply.error() != QNetworkReply.NetworkError.NoError:
                 if reply.error() == QNetworkReply.NetworkError.AuthenticationRequiredError:
+                    self._auth_id = None
+                    self._auth_key = None
+
                     nonce_match = re.search(r'nonce="([^"]+)', str(reply.rawHeader(b"WWW-Authenticate")))
                     if nonce_match:
                         self._nonce = nonce_match.group(1)
