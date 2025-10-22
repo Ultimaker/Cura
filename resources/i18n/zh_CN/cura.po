@@ -3030,10 +3030,9 @@ msgid "Please remove the print"
 msgstr "请取出打印件"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "请检查设置并检查您的模型是否："
 "- 适合构建体积"
-"- 分配给了已启用的挤出器"
 "- 尚未全部设置为修改器网格"
 
 msgctxt "@label"
@@ -5686,3 +5685,199 @@ msgstr "Y轴最大值（\"+\"朝前）"
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
 msgstr "Y轴最小值（\"-\"朝后）"
+
+msgctxt "@label"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) 您需要重启应用程序才能使这些更改生效。"
+
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>本次打印中至少有一个挤出机未被使用:"
+
+msgctxt "@option:check"
+msgid "Add icon to system tray (* restart required)"
+msgstr "在系统托盘中添加图标（* 需要重启）"
+
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "自动禁用未使用的挤出机"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "避免"
+
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr "BambuLab 3MF 文件"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "画笔形状"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "画笔尺寸"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr "无法将 GCode 写入 3MF 文件"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "圆形"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "清除全部"
+
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "连接与控制"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "禁用未使用的挤出机"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "启用 USB 线打印（需要重启）"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "擦除"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "获取可重新下载的软件包 ID..."
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "翻转模型工具手柄Y轴（* 需要重启）"
+
+msgctxt "@option:check"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "强制启用图层视图兼容模式（* 需要重启）"
+
+msgctxt "@label"
+msgid "Mark as"
+msgstr "标记为"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "材料"
+
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "未回抽"
+
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "喷涂"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "喷涂模型"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "喷涂工具"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "在模型上喷涂以选择要使用的材料"
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "喷涂视图"
+
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "首选项"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "首选"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "正在准备喷涂模型..."
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "回弹"
+
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "打印机未活动"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "USB 线打印并非适用于所有打印机,端口扫描可能会干扰其他连接的串行设备（例如:耳机）。新安装的 Cura 默认不再\"自动启用\"此功能。如需使用 USB 打印,请勾选此框后重启 Cura。请注意:USB 打印功能已停止维护。该功能可能兼容或不兼容您的电脑/打印机组合。"
+
+msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "提供喷涂工具。"
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "重做笔画"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "通过定义优先/避让区域来优化接缝位置"
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "通过定义优先/避让区域来优化支撑放置"
+
+msgctxt "@label"
+msgid "Retracted"
+msgstr "已回抽"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "回抽中"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "接缝"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr "选择单个模型开始喷涂"
+
+msgctxt "@action:button"
+msgid "Square"
+msgstr "方形"
+
+msgctxt "@action:button"
+msgid "Support"
+msgstr "支撑"
+
+msgctxt "@action:label"
+msgid "Support Structure"
+msgstr "支撑结构"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "打印机未活动,无法接受新的打印任务。"
+
+msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgid "Theme (* restart required):"
+msgstr "主题（* 需要重启）:"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "此打印机已停用,无法接收命令或任务。"
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "撤销笔画"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "未使用的挤出机"
+
+msgctxt "@option:check"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "使用单例 Cura（* 需要重启）"

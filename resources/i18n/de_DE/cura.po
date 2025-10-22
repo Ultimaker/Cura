@@ -3035,10 +3035,9 @@ msgid "Please remove the print"
 msgstr "Bitte den Ausdruck entfernen"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "Bitte überprüfen Sie die Einstellungen und prüfen Sie, ob Ihre Modelle:"
 "- Mit der Druckraumgröße kompatibel sind"
-"- Einem aktiven Extruder zugewiesen sind"
 "- Nicht alle als Modifier Meshes eingerichtet sind"
 
 msgctxt "@label"
@@ -5697,3 +5696,199 @@ msgstr "Y max ( '+' nach vorne)"
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
 msgstr "Y min ( '-' nach hinten)"
+
+msgctxt "@label"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) Die Anwendung muss neu gestartet werden, damit diese Änderungen wirksam werden."
+
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>Mindestens ein Extruder wird für diesen Druck nicht verwendet:"
+
+msgctxt "@option:check"
+msgid "Add icon to system tray (* restart required)"
+msgstr "Symbol zur Taskleiste hinzufügen (* Neustart erforderlich)"
+
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "Nicht verwendete(n) Extruder automatisch deaktivieren"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "Vermeiden"
+
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr "BambuLab-3MF-Datei"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "Pinselform"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "Pinselgröße"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr "GCode kann nicht in 3MF-Datei geschrieben werden"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "Kreis"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "Alles entfernen"
+
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "Verbindung und Steuerung"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "Nicht verwendete(n) Extruder deaktivieren"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "Druck per USB-Kabel aktivieren (* Neustart erforderlich)"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "Löschen"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "Erneut herunterladbare Paket-IDs werden abgerufen ..."
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "Y-Achse des Modellwerkzeuggriffs spiegeln (* Neustart erforderlich)"
+
+msgctxt "@option:check"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "Kompatibilitätsmodus der Layer-Ansicht erzwingen (* Neustart erforderlich)"
+
+msgctxt "@label"
+msgid "Mark as"
+msgstr "Markieren als"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "Nicht eingezogen"
+
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "Bemalen"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "Modell bemalen"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "Malwerkzeuge"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "Modell bemalen, um zu verwendende Materialien auszuwählen"
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "Malansicht"
+
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "Einstellungen"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "Bevorzugt"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "Modell wird zum Bemalen vorbereitet ..."
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "Grundierung"
+
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "Drucker nicht aktiv"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "Der Druck per USB-Kabel ist nicht mit allen Druckern möglich. Das Scannen nach Ports kann andere verbundene serielle Geräte (z. B. Earbuds) stören. Die Funktion wird in neuen Cura-Installationen nicht länger automatisch aktiviert. Wenn Sie den USB-Druck nutzen möchten, aktivieren Sie diese Option, indem Sie das Kontrollkästchen aktivieren und anschließend Cura neu starten. Bitte beachten Sie, dass der USB-Druck von uns nicht mehr unterstützt wird. Wir bieten keinen Support, falls die Funktion mit Ihrer Computer-Drucker-Kombination nicht funktioniert."
+
+msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "Stellt die Malwerkzeuge zur Verfügung."
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "Pinselstrich erneut ausführen"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "Optimieren Sie die Positionierung sichtbarer Nähte, indem Sie bevorzugte und zu vermeidende Bereiche definieren"
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "Optimieren Sie die Positionierung von Stützelementen, indem Sie bevorzugte und zu vermeidende Bereiche definieren"
+
+msgctxt "@label"
+msgid "Retracted"
+msgstr "Eingezogen"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "Wird eingezogen"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "Naht"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr "Wählen Sie ein Modell aus, um die Bemalung zu starten"
+
+msgctxt "@action:button"
+msgid "Square"
+msgstr "Quadrat"
+
+msgctxt "@action:button"
+msgid "Support"
+msgstr "Stützelement"
+
+msgctxt "@action:label"
+msgid "Support Structure"
+msgstr "Struktur des Stützelements"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "Der Drucker ist nicht aktiv und nimmt keinen neuen Druckauftrag an."
+
+msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgid "Theme (* restart required):"
+msgstr "Thema (* Neustart erforderlich):"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "Dieser Drucker wurde deaktiviert und nimmt keine Befehle oder Aufträge an."
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "Pinselstrich rückgängig machen"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "Nicht verwendete(r) Extruder"
+
+msgctxt "@option:check"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "Einzelne Cura-Instanz nutzen (* Neustart erforderlich)"

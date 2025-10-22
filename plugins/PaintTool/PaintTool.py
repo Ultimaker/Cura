@@ -5,8 +5,9 @@ import math
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
-from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF
+from PyQt6.QtGui import QImage, QPainter, QPen, QBrush, QPolygonF, QPainterPath
 from typing import cast, Optional, Tuple, List
+import pyUvula as uvula
 
 from UM.Application import Application
 from UM.Event import Event, MouseEvent
@@ -15,6 +16,7 @@ from UM.Logger import Logger
 from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
+from UM.Mesh.MeshData import MeshData
 from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
@@ -56,7 +58,7 @@ class PaintTool(Tool):
         self._shortcut_key: Qt.Key = Qt.Key.Key_P
 
         self._node_cache: Optional[SceneNode] = None
-        self._mesh_transformed_cache = None
+        self._mesh_transformed_cache: Optional[MeshData] = None
         self._cache_dirty: bool = True
 
         self._brush_size: int = 10
@@ -76,6 +78,7 @@ class PaintTool(Tool):
 
         self._controller.activeViewChanged.connect(self._updateIgnoreUnselectedObjects)
         self._controller.activeToolChanged.connect(self._updateState)
+        self._controller.activeStageChanged.connect(self._updateActiveView)
 
         self._camera: Optional[Camera] = None
         self._cam_pos: numpy.ndarray = numpy.array([0.0, 0.0, 0.0])
@@ -111,8 +114,16 @@ class PaintTool(Tool):
                 Logger.error(f"Unknown brush shape '{self._brush_shape}', painting may not work.")
         return pen
 
-    def _createStrokeImage(self, polys: List[Polygon]) -> Tuple[QImage, Tuple[int, int]]:
-        return PaintTool._rasterizePolygons(polys, self._brush_pen, QBrush(self._brush_pen.color()))
+    def _createStrokePath(self, polygons: List[Polygon]) -> QPainterPath:
+        path = QPainterPath()
+
+        for polygon in polygons:
+            path.moveTo(polygon[0][0], polygon[0][1])
+            for point in polygon:
+                path.lineTo(point[0], point[1])
+            path.closeSubpath()
+
+        return path
 
     def getPaintType(self) -> str:
         return self._view.getPaintType()
@@ -177,19 +188,15 @@ class PaintTool(Tool):
 
     def undoStackAction(self) -> None:
         self._view.undoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def redoStackAction(self) -> None:
         self._view.redoStroke()
-        self._updateScene()
+        self._updateScene(update_node = True)
 
     def clear(self) -> None:
-        width, height = self._view.getUvTexDimensions()
-        clear_image = QImage(width, height, QImage.Format.Format_RGB32)
-        clear_image.fill(Qt.GlobalColor.white)
-        self._view.addStroke(clear_image, 0, 0, "none" if self.getPaintType() != "extruder" else "0", False)
-
-        self._updateScene()
+        self._view.clearPaint()
+        self._updateScene(update_node = True)
 
     @staticmethod
     def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
@@ -265,90 +272,42 @@ class PaintTool(Tool):
             return Polygon()
         return shape.translate(stroke_a[0], stroke_a[1]).unionConvexHulls(shape.translate(stroke_b[0], stroke_b[1]))
 
-    @staticmethod
-    def _rasterizePolygons(polygons: List[Polygon], pen: QPen, brush: QBrush) -> Tuple[QImage, Tuple[int, int]]:
-        if not polygons:
-            return QImage(), (0, 0)
-
-        bounding_box = polygons[0].getBoundingBox()
-        for polygon in polygons[1:]:
-            bounding_box += polygon.getBoundingBox()
-
-        bounding_box = AxisAlignedBox2D(numpy.array([math.floor(bounding_box.left), math.floor(bounding_box.top)]),
-                                        numpy.array([math.ceil(bounding_box.right), math.ceil(bounding_box.bottom)]))
-
-        # Use RGB32 which is more optimized for drawing to
-        image = QImage(int(bounding_box.width), int(bounding_box.height), QImage.Format.Format_RGB32)
-        image.fill(0)
-
-        painter = QPainter(image)
-        painter.translate(-bounding_box.left, -bounding_box.bottom)
-        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
-        painter.setPen(pen)
-        painter.setBrush(brush)
-
-        for polygon in polygons:
-            painter.drawPolygon(QPolygonF([QPointF(point[0], point[1]) for point in polygon]))
-
-        painter.end()
-
-        return image, (int(bounding_box.left), int(bounding_box.bottom))
-
     # NOTE: Currently, it's unclear how well this would work for non-convex brush-shapes.
-    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray) -> List[Polygon]:
+    def _getUvAreasForStroke(self, world_coords_a: numpy.ndarray, world_coords_b: numpy.ndarray, face_id: int) -> List[Polygon]:
         """ Fetches all texture-coordinate areas within the provided stroke on the mesh.
 
         Calculates intersections of the stroke with the surface of the geometry and maps them to UV-space polygons.
 
-        :param face_id_a: ID of the face where the stroke starts.
-        :param face_id_b: ID of the face where the stroke ends.
         :param world_coords_a: 3D ('world') coordinates corresponding to the starting stroke point.
         :param world_coords_b: 3D ('world') coordinates corresponding to the ending stroke point.
+        :param face_id: the ID of the face at the center of the stroke
         :return: A list of UV-mapped polygons representing areas intersected by the stroke on the node's mesh surface.
         """
 
         def get_projected_on_plane(pt: numpy.ndarray) -> numpy.ndarray:
             return numpy.array([*self._camera.projectToViewport(Vector(*pt))], dtype=numpy.float32)
 
-        def get_projected_on_viewport_image(pt: numpy) -> numpy.ndarray:
-            return numpy.array([pt[0] + self._camera.getViewportWidth() / 2.0,
-                                self._camera.getViewportHeight() - (pt[1] + self._camera.getViewportHeight() / 2.0)],
-                               dtype=numpy.float32)
-
         stroke_poly = self._getStrokePolygon(get_projected_on_plane(world_coords_a), get_projected_on_plane(world_coords_b))
-        stroke_poly_viewport = Polygon([get_projected_on_viewport_image(point) for point in stroke_poly])
+        stroke_poly.toType(numpy.float32)
 
-        faces_image, (faces_x, faces_y) = PaintTool._rasterizePolygons([stroke_poly_viewport],
-                                                                       QPen(Qt.PenStyle.NoPen),
-                                                                       QBrush(Qt.GlobalColor.white))
-        faces = self._faces_selection_pass.getFacesIdsUnderMask(faces_image, faces_x, faces_y)
+        mesh_indices = self._mesh_transformed_cache.getIndices()
+        if mesh_indices is None:
+            mesh_indices = numpy.array([], dtype=numpy.int32)
 
-        texture_dimensions = numpy.array(list(self._view.getUvTexDimensions()))
-
-        res = []
-        for face in faces:
-            _, fnorm = self._mesh_transformed_cache.getFacePlane(face)
-            if numpy.dot(fnorm, self._cam_norm) < 0:  # <- facing away from the viewer
-                continue
-
-            va, vb, vc = self._mesh_transformed_cache.getFaceNodes(face)
-            stroke_tri = Polygon([
-                get_projected_on_plane(va),
-                get_projected_on_plane(vb),
-                get_projected_on_plane(vc)])
-            face_uv_coordinates = self._node_cache.getMeshData().getFaceUvCoords(face)
-            if face_uv_coordinates is None:
-                continue
-            ta, tb, tc = face_uv_coordinates
-            original_uv_poly = numpy.array([ta, tb, tc])
-            uv_area = stroke_poly.intersection(stroke_tri)
-
-            if uv_area.isValid():
-                uv_area_barycentric = PaintTool._getBarycentricCoordinates(uv_area.getPoints(), stroke_tri.getPoints())
-                if uv_area_barycentric is not None:
-                    res.append(Polygon((uv_area_barycentric @ original_uv_poly) * texture_dimensions))
-
-        return res
+        res = uvula.project(stroke_poly.getPoints(),
+                            self._mesh_transformed_cache.getVertices(),
+                            mesh_indices,
+                            self._node_cache.getMeshData().getUVCoordinates(),
+                            self._node_cache.getMeshData().getFacesConnections(),
+                            self._view.getUvTexDimensions()[0],
+                            self._view.getUvTexDimensions()[1],
+                            self._camera.getProjectToViewMatrix().getData(),
+                            self._camera.isPerspective(),
+                            self._camera.getViewportWidth(),
+                            self._camera.getViewportHeight(),
+                            self._cam_norm,
+                            face_id)
+        return [Polygon(points) for points in res]
 
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
@@ -359,8 +318,8 @@ class PaintTool(Tool):
         """
         super().event(event)
 
-        node = Selection.getSelectedObject(0)
-        if node is None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is None:
             return False
 
         # Make sure the displayed values are updated if the bounding box of the selected mesh(es) changes
@@ -371,6 +330,9 @@ class PaintTool(Tool):
             return True
 
         if self._state != PaintTool.Paint.State.READY:
+            return False
+
+        if self._controller.getActiveView() is not self._view:
             return False
 
         if event.type == Event.MouseReleaseEvent and self._controller.getToolsEnabled():
@@ -406,10 +368,10 @@ class PaintTool(Tool):
             if self._camera is None:
                 return False
 
-            if node != self._node_cache:
+            if painted_object != self._node_cache:
                 if self._node_cache is not None:
                     self._node_cache.transformationChanged.disconnect(self._nodeTransformChanged)
-                self._node_cache = node
+                self._node_cache = painted_object
                 self._node_cache.transformationChanged.connect(self._nodeTransformChanged)
                 self._cache_dirty = True
             if self._cache_dirty:
@@ -421,7 +383,7 @@ class PaintTool(Tool):
             face_id = self._faces_selection_pass.getFaceIdAtPosition(mouse_evt.x, mouse_evt.y)
             if face_id < 0 or face_id >= self._mesh_transformed_cache.getFaceCount():
                 if self._view.clearCursorStroke():
-                    self._updateScene(node)
+                    self._updateScene(painted_object, update_node = self._mouse_held)
                     return True
                 return False
 
@@ -430,54 +392,72 @@ class PaintTool(Tool):
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
+            event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords)
+                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
-                    cursor_stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas_cursor)
-                    self._view.setCursorStroke(cursor_stroke_img, start_x, start_y, brush_color)
+                    cursor_path = self._createStrokePath(uv_areas_cursor)
+                    self._view.setCursorStroke(cursor_path, brush_color)
                 else:
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords)
+                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
-                    stroke_img, (start_x, start_y) = self._createStrokeImage(uv_areas)
-                    self._view.addStroke(stroke_img, start_x, start_y, brush_color, is_moved)
+                    event_caught = True
+                    self._view.addStroke(uv_areas, brush_color, is_moved)
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
             self._last_world_coords = world_coords
-            self._updateScene(node)
-            return True
+            self._updateScene(painted_object, update_node = event_caught)
+            return event_caught
 
         return False
 
     def getRequiredExtraRenderingPasses(self) -> list[str]:
         return ["selection_faces", "picking_selected"]
 
-    @staticmethod
-    def _updateScene(node: SceneNode = None):
+    def _updateScene(self, node: SceneNode = None, update_node: bool = False):
+        """
+        Updates the current displayed scene
+        :param node: the specific scene node to be updated, otherwise the current painted object will be used
+        :param update_node: Indicates whether the specific node should be updated, which will invalidate its slicing
+                            data, or the whole scene, which will just trigger a redraw of the view
+        :return:
+        """
         if node is None:
-            node = Selection.getSelectedObject(0)
+            node = self._view.getPaintedObject()
         if node is not None:
-            Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            if update_node:
+                Application.getInstance().getController().getScene().sceneChanged.emit(node)
+            else:
+                scene = self.getController().getScene()
+                scene.sceneChanged.emit(scene.getRoot())
 
-    def _onSelectionChanged(self):
+    def _onSelectionChanged(self) -> None:
         super()._onSelectionChanged()
 
-        self.setActiveView("PaintTool" if len(Selection.getAllSelectedObjects()) == 1 else None)
+        single_selection = len(Selection.getAllSelectedObjects()) == 1
+        self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        self._updateActiveView()
         self._updateState()
 
+    def _updateActiveView(self) -> None:
+        has_painted_object = self._view.hasPaintedObject()
+        stage_is_prepare = self._controller.getActiveStage().stageId == "PrepareStage"
+        self.setActiveView("PaintTool" if has_painted_object and stage_is_prepare else None)
+
     def _updateState(self):
-        if len(Selection.getAllSelectedObjects()) == 1 and self._controller.getActiveTool() == self:
-            selected_object = Selection.getSelectedObject(0)
-            if selected_object.callDecoration("getPaintTexture") is not None:
+        painted_object = self._view.getPaintedObject()
+        if painted_object is not None and self._controller.getActiveTool() == self:
+            if painted_object.callDecoration("getPaintTexture") is not None:
                 new_state = PaintTool.Paint.State.READY
             else:
                 new_state = PaintTool.Paint.State.PREPARING_MODEL
-                self._prepare_texture_job = PrepareTextureJob(selected_object)
+                self._prepare_texture_job = PrepareTextureJob(painted_object)
                 self._prepare_texture_job.finished.connect(self._onPrepareTextureFinished)
                 self._prepare_texture_job.start()
         else:

@@ -1542,6 +1542,19 @@
                             "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
+                        },
+                        "roofing_expansion":
+                        {
+                            "label": "Top Surface Expansion",
+                            "description": "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces.",
+                            "type": "float",
+                            "default_value": "0",
+                            "value": "0",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "roofing_line_width * 10",
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
                         }
                     }
                 },
@@ -2053,7 +2066,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "value": "max(-skin_preshrink, wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x)",
                     "minimum_value": "-skin_preshrink",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
@@ -7926,13 +7939,13 @@
                     "minimum_value": "0.05",
                     "maximum_value": "5",
                     "maximum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 },
-                "multi_material_paint_deepness":
+                "multi_material_paint_depth":
                 {
-                    "label": "Multi-material Deepness",
-                    "description": "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary.",
+                    "label": "Multi-material Depth",
+                    "description": "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary.",
                     "unit": "mm",
                     "type": "float",
                     "enabled": "extruders_enabled_count > 1",
@@ -7940,8 +7953,8 @@
                     "value": "line_width * 10",
                     "minimum_value": "line_width",
                     "minimum_value_warning": "line_width * 2",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },

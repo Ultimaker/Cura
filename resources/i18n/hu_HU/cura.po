@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 15:37+0100\n"
+"POT-Creation-Date: 2025-09-22 08:45+0200\n"
 "PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
@@ -18,11 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-msgctxt "@title:label"
-msgid " "
-msgstr ""
-
-#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -148,7 +143,7 @@ msgid "&View"
 msgstr "&Nézet"
 
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
+msgid "*) You will need to restart the application for these changes to have effect."
 msgstr ""
 
 msgctxt "@text"
@@ -214,17 +209,18 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr ""
 
-#, python-brace-format
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Renderer: {renderer}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL terjesztő: {vendor}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL Verzió: {version}</li>"
@@ -253,7 +249,6 @@ msgstr ""
 "                    <p>Kérjük, küldje el nekünk ezt a hibajelentést a probléma megoldásához.</p>\n"
 "                "
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
@@ -385,7 +380,7 @@ msgid "Add a script"
 msgstr "Adjon hozzá egy szkriptet"
 
 msgctxt "@option:check"
-msgid "Add icon to system tray *"
+msgid "Add icon to system tray (* restart required)"
 msgstr ""
 
 msgctxt "@button"
@@ -424,7 +419,6 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr ""
 
-#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr ""
@@ -465,7 +459,6 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Minden fájl (*)"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Összes támasz típus ({0})"
@@ -558,7 +551,6 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "Biztos, hogy a %1 a nyomtatási sor elejére akarod mozgatni?"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr ""
@@ -571,7 +563,6 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Biztosan el akarod távolítani %1 -et? Ez nem vonható vissza!"
 
-#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr ""
@@ -600,6 +591,10 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "Automatikusan létrehoz egy biztonsági mentést minden egyes nap, mikor a Cura indítva van."
 
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Modellek automatikus tárgyasztalra illesztése"
@@ -611,6 +606,10 @@ msgstr "Automatikus firmware frissítés"
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Elérhető hálózati nyomtatók"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -656,6 +655,10 @@ msgctxt "@label"
 msgid "Balanced"
 msgstr "Kiegyensúlyozott"
 
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Alap (mm)"
@@ -667,6 +670,14 @@ msgstr ""
 msgctxt "@label"
 msgid "Brand"
 msgstr "Márka"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr ""
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr ""
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -732,15 +743,17 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Nem importálható a profil <filename>{0}</filename> -ból, mielőtt hozzá nem adunk egy nyomtatót."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Nem nyitható meg más fájl, ha a G-kód betöltődik. Az importálás kihagyva {0}"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -827,9 +840,17 @@ msgid ""
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Circle"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Tárgyasztal törlése"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -983,6 +1004,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr ""
 
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr ""
+
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr ""
@@ -1027,7 +1052,6 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Nem sikerült archívumot létrehozni a felhasználói adatkönyvtárból: {}"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Nem található a fájlnév {device} -on az írási művelethez."
@@ -1056,12 +1080,10 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Sikertelen mentés <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Sikertelen mentés a {0}: {1} meghajtóra."
@@ -1070,21 +1092,18 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Nem sikerült feltölteni az adatokat a nyomtatóra."
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "No permission to execute process."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Operating system is blocking it (antivirus?)"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
@@ -1175,7 +1194,6 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "A Cura nem tud elindulni"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "A Cura olyan anyagprofilt észlel, amelyet még nem telepítettek a(z) {0} csoport gazdanyomtatójára."
@@ -1350,6 +1368,10 @@ msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Extruder letiltása"
 
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "Eldobás és ne kérdezze újra"
@@ -1446,12 +1468,10 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "Leválaszt"
 
-#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "{0} meghajtó leválasztása"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "{0} leválasztva. Eltávolíthatod az adathordozót."
@@ -1467,6 +1487,10 @@ msgstr ""
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "Extruder engedélyezése"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
@@ -1506,6 +1530,10 @@ msgstr "Írd be a nyomtató hálózati IP címét."
 
 msgctxt "@text"
 msgid "Enter your printer's IP address."
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Erase"
 msgstr ""
 
 msgctxt "@info:title"
@@ -1564,7 +1592,6 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Sikeres export"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Profil exportálva ide: <filename>{0}</filename>"
@@ -1609,7 +1636,6 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr ""
@@ -1634,7 +1660,6 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "{0} leválasztása sikertelen. A meghajtó használatban van."
@@ -1643,27 +1668,22 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Sikertelen alapanyag export <filename>%1</filename>: <message>%2</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "A profil exportálása nem sikerült <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "A profil exportálása nem sikerült <filename>{0}</filename>:Az író beépülő modul hibát jelez."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Nem importálható a profil <filename>{0}</filename>:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "A profil importálása nem sikerült <filename>{0}</filename>:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Sikertelen profil importálás <filename>{0}</filename>: {1} -ból"
@@ -1680,7 +1700,6 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr ""
@@ -1688,6 +1707,10 @@ msgstr ""
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Kedvencek"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr ""
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1709,7 +1732,6 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Fájl Mentve"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "A {0} fájl nem tartalmaz érvényes profilt."
@@ -1791,7 +1813,7 @@ msgid "First available"
 msgstr "Az első elérhető"
 
 msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
+msgid "Flip model's toolhandle Y axis (* restart required)"
 msgstr ""
 
 msgctxt "@label:listbox"
@@ -1823,8 +1845,8 @@ msgid "For lithophanes dark pixels should correspond to thicker locations in ord
 msgstr "A litofánok esetében a sötét képpontoknak a vastagabb helyek felelnek meg.Ez azért van így, mert minél vastagabb a hely, annál kevesebb fényt enged át.A magassági térképeknél a világosabb képpontok magasabb szintnek felelnek meg, tehát a generált 3D modellnél ezeket figyelembe kell venni.Ez azt is jelenti, hogy általában a generált modell a tényleges kép negatívja kell, hogy legyen."
 
 msgctxt "@option:check"
-msgid "Force layer view compatibility mode (restart required)"
-msgstr "A rétegnézet kompatibilis módjának kényszerítése (újraindítás szükséges)"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr ""
 
 msgid "FreeCAD trackpad"
 msgstr ""
@@ -1913,7 +1935,6 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Csoport #{group_nr}"
@@ -2466,6 +2487,10 @@ msgctxt "@label"
 msgid "Manufacturer"
 msgstr ""
 
+msgctxt "@label"
+msgid "Mark as"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Piactér"
@@ -2476,6 +2501,10 @@ msgstr "Piactér"
 
 msgctxt "name"
 msgid "Marketplace"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Material"
 msgstr ""
 
 msgctxt "@action:label"
@@ -2640,7 +2669,6 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "Hálózati hiba"
 
-#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr ""
@@ -2653,7 +2681,6 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr ""
@@ -2700,7 +2727,6 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Nincs költségbecslés"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Nincs egyéni profil a <filename>{0}</filename> fájlban, amelyet importálni lehetne"
@@ -2773,6 +2799,10 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Nincs felülírva"
 
+msgctxt "@label"
+msgid "Not retracted"
+msgstr ""
+
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "Nem támogatott"
@@ -2837,7 +2867,6 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Csak a felső rétegek megjelenítése"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Egyszerre csak egy G-kód fájlt lehet betölteni. Az importálás kihagyva {0}"
@@ -2975,6 +3004,26 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Paint"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr ""
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr ""
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-kód elemzés"
@@ -3086,7 +3135,6 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 
@@ -3150,6 +3198,14 @@ msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Előfűtés"
 
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr ""
+
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Előkészítés"
@@ -3157,6 +3213,10 @@ msgstr "Előkészítés"
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "Előkészítés nézet"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3185,6 +3245,10 @@ msgstr "Előnézet"
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "Elsődleges torony"
+
+msgctxt "@label"
+msgid "Priming"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3302,6 +3366,10 @@ msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "A nyomtató nem fogadja a parancsokat"
 
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr ""
+
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Nyomtató név"
@@ -3341,6 +3409,10 @@ msgstr ""
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "Nyomtatási idő"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3382,7 +3454,6 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Profil beállítások"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "A(z) {0} profil ismeretlen fájltípusú vagy sérült."
@@ -3403,22 +3474,18 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "A projekt fájl <filename>{0}</filename> egy ismeretlen <message>{1}</message> géptípust tartalmaz.Gépet nem lehet importálni. Importálj helyette modelleket."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr ""
@@ -3524,6 +3591,10 @@ msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "Biztosítja a kapcsolatot a CuraEngine szeletelő motorhoz."
 
 msgctxt "description"
+msgid "Provides the paint tools."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr ""
 
@@ -3535,7 +3606,6 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt verzió"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr ""
@@ -3570,6 +3640,18 @@ msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
 msgstr ""
 
 msgctxt "@action:button"
@@ -3696,6 +3778,14 @@ msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "Folytatás..."
 
+msgctxt "@label"
+msgid "Retracted"
+msgstr ""
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr ""
+
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "Visszahúzás"
@@ -3772,12 +3862,10 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Mentés külső meghajtóra"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Mentés külső meghajtóra {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Mentve a {0} meghajtóra, mint {1}"
@@ -3786,7 +3874,6 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Mentés"
 
-#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Mentés külső meghajóra <filename>{0}</filename>"
@@ -3798,6 +3885,10 @@ msgstr "Extrém kicsi modellek átméretezése"
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Nagy modellek átméretezése"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr ""
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3826,6 +3917,10 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "A modellek egyéni beállításainak kiválasztása"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr ""
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -4223,6 +4318,10 @@ msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Square"
+msgstr ""
+
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr ""
@@ -4279,7 +4378,6 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Sikeres alapanyag import <filename>%1</filename>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr ""
@@ -4302,6 +4400,10 @@ msgstr ""
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Support"
 msgstr ""
 
 msgctxt "@label"
@@ -4329,7 +4431,7 @@ msgid "Support Interface"
 msgstr "Támasz interface"
 
 msgctxt "@action:label"
-msgid "Support Type"
+msgid "Support Structure"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4458,7 +4560,6 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "A <filename>{0}</filename> fájl már létezik. Biztosan szeretnéd, hogy felülírjuk?"
@@ -4557,6 +4658,10 @@ msgid "The printer at this address has not yet responded."
 msgstr "A címen található nyomtató még nem válaszolt."
 
 msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr ""
+
+msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "A nyomtató nincs csatlakoztatva."
 
@@ -4605,7 +4710,7 @@ msgid "The width in millimeters on the build plate"
 msgstr ""
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme*:"
+msgid "Theme (* restart required):"
 msgstr ""
 
 msgctxt "@info:status"
@@ -4672,6 +4777,10 @@ msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "Ezt a nyomtatót nem lehet hozzáadni, mert ismeretlen a nyomtató vagy nem egy csoport tagja."
 
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr ""
+
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
@@ -4690,7 +4799,6 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Ez a nyomtató gazdagépe a %1 nyomtatócsoportnak."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Ez a <filename>{0}</filename> profil helytelen adatokat tartamaz, ezért nem importálható."
@@ -4769,7 +4877,6 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr ""
 
-#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr ""
@@ -4782,7 +4889,6 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Ha hálózaton keresztül szeretnél közvetlenül nyomtatni, akkor győződj meg arról, hogy a nyomtató csatlakozik vezetékes, vagy vezeték nélküli hálózathoz. Ha nincs elérhető hálózat, akkor közvetlenül USB kapcsolaton keresztül is tudsz nyomtatni."
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr ""
@@ -4927,12 +5033,10 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Nincs elég hely az összes objektum építési térfogatához"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Unable to kill running EnginePlugin: {self._plugin_id}\n"
@@ -4967,12 +5071,10 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Nem lehet szeletelni, mert az elsődleges torony, vagy az elsődleges pozíció érvénytelen."
 
-#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Nem lehet szeletelni, mert vannak olyan objektumok, amelyek a letiltott Extruderhez vannak társítva.%s."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Nem lehet szeletelni pár modell beállítás miatt. A következő beállításokokoznak hibát egy vagy több modellnél: {error_labels}"
@@ -4981,7 +5083,6 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Nem lehet szeletelni a jelenlegi alapanyaggal, mert nem kompatibilis a kiválasztott nyomtatóval, vagy a beállításaival."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "Nem lehet szeletelni ezekkel a beállításokkal. Ezek a beállítások okoznak hibát: {0}"
@@ -4990,7 +5091,6 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr ""
@@ -5002,6 +5102,10 @@ msgstr "Elérhetetlen"
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "Elérhetetlen nyomtató"
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5039,7 +5143,6 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr ""
@@ -5063,6 +5166,10 @@ msgstr "Felirat nélküli"
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "Névtelen"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr ""
 
 msgctxt "@button"
 msgid "Update"
@@ -5233,7 +5340,7 @@ msgid "Uploading your backup..."
 msgstr "A biztonsági mentés feltöltése ..."
 
 msgctxt "@option:check"
-msgid "Use a single instance of Cura"
+msgid "Use a single instance of Cura (* restart required)"
 msgstr ""
 
 msgctxt "@label"
@@ -5416,7 +5523,6 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "Figyelem"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr ""
@@ -5543,7 +5649,6 @@ msgid ""
 "Are you sure you want to continue?"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid ""
 "You are about to remove {0} printer from Cura. This action cannot be undone.\n"
@@ -5558,7 +5663,6 @@ msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az UltiMaker Connect. Kérjük, frissítse a nyomtatón a firmware-t."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "Megpróbált csatlakozni a (z) {0} -hez, de a gép nem része a csoportnak.Látogasson el a weboldalra, és konfigurálhatja azt csoporttagnak."
@@ -5599,7 +5703,6 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
@@ -5662,7 +5765,6 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "verzió: %1"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr ""
@@ -5694,6 +5796,10 @@ msgstr ""
 #~ msgctxt "@label"
 #~ msgid "Font"
 #~ msgstr "Betűtípus"
+
+#~ msgctxt "@option:check"
+#~ msgid "Force layer view compatibility mode (restart required)"
+#~ msgstr "A rétegnézet kompatibilis módjának kényszerítése (újraindítás szükséges)"
 
 #~ msgctxt "@label Description for application component"
 #~ msgid "G-code generator"

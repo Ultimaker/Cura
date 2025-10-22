@@ -66,12 +66,31 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
-        self._auth_id = None
-        self._auth_key = None
+
         self._auth_tries = 0
 
-        self._nonce_count = 1
-        self._nonce = None
+        prefs = CuraApplication.getInstance().getPreferences()
+        prefs.addPreference("cluster_api/auth_ids", "{}")
+        prefs.addPreference("cluster_api/auth_keys", "{}")
+        prefs.addPreference("cluster_api/nonce_counts", "{}")
+        prefs.addPreference("cluster_api/nonces", "{}")
+        try:
+            self._auth_id = json.loads(prefs.getValue("cluster_api/auth_ids")).get(self._address, None)
+            self._auth_key = json.loads(prefs.getValue("cluster_api/auth_keys")).get(self._address, None)
+            self._nonce_count = int(json.loads(prefs.getValue("cluster_api/nonce_counts")).get(self._address, 1))
+            self._nonce = json.loads(prefs.getValue("cluster_api/nonces")).get(self._address, None)
+        except (JSONDecodeError, TypeError, KeyError) as ex:
+            Logger.info(f"Get new cluster-API auth info ('{str(ex)}').")
+            self._auth_id = None
+            self._auth_key = None
+            self._nonce_count = 1
+            self._nonce = None
+
+    def _setLocalValueToPrefDict(self, name: str, value: Any) -> None:
+        prefs = CuraApplication.getInstance().getPreferences()
+        values_per_address = json.loads(prefs.getValue(name))
+        values_per_address[self._address] = value
+        prefs.setValue(name, json.dumps(values_per_address))
 
     def getSystem(self, on_finished: Callable) -> None:
         """Get printer system information.
@@ -158,6 +177,8 @@ class ClusterApiClient:
             digest_str = self._makeAuthDigestHeaderPart(path, method=method)
             request.setRawHeader(b"Authorization", f"Digest {digest_str}".encode("utf-8"))
             self._nonce_count += 1
+            self._setLocalValueToPrefDict("cluster_api/nonce_counts", self._nonce_count)
+            CuraApplication.getInstance().savePreferences()
         elif not skip_auth:
             self._setupAuth()
         return request
@@ -242,6 +263,9 @@ class ClusterApiClient:
                 auth_info = json.loads(resp.data().decode())
                 self._auth_id = auth_info["id"]
                 self._auth_key = auth_info["key"]
+                self._setLocalValueToPrefDict("cluster_api/auth_ids", self._auth_id)
+                self._setLocalValueToPrefDict("cluster_api/auth_keys", self._auth_key)
+                CuraApplication.getInstance().savePreferences()
             except Exception as ex:
                 Logger.warning(f"Couldn't get temporary digest token: {str(ex)}")
                 return
@@ -282,6 +306,9 @@ class ClusterApiClient:
                     if nonce_match:
                         self._nonce = nonce_match.group(1)
                         self._nonce_count = 1
+                        self._setLocalValueToPrefDict("cluster_api/nonce_counts", self._nonce_count)
+                        self._setLocalValueToPrefDict("cluster_api/nonces", self._nonce)
+                        CuraApplication.getInstance().savePreferences()
                 self._on_error(reply.errorString())
                 return
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2025-09-22 08:45+0000\n"
 "PO-Revision-Date: 2023-02-16 20:35+0100\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -19,6 +19,14 @@ msgstr ""
 
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr ""
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
 msgstr ""
 
 msgctxt "cool_during_extruder_switch description"
@@ -281,6 +289,10 @@ msgctxt "z_seam_position option backright"
 msgid "Back Right"
 msgstr "Zadní pravá"
 
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr ""
+
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
 msgstr "Bits from Bytes"
@@ -521,14 +533,6 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Šířka límce"
 
-msgctxt "build_fan_full_at_height label"
-msgid "Build Fan Speed at Height"
-msgstr ""
-
-msgctxt "build_fan_full_layer label"
-msgid "Build Fan Speed at Layer"
-msgstr ""
-
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Adheze topné podložky"
@@ -541,10 +545,6 @@ msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
 msgstr "Typ přilnavosti podložky"
 
-msgctxt "machine_buildplate_type label"
-msgid "Build Plate Material"
-msgstr "Materiál podložky"
-
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Tvar podložky"
@@ -556,6 +556,22 @@ msgstr "Teplota podložky"
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
 msgstr "Teplota podložky při počáteční vrstvě"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr ""
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr ""
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr ""
 
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
@@ -702,8 +718,8 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "Propojte horní / dolní povrchové cesty tam, kde běží vedle sebe. Pro soustředné uspořádání umožňující toto nastavení výrazně zkracuje dobu cestování, ale protože se spojení může uskutečnit uprostřed výplně, může tato funkce snížit kvalitu povrchu."
 
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Určete, zda rohy na obrysu modelu ovlivňují polohu švu. Žádné znamená, že rohy nemají žádný vliv na polohu švu. Funkce \"Schovat šev\" zvyšuje pravděpodobnost, že se šev vyskytuje ve vnitřním rohu. \"Ukázat šev\" zvyšuje pravděpodobnost, že se šev objeví na vnějším rohu. \"Skrýt nebo vystavit šev\" zvyšuje pravděpodobnost, že šev nastane ve vnitřním nebo vnějším rohu. \"Inteligentní skrytí\" umožňuje vnitřní i vnější rohy, ale v případě potřeby vybírá vnitřní rohy častěji."
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr ""
 
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
@@ -1851,6 +1867,10 @@ msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Počáteční překrytí vrstvy Z"
 
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr ""
+
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Počáteční teplota tisku"
@@ -1986,6 +2006,10 @@ msgstr "Rozmazat jen okrajové části modelu a žádné díry modelu."
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Ponechat odpojené plochy"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr ""
 
 msgctxt "layer_height label"
 msgid "Layer Height"
@@ -2217,6 +2241,10 @@ msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "GUID materiálu"
 
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr ""
+
 msgctxt "material_type label"
 msgid "Material Type"
 msgstr ""
@@ -2336,6 +2364,10 @@ msgstr "Maximální hustota výplně považovaná za řídkou. Kůže nad řídk
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
 msgstr "Maximální průměr ve směru X / Y malé plochy, která má být podepřena specializovanou podpůrnou věží."
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr ""
 
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
@@ -2533,6 +2565,14 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr "Monotónní pořadí horních / dolních povrchů"
 
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr ""
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr ""
+
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "Více linek okraje pomáhá vytlačit vaše vytlačování lépe pro malé modely. Nastavení na 0 zakáže okraj."
@@ -2564,10 +2604,6 @@ msgstr "Žádný"
 msgctxt "extra_infill_lines_to_support_skins option none"
 msgid "None"
 msgstr ""
-
-msgctxt "z_seam_corner option z_seam_corner_none"
-msgid "None"
-msgstr "Žádný"
 
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
@@ -2848,6 +2884,10 @@ msgstr ""
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
 msgstr "Zabraňuje přecházení tam a zpět mezi o jednu více a o jednu méně čarami zdí. Tato rezerva rozšíří rozsah možných šířek čar na [Minimální šířka čáry zdi - Rezerva, 2 * Minimální šířka čáry zdi + Rezerva]. Zvýšení této rezervy omezí počet přechodů mezi různými počty čar zdí, což sníží počet rozjezdů/zastavení a také čas cestování. Velké výkyvy v šířce čar však mohou vést k problémům s nedostatečnou nebo přílišnou extruzí."
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr ""
 
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
@@ -3397,6 +3437,10 @@ msgctxt "retraction_amount label"
 msgid "Retraction Distance"
 msgstr "Délka zatažení"
 
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr ""
+
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
 msgstr "Množství zatažení navíc"
@@ -3432,6 +3476,10 @@ msgstr "Změnit stupnici rychlosti ventilátoru na 0 až 1, namísto 0 až 256."
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
 msgstr "Faktor zvětšení pro kompenzaci smrštění"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr ""
 
 msgctxt "scarf_joint_seam_length label"
 msgid "Scarf Seam Length"
@@ -4281,6 +4329,10 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr ""
 
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr ""
+
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "Výchozí zrychlení pohybu tiskové hlavy."
@@ -4489,6 +4541,14 @@ msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
 msgstr "Vytlačovací souprava použitá pro tisk stěn. Používá se při vícenásobném vytlačování."
 
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr ""
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr ""
+
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
 msgstr "Rychlost ventilátoru při tisku základních vrstev raftu."
@@ -4642,7 +4702,7 @@ msgid "The largest width of top skin areas which are to be removed. Every skin a
 msgstr "Největší šířka horních oblastí povrchu, které mají být odstraněny. Každá oblast povrchu menší než tato hodnota zmizí. To může pomoci omezit množství času a materiálu stráveného tiskem vrchní kůže na šikmých plochách v modelu."
 
 msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
 msgstr ""
 
 msgctxt "cool_fan_full_layer description"
@@ -4660,10 +4720,6 @@ msgstr "Délka materiálu zasunutého během pohybu zasunutí."
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr ""
-
-msgctxt "machine_buildplate_type description"
-msgid "The material of the build plate installed on the printer."
-msgstr "Materiál podložky nainstalované na tiskárně."
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5037,6 +5093,10 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Poloha poblíž místa, kde začít tisknout každou část ve vrstvě."
 
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
+
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
 msgstr "Preferovaný úhel větví, které se nemusí vyhýbat modelu. Použijte nižší úhel, aby byly větve více vertikální a stabilní. Použijte vyšší úhel, aby se větve rychleji spojovaly."
@@ -5332,6 +5392,10 @@ msgstr "Tloušťka výplňového materiálu na vrstvu. Tato hodnota by měla bý
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "Tloušťka na vrstvu nosného výplňového materiálu. Tato hodnota by měla být vždy násobkem výšky vrstvy a je jinak zaoblená."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr ""
 
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
@@ -5861,6 +5925,10 @@ msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "Při tisku třetí vrstvy potahu se množství vytlačovaného materiálu násobí touto hodnotou."
 
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr ""
+
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "Pokud je minimální rychlost zasažena z důvodu minimálního času vrstvy, zvedněte hlavu z tisku a vyčkejte další čas, dokud není dosaženo minimálního času vrstvy."
@@ -5956,6 +6024,10 @@ msgstr "Zda se vlákno před tiskem připraví blobem. Zapnutím tohoto nastaven
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
 msgstr "Zda tisknout všechny modely po jedné vrstvě najednou, nebo počkat na dokončení jednoho modelu, než se přesunete k další. Jeden za časovým režimem je možný, pokud a) je povolen pouze jeden extrudér a b) všechny modely jsou odděleny tak, že celá tisková hlava se může pohybovat mezi a všechny modely jsou menší než vzdálenost mezi tryskou a X / Osy Y."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr ""
 
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
@@ -6241,9 +6313,21 @@ msgstr "cestování"
 #~ msgid "Brim Only on Outside"
 #~ msgstr "Límec pouze venku"
 
+#~ msgctxt "machine_buildplate_type label"
+#~ msgid "Build Plate Material"
+#~ msgstr "Materiál podložky"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+#~ msgstr "Určete, zda rohy na obrysu modelu ovlivňují polohu švu. Žádné znamená, že rohy nemají žádný vliv na polohu švu. Funkce \"Schovat šev\" zvyšuje pravděpodobnost, že se šev vyskytuje ve vnitřním rohu. \"Ukázat šev\" zvyšuje pravděpodobnost, že se šev objeví na vnějším rohu. \"Skrýt nebo vystavit šev\" zvyšuje pravděpodobnost, že šev nastane ve vnitřním nebo vnějším rohu. \"Inteligentní skrytí\" umožňuje vnitřní i vnější rohy, ale v případě potřeby vybírá vnitřní rohy častěji."
+
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "První a druhá vrstva modelu se překrývají ve směru Z, aby se kompenzovalo vlákno ztracené ve vzduchové mezeře. Všechny modely nad první vrstvou modelu budou o tuto částku posunuty dolů."
+
+#~ msgctxt "z_seam_corner option z_seam_corner_none"
+#~ msgid "None"
+#~ msgstr "Žádný"
 
 #~ msgctxt "machine_nozzle_head_distance label"
 #~ msgid "Nozzle Length"
@@ -6272,6 +6356,10 @@ msgstr "cestování"
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 #~ msgstr "Výškový rozdíl mezi špičkou trysky a nejnižší částí tiskové hlavy."
+
+#~ msgctxt "machine_buildplate_type description"
+#~ msgid "The material of the build plate installed on the printer."
+#~ msgstr "Materiál podložky nainstalované na tiskárně."
 
 #~ msgctxt "machine_head_with_fans_polygon description"
 #~ msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
