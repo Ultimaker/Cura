@@ -200,6 +200,7 @@ class DisplayInfoOnLCD(Script):
                     "label": "Enable Countdown to Pauses",
                     "description": "If print sequence is 'one_at_a_time' this is false.  This setting is always hidden.",
                     "type": "bool",
+                    "default_value": false,
                     "value": false,
                     "enabled": false
                 },
