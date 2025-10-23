@@ -40,7 +40,7 @@
 - Updated settings to improve overhang, top/bottom settings on the UltiMaker S6 and S8
 - Updated settings to improve the Z seam settings for Factor 4
 - Fixed a bug with the translations where French translations had some Italian text in them on the recommended window
-- Fixed a bug where the Makerbot Repicator+ could not start a print with a Smart Extruder+ Tough
+- Fixed a bug where the Makerbot Replicator+ could not start a print with a Smart Extruder+ Tough
 - Introduced messages when you cannot start a printjob over network because the printer Requires Authentication
 
 * Bug fixes:
