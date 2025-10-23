@@ -28,15 +28,15 @@
 - Improved slicing time on Windows machines making it significantly faster for a number of models
 - Introduced Top Surface Extension setting to improve quality of details like text on the top of prints
 - Updated traveling directions for monotonic top surface, to reduce traveling and improve part quality
-- Fixed a bug where drawing closed shapes would not respect the drawn lines but would close filled shapes
+- Fixed a bug where painting closed shapes would not respect the drawn lines but would close filled shapes
 - Introduced a workaround for deprecated face selection methods to remain backwards compatible for plugins
 - Multi material settings are now settable per mesh
 - Fixed a bug where you had to reslice to see your preview again after saving or sending the model
 - Fixed group handling for painting features, and disabled painting for grouped objects because the painting is currently designed to allow painting a single object at once
 - Fixed a bug where Cura would crash if you switched to another printer with a painted model
 - Fixed a bug where the model and a prime tower could collide when a model was painted
-- Fixed a bug where you could paint with an disabled extruder
-- Improved handling of rotating your model when you are in paint on mode
+- Fixed a bug where you could slice with a painted disabled extruder
+- Improved handling of rotating your view when you are in paint on mode
 - Updated settings to improve overhang, top/bottom settings on the UltiMaker S6 and S8
 - Updated settings to improve the Z seam settings for Factor 4
 - Fixed a bug with the translations where French translations had some Italian text in them on the recommended window
