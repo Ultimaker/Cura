@@ -91,11 +91,10 @@
 - Introduced BIQU B2, contributed by @bjuraga
 - Introduced Geetech M1 and Geetech M1S Profiles, and updated the Geetech Thunder Profiles, contributed by @whoseyoung
 
-* Known Issues, but we intend to resolve them for stable
-- Painting can still be slow with very detailed models
-- Prime tower area is not displayed nor considered when using multi-material via painting
-- Painting does not work on models contained in a group
-- Painting undo/redo/clear does not invalidate the slice result
+* Known Issues
+- When using a model with overlapping meshes, the paint on material may produce unexpected results
+- Painting might still be slow with very detailed models
+
 
 [5.10.2]
 
