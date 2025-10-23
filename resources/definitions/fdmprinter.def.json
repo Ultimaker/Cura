@@ -1551,7 +1551,7 @@
                             "default_value": "0",
                             "value": "0",
                             "minimum_value": "0",
-                            "maximum_value_warning": "roofing_line_width * 10",
+                            "maximum_value_warning": "roofing_line_width * 3",
                             "enabled": "roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
