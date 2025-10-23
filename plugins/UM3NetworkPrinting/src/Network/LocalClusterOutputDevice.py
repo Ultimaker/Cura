@@ -21,6 +21,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .ClusterApiClient import ClusterApiClient
 from .SendMaterialJob import SendMaterialJob
 from ..ExportFileJob import ExportFileJob
+from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -239,9 +240,19 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             if print_job.getPreviewImage() is None:
                 self.getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
 
+    def _onAuthRequired(self, error_msg: str) -> None:
+        active_name = CuraApplication.getInstance().getOutputDeviceManager().getActiveDevice().getName()
+        if self._name == active_name:
+            Logger.info(f"Authorization required for {self._name}: {error_msg}")
+            AuthorizationRequiredMessage.show(self._name, error_msg)
+
     def getApiClient(self) -> ClusterApiClient:
         """Get the API client instance."""
 
         if not self._cluster_api:
-            self._cluster_api = ClusterApiClient(self.address, on_error = lambda error: Logger.log("e", str(error)))
+            self._cluster_api = ClusterApiClient(
+                self._address,
+                on_error = lambda error: Logger.log("e", str(error)),
+                on_auth_required = self._onAuthRequired
+            )
         return self._cluster_api
