@@ -93,7 +93,7 @@ UM.ManagementPage
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create new")
 
-            enabled: !Cura.MachineManager.stacksHaveErrors
+            enabled: !Cura.MachineErrorChecker.hasError
             visible: base.canCreateProfile
             tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
