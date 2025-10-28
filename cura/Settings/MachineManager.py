@@ -489,7 +489,7 @@ class MachineManager(QObject):
             container.sendPostponedEmits()
 
     @pyqtProperty(bool, notify = stacksValidationChanged)
-    @deprecated("This property was already inactive and will now be removed, use MachineErrorChecker.hasError instead.", since="5.11.0")
+    @deprecated("This property was already inactive and will now be removed, use MachineErrorChecker.hasError instead.", since="5.12.0")
     def stacksHaveErrors(self) -> bool:
         """Check if none of the stacks contain error states"""
         return False
