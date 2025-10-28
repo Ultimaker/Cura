@@ -248,11 +248,11 @@ class ExtruderManager(QObject):
                 stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
 
             if not support_enabled:
-                support_enabled |= stack_to_use.getProperty("support_enable", "value")
+                support_enabled |= parseBool(stack_to_use.getProperty("support_enable", "value"))
             if not support_bottom_enabled:
-                support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
+                support_bottom_enabled |= parseBool(stack_to_use.getProperty("support_bottom_enable", "value"))
             if not support_roof_enabled:
-                support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+                support_roof_enabled |= parseBool(stack_to_use.getProperty("support_roof_enable", "value"))
 
             painted_extruders = node.callDecoration("getPaintedExtruders")
             if painted_extruders is not None:
