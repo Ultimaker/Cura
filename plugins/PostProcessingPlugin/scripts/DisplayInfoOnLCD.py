@@ -685,21 +685,22 @@ class DisplayInfoOnLCD(Script):
             filament_line_t1 += f";  Print Temp.  : {global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
         
         # Calculate the cost of electricity for the print
-        electricity_cost = self.getSettingValueByKey("electricity_cost")
-        printer_power_usage = self.getSettingValueByKey("printer_power_usage")
-        currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
-        total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
+        electric_line = self.getElectricCostLine()
         
         # Add the stats to the gcode file
         lines = data[0].split("\n")
+        # This is a switch to avoid a 'double insertion' in a Marlin file.
+        lines_inserted = False
         for index, line in enumerate(lines):
             if line.startswith(";Layer height:") or line.startswith(";TARGET_MACHINE.NAME:"):
-                lines[index] = ";Layer height: " + f"{global_stack.getProperty("layer_height", "value")}"
-                lines[index] += f"\n{init_layer_hgt_line}"
-                lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
-                lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
+                if not lines_inserted:
+                    lines[index] = ";Layer height: " + f"{global_stack.getProperty("layer_height", "value")}"
+                    lines[index] += f"\n{init_layer_hgt_line}"
+                    lines[index] += f"\n;Base Quality Name  : '{global_stack.quality.getMetaDataEntry("name", "")}'"
+                    lines[index] += f"\n;Custom Quality Name: '{global_stack.qualityChanges.getMetaDataEntry("name")}'"
+                    lines_inserted = True
             if line.startswith(";Filament used"):
-                lines[index] = filament_line_t0 + filament_line_t1 + f"\n;Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
+                lines[index] = filament_line_t0 + filament_line_t1 + "\n;" + electric_line
             # The target machine "machine_name" is actually the printer model.  This adds the user defined printer name to the "TARGET_MACHINE" line.
             if line.startswith(";TARGET_MACHINE"):
                 machine_model = str(global_stack.getProperty("machine_name", "value"))
@@ -709,3 +710,13 @@ class DisplayInfoOnLCD(Script):
                 # Add the Object List
                 lines[index - 1] += f"\n;Model List: {str(model_list)}"
         return "\n".join(lines)
+        
+    def getElectricCostLine(self) -> str:
+        electricity_cost = self.getSettingValueByKey("electricity_cost")
+        printer_power_usage = self.getSettingValueByKey("printer_power_usage")
+        if electricity_cost == 0 or printer_power_usage == 0:
+            return ""
+        currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
+        total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
+        electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
+        return electric_line
