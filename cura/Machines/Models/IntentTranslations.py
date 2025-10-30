@@ -15,7 +15,7 @@ catalog = i18nCatalog("cura")
 class IntentTranslations:
     def __init__(self):
         from cura.CuraApplication import CuraApplication
-        intents_definition_path = Resources.getPath(CuraApplication.ResourceTypes.IntentInstanceContainer, "intents.def.json")
+        intents_definition_path = Resources.getPath(CuraApplication.ResourceTypes.IntentInstanceContainer, "intents.json")
         self._intent_translations: collections.OrderedDict[str, Dict[str, str]] = collections.OrderedDict()
 
         with open(intents_definition_path, "r") as file:
