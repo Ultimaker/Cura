@@ -180,7 +180,10 @@ class CuraConan(ConanFile):
     def _make_pip_dependency_description(self, package, version, dependencies):
         url = ["https://pypi.org/pypi", package]
         if version is not None:
-            url.append(version)
+            # Strip local version identifiers (everything after '+') for PyPI API compatibility
+            # e.g., "1.26.1+mkl" becomes "1.26.1"
+            clean_version = version.split('+')[0] if '+' in version else version
+            url.append(clean_version)
         url.append("json")
 
         try:
@@ -210,7 +213,7 @@ class CuraConan(ConanFile):
         info = data["info"]
         dependency_description = {
             "summary": info.get("summary", f"Package {package}"),
-            "version": info.get("version", version or "unknown"),
+            "version": version or info.get("version", "unknown"),  # Use original version if available
             "license": info.get("license", "unknown")
         }
 
