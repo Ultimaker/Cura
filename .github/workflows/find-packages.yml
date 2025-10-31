@@ -13,6 +13,14 @@ on:
         default: true
         required: false
         type: boolean
+      cura_conan_version:
+        description: 'Cura Conan Version (optional, overrides discovered packages)'
+        default: ''
+        type: string
+      package_overrides:
+        description: 'List of specific packages to be used (space-separated, in addition to discovered packages)'
+        default: ''
+        type: string
       conan_args:
         description: 'Conan args'
         default: ''
@@ -43,8 +51,8 @@ jobs:
     if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
-      cura_conan_version: ${{ needs.find-packages.outputs.cura_package }}
-      package_overrides: ${{ needs.find-packages.outputs.package_overrides }}
+      cura_conan_version: ${{ inputs.cura_conan_version != '' && inputs.cura_conan_version || needs.find-packages.outputs.cura_package }}
+      package_overrides: ${{ format('{0}, {1}', needs.find-packages.outputs.package_overrides, inputs.package_overrides) }}
       conan_args: ${{ inputs.conan_args }}
       enterprise: ${{ inputs.enterprise }}
       staging: ${{ inputs.staging  }}
