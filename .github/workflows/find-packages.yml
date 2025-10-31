@@ -40,7 +40,7 @@ permissions:
 jobs:
   find-packages:
     name: Find packages for Jira ticket
-    uses: ultimaker/cura-workflows/.github/workflows/find-package-by-ticket.yml@update_package_find_workflow_deduplicate
+    uses: ultimaker/cura-workflows/.github/workflows/find-package-by-ticket.yml@main
     with:
       jira_ticket_number: ${{ inputs.jira_ticket_number }}
     secrets: inherit
