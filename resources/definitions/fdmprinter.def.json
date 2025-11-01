@@ -8793,6 +8793,36 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "adaptive_layer_height_min":
+                {
+                    "label": "Adaptive Layers Minimum Height",
+                    "description": "The minimum layer height that adaptive layers will use. Should be thin enough for fine details.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": 0.05,
+                    "unit": "mm",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.02",
+                    "maximum_value": "layer_height",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_max":
+                {
+                    "label": "Adaptive Layers Maximum Height",
+                    "description": "The maximum layer height that adaptive layers will use. Limited by nozzle diameter for quality.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": 0.8,
+                    "unit": "mm",
+                    "minimum_value": "layer_height",
+                    "maximum_value": "2.0 * min(extruderValues('machine_nozzle_size'))",
+                    "maximum_value_warning": "0.8 * min(extruderValues('machine_nozzle_size'))",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "adaptive_layer_height_smoothing_enabled":
                 {
                     "label": "Enable Layer Height Smoothing",
