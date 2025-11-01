@@ -8731,7 +8731,7 @@
                     "label": "Adaptive Layers Maximum Variation",
                     "description": "The maximum allowed height different from the base layer height.",
                     "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_algorithm == 'legacy'",
                     "unit": "mm",
                     "default_value": 0.1,
                     "minimum_value": "0.0",
@@ -8744,7 +8744,7 @@
                     "label": "Adaptive Layers Variation Step Size",
                     "description": "The difference in height of the next layer height compared to the previous one.",
                     "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_algorithm == 'legacy'",
                     "default_value": 0.01,
                     "unit": "mm",
                     "settable_per_mesh": false,
@@ -8757,9 +8757,73 @@
                     "label": "Adaptive Layers Topography Size",
                     "description": "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together.",
                     "type": "float",
-                    "enabled": "adaptive_layer_height_enabled",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_algorithm == 'legacy'",
                     "default_value": 0.2,
                     "unit": "mm",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+
+                "adaptive_layer_height_algorithm":
+                {
+                    "label": "Adaptive Layer Algorithm",
+                    "description": "Choose the algorithm for adaptive layer height calculation.",
+                    "type": "enum",
+                    "options": {
+                        "legacy": "Legacy (Slope-based)",
+                        "advanced": "Advanced (Quality-based)"
+                    },
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": "legacy",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_quality_factor":
+                {
+                    "label": "Adaptive Layers Quality Factor",
+                    "description": "Quality vs Speed balance for adaptive layers. 0.0 = best quality with thin layers, 1.0 = fastest speed with thick layers.",
+                    "type": "float",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_algorithm == 'advanced'",
+                    "default_value": 0.5,
+                    "minimum_value": "0.0",
+                    "maximum_value": "1.0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_smoothing_enabled":
+                {
+                    "label": "Enable Layer Height Smoothing",
+                    "description": "Apply Gaussian smoothing to reduce abrupt layer height changes in adaptive layers.",
+                    "type": "bool",
+                    "enabled": "adaptive_layer_height_enabled",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_smoothing_radius":
+                {
+                    "label": "Smoothing Radius",
+                    "description": "Radius for Gaussian smoothing of layer heights. Higher values create smoother transitions.",
+                    "type": "int",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_smoothing_enabled",
+                    "default_value": 5,
+                    "minimum_value": "1",
+                    "maximum_value": "20",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "adaptive_layer_height_keep_min":
+                {
+                    "label": "Keep Minimum Heights",
+                    "description": "During smoothing, preserve areas with minimum layer heights to maintain fine details.",
+                    "type": "bool",
+                    "enabled": "adaptive_layer_height_enabled and adaptive_layer_height_smoothing_enabled",
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
