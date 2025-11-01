@@ -8764,13 +8764,13 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-
                 "adaptive_layer_height_algorithm":
                 {
                     "label": "Adaptive Layer Algorithm",
                     "description": "Choose the algorithm for adaptive layer height calculation.",
                     "type": "enum",
-                    "options": {
+                    "options":
+                    {
                         "legacy": "Legacy (Slope-based)",
                         "advanced": "Advanced (Quality-based)"
                     },
