@@ -1,13 +1,12 @@
 import collections
 import warnings
 import json
-from typing import Dict, Optional
+from typing import Dict
 
 from UM.Decorators import singleton, deprecated
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Resources import Resources
-from typing import Dict, Optional
 catalog = i18nCatalog("cura")
 
 
@@ -23,8 +22,8 @@ class IntentTranslations:
             for intent_id in intents_data:
                 intent_definition = intents_data[intent_id]
                 self._intent_translations[intent_id] = {
-                    "name": catalog.i18nc("@label", intent_definition["label"]),
-                    "description": catalog.i18nc("@text", intent_definition["description"])
+                    "name": catalog.i18nc(f"{intent_id} intent label", intent_definition["label"]),
+                    "description": catalog.i18nc(f"{intent_id} intent description", intent_definition["description"])
                 }
 
     def index(self, intent_id: str) -> int:
