@@ -9,6 +9,7 @@ from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast, Set
 from PyQt6.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
@@ -86,8 +87,6 @@ class MachineManager(QObject):
 
         self.globalContainerChanged.connect(self.activeQualityChangesGroupChanged)
         self.globalContainerChanged.connect(self.activeQualityGroupChanged)
-
-        self._stacks_have_errors = None  # type: Optional[bool]
 
         extruder_manager = self._application.getExtruderManager()
 
@@ -447,31 +446,6 @@ class MachineManager(QObject):
             return False
         return True
 
-    def _checkStacksHaveErrors(self) -> bool:
-        time_start = time.time()
-        if self._global_container_stack is None: #No active machine.
-            return False
-
-        if self._global_container_stack.hasErrors():
-            Logger.log("d", "Checking global stack for errors took %0.2f s and we found an error" % (time.time() - time_start))
-            return True
-
-        # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
-        machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-        extruder_stacks = self._global_container_stack.extruderList
-        count = 1  # We start with the global stack
-        for stack in extruder_stacks:
-            md = stack.getMetaData()
-            if "position" in md and int(md["position"]) >= machine_extruder_count:
-                continue
-            count += 1
-            if stack.hasErrors():
-                Logger.log("d", "Checking %s stacks for errors took %.2f s and we found an error in stack [%s]" % (count, time.time() - time_start, str(stack)))
-                return True
-
-        Logger.log("d", "Checking %s stacks for errors took %.2f s" % (count, time.time() - time_start))
-        return False
-
     @pyqtProperty(bool, notify = numUserSettingsChanged)
     def hasUserSettings(self) -> bool:
         return self._num_user_settings != 0
@@ -515,13 +489,10 @@ class MachineManager(QObject):
             container.sendPostponedEmits()
 
     @pyqtProperty(bool, notify = stacksValidationChanged)
+    @deprecated("This property was already inactive and will now be removed, use MachineErrorChecker.hasError instead.", since="5.12.0")
     def stacksHaveErrors(self) -> bool:
-        """Check if none of the stacks contain error states
-
-        Note that the _stacks_have_errors is cached due to performance issues
-        Calling _checkStack(s)ForErrors on every change is simply too expensive
-        """
-        return bool(self._stacks_have_errors)
+        """Check if none of the stacks contain error states"""
+        return False
 
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineFirmwareVersion(self) -> str:
