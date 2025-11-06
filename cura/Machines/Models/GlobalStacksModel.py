@@ -112,7 +112,7 @@ class GlobalStacksModel(ListModel):
 
         if this is set to None both abstract and non-abstract printers will be included in the list
                    set to True will only include abstract printers
-                   set to False will only inclde non-abstract printers
+                   set to False will only include non-abstract printers
         """
         return self._filter_abstract_machines
 

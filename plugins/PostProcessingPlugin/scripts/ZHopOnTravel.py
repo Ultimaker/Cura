@@ -287,7 +287,7 @@ class ZHopOnTravel(Script):
                         if " Z" in line and self.getValue(line, "Z"):
                             self._cur_z = self.getValue(line, "Z")
 
-                    # Check whether retractions have occured
+                    # Check whether retractions have occurred
                     if line[0:3] in ["G1 ", "G2 ", "G3 "] and "X" in line and "Y" in line and "E" in line:
                         self._is_retracted = False
                         self._cur_e = self.getValue(line, "E")
@@ -541,7 +541,7 @@ class ZHopOnTravel(Script):
                     if " Z" in line and self.getValue(line, "Z"):
                         self._cur_z = self.getValue(line, "Z")
 
-                # Check whether retractions have occured and track the E location
+                # Check whether retractions have occurred and track the E location
                 if not relative_extrusion:
                     if line.startswith("G1 ") and " X" in line and " Y" in line and " E" in line:
                         self._is_retracted = False

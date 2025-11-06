@@ -979,7 +979,7 @@ class AddCoolingProfile(Script):
         return comment_data
 
     def _control_bv_fan(self, bv_data: str) -> str:
-        # Control any secondary fan.  Can be used for an Auxilliary/Chamber fan
+        # Control any secondary fan.  Can be used for an Auxiliary/Chamber fan
         bv_start_layer = self.getSettingValueByKey("bv_fan_start_layer") - 1
         bv_end_layer = self.getSettingValueByKey("bv_fan_end_layer")
         bv_fan_nr = self.getSettingValueByKey("bv_fan_nr")

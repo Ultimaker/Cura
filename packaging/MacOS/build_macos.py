@@ -67,7 +67,7 @@ def build_pkg(dist_path: str, app_filename: str, component_filename: str, cura_v
         product_build_executable,
         "--synthesize",
         "--package", Path(dist_path, component_filename),  # Package that will be inside installer
-        Path(dist_path, "distribution.xml"),  # Output location for sythesized distributions file
+        Path(dist_path, "distribution.xml"),  # Output location for synthesized distributions file
     ]
     print(f"Run distribution creation command [{" ".join([str(arg) for arg in distribution_creation_arguments])}]")
     subprocess.run(distribution_creation_arguments, check=True)

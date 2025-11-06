@@ -138,7 +138,7 @@ class MachineListModel(ListModel):
                 "isOnline": True,
                 "isAbstractMachine": False,
                 "machineCount": 0,
-                "catergory": "connected",
+                "category": "connected",
             })
 
         for stack in other_machine_stacks:
@@ -157,7 +157,7 @@ class MachineListModel(ListModel):
             "isAbstractMachine": parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False)),
             "isNetworked": cast(GlobalStack, container_stack).hasNetworkedConnection() if isinstance(container_stack, GlobalStack) else False,
             "machineCount": machine_count,
-            "catergory": "connected" if is_online else "other",
+            "category": "connected" if is_online else "other",
         })
 
     def getItems(self) -> Dict[str, Any]:

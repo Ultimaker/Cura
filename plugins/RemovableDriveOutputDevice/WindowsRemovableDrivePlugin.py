@@ -62,7 +62,7 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
             drive = "{0}:/".format(letter)
 
             # Do we really want to skip A and B?
-            # GetDriveTypeA explicitly wants a byte array of type ascii. It will accept a string, but this wont work
+            # GetDriveTypeA explicitly wants a byte array of type ascii. It will accept a string, but this won't work
             if bitmask & 1 and ctypes.windll.kernel32.GetDriveTypeA(drive.encode("ascii")) == DRIVE_REMOVABLE:
                 volume_name = ""
                 name_buffer = ctypes.create_unicode_buffer(1024)

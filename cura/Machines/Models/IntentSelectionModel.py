@@ -101,7 +101,7 @@ class IntentSelectionModel(ListModel):
                 })
             else:
                 # There can be multiple intents with the same category, use one of these
-                # intent-metadata's for the icon/description defintions for the intent
+                # intent-metadata's for the icon/description definitions for the intent
 
 
 

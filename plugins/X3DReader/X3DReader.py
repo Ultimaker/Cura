@@ -753,7 +753,7 @@ class X3DReader(MeshReader):
         else:
             self.addTri(b, a, c)
 
-    # Needs to be convex, but not necessaily planar
+    # Needs to be convex, but not necessarily planar
     # Assumed ccw, cut along the ac diagonal
     def addQuad(self, a, b, c, d):
         self.addTri(a, b, c)

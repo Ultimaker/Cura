@@ -61,7 +61,7 @@ class ExtruderManager(QObject):
         # The emit function can't be directly connected to another signal. This wrapper function is required.
         # The extrudersChanged signal is emitted early when changing machines. This triggers it a second time
         # after the extruder have changed properly. This is important for any QML using ExtruderManager.extruderIds
-        # This is a hack, but other behaviour relys on the updating in this order.
+        # This is a hack, but other behaviour relies on the updating in this order.
         self.extrudersChanged.emit(self._application.getGlobalContainerStack().getId())
 
     @pyqtProperty(int, notify = extrudersChanged)
