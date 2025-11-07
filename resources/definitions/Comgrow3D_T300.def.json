@@ -49,6 +49,7 @@
         "retraction_amount": { "value":0.5 },
         "retraction_speed": { "value": 30 },
 
-        "wall_overhang_speed_factors": { "value": 60 },
+        "wall_overhang_speed_factors": { "value": 60 }
     }
 }
+
