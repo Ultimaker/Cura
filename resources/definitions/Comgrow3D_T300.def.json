@@ -50,9 +50,7 @@
         "retraction_speed": { "value": 30 },
 
         "wall_overhang_angle": { "value": 35 },
-        "wall_overhang_speed_factor": { "value": 60 },
-
-        "bridge_settings_enabled": { "value": true },
+        "wall_overhang_speed_factors": { "value": 60 },  "bridge_settings_enabled": { "value": true },
         "bridge_wall_min_length": { "value": 5 }
     }
 }
