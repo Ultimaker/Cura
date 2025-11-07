@@ -48,14 +48,14 @@
         "speed_travel": { "value": "speed_print" } ,
         "speed_layer_0": { "value": "speed_print * 7 / 36" },
         "speed_travel_layer_0": { "value": "speed_layer_0 * 20 / 7" },
-
-	"acceleration_enabled": {"value": true },
+        
+        "acceleration_enabled": {"value": true },
         "acceleration_print": {"value": 8000 },
         "acceleration_travel": {"value": "acceleration_print"},
         "acceleration_layer_0": {"value": "acceleration_print / 8"},
 
-	"jerk_print": { "value": 5 },
-	"jerk_travel": { "value": 10 },
+        "jerk_print": { "value": 5 },
+        "jerk_travel": { "value": 10 },
 
         "retraction_hop": { "value": 0.2 },
         "retraction_hop_enabled": { "value": true },
