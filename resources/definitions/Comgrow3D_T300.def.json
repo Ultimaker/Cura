@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "has_variants": false,
         "has_machine_quality": false,
-        "machine_extruder_trains": { "0": "Comgrow3D_extruder_0" }
+        "machine_extruder_trains": { "0": "Comgrow3D_T300_extruder_0" }
     },
 	
     "overrides": {
@@ -49,3 +49,4 @@
         "retraction_speed": { "value": 30 }
     }
 }
+
