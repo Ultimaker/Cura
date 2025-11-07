@@ -44,8 +44,7 @@
 		"jerk_print": { "value": 5 },
 	"jerk_travel": { "value": 10 },
 
-        "retract_at_layer_change": { "value": false },
-        "retraction_hop": { "value": 0.2 },
+         "retraction_hop": { "value": 0.2 },
         "retraction_hop_enabled": { "value": true },
         "retraction_amount": { "value":0.5 },
         "retraction_speed": { "value": 30 },
