@@ -24,9 +24,7 @@
         "material_final_print_temperature": { "value": "material_print_temperature" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
 
-        "optimize_wall_printing_order": { "value": true },
-
-        "speed_print": { "value": 300.0 },
+          "speed_print": { "value": 300.0 },
         "speed_infill": { "value": "speed_print" },
         "speed_wall": { "value": "speed_print" },
         "speed_wall_0": { "value": "speed_wall * 2 / 3" },
