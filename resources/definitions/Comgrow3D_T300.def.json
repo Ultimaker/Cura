@@ -47,9 +47,8 @@
         "retraction_hop": { "value": 0.2 },
         "retraction_hop_enabled": { "value": true },
         "retraction_amount": { "value":0.5 },
-        "retraction_speed": { "value": 30 },
-
-        "wall_overhang_speed_factors": { "value": 60 }
+        "retraction_speed": { "value": 30 }
     }
 }
+
 
