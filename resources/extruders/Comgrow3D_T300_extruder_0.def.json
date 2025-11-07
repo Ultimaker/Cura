@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "comgrow3d",
+        "machine": "comgrow3d_t300",
         "position": "0"
     },
 
@@ -13,5 +13,6 @@
         "material_diameter": { "default_value": 1.75 }
     }
 }
+
 
 
