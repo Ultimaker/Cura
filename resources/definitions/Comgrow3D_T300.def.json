@@ -41,8 +41,7 @@
         "acceleration_travel": { "value": "acceleration_print" },
         "acceleration_layer_0": { "value": "acceleration_print / 16" },
 
-	"jerk_enabled": { "value": false },
-	"jerk_print": { "value": 5 },
+		"jerk_print": { "value": 5 },
 	"jerk_travel": { "value": 10 },
 
         "retract_at_layer_change": { "value": false },
