@@ -32,7 +32,7 @@
         "speed_layer_0": { "value": "speed_print * 3 / 20" },
         "speed_travel_layer_0": { "value": "speed_layer_0 * 10 / 3" },
 
-        leration_enabled": { "value": true },
+        "accleration_enabled": { "value": true },
         "acceleration_print": { "value": 8000 },
         "acceleration_wall": { "value": "acceleration_print * 3 / 4" },
         "acceleration_wall_0": { "value": "acceleration_wall * 2 / 3" },
@@ -41,7 +41,7 @@
         "acceleration_layer_0": { "value": "acceleration_print / 16" },
 
 		"jerk_print": { "value": 5 },
-	"jerk_travel": { "value": 10 },
+    	"jerk_travel": { "value": 10 },
 		"jerk_print": { "value": 5 },
         "retraction_hop_enabled": { "value": true },
         "retraction_amount": { "value":0.5 },
@@ -52,4 +52,5 @@
         "bridge_wall_min_length": { "value": 5 }
     }
 }
+
 
