@@ -1,19 +1,19 @@
 {
     "version": 2,
-    "name": "Comgrow3D T300",
+    "name": "Comgrow T300",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "JoGro",
-        "manufacturer": "Comgrow 3D",
+        "author": "JoGrob",
+        "manufacturer": "Comgrow",
         "file_formats": "text/x-gcode",
         "has_variants": false,
         "has_machine_quality": false,
-        "machine_extruder_trains": { "0": "comgrow3d_t300_extruder_0" }
+        "machine_extruder_trains": { "0": "comgrow_t300_extruder_0" }
     },
 	
     "overrides": {
-        "machine_name": { "default_value": "Comgrow3D T300" },
+        "machine_name": { "default_value": "Comgrow T300" },
         "machine_width": { "default_value": 300 },
         "machine_depth": { "default_value": 300 },
         "machine_height": { "default_value": 350 },
@@ -51,3 +51,4 @@
         "retraction_speed": { "value": 30 }
     }
 }
+
