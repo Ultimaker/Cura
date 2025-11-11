@@ -2555,9 +2555,9 @@
                         }
                     }
                 },
-                "infill_move_inwards":
+                "infill_move_inwards_length":
                 {
-                    "label": "Infill Start/End Move Inwards",
+                    "label": "Infill Start/End Move Inwards Length",
                     "description": "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
                     "unit": "mm",
                     "type": "float",
