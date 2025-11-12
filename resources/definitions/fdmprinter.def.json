@@ -2567,7 +2567,40 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "infill_start_move_inwards_length":
+                        {
+                            "label": "Infill Start Move Inwards Length",
+                            "description": "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "line_width * 10",
+                            "default_value": 0,
+                            "value": "infill_move_inwards_length",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_sparse_density > 0",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "infill_end_move_inwards_length":
+                        {
+                            "label": "Infill End Move Inwards Length",
+                            "description": "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "line_width * 10",
+                            "default_value": 0,
+                            "value": "infill_move_inwards_length",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_sparse_density > 0",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        }
+                    }
                 }
             }
         },
