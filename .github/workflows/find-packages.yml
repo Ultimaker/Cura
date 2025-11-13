@@ -52,7 +52,7 @@ jobs:
     uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version != '' && inputs.cura_conan_version || needs.find-packages.outputs.cura_package }}
-      package_overrides: ${{ format('{0}, {1}', needs.find-packages.outputs.package_overrides, inputs.package_overrides) }}
+      package_overrides: ${{ needs.find-packages.outputs.package_overrides }} ${{ inputs.package_overrides }}
       conan_args: ${{ inputs.conan_args }}
       enterprise: ${{ inputs.enterprise }}
       staging: ${{ inputs.staging  }}
