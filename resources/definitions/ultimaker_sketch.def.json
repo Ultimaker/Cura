@@ -107,12 +107,6 @@
             "value": false
         },
         "layer_height_0": { "value": "layer_height * 1.25" },
-        "raft_base_thickness": {
-            "value": 0.4
-        },
-        "raft_airgap": {
-            "value": "layer_height * 2"
-        },
         "layer_start_x": { "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))" },
         "layer_start_y": { "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))" },
         "machine_center_is_zero": { "default_value": true },
