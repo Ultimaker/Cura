@@ -1,0 +1,18 @@
+{
+    "name": "Artillery Hornet",
+    "version": 1,
+    "inherits": "artillery_base",
+    "overrides": {
+        "machine_name": { "default_value": "Artillery Hornet" },
+        "machine_width": { "default_value": 220 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "gantry_height": { "value": 25 },
+        "machine_start_gcode": { "default_value": "G28 ; Home\n G92 E0 ; reset extruder\n ;Prime the extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface\n G1 X200.0 Y0.2 Z0.3 F5000.0 ; move to start-line position\n G1 X100.0 Y0.2 Z0.3 F1500.0 E10 ; draw 1st line\n G1 X100.0 Y0.6 Z0.3 F5000.0 ; move to side a little\n G1 X200.0 Y0.6 Z0.3 F1500.0 E20 ; draw 2nd line\n G92 E0 ; reset extruder\n G1 Z1.0 F3000 ; move z up little to prevent scratching of surface"},
+        "machine_end_gcode": { "default_value": "G1 E-6 F9000\n M104 S0 T0 ; turn off temperature\n M140 S0 ; turn off bed\n G1 X110 Y220 F10000\n M84 ; disable motors"}
+    },
+    "metadata": {
+        "quality_definition": "artillery_base",
+        "visible": true
+    }
+}
