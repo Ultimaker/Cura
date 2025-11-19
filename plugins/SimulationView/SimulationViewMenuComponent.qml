@@ -53,16 +53,37 @@ Cura.ExpandableComponent
 
         UM.Label
         {
+            id: lineTypeLabel
             text: layerTypeCombobox.currentText
-            anchors
-            {
-                left: colorSchemeLabel.right
-                leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
-            }
+            anchors.left: colorSchemeLabel.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
             height: parent.height
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
+        }
+
+        UM.ColorImage
+        {
+            id: warningIcon
+            anchors
+            {
+                left: lineTypeLabel.right
+                leftMargin: UM.Theme.getSize("narrow_margin").width
+                verticalCenter: parent.verticalCenter
+            }
+            width: UM.Theme.getSize("section_icon").width
+            height: UM.Theme.getSize("section_icon").height
+            source: UM.Theme.getIcon("Warning")
+            color: UM.Theme.getColor("warning")
+            visible: {
+                // Check if any extruder is unchecked
+                for (var i = 0; i < viewSettings.extruder_opacities.length; i++) {
+                    if (viewSettings.extruder_opacities[i] <= 0.5 && viewSettings.extruder_opacities[i] !== undefined && viewSettings.extruder_opacities[i] !== "") {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
     }
 
@@ -212,10 +233,26 @@ Cura.ExpandableComponent
                     {
                         verticalCenter: parent.verticalCenter
                         left: extrudersModelCheckBox.left
-                        right: extrudersModelCheckBox.right
+                        right: extruderWarningIcon.visible ? extruderWarningIcon.left : swatch.left
                         leftMargin: UM.Theme.getSize("checkbox").width + Math.round(UM.Theme.getSize("default_margin").width / 2)
-                        rightMargin: UM.Theme.getSize("default_margin").width * 2
+                        rightMargin: UM.Theme.getSize("narrow_margin").width
                     }
+                }
+
+                UM.ColorImage
+                {
+                    id: extruderWarningIcon
+                    anchors
+                    {
+                        verticalCenter: parent.verticalCenter
+                        right: swatch.left
+                        rightMargin: UM.Theme.getSize("narrow_margin").width
+                    }
+                    width: UM.Theme.getSize("section_icon").width
+                    height: UM.Theme.getSize("section_icon").height
+                    source: UM.Theme.getIcon("Warning")
+                    color: UM.Theme.getColor("warning")
+                    visible: !extrudersModelCheckBox.checked
                 }
             }
         }
