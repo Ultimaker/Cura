@@ -53,7 +53,7 @@ Cura.ExpandableComponent
 
         UM.Label
         {
-            id: SchemeTypeLabel
+            id: schemeTypeLabel
             text: layerTypeCombobox.currentText
             anchors.left: colorSchemeLabel.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -67,7 +67,7 @@ Cura.ExpandableComponent
             id: warningIcon
             anchors
             {
-                left: SchemeTypeLabel.right
+                left: schemeTypeLabel.right
                 leftMargin: UM.Theme.getSize("narrow_margin").width
                 verticalCenter: parent.verticalCenter
             }
