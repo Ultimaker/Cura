@@ -76,8 +76,9 @@ Cura.ExpandableComponent
             source: UM.Theme.getIcon("Warning")
             color: UM.Theme.getColor("warning")
             visible: {
-                // Check if any extruder is unchecked
-                for (var i = 0; i < viewSettings.extruder_opacities.length; i++) {
+                // Check if any extruder is unchecked, but only for extruders that exist in the current printer
+                var extruderCount = CuraApplication.getExtrudersModel().count;
+                for (var i = 0; i < extruderCount; i++) {
                     if (viewSettings.extruder_opacities[i] <= 0.5 && viewSettings.extruder_opacities[i] !== undefined && viewSettings.extruder_opacities[i] !== "") {
                         return true;
                     }
