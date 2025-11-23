@@ -296,11 +296,6 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        # Don't slice if there is a setting with an error value.
-        if CuraApplication.getInstance().getMachineManager().stacksHaveErrors:
-            self.setResult(StartJobResult.SettingError)
-            return
-
         if CuraApplication.getInstance().getBuildVolume().hasErrors():
             self.setResult(StartJobResult.BuildPlateError)
             return
@@ -309,6 +304,7 @@ class StartSliceJob(Job):
         while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
             time.sleep(0.1)
 
+        # Don't slice if there is a setting with an error value.
         if CuraApplication.getInstance().getMachineErrorChecker().hasError:
             self.setResult(StartJobResult.SettingError)
             return

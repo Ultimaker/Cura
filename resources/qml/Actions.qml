@@ -232,7 +232,7 @@ Item
     Action
     {
         id: updateProfileAction
-        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
+        enabled: !Cura.MachineErrorChecker.hasError && Cura.MachineManager.hasUserSettings && Cura.MachineManager.activeQualityChangesGroup != null
         text: catalog.i18nc("@action:inmenu menubar:profile", "&Update profile with current settings/overrides");
         onTriggered: Cura.ContainerManager.updateQualityChanges()
     }
@@ -252,7 +252,7 @@ Item
     Action
     {
         id: addProfileAction
-        enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings
+        enabled: !Cura.MachineErrorChecker.hasError && Cura.MachineManager.hasUserSettings
         text: catalog.i18nc("@action:inmenu menubar:profile", "&Create profile from current settings/overrides...")
     }
 

@@ -16,6 +16,7 @@ from UM.Logger import Logger
 
 from cura.CuraApplication import CuraApplication
 
+from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
@@ -56,7 +57,7 @@ class ClusterApiClient:
     # In order to avoid garbage collection we keep the callbacks in this list.
     _anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
-    def __init__(self, address: str, on_error: Callable) -> None:
+    def __init__(self, address: str, on_error: Callable, on_auth_required: Callable) -> None:
         """Initializes a new cluster API client.
 
         :param address: The network address of the cluster to call.
@@ -68,6 +69,7 @@ class ClusterApiClient:
         self._on_error = on_error
 
         self._auth_tries = 0
+        self._on_auth_required = on_auth_required
 
         prefs = CuraApplication.getInstance().getPreferences()
         prefs.addPreference("cluster_api/auth_ids", "{}")
@@ -302,6 +304,10 @@ class ClusterApiClient:
 
             if reply.error() != QNetworkReply.NetworkError.NoError:
                 if reply.error() == QNetworkReply.NetworkError.AuthenticationRequiredError:
+                    self._auth_id = None
+                    self._auth_key = None
+
+                    self._on_auth_required(reply.errorString())
                     nonce_match = re.search(r'nonce="([^"]+)', str(reply.rawHeader(b"WWW-Authenticate")))
                     if nonce_match:
                         self._nonce = nonce_match.group(1)
@@ -309,8 +315,12 @@ class ClusterApiClient:
                         self._setLocalValueToPrefDict("cluster_api/nonce_counts", self._nonce_count)
                         self._setLocalValueToPrefDict("cluster_api/nonces", self._nonce)
                         CuraApplication.getInstance().savePreferences()
-                self._on_error(reply.errorString())
+                else:
+                    self._on_error(reply.errorString())
                 return
+
+            if self._auth_id and self._auth_key and self._nonce_count > 1:
+                AuthorizationRequiredMessage.hide()
 
             # If no parse model is given, simply return the raw data in the callback.
             if not model:
