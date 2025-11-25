@@ -1736,7 +1736,7 @@
                                     "maximum_value": "999999",
                                     "default_value": 6,
                                     "type": "int",
-                                    "value": "math.ceil(round((bottom_thickness - layer_height_0) / resolveOrValue('layer_height'), 4)) + 1",
+                                    "value": "bottom_layers",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
