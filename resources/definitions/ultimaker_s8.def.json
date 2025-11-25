@@ -607,6 +607,7 @@
         "support_xy_distance": { "value": 1.2 },
         "support_xy_distance_overhang": { "value": "1.5*machine_nozzle_size" },
         "support_z_distance": { "value": "2*layer_height" },
+        "switch_extruder_retraction_amount": { "value": 16 },
         "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
