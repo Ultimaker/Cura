@@ -9011,6 +9011,15 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_interlace_lines":
+                {
+                    "label": "Interlace Bridge Lines",
+                    "description": "blablabla.",
+                    "default_value": false,
+                    "type": "bool",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_enable_more_layers":
                 {
                     "label": "Bridge Has Multiple Layers",
