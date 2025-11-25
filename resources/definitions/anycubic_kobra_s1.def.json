@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "Anycubic Kobra S1",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "takanuva15",
+        "manufacturer": "Anycubic",
+        "file_formats": "text/x-gcode",
+        "platform": "anycubic_kobra_s1_buildplate.obj",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_textured_buildplate": true,
+        "has_variant_buildplates": false,
+        "has_variants": false,
+        "machine_extruder_trains": { "0": "anycubic_kobra_s1_extruder_0" },
+        "platform_texture": "anycubic_kobra_s1_buildplate_texture.png",
+        "preferred_quality_type": "normal",
+        "preferred_variant_name": "0.4mm"
+    },
+    "overrides":
+    {
+        "machine_buildplate_type": { "default_value": "PEI Spring Steel" },
+        "machine_depth": { "default_value": 250 },
+        "machine_end_gcode": { "default_value": "; move printhead away from object\nG1 Z22.000 ; for object exclusion\nG1 E-.76675 F2400\n; fan off\nM106 S0\nM106 P2 S0\n;TYPE:Custom\n; filament end gcode\nG92 E0\nG1 E-2 F3000\nG1 Z24 F900 ; Move print head further up \nG1 F12000; present print\nG1 X44;  throw_position_x\nG1 Y270; throw_position_y\nM140 S0 ; turn off heatbed\nM104 S0 ; turn off temperature\nM106 P1 S0 ; turn off fan\nM106 P2 S0\nM106 P3 S0\nM84; disable motors                  \n; disable stepper motors\nM106 P3 S204\n\n; CONFIG FOR SCREEN PRINT PREVIEW\n; total filament used [g] = {filament_weight}\n\n; CONFIG_BLOCK_START = begin\n; filament_type = {material_type}\n; nozzle_temperature = {material_print_temperature}\n; bed_temperature = {material_bed_temperature}\n; CONFIG_BLOCK_END = end" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 250 },
+        "machine_name":
+        {
+            "default_value": "Anycubic Kobra S1",
+            "description": "Anycubic Kobra S1"
+        },
+        "machine_start_gcode": { "default_value": "M106 S0\nM106 P2 S0\n;TYPE:Custom\nG9111 bedTemp={material_bed_temperature} extruderTemp={material_print_temperature}\nM117\nM106 P3 S153\nG90\nG21\nM83 ; use relative distances for extrusion\n; filament start gcode\nM900 K0.035 ; Override pressure advance value\nM106 S0\nM106 P2 S0\n\nM420 S1 ;load stored mesh to avoid auto-leveling" },
+        "machine_width": { "default_value": 250 }
+    }
+}

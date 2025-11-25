@@ -1427,11 +1427,10 @@
                 "z_seam_corner":
                 {
                     "label": "Seam Corner Preference",
-                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate.",
+                    "description": "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate.",
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none": "None",
                         "z_seam_corner_inner": "Hide Seam",
                         "z_seam_corner_outer": "Expose Seam",
                         "z_seam_corner_any": "Hide or Expose Seam",
@@ -1541,6 +1540,19 @@
                             "default_value": "[ ]",
                             "value": "skin_angles",
                             "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "roofing_expansion":
+                        {
+                            "label": "Top Surface Expansion",
+                            "description": "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces.",
+                            "type": "float",
+                            "default_value": "0",
+                            "value": "0",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "roofing_line_width * 3",
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -1681,7 +1693,7 @@
                                     "maximum_value": "999999",
                                     "type": "int",
                                     "minimum_value_warning": "2",
-                                    "value": "0 if infill_sparse_density == 100 else math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -1711,7 +1723,7 @@
                                     "default_value": 6,
                                     "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "999999 if infill_sparse_density == 100 and not magic_spiralize else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -2054,7 +2066,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
-                    "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
+                    "value": "max(-skin_preshrink, wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x)",
                     "minimum_value": "-skin_preshrink",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
@@ -2540,6 +2552,53 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "value": "lightning_infill_support_angle"
+                        }
+                    }
+                },
+                "infill_move_inwards_length":
+                {
+                    "label": "Infill Start/End Move Inwards Length",
+                    "description": "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "line_width * 10",
+                    "default_value": 0,
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_sparse_density > 0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "infill_start_move_inwards_length":
+                        {
+                            "label": "Infill Start Move Inwards Length",
+                            "description": "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "line_width * 10",
+                            "default_value": 0,
+                            "value": "infill_move_inwards_length",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_sparse_density > 0",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
+                        },
+                        "infill_end_move_inwards_length":
+                        {
+                            "label": "Infill End Move Inwards Length",
+                            "description": "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "line_width * 10",
+                            "default_value": 0,
+                            "value": "infill_move_inwards_length",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "enabled": "infill_sparse_density > 0",
+                            "settable_per_mesh": true,
+                            "settable_per_extruder": true
                         }
                     }
                 }
@@ -4568,7 +4627,7 @@
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_speed":
@@ -4658,7 +4717,7 @@
                     "maximum_value": 999999999,
                     "type": "int",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_extrusion_window":
@@ -4672,7 +4731,7 @@
                     "maximum_value_warning": "retraction_amount * 2",
                     "value": "retraction_amount",
                     "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
+                    "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
                 "retraction_combing":
@@ -4712,10 +4771,9 @@
                     "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0,
+                    "default_value": 0.6,
                     "value": "machine_nozzle_size * 1.5",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "machine_nozzle_size * 0.5",
+                    "minimum_value": "machine_nozzle_size * 0.5",
                     "maximum_value_warning": "machine_nozzle_size * 10",
                     "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
@@ -7915,6 +7973,35 @@
                     "resolve": "max(extruderValues('interlocking_boundary_avoidance'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "multi_material_paint_resolution":
+                {
+                    "label": "Multi-material Precision",
+                    "description": "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 0.2,
+                    "value": "min(line_width / 2, layer_height)",
+                    "minimum_value": "0.05",
+                    "maximum_value": "5",
+                    "maximum_value_warning": "line_width * 2",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
+                },
+                "multi_material_paint_depth":
+                {
+                    "label": "Multi-material Depth",
+                    "description": "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "extruders_enabled_count > 1",
+                    "default_value": 4,
+                    "value": "line_width * 10",
+                    "minimum_value": "line_width",
+                    "minimum_value_warning": "line_width * 2",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -8808,7 +8895,7 @@
                     "value": "line_width + support_xy_distance + 1.0",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true,
-                    "settable_per_extruder": false
+                    "settable_per_extruder": true
                 },
                 "bridge_skin_support_threshold":
                 {

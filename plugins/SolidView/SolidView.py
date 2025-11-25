@@ -270,7 +270,7 @@ class SolidView(View):
                         renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                     else:
                         renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
-                elif getattr(node, "_outside_buildarea", False):
+                elif getattr(node, "_outside_buildarea", False) or node.callDecoration("isAssignedToDisabledExtruder"):
                     disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation = node.getCachedNormalMatrix())
                 elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                     # Render support meshes with a vertical stripe that is darker
@@ -289,8 +289,9 @@ class SolidView(View):
 
     def endRendering(self):
         # check whether the xray overlay is showing badness
-        if time.time() > self._next_xray_checking_time\
-                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+        if (time.time() > self._next_xray_checking_time
+                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference)
+                and self._xray_pass is not None):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()

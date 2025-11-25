@@ -153,71 +153,110 @@ class CuraConan(ConanFile):
     def _retrieve_pip_license(self, package, sources_url, dependency_description):
         # Download the sources to get the license file inside
         self.output.info(f"Retrieving license for {package}")
-        response = requests.get(sources_url)
-        response.raise_for_status()
+        try:
+            response = requests.get(sources_url)
+            response.raise_for_status()
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            sources_path = os.path.join(temp_dir, "sources.tar.gz")
-            with open(sources_path, 'wb') as sources_file:
-                sources_file.write(response.content)
+            with tempfile.TemporaryDirectory() as temp_dir:
+                sources_path = os.path.join(temp_dir, "sources.tar.gz")
+                with open(sources_path, 'wb') as sources_file:
+                    sources_file.write(response.content)
 
-            with tarfile.open(sources_path, 'r:gz') as sources_archive:
-                license_file = "LICENSE"
+                with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                    license_file = "LICENSE"
 
-                for source_file in sources_archive.getnames():
-                    if Path(source_file).name == license_file:
-                        sources_archive.extract(source_file, temp_dir)
+                    for source_file in sources_archive.getnames():
+                        if Path(source_file).name == license_file:
+                            sources_archive.extract(source_file, temp_dir)
 
-                        license_file_path = os.path.join(temp_dir, source_file)
-                        with open(license_file_path, 'r', encoding='utf8') as file:
-                            dependency_description["license_full"] = file.read()
+                            license_file_path = os.path.join(temp_dir, source_file)
+                            with open(license_file_path, 'r', encoding='utf8') as file:
+                                dependency_description["license_full"] = file.read()
+                            break
+        except Exception as e:
+            self.output.warning(f"Failed to retrieve license for {package} from {sources_url}: {e}")
+            # Don't fail the build, just continue without the license
 
     def _make_pip_dependency_description(self, package, version, dependencies):
         url = ["https://pypi.org/pypi", package]
         if version is not None:
-            url.append(version)
+            # Strip local version identifiers (everything after '+') for PyPI API compatibility
+            # e.g., "1.26.1+mkl" becomes "1.26.1"
+            clean_version = version.split('+')[0] if '+' in version else version
+            url.append(clean_version)
         url.append("json")
 
-        data = requests.get("/".join(url)).json()
+        try:
+            response = requests.get("/".join(url))
+            response.raise_for_status()
+            data = response.json()
+        except (requests.RequestException, ValueError) as e:
+            self.output.warning(f"Failed to retrieve PyPI data for {package}: {e}")
+            # Create minimal dependency description with fallback values
+            dependencies[package] = {
+                "summary": f"Package {package}",
+                "version": version or "unknown",
+                "license": "unknown"
+            }
+            return
 
+        # Check if the response has the expected structure
+        if "info" not in data:
+            self.output.warning(f"PyPI response for {package} missing 'info' field")
+            dependencies[package] = {
+                "summary": f"Package {package}",
+                "version": version or "unknown", 
+                "license": "unknown"
+            }
+            return
+
+        info = data["info"]
         dependency_description = {
-            "summary": data["info"]["summary"],
-            "version": data["info"]["version"],
-            "license": data["info"]["license"]
+            "summary": info.get("summary", f"Package {package}"),
+            "version": version or info.get("version", "unknown"),  # Use original version if available
+            "license": info.get("license", "unknown")
         }
 
-        for url_data in data["urls"]:
-            if url_data["packagetype"] == "sdist":
-                sources_url = url_data["url"]
-                dependency_description["sources_url"] = sources_url
+        # Handle URLs section safely
+        if "urls" in data:
+            for url_data in data["urls"]:
+                if url_data.get("packagetype") == "sdist":
+                    sources_url = url_data.get("url")
+                    if sources_url:
+                        dependency_description["sources_url"] = sources_url
 
-                if not self.options.skip_licenses_download:
-                    self._retrieve_pip_license(package, sources_url, dependency_description)
+                        if not self.options.skip_licenses_download:
+                            try:
+                                self._retrieve_pip_license(package, sources_url, dependency_description)
+                            except Exception as e:
+                                self.output.warning(f"Failed to retrieve license for {package}: {e}")
 
-        for source_url, check_source in [("source", False),
-                                         ("Source", False),
-                                         ("Source Code", False),
-                                         ("Repository", False),
-                                         ("Code", False),
-                                         ("homepage", True),
-                                         ("Homepage", True)]:
-            try:
-                url = data["info"]["project_urls"][source_url]
-                if check_source and not self._is_repository_url(url):
-                    # That will not work for ALL open-source projects, but should already get a large majority of them
-                    self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
-                    continue
-                dependency_description["sources_url"] = url
-                break
-            except KeyError:
-                pass
+        # Handle project URLs safely
+        if "project_urls" in info:
+            for source_url, check_source in [("source", False),
+                                             ("Source", False),
+                                             ("Source Code", False),
+                                             ("Repository", False),
+                                             ("Code", False),
+                                             ("homepage", True),
+                                             ("Homepage", True)]:
+                try:
+                    url = info["project_urls"][source_url]
+                    if check_source and not self._is_repository_url(url):
+                        # That will not work for ALL open-source projects, but should already get a large majority of them
+                        self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
+                        continue
+                    dependency_description["sources_url"] = url
+                    break
+                except (KeyError, TypeError):
+                    pass
 
         if dependency_description["license"] is not None and len(dependency_description["license"]) > 32:
             # Some packages have their full license in this field
             dependency_description["license_full"] = dependency_description["license"]
-            dependency_description["license"] = data["info"]["name"]
+            dependency_description["license"] = info.get("name", package)
 
-        dependencies[data["info"]["name"]] = dependency_description
+        dependencies[info.get("name", package)] = dependency_description
 
     @staticmethod
     def _get_license_from_repository(sources_url, version, license_file_name = None):
@@ -338,7 +377,7 @@ class CuraConan(ConanFile):
 
         if extra_build_identifiers:
             separator = "+" if not cura_version.build else "."
-            cura_version = Version(f"{cura_version}{separator}{".".join(extra_build_identifiers)}")
+            cura_version = Version(f"{cura_version}{separator}{'.'.join(extra_build_identifiers)}")
 
         self.output.info(f"Write CuraVersion.py to {self.recipe_folder}")
 

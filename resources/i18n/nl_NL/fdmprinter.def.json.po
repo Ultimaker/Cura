@@ -6240,3 +6240,103 @@ msgstr "Breedte van een enkele lijn van de gebieden aan de onderkant van de prin
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zigzag"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>De ratio van grondverf tijdens de verplaatsing, waarbij de rest wordt voltooid terwijl het mondstuk stilstaat, na het verplaatsen<ul><li> Indien 0, wordt de volledige grondverf uitgevoerd in stilstand, nadat de verplaatsing is beëindigd</li><li> Indien 100, wordt de volledige grondverf uitgevoerd tijdens de verplaatsing, waardoor het afdrukken onmiddellijk kan beginnen</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>De ratio van intrekking uitgevoerd tijdens de verplaatsing, waarbij de rest wordt voltooid met het mondstuk in stilstand, voor de verplaatsing<ul><li>Indien 0, wordt de volledige intrekking uitgevoerd in stilstand, voor de verplaatsing begint</li><li>Indien 100, wordt de volledige intrekking uitgevoerd tijdens de verplaatsing en wordt de stationaire fase overgeslagen</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "Type bouwplaat"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "Bouwvolume ventilatorsnelheid"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "Bouwvolume ventilatorsnelheid op hoogte"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "Bouwvolume ventilatorsnelheid op laag nivea"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Bepaal hoe hoeken op de modelomtrek de positie van de naad beïnvloeden. Met Naad verbergen is de kans groter dat de naad zich in een binnenhoek bevindt. Met Naad zichtbaar maken is de kans groter dat de naad zich in een buitenhoek bevindt. Met Naad verbergen of zichtbaar maken is de kans groter dat de naad zich in een binnen- of buitenhoek bevindt. Slim verbergen staat zowel binnen- als buitenhoeken toe, maar kiest indien van toepassing vaker voor binnenhoeken."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "Initiële lagen bouwvolume ventilatorsnelheid"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "Blijf intrekken tijdens verplaatsing"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "Maximale stroomsnelheid materiaal"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "Maximale stroomsnelheid die de printer voor het materiaal kan extruderen"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Multi-materiële diepte"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "Multi-materiële nauwkeurigheid"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "Prime tijdens verplaatsing"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "Intrekking tijdens verplaatsing"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "Scan de eerste laag"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "De diepte van de geverfde details in het model. Een hogere diepte zorgt voor een betere interlocking, maar verhoogt de snijtijd en het geheugen. Stel een zeer hoge waarde in om zo diep mogelijk te gaan. De werkelijk berekende diepte kan variëren."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "De ventilatorsnelheid (als percentage) voor de hulp- of bouwvolume ventilator die ingesteld is vanaf het moment dat de laag die is opgegeven op 'Bouwvolume ventilarsnelheid op laag niveau' is bereikt. Daarvoor wordt de snelheid ingesteld via 'Initiële lagen bouwvolume ventilatorsnelheid'."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "De ventilatorsnelheid (als percentage) voor de hulp- of bouwvolume ventilator die ingesteld is totdat de laag opgegeven als 'Bouwvolume ventilarsnelheid op laag niveau' is bereikt. Daarna wordt de snelheid ingesteld via 'Bouwvolume ventilatorsnelheid' (dus niet de Initiële lagen"
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "De laag waarop de bouwvolume ventilatoren op volle snelheid draaien. Deze waarde wordt berekend en afgerond naar een heel getal."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "De nauwkeurigheid van de details bij het genereren van vormen met meerdere materialen op basis van verfgegevens. Een lagere nauwkeurigheid biedt meer details, maar verhoogt de snijtijd en het geheugen."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "Het type bouwplaat dat op de printer is geïnstalleerd."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "Als intrekking tijdens verplaatsing ingeschakeld is en er meer dan voldoende tijd is om een ​​volledige intrekking uit te voeren tijdens een verplaatsing, verdeel dan de intrekking over de gehele verplaatsing met een lagere intreksnelheid, zodat er geen sprake is van een verplaatsing met een niet-intrekkende nozzle. Dit kan lekkage helpen verminderen."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "Of de eerste laag gescand moet worden op problemen met de hechting van lagen."

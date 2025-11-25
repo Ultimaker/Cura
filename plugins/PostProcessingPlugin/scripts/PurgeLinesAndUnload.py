@@ -486,9 +486,9 @@ class PurgeLinesAndUnload(Script):
             data[0] += ";  [Purge Lines and Unload]  'Add Purge Lines' did not run because the assumed primary nozzle (T0) has tool offsets.\n"
             Message(title = "[Purge Lines and Unload]", text = "'Add Purge Lines' did not run because the assumed primary nozzle (T0) has tool offsets").show()
             return data
-
+        self.purge_line_hgt = round(float(self.global_stack.getProperty("layer_height_0", "value")),2)
         def calculate_purge_volume(line_width, purge_length, volume_per_mm):
-            return round((line_width * 0.3 * purge_length) * 1.25 / volume_per_mm, 5)
+            return round((line_width * self.purge_line_hgt * purge_length) * 1.25 / volume_per_mm, 5)
         
         def adjust_for_prime_blob_gcode(retract_speed, retract_distance):
             """Generates G-code lines for prime blob adjustment."""
@@ -511,7 +511,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str = purge_str.replace("Lines", "Lines at MinX")
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -522,7 +522,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
@@ -532,7 +532,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str = purge_str.replace("Lines", "Lines at MaxX")
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} ; Move\nG0 Y{self.machine_back - 10} ; Move\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -543,7 +543,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.FRONT:
@@ -554,7 +554,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str = purge_str.replace("Lines", "Lines at MinY")
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Y{self.machine_front + self.border_distance} ; Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -565,7 +565,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.REAR:
@@ -577,7 +577,7 @@ class PurgeLinesAndUnload(Script):
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} Y{self.machine_back - self.border_distance} ; Ortho Move to back\n"
                 purge_str += f"G0 X{self.machine_right - 10} ; Ortho move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -588,7 +588,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Some cartesian printers (BIBO, Weedo, MethodX, etc.) are Origin at Center
@@ -600,7 +600,7 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + self.border_distance} Y{self.machine_front + 10} ; Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -611,7 +611,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 20} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 3 + self.border_distance} Y{self.machine_front + 35} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
@@ -621,7 +621,7 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_right - self.border_distance} Z2 ; Move\nG0 Y{self.machine_back - 10} Z2 ; Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -632,7 +632,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 20} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 3 - self.border_distance} Y{self.machine_back - 35} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.FRONT:
@@ -642,7 +642,7 @@ class PurgeLinesAndUnload(Script):
                 purge_volume = calculate_purge_volume(self.init_line_width, purge_len, self.mm3_per_mm)
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{self.machine_left + 10} Z2 ; Move\nG0 Y{self.machine_front + self.border_distance} Z2 ; Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -653,7 +653,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_left + 20} Y{self.machine_front + 3 + self.border_distance} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_left + 35} Y{self.machine_front + 3 + self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.REAR:
@@ -664,7 +664,7 @@ class PurgeLinesAndUnload(Script):
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} Y{self.machine_back - self.border_distance} Z2; Ortho Move to back\n"
                 purge_str += f"G0 X{self.machine_right - 10} Z2 ; Ortho Move to start\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 if self.prime_blob_enable:
                     purge_str += adjust_for_prime_blob_gcode(self.retract_speed, self.retract_dist)
                 # Purge two lines
@@ -675,7 +675,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round(purge_volume * 2 - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z8 ; Move Up\nG4 S1 ; Wait for 1 second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z0.3 ; Slide over and down\n"
+                purge_str += f"G0 F{self.print_speed} X{self.machine_right - 20} Y{self.machine_back - 3 - self.border_distance} Z{self.purge_line_hgt} ; Slide over and down\n"
                 purge_str += f"G0 X{self.machine_right - 35} Y{self.machine_back - 3 - self.border_distance} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
         # Elliptic printers with Origin at Center
@@ -689,7 +689,7 @@ class PurgeLinesAndUnload(Script):
             if purge_location == Location.LEFT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 # Purge two arcs
                 purge_str += f"G2 F{self.print_speed} X-{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} I{round(radius_1 * .707, 2)} J{round(radius_1 * .707, 2)} E{purge_volume} ; First Arc\n"
                 purge_str += f"G0 X-{round((radius_1 - 3) * .707, 2)} Y{round((radius_1 - 3) * .707, 2)} ; Move Over\n"
@@ -699,13 +699,13 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round((purge_volume * 2 + 1) - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z5 ; Move Up\nG4 S1 ; Wait 1 Second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
+                purge_str += f"G0 F{self.print_speed} X-{round((radius_1 - 3) * .707 - 15, 2)} Z{self.purge_line_hgt} ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} X-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.RIGHT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 # Purge two arcs
                 purge_str += f"G3 F{self.print_speed} X{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} I-{round(radius_1 * .707, 2)} J{round(radius_1 * .707, 2)} E{purge_volume} ; First Arc\n"
                 purge_str += f"G0 X{round((radius_1 - 3) * .707, 2)} Y{round((radius_1 - 3) * .707, 2)} ; Move Over\n"
@@ -715,13 +715,13 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round((purge_volume * 2 + 1) - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z5 ; Move Up\nG4 S1 ; Wait 1 Second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
+                purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707 - 15, 2)} Z{self.purge_line_hgt} ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} X{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
             elif purge_location == Location.FRONT:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X-{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} ; Travel\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 # Purge two arcs
                 purge_str += f"G3 F{self.print_speed} X{round(radius_1 * .707, 2)} Y-{round(radius_1 * .707, 2)} I{round(radius_1 * .707, 2)} J{round(radius_1 * .707, 2)} E{purge_volume} ; First Arc\n"
                 purge_str += f"G0 X{round((radius_1 - 3) * .707, 2)} Y-{round((radius_1 - 3) * .707, 2)} ; Move Over\n"
@@ -731,13 +731,13 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round((purge_volume * 2 + 1) - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z5 ; Move Up\nG4 S1 ; Wait 1 Second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
+                purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707 - 15, 2)} Z{self.purge_line_hgt} ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} Y-{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.LEFT_FRONT
             elif purge_location == Location.REAR:
                 # Travel to the purge start
                 purge_str += f"G0 F{self.speed_travel} X{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} ; Travel\n"
-                purge_str += f"G0 F600 Z0.3 ; Move down\n"
+                purge_str += f"G0 F600 Z{self.purge_line_hgt} ; Move down\n"
                 # Purge two arcs
                 purge_str += f"G3 F{self.print_speed} X-{round(radius_1 * .707, 2)} Y{round(radius_1 * .707, 2)} I-{round(radius_1 * .707, 2)} J-{round(radius_1 * .707, 2)} E{purge_volume} ; First Arc\n"
                 purge_str += f"G0 X-{round((radius_1 - 3) * .707, 2)} Y{round((radius_1 - 3) * .707, 2)} ; Move Over\n"
@@ -747,7 +747,7 @@ class PurgeLinesAndUnload(Script):
                 purge_str += f"G1 F{int(self.retract_speed)} E{round((purge_volume * 2 + 1) - self.retract_dist, 5)} ; Retract\n" if self.retraction_enable else ""
                 purge_str += "G0 F600 Z5\nG4 S1 ; Wait 1 Second\n"
                 # Wipe
-                purge_str += f"G0 F{self.print_speed} Y{round((radius_1 - 3) * .707 - 15, 2)} Z0.3 ; Slide Over\n"
+                purge_str += f"G0 F{self.print_speed} Y{round((radius_1 - 3) * .707 - 15, 2)} Z{self.purge_line_hgt} ; Slide Over\n"
                 purge_str += f"G0 F{self.print_speed} Y{round((radius_1 - 3) * .707, 2)} ; Wipe\n"
                 self.end_purge_location = Position.RIGHT_REAR
 

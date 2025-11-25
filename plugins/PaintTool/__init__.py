@@ -14,7 +14,7 @@ def getMetaData():
         "tool": {
             "name": i18n_catalog.i18nc("@action:button", "Paint"),
             "description": i18n_catalog.i18nc("@info:tooltip", "Paint Model"),
-            "icon": "Visual",
+            "icon": "Brush",
             "tool_panel": "PaintTool.qml",
             "weight": 0
         },
@@ -27,7 +27,9 @@ def getMetaData():
 
 def register(app):
     qmlRegisterUncreatableType(PaintTool.PaintTool.Brush, "Cura", 1, 0, "This is an enumeration class", "PaintToolBrush")
+    qmlRegisterUncreatableType(PaintTool.PaintTool.Paint, "Cura", 1, 0, "This is an enumeration class", "PaintToolState")
+    view = PaintView.PaintView()
     return {
-        "tool": PaintTool.PaintTool(),
-        "view": PaintView.PaintView()
+        "tool": PaintTool.PaintTool(view),
+        "view": view
     }

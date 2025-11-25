@@ -13,13 +13,6 @@ UM.ToolbarButton
 
     property int shape
 
-    checked: base.selectedShape === buttonBrushShape.shape
-
-    onClicked: setShape()
-
-    function setShape()
-    {
-        base.selectedShape = buttonBrushShape.shape
-        UM.Controller.triggerActionWithData("setBrushShape", buttonBrushShape.shape)
-    }
+    checked: UM.Controller.properties.getValue("BrushShape") === buttonBrushShape.shape
+    onClicked: UM.Controller.setProperty("BrushShape", buttonBrushShape.shape)
 }
