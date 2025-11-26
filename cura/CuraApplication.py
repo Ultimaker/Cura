@@ -1605,6 +1605,9 @@ class CuraApplication(QtApplication):
         job = ArrangeObjectsJob(nodes, fixed_nodes, min_offset = max(min_offset, 8), grid_arrange = grid_arrangement)
         job.start()
 
+    startReloadAll = pyqtSignal()
+    """Signal when reloading all mesh data"""
+
     @pyqtSlot()
     def reloadAll(self) -> None:
         """Reload all mesh data on the screen from file."""
@@ -1633,6 +1636,8 @@ class CuraApplication(QtApplication):
 
         if not nodes:
             return
+
+        self.startReloadAll.emit()
 
         objects_in_filename: Dict[str, List[CuraSceneNode]] = {}
         for node in nodes:
