@@ -26,6 +26,7 @@ def getPrintInformation(printer_name) -> PrintInformation:
 
     global_container_stack = MagicMock()
     global_container_stack.definition.getName = MagicMock(return_value = printer_name)
+    global_container_stack.getProperty = MagicMock(return_value = None)
     mock_application.getGlobalContainerStack = MagicMock(return_value = global_container_stack)
     mock_application.getPreferences = MagicMock(return_value = mocked_preferences)
 
