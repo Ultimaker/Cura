@@ -9014,7 +9014,7 @@
                 "bridge_interlace_lines":
                 {
                     "label": "Interlace Bridge Lines",
-                    "description": "blablabla.",
+                    "description": "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added.",
                     "default_value": false,
                     "type": "bool",
                     "enabled": "bridge_settings_enabled",
