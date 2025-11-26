@@ -598,7 +598,7 @@ class CuraConan(ConanFile):
         if self.options.enterprise:
             for req in self.conan_data["requirements_enterprise"]:
                 self.requires(req)
-        self.requires("cpython/3.12.2")
+        self.requires("cpython/3.12.7")
 
     def layout(self):
         self.folders.source = "."
