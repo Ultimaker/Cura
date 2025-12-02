@@ -25,7 +25,8 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
+        if application is not None:
+            application.getMachineManager().extruderChanged.connect(self._updateIsAssignedToDisabledExtruder)
         self._painted_extruders: Optional[List[int]] = None
 
         self.paintTextureChanged = Signal()
