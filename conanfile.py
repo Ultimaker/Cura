@@ -548,6 +548,10 @@ class CuraConan(ConanFile):
         if self.settings.os == "Windows":
             hiddenimports += pyinstaller_metadata["hiddenimports_WINDOWS_ONLY"]
             collect_all += pyinstaller_metadata["collect_all_WINDOWS_ONLY"]
+        
+        # Remove pynavlib on ARM64 Windows (no ARM64 wheels available)
+        if self.settings.os == "Windows" and self.settings.arch == "armv8":
+            collect_all = [item for item in collect_all if item != "pynavlib"]
 
         # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
