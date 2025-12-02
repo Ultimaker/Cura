@@ -18,7 +18,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
-from .ClusterApiClient import ClusterApiClient
+from .ClusterApiClient import ClusterApiClient, HttpRequestMethod
 from .SendMaterialJob import SendMaterialJob
 from ..ExportFileJob import ExportFileJob
 from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
