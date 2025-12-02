@@ -118,6 +118,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super()._update()
         if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cluster too often
+        self._time_of_last_request = time()
         self.getApiClient().getPrinters(self._updatePrinters)
         self.getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
