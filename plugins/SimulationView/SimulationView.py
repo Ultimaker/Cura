@@ -289,6 +289,62 @@ class SimulationView(CuraView):
             return layer_data.getLayer(self.getCurrentLayer())
         return None
 
+    def _getLayerHeight(self, layer_number: int) -> float:
+        """Helper method to get the height of a specific layer in millimeters.
+        
+        Handles both sliced data (microns) and loaded gcode (millimeters).
+        For layer 0 from gcode, uses thickness instead of height due to incorrect Z coordinates.
+        
+        :param layer_number: The layer number to get the height for.
+        :return: The layer height in millimeters, or 0.0 if no data is available.
+        """
+        scene = self.getController().getScene()
+        from cura.Scene.GCodeListDecorator import GCodeListDecorator
+        
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+            
+            layer = layer_data.getLayer(layer_number)
+            if not layer:
+                continue
+            
+            has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
+            
+            # If node has GCodeListDecorator, heights are already in millimeters (from gcode)
+            if has_gcode_decorator:
+                # Special case for layer 0: FlavorParser may get wrong Z coordinate (startup position)
+                # Use thickness instead, which represents the actual layer height
+                if layer_number == 0 and layer.thickness > 0:
+                    return layer.thickness
+                return layer.height
+            # Otherwise, heights are in microns (backend/slicing), convert to mm
+            else:
+                return layer.height / 1000.0
+        
+        return 0.0
+
+    def getCurrentLayerHeight(self) -> float:
+        """Get the height (z-coordinate) of the current layer in millimeters.
+        
+        This returns the actual height from the layer data, which already takes into account:
+        - Initial layer height (layer_height_0)
+        - Adaptive layer heights
+        - Regular layer height
+        - Raft layers
+        
+        Returns 0.0 if no layer data is available.
+        """
+        return self._getLayerHeight(self.getCurrentLayer())
+
+    def getMinimumLayerHeight(self) -> float:
+        """Get the height (z-coordinate) of the minimum layer in millimeters.
+        
+        Returns 0.0 if no layer data is available.
+        """
+        return self._getLayerHeight(self.getMinimumLayer())
+
     def getMinimumPath(self) -> int:
         return self._minimum_path_num
 
