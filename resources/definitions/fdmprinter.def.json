@@ -3461,6 +3461,40 @@
             "type": "category",
             "children":
             {
+                "random_speed_ratio_min":
+                {
+                    "label": "Randomize Layer-Speed Min",
+                    "description": "Randomize speed variance for every layer (or batch of layers); minimum possible multiplier.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "50",
+                    "maximum_value": "random_speed_ratio_max",
+                    "default_value": 100,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "random_speed_ratio_max":
+                {
+                    "label": "Randomize Layer-Speed Max",
+                    "description": "Randomize speed variance for every layer (or batch of layers); maximum possible multiplier.",
+                    "type": "float",
+                    "unit": "%",
+                    "minimum_value": "random_speed_ratio_min",
+                    "maximum_value": "200",
+                    "default_value": 100,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "random_speed_layer_batch_count":
+                {
+                    "label": "Randomize Speed Layer Count",
+                    "description": "The number of layers in a batch to have the same random speed variance.",
+                    "type": "int",
+                    "minimum_value": "1",
+                    "default_value": 1,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "speed_print":
                 {
                     "label": "Print Speed",
