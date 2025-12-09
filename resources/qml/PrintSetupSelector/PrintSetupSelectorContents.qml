@@ -66,7 +66,7 @@ Item
                 right: parent.right
                 top: parent.top
             }
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
+            visible: true
             height: {
                 const height = base.height - (recommendedPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height);
                 const maxHeight = UM.Preferences.getValue("view/settings_list_height");
@@ -90,11 +90,6 @@ Item
 
                     updateDragPosition();
                 }
-            }
-
-            function onModeChanged()
-            {
-                currentModeIndex = PrintSetupSelectorContents.Mode.Custom;
             }
         }
 
@@ -132,7 +127,7 @@ Item
                     updateDragPosition();
                 }
             }
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
+            visible: false
         }
     }
 

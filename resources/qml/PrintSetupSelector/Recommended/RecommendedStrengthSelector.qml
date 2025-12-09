@@ -61,45 +61,6 @@ RecommendedSettingSection
                 settingName: "infill_pattern"
                 updateAllExtruders: true
             }
-        },
-        RecommendedSettingItem
-        {
-            settingName: catalog.i18nc("@action:label", "Shell Thickness")
-            tooltipText: catalog.i18nc("@label", "Defines the thickness of your part side walls, roof and floor.")
-
-            settingControl: RowLayout
-            {
-                anchors.fill: parent
-                spacing: UM.Theme.getSize("default_margin").width
-                UM.ComponentWithIcon
-                {
-                    Layout.fillWidth: true
-                    source: UM.Theme.getIcon("PrintWalls")
-
-                    Cura.SingleSettingTextField
-                    {
-                        width: parent.width
-                        settingName: "wall_thickness"
-                        updateAllExtruders: true
-                        validator: UM.FloatValidator {}
-                        unitText: catalog.i18nc("@label", "mm")
-                    }
-                }
-                UM.ComponentWithIcon
-                {
-                    Layout.fillWidth: true
-                    source: UM.Theme.getIcon("PrintTopBottom")
-
-                    Cura.SingleSettingTextField
-                    {
-                        width: parent.width
-                        settingName: "top_bottom_thickness"
-                        updateAllExtruders: true
-                        validator: UM.FloatValidator {}
-                        unitText: catalog.i18nc("@label", "mm")
-                    }
-                }
-            }
         }
     ]
 }

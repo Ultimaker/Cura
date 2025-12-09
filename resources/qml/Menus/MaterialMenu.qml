@@ -109,11 +109,6 @@ Cura.Menu
 
     Cura.MenuSeparator {}
 
-    Cura.MenuItem
-    {
-        action: Cura.Actions.manageMaterials
-    }
-
     Cura.MenuSeparator {}
 
     Cura.MenuItem

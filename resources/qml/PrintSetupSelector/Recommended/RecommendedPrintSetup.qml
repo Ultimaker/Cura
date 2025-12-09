@@ -19,8 +19,6 @@ Flickable
 
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
 
-    function onModeChanged() {}
-
     ScrollBar.vertical: UM.ScrollBar {
         id: scroll
         anchors
@@ -104,28 +102,9 @@ Flickable
                     text: catalog.i18nc("@label", "Recommended print settings")
                     font: UM.Theme.getFont("medium")
                 }
-
-                Cura.SecondaryButton
-                {
-                    id: customSettingsButton
-                    anchors.right: parent.right
-                    text: catalog.i18nc("@button", "Show Custom")
-                    textFont: UM.Theme.getFont("medium_bold")
-                    onClicked: onModeChanged()
-                }
             }
 
             RecommendedStrengthSelector
-            {
-                width: parent.width
-            }
-
-            RecommendedSupportSelector
-            {
-                width: parent.width
-            }
-
-            RecommendedAdhesionSelector
             {
                 width: parent.width
             }

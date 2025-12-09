@@ -55,7 +55,6 @@ Item
     property alias resetProfile: resetProfileAction
     property alias manageProfiles: manageProfilesAction
 
-    property alias manageMaterials: manageMaterialsAction
     property alias marketplaceMaterials: marketplaceMaterialsAction
 
     property alias preferences: preferencesAction
@@ -213,14 +212,6 @@ Item
         id: settingsAction
         text: catalog.i18nc("@action:inmenu menubar:printer", "Manage Pr&inters...")
         icon.name: "configure"
-    }
-
-    Action
-    {
-        id: manageMaterialsAction
-        text: catalog.i18nc("@action:inmenu", "Manage Materials...")
-        icon.name: "configure"
-        shortcut: "Ctrl+K"
     }
 
     Action
