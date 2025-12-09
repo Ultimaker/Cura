@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2025-09-22 08:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -169,11 +169,11 @@ msgid "Elliptic"
 msgstr ""
 
 msgctxt "machine_buildplate_type label"
-msgid "Build Plate Material"
+msgid "Build Plate Type"
 msgstr ""
 
 msgctxt "machine_buildplate_type description"
-msgid "The material of the build plate installed on the printer."
+msgid "The type of build plate installed on the printer."
 msgstr ""
 
 msgctxt "machine_buildplate_type option glass"
@@ -334,6 +334,10 @@ msgstr ""
 
 msgctxt "machine_gcode_flavor option Repetier"
 msgid "Repetier"
+msgstr ""
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
 msgstr ""
 
 msgctxt "machine_firmware_retract label"
@@ -1069,11 +1073,7 @@ msgid "Seam Corner Preference"
 msgstr ""
 
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr ""
-
-msgctxt "z_seam_corner option z_seam_corner_none"
-msgid "None"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
 msgstr ""
 
 msgctxt "z_seam_corner option z_seam_corner_inner"
@@ -2344,6 +2344,14 @@ msgctxt "material_pressure_advance_factor description"
 msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
 msgstr ""
 
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr ""
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr ""
+
 msgctxt "speed label"
 msgid "Speed"
 msgstr ""
@@ -3197,7 +3205,7 @@ msgid "Enables the print cooling fans while printing. The fans improve print qua
 msgstr ""
 
 msgctxt "build_fan_full_at_height label"
-msgid "Build Fan Speed at Height"
+msgid "Build Volume Fan Speed at Height"
 msgstr ""
 
 msgctxt "build_fan_full_at_height description"
@@ -3205,11 +3213,27 @@ msgid "The height at which the fans spin on regular fan speed. At the layers bel
 msgstr ""
 
 msgctxt "build_fan_full_layer label"
-msgid "Build Fan Speed at Layer"
+msgid "Build Volume Fan Speed at Layer"
 msgstr ""
 
 msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr ""
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr ""
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr ""
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr ""
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
 msgstr ""
 
 msgctxt "cool_fan_speed label"
@@ -3274,22 +3298,6 @@ msgstr ""
 
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr ""
-
-msgctxt "cool_min_layer_time_overhang label"
-msgid "Minimum Layer Time with Overhang"
-msgstr ""
-
-msgctxt "cool_min_layer_time_overhang description"
-msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr ""
-
-msgctxt "cool_min_layer_time_overhang_min_segment_length label"
-msgid "Minimum Overhang Segment Length"
-msgstr ""
-
-msgctxt "cool_min_layer_time_overhang_min_segment_length description"
-msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
 msgstr ""
 
 msgctxt "cool_min_speed label"
@@ -4840,6 +4848,14 @@ msgctxt "raft_surface_flow description"
 msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
 msgstr ""
 
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr ""
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr ""
+
 msgctxt "dual label"
 msgid "Dual Extrusion"
 msgstr ""
@@ -5078,6 +5094,22 @@ msgstr ""
 
 msgctxt "interlocking_boundary_avoidance description"
 msgid "The distance from the outside of a model where interlocking structures will not be generated, measured in cells."
+msgstr ""
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr ""
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr ""
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr ""
 
 msgctxt "meshfix label"
@@ -5680,6 +5712,22 @@ msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
 msgstr ""
 
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr ""
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr ""
+
 msgctxt "seam_overhang_angle label"
 msgid "Seam Overhanging Wall Angle"
 msgstr ""
@@ -6022,6 +6070,30 @@ msgstr ""
 
 msgctxt "group_outer_walls description"
 msgid "Outer walls of different islands in the same layer are printed in sequence. When enabled the amount of flow changes is limited because walls are printed one type at a time, when disabled the number of travels between islands is reduced because walls in the same islands are grouped."
+msgstr ""
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr ""
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr ""
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr ""
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr ""
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr ""
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
 msgstr ""
 
 msgctxt "scarf_joint_seam_length label"

@@ -6240,3 +6240,103 @@ msgstr "Ширина одной линии на нижних поверхнос�
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Зигзаг"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>Соотношение между грунтовкой, выполненной во время движения, и остатком, выполненным во время неподвижного положения сопла после перемещения<ul><li>При значении 0 вся грунтовка выполняется в неподвижном состоянии после завершения перемещения</li><li>При значении 100 вся грунтовка выполняется во время перемещения, что позволяет немедленно начать печать</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>Соотношение между втягиванием, выполненным во время движения, и остатком, выполненным во время неподвижного положения сопла перед перемещением<ul><li>При значении 0 всё втягивание выполняется в неподвижном состоянии перед началом перемещения</li><li>При значении 100 всё втягивание выполняется во время перемещения, минуя стационарную фазу.</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "Тип платформы"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "Скорость вентилятора печатной камеры"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "Скорость вентилятора печатной камеры на высоте"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "Скорость вентилятора печатной камеры на слое"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Контролируйте, как углы на контуре модели влияют на положение шва. \"Скрыть шов\" повышает вероятность появления шва на внутреннем углу. \"Показать шов\" повышает вероятность появления шва на внешнем углу. \"Скрыть или показать шов\" повышает вероятность появления шва на внутреннем или внешнем углу. \"Умное скрытие\" разрешает как внутренние, так и внешние углы, но при необходимости чаще выбирает внутренние углы."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "Скорость вентилятора печатной камеры на начальных слоях"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "Продолжать втягивание во время перемещения"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "Максимальная скорость подачи материала"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "Максимальная скорость подачи, с которой принтер может выдавливать материал"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Мультиматериальная глубина"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "Мультиматериальная точность"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "Грунтовка во время перемещения"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "Втягивание во время перемещения"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "Сканировать первый слой"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "Глубина покрашенных деталей внутри модели. Чем больше глубина, тем лучше сцепление, но при этом увеличивается время нарезки и объем памяти. Установите очень высокое значение, чтобы глубина была максимальной. Фактически рассчитанная глубина может отличаться."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "Скорость вентилятора (в процентах) для вспомогательного вентилятора или вентилятора печатной камеры, которая устанавливается с момента достижения слоя, указанного в параметре \"Скорость вентилятора печатной камеры на слое\". До этого скорость устанавливается с помощью параметра \"Скорость вентилятора печатной камеры на начальных слоях\"."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "Скорость вентилятора (в процентах) для вспомогательного вентилятора или вентилятора печатной камеры, которая устанавливается до достижения уровня, указанного в параметре \"Скорость вентилятора печатной камеры на слое\". После этого скорость устанавливается с помощью параметра \"Скорость вентилятора печатной камеры\" (так что это не \"Начальные слои\")."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Слой, на котором вентиляторы печатной камеры вращаются на полной скорости. Это значение рассчитывается и округляется до целого числа."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "Точность деталей при создании мультиматериальных фигур на основе данных покраски. Более низкая точность позволяет получить больше деталей, но увеличивает время нарезки и объем памяти."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "Тип платформы, установленной на принтере."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "Если включено втягивание во время перемещения и времени для выполнения полного втягивания во время перемещения более чем достаточно, распределите втягивание по всему перемещению с меньшей скоростью втягивания, чтобы не было перемещения с невтягивающим соплом. Это может помочь уменьшить просачивание."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "Стоит ли сканировать первый слой на предмет проблем с адгезией слоев."

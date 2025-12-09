@@ -209,14 +209,11 @@
             "value": 35
         },
         "bridge_skin_speed_2": { "value": "speed_print*2/3" },
-        "bridge_sparse_infill_max_density": { "value": 50 },
+        "bridge_skin_support_threshold": { "value": 20 },
+        "bridge_sparse_infill_max_density": { "value": 20 },
         "bridge_wall_material_flow": { "value": 200 },
         "bridge_wall_min_length": { "value": 2 },
-        "bridge_wall_speed":
-        {
-            "unit": "mm/s",
-            "value": 50
-        },
+        "bridge_wall_speed": { "value": 50 },
         "build_volume_temperature":
         {
             "force_depends_on_settings": [
@@ -239,15 +236,16 @@
         "flooring_layer_count": { "value": 1 },
         "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
         "flooring_monotonic": { "value": false },
-        "gradual_flow_discretisation_step_size": { "value": 1 },
+        "gradual_flow_discretisation_step_size": { "value": 0.3 },
         "gradual_flow_enabled": { "value": true },
         "hole_xy_offset": { "value": 0.075 },
         "infill_material_flow": { "value": "material_flow if infill_sparse_density < 95 else 95" },
+        "infill_move_inwards_length": { "value": "3*machine_nozzle_size" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'grid'" },
         "infill_sparse_density": { "value": 15 },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
-        "initial_bottom_layers": { "value": 2 },
+        "initial_bottom_layers": { "value": "2 if extruderValueFromContainer(top_bottom_extruder_nr, 'bottom_layers', 2) == bottom_layers else bottom_layers" },
         "jerk_flooring":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
@@ -387,6 +385,7 @@
             "unit": "m/s\u00b3",
             "value": "jerk_wall_0"
         },
+        "keep_retracting_during_travel": { "enabled": false },
         "machine_gcode_flavor": { "default_value": "Cheetah" },
         "machine_max_acceleration_x": { "default_value": 50000 },
         "machine_max_acceleration_y": { "default_value": 50000 },
@@ -434,23 +433,29 @@
         "max_flow_acceleration": { "value": 1.5 },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
+        "min_bead_width":
+        {
+            "maximum_value_warning": "machine_nozzle_size * 1.25",
+            "value": "machine_nozzle_size * 1.15"
+        },
         "min_infill_area": { "default_value": 10 },
         "optimize_wall_printing_order": { "value": false },
+        "prime_during_travel_ratio": { "enabled": false },
         "prime_tower_brim_enable": { "value": true },
         "prime_tower_min_volume": { "value": 10 },
         "prime_tower_mode": { "resolve": "'normal'" },
         "retraction_amount": { "value": 6.5 },
         "retraction_combing_avoid_distance": { "value": 1.2 },
         "retraction_combing_max_distance": { "value": 50 },
+        "retraction_during_travel_ratio": { "enabled": false },
         "retraction_hop": { "value": 1 },
         "retraction_hop_after_extruder_switch_height": { "value": 2 },
         "retraction_hop_enabled": { "value": true },
         "retraction_min_travel": { "value": "2.5 if support_enable and support_structure=='tree' else line_width * 2.5" },
-        "retraction_prime_speed": { "value": 15 },
-        "roofing_monotonic": { "value": false },
-        "roofing_pattern": { "value": "'zigzag'" },
+        "roofing_expansion": { "value": 1.2 },
+        "roofing_pattern": { "value": "'lines'" },
         "seam_overhang_angle": { "value": 35 },
-        "skin_edge_support_thickness": { "value": 0 },
+        "skin_edge_support_thickness": { "value": 0.8 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 20 },
@@ -608,6 +613,7 @@
         "support_xy_distance": { "value": 1.2 },
         "support_xy_distance_overhang": { "value": "1.5*machine_nozzle_size" },
         "support_z_distance": { "value": "2*layer_height" },
+        "switch_extruder_retraction_amount": { "value": 16 },
         "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },

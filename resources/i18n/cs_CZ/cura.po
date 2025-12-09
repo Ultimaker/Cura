@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 15:37+0100\n"
+"POT-Creation-Date: 2025-09-22 08:45+0200\n"
 "PO-Revision-Date: 2023-09-03 18:15+0200\n"
 "Last-Translator: Miroslav Šustek <sustmidown@centrum.cz>\n"
 "Language-Team: DenyCZ <www.github.com/DenyCZ>\n"
@@ -18,11 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2);\n"
 "X-Generator: Poedit 3.3.2\n"
 
-msgctxt "@title:label"
-msgid " "
-msgstr ""
-
-#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -150,8 +145,8 @@ msgid "&View"
 msgstr "Po&hled"
 
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
-msgstr "*Aby se tyto změny projevily, budete muset aplikaci restartovat."
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr ""
 
 msgctxt "@text"
 msgid ""
@@ -219,17 +214,18 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>Ve vlastním profilu budou uložena pouze nastavení změněná uživatelem.</b><br/>Pro materiály, které to podporují, bude nový vlastní profil dědit vlastnosti z <b>%1</b>."
 
-#, python-brace-format
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Renderer: {renderer}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL Vendor: {vendor}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>Verze OpenGL: {version}</li>"
@@ -258,7 +254,6 @@ msgstr ""
 "                     <p> Za účelem vyřešení problému nám prosím pošlete tento záznam pádu. </p>\n"
 "                "
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
@@ -391,8 +386,8 @@ msgid "Add a script"
 msgstr "Přidat skript"
 
 msgctxt "@option:check"
-msgid "Add icon to system tray *"
-msgstr "Přidat ikonu do systémové lišty *"
+msgid "Add icon to system tray (* restart required)"
+msgstr ""
 
 msgctxt "@button"
 msgid "Add local printer"
@@ -430,7 +425,6 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "Přidat tiskárnu manuálně"
 
-#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "Přidávám tiskárnu {name} ({model}) z vašeho účtu"
@@ -471,7 +465,6 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Všechny soubory (*)"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Všechny podporované typy ({0})"
@@ -564,7 +557,6 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "Doopravdy chcete posunout %1 na začátek fronty?"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "Opravdu chcete tiskárnu {printer_name} dočasně odebrat?"
@@ -577,7 +569,6 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Doopravdy chcete odstranit %1? Toto nelze vrátit zpět!"
 
-#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "Doopravdy chcete odstranit {0}? Toto nelze vrátit zpět!"
@@ -606,6 +597,10 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "Automaticky vytvořte zálohu každý den, kdy je spuštěna Cura."
 
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Automaticky přetáhnout modely na podložku"
@@ -617,6 +612,10 @@ msgstr "Automaticky aktualizovat firmware"
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Dostupné síťové tiskárny"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -662,6 +661,10 @@ msgctxt "@label"
 msgid "Balanced"
 msgstr "Vyvážený"
 
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "Základna (mm)"
@@ -673,6 +676,14 @@ msgstr "Pohled zezdola"
 msgctxt "@label"
 msgid "Brand"
 msgstr "Značka"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr ""
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr ""
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -738,15 +749,17 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "Nemůžete se připojit k Vaší tiskárně UltiMaker?"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Nemohu přidat profil z <filename>{0}</filename> před tím, než je přidána tiskárna."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Nelze otevřít žádný jiný soubor, když se načítá G kód. Přeskočen import {0}"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -838,9 +851,17 @@ msgstr ""
 "\n"
 "„Stromová“ podpora vytváří větve směrem k převislým oblastem, které podporují model na koncích těchto větví, a umožňuje větvím procházet kolem modelu a podporovat je co nejvíce z konstrukční desky."
 
+msgctxt "@action:button"
+msgid "Circle"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Vyčistit podložku"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -994,6 +1015,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "Připojen přes cloud"
 
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr ""
+
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr "Připojuje k Digitální knihovně. Umožňuje Cuře otevírat a ukládat soubory z a do Digitální knihovny."
@@ -1038,7 +1063,6 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "Nelze vytvořit archiv ze složky s uživatelskými daty: {}"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "Při pokusu o zápis do zařízení {device} nebyl nalezen název souboru."
@@ -1067,12 +1091,10 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "Nelze uložit archiv s materiálem do {}:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Nemohu uložit na <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "Nelze uložit na vyměnitelnou jednotku {0}: {1}"
@@ -1081,21 +1103,18 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Nemohu nahrát data do tiskárny."
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "No permission to execute process."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Operating system is blocking it (antivirus?)"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
@@ -1186,7 +1205,6 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura nelze spustit"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura zjistil materiálové profily, které ještě nebyly nainstalovány na hostitelské tiskárně skupiny {0}."
@@ -1363,6 +1381,10 @@ msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Zakázat Extruder"
 
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "Smazat a už se nikdy neptat"
@@ -1459,12 +1481,10 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "Vysunout"
 
-#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "Vysunout vyměnitelnou jednotku {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "Vysunuto {0}. Nyní můžete bezpečně vyjmout jednotku."
@@ -1480,6 +1500,10 @@ msgstr "Zapnout"
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "Povolit extuder"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
@@ -1520,6 +1544,10 @@ msgstr "Vložte IP adresu vaší tiskárny na síti."
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "Zadejte IP adresu vaší tiskárny."
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Error"
@@ -1577,7 +1605,6 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Export úspěšný"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Exportován profil do <filename>{0}</filename>"
@@ -1622,7 +1649,6 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr ""
@@ -1647,7 +1673,6 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "Nepodařilo se vytvořit archiv s materiály pro synchronizaci s tiskárnami."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "Nepodařilo se vysunout {0}. Jednotku může používat jiný program."
@@ -1656,27 +1681,22 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Neúspěch při exportu materiálu do <filename>%1</filename>: <message>%2</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Nepodařilo se exportovat profil do <filename>{0}</filename>: <message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Export profilu do <filename>{0}</filename> se nezdařil: Zapisovací zásuvný modul ohlásil chybu."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Import profilu z <filename>{0}</filename> se nezdařil:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Import profilu z <filename>{0}</filename> se nezdařil:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Nepodařilo se importovat profil z <filename>{0}</filename>: {1}"
@@ -1693,7 +1713,6 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "Nepodařilo se uložit archiv s materiálem"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr ""
@@ -1701,6 +1720,10 @@ msgstr ""
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Oblíbené"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr ""
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1722,7 +1745,6 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "Soubor uložen"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Soubor {0} neobsahuje žádný platný profil."
@@ -1804,7 +1826,7 @@ msgid "First available"
 msgstr "První dostupný"
 
 msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
+msgid "Flip model's toolhandle Y axis (* restart required)"
 msgstr ""
 
 msgctxt "@label:listbox"
@@ -1836,8 +1858,8 @@ msgid "For lithophanes dark pixels should correspond to thicker locations in ord
 msgstr "U litofanů by tmavé pixely měly odpovídat silnějším místům, aby blokovaly více světla procházejícího. Pro výškové mapy znamenají světlejší pixely vyšší terén, takže světlejší pixely by měly odpovídat silnějším umístěním v generovaném 3D modelu."
 
 msgctxt "@option:check"
-msgid "Force layer view compatibility mode (restart required)"
-msgstr "Vynutit režim kompatibility zobrazení vrstev (vyžaduje restart)"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr ""
 
 msgid "FreeCAD trackpad"
 msgstr ""
@@ -1926,7 +1948,6 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "Skupina #{group_nr}"
@@ -2479,6 +2500,10 @@ msgctxt "@label"
 msgid "Manufacturer"
 msgstr "Výrobce"
 
+msgctxt "@label"
+msgid "Mark as"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Obchod"
@@ -2490,6 +2515,10 @@ msgstr "Obchod"
 msgctxt "name"
 msgid "Marketplace"
 msgstr "Obchod"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr ""
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2654,7 +2683,6 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "Chyba sítě"
 
-#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "Nový stabilní firmware je k dispozici pro %s"
@@ -2667,7 +2695,6 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr "Nové tiskárny UltiMaker mohou být připojeny k Digital Factory a vzdáleně monitorovány."
 
-#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "K dispozici mohou být nové funkce nebo opravy chyb pro zařízení {machine_name}! Pokud jste tak už neučinili, je doporučeno zaktualizovat firmware vaší tiskárny na verzi {latest_version}."
@@ -2715,7 +2742,6 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Žádná cena není dostupná"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "V souboru <filename>{0}</filename> není k dispozici žádný vlastní profil"
@@ -2788,6 +2814,10 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Nepřepsáno"
 
+msgctxt "@label"
+msgid "Not retracted"
+msgstr ""
+
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "Nepodporovaný"
@@ -2852,7 +2882,6 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "Zobrazit jen vrchní vrstvy"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Současně lze načíst pouze jeden soubor G-kódu. Přeskočen import {0}"
@@ -2991,6 +3020,26 @@ msgctxt "@header"
 msgid "Package details"
 msgstr "Detaily balíčku"
 
+msgctxt "@action:button"
+msgid "Paint"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr ""
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr ""
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Zpracovávám G kód"
@@ -3102,12 +3151,10 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 "Zkontrolujte nastavení a zda vaše modely:\n"
 "- Vejdou se na pracovní prostor\n"
-"- Jsou přiřazeny k povolenému extruderu\n"
 "- Nejsou nastavené jako modifikační sítě"
 
 msgctxt "@label"
@@ -3170,6 +3217,14 @@ msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Předehřání"
 
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr ""
+
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "Příprava"
@@ -3177,6 +3232,10 @@ msgstr "Příprava"
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "Fáze přípravy"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3205,6 +3264,10 @@ msgstr "Fáze náhledu"
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "Hlavní věž"
+
+msgctxt "@label"
+msgid "Priming"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3324,6 +3387,10 @@ msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "Tiskárna nepřijímá příkazy"
 
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr ""
+
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Název tiskárny"
@@ -3363,6 +3430,10 @@ msgstr "Tisknu"
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "Čas tisku"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3404,7 +3475,6 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "Nastavení profilu"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Profil {0} má neznámý typ souboru nebo je poškozen."
@@ -3425,22 +3495,18 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "Profily kompatibilní s aktivní tiskárnou:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projektový soubor <filename>{0}</filename> obsahuje neznámý typ zařízení <message>{1}</message>. Nelze importovat zařízení. Místo toho budou importovány modely."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "Soubor projektu <filename>{0}</filename> je poškozený: <message>{1}</message>."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "Soubor projektu <filename>{0}</filename> je vytvořený s profily, které nejsou této verzi UltiMaker Cura známé."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "Soubor projektu <filename>{0}</filename> je neočekávaně nedostupný: <message>{1}</message>."
@@ -3546,6 +3612,10 @@ msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "Poskytuje odkaz na backend krájení CuraEngine."
 
 msgctxt "description"
+msgid "Provides the paint tools."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr "Poskytuje náhled slicovaných dat vrstev."
 
@@ -3557,7 +3627,6 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Verze Qt"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "Typ kvality '{0}' není kompatibilní s definicí '{1}' aktivního zařízení."
@@ -3593,6 +3662,18 @@ msgstr "Doporučená nastavení tisku"
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr "Doporučená nastavení (pro <b>%1</b>) byla změněna."
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Refresh"
@@ -3718,6 +3799,14 @@ msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "Obnovuji..."
 
+msgctxt "@label"
+msgid "Retracted"
+msgstr ""
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr ""
+
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "Retrakce"
@@ -3794,12 +3883,10 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "Uložit na vyměnitelný disk"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "Uložit na vyměnitelný disk {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "Ukládám na vyměnitelnou jednotku {0} jako {1}"
@@ -3808,7 +3895,6 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "Ukládám"
 
-#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "Ukládám na vyměnitelný disk <filename>{0}</filename>"
@@ -3820,6 +3906,10 @@ msgstr "Škálovat extrémně malé modely"
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Škálovat velké modely"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr ""
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3848,6 +3938,10 @@ msgstr "Vyberte tiskárnu"
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Vybrat nastavení k přizpůsobení pro tento model"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr ""
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -4245,6 +4339,10 @@ msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Square"
+msgstr ""
+
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr "Stabilní a beta vydání"
@@ -4301,7 +4399,6 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Úspěšně importován materiál <filename>%1</filename>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "Úspěšně importován profil {0}."
@@ -4324,6 +4421,10 @@ msgstr ""
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Support"
 msgstr ""
 
 msgctxt "@label"
@@ -4351,8 +4452,8 @@ msgid "Support Interface"
 msgstr "Rozhraní podpor"
 
 msgctxt "@action:label"
-msgid "Support Type"
-msgstr "Typ podpory"
+msgid "Support Structure"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4481,7 +4582,6 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr "Vytlačovací souprava použitá pro tisk podpory. Používá se při vícenásobném vytlačování."
 
-#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Soubor <filename>{0}</filename> již existuje. Opravdu jej chcete přepsat?"
@@ -4588,6 +4688,10 @@ msgid "The printer at this address has not yet responded."
 msgstr "Tiskárna na této adrese dosud neodpověděla."
 
 msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr ""
+
+msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "Tiskárna není připojena."
 
@@ -4636,8 +4740,8 @@ msgid "The width in millimeters on the build plate"
 msgstr "Šířka na podložce v milimetrech"
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme*:"
-msgstr "Styl*:"
+msgid "Theme (* restart required):"
+msgstr ""
 
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
@@ -4703,6 +4807,10 @@ msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "Tuto tiskárnu nelze přidat, protože se jedná o neznámou tiskárnu nebo není hostitelem skupiny."
 
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr ""
+
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
@@ -4722,7 +4830,6 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Tato tiskárna je hostitelem skupiny tiskáren %1."
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Tento profil <filename>{0}</filename> obsahuje nesprávná data, nemohl je importovat."
@@ -4802,7 +4909,6 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "Pro automatickou synchronizaci materiálových profilů se všemi vašimi tiskárnami připojenými k Digital Factory musíte být přihlášení v Cuře."
 
-#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "Chcete-li navázat spojení, navštivte {website_link}"
@@ -4815,7 +4921,6 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "Chcete-li tisknout přímo na tiskárně prostřednictvím sítě, zkontrolujte, zda je tiskárna připojena k síti pomocí síťového kabelu nebo připojením tiskárny k síti WIFI. Pokud nepřipojíte Curu k tiskárně, můžete stále používat jednotku USB k přenosu souborů g-kódu do vaší tiskárny."
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "Chcete-li tiskárnu {printer_name} trvale odebrat, navštivte {digital_factory_link}"
@@ -4960,12 +5065,10 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Nemohu najít lokaci na podložce pro všechny objekty"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Unable to kill running EnginePlugin: {self._plugin_id}\n"
@@ -5000,12 +5103,10 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Nelze slicovat, protože hlavní věž nebo primární pozice jsou neplatné."
 
-#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "Nelze slicovat, protože jsou zde objekty asociované k zakázanému extruder %s."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Nelze slicovat kvůli některým nastavení jednotlivých modelů. Následující nastavení obsahuje chyby na jednom nebo více modelech: {error_labels}"
@@ -5014,7 +5115,6 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "Nelze slicovat s aktuálním materiálem, protože je nekompatibilní s vybraným strojem nebo konfigurací."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "S aktuálním nastavením nelze slicovat. Následující nastavení obsahuje chyby: {0}"
@@ -5023,7 +5123,6 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "Nepodařilo se mi spustit nový proces přihlášení. Zkontrolujte, zda nějaký jiný již neběží."
 
-#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr ""
@@ -5035,6 +5134,10 @@ msgstr "Nedostupný"
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "Nedostupná tiskárna"
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5072,7 +5175,6 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr "Neznámý balíček"
 
-#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "Při nahrávání tiskové úlohy došlo k chybě s neznámým kódem: {0}"
@@ -5096,6 +5198,10 @@ msgstr "Bez názvu"
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "Bez názvu"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr ""
 
 msgctxt "@button"
 msgid "Update"
@@ -5266,8 +5372,8 @@ msgid "Uploading your backup..."
 msgstr "Nahrávám vaši zálohu..."
 
 msgctxt "@option:check"
-msgid "Use a single instance of Cura"
-msgstr "Používat pouze jednu instanci programu Cura"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5449,7 +5555,6 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "Varování"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "Varování: Profil není viditelný, protože typ kvality '{0}' není dostupný pro aktuální konfiguraci. Přepněte na kombinaci materiálu a trysky, která může být použita s tímto typem kvality."
@@ -5578,7 +5683,6 @@ msgstr ""
 "Chystáte se odebrat všechny tiskárny z Cury. Tuto akci nelze vrátit zpět.\n"
 "Doopravdy chcete pokračovat?"
 
-#, python-brace-format
 msgctxt "@label"
 msgid ""
 "You are about to remove {0} printer from Cura. This action cannot be undone.\n"
@@ -5600,7 +5704,6 @@ msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "Pokoušíte se připojit k tiskárně, na které není spuštěna aplikace UltiMaker Connect. Aktualizujte tiskárnu na nejnovější firmware."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "Pokoušíte se připojit k {0}, ale není hostitelem skupiny. Webovou stránku můžete navštívit a nakonfigurovat ji jako skupinového hostitele."
@@ -5641,7 +5744,6 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr "Vaše nová tiskárna se automaticky objeví v Cuře"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
@@ -5706,7 +5808,6 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "verze: %1"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "Tiskárna {printer_name} bude odebrána až do další synchronizace účtu."
@@ -5715,13 +5816,20 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 
-#, python-brace-format
+#~ msgctxt "@label"
+#~ msgid "*You will need to restart the application for these changes to have effect."
+#~ msgstr "*Aby se tyto změny projevily, budete muset aplikaci restartovat."
+
 #~ msgctxt "info:{0} gets replaced by a number of printers"
 #~ msgid "... and {0} other"
 #~ msgid_plural "... and {0} others"
 #~ msgstr[0] "... a {0} další"
 #~ msgstr[1] "... a {0} další"
 #~ msgstr[2] "... a {0} dalších"
+
+#~ msgctxt "@option:check"
+#~ msgid "Add icon to system tray *"
+#~ msgstr "Přidat ikonu do systémové lišty *"
 
 #~ msgctxt "@label Description for application component"
 #~ msgid "Application framework"
@@ -5766,6 +5874,10 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgctxt "@label"
 #~ msgid "Font"
 #~ msgstr "Font"
+
+#~ msgctxt "@option:check"
+#~ msgid "Force layer view compatibility mode (restart required)"
+#~ msgstr "Vynutit režim kompatibility zobrazení vrstev (vyžaduje restart)"
 
 #~ msgctxt "@label Description for application component"
 #~ msgid "G-code generator"
@@ -5879,6 +5991,10 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgid "Slicing failed with an unexpected error. Please consider reporting a bug on our issue tracker."
 #~ msgstr "Slicování selhalo na neočekávané chybě. Zvažte, prosím, nahlášení chyby v našem issue trackeru."
 
+#~ msgctxt "@action:label"
+#~ msgid "Support Type"
+#~ msgstr "Typ podpory"
+
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Support library for faster math"
 #~ msgstr "Podpůrný knihovna pro rychlejší matematické výpočty"
@@ -5919,9 +6035,17 @@ msgstr "Nepovedlo se stáhnout {} zásuvných modulů"
 #~ msgid "The operating system does not allow saving a project file to this location or with this file name."
 #~ msgstr "Operační systém nepovoluje uložit soubor s projektem do tohoto umístění nebo pod tímto názvem."
 
+#~ msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+#~ msgid "Theme*:"
+#~ msgstr "Styl*:"
+
 #~ msgctxt "@label Description for development tool"
 #~ msgid "Universal build system configuration"
 #~ msgstr "Univerzální konfigurace překladu programů"
+
+#~ msgctxt "@option:check"
+#~ msgid "Use a single instance of Cura"
+#~ msgstr "Používat pouze jednu instanci programu Cura"
 
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Utility functions, including an image loader"

@@ -6240,3 +6240,103 @@ msgstr "Largeur d’une seule ligne des zones situées au bas de l’impression.
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zig-zag"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>Ratio d'amorçage effectué pendant le déplacement, le reste étant effectué lorsque la buse est immobile, après le déplacement<ul><li>Lorsque 0, l'ensemble de l'amorçage est effectué pendant l'immobilisation, après la fin du déplacement</li><li>Lorsque 100, l'ensemble de l'amorçage est effectué pendant le déplacement, ce qui permet de lancer immédiatement l'impression</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>Le ratio de rétraction effectué pendant le déplacement, le reste étant effectué lorsque la buse est stationnaire, avant le déplacement<ul><li>Lorsque la valeur est 0, la totalité de la rétraction est effectuée à l'arrêt, avant le début du déplacement</li><li>Lorsque la valeur est 100, la totalité de la rétraction est effectuée pendant le déplacement, en contournant la phase stationnaire</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "Type de plaque de construction"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "Vitesse du ventilateur du volume de construction"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "Vitesse du ventilateur du volume de construction à la hauteur"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "Vitesse du ventilateur du volume de construction à la couche"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Contrôlez la façon dont les coins du contour du modèle influencent la position de la couture. La fonction \"Cacher la couture\" augmente la probabilité que la couture se produise dans un angle intérieur. La fonction \"Exposer la couture\" rend la couture plus susceptible de se trouver dans un coin extérieur. La fonction \"Cacher ou exposer la couture\" rend la couture plus susceptible de se trouver dans un angle intérieur ou extérieur. Le masquage intelligent autorise les angles intérieurs et extérieurs, mais choisit plus fréquemment les angles intérieurs, le cas échéant."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "Couches initiales Construire le volume Vitesse du ventilateur"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "Maintien de la rétraction pendant le déplacement"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "Débit maximal du matériau"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "Débit maximum que l'imprimante peut extruder pour le matériau."
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Profondeur multi-matériaux"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "Précision multi-matériaux"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "Amorçage pendant le déplacement en voyage"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "Rétraction pendant le déplacement en voyage"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "Numériser la première couche"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "La profondeur des détails peints à l'intérieur du modèle. Une plus grande profondeur permettra un meilleur emboîtement, mais augmentera le temps de découpage et la mémoire. Définissez une valeur très élevée pour aller aussi loin que possible. La profondeur réellement calculée peut varier."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "La vitesse du ventilateur (en pourcentage) pour le ventilateur auxiliaire ou de volume de construction, qui est définie à partir du moment où la couche spécifiée dans \"Vitesse du ventilateur de volume de construction à la couche\" est atteinte. Auparavant, la vitesse est définie par \"Vitesse du ventilateur de volume de construction des couches initiales\"."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "La vitesse du ventilateur (en pourcentage) pour le ventilateur auxiliaire ou le ventilateur de volume de construction, qui est définie jusqu'à ce que la couche spécifiée dans \"Vitesse du ventilateur de volume de construction à la couche\" soit atteinte. Par la suite, la vitesse est définie par \"Vitesse du ventilateur du volume de construction\" (et non par \"Couches initiales\")."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Couche à partir de laquelle les ventilateurs du volume de construction tournent à plein régime. Cette valeur est calculée et arrondie à un nombre entier."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "La précision des détails lors de la génération de formes multi-matériaux basées sur des données de peinture. Une précision moindre permet d'obtenir plus de détails, mais augmente le temps de découpage et la mémoire."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "Le type de plaque de construction installée sur l'imprimante."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "Lorsque la rétraction pendant le déplacement est activée et qu'il y a plus de temps qu'il n'en faut pour effectuer une rétraction complète pendant un déplacement, étalez la rétraction sur l'ensemble du déplacement avec une vitesse de rétraction plus faible, de manière à ne pas voyager avec une buse non rétractée. Cette mesure peut contribuer à réduire le suintement."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "S'il faut analyser la première couche pour détecter les problèmes d'adhérence de la couche."

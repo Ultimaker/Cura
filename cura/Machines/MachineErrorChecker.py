@@ -6,7 +6,7 @@ import time
 from collections import deque
 
 from PyQt6.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
-from typing import Optional, Any, Set
+from typing import Optional, Any, Set, List
 
 from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
@@ -77,21 +77,21 @@ class MachineErrorChecker(QObject):
 
     def _onMachineChanged(self) -> None:
         if self._global_stack:
-            self._global_stack.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
+            self._global_stack.propertiesChanged.disconnect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.disconnect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruderList:
-                extruder.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
+                extruder.propertiesChanged.disconnect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.disconnect(self.startErrorCheck)
 
         self._global_stack = self._machine_manager.activeMachine
 
         if self._global_stack:
-            self._global_stack.propertyChanged.connect(self.startErrorCheckPropertyChanged)
+            self._global_stack.propertiesChanged.connect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.connect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruderList:
-                extruder.propertyChanged.connect(self.startErrorCheckPropertyChanged)
+                extruder.propertiesChanged.connect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.connect(self.startErrorCheck)
 
     hasErrorUpdated = pyqtSignal()
@@ -106,15 +106,15 @@ class MachineErrorChecker(QObject):
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
 
-    def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
+    def startErrorCheckPropertyChanged(self, key: str, property_names: List[str]) -> None:
         """Start the error check for property changed
         this is separate from the startErrorCheck because it ignores a number property types
 
         :param key:
-        :param property_name:
+        :param property_names:
         """
 
-        if property_name != "value":
+        if "validationState" not in property_names and "enabled" not in property_names:
             return
         self._keys_to_check.add(key)
         self.startErrorCheck()
@@ -212,7 +212,6 @@ class MachineErrorChecker(QObject):
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()
-            self._machine_manager.stacksValidationChanged.emit()
         self._keys_to_check = keys_to_recheck if keys_to_recheck else set()
         self._need_to_check = False
         self._check_in_progress = False

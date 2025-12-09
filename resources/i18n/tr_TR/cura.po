@@ -3036,10 +3036,9 @@ msgid "Please remove the print"
 msgstr "Lütfen yazıcıyı çıkarın"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "Lütfen ayarları gözden geçirin ve modellerinizi şu durumlara karşı kontrol edin:"
 "- Yapı hacmine sığma"
-"- Etkin bir ekstrüdere atanma"
 "- Değiştirici kafesler olarak ayarlanmama"
 
 msgctxt "@label"
@@ -5699,3 +5698,199 @@ msgstr "Y max ( '+' öne doğru)"
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
 msgstr "Y min ('-' arkaya doğru)"
+
+msgctxt "@label"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) Bu değişikliklerin etkili olması için uygulamayı yeniden başlatmanız gerekecek."
+
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>Bu baskıda en az bir adet extruder kullanılmıyor."
+
+msgctxt "@option:check"
+msgid "Add icon to system tray (* restart required)"
+msgstr "Sistem tepsisine simge ekle (* yeniden başlatma gerekir)"
+
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "Kullanılmayan extruder(lar)'ı otomatik olarak devre dışı bırak"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "Kaçın"
+
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr "BambuLab 3MF dosyası"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "Fırça Biçimi"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "Fırça Boyutu"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr "3MF dosyasında GCode yazılamaz"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "Daire"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "Tümünü temizle"
+
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "Bağlantı ve Kontrol"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "Kullanılmayan extruder(lar)'ı devre dışı bırak"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "USB kablo üzerinden yazmayı etkinleştir (* yeniden başlatma gerekir)"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "Sil"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "Tekrar indirilebilir paket numaralarını getir..."
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "Modelin takım sapını Y ekseninde çevir (* yeniden başlatma gerekir)"
+
+msgctxt "@option:check"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "Katman görüntüsü uyumluluk modunu dayat (* yeniden başlatma gerekir)"
+
+msgctxt "@label"
+msgid "Mark as"
+msgstr "Şu olarak işaretle:"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "Materyal"
+
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "Geri çekilmemiş"
+
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "Boya"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "Boya Modeli"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "Boya Araçları"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "Kullanılacak materyali seçmek için modeli boyayın"
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "Boya görüntüsü"
+
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "Tercihler"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "Tercih Ediliyor"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "Model, boyama için hazırlanıyor..."
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "Hazırlama"
+
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "Yazıcı aktif değil"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "USB kablo üzerinden yazdırma işlemi, tüm yazıcılar ile çalışmaz ve bağlantı noktası için tarama yapma işlemi diğer bağlı dizisel aygıtları (örn: kulaklık) engelleyebilir. Yeni Cura yüklemelerinde artık 'Otomatik Etkinleştirme' yapılmamaktadır. USB üzerinden Yazdırma işlemini kullanmak istiyorsanız kutucuğu işaretleyip Cura'yı yeniden başlatarak etkinleştirin. Lütfen Unutmayın: USB üzerinden Yazdırma işlemi artık sürdürülmemektedir. Bilgisayar/yazıcı kombinasyonunuzda ya çalışacaktır ya da çalışmayacaktır."
+
+msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "Boya araçlarını sağlar."
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "Darbeyi Yinele"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "Tercih edilen/kaçınılan alanları tanımlayarak dikiş yerleştirmeyi iyileştirin"
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "Tercih edilen/kaçınılan alanları tanımlayarak destek yerleştirmeyi iyileştirin"
+
+msgctxt "@label"
+msgid "Retracted"
+msgstr "Geri Çekilmiş"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "Geri Çekiliyor"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "Dikiş"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr "Boyamaya başlamak için bir tek model seçin"
+
+msgctxt "@action:button"
+msgid "Square"
+msgstr "Kare"
+
+msgctxt "@action:button"
+msgid "Support"
+msgstr "Destek"
+
+msgctxt "@action:label"
+msgid "Support Structure"
+msgstr "Destek Yapısı"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "Yazıcı aktif değil ve yeni bir baskı işi kabul edemez."
+
+msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgid "Theme (* restart required):"
+msgstr "Tema (* yeniden başlatma gerekir):"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "Bu yazıcı devre dışı bırakılmış ve komut veya iş kabul edemez."
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "Darbeyi Geri Al"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "Kullanılmayan Extruder(lar)"
+
+msgctxt "@option:check"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "Cura'nın tek bir örneğini kullan (* yeniden başlatma gerekiyor)"

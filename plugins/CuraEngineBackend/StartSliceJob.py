@@ -234,7 +234,7 @@ class StartSliceJob(Job):
         self._slice_message: Arcus.PythonMessage = slice_message
         self._is_cancelled: bool = False
         self._build_plate_number: Optional[int] = None
-        self._associated_disabled_extruders: Optional[str] = None
+        self._associated_disabled_extruders: List[int] = []
 
         # cache for all setting values from all stacks (global & extruder) for the current machine
         self._all_extruders_settings: Optional[Dict[str, Any]] = None
@@ -242,7 +242,7 @@ class StartSliceJob(Job):
     def getSliceMessage(self) -> Arcus.PythonMessage:
         return self._slice_message
 
-    def getAssociatedDisabledExtruders(self) -> Optional[str]:
+    def getAssociatedDisabledExtruders(self) -> List[int]:
         return self._associated_disabled_extruders
 
     def setBuildPlate(self, build_plate_number: int) -> None:
@@ -296,11 +296,6 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.Error)
             return
 
-        # Don't slice if there is a setting with an error value.
-        if CuraApplication.getInstance().getMachineManager().stacksHaveErrors:
-            self.setResult(StartJobResult.SettingError)
-            return
-
         if CuraApplication.getInstance().getBuildVolume().hasErrors():
             self.setResult(StartJobResult.BuildPlateError)
             return
@@ -309,6 +304,7 @@ class StartSliceJob(Job):
         while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
             time.sleep(0.1)
 
+        # Don't slice if there is a setting with an error value.
         if CuraApplication.getInstance().getMachineErrorChecker().hasError:
             self.setResult(StartJobResult.SettingError)
             return
@@ -415,18 +411,18 @@ class StartSliceJob(Job):
             for node in group:
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
-                if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
-                    skip_group = True
-                    has_model_with_disabled_extruders = True
-                    associated_disabled_extruders.add(extruder_position)
+                if not is_non_printing_mesh:
+                    for used_extruder in StartSliceJob._getMainExtruders(node):
+                        if not extruders_enabled[used_extruder]:
+                            skip_group = True
+                            has_model_with_disabled_extruders = True
+                            associated_disabled_extruders.add(used_extruder)
             if not skip_group:
                 filtered_object_groups.append(group)
 
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-            associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
-            self._associated_disabled_extruders = ", ".join(map(str, sorted(associated_disabled_extruders)))
+            self._associated_disabled_extruders = sorted(list(associated_disabled_extruders))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
@@ -760,3 +756,13 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
+
+    @staticmethod
+    def _getMainExtruders(node: SceneNode) -> List[int]:
+        used_extruders = node.callDecoration("getPaintedExtruders")
+
+        # There is no relevant painting data, just take the extruder associated to the model
+        if not used_extruders:
+            used_extruders = [int(node.callDecoration("getActiveExtruderPosition"))]
+
+        return used_extruders
