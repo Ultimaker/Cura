@@ -76,11 +76,6 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("general/use_tray_icon")
         trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
 
-        UM.Preferences.resetPreference("cura/single_instance")
-        singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
-        UM.Preferences.resetPreference("cura/single_instance_clear_before_load")
-        singleInstanceClearBeforeLoadCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
-
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
         UM.Preferences.resetPreference("physics/automatic_drop_down")
@@ -681,40 +676,6 @@ UM.PreferencesPage
             {
                 font: UM.Theme.getFont("medium_bold")
                 text: catalog.i18nc("@label","Opening and saving files")
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                // Mac only allows applications to run as a single instance, so providing the option for this os doesn't make much sense
-                visible: Qt.platform.os !== "osx"
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip","Should opening files from the desktop or external applications open in the same instance of Cura?")
-
-                UM.CheckBox
-                {
-                    id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura *")
-
-                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip","Should the build plate be cleared before loading a new model in the single instance of Cura?")
-                enabled: singleInstanceCheckbox.checked
-
-                UM.CheckBox
-                {
-                    id: singleInstanceClearBeforeLoadCheckbox
-                    text: catalog.i18nc("@option:check","Clear buildplate before loading model into the single instance")
-                    checked: boolCheck(UM.Preferences.getValue("cura/single_instance_clear_before_load"))
-                    onCheckedChanged: UM.Preferences.setValue("cura/single_instance_clear_before_load", checked)
-                }
             }
 
             UM.TooltipArea

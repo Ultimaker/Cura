@@ -184,7 +184,7 @@ class CuraApplication(QtApplication):
         # Variables set from CLI
         self._files_to_open = []
         self._urls_to_open = []
-        self._use_single_instance = False
+        self._use_single_instance = True
 
         self._single_instance = None
         self._open_project_mode: Optional[str] = None
@@ -309,10 +309,6 @@ class CuraApplication(QtApplication):
                                       action = "store_true",
                                       default = False,
                                       help = "Show this help message and exit.")
-        self._cli_parser.add_argument("--single-instance",
-                                      dest = "single_instance",
-                                      action = "store_true",
-                                      default = False)
         # >> For debugging
         # Trigger an early crash, i.e. a crash that happens before the application enters its event loop.
         self._cli_parser.add_argument("--trigger-early-crash",
@@ -332,7 +328,6 @@ class CuraApplication(QtApplication):
             self._cli_parser.print_help()
             sys.exit(0)
 
-        self._use_single_instance = self._cli_args.single_instance
         # FOR TESTING ONLY
         if self._cli_args.trigger_early_crash:
             assert not "This crash is triggered by the trigger_early_crash command line argument."
@@ -349,8 +344,7 @@ class CuraApplication(QtApplication):
 
         super().initialize(ApplicationMetadata.IsEnterpriseVersion)
 
-        self._preferences.addPreference("cura/single_instance", False)
-        self._use_single_instance = self._preferences.getValue("cura/single_instance") or self._cli_args.single_instance
+        self._use_single_instance = True
 
         self.__sendCommandToSingleInstance()
         self._initializeSettingDefinitions()
