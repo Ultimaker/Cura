@@ -3495,6 +3495,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "random_speed_infill_only":
+                {
+                    "label": "Randomize Layer-Speed Only In Infill",
+                    "description": "Limit randomized layer-speed to infill only.",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "speed_print":
                 {
                     "label": "Print Speed",
