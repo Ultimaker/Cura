@@ -1,4 +1,4 @@
-version: "5.10.3"
+version: "5.10.3-avalanche.2"
 requirements:
   - "cura_resources/5.10.3"
   - "uranium/5.10.3"
@@ -6,7 +6,7 @@ requirements:
   - "cura_binary_data/5.10.3"
   - "fdm_materials/5.10.3"
   - "dulcificum/5.10.0"
-  - "pysavitar/5.10.0"
+  - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
   - "fdm_materials/5.10.3"
