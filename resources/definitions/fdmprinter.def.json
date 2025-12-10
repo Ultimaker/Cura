@@ -8107,6 +8107,16 @@
             "description": "Non-traditional ways to print your models.",
             "children":
             {
+                "belt_gantry_angle":
+                {
+                    "default_value": 28.0,
+                    "description": "The angle of the gantry relative to the build plate. Match this setting with the current printer configuration.",
+                    "label": "Gantry Angle",
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": false,
+                    "type": "float",
+                    "unit": "\u00b0"
+                },
                 "print_sequence":
                 {
                     "label": "Print Sequence",

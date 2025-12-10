@@ -14,6 +14,7 @@ from PyQt6.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Math.Matrix import Matrix
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -39,7 +40,6 @@ from cura.OneAtATimeIterator import OneAtATimeIterator
 from cura.Settings.CuraContainerStack import CuraContainerStack
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.CuraVersion import CuraVersion
-from .BlackBeltDecorator import BlackBeltDecorator
 from .SupportMeshCreator import SupportMeshCreator
 
 NON_PRINTING_MESH_SETTINGS = ["anti_overhang_mesh", "infill_mesh", "cutting_mesh"]
@@ -290,6 +290,45 @@ class StartSliceJob(Job):
             Job.yieldThread()
 
         return False
+
+    @staticmethod
+    def _beltPrinterTransform() -> Matrix:
+        # Both the comment and the resulting method where originally in the BlackBeltPrinter plugin by fieldOfView.
+        """
+        # The below magic transform matrix is composed as follows.
+        import numpy
+        matrix_data = numpy.identity(4)
+        matrix_data[2, 2] = 1/math.sin(self._gantry_angle)  # scale Z
+        matrix_data[1, 2] = -1/math.tan(self._gantry_angle) # shear ZY
+        matrix = Matrix(matrix_data)
+
+        matrix_data = numpy.identity(4)
+        # use front buildvolume face instead of bottom face
+        matrix_data[1, 1] = 0
+        matrix_data[1, 2] = 1
+        matrix_data[2, 1] = -1
+        matrix_data[2, 2] = 0
+        axes_matrix = Matrix(matrix_data)
+
+        matrix.multiply(axes_matrix)
+
+        # bottom face has origin at the center, front face has origin at one side
+        matrix.translate(Vector(0, - math.sin(self._gantry_angle) * machine_depth / 2, 0))
+        # make sure objects are not transformed to be below the buildplate
+        matrix.translate(Vector(0, 0, machine_depth / 2))
+
+        self._transform_matrix = matrix
+        """
+
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        gantry_angle = math.radians(float(global_stack.getProperty("belt_gantry_angle", "value")))
+
+        machine_depth = global_stack.getProperty("machine_depth", "value")
+
+        matrix = Matrix()
+        matrix.setColumn(1, [0, 1 / math.tan(gantry_angle), 1, (machine_depth / 2) * (1 - math.cos(gantry_angle))])
+        matrix.setColumn(2, [0, - 1 / math.sin(gantry_angle), 0, machine_depth / 2])
+        return matrix
 
     def run(self) -> None:
         """Runs the job that initiates the slicing."""
@@ -606,7 +645,7 @@ class StartSliceJob(Job):
                 if added_meshes:
                     group += added_meshes
 
-        transform_matrix = BlackBeltDecorator.calculateTransformData()  # self._scene.getRoot().callDecoration("getTransformMatrix")    ### ????? BOOKMARK!
+        transform_matrix = StartSliceJob._beltPrinterTransform()
         front_offset = None
 
         raft_offset = 0
@@ -709,14 +748,6 @@ class StartSliceJob(Job):
                     flat_verts = numpy.array(verts)
 
                 obj.vertices = flat_verts
-
-                uv_coordinates = mesh_data.getUVCoordinates()
-                if uv_coordinates is not None:
-                    obj.uv_coordinates = uv_coordinates.flatten()
-
-                packed_texture = object.callDecoration("packTexture")
-                if packed_texture is not None:
-                    obj.texture = packed_texture
 
                 if object.getName() in raft_meshes:
                     self._addSettingsMessage(obj, {
