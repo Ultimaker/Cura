@@ -1,214 +1,214 @@
 {
     "metadata": {
-        "name": "UltiMaker"
+        "name": "Solevation"
     },
 
     "fonts": {
         "large": {
             "size": 1.35,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "large_ja_JP": {
             "size": 1.35,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "large_zh_CN": {
             "size": 1.35,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "large_zh_TW": {
             "size": 1.35,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "large_bold": {
             "size": 1.35,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "huge": {
             "size": 1.8,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "huge_bold": {
             "size": 1.8,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium": {
             "size": 1.16,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium_ja_JP": {
             "size": 1.16,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium_zh_CN": {
             "size": 1.16,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium_zh_TW": {
             "size": 1.16,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium_bold": {
             "size": 1.16,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default": {
             "size": 0.95,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_ja_JP": {
             "size": 1.0,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_zh_CN": {
             "size": 1.0,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_zh_TW": {
             "size": 1.0,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_bold": {
             "size": 0.95,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_bold_ja_JP": {
             "size": 1.0,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_bold_zh_CN": {
             "size": 1.0,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_bold_zh_TW": {
             "size": 1.0,
             "weight": 600,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_italic": {
             "size": 0.95,
             "weight": 400,
             "italic": true,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "medium_italic": {
             "size": 1.16,
             "weight": 400,
             "italic": true,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_italic_ja_JP": {
             "size": 1.0,
             "weight": 400,
             "italic": true,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_italic_zh_CN": {
             "size": 1.0,
             "weight": 400,
             "italic": true,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "default_italic_zh_TW": {
             "size": 1.0,
             "weight": 400,
             "italic": true,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small": {
             "size": 0.9,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_bold": {
             "size": 0.9,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_ja_JP": {
             "size": 0.9,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_zh_CN": {
             "size": 0.9,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_zh_TW": {
             "size": 0.9,
             "weight": 400,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_emphasis": {
             "size": 0.9,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_emphasis_ja_JP": {
             "size": 0.9,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_emphasis_zh_CN": {
             "size": 0.9,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "small_emphasis_zh_TW": {
             "size": 0.9,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "tiny_emphasis": {
             "size": 0.7,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "tiny_emphasis_ja_JP": {
             "size": 0.7,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "tiny_emphasis_zh_CN": {
             "size": 0.7,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         },
         "tiny_emphasis_zh_TW": {
             "size": 0.7,
             "weight": 700,
-            "family": "Noto Sans"
+            "family": "Montserrat"
         }
     },
 
     "base_colors": {
         "background_1": [255, 255, 255, 255],
-        "background_2": [243, 243, 243, 255],
-        "background_3": [232, 240, 253, 255],
-        "background_4": [3, 12, 66, 255],
+        "background_2": [152, 202, 232, 255],
+        "background_3": [5, 143, 208, 255],
+        "background_4": [15, 12, 33, 255],
 
-        "accent_1": [25, 110, 240, 255],
-        "accent_2": [16, 70, 156, 255],
+        "accent_1": [152, 202, 232, 255],
+        "accent_2": [5, 143, 208, 255],
         "border_main": [212, 212, 212, 255],
         "border_accent_1": [25, 110, 240, 255],
         "border_accent_2": [16, 70, 156, 255],
@@ -255,7 +255,7 @@
         "expandable_active": [240, 240, 240, 255],
         "expandable_hover": [232, 242, 252, 255],
 
-        "icon": [8, 7, 63, 255],
+        "icon": [15, 12, 33, 255],
 
         "primary_button": "accent_1",
         "primary_button_hover": [16, 70, 156, 255],
@@ -266,8 +266,8 @@
         "secondary_button_hover": [232, 240, 253, 255],
         "secondary_button_text": "accent_1",
 
-        "main_window_header_background": [8, 7, 63, 255],
-        "main_window_header_background_gradient": [25, 23, 91, 255],
+        "main_window_header_background": [5, 143, 208, 255],
+        "main_window_header_background_gradient": [5, 143, 208, 255],
         "main_window_header_button_text_active": [8, 7, 63, 255],
         "main_window_header_button_text_inactive": [255, 255, 255, 255],
         "main_window_header_button_text_hovered": [255, 255, 255, 255],

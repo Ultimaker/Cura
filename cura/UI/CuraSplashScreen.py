@@ -25,6 +25,7 @@ class CuraSplashScreen(QSplashScreen):
             self._version_y_offset = 26
         else:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura.png"))
+        self._version_y_offset -= 98
 
         self.setPixmap(splash_image)
 
@@ -85,7 +86,7 @@ class CuraSplashScreen(QSplashScreen):
         pen.setWidthF(2 * self._scale)
         pen.setColor(QColor(255, 255, 255, 255))
         painter.setPen(pen)
-        painter.drawArc(38, 324, round(20 * self._scale), round(20 * self._scale), round(self._loading_image_rotation_angle * 16), 300 * 16)
+        painter.drawArc(138, 324, round(20 * self._scale), round(20 * self._scale), round(self._loading_image_rotation_angle * 16), 300 * 16)
 
         # Draw message text
         if self._current_message:
@@ -95,7 +96,7 @@ class CuraSplashScreen(QSplashScreen):
             pen.setColor(QColor(255, 255, 255, 255))
             painter.setPen(pen)
             painter.setFont(font)
-            painter.drawText(70, 308, 170, 48,
+            painter.drawText(170, 308, 170, 48,
                              Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter | Qt.TextFlag.TextWordWrap,
                              self._current_message)
 

@@ -163,20 +163,6 @@ Item
             right: parent.right
         }
 
-        Cura.SecondaryButton
-        {
-            id: recommendedButton
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.margins: parent.padding
-            leftPadding: UM.Theme.getSize("default_margin").width
-            rightPadding: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@button", "Recommended")
-            iconSource: UM.Theme.getIcon("ChevronSingleLeft")
-            visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
-            onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Recommended
-        }
-
         //Invisible area at the bottom with which you can resize the panel.
         MouseArea
         {
