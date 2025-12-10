@@ -350,7 +350,7 @@
                     "type": "enum",
                     "unit": "\u00b0"
                 },
-                "blackbelt_repetitions_gcode": { "default_value": "\nG92 E0   ; Set Extruder to zero\nG1 E-4 F3900  ; Retract 4mm at 65mm/s\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance  }   ; Advance belt between repetitions\nG92 Z0   ; Set Belt to zero again\n\n;\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4 - repetition - \u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\n\nM107    ; Start with the fan off\nG0 X170 ; Move X to the center\nG1 Y1   ; Move y to the belt\nG1 E0   ; Move extruder back to 0\nG92 E-5 ; Add 5mm restart distance\n\n",
+                "blackbelt_repetitions_gcode": { "default_value": "\nG92 E0   ; Set Extruder to zero\nG1 E-4 F3900  ; Retract 4mm at 65mm/s\nG92 Z0   ; Set Belt to zero\nG1 Z{blackbelt_repetitions_distance   }   ; Advance belt between repetitions\nG92 Z0   ; Set Belt to zero again\n\n;\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4 - repetition - \u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\u02c4\n\nM107    ; Start with the fan off\nG0 X170 ; Move X to the center\nG1 Y1   ; Move y to the belt\nG1 E0   ; Move extruder back to 0\nG92 E-5 ; Add 5mm restart distance\n\n",
                     "description": "Gcode commands to be executed between repetitions - separated by \\n.",
                     "enabled": "blackbelt_repetitions > 1",
                     "label": "Repetitions GCode",
