@@ -326,6 +326,7 @@ class StartSliceJob(Job):
         machine_depth = global_stack.getProperty("machine_depth", "value")
 
         matrix = Matrix()
+        matrix.setColumn(0, [-1, 0, 0, 0]) # <- Compensate for flipped YZ-plane on Avalanche printers.
         matrix.setColumn(1, [0, 1 / math.tan(gantry_angle), 1, (machine_depth / 2) * (1 - math.cos(gantry_angle))])
         matrix.setColumn(2, [0, - 1 / math.sin(gantry_angle), 0, machine_depth / 2])
         return matrix

@@ -1,6 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import math
+from typing import Tuple
 
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
@@ -14,6 +15,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.View.RenderPass import RenderPass
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from cura.CuraApplication import CuraApplication
 
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.LayerPolygon import LayerPolygon
@@ -141,6 +143,10 @@ class SimulationPass(RenderPass):
                 if not layer_data:
                     continue
 
+                # Compensate for flipping the ZY-plane:
+                flip_plane_info: Tuple[bool, float] = (True, CuraApplication.getInstance().getBuildVolume().getWidth())
+                print(f"FLIP PLANE INFO: {flip_plane_info}")
+
                 # Render all layers below a certain number as line mesh instead of vertices.
                 if self._layer_view.getCurrentLayer() > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
                     start = 0
@@ -211,12 +217,12 @@ class SimulationPass(RenderPass):
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
-                    layers_batch.addItem(node.getWorldTransformation(), layer_data)
+                    layers_batch.addItem(node.getWorldTransformation(), layer_data, flip_zy_plane=flip_plane_info)
                     layers_batch.render(self._scene.getActiveCamera())
 
                     # Current selected layer is rendered
                     current_layer_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end))
-                    current_layer_batch.addItem(node.getWorldTransformation(), layer_data)
+                    current_layer_batch.addItem(node.getWorldTransformation(), layer_data, flip_zy_plane=flip_plane_info)
                     current_layer_batch.render(self._scene.getActiveCamera())
 
                     # Last line may be partial
@@ -227,7 +233,7 @@ class SimulationPass(RenderPass):
                         last_line_start = current_layer_end
                         last_line_end = current_layer_end + towards_next_vertex
                         last_line_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode=RenderBatch.RenderMode.Lines, range = (last_line_start, last_line_end))
-                        last_line_batch.addItem(node.getWorldTransformation(), layer_data)
+                        last_line_batch.addItem(node.getWorldTransformation(), layer_data, flip_zy_plane=flip_plane_info)
                         last_line_batch.render(self._scene.getActiveCamera())
 
                     self._old_current_layer = self._layer_view.getCurrentLayer()
@@ -237,10 +243,10 @@ class SimulationPass(RenderPass):
                 batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid)
 
                 if self._layer_view.getCurrentLayerMesh():
-                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerMesh())
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerMesh(), flip_zy_plane=flip_plane_info)
 
                 if self._layer_view.getCurrentLayerJumps():
-                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerJumps())
+                    batch.addItem(node.getWorldTransformation(), self._layer_view.getCurrentLayerJumps(), flip_zy_plane=flip_plane_info)
 
                 if len(batch.items) > 0:
                     batch.render(self._scene.getActiveCamera())
