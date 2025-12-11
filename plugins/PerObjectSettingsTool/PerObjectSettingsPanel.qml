@@ -107,21 +107,6 @@ Item
 
             UM.ToolbarButton
             {
-                id: overlapMeshButton
-                text: catalog.i18nc("@label", "Modify settings for overlaps")
-                toolItem: UM.ColorImage
-                {
-                    source: UM.Theme.getIcon("MeshTypeIntersect")
-                    color: UM.Theme.getColor("icon")
-                }
-                property bool needBorder: true
-                checkable:true
-                onClicked: setMeshType(infillMeshType)
-                z: 2
-            }
-
-            UM.ToolbarButton
-            {
                 id: antiOverhangMeshButton
                 text:  catalog.i18nc("@label", "Don't support overlaps")
                 toolItem: UM.ColorImage
@@ -134,7 +119,6 @@ Item
                 onClicked: setMeshType(antiOverhangMeshType)
                 z: 1
             }
-
         }
 
         UM.Label
@@ -411,34 +395,6 @@ Item
                 }
             }
         }
-
-        Cura.SecondaryButton
-        {
-            id: customiseSettingsButton;
-            height: UM.Theme.getSize("setting_control").height;
-            visible: currentSettings.visible
-
-            text: catalog.i18nc("@action:button", "Select settings");
-
-            onClicked:
-            {
-                settingPickDialog.visible = true;
-                if (currentMeshType === "support_mesh")
-                {
-                    settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
-                }
-                else
-                {
-                    settingPickDialog.additional_excluded_settings = [];
-                }
-            }
-        }
-
-    }
-
-    SettingPickDialog
-    {
-        id: settingPickDialog
     }
 
     UM.SettingPropertyProvider
