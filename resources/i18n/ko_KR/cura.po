@@ -3028,10 +3028,9 @@ msgid "Please remove the print"
 msgstr "프린트물을 제거하십시오"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "설정을 검토하고 모델이 다음 사항에 해당하는지 확인하십시오."
 "- 출력 사이즈 내에 맞춤화됨"
-"- 활성화된 익스트루더로 할당됨"
 "- 수정자 메쉬로 전체 설정되지 않음"
 
 msgctxt "@label"
@@ -5684,3 +5683,199 @@ msgstr "Y 최대 ('+'를 앞쪽으로)"
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
 msgstr "Y 최소 ( '-'를 뒤쪽으로)"
+
+msgctxt "@label"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) 변경 사항을 적용하려면 애플리케이션을 재시작하세요."
+
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>이번 인쇄에는 최소 1개의 압출기가 유휴 상태로 남아 있습니다:"
+
+msgctxt "@option:check"
+msgid "Add icon to system tray (* restart required)"
+msgstr "시스템 트레이에 아이콘 추가 (*재시작 필요)"
+
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "유휴 중인 압출기를 자동으로 비활성화합니다."
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "방지"
+
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr "BambuLab 3MF 파일"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "브러시 모양"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "브러시 크기"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr "3MF 파일에 GCode를 기록할 수 없습니다"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "원형"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "전체 초기화"
+
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "연결 및 제어"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "유휴 압출기 비활성화"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "USB 케이블 인쇄 활성화 (*재시작 필요)"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "지우기"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "재다운로드 가능한 패키지 ID 불러오기..."
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "모델의 툴 핸들 Y축 반전 (*재시작 필요)"
+
+msgctxt "@option:check"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "레이어 보기 호환성 모드 강제 실행 (*재시작 필요)"
+
+msgctxt "@label"
+msgid "Mark as"
+msgstr "다음으로 표시"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "재료"
+
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "리트랙션 안 됨"
+
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "페인트"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "모델 페인트"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "페인트 도구"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "모델을 페인트해 사용할 재료를 선택합니다."
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "페인트 보기"
+
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "환경 설정"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "선호"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "페인트를 위해 모델 준비 중..."
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "프라이밍"
+
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "프린터 비활성화 중"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "일부 프린터에서는 USB 케이블 연결을 통한 인쇄를 지원하지 않으며, 포트 스캔은 연결된 다른 시리얼 장치(이어폰 등)에 영향을 줄 수 있습니다. Cura를 새로 설치할 경우, 이 항목은 더 이상 '자동으로 활성화'되지 않습니다. USB 인쇄를 사용하려면 확인 상자를 체크하고 Cura를 재시작해 활성화하세요. 주의: USB 인쇄는 더 이상 기술 지원을 제공하지 않습니다. 사용자의 컴퓨터/프린터 조합에 따라 작동할 수도, 그렇지 않을 수도 있습니다."
+
+msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "페인트 도구를 제공합니다."
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "스트로크 재실행"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "선호/방지 영역을 지정해 솔기 배치를 세부화합니다."
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "선호/방지 영역을 지정해 서포트 배치를 세부화합니다."
+
+msgctxt "@label"
+msgid "Retracted"
+msgstr "리트랙트됨"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "리트랙트 중"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "솔기"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr "모델 하나를 선택해 페인팅을 시작하세요"
+
+msgctxt "@action:button"
+msgid "Square"
+msgstr "사각형"
+
+msgctxt "@action:button"
+msgid "Support"
+msgstr "서포트"
+
+msgctxt "@action:label"
+msgid "Support Structure"
+msgstr "서포트 구조"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "프린터가 유휴 상태이며 새 인쇄 작업을 수락할 수 없습니다."
+
+msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgid "Theme (* restart required):"
+msgstr "테마 (*재시작 필요):"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "이 프린터는 비활성화 상태이며 명령이나 작업을 수락할 수 없습니다."
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "스트로크 취소"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "미사용 압출기"
+
+msgctxt "@option:check"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "Cura 단일 인스턴스를 사용합니다 (*재시작 필요)"

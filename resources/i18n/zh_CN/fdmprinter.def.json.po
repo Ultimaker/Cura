@@ -6240,3 +6240,103 @@ msgstr "打印底部区域的单线宽度"
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "锯齿形"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>在空驶移动过程中执行的回弹比例,剩余部分将在空移结束后喷嘴静止时完成<ul><li>设为0时,全部回弹将在空移结束后静止状态下执行</li><li>设为100时,全部回弹将在空驶移动过程中完成,可立即开始打印</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>在空驶移动过程中执行的回缩比例,剩余部分将在空移开始前喷嘴静止时完成<ul><li>设为0时,全部回缩将在空移开始前静止状态下执行</li><li>设为100时,全部回缩将在空驶移动过程中完成,跳过静止阶段</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "构建板类型"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "构建腔风扇速度"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "构建腔风扇速度生效高度"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "构建腔风扇速度生效层数"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "控制模型轮廓上的转角如何影响接缝位置。\"隐藏接缝\"会使接缝更可能出现在内转角处；\"暴露接缝\"会使接缝更可能出现在外转角处；\"隐藏或暴露接缝\"会使接缝可能出现在内或外转角处；\"智能隐藏\"允许内外转角均可,但会优先选择内转角（如果适用）。"
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "初始层构建腔风扇速度"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "在空驶过程中持续回抽"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "材料最大流量率"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "打印机可挤出该材料的最大流量率"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "多材料打印深度"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "多材料打印精度"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "在空驶移动过程中进行回弹"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "在空驶移动过程中进行回抽"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "扫描首层"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "模型内部喷涂细节的深度。较高的深度值可提供更好的咬合效果,但会增加切片时间和内存占用。设置极高的数值可实现最大深度（实际计算深度可能存在浮动）。"
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "辅助风扇/构建腔风扇的速度百分比,从达到\"构建腔风扇速度生效层数\"指定的层数开始持续生效。在此之前,风扇速度由\"初始层构建腔风扇速度\"控制。"
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "辅助风扇/构建腔风扇的速度百分比,在达到\"构建腔风扇速度生效层数\"指定的层数之前持续生效。此后,风扇速度将改由\"构建腔风扇速度\"控制（即不再使用此\"初始层\"设置）。"
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "构建腔风扇开始全速运转的层数。该值为计算后取整的数值。"
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "基于喷涂数据生成多材料形状时的细节精度。较低的精度值会保留更多细节,但会增加切片时间和内存占用。"
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "打印机上安装的构建板类型。"
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "当启用空驶回缩且空移时间充足时,将回缩动作分散至整个空移过程并以较低速度执行,避免喷嘴在未回缩状态下移动。这有助于减少渗料现象。"
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "是否扫描首层以检测层间粘附问题。"

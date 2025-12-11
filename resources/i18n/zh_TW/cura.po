@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 15:37+0100\n"
+"POT-Creation-Date: 2025-09-22 08:45+0200\n"
 "PO-Revision-Date: 2022-01-02 19:59+0800\n"
 "Last-Translator: Valen Chang  <carf17771@gmail.com>\n"
 "Language-Team: Valen Chang <carf17771@gmail.com>\n"
@@ -18,11 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.0\n"
 
-msgctxt "@title:label"
-msgid " "
-msgstr ""
-
-#, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -146,7 +141,7 @@ msgid "&View"
 msgstr "檢視（&V）"
 
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
+msgid "*) You will need to restart the application for these changes to have effect."
 msgstr ""
 
 msgctxt "@text"
@@ -215,17 +210,18 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr ""
 
-#, python-brace-format
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL 渲染器：{renderer}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL vendor"
 msgid "<li>OpenGL Vendor: {vendor}</li>"
 msgstr "<li>OpenGL 供應商：{vendor}</li>"
 
-#, python-brace-format
 msgctxt "@label OpenGL version"
 msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 版本：{version}</li>"
@@ -254,7 +250,6 @@ msgstr ""
 "                    <p>請將錯誤報告傳送給我們以修正此問題。</p>\n"
 "                "
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
@@ -385,7 +380,7 @@ msgid "Add a script"
 msgstr "添加一個腳本"
 
 msgctxt "@option:check"
-msgid "Add icon to system tray *"
+msgid "Add icon to system tray (* restart required)"
 msgstr ""
 
 msgctxt "@button"
@@ -424,7 +419,6 @@ msgctxt "@button"
 msgid "Add printer manually"
 msgstr "手動新增印表機"
 
-#, python-brace-format
 msgctxt "info:status Filled in with printer name and printer model."
 msgid "Adding printer {name} ({model}) from your account"
 msgstr "從你的帳號新增印表機 {name} （{model}）"
@@ -465,7 +459,6 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "所有檔案 (*)"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "所有支援的類型 ({0})"
@@ -558,7 +551,6 @@ msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
 msgstr "你確定要將 %1 移至隊列的頂端嗎？"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "Are you sure you want to remove {printer_name} temporarily?"
 msgstr "你確定要暫時移除 {printer_name} 嗎？"
@@ -571,7 +563,6 @@ msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "你確定要移除 %1 嗎？這動作無法復原！"
 
-#, python-brace-format
 msgctxt "@label {0} is the name of a printer that's about to be deleted."
 msgid "Are you sure you wish to remove {0}? This cannot be undone!"
 msgstr "你確定要移除 {0} 嗎？這動作無法復原!"
@@ -600,6 +591,10 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "每天啟動 Cura 時自動建立備份。"
 
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "自動下降模型到列印平台"
@@ -611,6 +606,10 @@ msgstr "自動升級韌體"
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "可用的網路印表機"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr ""
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -656,6 +655,10 @@ msgctxt "@label"
 msgid "Balanced"
 msgstr ""
 
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr ""
+
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr "底板 (mm)"
@@ -667,6 +670,14 @@ msgstr "下視圖"
 msgctxt "@label"
 msgid "Brand"
 msgstr "品牌"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr ""
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr ""
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -732,15 +743,17 @@ msgctxt "@label"
 msgid "Can't connect to your UltiMaker printer?"
 msgstr "無法連接到 UltiMaker 印表機？"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "在加入印表機前，無法從 <filename>{0}</filename> 匯入列印參數。"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "如果載入 G-code，則無法開啟其他任何檔案。{0} 已跳過匯入"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -827,9 +840,17 @@ msgid ""
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Circle"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "清空列印平台"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr ""
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -983,6 +1004,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "透過雲端服務連接"
 
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr ""
+
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr "連結至\"數位博物館\"，允許Cura從\"數位博物館\"打開或保存文件."
@@ -1027,7 +1052,6 @@ msgctxt "@info:backup_failed"
 msgid "Could not create archive from user data directory: {}"
 msgstr "無法從使用者資料目錄建立備份檔：{}"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the tag {device}!"
 msgid "Could not find a file name when trying to write to {device}."
 msgstr "嘗試寫入到 {device} 時無法找到檔名。"
@@ -1056,12 +1080,10 @@ msgctxt "@message:text"
 msgid "Could not save material archive to {}:"
 msgstr "無法儲存線材資料至{}:"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not save to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "無法儲存到 <filename>{0}</filename>：<message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Could not save to removable drive {0}: {1}"
 msgstr "無法儲存到行動裝置 {0}：{1}"
@@ -1070,21 +1092,18 @@ msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "雲端服務未上傳資料到印表機。"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "No permission to execute process."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
 "Operating system is blocking it (antivirus?)"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Couldn't start EnginePlugin: {self._plugin_id}\n"
@@ -1175,7 +1194,6 @@ msgctxt "@title:window"
 msgid "Cura can't start"
 msgstr "Cura 無法啟動"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
 msgstr "Cura 偵測到群組 {0} 的管理主機上未安裝的線材參數。"
@@ -1352,6 +1370,10 @@ msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "關閉擠出機"
 
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr "捨棄更改，並不再詢問此問題"
@@ -1448,12 +1470,10 @@ msgctxt "@action:button"
 msgid "Eject"
 msgstr "卸載"
 
-#, python-brace-format
 msgctxt "@action"
 msgid "Eject removable device {0}"
 msgstr "卸載行動裝置 {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
 msgstr "已卸載 {0}。現在你可以安全地移除行動裝置。"
@@ -1469,6 +1489,10 @@ msgstr ""
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "啟用擠出機"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
@@ -1509,6 +1533,10 @@ msgstr "輸入印表機的 IP 位址。"
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "輸入印表機的 IP 位址。"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr ""
 
 msgctxt "@info:title"
 msgid "Error"
@@ -1566,7 +1594,6 @@ msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "匯出成功"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "列印參數已匯出至：<filename>{0}</filename>"
@@ -1611,7 +1638,6 @@ msgctxt "@label"
 msgid "Extruder Start G-code duration"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Extruder {0}"
 msgstr ""
@@ -1636,7 +1662,6 @@ msgctxt "@text:error"
 msgid "Failed to create archive of materials to sync with printers."
 msgstr "無法建立與印表機同步的材料檔案."
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed to eject {0}. Another program may be using the drive."
 msgstr "無法卸載 {0}，可能有其它程式正在使用行動裝置。"
@@ -1645,27 +1670,22 @@ msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "無法匯出線材至 <filename>%1</filename>：<message>%2</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "無法將列印參數匯出至 <filename>{0}</filename>：<message>{1}</message>"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "無法將列印參數匯出至 <filename>{0}</filename>：寫入器外掛報告故障。"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "從 <filename>{0}</filename> 匯入列印參數失敗："
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "從 <filename>{0}</filename> 匯入列印參數失敗："
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "無法從 <filename>{0}</filename> 匯入列印參數：{1}"
@@ -1682,7 +1702,6 @@ msgctxt "@message:title"
 msgid "Failed to save material archive"
 msgstr "線材資料儲存失敗"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Failed writing to specific cloud printer: {0} not in remote clusters."
 msgstr ""
@@ -1690,6 +1709,10 @@ msgstr ""
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "常用"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr ""
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1711,7 +1734,6 @@ msgctxt "@info:title"
 msgid "File Saved"
 msgstr "檔案已儲存"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "檔案 {0} 內未含有效的列印參數。"
@@ -1793,7 +1815,7 @@ msgid "First available"
 msgstr "可用的第一個"
 
 msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
+msgid "Flip model's toolhandle Y axis (* restart required)"
 msgstr ""
 
 msgctxt "@label:listbox"
@@ -1825,8 +1847,8 @@ msgid "For lithophanes dark pixels should correspond to thicker locations in ord
 msgstr "若要列印浮雕，深色像素應該對應到較厚的位置，以阻擋更多的光通過。若要列印高度圖，淺色像素表示較高的地形，因此淺色像素應對應於產生的 3D 模型中較厚的位置。"
 
 msgctxt "@option:check"
-msgid "Force layer view compatibility mode (restart required)"
-msgstr "強制分層檢視相容模式（需要重新啟動）"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr ""
 
 msgid "FreeCAD trackpad"
 msgstr ""
@@ -1915,7 +1937,6 @@ msgctxt "@label"
 msgid "Grid Placement"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
 msgstr "群組 #{group_nr}"
@@ -2469,6 +2490,10 @@ msgctxt "@label"
 msgid "Manufacturer"
 msgstr "製造商"
 
+msgctxt "@label"
+msgid "Mark as"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "市集"
@@ -2479,6 +2504,10 @@ msgstr "市集"
 
 msgctxt "name"
 msgid "Marketplace"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Material"
 msgstr ""
 
 msgctxt "@action:label"
@@ -2642,7 +2671,6 @@ msgctxt "@info:title"
 msgid "Network error"
 msgstr "網路錯誤"
 
-#, python-format
 msgctxt "@info:title The %s gets replaced with the printer name."
 msgid "New %s stable firmware available"
 msgstr "新的%s軟體已可使用"
@@ -2655,7 +2683,6 @@ msgctxt "@label"
 msgid "New UltiMaker printers can be connected to Digital Factory and monitored remotely."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid "New features or bug-fixes may be available for your {machine_name}! If you haven't done so already, it is recommended to update the firmware on your printer to version {latest_version}."
 msgstr "新的問題修復功能適用於您的 {machine_name}! 如果你準備好了,推薦您將列印機的軟體升級至最新版本 {latest_version}."
@@ -2701,7 +2728,6 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "沒有成本估算"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "檔案 <filename>{0}</filename> 內沒有自訂列印參數可匯入"
@@ -2774,6 +2800,10 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "不覆寫"
 
+msgctxt "@label"
+msgid "Not retracted"
+msgstr ""
+
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "不支援"
@@ -2838,7 +2868,6 @@ msgctxt "@label"
 msgid "Only Show Top Layers"
 msgstr "只顯示頂層"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "一次只能載入一個 G-code 檔案。{0} 已跳過匯入"
@@ -2975,6 +3004,26 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Paint"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr ""
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr ""
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "正在解析 G-code"
@@ -3086,12 +3135,10 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 "請檢查設定並檢查你的模型是否：\n"
 "- 適合列印範圍\n"
-"- 分配了一個已啟用的擠出機\n"
 "- 沒有全部設定成修改網格"
 
 msgctxt "@label"
@@ -3154,6 +3201,14 @@ msgctxt "@button"
 msgid "Pre-heat"
 msgstr "預熱"
 
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr ""
+
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "準備"
@@ -3161,6 +3216,10 @@ msgstr "準備"
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "準備介面"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3189,6 +3248,10 @@ msgstr "預覽介面"
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "裝填塔"
+
+msgctxt "@label"
+msgid "Priming"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3304,6 +3367,10 @@ msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "印表機不接受命令"
 
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr ""
+
 msgctxt "@label"
 msgid "Printer name"
 msgstr "印表機名稱"
@@ -3343,6 +3410,10 @@ msgstr "正在列印"
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "列印時間"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr ""
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3384,7 +3455,6 @@ msgctxt "@title:column"
 msgid "Profile settings"
 msgstr "列印參數設定"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "列印參數 {0} 檔案類型未知或已損壞。"
@@ -3405,22 +3475,18 @@ msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "專案檔案 <filename>{0}</filename> 包含未知的機器類型 <message>{1}</message>。機器無法被匯入，但模型將被匯入。"
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>."
 msgstr "專案檔案<filename>{0}</filename> 已毀損 : <message>{1}</message>."
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tag <filename>!"
 msgid "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura."
 msgstr "專案檔案 <filename>{0}</filename> 使用了此版本 UltiMaker Cura 未知的參數製作。"
 
-#, python-brace-format
 msgctxt "@info:error Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>."
 msgstr "專案檔案 <filename>{0}</filename> 無法存取：<message>{1}</message>。"
@@ -3526,6 +3592,10 @@ msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "提供連結到 Cura 切片引擎後台。"
 
 msgctxt "description"
+msgid "Provides the paint tools."
+msgstr ""
+
+msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr ""
 
@@ -3537,7 +3607,6 @@ msgctxt "@label"
 msgid "Qt version"
 msgstr "Qt 版本"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Quality type '{0}' is not compatible with the current active machine definition '{1}'."
 msgstr "品質類型 '{0}' 與目前的啟用的機器設定 '{1} '不相容。"
@@ -3572,6 +3641,18 @@ msgstr ""
 
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
 msgstr ""
 
 msgctxt "@action:button"
@@ -3698,6 +3779,14 @@ msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "正在繼續..."
 
+msgctxt "@label"
+msgid "Retracted"
+msgstr ""
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr ""
+
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "回抽"
@@ -3774,12 +3863,10 @@ msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Save to Removable Drive"
 msgstr "儲存至行動裝置"
 
-#, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "Save to Removable Drive {0}"
 msgstr "儲存到行動裝置 {0}"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Saved to Removable Drive {0} as {1}"
 msgstr "儲存到行動裝置 {0}：{1}"
@@ -3788,7 +3875,6 @@ msgctxt "@info:title"
 msgid "Saving"
 msgstr "儲存中"
 
-#, python-brace-format
 msgctxt "@info:progress Don't translate the XML tags <filename>!"
 msgid "Saving to Removable Drive <filename>{0}</filename>"
 msgstr "正在儲存到行動裝置 <filename>{0}</filename>"
@@ -3800,6 +3886,10 @@ msgstr "放大過小模型"
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "縮小過大模型"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr ""
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3828,6 +3918,10 @@ msgstr ""
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "選擇對此模型的自訂設定"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr ""
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -4225,6 +4319,10 @@ msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Square"
+msgstr ""
+
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr "正式版本與測試版本發佈"
@@ -4281,7 +4379,6 @@ msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "成功匯入線材 <filename>%1</filename>"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}."
 msgstr "已成功匯入列印參數 {0}。"
@@ -4304,6 +4401,10 @@ msgstr ""
 
 msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Support"
 msgstr ""
 
 msgctxt "@label"
@@ -4331,7 +4432,7 @@ msgid "Support Interface"
 msgstr "支撐介面"
 
 msgctxt "@action:label"
-msgid "Support Type"
+msgid "Support Structure"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4459,7 +4560,6 @@ msgctxt "@label"
 msgid "The extruder train to use for printing the support. This is used in multi-extrusion."
 msgstr ""
 
-#, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "檔案 <filename>{0}</filename> 已存在。你確定要覆蓋掉它嗎？"
@@ -4557,6 +4657,10 @@ msgid "The printer at this address has not yet responded."
 msgstr "該網路位址的印表機尚無回應。"
 
 msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr ""
+
+msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr "尚未連線到印表機。"
 
@@ -4605,7 +4709,7 @@ msgid "The width in millimeters on the build plate"
 msgstr ""
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme*:"
+msgid "Theme (* restart required):"
 msgstr ""
 
 msgctxt "@info:status"
@@ -4672,6 +4776,10 @@ msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "無法添加此印表機，因為它是未知的印表機，或者它不是印表機群組的主機。"
 
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr ""
+
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
 msgid_plural "These printers are not linked to the Digital Factory:"
@@ -4689,7 +4797,6 @@ msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "此印表機為 %1 印表機群組的管理者。"
 
-#, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "列印參數 <filename>{0}</filename> 含有不正確的資料，無法匯入。"
@@ -4767,7 +4874,6 @@ msgctxt "@text"
 msgid "To automatically sync the material profiles with all your printers connected to Digital Factory you need to be signed in in Cura."
 msgstr "為了自動將線材設定檔與所有連接到 Digital Factory 的列印機同步，您必須先從Cura進行登入."
 
-#, python-brace-format
 msgctxt "info:status"
 msgid "To establish a connection, please visit the {website_link}"
 msgstr "要建立連線，請前往 {website_link}"
@@ -4780,7 +4886,6 @@ msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
 msgstr "要透過網路列印，請確認你的印表機已透過網路線或 WIFI 連接到網路。若你無法讓 Cura 與印表機連線，你仍然可以使用 USB 裝置將 G-code 檔案傳輸到印表機。"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "To remove {printer_name} permanently, visit {digital_factory_link}"
 msgstr "要永久移除 {printer_name}，請前往 {digital_factory_link}"
@@ -4925,12 +5030,10 @@ msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "無法在列印範圍內放下全部物件"
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id}"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:plugin_failed"
 msgid ""
 "Unable to kill running EnginePlugin: {self._plugin_id}\n"
@@ -4965,12 +5068,10 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "無法切片（原因：換料塔或主位置無效）。"
 
-#, python-format
 msgctxt "@info:status"
 msgid "Unable to slice because there are objects associated with disabled Extruder %s."
 msgstr "有物件使用了被停用的擠出機 %s ，因此無法進行切片。"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "因部份模型設定問題無法進行切片。部份模型的下列設定有錯誤：{error_labels}"
@@ -4979,7 +5080,6 @@ msgctxt "@info:status"
 msgid "Unable to slice with the current material as it is incompatible with the selected machine or configuration."
 msgstr "無法使用目前線材切片，因為它與所選機器或設定不相容。"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice with the current settings. The following settings have errors: {0}"
 msgstr "無法使用目前設定進行切片。以下設定存在錯誤：{0}"
@@ -4988,7 +5088,6 @@ msgctxt "@info"
 msgid "Unable to start a new sign in process. Check if another sign in attempt is still active."
 msgstr "無法開始新的登入程序。檢查是否有其他登入仍在進行中。"
 
-#, python-brace-format
 msgctxt "@info:error"
 msgid "Unable to write to file: {0}"
 msgstr ""
@@ -5000,6 +5099,10 @@ msgstr "無法使用"
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "無法使用的印表機"
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5037,7 +5140,6 @@ msgctxt "@label:property"
 msgid "Unknown Package"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@error:send"
 msgid "Unknown error code when uploading print job: {0}"
 msgstr "不明上傳列印作業錯誤代碼：{0}"
@@ -5061,6 +5163,10 @@ msgstr "無標題"
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "無標題"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr ""
 
 msgctxt "@button"
 msgid "Update"
@@ -5231,8 +5337,8 @@ msgid "Uploading your backup..."
 msgstr "正在上傳你的備份..."
 
 msgctxt "@option:check"
-msgid "Use a single instance of Cura"
-msgstr "使用同一 Cura 視窗"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5414,7 +5520,6 @@ msgctxt "@info:title"
 msgid "Warning"
 msgstr "警告"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "Warning: The profile is not visible because its quality type '{0}' is not available for the current configuration. Switch to a material/nozzle combination that can use this quality type."
 msgstr "警告：列印參數無法顯示，因為它的品質類型 '{0}' 無法在目前設定使用。切換到可使用此品質類型的線材/噴頭組合。"
@@ -5543,7 +5648,6 @@ msgstr ""
 "你將從 Cura 移除所有印表機。此動作無法復原。\n"
 "你確定要繼續嗎？"
 
-#, python-brace-format
 msgctxt "@label"
 msgid ""
 "You are about to remove {0} printer from Cura. This action cannot be undone.\n"
@@ -5559,7 +5663,6 @@ msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
 msgstr "你正在嘗試連接到一台未安裝 UltiMaker Connect 的印表機。請將印表機更新至最新版本的韌體。"
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
 msgstr "你正在嘗試連接到 {0}，但它不是印表機群組的管理者。你可以透過網頁將其設定為印表機群組的管理者。"
@@ -5600,7 +5703,6 @@ msgctxt "@info"
 msgid "Your new printer will automatically appear in Cura"
 msgstr ""
 
-#, python-brace-format
 msgctxt "@info:status"
 msgid ""
 "Your printer <b>{printer_name}</b> could be connected via cloud.\n"
@@ -5665,7 +5767,6 @@ msgctxt "@label"
 msgid "version: %1"
 msgstr "版本：%1"
 
-#, python-brace-format
 msgctxt "@message {printer_name} is replaced with the name of the printer"
 msgid "{printer_name} will be removed until the next account sync."
 msgstr "{printer_name} 將被移除，直到下次帳號同步之前。"
@@ -5800,7 +5901,6 @@ msgstr "下載外掛 {} 失敗"
 #~ msgid "- Store your UltiMaker Cura settings in the cloud for use anywhere"
 #~ msgstr "- 將你的 UltiMaker Cura 設定儲存在雲端以便隨處使用"
 
-#, python-brace-format
 #~ msgctxt "info:{0} gets replaced by a number of printers"
 #~ msgid "... and {0} other"
 #~ msgid_plural "... and {0} others"
@@ -6833,6 +6933,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@label"
 #~ msgid "Font"
 #~ msgstr "字體"
+
+#~ msgctxt "@option:check"
+#~ msgid "Force layer view compatibility mode (restart required)"
+#~ msgstr "強制分層檢視相容模式（需要重新啟動）"
 
 #~ msgctxt "@info:status"
 #~ msgid ""
@@ -8660,6 +8764,10 @@ msgstr "下載外掛 {} 失敗"
 #~ msgctxt "@info:status"
 #~ msgid "Uploading via UltiMaker Cloud"
 #~ msgstr "透過 UltiMaker Cloud 上傳"
+
+#~ msgctxt "@option:check"
+#~ msgid "Use a single instance of Cura"
+#~ msgstr "使用同一 Cura 視窗"
 
 # Added after the string freeze.
 #~ msgctxt "@label"
