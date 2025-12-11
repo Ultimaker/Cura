@@ -285,30 +285,11 @@ Cura.ExpandablePopup
         Item
         {
             width: parent.width - 2 * parent.padding
-            height:
-            {
-                var height = 0
-                if (autoConfiguration.visible)
-                {
-                    height += autoConfiguration.height
-                }
-                if (customConfiguration.visible)
-                {
-                    height += customConfiguration.height
-                }
-                return height
-            }
+            height: autoConfiguration.height
 
             AutoConfiguration
             {
                 id: autoConfiguration
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Auto
-            }
-
-            CustomConfiguration
-            {
-                id: customConfiguration
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
             }
         }
 
@@ -322,49 +303,6 @@ Cura.ExpandablePopup
             height: UM.Theme.getSize("default_lining").height
 
             color: UM.Theme.getColor("lining")
-        }
-
-        //Allow switching between custom and auto.
-        Item
-        {
-            id: buttonBar
-            visible: popupItem.is_connected //Switching only makes sense if the "auto" part is possible.
-
-            width: parent.width - 2 * parent.padding
-            height: childrenRect.height
-
-            Cura.SecondaryButton
-            {
-                id: goToCustom
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Auto
-                text: catalog.i18nc("@label", "Custom")
-
-                anchors.right: parent.right
-
-                iconSource: UM.Theme.getIcon("ChevronSingleRight")
-                isIconOnRightSide: true
-
-                onClicked:
-                {
-                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Custom
-                    popupItem.manual_selected_method = popupItem.configuration_method
-                }
-            }
-
-            Cura.SecondaryButton
-            {
-                id: goToAuto
-                visible: popupItem.configuration_method == ConfigurationMenu.ConfigurationMethod.Custom
-                text: catalog.i18nc("@label", "Configurations")
-
-                iconSource: UM.Theme.getIcon("ChevronSingleLeft")
-
-                onClicked:
-                {
-                    popupItem.configuration_method = ConfigurationMenu.ConfigurationMethod.Auto
-                    popupItem.manual_selected_method = popupItem.configuration_method
-                }
-            }
         }
     }
 

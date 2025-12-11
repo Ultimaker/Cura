@@ -25,7 +25,7 @@ Button
         for (var index in extruderConfigurations)
         {
             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
-            if (name == "" || name == "Unknown")
+            if (! name.toLowerCase().startsWith("solevation"))
             {
                 return false
             }
@@ -127,6 +127,10 @@ Button
                         for (var index in extruderConfigurations)
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
+                            if (! name.toLowerCase().startsWith("solevation"))
+                            {
+                                name = "";
+                            }
                             if (name == "" || name == "Unknown")
                             {
                                 var materialType = extruderConfigurations[index].material.type
@@ -147,7 +151,7 @@ Button
                         }
 
                         unknownMaterials = "<b>" + unknownMaterials + "</b>"
-                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile.");
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Only Solevation materials are supported in this version.");
                         return draftResult.arg(unknownMaterials).arg("<a href=' '>" + catalog.i18nc("@label","Marketplace") + "</a> ")
                     }
 
