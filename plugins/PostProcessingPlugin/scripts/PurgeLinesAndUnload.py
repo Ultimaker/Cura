@@ -500,7 +500,7 @@ class PurgeLinesAndUnload(Script):
 
         purge_location = self.getSettingValueByKey("purge_line_location")
         purge_extrusion_full = True if self.getSettingValueByKey("purge_line_length") == "purge_full" else False
-        purge_str = ";TYPE:CUSTOM----------[Purge Lines]\nG0 F600 Z2 ; Move up\nG92 E0 ; Reset extruder\n"
+        purge_str = ";---------------------[Purge Lines]\nG0 F600 Z2 ; Move up\nG92 E0 ; Reset extruder\n"
         purge_str += self._get_blob_code()
         # Normal cartesian printer with origin at the left front corner
         if self.bed_shape == "rectangular" and not self.origin_at_center:
