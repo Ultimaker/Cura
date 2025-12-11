@@ -388,8 +388,7 @@
                         "Makerbot": "Makerbot",
                         "BFB": "Bits from Bytes",
                         "MACH3": "Mach3",
-                        "Repetier": "Repetier",
-                        "BambuLab": "BambuLab"
+                        "Repetier": "Repetier"
                     },
                     "default_value": "RepRap (Marlin/Sprinter)",
                     "settable_per_mesh": false,
