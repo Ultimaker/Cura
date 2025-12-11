@@ -57,7 +57,6 @@ class SettingsExportModel(QObject):
                            'brim_smart_ordering',
                            'ooze_shield_enabled',
                            'bottom_skin_preshrink',
-                           'skin_edge_support_thickness',
                            'alternate_carve_order',
                            'top_skin_preshrink',
                            'interlocking_enable'}
