@@ -2442,53 +2442,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "skin_edge_support_thickness":
-                {
-                    "label": "Skin Edge Support Thickness",
-                    "description": "The thickness of the extra infill that supports skin edges.",
-                    "unit": "mm",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "machine_height",
-                    "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
-                    "type": "float",
-                    "value": "0",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "enabled": "infill_sparse_density > 0",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "skin_edge_support_layers":
-                        {
-                            "label": "Skin Edge Support Layers",
-                            "description": "The number of infill layers that supports skin edges.",
-                            "default_value": 0,
-                            "minimum_value": "0",
-                            "maximum_value_warning": "10",
-                            "type": "int",
-                            "maximum_value": "999999",
-                            "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
-                            "limit_to_extruder": "infill_extruder_nr",
-                            "enabled": "infill_sparse_density > 0",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "extra_infill_lines_to_support_skins":
-                {
-                    "label": "Extra Infill Lines To Support Skins",
-                    "description": "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "walls_and_lines": "Walls and Lines",
-                        "walls": "Walls Only",
-                        "none": "None"
-                    },
-                    "default_value": "walls_and_lines",
-                    "value": "'none' if infill_sparse_density > 50 else 'walls' if skin_edge_support_thickness > 0 else 'walls_and_lines'",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern not in ('lightning', 'concentric', 'cross','cross_3d') and wall_line_count > 0 and top_layers > 0"
-                },
                 "skin_support":
                 {
                     "label": "Infill Skin Support",
@@ -8987,17 +8940,6 @@
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
-                "bridge_sparse_infill_max_density":
-                {
-                    "label": "Bridge Sparse Infill Max Density",
-                    "description": "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
