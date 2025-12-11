@@ -72,6 +72,4 @@ Cura.Menu
     }
 
     Cura.MenuSeparator { }
-
-    Cura.MenuItem { action: Cura.Actions.configureSettingVisibility }
 }

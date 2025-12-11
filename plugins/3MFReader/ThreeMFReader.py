@@ -1,14 +1,11 @@
 #  Copyright (c) 2021-2022 Ultimaker B.V.
 #  Cura is released under the terms of the LGPLv3 or higher.
-import json
 import os.path
 import zipfile
 from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import pySavitar as Savitar
 import numpy
-from PyQt6.QtCore import QBuffer
-from PyQt6.QtGui import QImage, QImageReader
 
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
@@ -20,8 +17,6 @@ from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Scene.SceneNodeSettings import SceneNodeSettings
 from UM.Util import parseBool
-from UM.View.GL.OpenGL import OpenGL
-from UM.View.GL.Texture import Texture
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
@@ -140,14 +135,9 @@ class ThreeMFReader(MeshReader):
         vertices_data = numpy.fromstring(mesh_data.getFlatVerticesAsBytes(), dtype=numpy.float32)
         vertices = numpy.resize(vertices_data, (int(vertices_data.size / 3), 3))
 
-        texture_path = mesh_data.getTexturePath(scene)
-        uv_data = numpy.fromstring(mesh_data.getUVCoordinatesPerVertexAsBytes(scene), dtype=numpy.float32)
-        uv_coordinates = numpy.resize(uv_data, (int(uv_data.size / 2), 2))
-
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
         mesh_builder.setMeshId(node_id)
-        mesh_builder.setUVCoordinates(uv_coordinates)
         if file_name:
             # The filename is used to give the user the option to reload the file if it is changed on disk
             # It is only set for the root node of the 3mf file
@@ -230,30 +220,6 @@ class ThreeMFReader(MeshReader):
             # affects (auto) slicing
             sliceable_decorator = SliceableObjectDecorator()
             um_node.addDecorator(sliceable_decorator)
-
-            if texture_path != "" and archive is not None:
-                texture_data = archive.open(texture_path).read()
-                texture_buffer = QBuffer()
-                texture_buffer.open(QBuffer.OpenModeFlag.ReadWrite)
-                texture_buffer.write(texture_data)
-
-                image_reader = QImageReader(texture_buffer, b"png")
-
-                texture_buffer.seek(0)
-                texture_image = image_reader.read()
-                texture = Texture(OpenGL.getInstance())
-                texture.setImage(texture_image)
-                sliceable_decorator.setPaintTexture(texture)
-
-                texture_buffer.seek(0)
-                data_mapping_desc = image_reader.text("Description")
-                if data_mapping_desc != "":
-                    data_mapping = json.loads(data_mapping_desc)
-                    for key, value in data_mapping.items():
-                        # Tuples are stored as lists in json, restore them back to tuples
-                        data_mapping[key] = tuple(value)
-                    sliceable_decorator.setTextureDataMapping(data_mapping)
-
         return um_node
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:

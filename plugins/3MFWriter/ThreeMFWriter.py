@@ -7,14 +7,11 @@ import threading
 
 from typing import Optional, cast, List, Dict, Set
 
-from UM.PluginRegistry import PluginRegistry
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Application import Application
-from UM.OutputDevice import OutputDeviceError
-from UM.Message import Message
 from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -51,14 +48,12 @@ from .SettingsExportModel import SettingsExportModel
 from .SettingsExportGroup import SettingsExportGroup
 from .ThreeMFVariant import ThreeMFVariant
 from .Cura3mfVariant import Cura3mfVariant
-from .BambuLabVariant import BambuLabVariant
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 MODEL_PATH = "3D/3dmodel.model"
 PACKAGE_METADATA_PATH = "Cura/packages.json"
-TEXTURES_PATH = "3D/Textures"
 MODEL_RELATIONS_PATH = "3D/_rels/3dmodel.model.rels"
 
 class ThreeMFWriter(MeshWriter):
@@ -79,7 +74,6 @@ class ThreeMFWriter(MeshWriter):
         # Register available variants
         self._variants = {
             Cura3mfVariant(self).mime_type: Cura3mfVariant,
-            BambuLabVariant(self).mime_type: BambuLabVariant
         }
 
     @staticmethod
@@ -157,27 +151,6 @@ class ThreeMFWriter(MeshWriter):
                 savitar_node.getMeshData().setFacesFromBytes(indices_array)
             else:
                 savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
-
-            packed_texture = um_node.callDecoration("packTexture") 
-            uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
-            if packed_texture is not None and archive is not None and uv_coordinates_array is not None and len(uv_coordinates_array) > 0:
-                texture_path = f"{TEXTURES_PATH}/{id(um_node)}.png"
-                texture_file = zipfile.ZipInfo(texture_path)
-                # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
-                archive.writestr(texture_file, packed_texture)
-
-                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
-
-                # Add texture relation to model relations file
-                if model_relations_element is not None:
-                    ET.SubElement(model_relations_element, "Relationship",
-                                  Target=texture_path, Id=f"rel{len(model_relations_element)+1}",
-                                  Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dtexture")
-
-                if content_types_element is not None:
-                    ET.SubElement(content_types_element, "Override", PartName=texture_path,
-                                  ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
-
 
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")

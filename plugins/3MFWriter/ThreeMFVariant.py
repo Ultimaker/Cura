@@ -16,8 +16,7 @@ class ThreeMFVariant(ABC):
     """Base class for 3MF format variants.
     
     Different vendors may have their own extensions to the 3MF format,
-    such as BambuLab's 3MF variant. This class provides an interface
-    for implementing these variants.
+    This class provides an interface for implementing these variants.
     """
     
     def __init__(self, writer: 'ThreeMFWriter'):

@@ -146,15 +146,7 @@ Item
     {
         id: buttonRow
         property real padding: UM.Theme.getSize("default_margin").width
-        height:
-        {
-            const draggable_area_height = draggableArea.visible ? draggableArea.height : 0;
-            if (currentModeIndex == PrintSetupSelectorContents.Mode.Custom)
-            {
-                return recommendedButton.height + 2 * padding + draggable_area_height;
-            }
-            return draggable_area_height;
-        }
+        height: draggableArea.visible ? draggableArea.height : 0;
 
         anchors
         {

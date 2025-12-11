@@ -467,9 +467,8 @@ UM.MainWindow
             insertPage(0, catalog.i18nc("@title:tab","General"), Qt.resolvedUrl("Preferences/GeneralPage.qml"));
 
             removePage(1);
-            insertPage(1, catalog.i18nc("@title:tab","Settings"), Qt.resolvedUrl("Preferences/SettingVisibilityPage.qml"));
+            insertPage(1, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
 
-            insertPage(2, catalog.i18nc("@title:tab", "Printers"), Qt.resolvedUrl("Preferences/MachinesPage.qml"));
             currentPage = 0;
         }
 
@@ -508,21 +507,7 @@ UM.MainWindow
         function onTriggered()
         {
             preferences.visible = true;
-            preferences.setPage(2);
-        }
-    }
-
-    Connections
-    {
-        target: Cura.Actions.configureSettingVisibility
-        function onTriggered(source)
-        {
-            preferences.visible = true;
             preferences.setPage(1);
-            if(source && source.key)
-            {
-                preferences.getCurrentItem().scrollToSection(source.key);
-            }
         }
     }
 

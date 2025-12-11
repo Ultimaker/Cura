@@ -53,29 +53,6 @@ Cura.CategoryButton
 
     UM.SimpleButton
     {
-        id: settingsButton
-
-        visible: base.hovered || settingsButton.hovered
-        height: UM.Theme.getSize("small_button_icon").height
-        width: height
-
-        anchors
-        {
-            right: inheritButton.visible ? inheritButton.left : parent.right
-            // Use 1.9 as the factor because there is a 0.1 difference between the settings and inheritance warning icons
-            rightMargin: inheritButton.visible ? Math.round(UM.Theme.getSize("default_margin").width / 2) : arrow.width + Math.round(UM.Theme.getSize("default_margin").width * 1.9)
-            verticalCenter: parent.verticalCenter
-        }
-
-        color: UM.Theme.getColor("setting_control_button")
-        hoverColor: UM.Theme.getColor("setting_control_button_hover")
-        iconSource: UM.Theme.getIcon("Sliders")
-
-        onClicked: Cura.Actions.configureSettingVisibility.trigger(definition)
-    }
-
-    UM.SimpleButton
-    {
         id: inheritButton
 
         anchors.verticalCenter: parent.verticalCenter

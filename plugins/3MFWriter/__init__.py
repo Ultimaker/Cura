@@ -33,12 +33,6 @@ def getMetaData():
                     "mime_type": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
                     "mode": ThreeMFWriter.ThreeMFWriter.OutputMode.BinaryMode
                 },
-                {
-                    "extension": f"gcode.{workspace_extension}",
-                    "description": i18n_catalog.i18nc("@item:inlistbox", "BambuLab 3MF file"),
-                    "mime_type": "application/vnd.bambulab-package.3dmanufacturing-3dmodel+xml",
-                    "mode": ThreeMFWorkspaceWriter.ThreeMFWorkspaceWriter.OutputMode.BinaryMode
-                }
             ]
         }
         metaData["workspace_writer"] = {

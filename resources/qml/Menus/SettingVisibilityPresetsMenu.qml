@@ -45,11 +45,4 @@ Cura.Menu
             collapseAllCategories();
         }
     }
-    Cura.MenuSeparator {}
-    Cura.MenuItem
-    {
-        text: catalog.i18nc("@action:inmenu", "Manage Setting Visibility...")
-        icon.name: "configure"
-        onTriggered: Cura.Actions.configureSettingVisibility.trigger()
-    }
 }

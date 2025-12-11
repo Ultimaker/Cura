@@ -69,8 +69,6 @@ Item
     property alias toggleFullScreen: toggleFullScreenAction
     property alias exitFullScreen: exitFullScreenAction
 
-    property alias configureSettingVisibility: configureSettingVisibilityAction
-
     property alias browsePackages: browsePackagesAction
 
     property alias paste: pasteAction
@@ -525,14 +523,6 @@ Item
     {
         id: showProfileFolderAction
         text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder")
-    }
-
-
-    Action
-    {
-        id: configureSettingVisibilityAction
-        text: catalog.i18nc("@action:menu", "Configure setting visibility...")
-        icon.name: "configure"
     }
 
     Action
