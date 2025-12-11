@@ -25,7 +25,12 @@ Button
         for (var index in extruderConfigurations)
         {
             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
-            if (! name.toLowerCase().startsWith("solevation"))
+            if (name == "" || name == "Unknown")
+            {
+                return false
+            }
+            var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
+            if (! brand.toLowerCase().startsWith("solevation"))
             {
                 return false
             }
@@ -127,7 +132,8 @@ Button
                         for (var index in extruderConfigurations)
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
-                            if (! name.toLowerCase().startsWith("solevation"))
+                            var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
+                            if (! brand.toLowerCase().startsWith("solevation"))
                             {
                                 name = "";
                             }
