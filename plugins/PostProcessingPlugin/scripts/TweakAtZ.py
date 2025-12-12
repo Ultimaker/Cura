@@ -12,8 +12,8 @@
         ~Added support for Relative Extrusion
         ~Added support for Firmware Retraction
         ~Added support for 'G2' and 'G3' moves.
-        ~The script supports a maximum of 2 extruders.
-        ~'One-at-a-Time' is not supported and a kick-out is added
+        ~The script supports a maximum of 2 extruders.  You can have more, but they are ignored.
+        (see change note below) ~'One-at-a-Time' is now supported
 
     Previous contributions by:
         Original Authors and contributors to the ChangeAtZ post-processing script and the earlier TweakAtZ:
@@ -25,6 +25,7 @@
             Modified by Wes Hanney, Retract Length + Speed, Clean up
             Modified by Alex Jaxon, Added option to modify Build Volume Temperature
             Re-write by GregValiant, to work with new variables in Cura 5.x and with the changes noted above
+    Dec 12, 2025 ~ Added support for 'One at a Time' print sequence.
 """
 
 from UM.Application import Application
@@ -34,7 +35,11 @@ from UM.Message import Message
 from UM.Logger import Logger
 
 class TweakAtZ(Script):
-    version = "2.0.0"
+    version = "2.1" # Updated from 2.0 on Dec 12, 2025
+    # These are for one-at-a-time mode
+    start_list = []
+    end_list = []
+    print_start_adj = 2 # Accounts for the first layer being in data[2]
 
     def initialize(self) -> None:
         """
@@ -63,7 +68,7 @@ class TweakAtZ(Script):
 
     def getSettingDataString(self):
         return """{
-            "name": "Tweak At Z (2.0)",
+            "name": "Tweak at Z (""" + self.version + """)",
             "key": "TweakAtZ",
             "metadata": {},
             "version": 2,
@@ -74,6 +79,13 @@ class TweakAtZ(Script):
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
+                },
+                "enable_one_at_a_time_mode": {
+                    "label": "Enable 'One at a Time' mode",
+                    "description": "If your print sequence is 'One at a Time' enable this so each model will have it's own adjustments.  The models are treated as if they are all the same.  If you have different models and model heights you will need to experiment.  NOTE: This setting has no effect on 'All at Once' prints.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "taz_enabled"
                 },
                 "by_layer_or_height": {
                     "label": "'By Layer' or 'By Height'",
@@ -352,13 +364,6 @@ class TweakAtZ(Script):
             Logger.log("i", "[Tweak at Z] is not enabled")
             return data
 
-        # Message the user and exit if the print sequence is 'One at a Time'
-        if self.global_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-            Message(title = "[Tweak at Z]", text = "One-at-a-Time mode is not supported.  The script will exit without making any changes.").show()
-            data[0] += ";  [Tweak at Z] Did not run (One at a Time mode is not supported)\n"
-            Logger.log("i", "TweakAtZ does not support 'One at a Time' mode")
-            return data
-
         # Exit if the gcode has been previously post-processed.
         if ";POSTPROCESSED" in data[0]:
             return data
@@ -375,6 +380,11 @@ class TweakAtZ(Script):
         self.orig_bv_temp = self.global_stack.getProperty("build_volume_temperature", "value")
         self.z_hop_enabled = bool(self.extruder_list[0].getProperty("retraction_hop_enabled", "value"))
         self.raft_enabled = True if str(self.global_stack.getProperty("adhesion_type", "value")) == "raft" else False
+
+        # Script settings
+        self.print_sequence = self.global_stack.getProperty("print_sequence", "value")
+        self.by_layer_or_height = self.getSettingValueByKey("by_layer_or_height")
+
         # The Start and end layer numbers are used when 'By Layer' is selected
         self.start_layer = self.getSettingValueByKey("a_start_layer") - 1
         end_layer = int(self.getSettingValueByKey("a_end_layer"))
@@ -451,9 +461,34 @@ class TweakAtZ(Script):
         }
 
         # Run the selected procedures
-        for setting, method in procedures.items():
-            if self.getSettingValueByKey(setting):
-                method(data)
+        if self.print_sequence == "all_at_once":
+            for setting, method in procedures.items():
+                if self.getSettingValueByKey(setting):
+                    method(data)
+        elif self.print_sequence == "one_at_a_time" and bool(self.getSettingValueByKey("enable_one_at_a_time_mode")):
+            # Put together a list of the starts and ends of each model on the build plate.
+            starts_and_ends = self.one_at_a_time_lists(data)
+            # To accomodate existing code the temp_start and temp_end were necessary
+            temp_start = self.start_index
+            temp_end = self.end_index
+
+            """ 
+            Make adjustments to the start and end indexes based on the indexes of the LAYER:0's
+            This was required to get One at a Time to work with By Height and By Layer.
+            """
+            for num in range(0, len(self.start_list)):
+                self.start_index = self.start_list[num] + temp_start - self.print_start_adj
+                if end_layer != -1 or self.by_layer_or_height == "by_height":
+                    self.end_index = self.start_list[num] + temp_end - self.print_start_adj
+                elif end_layer == -1 and self.by_layer_or_height == "by_layer":
+                    self.end_index = self.end_list[num]
+                # Run each prodedure with different starts and ends
+                for setting, method in procedures.items():
+                    if self.getSettingValueByKey(setting):
+                        method(data)
+            self.start_index = temp_start
+            self.end_index = temp_end
+
         data = self._format_lines(data)
         return data
 
@@ -744,16 +779,16 @@ class TweakAtZ(Script):
         if not self.retract_enabled:
             return
 
-        # Exit if neither child setting is checked.
-        if not (change_retract_amt or change_retract_speed):
-            return
-
         speed_retract_0 = int(self.extruder_list[0].getProperty("retraction_speed", "value") * 60)
         retract_amt_0 = self.extruder_list[0].getProperty("retraction_amount", "value")
         change_retract_amt = self.getSettingValueByKey("g_change_retract_amount")
         change_retract_speed = self.getSettingValueByKey("g_change_retract_speed")
         new_retract_speed = int(self.getSettingValueByKey("g_retract_speed") * 60)
         new_retract_amt = self.getSettingValueByKey("g_retract_amount")
+
+        # Exit if neither child setting is checked.
+        if not (change_retract_amt or change_retract_speed):
+            return
 
         # Use M207 and M208 to adjust firmware retraction when required
         if self.firmware_retraction:
@@ -987,3 +1022,23 @@ class TweakAtZ(Script):
 
     def _f_x_y_not_z(self, line):
         return " F" in line and " X" in line and " Y" in line and not " Z" in line
+
+    def one_at_a_time_lists(self, data):
+        """
+        This puts together a list of starts and their related list of ends.  
+        This is requried for One-at-a-Time mode.
+        """
+        self.start_list = []
+        self.end_list = []
+        for index, layer in enumerate(data):
+            if index < 2 or index > len(data) - 1:
+                continue
+            if ";LAYER:0" in layer:
+                self.start_list.append(index)
+                self.end_list.append(index - 1)
+            if "M140 S0" in layer:
+                self.end_list.append(index-1)
+                break
+        # Delete the inital stop index as it is not requried.  This also leaves both lists the same length.
+        self.end_list.pop(0)
+        return True
