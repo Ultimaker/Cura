@@ -178,7 +178,7 @@
             "maximum_value": 260,
             "maximum_value_warning": 240
         },
-        "min_bead_width": { "value": 0.3 },
+        "min_bead_width": { "value": "line_width * 1.15" },
         "multiple_mesh_overlap": { "value": "0" },
         "print_sequence": { "enabled": false },
         "raft_airgap": { "value": 0.35 },
