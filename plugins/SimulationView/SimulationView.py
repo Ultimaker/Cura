@@ -103,6 +103,7 @@ class SimulationView(CuraView):
 
         # Cache for layer heights to avoid recalculating on every query
         self._layer_heights_cache: dict[int, float] = {}
+        self._layer_heights_cache_node_id: Optional[int] = None  # Track which node's data is cached
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -298,8 +299,8 @@ class SimulationView(CuraView):
         This method iterates through all layers once and stores their heights in a cache.
         Handles both sliced data (microns) and loaded gcode (millimeters).
         For layer 0 from gcode, uses thickness instead of height due to incorrect Z coordinates.
+        Only recalculates if the layer data source has changed.
         """
-        self._layer_heights_cache.clear()
         scene = self.getController().getScene()
         from cura.Scene.GCodeListDecorator import GCodeListDecorator
         
@@ -307,6 +308,15 @@ class SimulationView(CuraView):
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
                 continue
+            
+            # Check if we already have cached data for this node
+            current_node_id = id(node)
+            if self._layer_heights_cache_node_id == current_node_id and self._layer_heights_cache:
+                # Cache is still valid, no need to recalculate
+                return
+            # Cache is invalid or empty, recalculate
+            self._layer_heights_cache.clear()
+            self._layer_heights_cache_node_id = current_node_id
             
             has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
             
@@ -328,8 +338,13 @@ class SimulationView(CuraView):
                 else:
                     self._layer_heights_cache[layer_id] = layer.height / 1000.0
             
-            # We found layer data, no need to continue searching
-            break
+            # We found layer data and cached it, no need to continue searching
+            return
+        
+        # No layer data found - clear the cache
+        if self._layer_heights_cache_node_id is not None:
+            self._layer_heights_cache.clear()
+            self._layer_heights_cache_node_id = None
 
     def _getLayerHeight(self, layer_number: int) -> float:
         """Helper method to get the height of a specific layer in millimeters from cache.
@@ -789,6 +804,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self._calculateLayerHeightsCache()
             self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)
