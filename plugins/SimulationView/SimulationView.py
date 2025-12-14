@@ -309,14 +309,15 @@ class SimulationView(CuraView):
             if not layer_data:
                 continue
             
-            # Check if we already have cached data for this node
-            current_node_id = id(node)
-            if self._layer_heights_cache_node_id == current_node_id and self._layer_heights_cache:
+            # Check if we already have cached data for this layer_data object
+            # Use id of the layer_data itself, not the node, since node might be reused
+            current_layer_data_id = id(layer_data)
+            if self._layer_heights_cache_node_id == current_layer_data_id and self._layer_heights_cache:
                 # Cache is still valid, no need to recalculate
                 return
             # Cache is invalid or empty, recalculate
             self._layer_heights_cache.clear()
-            self._layer_heights_cache_node_id = current_node_id
+            self._layer_heights_cache_node_id = current_layer_data_id
             
             has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
             
