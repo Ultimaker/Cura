@@ -1,7 +1,7 @@
 # Copyright (c) 2021 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import math
-from typing import Tuple
+from typing import Optional
 
 from UM.Math.Color import Color
 from UM.Math.Vector import Vector
@@ -144,7 +144,7 @@ class SimulationPass(RenderPass):
                     continue
 
                 # Compensate for flipping the ZY-plane:
-                flip_plane_info: Tuple[bool, float] = (True, CuraApplication.getInstance().getBuildVolume().getWidth())
+                flip_plane_info: Optional[float] = CuraApplication.getInstance().getBuildVolume().getWidth()
 
                 # Render all layers below a certain number as line mesh instead of vertices.
                 if self._layer_view.getCurrentLayer() > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
