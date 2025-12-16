@@ -99,8 +99,8 @@
 
         "retraction_amount": { "default_value": 0.8 },
         "retraction_speed": { "default_value": 30 },
-        "retraction_retract_speed": { "default_value": 30 },
-        "retraction_prime_speed": { "default_value": 30 },
+        "retraction_retract_speed": { "value": 30 },
+        "retraction_prime_speed": { "value": 30 },
         "retraction_hop": { "value": 0.4 },
         "retraction_hop_enabled": { "value": true },
         "retraction_count_max": { "value": 100 },
