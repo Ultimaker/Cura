@@ -47,15 +47,12 @@
         "machine_max_jerk_z": { "value": 3.0 },
         "machine_max_jerk_e": { "value": 2.5 },
 
-        "acceleration_enabled": { "value": true },
         "acceleration_print":
         {
             "value": 10000,
             "maximum_value_warning": 20000
         },
-        "acceleration_travel": { "value": "acceleration_print" },
         "acceleration_wall": { "value": "acceleration_print / 2" },
-        "acceleration_wall_0": { "value": "acceleration_wall" },
         "acceleration_layer_0": { "value": 1000 },
 
         "speed_print":
@@ -98,7 +95,6 @@
             "value": 100,
             "maximum_value_warning": 500
         },
-        "speed_support": { "value": "speed_print", "maximum_value_warning": 500 },
         "speed_support_interface": { "value": 80, "maximum_value_warning": 500 },
 
         "retraction_amount": { "default_value": 0.8 },
@@ -110,9 +106,7 @@
         "retraction_count_max": { "value": 100 },
         "retraction_combing": { "value": "'no_outer_surfaces'" },
 
-        "infill_sparse_density": { "default_value": 15 },
         "infill_pattern": { "value": "'zigzag'" },
-        "wall_line_count": { "value": 2 },
         "top_layers": { "value": 5 },
         "bottom_layers": { "value": 3 },
         "top_bottom_thickness": { "value": 1.0 },
@@ -121,16 +115,10 @@
         "support_z_distance": { "value": 0.15 },
         "support_xy_distance": { "value": 0.5 },
         "support_interface_enable": { "value": true },
-        "support_interface_density": { "value": 100 },
 
         "adhesion_type": { "value": "'skirt'" },
         "skirt_line_count": { "value": 2 },
         "skirt_gap": { "value": 2 },
-        "brim_width": { "default_value": 5 },
-
-        "material_diameter": { "value": 1.75 },
-        "material_print_temperature": { "value": 210 },
-        "material_bed_temperature": { "value": 60 },
 
         "machine_start_gcode": { "default_value": ";;===== Elegoo Centauri Carbon Start G-code =====\n;printer_model:ELEGOO Centauri Carbon\nM400 ; wait for buffer to clear\nM220 S100 ;Set the feed speed to 100%\nM221 S100 ;Set the flow rate to 100%\nM104 S140\nM140 S{material_bed_temperature_layer_0}\nG90\nG28 ;home\nM729 ;Clean Nozzle\nM106 P2 S255\nM190 S{material_bed_temperature_layer_0}\nM106 P2 S0\n\n;=============turn on fans to prevent PLA jamming=================\nM106 P3 S180\n\n;Enable pressure advance\nSET_PRESSURE_ADVANCE ADVANCE=0.024\nM400\nM204 S10000 ;Set acceleration\n\nG1 X128 Y-1.2 F20000\nG1 Z0.3 F900\nM109 S{material_print_temperature_layer_0}\nM83\nG92 E0 ;Reset Extruder\nG1 X-1.2 E10.156 F6000 ;Draw the first line\nG1 Y98.8 E7.934\nG1 X-0.5 Y100 E0.1\nG1 Y-0.3 E7.934\nG1 X78 E6.284\nG3 I-1 J0 Z0.6 F1200.0 ;Move to side a little\nG1 F20000\nG92 E0 ;Reset Extruder\n" },
 
