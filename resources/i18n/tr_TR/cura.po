@@ -3036,10 +3036,9 @@ msgid "Please remove the print"
 msgstr "Lütfen yazıcıyı çıkarın"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "Lütfen ayarları gözden geçirin ve modellerinizi şu durumlara karşı kontrol edin:"
 "- Yapı hacmine sığma"
-"- Etkin bir ekstrüdere atanma"
 "- Değiştirici kafesler olarak ayarlanmama"
 
 msgctxt "@label"

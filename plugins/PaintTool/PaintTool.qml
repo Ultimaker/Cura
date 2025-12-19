@@ -326,7 +326,7 @@ Item
         UM.Label
         {
             anchors.fill: parent
-            text: catalog.i18nc("@label", "Select a single model to start painting")
+            text: catalog.i18nc("@label", "Select a single ungrouped model to start painting")
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }

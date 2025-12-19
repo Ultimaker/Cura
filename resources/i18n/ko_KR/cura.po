@@ -3028,10 +3028,9 @@ msgid "Please remove the print"
 msgstr "프린트물을 제거하십시오"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are assigned to an enabled extruder\n- Are not all set as modifier meshes"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
 msgstr "설정을 검토하고 모델이 다음 사항에 해당하는지 확인하십시오."
 "- 출력 사이즈 내에 맞춤화됨"
-"- 활성화된 익스트루더로 할당됨"
 "- 수정자 메쉬로 전체 설정되지 않음"
 
 msgctxt "@label"

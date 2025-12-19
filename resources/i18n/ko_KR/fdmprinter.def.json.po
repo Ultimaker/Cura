@@ -6289,8 +6289,8 @@ msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
 msgstr "프린터가 재료를 압출할 때 허용할 최대 유량"
 
-msgctxt "multi_material_paint_deepness label"
-msgid "Multi-material Deepness"
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
 msgstr "다중 재료 깊이"
 
 msgctxt "multi_material_paint_resolution label"
@@ -6309,8 +6309,8 @@ msgctxt "machine_scan_first_layer label"
 msgid "Scan the first layer"
 msgstr "첫 레이어 스캔"
 
-msgctxt "multi_material_paint_deepness description"
-msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr "모델 내부에 페인트되는 디테일의 깊이. 깊이 값이 높을수록 맞물림 정도가 향상되지만, 슬라이싱 시간과 메모리는 늘어납니다. 깊이를 최대한으로 표현하려면 아주 높은 값을 설정하세요. 실제 계산되는 깊이는 다를 수 있습니다."
 
 msgctxt "build_volume_fan_speed description"
