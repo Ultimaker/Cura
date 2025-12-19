@@ -55,7 +55,6 @@
             "maximum_value_warning": 295,
             "value": "material_print_temperature + 5"
         },
-        "material_standby_temperature": { "default_value": "material_print_temperature" },
         "relative_extrusion": { "value": true }
     }
 }
