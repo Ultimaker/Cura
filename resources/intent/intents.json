@@ -1,0 +1,32 @@
+{
+  "default":
+  {
+    "label": "Balanced",
+    "description": "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+  },
+  "visual":
+  {
+    "label": "Visual",
+    "description": "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+  },
+  "engineering":
+  {
+    "label": "Engineering",
+    "description": "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+  },
+  "quick":
+  {
+    "label": "Draft",
+    "description": "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+  },
+  "annealing":
+  {
+    "label": "Annealing",
+    "description": "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+  },
+  "solid":
+  {
+    "label": "Solid",
+    "description": "A highly dense and strong part but at a slower print time. Great for functional parts."
+  }
+}
