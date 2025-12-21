@@ -5,12 +5,14 @@ import QtQuick 2.5
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.1
 
-import UM 1.0 as UM
+import UM 1.5 as UM
 import Cura 1.0 as Cura
 
 UM.PointingRectangle
 {
     id: sliderLabelRoot
+
+    property variant catalog: UM.I18nCatalog { name: "cura" }
 
     // custom properties
     property real maximumValue: 100
@@ -18,7 +20,7 @@ UM.PointingRectangle
     property var setValue // Function
     property bool busy: false
     property int startFrom: 1
-    property real layerHeight: 0.0  // Height in mm to display
+    property var layerData: ({})  // Dict with height, time_elapsed, layer_time, time_remaining
 
     target: Qt.point(parent.width, y + height / 2)
     arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
@@ -91,21 +93,103 @@ UM.PointingRectangle
             id: layerHeightBackground
             x: -(width + UM.Theme.getSize("narrow_margin").width)
             y: (parent.height - height) / 2
-            width: layerHeightText.width + 2 * UM.Theme.getSize("narrow_margin").width
-            height: layerHeightText.height + 2 * UM.Theme.getSize("narrow_margin").height
+            width: infoColumn.width + 2 * UM.Theme.getSize("default_margin").width
+            height: infoColumn.height + 2 * UM.Theme.getSize("default_margin").height
             color: UM.Theme.getColor("tool_panel_background")
             radius: UM.Theme.getSize("default_radius").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
 
-            Text
+            GridLayout
             {
-                id: layerHeightText
+                id: infoColumn
                 anchors.centerIn: parent
-                text: sliderLabelRoot.layerHeight.toFixed(2) + "mm"
-                color: UM.Theme.getColor("text")
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
+                columns: 2
+                columnSpacing: 1.5 * UM.Theme.getSize("default_margin").width
+                rowSpacing: UM.Theme.getSize("narrow_margin").height
+
+                // Current Height label
+                Text
+                {
+                    text: catalog.i18nc("@label", "Current Height:")
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignLeft
+                }
+                // Current Height value
+                Text
+                {
+                    text: (sliderLabelRoot.layerData.height || 0).toFixed(2) + " mm"
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignRight
+                    visible: sliderLabelRoot.layerData.height !== undefined
+                }
+
+                // Time Elapsed label
+                Text
+                {
+                    text: catalog.i18nc("@label", "Time Elapsed:")
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignLeft
+                    visible: sliderLabelRoot.layerData.time_elapsed !== undefined
+                }
+                // Time Elapsed value
+                Text
+                {
+                    text: sliderLabelRoot.layerData.time_elapsed || ""
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignRight
+                    visible: sliderLabelRoot.layerData.time_elapsed !== undefined
+                }
+
+                // Layer Print Time label
+                Text
+                {
+                    text: catalog.i18nc("@label", "Layer Print Time:")
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignLeft
+                    visible: sliderLabelRoot.layerData.layer_time !== undefined
+                }
+                // Layer Print Time value
+                Text
+                {
+                    text: sliderLabelRoot.layerData.layer_time || ""
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignRight
+                    visible: sliderLabelRoot.layerData.layer_time !== undefined
+                }
+
+                // Time Remaining label
+                Text
+                {
+                    text: catalog.i18nc("@label", "Time Remaining:")
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignLeft
+                    visible: sliderLabelRoot.layerData.time_remaining !== undefined
+                }
+                // Time Remaining value
+                Text
+                {
+                    text: sliderLabelRoot.layerData.time_remaining || ""
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default_bold")
+                    renderType: Text.NativeRendering
+                    Layout.alignment: Qt.AlignRight
+                    visible: sliderLabelRoot.layerData.time_remaining !== undefined
+                }
             }
         }
     }
