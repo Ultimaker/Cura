@@ -43,6 +43,12 @@ class LayerDataBuilder(MeshBuilder):
 
         self._layers[layer].setThickness(thickness)
 
+    def setLayerTime(self, layer: int, layer_time: float) -> None:
+        if layer not in self._layers:
+            self.addLayer(layer)
+
+        self._layers[layer].setLayerTime(layer_time)
+
     def build(self, material_color_map, line_type_brightness = 1.0):
         """Return the layer data as :py:class:`cura.LayerData.LayerData`.
 

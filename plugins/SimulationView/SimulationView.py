@@ -334,7 +334,8 @@ class SimulationView(CuraView):
             
             has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
             
-            # First, process layer heights
+            # First, process layer heights and layer times
+            total_time_elapsed = 0.0
             for layer_id in layer_data.getLayers():
                 layer = layer_data.getLayer(layer_id)
                 if not layer:
@@ -354,26 +355,55 @@ class SimulationView(CuraView):
                 
                 # Initialize cache entry with height
                 self._layer_data_cache[layer_id] = {'height': height}
+                
+                # Add layer time if available (from slicing - protobuf message)
+                if hasattr(layer, 'layer_time') and layer.layer_time > 0:
+                    total_time_elapsed += layer.layer_time
+                    
+                    # Format time strings
+                    time_elapsed_str = Duration(total_time_elapsed).getDisplayString(DurationFormat.Format.ISO8601)
+                    layer_time_str = Duration(layer.layer_time).getDisplayString(DurationFormat.Format.ISO8601)
+                    
+                    self._layer_data_cache[layer_id].update({
+                        'time_elapsed': time_elapsed_str,
+                        'layer_time': layer_time_str,
+                        'total_time_raw': total_time_elapsed  # Store for remaining time calculation
+                    })
             
-            # Second, process layer times from gcode
-            gcode_list = None
+            # Calculate remaining times for layers that have time data
+            if total_time_elapsed > 0:
+                for layer_id, cache_entry in self._layer_data_cache.items():
+                    if 'time_elapsed' in cache_entry:
+                        # We stored the raw total_time in the cache temporarily
+                        raw_elapsed = cache_entry.get('total_time_raw', 0)
+                        remaining_time = max(0.0, total_time_elapsed - raw_elapsed)
+                        time_remaining_str = Duration(remaining_time).getDisplayString(DurationFormat.Format.ISO8601)
+                        cache_entry['time_remaining'] = time_remaining_str
+                        # Remove the temporary raw time value
+                        if 'total_time_raw' in cache_entry:
+                            del cache_entry['total_time_raw']
             
-            # Try to get gcode from decorator (when gcode file is loaded)
-            if has_gcode_decorator:
-                gcode_list_decorator = node.getDecorator(GCodeListDecorator)
-                if gcode_list_decorator:
-                    gcode_list = gcode_list_decorator.getGCodeList()
-            
-            # If not found, try scene.gcode_dict (when freshly sliced)
-            if not gcode_list and hasattr(scene, "gcode_dict"):
-                gcode_dict = getattr(scene, "gcode_dict")
-                if gcode_dict:
-                    active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
-                    gcode_list = gcode_dict.get(active_build_plate, None)
-            
-            # Parse time information if gcode is available
-            if gcode_list:
-                self._parseLayerTimes(gcode_list)
+            # If we don't have time data from slicing (layer_time from protobuf),
+            # fall back to parsing gcode comments (for loaded gcode files)
+            if total_time_elapsed == 0:
+                gcode_list = None
+                
+                # Try to get gcode from decorator (when gcode file is loaded)
+                if has_gcode_decorator:
+                    gcode_list_decorator = node.getDecorator(GCodeListDecorator)
+                    if gcode_list_decorator:
+                        gcode_list = gcode_list_decorator.getGCodeList()
+                
+                # If not found, try scene.gcode_dict (when freshly sliced)
+                if not gcode_list and hasattr(scene, "gcode_dict"):
+                    gcode_dict = getattr(scene, "gcode_dict")
+                    if gcode_dict:
+                        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+                        gcode_list = gcode_dict.get(active_build_plate, None)
+                
+                # Parse time information if gcode is available
+                if gcode_list:
+                    self._parseLayerTimes(gcode_list)
             
             # We found layer data and cached it, no need to continue searching
             return
@@ -384,14 +414,16 @@ class SimulationView(CuraView):
             self._layer_data_cache_node_id = None
 
     def _parseLayerTimes(self, gcode_list: List[str]) -> None:
-        """Parse gcode to extract TIME_ELAPSED values and add time metrics to cache.
+        """Parse gcode to extract TIME_ELAPSED values and calculate time metrics for loaded gcode files.
         
-        Reads gcode for ;TIME_ELAPSED: comments and updates the layer data cache
-        with time metrics (elapsed, layer_time, remaining).
+        This is used as a fallback when loading gcode files that don't have layer_time in the 
+        protobuf message (i.e., manually loaded gcode files, not freshly sliced).
+        
+        Reads gcode for ;TIME_ELAPSED: comments and calculates layer times by computing deltas.
         
         :param gcode_list: List of gcode chunks (strings) to parse
         """
-        # First pass: collect raw TIME_ELAPSED values
+        # Collect raw TIME_ELAPSED values from gcode
         time_elapsed_raw: dict[int, float] = {}
         current_layer = -1  # Start before layer 0
         
@@ -406,7 +438,7 @@ class SimulationView(CuraView):
                         pass
 
                 # Check for TIME_ELAPSED marker
-                if line.startswith(";TIME_ELAPSED:"):
+                elif line.startswith(";TIME_ELAPSED:"):
                     try:
                         time_value = float(line[14:].strip())
                         # Associate this time with the current layer
@@ -415,7 +447,7 @@ class SimulationView(CuraView):
                     except ValueError:
                         pass
 
-        # Second pass: calculate all derived values and add to cache
+        # Process collected data and add to cache
         if not time_elapsed_raw:
             # No time data found
             return
@@ -434,7 +466,7 @@ class SimulationView(CuraView):
             # Calculate remaining time
             remaining_time = max(0.0, total_time - elapsed_time)
 
-            # Format time strings using UM Duration formatter - only store formatted strings
+            # Format time strings using UM Duration formatter (ISO8601 format to show seconds)
             time_elapsed_str = Duration(elapsed_time).getDisplayString(DurationFormat.Format.ISO8601)
             layer_time_str = Duration(layer_time).getDisplayString(DurationFormat.Format.ISO8601)
             time_remaining_str = Duration(remaining_time).getDisplayString(DurationFormat.Format.ISO8601)

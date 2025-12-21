@@ -14,6 +14,7 @@ class Layer:
         self._id = layer_id
         self._height = 0.0
         self._thickness = 0.0
+        self._layer_time = 0.0
         self._polygons = []  # type: List[LayerPolygon]
         self._element_count = 0
 
@@ -24,6 +25,10 @@ class Layer:
     @property
     def thickness(self):
         return self._thickness
+
+    @property
+    def layer_time(self):
+        return self._layer_time
 
     @property
     def polygons(self) -> List[LayerPolygon]:
@@ -38,6 +43,9 @@ class Layer:
 
     def setThickness(self, thickness: float) -> None:
         self._thickness = thickness
+
+    def setLayerTime(self, layer_time: float) -> None:
+        self._layer_time = layer_time
 
     def lineMeshVertexCount(self) -> int:
         result = 0
