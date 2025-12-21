@@ -46,13 +46,21 @@ class SimulationViewProxy(QObject):
     def minimumLayer(self):
         return self._simulation_view.getMinimumLayer()
 
-    @pyqtProperty(float, notify=currentLayerChanged)
-    def currentLayerHeight(self):
-        return self._simulation_view.getCurrentLayerHeight()
+    @pyqtProperty('QVariantMap', notify=currentLayerChanged)
+    def currentLayerData(self):
+        """Get all data for the current layer as a dict.
+        
+        Contains: height (float), time_elapsed (str), layer_time (str), time_remaining (str)
+        """
+        return self._simulation_view.getCurrentLayerData()
 
-    @pyqtProperty(float, notify=currentLayerChanged)
-    def minimumLayerHeight(self):
-        return self._simulation_view.getMinimumLayerHeight()
+    @pyqtProperty('QVariantMap', notify=currentLayerChanged)
+    def minimumLayerData(self):
+        """Get all data for the minimum layer as a dict.
+        
+        Contains: height (float), time_elapsed (str), layer_time (str), time_remaining (str)
+        """
+        return self._simulation_view.getMinimumLayerData()
 
     @pyqtProperty(int, notify=maxPathsChanged)
     def numPaths(self):
