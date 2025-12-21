@@ -29,6 +29,7 @@ from UM.View.GL.OpenGLContext import OpenGLContext
 from UM.View.GL.ShaderProgram import ShaderProgram
 
 from UM.i18n import i18nCatalog
+from UM.Qt.Duration import Duration, DurationFormat
 from cura.CuraView import CuraView
 from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
 from cura.Scene.ConvexHullNode import ConvexHullNode
@@ -101,9 +102,14 @@ class SimulationView(CuraView):
         self._cumulative_line_duration_layer: Optional[int] = None
         self._cumulative_line_duration: List[float] = []
 
-        # Cache for layer heights to avoid recalculating on every query
-        self._layer_heights_cache: dict[int, float] = {}
-        self._layer_heights_cache_node_id: Optional[int] = None  # Track which node's data is cached
+        # Cache for layer data - stores all pre-calculated values for each layer
+        # Each entry is a dict with:
+        #   'height': float (mm)
+        #   'time_elapsed': str (formatted)
+        #   'layer_time': str (formatted) 
+        #   'time_remaining': str (formatted)
+        self._layer_data_cache: dict[int, dict[str, float | str]] = {}
+        self._layer_data_cache_node_id: Optional[int] = None  # Track which node's data is cached
 
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
@@ -293,87 +299,181 @@ class SimulationView(CuraView):
             return layer_data.getLayer(self.getCurrentLayer())
         return None
 
-    def _calculateLayerHeightsCache(self) -> None:
-        """Calculate and cache heights for all layers.
+    def _calculateLayerDataCache(self) -> None:
+        """Calculate and cache all layer data (heights and times).
         
-        This method iterates through all layers once and stores their heights in a cache.
+        This method processes layer data to build a unified cache containing:
+        - height: The z-coordinate of the layer in millimeters
+        - elapsed: Cumulative time from start to end of layer (seconds)
+        - layer_time: Time to print just this layer (seconds)
+        - remaining: Time from this layer to print completion (seconds)
+        
         Handles both sliced data (microns) and loaded gcode (millimeters).
         For layer 0 from gcode, uses thickness instead of height due to incorrect Z coordinates.
-        Only recalculates if the layer data source has changed.
+        Time data is extracted from ;TIME_ELAPSED: comments in gcode (from both slicing and loaded files).
+        Only recalculates if the data source has changed.
         """
         scene = self.getController().getScene()
         from cura.Scene.GCodeListDecorator import GCodeListDecorator
         
+        # Find the node with layer data
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
                 continue
             
             # Check if we already have cached data for this layer_data object
-            # Use id of the layer_data itself, not the node, since node might be reused
             current_layer_data_id = id(layer_data)
-            if self._layer_heights_cache_node_id == current_layer_data_id and self._layer_heights_cache:
+            if self._layer_data_cache_node_id == current_layer_data_id and self._layer_data_cache:
                 # Cache is still valid, no need to recalculate
                 return
+            
             # Cache is invalid or empty, recalculate
-            self._layer_heights_cache.clear()
-            self._layer_heights_cache_node_id = current_layer_data_id
+            self._layer_data_cache.clear()
+            self._layer_data_cache_node_id = current_layer_data_id
             
             has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
             
-            # Process all layers at once
+            # First, process layer heights
             for layer_id in layer_data.getLayers():
                 layer = layer_data.getLayer(layer_id)
                 if not layer:
                     continue
                 
-                # If node has GCodeListDecorator, heights are already in millimeters (from gcode)
+                # Calculate height in millimeters
                 if has_gcode_decorator:
                     # Special case for layer 0: FlavorParser may get wrong Z coordinate (startup position)
                     # Use thickness instead, which represents the actual layer height
                     if layer_id == 0 and layer.thickness > 0:
-                        self._layer_heights_cache[layer_id] = layer.thickness
+                        height = layer.thickness
                     else:
-                        self._layer_heights_cache[layer_id] = layer.height
-                # Otherwise, heights are in microns (backend/slicing), convert to mm
+                        height = layer.height
                 else:
-                    self._layer_heights_cache[layer_id] = layer.height / 1000.0
+                    # Heights are in microns (backend/slicing), convert to mm
+                    height = layer.height / 1000.0
+                
+                # Initialize cache entry with height
+                self._layer_data_cache[layer_id] = {'height': height}
+            
+            # Second, process layer times from gcode
+            gcode_list = None
+            
+            # Try to get gcode from decorator (when gcode file is loaded)
+            if has_gcode_decorator:
+                gcode_list_decorator = node.getDecorator(GCodeListDecorator)
+                if gcode_list_decorator:
+                    gcode_list = gcode_list_decorator.getGCodeList()
+            
+            # If not found, try scene.gcode_dict (when freshly sliced)
+            if not gcode_list and hasattr(scene, "gcode_dict"):
+                gcode_dict = getattr(scene, "gcode_dict")
+                if gcode_dict:
+                    active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+                    gcode_list = gcode_dict.get(active_build_plate, None)
+            
+            # Parse time information if gcode is available
+            if gcode_list:
+                self._parseLayerTimes(gcode_list)
             
             # We found layer data and cached it, no need to continue searching
             return
         
         # No layer data found - clear the cache
-        if self._layer_heights_cache_node_id is not None:
-            self._layer_heights_cache.clear()
-            self._layer_heights_cache_node_id = None
+        if self._layer_data_cache_node_id is not None:
+            self._layer_data_cache.clear()
+            self._layer_data_cache_node_id = None
 
-    def _getLayerHeight(self, layer_number: int) -> float:
-        """Helper method to get the height of a specific layer in millimeters from cache.
+    def _parseLayerTimes(self, gcode_list: List[str]) -> None:
+        """Parse gcode to extract TIME_ELAPSED values and add time metrics to cache.
         
-        :param layer_number: The layer number to get the height for.
-        :return: The layer height in millimeters, or 0.0 if no data is available.
+        Reads gcode for ;TIME_ELAPSED: comments and updates the layer data cache
+        with time metrics (elapsed, layer_time, remaining).
+        
+        :param gcode_list: List of gcode chunks (strings) to parse
         """
-        return self._layer_heights_cache.get(layer_number, 0.0)
+        # First pass: collect raw TIME_ELAPSED values
+        time_elapsed_raw: dict[int, float] = {}
+        current_layer = -1  # Start before layer 0
+        
+        # gcode_list is a list of string chunks, we need to split them into lines
+        for gcode_chunk in gcode_list:
+            for line in gcode_chunk.split('\n'):
+                # Check for layer marker
+                if line.startswith(";LAYER:"):
+                    try:
+                        current_layer = int(line[7:].strip())
+                    except ValueError:
+                        pass
 
-    def getCurrentLayerHeight(self) -> float:
-        """Get the height (z-coordinate) of the current layer in millimeters.
-        
-        This returns the actual height from the layer data, which already takes into account:
-        - Initial layer height (layer_height_0)
-        - Adaptive layer heights
-        - Regular layer height
-        - Raft layers
-        
-        Returns 0.0 if no layer data is available.
-        """
-        return self._layer_heights_cache.get(self.getCurrentLayer(), 0.0)
+                # Check for TIME_ELAPSED marker
+                if line.startswith(";TIME_ELAPSED:"):
+                    try:
+                        time_value = float(line[14:].strip())
+                        # Associate this time with the current layer
+                        if current_layer >= 0:
+                            time_elapsed_raw[current_layer] = time_value
+                    except ValueError:
+                        pass
 
-    def getMinimumLayerHeight(self) -> float:
-        """Get the height (z-coordinate) of the minimum layer in millimeters.
+        # Second pass: calculate all derived values and add to cache
+        if not time_elapsed_raw:
+            # No time data found
+            return
+
+        max_layer = max(time_elapsed_raw.keys())
+        total_time = time_elapsed_raw.get(max_layer, 0.0)
+
+        for layer_num, elapsed_time in time_elapsed_raw.items():
+            # Calculate layer time (time to print just this layer)
+            if layer_num == 0:
+                layer_time = elapsed_time  # First layer: elapsed time is the layer time
+            else:
+                previous_time = time_elapsed_raw.get(layer_num - 1, 0.0)
+                layer_time = max(0.0, elapsed_time - previous_time)
+
+            # Calculate remaining time
+            remaining_time = max(0.0, total_time - elapsed_time)
+
+            # Format time strings using UM Duration formatter - only store formatted strings
+            time_elapsed_str = Duration(elapsed_time).getDisplayString(DurationFormat.Format.ISO8601)
+            layer_time_str = Duration(layer_time).getDisplayString(DurationFormat.Format.ISO8601)
+            time_remaining_str = Duration(remaining_time).getDisplayString(DurationFormat.Format.ISO8601)
+
+            # Add formatted time values to existing cache entry (or create new one if needed)
+            if layer_num not in self._layer_data_cache:
+                self._layer_data_cache[layer_num] = {}
+
+            self._layer_data_cache[layer_num].update({
+                'time_elapsed': time_elapsed_str,
+                'layer_time': layer_time_str,
+                'time_remaining': time_remaining_str
+            })
+
+    def getCurrentLayerData(self) -> dict[str, float | str]:
+        """Get all data for the current layer.
         
-        Returns 0.0 if no layer data is available.
+        Returns a dict with:
+        - 'height': float (mm)
+        - 'time_elapsed': str (formatted time)
+        - 'layer_time': str (formatted time)
+        - 'time_remaining': str (formatted time)
+        
+        Returns empty dict if no layer data is available.
         """
-        return self._layer_heights_cache.get(self.getMinimumLayer(), 0.0)
+        return self._layer_data_cache.get(self.getCurrentLayer(), {})
+
+    def getMinimumLayerData(self) -> dict[str, float | str]:
+        """Get all data for the minimum layer.
+        
+        Returns a dict with:
+        - 'height': float (mm)
+        - 'time_elapsed': str (formatted time)
+        - 'layer_time': str (formatted time)
+        - 'time_remaining': str (formatted time)
+        
+        Returns empty dict if no layer data is available.
+        """
+        return self._layer_data_cache.get(self.getMinimumLayer(), {})
 
     def getMinimumPath(self) -> int:
         return self._minimum_path_num
@@ -390,7 +490,7 @@ class SimulationView(CuraView):
         if node.getMeshData() is None:
             return
         self.setActivity(False)
-        self._calculateLayerHeightsCache()
+        self._calculateLayerDataCache()
         self.calculateColorSchemeLimits()
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
@@ -805,7 +905,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
-            self._calculateLayerHeightsCache()
+            self._calculateLayerDataCache()
             self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)
