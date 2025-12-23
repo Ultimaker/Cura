@@ -60,10 +60,6 @@ Item
     property alias preferences: preferencesAction
 
     property alias showProfileFolder: showProfileFolderAction
-    property alias documentation: documentationAction
-    property alias openSponsershipPage: openSponsershipPageAction
-    property alias reportBug: reportBugAction
-    property alias whatsNew: whatsNewAction
     property alias about: aboutAction
 
     property alias toggleFullScreen: toggleFullScreenAction
@@ -82,13 +78,6 @@ Item
     }
 
     UM.I18nCatalog{id: catalog; name: "cura"}
-
-    Action
-    {
-        id: openSponsershipPageAction
-        onTriggered: Qt.openUrlExternally("https://ultimaker.com/software/ultimaker-cura/sponsor/")
-        text: catalog.i18nc("@action:inmenu", "Sponsor Cura")
-    }
 
     Action
     {
@@ -251,22 +240,6 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:profile", "Manage Profiles...")
         icon.name: "configure"
         shortcut: "Ctrl+J"
-    }
-
-    Action
-    {
-        id: documentationAction
-        text: catalog.i18nc("@action:inmenu menubar:help", "Show Online &Documentation")
-        icon.name: "help-contents"
-        shortcut: StandardKey.Help
-        onTriggered: CuraActions.openDocumentation()
-    }
-
-    Action {
-        id: reportBugAction
-        text: catalog.i18nc("@action:inmenu menubar:help", "Report a &Bug")
-        icon.name: "tools-report-bug"
-        onTriggered: CuraActions.openBugReportPage()
     }
 
     Action

@@ -77,14 +77,6 @@ class CloudMaterialSync(QObject):
                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT
         )
 
-        sync_materials_message.addAction(
-                "learn_more",
-                name = catalog.i18nc("@action:button", "Learn more"),
-                icon = "",
-                description = "Learn more about syncing your newly installed materials with your printers.",
-                button_align = Message.ActionButtonAlignment.ALIGN_LEFT,
-                button_style = Message.ActionButtonStyle.LINK
-        )
         sync_materials_message.actionTriggered.connect(self._onSyncMaterialsMessageActionTriggered)
 
         # Show the message only if there are printers that support material export
@@ -97,8 +89,6 @@ class CloudMaterialSync(QObject):
         if sync_message_action == "sync":
             self.openSyncAllWindow()
             sync_message.hide()
-        elif sync_message_action == "learn_more":
-            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
 
     @pyqtSlot(result = QUrl)
     def getPreferredExportAllPath(self) -> QUrl:

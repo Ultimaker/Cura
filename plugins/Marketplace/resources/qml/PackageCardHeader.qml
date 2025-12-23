@@ -19,9 +19,6 @@ Item
     property bool showInstallButton: false
     property bool showUpdateButton: false
 
-    property string missingPackageReadMoreUrl: "https://support.ultimaker.com/hc/en-us/articles/360011968360-Using-the-Ultimaker-Marketplace?utm_source=cura&utm_medium=software&utm_campaign=load-file-material-missing"
-
-
     width: parent.width
     height: UM.Theme.getSize("card").height
 
@@ -190,25 +187,6 @@ Item
                     isIconOnRightSide: true
 
                     onClicked: Qt.openUrlExternally(packageData.authorInfoUrl)
-                }
-            }
-
-            Item
-            {
-                visible: packageData.isMissingPackageInformation
-                Layout.fillWidth: true
-                implicitHeight: readMoreButton.height
-                Layout.alignment: Qt.AlignTop
-                Cura.TertiaryButton
-                {
-                    id: readMoreButton
-                    text: catalog.i18nc("@button:label", "Learn More")
-                    leftPadding: 0
-                    rightPadding: 0
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    isIconOnRightSide: true
-
-                    onClicked: Qt.openUrlExternally(missingPackageReadMoreUrl)
                 }
             }
 

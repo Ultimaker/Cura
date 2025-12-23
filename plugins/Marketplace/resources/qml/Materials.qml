@@ -10,7 +10,6 @@ Packages
     bannerVisible:  UM.Preferences.getValue("cura/market_place_show_material_banner")
     bannerIcon: UM.Theme.getIcon("Spool")
     bannerText: catalog.i18nc("@text", "Select and install material profiles optimised for your UltiMaker 3D printers.")
-    bannerReadMoreUrl: "https://support.ultimaker.com/hc/en-us/articles/360011968360/?utm_source=cura&utm_medium=software&utm_campaign=marketplace-learn-materials"
     onRemoveBanner: function() {
         UM.Preferences.setValue("cura/market_place_show_material_banner", false);
         bannerVisible = false;

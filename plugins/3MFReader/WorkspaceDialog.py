@@ -503,14 +503,6 @@ class WorkspaceDialog(QObject):
             message_type=Message.MessageType.WARNING
         )
         result_message.addAction(
-            "learn_more",
-            name=i18n_catalog.i18nc("@action:button", "Learn more"),
-            icon="",
-            description=i18n_catalog.i18nc("@label", "Learn more about project packages."),
-            button_align=Message.ActionButtonAlignment.ALIGN_LEFT,
-            button_style=Message.ActionButtonStyle.LINK
-        )
-        result_message.addAction(
             "install_packages",
             name=i18n_catalog.i18nc("@action:button", "Install Packages"),
             icon="",
@@ -525,8 +517,6 @@ class WorkspaceDialog(QObject):
         if sync_message_action == "install_materials":
             self.installMissingPackages()
             message.hide()
-        elif sync_message_action == "learn_more":
-            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360011968360-Using-the-Ultimaker-Marketplace"))
 
 
     def __show(self) -> None:

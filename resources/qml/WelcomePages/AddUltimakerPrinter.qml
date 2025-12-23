@@ -90,19 +90,6 @@ Control
                         }
                     }
                 }
-
-                Cura.TertiaryButton
-                {
-                    id: learnMoreButton
-                    Layout.fillWidth: true
-                    Layout.alignment: Qt.AlignTop
-                    leftPadding: 0
-                    text: catalog.i18nc("@button", "Learn more")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    isIconOnRightSide: true
-                    textFont: UM.Theme.getFont("small")
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=onboarding-add-printer")
-                }
             }
         }
 

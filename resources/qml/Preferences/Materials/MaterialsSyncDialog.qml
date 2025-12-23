@@ -72,14 +72,6 @@ UM.Window
                     Layout.alignment: Qt.AlignBottom
                     Layout.fillWidth: true
 
-                    Cura.TertiaryButton
-                    {
-                        text: catalog.i18nc("@button", "Why do I need to sync material profiles?")
-                        iconSource: UM.Theme.getIcon("LinkExternal")
-                        isIconOnRightSide: true
-                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-why")
-                    }
-
                     Cura.PrimaryButton
                     {
                         anchors.right: parent.right
@@ -250,15 +242,6 @@ UM.Window
                         elide: Text.ElideRight
                         visible: text !== ""
                         font: UM.Theme.getFont("medium")
-                    }
-                    Cura.TertiaryButton
-                    {
-                        id: troubleshootingLink
-                        anchors.right: parent.right
-                        text: catalog.i18nc("@button", "Troubleshooting")
-                        visible: typeof syncModel !== "undefined" && syncModel.exportUploadStatus == "error"
-                        iconSource: UM.Theme.getIcon("LinkExternal")
-                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
                     }
                 }
                 ListView
@@ -474,18 +457,6 @@ UM.Window
                                         font: UM.Theme.getFont("medium")
                                     }
                                 }
-
-                                Cura.TertiaryButton
-                                {
-                                    id: printerListTroubleshooting
-                                    Layout.column: 1
-                                    Layout.row: 1
-                                    Layout.fillWidth: true
-                                    leftPadding: 0
-                                    text: catalog.i18nc("@button", "Troubleshooting")
-                                    iconSource: UM.Theme.getIcon("LinkExternal")
-                                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-troubleshoot-cloud-printer")
-                                }
                             }
                         }
                     }
@@ -618,20 +589,6 @@ UM.Window
 
                 Item
                 {
-                    Layout.fillWidth: true
-                    Layout.preferredHeight: parent.height / 4
-                    Cura.TertiaryButton
-                    {
-                        text: catalog.i18nc("@button", "Learn how to connect your printer to Digital Factory")
-                        iconSource: UM.Theme.getIcon("LinkExternal")
-                        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012019239?utm_source=cura&utm_medium=software&utm_campaign=sync-material-wizard-add-cloud-printer")
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        maximumWidth: parent.width
-                    }
-                }
-
-                Item
-                {
                     Layout.preferredHeight: childrenRect.height
                     Layout.alignment: Qt.AlignBottom
                     Layout.fillWidth: true
@@ -721,14 +678,6 @@ UM.Window
                           + "\n3. " + catalog.i18nc("@text", "Insert the USB stick into your printer and launch the procedure to load new material profiles.")
                         font: UM.Theme.getFont("medium")
                     }
-                }
-
-                Cura.TertiaryButton
-                {
-                    Layout.fillWidth: true
-                    text: catalog.i18nc("@button", "How to load new material profiles to my printer")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/4403319801106/?utm_source=cura&utm_medium=software&utm_campaign=add-material-profiles-via-usb")
                 }
 
                 Item

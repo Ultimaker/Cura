@@ -39,16 +39,4 @@ Column
         text: catalog.i18nc("@message:text %1 is the name the printer uses for 'nozzle'.", "No profiles are available for the selected material/%1 configuration. Please change your configuration."
             ).arg(Cura.MachineManager.activeDefinitionVariantsName)
     }
-
-    Cura.TertiaryButton
-    {
-        anchors.right: parent.right
-
-        text: catalog.i18nc("@button:label", "Learn more")
-        textFont: UM.Theme.getFont("default")
-        iconSource: UM.Theme.getIcon("LinkExternal")
-        isIconOnRightSide: true
-
-        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012909099")
-    }
 }

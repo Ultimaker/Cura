@@ -35,19 +35,6 @@ class WhatsNewPagesModel(WelcomePagesModel):
     def _collectOrdinalFiles(resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
         result = {}  # type: Dict[int, str]
         highest = -1
-        try:
-            folder_path = Resources.getPath(resource_type, "whats_new")
-            for _, _, files in os.walk(folder_path):
-                for filename in files:
-                    basename = os.path.basename(filename)
-                    base, ext = os.path.splitext(basename)
-                    if ext.lower() not in include or not base.isdigit():
-                        continue
-                    page_no = int(base)
-                    highest = max(highest, page_no)
-                    result[page_no] = os.path.join(folder_path, filename)
-        except FileNotFoundError:
-            Logger.logException("w", "Could not find 'whats_new' folder for resource-type {0}".format(resource_type))
         return result, highest
 
     @staticmethod

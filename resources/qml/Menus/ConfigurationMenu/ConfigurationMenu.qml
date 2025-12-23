@@ -292,18 +292,6 @@ Cura.ExpandablePopup
                 id: autoConfiguration
             }
         }
-
-        Rectangle
-        {
-            id: separator
-            visible: buttonBar.visible
-            x: -parent.padding
-
-            width: parent.width
-            height: UM.Theme.getSize("default_lining").height
-
-            color: UM.Theme.getColor("lining")
-        }
     }
 
     Connections

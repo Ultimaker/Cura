@@ -16,7 +16,6 @@ Window
 
     signal searchStringChanged(string new_search)
 
-    property alias showOnboadBanner: onBoardBanner.visible
     property alias showSearchHeader: searchHeader.visible
     property alias pageContentsSource: content.source
 
@@ -86,20 +85,6 @@ Window
                     font: UM.Theme.getFont("large")
                     text: content.item ? content.item.pageTitle: catalog.i18nc("@title", "Loading...")
                 }
-            }
-
-            OnboardBanner
-            {
-                id: onBoardBanner
-                visible: content.item && content.item.bannerVisible
-                text: content.item && content.item.bannerText
-                icon: content.item && content.item.bannerIcon
-                onRemove: content.item && content.item.onRemoveBanner
-                readMoreUrl: content.item && content.item.bannerReadMoreUrl
-
-                Layout.fillWidth: true
-                Layout.leftMargin: UM.Theme.getSize("default_margin").width
-                Layout.rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             // Search & Top-Level Tabs

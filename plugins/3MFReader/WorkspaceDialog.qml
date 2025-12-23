@@ -42,15 +42,6 @@ UM.Dialog
                     text: manager.isUcp? catalog.i18nc("@action:title Don't translate 'Universal Cura Project'", "Summary - Open Universal Cura Project (UCP)"): catalog.i18nc("@action:title", "Summary - Cura Project")
                     font: UM.Theme.getFont("large")
                 }
-                Cura.TertiaryButton
-                {
-                    id: learnMoreButton
-                    visible: manager.isUcp
-                    text: catalog.i18nc("@button", "Learn more")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    isIconOnRightSide: true
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/000002979")
-                }
             }
         }
     }

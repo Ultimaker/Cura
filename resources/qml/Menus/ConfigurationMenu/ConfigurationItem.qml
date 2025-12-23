@@ -29,10 +29,13 @@ Button
             {
                 return false
             }
-            var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
-            if (! brand.toLowerCase().startsWith("solevation"))
+            if (name != "empty" && ! name.toLowerCase().endsWith("tpu"))
             {
-                return false
+                var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
+                if (brand != "empty" && ! brand.toLowerCase().startsWith("solevation"))
+                {
+                    return false
+                }
             }
         }
         return true
@@ -133,6 +136,11 @@ Button
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
                             var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
+                            if (name.toLowerCase().endsWith("tpu"))
+                            {
+                                name = "Performance"
+                                brand = "Solevation"
+                            }
                             if (! brand.toLowerCase().startsWith("solevation"))
                             {
                                 name = "";
@@ -176,8 +184,8 @@ Button
                         }
 
                         mismatchedCores = "<b>" + mismatchedCores + "</b>"
-                        var draftResult = catalog.i18nc("@label", "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices.");
-                        return draftResult.arg(mismatchedCores).arg("https://support.ultimaker.com/s/article/1667411313529")
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because there is a mismatch or other problem with core-type %1.");
+                        return draftResult.arg(mismatchedCores)
                     }
 
                     text:

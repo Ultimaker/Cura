@@ -21,10 +21,6 @@ class PrintJobPendingApprovalMessage(Message):
         )
         self.addAction("manage_print_jobs", I18N_CATALOG.i18nc("@action", "Manage print jobs"), "", "")
 
-        self.addAction("learn_more", I18N_CATALOG.i18nc("@action", "Learn more"), "", "",
-                        button_style = Message.ActionButtonStyle.LINK,
-                        button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
-
         self.actionTriggered.connect(self._onActionTriggered)
 
         self.cluster_id = cluster_id
@@ -34,5 +30,3 @@ class PrintJobPendingApprovalMessage(Message):
         match action:
             case "manage_print_jobs":
                 QDesktopServices.openUrl(QUrl(f"https://digitalfactory.ultimaker.com/app/jobs/{self._cluster.cluster_id}?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"))
-            case "learn_more":
-                QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/5329940078620?utm_source=cura&utm_medium=software&utm_campaign=message-printjob-sent"))
