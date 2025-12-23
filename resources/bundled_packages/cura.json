@@ -390,23 +390,6 @@
             }
         }
     },
-    "PostProcessingPlugin": {
-        "package_info": {
-            "package_id": "PostProcessingPlugin",
-            "package_type": "plugin",
-            "display_name": "Post Processing",
-            "description": "Extension that allows for user created scripts for post processing.",
-            "package_version": "2.2.1",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
     "PrepareStage": {
         "package_info": {
             "package_id": "PrepareStage",
