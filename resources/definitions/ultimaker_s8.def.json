@@ -236,6 +236,7 @@
         "flooring_monotonic": { "value": false },
         "gradual_flow_discretisation_step_size": { "value": 0.3 },
         "gradual_flow_enabled": { "value": true },
+        "group_outer_walls": { "value": false },
         "hole_xy_offset": { "value": 0.075 },
         "infill_material_flow": { "value": "material_flow if infill_sparse_density < 95 else 95" },
         "infill_move_inwards_length": { "value": "3*machine_nozzle_size" },
