@@ -373,23 +373,6 @@
             }
         }
     },
-    "PerObjectSettingsTool": {
-        "package_info": {
-            "package_id": "PerObjectSettingsTool",
-            "package_type": "plugin",
-            "display_name": "Per-Object Settings Tool",
-            "description": "Provides the per-model settings.",
-            "package_version": "1.0.1",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
     "PrepareStage": {
         "package_info": {
             "package_id": "PrepareStage",
@@ -498,23 +481,6 @@
             "package_type": "plugin",
             "display_name": "Solid View",
             "description": "Provides a normal solid mesh view.",
-            "package_version": "1.0.1",
-            "sdk_version": "8.6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "UltiMaker",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
-    "SupportEraser": {
-        "package_info": {
-            "package_id": "SupportEraser",
-            "package_type": "plugin",
-            "display_name": "Support Eraser Tool",
-            "description": "Creates an eraser mesh to block the printing of support in certain places.",
             "package_version": "1.0.1",
             "sdk_version": "8.6.0",
             "website": "https://ultimaker.com",
