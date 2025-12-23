@@ -2258,12 +2258,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = bool)
     def shouldShowWhatsNewDialog(self) -> bool:
-        has_active_machine = self._machine_manager.activeMachine is not None
-        has_app_just_upgraded = self.hasJustUpdatedFromOldVersion()
-
-        # Only show the what's new dialog if there's no machine and we have just upgraded
-        show_whatsnew_only = has_active_machine and has_app_just_upgraded
-        return show_whatsnew_only
+        return False
 
     @pyqtSlot(result = int)
     def appWidth(self) -> int:
