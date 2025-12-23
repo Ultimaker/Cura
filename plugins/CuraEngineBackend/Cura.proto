@@ -100,8 +100,9 @@ message LayerOptimized {
     int32 id = 1;
     float height = 2; // Z position
     float thickness = 3; // height of a single layer
+    float layer_time = 4; // Time to print this layer in seconds
 
-    repeated PathSegment path_segment = 4; // layer data
+    repeated PathSegment path_segment = 5; // layer data
 }
 
 
