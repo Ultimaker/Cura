@@ -457,6 +457,7 @@
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 20 },
         "skin_preshrink": { "value": 0 },
+        "skin_support_speed": { "value": "speed_infill * infill_material_flow / skin_support_material_flow" },
         "skirt_brim_minimal_length": { "value": 1000 },
         "skirt_brim_speed":
         {
