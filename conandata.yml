@@ -1,4 +1,4 @@
-version: "5.10.3-avalanche.2"
+version: "5.10.3-solevation.3"
 requirements:
   - "cura_resources/5.10.3"
   - "uranium/5.10.3"
