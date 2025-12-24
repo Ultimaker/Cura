@@ -130,8 +130,12 @@ class IntentSelectionModel(ListModel):
                     "weight": 5,
                 })
 
-        result.sort(key=lambda k: k["weight"])
+        def sort_key(itemname: str) -> int:
+            match itemname:
+                case "soft": return 0
+                case "medium": return 1
+                case "hard": return 2
+            return 3
+        result.sort(key=lambda k: sort_key(k["name"].lower()))
 
         self.setItems(result)
-
-

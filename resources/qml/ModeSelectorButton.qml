@@ -83,7 +83,7 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 visible: icon === "" && custom_icon === ""
                 border.width: UM.Theme.getSize("thick_lining").width
-                border.color: UM.Theme.getColor("text")
+                border.color: base.text.toLowerCase() == "soft" ? "darkred" : (base.text.toLowerCase() == "medium" ? "chocolate" : "slategray")
                 color: "transparent"
 
                 UM.Label
@@ -93,10 +93,9 @@ Rectangle
                     text: base.text.charAt(0).toUpperCase()
                     font: UM.Theme.getFont("small_bold")
                     horizontalAlignment: Text.AlignHCenter
+                    color: base.text.toLowerCase() == "soft" ? "firebrick" : (base.text.toLowerCase() == "medium" ? "coral" : "silver")
                 }
             }
-
-
         }
     }
 

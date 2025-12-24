@@ -343,7 +343,7 @@ class QualityManagementModel(ListModel):
                     "quality_type": quality_group.quality_type,
                     "quality_changes_group": None,
                     "intent_category": "default",
-                    "section_name": catalog.i18nc("@label", "Balanced"),
+                    "section_name": catalog.i18nc("@label", "Medium"),
                     "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)

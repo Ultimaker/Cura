@@ -30,11 +30,12 @@ Item
             Cura.ModeSelectorButton
             {
                 text: model.name
-                icon: model.icon ? model.icon : ""
-                custom_icon: model.custom_icon ? model.custom_icon : ""
+                icon: ""
+                custom_icon: ""
                 tooltipText: model.description ? model.description : ""
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category
+                //visible: model.name != "Balanced"
 
                 onClicked: {
                     var qualityType
