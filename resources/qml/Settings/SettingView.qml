@@ -379,10 +379,6 @@ Item
                         }
                     }
                 }
-                function onSetScrollPositionChangeLoseFocus(lose_focus)
-                {
-                    loseFocusOnScrollPositionChange = lose_focus;
-                }
             }
         }
 

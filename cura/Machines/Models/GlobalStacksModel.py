@@ -148,6 +148,10 @@ class GlobalStacksModel(ListModel):
             if self._filter_online_only and not is_online:
                 continue
 
+            typ = container_stack.getMetaDataEntry("type", "")
+            if typ == "machine" and "belt" not in container_stack.getContainer(7).getId():
+                continue
+
             is_abstract_machine = parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))
             if self._filter_abstract_machines is not None and self._filter_abstract_machines is not is_abstract_machine:
                 continue

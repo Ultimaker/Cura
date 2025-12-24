@@ -222,6 +222,8 @@ class DiscoveredPrintersModel(QObject):
         available_list = []
         not_available_list = []
         for item in item_list:
+            if "belt" not in item.machineType:
+                continue
             if item.isUnknownMachineType or getattr(item.device, "clusterSize", 1) < 1:
                 not_available_list.append(item)
             else:

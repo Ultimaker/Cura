@@ -110,6 +110,10 @@ class MachineListModel(ListModel):
 
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
+
+            if "belt" not in definition_id:
+                continue
+
             connected_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = False)
 
             connected_machine_stacks = list(filter(lambda machine: machine.hasNetworkedConnection(), connected_machine_stacks))
@@ -142,6 +146,9 @@ class MachineListModel(ListModel):
             })
 
         for stack in other_machine_stacks:
+            if "belt" not in stack.getContainer(7).getId():
+                continue
+
             self.addItem(stack, False)
 
     def addItem(self, container_stack: ContainerStack, is_online: bool, machine_count: int = 0) -> None:
