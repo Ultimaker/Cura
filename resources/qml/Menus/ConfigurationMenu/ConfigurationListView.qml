@@ -50,7 +50,7 @@ Item
             // other when the connection was lost
             text: Cura.MachineManager.printerConnected ?
                     catalog.i18nc("@label", "Loading available configurations from the printer...") :
-                    catalog.i18nc("@label", "The configurations are not available because the printer is disconnected.")
+                    catalog.i18nc("@label", "Configurations aren't available because the printer is disconnected. (The 'settings' menu can be used to manually configure, though it's recommended to connect the printer instead, then select any here.)")
             wrapMode: Text.WordWrap
         }
     }

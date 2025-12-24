@@ -14,11 +14,12 @@ Instead we'll use a pop-up which doesn't seem to have that problem. */
 Cura.MenuItem
 {
     id: materialBrandMenu
-    height: UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height
+    height: materialTypesModel.name.toLowerCase() == "solevation" ? UM.Theme.getSize("menu").height + UM.Theme.getSize("narrow_margin").height : 1
     overrideShowArrow: true
 
     property var materialTypesModel
     text: materialTypesModel.name
+    visible: materialTypesModel.name.toLowerCase() == "solevation"
 
     contentItem: MouseArea
     {
