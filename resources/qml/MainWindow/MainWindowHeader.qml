@@ -132,7 +132,7 @@ Item
     Button
     {
         id: marketplaceButton
-        text: catalog.i18nc("@action:button", "Marketplace")
+        text: "_"
         height: Math.round(0.5 * UM.Theme.getSize("main_window_header").height)
         onClicked: Cura.Actions.browsePackages.trigger()
 
@@ -182,7 +182,7 @@ Item
                 rightMargin: (-0.5 * width) | 0
                 topMargin: (-0.5 * height) | 0
             }
-            visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
+            visible: false
 
             labelText:
             {

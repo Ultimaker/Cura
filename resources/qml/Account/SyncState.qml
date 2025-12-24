@@ -105,7 +105,7 @@ Row // Sync state icon + message
             height: contentHeight
             wrapMode: Text.NoWrap
             width: contentWidth + UM.Theme.getSize("default_margin").height
-            visible: Cura.API.account.updatePackagesEnabled
+            visible: false
 
             MouseArea
             {
@@ -126,7 +126,7 @@ Row // Sync state icon + message
             wrapMode: Text.NoWrap
             height: contentHeight
             width: contentWidth + UM.Theme.getSize("default_margin").height
-            visible: Cura.API.account.manualSyncEnabled
+            visible: false
 
             MouseArea
             {

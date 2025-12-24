@@ -126,9 +126,6 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("info/anonymous_engine_crash_report")
         sendEngineCrashCheckboxAnonymous.checked = boolCheck(UM.Preferences.getValue("info/anonymous_engine_crash_report"))
 
-        UM.Preferences.resetPreference("info/automatic_update_check")
-        checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-
         UM.Preferences.resetPreference("info/latest_update_source")
         UM.Preferences.resetPreference("info/automatic_plugin_update_check")
         pluginNotificationsUpdateCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
@@ -975,65 +972,6 @@ UM.PreferencesPage
                 //: Spacer
                 height: UM.Theme.getSize("default_margin").height
                 width: UM.Theme.getSize("default_margin").height
-            }
-
-            UM.Label
-            {
-                font: UM.Theme.getFont("medium_bold")
-                text: catalog.i18nc("@label", "Updates")
-            }
-
-            ButtonGroup
-            {
-                id: curaUpdatesGroup
-                buttons: [checkUpdatesOptionBeta, checkUpdatesOptionStable]
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "When checking for updates, only check for stable releases.")
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                Cura.RadioButton
-                {
-                    id: checkUpdatesOptionStable
-                    text: catalog.i18nc("@option:radio", "Stable releases only")
-                    enabled: checkUpdatesCheckbox.checked
-                    checked: UM.Preferences.getValue("info/latest_update_source") == "stable"
-                    onClicked: UM.Preferences.setValue("info/latest_update_source", "stable")
-                }
-            }
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "When checking for updates, check for both stable and for beta releases.")
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                Cura.RadioButton
-                {
-                    id: checkUpdatesOptionBeta
-                    text: catalog.i18nc("@option:radio", "Stable and Beta releases")
-                    enabled: checkUpdatesCheckbox.checked
-                    checked: UM.Preferences.getValue("info/latest_update_source") == "beta"
-                    onClicked: UM.Preferences.setValue("info/latest_update_source", "beta")
-                }
-            }
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: visible ? childrenRect.height : 0
-                text: catalog.i18nc("@info:tooltip", "Should an automatic check for new plugins be done every time Cura is started? It is highly recommended that you do not disable this!")
-
-                UM.CheckBox
-                {
-                    id: pluginNotificationsUpdateCheckbox
-                    text: catalog.i18nc("@option:check", "Get notifications for plugin updates")
-                    checked: boolCheck(UM.Preferences.getValue("info/automatic_plugin_update_check"))
-                    onCheckedChanged: UM.Preferences.setValue("info/automatic_plugin_update_check", checked)
-                }
             }
 
             Item

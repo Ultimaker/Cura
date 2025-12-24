@@ -129,7 +129,7 @@ class CloudPackageChecker(QObject):
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
-            self._showSyncMessage()
+            #self._showSyncMessage()
             self._last_notified_packages = user_subscribed_packages
 
     def _showSyncMessage(self) -> None:
