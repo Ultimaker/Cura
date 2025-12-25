@@ -43,6 +43,7 @@
     },
     "overrides":
     {
+        "brim_gap": { "value": "-xy_offset_layer_0 + 0.05" },
         "gantry_height": { "value": "52" },
         "infill_overlap": { "value": "0" },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 80 else 'grid'" },
