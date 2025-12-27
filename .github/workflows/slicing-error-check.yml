@@ -53,6 +53,16 @@ jobs:
             This issue is related to a slicing error, but it seems a project file (`.zip`) is missing.
             Please attach a `.zip` file containing your project (including models and profiles) so we can reproduce the issue.
             This will help us investigate and resolve the problem more effectively.
+            ### For Cura version under 5.7.x:
+            Update to the latest available Cura version first and see if the issue is resolved.
+            Latest Cura version available from: https://github.com/Ultimaker/Cura/releases/latest
+            ### For Cura version 5.7.x:
+            It is still recommended to update to a newer version of Cura and check if the issue is resolved.
+            Latest Cura version available from: https://github.com/Ultimaker/Cura/releases/latest
+            Include a project file that contains the model you're having the issue with as a `.zip` file.
+            Go to the `File` menu > `Save Project...`, and save the package.
+            Then create a .zip file with the package, attach the `.zip` file to this issue.
+            ### For Cura version 5.9.x and newer:
             Have Cura open with your project that fails to slice, go to `Help` > `Export Package For Technical Support`, and save the package.
             Then create a .zip file with the package, attach the `.zip` file to this issue.
             If you have already attached a `.zip` file, please ensure it is correctly linked in the issue body.
