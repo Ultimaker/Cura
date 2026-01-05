@@ -34,11 +34,12 @@ on:
         type: choice
         options:
           - self-hosted-Windows-X64
+          - self-hosted-Windows-ARM
           - windows-2022
 
 jobs:
   windows-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-windows.yml@CURA-12814
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       package_overrides: ${{ inputs.package_overrides }}
