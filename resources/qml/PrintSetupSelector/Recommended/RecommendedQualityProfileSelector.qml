@@ -35,7 +35,6 @@ Item
                 tooltipText: model.description ? model.description : ""
 
                 selected: Cura.MachineManager.activeIntentCategory == model.intent_category
-                //visible: model.name != "Balanced"
 
                 onClicked: {
                     var qualityType
