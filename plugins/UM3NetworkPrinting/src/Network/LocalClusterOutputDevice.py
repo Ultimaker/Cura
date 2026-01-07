@@ -1,6 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
+import platform
 from typing import Optional, Dict, List, Callable, Any
 
 from time import time
