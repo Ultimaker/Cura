@@ -190,7 +190,7 @@ class ClusterApiClient:
                 return
 
             if reply.error() != QNetworkReply.NetworkError.NoError:
-                Logger.warning("Cluster API request error: %s", reply.errorString())
+                Logger.warning(f"Cluster API request error: {reply.errorString()}")
                 return
 
             # If no parse model is given, simply return the raw data in the callback.

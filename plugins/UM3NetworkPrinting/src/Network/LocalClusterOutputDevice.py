@@ -196,7 +196,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return
         self._progress.show()
         parts = [
-            self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"),
+            self._createFormPart("name=owner", bytes(f"user@{platform.node()}", "utf-8"), "text/plain"),
             self._createFormPart(
                 "name=\"file\"; filename=\"%s\"" % self._active_exported_job.getFileName(),
                 self._active_exported_job.getOutput()
