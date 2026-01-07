@@ -36,9 +36,6 @@ class Backup:
     IGNORED_FOLDERS = []  # type: List[str]
     """These folders should be ignored when making a backup."""
 
-    SECRETS_SETTINGS = ["general/ultimaker_auth_data", "cluster_api/auth_ids", "cluster_api/auth_keys"]
-    """Secret preferences that need to obfuscated when making a backup of Cura"""
-
     catalog = i18nCatalog("cura")
     """Re-use translation catalog"""
 
