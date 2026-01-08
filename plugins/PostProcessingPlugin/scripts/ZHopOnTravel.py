@@ -30,7 +30,7 @@ from UM.Logger import Logger
 class ZHopOnTravel(Script):
     def __init__(self):
         super().__init__()
-        
+
     def getSettingDataString(self):
         return """{
             "name": "Z-Hop on Travel",
@@ -40,7 +40,7 @@ class ZHopOnTravel(Script):
             "settings": {
                 "zhop_travel_enabled": {
                     "label": "Enable script",
-                    "description": "Enables the script so it will run.  'One-at-a-Time' is not supported.  This script is slow running because it must check the length of all travel moves in your layer range.  ",
+                    "description": "Enables the script so it will run.  'One-at-a-Time' is not supported.  This script is slow running because it must check the length of all travel moves in your layer range.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
@@ -112,10 +112,17 @@ class ZHopOnTravel(Script):
                 },
                 "infill_only": {
                     "label": "Add Z-hops to Infill Only",
-                    "description": "Only add Z-hops to 'Infill' within the layer range.  (NOTE: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'cross infill'.)",
+                    "description": "Only add Z-hops to 'Infill' within the layer range.  (NOTE1: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'move across infill'.) (NOTE2: You may use 'Infill Only' or 'Interface Only', but not both in a single instance of this post-processor.  If you want both then add another instance.)",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "zhop_travel_enabled"
+                    "enabled": "zhop_travel_enabled and not interface_only"
+                },
+                "interface_only": {
+                    "label": "Add Z-hops to Supt-Interface Only",
+                    "description": "Only add Z-hops to 'Support Interface' within the layer range.  (NOTE: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'cross the interface'.) (NOTE2: You may use 'Infill Only' or 'Interface Only', but not both in a single instance of this post-processor.  If you want both then add another instance.)",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "zhop_travel_enabled and not infill_only"
                 }
             }
         }"""
@@ -176,6 +183,7 @@ class ZHopOnTravel(Script):
         hop_height = round(self.getSettingValueByKey("hop_height"),2)
         list_or_range = self.getSettingValueByKey("list_or_range")
         infill_only = self.getSettingValueByKey("infill_only")
+        interface_only = self.getSettingValueByKey("interface_only")
         layer_list = []
         index_list = []
 
@@ -250,6 +258,7 @@ class ZHopOnTravel(Script):
 
         # Make the insertions
         in_the_infill = False
+        in_the_interface = False
         for num in range(start_index, len(data)-1):
             # Leave if the num > highest index number to speed up the script.
             if num > index_list[len(index_list)-1]:
@@ -272,6 +281,10 @@ class ZHopOnTravel(Script):
                         in_the_infill = False
                     if line.startswith(";TYPE:FILL"):
                         in_the_infill = True
+                    if line.startswith(";") and in_the_interface == True:
+                        in_the_interface = False
+                    if line.startswith(";TYPE:SUPPORT-INTERFACE"):
+                        in_the_interface = True
                     if line.startswith("G92") and " E" in line:
                         self._cur_e = self.getValue(line, "E")
                         self._prev_e = self._cur_e
@@ -311,6 +324,9 @@ class ZHopOnTravel(Script):
                         hop_start = int(hop_indexes[0])
                         hop_end = int(hop_indexes[1])
                         if infill_only and not in_the_infill:
+                            hop_start = 0
+                            hop_end = 0
+                        if interface_only and not in_the_interface:
                             hop_start = 0
                             hop_end = 0
                         if hop_start > 0:
