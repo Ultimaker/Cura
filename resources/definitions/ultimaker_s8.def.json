@@ -455,16 +455,9 @@
         "seam_overhang_angle": { "value": 35 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
-        "skin_overlap": { "value": 20 },
-        "skin_preshrink": { "value": 0 },
+        "skin_support_speed": { "value": "speed_infill * infill_material_flow / skin_support_material_flow" },
         "skirt_brim_minimal_length": { "value": 1000 },
-        "skirt_brim_speed":
-        {
-            "maximum_value_warning": 300,
-            "value": "speed_layer_0"
-        },
         "skirt_line_count": { "value": 5 },
-        "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": 4 },
         "speed_flooring":
         {
