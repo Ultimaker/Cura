@@ -42,6 +42,7 @@
         "nlohmann_json/3.11.2#1ded6ae5d200a68ac17c51d528b945e2",
         "nlopt/2.7.1#61296485856e44d13b39346ef54325f1",
         "onetbb/2022.2.0#c46933bfdedba8347b631aa6fc9878cf",
+        "opencascade/7.9.1#d350d7e72420a1637c07c399037ed62a",
         "openssl/3.6.0#edf7648e96cca0d688e4ab1a84eafc67",
         "pcre2/10.42#9a35f5089feb875ec61a38eca364ce77",
         "protobuf/3.21.12#44ee56c0a6eea0c19aeeaca680370b88",
