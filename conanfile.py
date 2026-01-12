@@ -311,7 +311,7 @@ class CuraConan(ConanFile):
         for dependency in [self] + list(self.dependencies.values()):
             self._make_conan_dependency_description(dependency, dependencies)
 
-            if "extra_dependencies" in dependency.conan_data:
+            if dependency.conan_data is not None and "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
                     self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
 
