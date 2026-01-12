@@ -301,6 +301,10 @@ UM.Dialog
                     {
                         if (provider.properties.enabled == "True" && model.type != undefined)
                         {
+                            if (definition && definition.comments && definition.comments.toLowerCase() === "multiline")
+                            {
+                                return UM.Theme.getSize("standard_list_lineheight").height + UM.Theme.getSize("narrow_margin").height + (UM.Theme.getSize("setting_control").height * 3);
+                            }
                             return UM.Theme.getSize("section").height;
                         }
                         else
@@ -331,6 +335,19 @@ UM.Dialog
                         settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
                         settingLoader.item.doQualityUserSettingEmphasis = false
+                        // Pass properties explicitly to custom components that don't extend SettingItem
+                        if (settingLoader.item.hasOwnProperty("definition")) {
+                            settingLoader.item.definition = settingLoader.definition
+                        }
+                        if (settingLoader.item.hasOwnProperty("settingDefinitionsModel")) {
+                            settingLoader.item.settingDefinitionsModel = settingLoader.settingDefinitionsModel
+                        }
+                        if (settingLoader.item.hasOwnProperty("propertyProvider")) {
+                            settingLoader.item.propertyProvider = settingLoader.propertyProvider
+                        }
+                        if (settingLoader.item.hasOwnProperty("globalPropertyProvider")) {
+                            settingLoader.item.globalPropertyProvider = settingLoader.globalPropertyProvider
+                        }
                     }
 
                     sourceComponent:
@@ -348,6 +365,11 @@ UM.Dialog
                             case "bool":
                                 return settingCheckBox
                             case "str":
+                                // Check if comments field indicates multiline
+                                if (definition && definition.comments && definition.comments.toLowerCase() === "multiline")
+                                {
+                                    return settingTextArea;
+                                }
                                 return settingTextField
                             case "category":
                                 return settingCategory
@@ -403,6 +425,97 @@ UM.Dialog
             id: settingTextField;
 
             Cura.SettingTextField { }
+        }
+
+        Component
+        {
+            id: settingTextArea
+
+            Item
+            {
+                id: base
+
+                property var definition
+                property var settingDefinitionsModel
+                property var propertyProvider
+                property var globalPropertyProvider
+                
+                property bool showRevertButton: false
+                property bool showInheritButton: false
+                property bool showLinkedSettingIcon: false
+                property bool doDepthIndentation: false
+                property bool doQualityUserSettingEmphasis: false
+
+                property string textBeforeEdit
+                property bool textHasChanged
+
+                signal showTooltip(string text)
+                signal hideTooltip()
+
+                width: parent.width
+                height: UM.Theme.getSize("standard_list_lineheight").height + UM.Theme.getSize("narrow_margin").height + (UM.Theme.getSize("setting_control").height * 3)
+
+                UM.Label
+                {
+                    id: labelText
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: UM.Theme.getSize("standard_list_lineheight").height
+                    text: definition ? definition.label : ""
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                }
+
+                Flickable
+                {
+                    id: flickable
+                    anchors.top: labelText.bottom
+                    anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
+                    height: UM.Theme.getSize("setting_control").height * 3
+                    
+                    clip: true
+                    ScrollBar.vertical: UM.ScrollBar { }
+                    
+                    TextArea.flickable: TextArea
+                    {
+                        id: textArea
+                        
+                        enabled: propertyProvider && propertyProvider.properties ? propertyProvider.properties.enabled === "True" : true
+                        text: (propertyProvider && propertyProvider.properties && propertyProvider.properties.value !== undefined) ? propertyProvider.properties.value : ""
+                        
+                        background: Rectangle
+                        {
+                            color: UM.Theme.getColor("setting_control")
+                            border.color: textArea.activeFocus ? UM.Theme.getColor("text_field_border_active") : UM.Theme.getColor("text_field_border")
+                            border.width: UM.Theme.getSize("default_lining").width
+                        }
+
+                        onTextChanged:
+                        {
+                            if (activeFocus && propertyProvider)
+                            {
+                                propertyProvider.setPropertyValue("value", text);
+                            }
+                        }
+
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        selectionColor: UM.Theme.getColor("text_selection")
+                        selectedTextColor: UM.Theme.getColor("text")
+                        wrapMode: TextEdit.Wrap
+                        selectByMouse: true
+
+                        Keys.onReturnPressed: function(event) { event.accepted = false; }
+                        Keys.onEnterPressed: function(event) { event.accepted = false; }
+                        Keys.onEscapePressed: function(event) { focus = false; event.accepted = true; }
+                    }
+                }
+            }
         }
 
         Component
