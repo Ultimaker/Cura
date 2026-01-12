@@ -13,7 +13,7 @@ requirements_internal:
   - "fdm_materials/5.11.0"
   - "cura_private_data/5.11.0-alpha.0@internal/testing"
 requirements_enterprise:
-  - "native_cad_plugin/2.0.0"
+  - "native_cad_plugin/3.0.0"
 urls:
     default:
         cloud_api_root: "https://api.ultimaker.com"
