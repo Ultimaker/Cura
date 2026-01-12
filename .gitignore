@@ -94,7 +94,6 @@ venv/
 build/
 dist/
 conaninfo.txt
-conan.lock
 conan_imports_manifest.txt
 conanbuildinfo.txt
 graph_info.json
