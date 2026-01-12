@@ -25,7 +25,7 @@
         "libcap/2.69#7ef2d60864c2e58e89db957be936dc49",
         "libcurl/8.16.0#25c3bfc08d7e6a9aa4564a0fd20e9a21",
         "libffi/3.4.4#33feb967b22d92ea0becce63bf9d5490",
-        "libmount/2.39.2#64850679fa9d5ead878e5076b0cab2a8"
+        "libmount/2.39.2#64850679fa9d5ead878e5076b0cab2a8",
         "libpng/1.6.48#dd0fc04a42b9a23bce065545a81d4847",
         "libselinux/3.6#5a78ff6ae5034eeaac8da723361a8ce4",
         "libsystemd/255.10#0552f8de4d3eeaaefd87f6677dfbce1f",
@@ -68,10 +68,10 @@
         "automake/1.16.5#b91b7c384c3deaa9d535be02da14d04f",
         "bison/3.8.2#c3490cbe0078b6fd3eb4cf5ed64144dc",
         "cmake/3.31.9#2032c6471fe4f5a3e17f65fed518d545",
-        "flex/2.6.4#e5cd857e69595b17f7599ba56be7dad2"
+        "flex/2.6.4#e5cd857e69595b17f7599ba56be7dad2",
         "gettext/0.22.5#4705a1582f4a611eadb15d0417427993",
         "gnu-config/cci.20210814#69fde734e1a46fd1655b4af46ab40945",
-        "gperf/3.1#a7afdf8f7cccdc2dcd4d962370c33d4f"
+        "gperf/3.1#a7afdf8f7cccdc2dcd4d962370c33d4f",
         "libiconv/1.17#1e65319e945f2d31941a9d28cc13c058",
         "libtool/2.4.7#14e7739cc128bc1623d2ed318008e47e",
         "m4/1.4.19#b38ced39a01e31fef5435bc634461fd2",
@@ -101,7 +101,7 @@
             "libsystemd/255.10"
         ],
         "libcurl/[>=7.78.0 <9]": [
-            "libcurl/8.16.0#25c3bfc08d7e6a9aa4564a0fd20e9a21:
+            "libcurl/8.16.0#25c3bfc08d7e6a9aa4564a0fd20e9a21"
         ]
     },
     "config_requires": []
