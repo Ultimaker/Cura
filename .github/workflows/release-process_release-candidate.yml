@@ -135,7 +135,7 @@ jobs:
       conan_args: "-c user.sentry:environment=production"
       lockfile_repository_branch: "5.11"
       enterprise: ${{ inputs.enterprise }}
-      private_data: ${{ inputs.enterprise }}
+      conan_private_data: ${{ inputs.enterprise }}
     secrets: inherit
 
   create-release-draft:
