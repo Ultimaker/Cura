@@ -132,7 +132,7 @@ jobs:
     needs: [parse-version, create-packages]
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}
-      conan_args: "-c user.sentry:environment=production"
+      conan_args: '-c user.sentry:environment=production --build="*"'
       lockfile_repository_branch: "5.11"
       enterprise: ${{ inputs.enterprise }}
       conan_private_data: ${{ inputs.enterprise }}
