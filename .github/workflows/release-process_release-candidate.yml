@@ -14,6 +14,11 @@ on:
         required: true
         type: boolean
 
+      enterprise:
+        description: 'Build Cura as an Enterprise edition'
+        default: false
+        type: boolean
+
 jobs:
   parse-version:
     name: Parse input version string
@@ -31,7 +36,7 @@ jobs:
           input_string: ${{ inputs.cura_version }}
 
   freeze-packages-versions:
-    name: Freeze packges versions
+    name: Freeze packages versions
     uses: Ultimaker/Cura-workflows/.github/workflows/cura-set-packages-versions.yml@main
     needs: [parse-version]
     with:
@@ -56,7 +61,11 @@ jobs:
       - name: Find available tag name
         id: find-available-tag-name
         run: |
-          VERSION=${{ inputs.cura_version }}
+          if [[ "${{ inputs.enterprise }}" == "true" ]]; then
+            VERSION="${{ inputs.cura_version }}-Enterprise"
+          else
+            VERSION="${{ inputs.cura_version }}"
+          fi
 
           RC_INDEX=0
           while
@@ -124,11 +133,13 @@ jobs:
     with:
       cura_conan_version: cura/${{ inputs.cura_version }}
       conan_args: "-c user.sentry:environment=production"
+      enterprise: ${{ inputs.enterprise }}
     secrets: inherit
 
   create-release-draft:
     name: Create the release draft
     runs-on: ubuntu-latest
+    if: ${{ !inputs.enterprise }}
     needs: [create-installers, parse-version, create-tags]
     steps:
       - name: Checkout Cura repo
