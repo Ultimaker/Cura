@@ -76,7 +76,7 @@ Item
                 {
                     anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
-                    source: printer ? "../png/" + printer.type + ".png" : ""
+                    source: "../png/Ultimaker Factor 4.png"
                     mipmap: true
                 }
             }
