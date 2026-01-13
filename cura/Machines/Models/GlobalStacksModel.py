@@ -149,7 +149,8 @@ class GlobalStacksModel(ListModel):
                 continue
 
             typ = container_stack.getMetaDataEntry("type", "")
-            if typ == "machine" and "belt" not in container_stack.getContainer(7).getId():
+            container7_id = container_stack.getContainer(7).getId()
+            if typ == "machine" and ("belt" not in container7_id or "custom" in container7_id):
                 continue
 
             is_abstract_machine = parseBool(container_stack.getMetaDataEntry("is_abstract_machine", False))

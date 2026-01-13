@@ -111,7 +111,7 @@ class MachineListModel(ListModel):
         for abstract_machine in abstract_machine_stacks:
             definition_id = abstract_machine.definition.getId()
 
-            if "belt" not in definition_id:
+            if "belt" not in definition_id or "custom" in definition_id:
                 continue
 
             connected_machine_stacks = machines_manager.getMachinesWithDefinition(definition_id, online_only = False)
@@ -146,7 +146,8 @@ class MachineListModel(ListModel):
             })
 
         for stack in other_machine_stacks:
-            if "belt" not in stack.getContainer(7).getId():
+            stack7_id = stack.getContainer(7).getId()
+            if "belt" not in stack7_id or "custom" in stack7_id:
                 continue
 
             self.addItem(stack, False)
