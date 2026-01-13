@@ -137,45 +137,4 @@ Item
             tooltipText: catalog.i18nc("@info", "Reset to defaults.")
         }
     }
-
-    // Spacer
-    Item
-    {
-        id: buttonsSpacer
-        width: compareAndSaveButton.visible ? UM.Theme.getSize("default_margin").width : 0
-        anchors.right: compareAndSaveButton.left
-    }
-
-    UM.SimpleButton
-    {
-        id: compareAndSaveButton
-        height: UM.Theme.getSize("action_button_icon").height
-        width: visible ? height : 0
-        iconSource: UM.Theme.getIcon("Save")
-        anchors
-        {
-            right: parent.right
-            verticalCenter: parent.verticalCenter
-        }
-
-        visible: enabled
-        color: enabled ? UM.Theme.getColor("accent_1") : UM.Theme.getColor("disabled")
-        hoverColor: UM.Theme.getColor("primary_hover")
-
-        enabled: Cura.MachineManager.hasUserSettings
-        onClicked: CuraApplication.showCompareAndSaveProfileChanges
-            (
-                Cura.MachineManager.hasCustomQuality ?
-                DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromCustom :
-                DiscardOrKeepProfileChangesDialog.ButtonsType.SaveFromBuiltIn
-            )
-
-        UM.ToolTip
-        {
-            visible: parent.hovered
-            y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
-            targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
-            tooltipText: catalog.i18nc("@info", "Compare and save.")
-        }
-    }
 }
