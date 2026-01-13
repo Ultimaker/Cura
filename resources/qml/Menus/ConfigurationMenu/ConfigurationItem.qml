@@ -25,6 +25,10 @@ Button
         for (var index in extruderConfigurations)
         {
             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
+            if (name.toLowerCase() == "empty")
+            {
+                continue
+            }
             if (name == "" || name == "Unknown")
             {
                 return false
@@ -48,6 +52,11 @@ Button
         var coresList = configuration.validCoresForPrinterType
         for (var index in extruderConfigurations)
         {
+            var mat_name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
+            if (mat_name.toLowerCase() == "empty")
+            {
+                continue
+            }
             var name = extruderConfigurations[index].hotendID ? extruderConfigurations[index].hotendID : ""
             if (name != "" && ! coresList.includes(name))
             {
