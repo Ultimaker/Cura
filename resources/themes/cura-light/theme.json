@@ -317,7 +317,7 @@
 
         "button_tooltip": [31, 36, 39, 255],
 
-        "extruder_disabled": [255, 255, 255, 102],
+        "extruder_disabled": [255, 255, 255, 136],
 
         "action_button": [255, 255, 255, 255],
         "action_button_hovered": [232, 242, 252, 255],
@@ -334,7 +334,7 @@
         "setting_category_disabled": [255, 255, 255, 255],
         "setting_category_hover": "background_2",
         "setting_category_text": "text_default",
-        "setting_category_disabled_text": [24, 41, 77, 101],
+        "setting_category_disabled_text": [24, 41, 77, 136],
         "setting_category_active_text": "text_default",
 
         "setting_control": "background_2",

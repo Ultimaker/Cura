@@ -196,7 +196,7 @@ Button
                             perExtruder.push(` [${coreName}/${matName}]`)
                         }
 
-                        var configsStr = "<i>" + perExtruder + "</i>"
+                        var configsStr = "<code>" + perExtruder + "</code>"
                         var warnStr = isValidMaterial ? whenMismatchedCore() : whenUnknownMaterial()
                         return configsStr + "<br/>" + warnStr
                     }
