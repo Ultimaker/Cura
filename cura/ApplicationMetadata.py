@@ -23,12 +23,8 @@ try:
 except ImportError:
     CuraLatestURL = DEFAULT_CURA_LATEST_URL
 
-try:
-    from cura.CuraVersion import CuraAppName  # type: ignore
-    if CuraAppName == "":
-        CuraAppName = DEFAULT_CURA_APP_NAME
-except ImportError:
-    CuraAppName = DEFAULT_CURA_APP_NAME
+
+CuraAppName = "solevation_cura"
 
 try:
     from cura.CuraVersion import CuraVersion  # type: ignore
