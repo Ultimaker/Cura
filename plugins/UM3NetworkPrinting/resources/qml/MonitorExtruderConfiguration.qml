@@ -54,7 +54,7 @@ Item
         }
         color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         height: childrenRect.height
-        width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
+        width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) + 10 // TODO: Theme!
         radius: 2 * screenScaleFactor // TODO: Theme!
 
         UM.Label

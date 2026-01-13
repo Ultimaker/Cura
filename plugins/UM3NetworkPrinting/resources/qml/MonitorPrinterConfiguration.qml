@@ -24,7 +24,7 @@ Item
     Row
     {
         id: extruderConfigurationRow
-        spacing: 18 * screenScaleFactor // TODO: Theme!
+        spacing: 22 * screenScaleFactor // TODO: Theme!
 
         Repeater
         {
