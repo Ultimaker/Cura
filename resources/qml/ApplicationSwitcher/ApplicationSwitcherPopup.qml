@@ -56,13 +56,6 @@ Popup
                     link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
                     permissionsRequired: []
                 },
-                {
-                    displayName: catalog.i18nc("@label:button", "Report a bug"),
-                    thumbnail: UM.Theme.getIcon("Bug", "high"),
-                    description: catalog.i18nc("@tooltip:button", "Let developers know that something is going wrong."),
-                    link: "https://github.com/Ultimaker/Cura/issues/new/choose",
-                    permissionsRequired: []
-                },
             ]
 
             delegate: ApplicationButton

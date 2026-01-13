@@ -188,18 +188,10 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing_error_message = Message(
             text = catalog.i18nc("@message", "Oops! We encountered an unexpected error during your slicing process. "
                                              "Rest assured, we've automatically received the crash logs for analysis, "
-                                             "if you have not disabled data sharing in your preferences. To assist us "
-                                             "further, consider sharing your project details on our issue tracker."),
+                                             "if you have not disabled data sharing in your preferences."),
             title = catalog.i18nc("@message:title", "Slicing failed"),
             message_type = Message.MessageType.ERROR
         )
-        self._slicing_error_message.addAction(
-            action_id = "report_bug",
-            name = catalog.i18nc("@message:button", "Report a bug"),
-            description = catalog.i18nc("@message:description", "Report a bug on UltiMaker Cura's issue tracker."),
-            icon = "[no_icon]"
-        )
-        self._slicing_error_message.actionTriggered.connect(self._reportBackendError)
 
         self._resetLastSliceTimeStats()
         self._snapshot: Optional[QImage] = None
