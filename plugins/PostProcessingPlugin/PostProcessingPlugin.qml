@@ -517,7 +517,7 @@ UM.Dialog
                         color: UM.Theme.getColor("text")
                         selectionColor: UM.Theme.getColor("text_selection")
                         selectedTextColor: UM.Theme.getColor("text")
-                        wrapMode: TextEdit.Wrap
+                        wrapMode: TextEdit.NoWrap
                         selectByMouse: true
 
                         // Allow Enter/Return to insert newlines instead of closing dialog
