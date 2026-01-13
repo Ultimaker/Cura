@@ -29,13 +29,10 @@ Button
             {
                 return false
             }
-            if (name != "empty" && ! name.toLowerCase().endsWith("tpu"))
+            var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
+            if (! brand.toLowerCase().startsWith("solevation"))
             {
-                var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
-                if (brand != "empty" && ! brand.toLowerCase().startsWith("solevation"))
-                {
-                    return false
-                }
+                return false
             }
         }
         return true
@@ -136,11 +133,6 @@ Button
                         {
                             var name = extruderConfigurations[index].material ? extruderConfigurations[index].material.name : ""
                             var brand = extruderConfigurations[index].material ? extruderConfigurations[index].material.brand : ""
-                            if (name.toLowerCase().endsWith("tpu"))
-                            {
-                                name = "Performance"
-                                brand = "Solevation"
-                            }
                             if (! brand.toLowerCase().startsWith("solevation"))
                             {
                                 name = "";
@@ -165,7 +157,7 @@ Button
                         }
 
                         unknownMaterials = "<b>" + unknownMaterials + "</b>"
-                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile.");
+                        var draftResult = catalog.i18nc("@label", "This configuration is not available because %1 is not recognized. Only Solevation materials are supported in this version.");
                         return draftResult.arg(unknownMaterials).arg("<a href=' '>" + catalog.i18nc("@label","Marketplace") + "</a> ")
                     }
 
