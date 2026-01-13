@@ -281,14 +281,6 @@ class WelcomePagesModel(ListModel):
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
                            "should_show_function": self.shouldShowMachineActions,
                            },
-                          {"id": "whats_new",
-                           "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
-                           "next_page_button_text": self._catalog.i18nc("@action:button", "Skip"),
-                           },
-                          {"id": "changelog",
-                           "page_url": self._getBuiltinWelcomePagePath("ChangelogContent.qml"),
-                           "next_page_button_text": self._catalog.i18nc("@action:button", "Finish"),
-                           },
                           ]
 
         pages_to_show = all_pages_list

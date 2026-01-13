@@ -647,7 +647,7 @@ class CuraApplication(QtApplication):
             self._qml_engine.rootObjects()[0].setTitle(f"{ApplicationMetadata.CuraAppDisplayName} {ApplicationMetadata.CuraVersion}")
             message = Message(
                 self._i18n_catalog.i18nc("@info:warning",
-                                         f"This version is not intended for production use. If you encounter any issues, please report them on our GitHub page, mentioning the full version {self.getVersion()}"),
+                                         f"This version {self.getVersion()} is not intended for production use."),
                 lifetime = 0,
                 title = self._i18n_catalog.i18nc("@info:title", "Nightly build"),
                 message_type = Message.MessageType.WARNING)
