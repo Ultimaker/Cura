@@ -3,8 +3,8 @@
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
-# Modification 10.01.2026
-# add multiline in custom G-code, using '\n'.
+# Modification 01.13.2026
+# convert G-code Before and G-Code After inputs to textareas (#21298).
 
 from typing import List
 from ..Script import Script
@@ -137,9 +137,10 @@ class FilamentChange(Script):
                 "before_macro":
                 {
                     "label": "G-code Before",
-                    "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep. Use \\\\n to separate lines.",
+                    "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep.",
                     "unit": "",
                     "type": "str",
+                    "comments": "multiline",
                     "default_value": "M300 S1000 P10000",
                     "enabled": "enabled and enable_before_macro"
                 },
@@ -154,9 +155,10 @@ class FilamentChange(Script):
                 "after_macro":
                 {
                     "label": "G-code After",
-                    "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle. Use \\\\n to separate lines.",
+                    "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle.",
                     "unit": "",
                     "type": "str",
+                    "comments": "multiline",
                     "default_value": "M300 S440 P500",
                     "enabled": "enabled and enable_after_macro"
                 }
@@ -199,7 +201,7 @@ class FilamentChange(Script):
         color_change = ";BEGIN FilamentChange plugin\n"
 
         if enable_before_macro:
-            color_change = color_change + before_macro.replace("\\n", "\n") + "\n"
+            color_change = color_change + before_macro + "\n"
 
         color_change = color_change + "M600"
 
@@ -225,7 +227,7 @@ class FilamentChange(Script):
         color_change = color_change + "\n"
 
         if enable_after_macro:
-            color_change = color_change + after_macro.replace("\\n", "\n") + "\n"
+            color_change = color_change + after_macro + "\n"
 
         color_change = color_change + ";END FilamentChange plugin\n"
 
