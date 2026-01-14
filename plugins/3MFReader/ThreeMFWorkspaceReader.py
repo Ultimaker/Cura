@@ -273,6 +273,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             definition_container_type = definition_container.get("type")
             if definition_container_type == "machine":
                 machine_definition_id = container_id
+
+                if "belt" not in machine_definition_id.lower() or "custom" in machine_definition_id.lower():
+                    return WorkspaceReader.PreReadResult.failed
+
                 machine_definition_containers = self._container_registry.findDefinitionContainers(id = machine_definition_id)
                 if machine_definition_containers and updatable_machines is not None:
                     updatable_machines = [machine for machine in self._container_registry.findContainerStacks(type = "machine") if machine.definition == machine_definition_containers[0]]
