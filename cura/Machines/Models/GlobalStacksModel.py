@@ -149,7 +149,7 @@ class GlobalStacksModel(ListModel):
                 continue
 
             typ = container_stack.getMetaDataEntry("type", "")
-            container7_id = container_stack.getContainer(7).getId()
+            container7_id = container_stack.getContainer(7).getId().lower()
             if typ == "machine" and ("belt" not in container7_id or "custom" in container7_id):
                 continue
 
