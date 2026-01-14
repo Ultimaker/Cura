@@ -18,7 +18,7 @@ Button
 
     onHoveredChanged:
     {
-        if(hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible))
+        if(hovered && (buttonTextMetrics.elidedText != buttonText.text))
         {
             tooltip.show()
         } else
@@ -86,7 +86,7 @@ Button
     UM.ToolTip
     {
         id: tooltip
-        tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText
+        tooltipText: objectItemButton.text
     }
 
     UM.I18nCatalog
