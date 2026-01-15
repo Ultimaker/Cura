@@ -210,7 +210,6 @@
         },
         "bridge_skin_speed_2": { "value": "speed_print*2/3" },
         "bridge_skin_support_threshold": { "value": 20 },
-        "bridge_sparse_infill_max_density": { "value": 20 },
         "bridge_wall_material_flow": { "value": 200 },
         "bridge_wall_min_length": { "value": 2 },
         "bridge_wall_speed": { "value": 50 },
@@ -232,14 +231,15 @@
             "value": "material_print_temperature-15"
         },
         "default_material_print_temperature": { "maximum_value_warning": 320 },
-        "extra_infill_lines_to_support_skins": { "value": "'walls_and_lines'" },
         "flooring_layer_count": { "value": 1 },
         "flooring_material_flow": { "value": "skin_material_flow * 110/93" },
         "flooring_monotonic": { "value": false },
         "gradual_flow_discretisation_step_size": { "value": 0.3 },
         "gradual_flow_enabled": { "value": true },
+        "group_outer_walls": { "value": false },
         "hole_xy_offset": { "value": 0.075 },
         "infill_material_flow": { "value": "material_flow if infill_sparse_density < 95 else 95" },
+        "infill_move_inwards_length": { "value": "3*machine_nozzle_size" },
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'zigzag' if infill_sparse_density > 50 else 'grid'" },
         "infill_sparse_density": { "value": 15 },
@@ -432,6 +432,11 @@
         "max_flow_acceleration": { "value": 1.5 },
         "max_skin_angle_for_expansion": { "value": 45 },
         "meshfix_maximum_resolution": { "value": 0.4 },
+        "min_bead_width":
+        {
+            "maximum_value_warning": "machine_nozzle_size * 1.25",
+            "value": "machine_nozzle_size * 1.15"
+        },
         "min_infill_area": { "default_value": 10 },
         "optimize_wall_printing_order": { "value": false },
         "prime_during_travel_ratio": { "enabled": false },
@@ -449,19 +454,11 @@
         "roofing_expansion": { "value": 1.2 },
         "roofing_pattern": { "value": "'lines'" },
         "seam_overhang_angle": { "value": 35 },
-        "skin_edge_support_thickness": { "value": 0.8 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
-        "skin_overlap": { "value": 20 },
-        "skin_preshrink": { "value": 0 },
+        "skin_support_speed": { "value": "speed_infill * infill_material_flow / skin_support_material_flow" },
         "skirt_brim_minimal_length": { "value": 1000 },
-        "skirt_brim_speed":
-        {
-            "maximum_value_warning": 300,
-            "value": "speed_layer_0"
-        },
         "skirt_line_count": { "value": 5 },
-        "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": 4 },
         "speed_flooring":
         {

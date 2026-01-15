@@ -91,7 +91,7 @@ class AnnealingOrDrying(Script):
                     "description": "Hold the bed temp at the 'Bed Start Out Temperature' for this amount of time (in decimal hours).  When this time expires then the Annealing cool down will start.  This is also the 'Drying Time' used when 'Drying Filament'.",
                     "type": "float",
                     "default_value": 0.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
                 "dry_time":
@@ -100,7 +100,7 @@ class AnnealingOrDrying(Script):
                     "description": "Hold the bed temp at the 'Bed Start Out Temperature' for this amount of time (in decimal hours).  When this time expires the bed will shut off.",
                     "type": "float",
                     "default_value": 4.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "enabled": "enable_script and cycle_type == 'dry_cycle'"
                 },
                 "pause_cmd":
@@ -117,7 +117,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature to start at.  This is typically the bed temperature during the print but can be changed here.  This is also the temperature used when drying filament.",
                     "type": "int",
                     "value": 30,
-                    "unit": "Degrees ",
+                    "unit": "°C/F ",
                     "minimum_value": 30,
                     "maximum_value": 110,
                     "maximum_value_warning": 100,
@@ -129,7 +129,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the lowest temperature to control the cool down.  This is the shut-off temperature for the build plate and (when applicable) the Heated Chamber.  The minimum value is 30",
                     "type": "int",
                     "default_value": 30,
-                    "unit": "Degrees ",
+                    "unit": "°C/F ",
                     "minimum_value": 30,
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
@@ -139,7 +139,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature for the Build Volume (Heated Chamber).  This is typically the temperature during the print but can be changed here.",
                     "type": "int",
                     "value": 24,
-                    "unit": "Degrees ",
+                    "unit": "°C/F ",
                     "minimum_value": 0,
                     "maximum_value": 90,
                     "maximum_value_warning": 75,
@@ -170,7 +170,7 @@ class AnnealingOrDrying(Script):
                     "description": "The total amount of time (in decimal hours) to control the cool down.  The build plate temperature will be dropped in 3° increments across this time span.  'Cool Down Time' starts at the end of the 'Hold Time' if you entered one.",
                     "type": "float",
                     "default_value": 1.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "minimum_value_warning": 0.25,
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
@@ -203,7 +203,7 @@ class AnnealingOrDrying(Script):
                     "label": "Beep Duration",
                     "description": "The length of the buzzer sound.  Units are in milliseconds so 1000ms = 1 second.",
                     "type": "int",
-                    "unit": "milliseconds ",
+                    "unit": "msec ",
                     "default_value": 1000,
                     "enabled": "beep_when_done and enable_script"
                 },
@@ -471,9 +471,9 @@ class AnnealingOrDrying(Script):
 
     def _dry_filament_only(
             self,
+            drydata: str,
             bed_temperature: int,
             chamber_temp: int,
-            drydata: str,
             heated_chamber: bool,
             heating_zone: str,
             max_y: str,
@@ -562,10 +562,10 @@ class AnnealingOrDrying(Script):
                 back_txt = lines[index].split(";")[1]
                 lines[index] = front_txt + str(" " * (30 - len(front_txt))) +";" +  back_txt
         drydata[1] = "\n".join(lines) + "\n"
-        dry_txt = "; Drying time ...................... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
+        dry_txt = "; Drying time ............... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
         dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "°\n"
         if heated_chamber and heating_zone == "bed_chamber":
-            dry_txt += "; Chamber temperature ... " + str(chamber_temp) + "°\n"
+            dry_txt += "; Chamber temperature ....... " + str(chamber_temp) + "°\n"
         Message(title = "[Dry Filament]", text = dry_txt).show()
         drydata[0] = "; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
         return drydata
