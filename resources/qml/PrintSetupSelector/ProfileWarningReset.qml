@@ -118,7 +118,7 @@ Item
         iconSource: UM.Theme.getIcon("ArrowReset")
         anchors
         {
-            right: buttonsSpacer.left
+            right: parent.right
             verticalCenter: parent.verticalCenter
         }
 
