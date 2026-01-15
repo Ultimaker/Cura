@@ -274,6 +274,7 @@ Item
             value: sliderRoot.upperValue
             busy: UM.SimulationView.busy
             setValue: upperHandle.setValueManually // connect callback functions
+            layerHeight: UM.SimulationView.currentLayerHeight
         }
     }
 
@@ -384,6 +385,7 @@ Item
             value: sliderRoot.lowerValue
             busy: UM.SimulationView.busy
             setValue: lowerHandle.setValueManually // connect callback functions
+            layerHeight: UM.SimulationView.minimumLayerHeight
         }
     }
 }

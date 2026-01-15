@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 08:45+0200\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: 2025-10-06 13:55+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
@@ -208,6 +209,10 @@ msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
 msgstr "<html>1つ以上のエクストルーダーがプリントに使用されません:"
 
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGLレンダラー: {renderer}</li>"
@@ -265,7 +270,7 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "一部のプリンターではクラウド接続は利用できません"
 
-msgctxt "@text"
+msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "密度の高い強力な部品ですが、印刷時間が遅くなります。機能部品に最適です。"
 
@@ -497,7 +502,7 @@ msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "単位がミリメートルではなくメートルの場合、モデルが極端に小さくなる場合があります。この場合にモデルを拡大するかどうかを選択します。"
 
-msgctxt "@label"
+msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr "アニーリング"
 
@@ -593,6 +598,10 @@ msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "自動でモデルをビルドプレート上に配置"
 
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr "自動でファームウェアを更新"
@@ -645,13 +654,9 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "バックアップ"
 
-msgctxt "@label"
+msgctxt "default intent label"
 msgid "Balanced"
 msgstr "バランス"
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
-msgstr "BambuLab 3MFファイル"
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -744,10 +749,6 @@ msgstr "プリンターを追加する前に、<filename>{0}</filename>からプ
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "G-codeを読み込み中は他のファイルを開くことができません。{0}の取り込みをスキップしました。"
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
-msgstr "GCodeを3MFファイルに書き出せません"
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -1443,7 +1444,7 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr "ダウングレード中..."
 
-msgctxt "@label"
+msgctxt "quick intent label"
 msgid "Draft"
 msgstr "ドラフト"
 
@@ -1503,6 +1504,10 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr "ブリムまたはラフトの印刷を有効にできます。これにより、オブジェクトの周囲または下に平らな部分が追加され、後で簡単に切り取ることができます。無効にすると、デフォルトでオブジェクトの周囲にスカートが形成されます。"
 
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
+
 msgctxt "@label"
 msgid "Enabled"
 msgstr "有効"
@@ -1523,7 +1528,7 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr "EnginePlugin"
 
-msgctxt "@label"
+msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr "エンジニアリング"
 
@@ -3924,8 +3929,8 @@ msgid "Select Settings to Customize for this model"
 msgstr "このモデルをカスタマイズする設定を選択する"
 
 msgctxt "@label"
-msgid "Select a single model to start painting"
-msgstr "ペイントを始めるにはモデルを1つだけ選択してください"
+msgid "Select a single ungrouped model to start painting"
+msgstr ""
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -4251,7 +4256,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "スムージング"
 
-msgctxt "@label"
+msgctxt "solid intent label"
 msgid "Solid"
 msgstr "固体"
 
@@ -4491,7 +4496,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "画像に適応したスムージング量。"
 
-msgctxt "@text"
+msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "アニーリングプロファイルは、印刷終了後にオーブンでの後処理が必要です。このプロファイルにより、アニーリング後の印刷部品の寸法精度が維持され、強度、剛性、耐熱性が向上します。"
 
@@ -4504,7 +4509,7 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "バックアップが最大ファイルサイズを超えています。"
 
-msgctxt "@text"
+msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "バランスプロファイルは、生産性、表面品質、機械的特性、寸法精度のバランスを取るために設計されています。"
 
@@ -4552,11 +4557,11 @@ msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "ビルドプレート上の奥行き（ミリメートル）"
 
-msgctxt "@text"
+msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "ドラフトプロファイルは、プリント時間の大幅短縮を目的とした初期プロトタイプとコンセプト検証をプリントするために設計されています。"
 
-msgctxt "@text"
+msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "エンジニアリングプロファイルは、精度向上と公差の厳格対応を目的とした機能プロトタイプや最終用途部品をプリントするために設計されています。"
 
@@ -4711,7 +4716,7 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "ホットエンドをプレヒートする温度です。"
 
-msgctxt "@text"
+msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "ビジュアルプロファイルは、優れたビジュアルと表面品質を目的としたビジュアルプロトタイプやモデルをプリントするために設計されています。"
 
@@ -5080,10 +5085,6 @@ msgstr "スライスできません"
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "プライムタワーまたはプライム位置が無効なためスライスできません。"
-
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr "無効なエクストルーダー %s に関連付けられている造形物があるため、スライスできません。"
 
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -5509,7 +5510,7 @@ msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr "UltiMakerウェブサイトをご確認ください。"
 
-msgctxt "@label"
+msgctxt "visual intent label"
 msgid "Visual"
 msgstr "ビジュアル"
 
@@ -5800,9 +5801,17 @@ msgstr "{}プラグインのダウンロードに失敗しました"
 #~ msgid "Application framework"
 #~ msgstr "アプリケーションフレームワーク"
 
+#~ msgctxt "@item:inlistbox"
+#~ msgid "BambuLab 3MF file"
+#~ msgstr "BambuLab 3MFファイル"
+
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "C/C++ Binding library"
 #~ msgstr "C/C++バインディングライブラリー"
+
+#~ msgctxt "@info:error"
+#~ msgid "Can't write GCode to 3MF file"
+#~ msgstr "GCodeを3MFファイルに書き出せません"
 
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Compatibility between Python 2 and 3"
@@ -5904,6 +5913,10 @@ msgstr "{}プラグインのダウンロードに失敗しました"
 #~ msgid "Root Certificates for validating SSL trustworthiness"
 #~ msgstr "SSLの信頼性を検証するためのルート証明書"
 
+#~ msgctxt "@label"
+#~ msgid "Select a single model to start painting"
+#~ msgstr "ペイントを始めるにはモデルを1つだけ選択してください"
+
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Serial communication library"
 #~ msgstr "シリアル通信ライブラリー"
@@ -5951,6 +5964,10 @@ msgstr "{}プラグインのダウンロードに失敗しました"
 #~ msgctxt "@text:window"
 #~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
 #~ msgstr "これはCura Universal Projectファイルです。Cura ProjectまたはCura Universal Projectとして開きますか？それともそこからモデルをインポートしますか？"
+
+#~ msgctxt "@info:status"
+#~ msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+#~ msgstr "無効なエクストルーダー %s に関連付けられている造形物があるため、スライスできません。"
 
 #~ msgctxt "@label Description for development tool"
 #~ msgid "Universal build system configuration"
