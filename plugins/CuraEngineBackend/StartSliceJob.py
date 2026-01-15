@@ -413,6 +413,9 @@ class StartSliceJob(Job):
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                 if not is_non_printing_mesh:
                     for used_extruder in StartSliceJob._getMainExtruders(node):
+                        if used_extruder >= len(extruders_enabled):
+                            continue
+
                         if not extruders_enabled[used_extruder]:
                             skip_group = True
                             has_model_with_disabled_extruders = True
