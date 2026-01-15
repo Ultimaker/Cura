@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 08:45+0200\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: 2021-09-07 08:02+0200\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -214,6 +214,10 @@ msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
 msgstr ""
 
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL Renderer: {renderer}</li>"
@@ -272,7 +276,7 @@ msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] ""
 msgstr[1] ""
 
-msgctxt "@text"
+msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr ""
 
@@ -504,7 +508,7 @@ msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Model może wydawać się bardzo mały, jeśli jego jednostka jest na przykład w metrach, a nie w milimetrach. Czy takie modele powinny być skalowane?"
 
-msgctxt "@label"
+msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr ""
 
@@ -600,6 +604,10 @@ msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Automatycznie upuść modele na stół roboczy"
 
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr "Automatycznie uaktualnij oprogramowanie"
@@ -652,13 +660,9 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "Kopie zapasowe"
 
-msgctxt "@label"
+msgctxt "default intent label"
 msgid "Balanced"
 msgstr "Zrównoważony"
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -751,10 +755,6 @@ msgstr "Nie można importować profilu z <filename>{0}</filename> przed dodaniem
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Nie można otworzyć żadnego innego pliku, jeśli ładuje się G-code. Pominięto importowanie {0}"
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
-msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -1439,7 +1439,7 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr ""
 
-msgctxt "@label"
+msgctxt "quick intent label"
 msgid "Draft"
 msgstr "Szkic"
 
@@ -1499,6 +1499,10 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr ""
 
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
+
 msgctxt "@label"
 msgid "Enabled"
 msgstr "Włączona"
@@ -1519,7 +1523,7 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr ""
 
-msgctxt "@label"
+msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr "Inżynieria"
 
@@ -3922,7 +3926,7 @@ msgid "Select Settings to Customize for this model"
 msgstr "Wybierz Ustawienia, aby dostosować ten model"
 
 msgctxt "@label"
-msgid "Select a single model to start painting"
+msgid "Select a single ungrouped model to start painting"
 msgstr ""
 
 msgctxt "@text"
@@ -4249,7 +4253,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Wygładzanie"
 
-msgctxt "@label"
+msgctxt "solid intent label"
 msgid "Solid"
 msgstr ""
 
@@ -4489,7 +4493,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "Ilość wygładzania do zastosowania do obrazu."
 
-msgctxt "@text"
+msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr ""
 
@@ -4503,7 +4507,7 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr ""
 
-msgctxt "@text"
+msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "Zrównoważony profil został zaprojektowany w celu znalezienia równowagi między wydajnością, jakością powierzchni, właściwościami mechanicznymi i precyzją wymiarową."
 
@@ -4551,11 +4555,11 @@ msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "Głębokość w milimetrach na stole"
 
-msgctxt "@text"
+msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "Profil szkicu służy do drukowania początkowych prototypów i weryfikacji koncepcji z naciskiem na krótki czasu drukowania."
 
-msgctxt "@text"
+msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "Profil inżynieryjny jest przeznaczony do drukowania prototypów funkcjonalnych i części końcowych z naciskiem na lepszą dokładność i lepszą tolerancję."
 
@@ -4704,7 +4708,7 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "Temperatura do wstępnego podgrzewania głowicy."
 
-msgctxt "@text"
+msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "Profil wizualny jest przeznaczony do drukowania prototypów i modeli z zamiarem podkreślenia wysokiej jakości wizualnej i powierzchni."
 
@@ -5073,10 +5077,6 @@ msgstr "Nie można pociąć"
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Nie można pociąć, ponieważ wieża czyszcząca lub jej pozycja(e) są niewłaściwe."
-
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr "Nie można pociąć, ponieważ obecne są obiekty powiązane z wyłączonym ekstruderem %s."
 
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -5502,7 +5502,7 @@ msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr ""
 
-msgctxt "@label"
+msgctxt "visual intent label"
 msgid "Visual"
 msgstr "Wizualny"
 
@@ -5879,6 +5879,10 @@ msgstr ""
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Support library for scientific computing"
 #~ msgstr "Wsparcie biblioteki do obliczeń naukowych"
+
+#~ msgctxt "@info:status"
+#~ msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+#~ msgstr "Nie można pociąć, ponieważ obecne są obiekty powiązane z wyłączonym ekstruderem %s."
 
 #~ msgctxt "@label"
 #~ msgid "Y max"

@@ -181,8 +181,6 @@
         "retraction_speed": { "default_value": 30 },
         "roofing_layer_count": { "value": "1" },
         "roofing_material_flow": { "value": "99" },
-        "skin_edge_support_layers": { "value": "0" },
-        "skin_edge_support_thickness": { "value": "0" },
         "skin_material_flow": { "value": "99" },
         "skin_no_small_gaps_heuristic": { "default_value": true },
         "skin_outline_count": { "value": 0 },
