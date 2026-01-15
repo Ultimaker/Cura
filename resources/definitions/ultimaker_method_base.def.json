@@ -199,7 +199,6 @@
         "bridge_skin_speed": { "value": "speed_topbottom" },
         "bridge_skin_speed_2": { "value": "speed_topbottom" },
         "bridge_skin_speed_3": { "value": "speed_topbottom" },
-        "bridge_sparse_infill_max_density": { "value": 50 },
         "bridge_wall_coast": { "value": 0 },
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
