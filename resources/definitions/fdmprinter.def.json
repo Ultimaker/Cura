@@ -1392,7 +1392,7 @@
                 "z_seam_position":
                 {
                     "label": "Z Seam Position",
-                    "description": "The position near where to start printing each part in a layer.",
+                    "description": "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements.",
                     "type": "enum",
                     "options":
                     {
@@ -1415,7 +1415,7 @@
                         "z_seam_x":
                         {
                             "label": "Z Seam X",
-                            "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                            "description": "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 100.0,
@@ -1427,7 +1427,7 @@
                         "z_seam_y":
                         {
                             "label": "Z Seam Y",
-                            "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                            "description": "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 100.0,
@@ -1458,7 +1458,7 @@
                 "z_seam_relative":
                 {
                     "label": "Z Seam Relative",
-                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
+                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "z_seam_type == 'back'",
