@@ -101,6 +101,10 @@ class SimulationView(CuraView):
         self._cumulative_line_duration_layer: Optional[int] = None
         self._cumulative_line_duration: List[float] = []
 
+        # Cache for layer heights to avoid recalculating on every query
+        self._layer_heights_cache: dict[int, float] = {}
+        self._layer_heights_cache_node_id: Optional[int] = None  # Track which node's data is cached
+
         self._global_container_stack: Optional[ContainerStack] = None
         self._proxy = None
 
@@ -289,6 +293,88 @@ class SimulationView(CuraView):
             return layer_data.getLayer(self.getCurrentLayer())
         return None
 
+    def _calculateLayerHeightsCache(self) -> None:
+        """Calculate and cache heights for all layers.
+        
+        This method iterates through all layers once and stores their heights in a cache.
+        Handles both sliced data (microns) and loaded gcode (millimeters).
+        For layer 0 from gcode, uses thickness instead of height due to incorrect Z coordinates.
+        Only recalculates if the layer data source has changed.
+        """
+        scene = self.getController().getScene()
+        from cura.Scene.GCodeListDecorator import GCodeListDecorator
+        
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+            
+            # Check if we already have cached data for this layer_data object
+            # Use id of the layer_data itself, not the node, since node might be reused
+            current_layer_data_id = id(layer_data)
+            if self._layer_heights_cache_node_id == current_layer_data_id and self._layer_heights_cache:
+                # Cache is still valid, no need to recalculate
+                return
+            # Cache is invalid or empty, recalculate
+            self._layer_heights_cache.clear()
+            self._layer_heights_cache_node_id = current_layer_data_id
+            
+            has_gcode_decorator = node.getDecorator(GCodeListDecorator) is not None
+            
+            # Process all layers at once
+            for layer_id in layer_data.getLayers():
+                layer = layer_data.getLayer(layer_id)
+                if not layer:
+                    continue
+                
+                # If node has GCodeListDecorator, heights are already in millimeters (from gcode)
+                if has_gcode_decorator:
+                    # Special case for layer 0: FlavorParser may get wrong Z coordinate (startup position)
+                    # Use thickness instead, which represents the actual layer height
+                    if layer_id == 0 and layer.thickness > 0:
+                        self._layer_heights_cache[layer_id] = layer.thickness
+                    else:
+                        self._layer_heights_cache[layer_id] = layer.height
+                # Otherwise, heights are in microns (backend/slicing), convert to mm
+                else:
+                    self._layer_heights_cache[layer_id] = layer.height / 1000.0
+            
+            # We found layer data and cached it, no need to continue searching
+            return
+        
+        # No layer data found - clear the cache
+        if self._layer_heights_cache_node_id is not None:
+            self._layer_heights_cache.clear()
+            self._layer_heights_cache_node_id = None
+
+    def _getLayerHeight(self, layer_number: int) -> float:
+        """Helper method to get the height of a specific layer in millimeters from cache.
+        
+        :param layer_number: The layer number to get the height for.
+        :return: The layer height in millimeters, or 0.0 if no data is available.
+        """
+        return self._layer_heights_cache.get(layer_number, 0.0)
+
+    def getCurrentLayerHeight(self) -> float:
+        """Get the height (z-coordinate) of the current layer in millimeters.
+        
+        This returns the actual height from the layer data, which already takes into account:
+        - Initial layer height (layer_height_0)
+        - Adaptive layer heights
+        - Regular layer height
+        - Raft layers
+        
+        Returns 0.0 if no layer data is available.
+        """
+        return self._layer_heights_cache.get(self.getCurrentLayer(), 0.0)
+
+    def getMinimumLayerHeight(self) -> float:
+        """Get the height (z-coordinate) of the minimum layer in millimeters.
+        
+        Returns 0.0 if no layer data is available.
+        """
+        return self._layer_heights_cache.get(self.getMinimumLayer(), 0.0)
+
     def getMinimumPath(self) -> int:
         return self._minimum_path_num
 
@@ -304,6 +390,7 @@ class SimulationView(CuraView):
         if node.getMeshData() is None:
             return
         self.setActivity(False)
+        self._calculateLayerHeightsCache()
         self.calculateColorSchemeLimits()
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
@@ -718,6 +805,7 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self._calculateLayerHeightsCache()
             self.calculateColorSchemeLimits()
             self.calculateMaxLayers()
             self.calculateMaxPathsOnLayer(self._current_layer_num)

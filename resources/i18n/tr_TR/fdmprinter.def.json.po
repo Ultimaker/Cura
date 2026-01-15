@@ -6240,3 +6240,103 @@ msgstr "Baskının alt kısmındaki alanların tek bir çizgisinin genişliği."
 msgctxt "flooring_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zikzak"
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>Kalanı nozzle hareketsiz iken tamamlanmak üzere, hareketten sonra hareket sırasında gerçekleşen hazırlama oranı<ul><li>0 olduğunda, hazırlama işleminin tamamı hareket sonlandıktan sonra hareketsiz iken gerçekleştir</li><li>100 olduğunda, hazırlama işleminin tamamı hareket halindeyken gerçekleşir ve baskının anında başlamasını sağlar</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>Kalanı nozzle hareketsiz iken tamamlanmak üzere, hareketten önce hareket sırasında gerçekleşen geri çekme oranı<ul><li>0 olduğunda, geri çekme işleminin tamamı hareket başlamadan önce hareketsiz iken gerçekleştirilir</li><li>100 olduğunda, geri çekme işleminin tamamı hareket sırasında gerçekleştirilir ve hareketsiz fazını baypas eder.</li></ul></html>"
+
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "Yapım Plakası Türü"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "Yapım Hacmi Fan Hızı"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "Yüksekliğe Göre Yapım Hacmi Fan Hızı"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "Katmana Göre Yapım Hacmi Fan Hızı"
+
+msgctxt "z_seam_corner description"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "Modelin dış hatlarındaki köşelerin dikiş pozisyonlarını nasıl etkilediğini kontrol edin. Dikişi Gizle seçeneği, dikişin iç köşede gerçekleşme olasılığını artırır. Dikişi Göster seçeneği, dikişin dış köşede olma olasılığını artırır. Dikişi Gizle veya Göster seçeneği, dikişin iç veya dış köşede olma olasılığını artırır. Akıllı Gizleme, hem iç hem dış köşelere izin verir fakat uygun olması durumunda iç köşeleri daha sıklıkla tercih eder."
+
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "İlk Katmanlar Yapım Hacmi Fan Hızı"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "Hareket Sırasında Geri Çekmeye Devam Et"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "Materyal Maksimum Akış Oranı"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "Materyal için yazıcının sıkabileceği maksimum akış oranı"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Çoklu Materyal Derinliği"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "Çoklu Materyal Doğruluğu"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "Hareket Sırasında Hazırla"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "Hareket Sırasında Geri Çekme"
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "İlk katmanı tara"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "Model içerisindeki boyalı detayların derinliği. Daha yüksek bir derinlik, daha iyi bir kenetlenme sağlar, fakat dilimleme süresini ve bellek kullanımını artırır. Mümkün olduğunca derinleştirmek için çok yüksek bir değer seçin. Asıl hesaplanan derinlik farklılık gösterebilir."
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "'Katmana Göre Yapım Hacmi Fan Hızı'nda belirtilen katmana ulaşıldığı andan sonrası için ayarlanan harici veya hacim içi fanın (yüzde olarak) fan hızı. Bundan öncesi için fan hızı, 'İlk Katmanlar Yapım Hacmi Fan Hızı' tarafından ayarlanır."
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "'Katmana Göre Yapım Hacmi Fan Hızı'nda belirtilen katmana ulaşıldığı ana kadar için ayarlanan harici veya hacim içi fanın (yüzde olarak) fan hızı. Bundan sonrası için fan hızı, 'Yapım Hacmi Fan Hızı' tarafından ayarlanır ('İlk Katmanlar' tarafından değil)."
+
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "Yapım hacmi fanlarının en yüksek hızda döndüğü katman. Bu değer hesaplanır ve bir tam sayıya yuvarlanır."
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "Boyama verilerine bağlı olarak çoklu materyal şekillerinin oluşturulduğu sıradaki detayların hassasiyeti. Daha düşük bir hassasiyet daha çok detay sunar fakat dilimleme süresini ve bellek kullanımını artırır."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "Bu yazıcıda kullanılan yapım plakasının türü."
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "Hareket sırasında geri çekme etkinleştirilmişse ve hareket sırasında bir tam geri çekme için yeterli süre varsa, geri çekme işlemini hareket boyunca daha düşük bir geri çekme hızına yayar, böylece geri çekilmeyen bir nozzle ile hareket etmemiş oluruz. Bu, sızıntıyı azaltmaya yardımcı olur."
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "İlk katmanın katman yapışkanlığı sorunları için taranıp taranmayacağını belirler."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-02-21 15:37+0000\n"
+"POT-Creation-Date: 2025-09-22 08:45+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -19,6 +19,14 @@ msgstr ""
 
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr ""
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
 msgstr ""
 
 msgctxt "cool_during_extruder_switch description"
@@ -281,6 +289,10 @@ msgctxt "z_seam_position option backright"
 msgid "Back Right"
 msgstr "Hátra jobbra"
 
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr ""
+
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
 msgstr "Bits from Bytes (BFB)"
@@ -521,14 +533,6 @@ msgctxt "brim_width label"
 msgid "Brim Width"
 msgstr "Perem szélesség"
 
-msgctxt "build_fan_full_at_height label"
-msgid "Build Fan Speed at Height"
-msgstr ""
-
-msgctxt "build_fan_full_layer label"
-msgid "Build Fan Speed at Layer"
-msgstr ""
-
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Tárgyasztal tapadás"
@@ -541,10 +545,6 @@ msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
 msgstr "Tárgyasztal tapadási típus"
 
-msgctxt "machine_buildplate_type label"
-msgid "Build Plate Material"
-msgstr "Tárgyasztal anyaga"
-
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "Tárgyasztal alakja"
@@ -556,6 +556,22 @@ msgstr "Tárgyasztal hőmérséklete"
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
 msgstr "Tárgyasztal hőmérséklet a kezdő rétegnél"
+
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr ""
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr ""
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr ""
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr ""
 
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
@@ -702,8 +718,8 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "Az alsó/felső rétegpályákat kapcsolja össze, ahol egymás mellett futnak.Ha ezt a beállítást engedélyezzük a körkörös mintázatnál, jelentősen csökkenthetjük a fej átemelési időt, mivel a kapcsolódások félúton terténhetnek meg. Ez azonban ronthatja a felső felület minőségét."
 
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Ellenőrzi, hogy a modell körvonalai mennyire befolyásolják a varrat helyzetét.Ha azt választjuk, hogy nincs, akkor a sarkok nincsenek hatással a varrás helyzetére.A varrat rejtés esetén a varrás legvalószínűbb helyzete, valamelyik belső sarokban lesz.A külső varrat esetén a megjelenés valószínűleg egy külső sarkon lesz.A külső/belső varrat esetén a varrat vagy külső, vagy belső sarokban lesz.Az okos rejtés esetén ugyanaz, mint a külső/belső varrat, de törekszik arra, hogy a varrat inkább a belső sarkokon legyen, rejtve."
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr ""
 
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
@@ -1853,6 +1869,10 @@ msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Első réteg Z átfedés"
 
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr ""
+
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "Kezdeti nyomtatási hőmérséklet"
@@ -1988,6 +2008,10 @@ msgstr ""
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "Nyílt poligonok megtartása"
+
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr ""
 
 msgctxt "layer_height label"
 msgid "Layer Height"
@@ -2219,6 +2243,10 @@ msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "Alapanyag GUID"
 
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr ""
+
 msgctxt "material_type label"
 msgid "Material Type"
 msgstr ""
@@ -2338,6 +2366,10 @@ msgstr ""
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
 msgstr "Annak a kis területnek a legnagyobb átmérője, amit speciális támasz toronnyalkell alátámasztani."
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr ""
 
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
@@ -2535,6 +2567,14 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr ""
 
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr ""
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr ""
+
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "A szoknyavonalak számának növelése, kisméretű tárgyak esetén segíthet az extruderben a megvelelő olvadókamra nyomás előállításában.Ha az érték 0, akkor a szoknya letiltódik."
@@ -2566,10 +2606,6 @@ msgstr "Nincs"
 msgctxt "extra_infill_lines_to_support_skins option none"
 msgid "None"
 msgstr ""
-
-msgctxt "z_seam_corner option z_seam_corner_none"
-msgid "None"
-msgstr "Nincs"
 
 msgctxt "magic_mesh_surface_mode option normal"
 msgid "Normal"
@@ -2849,6 +2885,10 @@ msgstr ""
 
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
+msgstr ""
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
 msgstr ""
 
 msgctxt "acceleration_prime_tower label"
@@ -3399,6 +3439,10 @@ msgctxt "retraction_amount label"
 msgid "Retraction Distance"
 msgstr "Visszahúzási távolság"
 
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr ""
+
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
 msgstr "Előtolási plussz anyagmennyiség"
@@ -3433,6 +3477,10 @@ msgstr ""
 
 msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
+msgstr ""
+
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
 msgstr ""
 
 msgctxt "scarf_joint_seam_length label"
@@ -4283,6 +4331,10 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr ""
 
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr ""
+
 msgctxt "machine_acceleration description"
 msgid "The default acceleration of print head movement."
 msgstr "A nyomtatófej mozgásának alapértelmezett gyorsulása."
@@ -4491,6 +4543,14 @@ msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
 msgstr "Az az extruder, amit a falak nyomtatásához használunk.Ezt csak multi extruder esetén használhatjuk."
 
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr ""
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr ""
+
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
 msgstr "A hűtőventillátor sebessége a tutajalap rétegeinek nyomtatásakor."
@@ -4644,7 +4704,7 @@ msgid "The largest width of top skin areas which are to be removed. Every skin a
 msgstr "Az eltávolítandó felső kéreg felület legnagyobb szélessége. Az ettől kissebb felületek el fognak tűnni. Ez segíthet korlátozni a modell ferde felületeinek felső részének nyomtatásához felhasznált időt és anyagot."
 
 msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
 msgstr ""
 
 msgctxt "cool_fan_full_layer description"
@@ -4662,10 +4722,6 @@ msgstr "A visszahúzott anyag hossza visszahúzáskor."
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr ""
-
-msgctxt "machine_buildplate_type description"
-msgid "The material of the build plate installed on the printer."
-msgstr "A gépre szerelt tárgyasztal anyaga."
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -5039,6 +5095,10 @@ msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
 msgstr "Az a pont, ahol az egyes rétegek nyomtatását kezdeni fogja."
 
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr ""
+
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
 msgstr ""
@@ -5334,6 +5394,10 @@ msgstr "A kitöltési réteg vastagsága. Ez az érték minden esetben a normál
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "A támasz kitöltés retegenkénti anyagvastagsága. Ennek az értéknek minden esetben a rétegmagasság egész többszörösének kell lennie, és oda lesz kerekítve."
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr ""
 
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
@@ -5863,6 +5927,10 @@ msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "A harmadik hídréteg nyomtatásakor az extrudált anyag mennyiségét megszorozzuk ezzel az értékkel."
 
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr ""
+
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
 msgstr "Ha a nyomtató elérte a megadott minimális rétegidővel a minimális sebességet, és nem tud tovább lassulni, akkor a nyomtató emelje fel a fejet addig, amig amíg el nem éri a minimális rétegidőt."
@@ -5957,6 +6025,10 @@ msgstr "A nyomtatás előtt a nyomtatószálat előkészítio, és az olvadókam
 
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+msgstr ""
+
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
 msgstr ""
 
 msgctxt "machine_show_variants description"
@@ -6235,9 +6307,21 @@ msgstr "fej átpozícionálás"
 #~ msgid "Brim Only on Outside"
 #~ msgstr "Perem csak kívül"
 
+#~ msgctxt "machine_buildplate_type label"
+#~ msgid "Build Plate Material"
+#~ msgstr "Tárgyasztal anyaga"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+#~ msgstr "Ellenőrzi, hogy a modell körvonalai mennyire befolyásolják a varrat helyzetét.Ha azt választjuk, hogy nincs, akkor a sarkok nincsenek hatással a varrás helyzetére.A varrat rejtés esetén a varrás legvalószínűbb helyzete, valamelyik belső sarokban lesz.A külső varrat esetén a megjelenés valószínűleg egy külső sarkon lesz.A külső/belső varrat esetén a varrat vagy külső, vagy belső sarokban lesz.Az okos rejtés esetén ugyanaz, mint a külső/belső varrat, de törekszik arra, hogy a varrat inkább a belső sarkokon legyen, rejtve."
+
 #~ msgctxt "layer_0_z_overlap description"
 #~ msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount."
 #~ msgstr "A modell első és második rétege között átfedést hoz létre Z irányban.Ez képes kompenzálni azt a hibát, ami az első rétegben keletkezett. Ezt a hibát az okozza, hogy a tutaj légrésben az első réteg benyúlik, így nem alakul ki a tökéletes első réteg.Az első réteg feletti összes rész magasságát érinti ez a beállítás."
+
+#~ msgctxt "z_seam_corner option z_seam_corner_none"
+#~ msgid "None"
+#~ msgstr "Nincs"
 
 #~ msgctxt "machine_nozzle_head_distance label"
 #~ msgid "Nozzle Length"
@@ -6266,6 +6350,10 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "machine_nozzle_head_distance description"
 #~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
 #~ msgstr "A fúvóka csúcsa és a nyomtatófej legalacsonyabb része (fűtőblokk) közötti magasságkülönbség."
+
+#~ msgctxt "machine_buildplate_type description"
+#~ msgid "The material of the build plate installed on the printer."
+#~ msgstr "A gépre szerelt tárgyasztal anyaga."
 
 #~ msgctxt "support_interface_skip_height description"
 #~ msgid "When checking where there's model above and below the support, take steps of the given height. Lower values will slice slower, while higher values may cause normal support to be printed in some places where there should have been support interface."

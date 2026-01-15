@@ -48,6 +48,8 @@ class PrintInformation(QObject):
 
         self._pre_sliced = False
 
+        self._user_time_estimation_adjusted = False
+
         self._backend = self._application.getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
@@ -128,6 +130,12 @@ class PrintInformation(QObject):
     def preSliced(self) -> bool:
         return self._pre_sliced
 
+    userTimeAdjustedChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify=userTimeAdjustedChanged)
+    def userTimeAdjusted(self) -> bool:
+        return self._user_time_estimation_adjusted
+
     def setPreSliced(self, pre_sliced: bool) -> None:
         if self._pre_sliced != pre_sliced:
             self._pre_sliced = pre_sliced
@@ -166,6 +174,47 @@ class PrintInformation(QObject):
     def printTimes(self) -> Dict[str, Duration]:
         return self._print_times_per_feature[self._active_build_plate]
 
+    def _getTimeEstimationFactor(self) -> Optional[float]:
+        """Returns the time estimation factor as set by the user in the machine settings, or None if not set.
+        If a factor is found and differs from 1.0 (100%), the userTimeAdjusted property is set to True.
+        This factor is used to adjust the estimated print time received from the backend.
+        Note that the factor is converted from percentage to decimal (e.g., 80% becomes 0.8).
+        """
+        global_stack = self._application.getGlobalContainerStack()
+        if global_stack is None:
+            self._resetUserTimeAdjustment()
+            return None
+
+        factor_value = global_stack.getProperty("machine_time_estimation_factor", "value")
+        if factor_value is None:
+            self._resetUserTimeAdjustment()
+            return None
+
+        try:
+            factor = float(factor_value) / 100.0
+        except (ValueError, TypeError):
+            Logger.warning(f"Invalid time estimation factor value: {factor_value}")
+            self._resetUserTimeAdjustment()
+            return None
+
+        # Check if factor is significantly different from 1.0 to avoid floating point precision issues
+        if abs(factor - 1.0) > 1e-6:
+            self._setUserTimeAdjustment(True)
+            return factor
+        
+        self._resetUserTimeAdjustment()
+        return None
+
+    def _setUserTimeAdjustment(self, adjusted: bool) -> None:
+        """Sets the user time adjustment state and emits signal if changed."""
+        if self._user_time_estimation_adjusted != adjusted:
+            self._user_time_estimation_adjusted = adjusted
+            self.userTimeAdjustedChanged.emit()
+
+    def _resetUserTimeAdjustment(self) -> None:
+        """Resets the user time adjustment state to False."""
+        self._setUserTimeAdjustment(False)
+
     def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
         self.currentPrintTimeChanged.emit()
@@ -175,6 +224,7 @@ class PrintInformation(QObject):
 
     def _updateTotalPrintTimePerFeature(self, build_plate_number: int, print_times_per_feature: Dict[str, int]) -> None:
         total_estimated_time = 0
+        time_estimation_factor = self._getTimeEstimationFactor()
 
         if build_plate_number not in self._print_times_per_feature:
             self._initPrintTimesPerFeature(build_plate_number)
@@ -188,6 +238,9 @@ class PrintInformation(QObject):
                 duration.setDuration(0)
                 Logger.warning("Received NaN for print duration message")
                 continue
+
+            if time_estimation_factor is not None:
+                time = int(time * time_estimation_factor)
 
             total_estimated_time += time
             duration.setDuration(time)
