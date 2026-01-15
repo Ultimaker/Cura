@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-21 15:37+0100\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-
-msgctxt "@title:label"
-msgid " "
-msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -148,7 +144,7 @@ msgid "&View"
 msgstr ""
 
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
+msgid "*) You will need to restart the application for these changes to have effect."
 msgstr ""
 
 msgctxt "@text"
@@ -202,6 +198,14 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr ""
 
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr ""
+
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
@@ -251,10 +255,6 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] ""
 msgstr[1] ""
-
-msgctxt "@text"
-msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
-msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -353,7 +353,7 @@ msgid "Add a script"
 msgstr ""
 
 msgctxt "@option:check"
-msgid "Add icon to system tray *"
+msgid "Add icon to system tray (* restart required)"
 msgstr ""
 
 msgctxt "@button"
@@ -471,10 +471,6 @@ msgid "An model may appear extremely small if its unit is for example in meters 
 msgstr ""
 
 msgctxt "@label"
-msgid "Annealing"
-msgstr ""
-
-msgctxt "@label"
 msgid "Anonymous"
 msgstr ""
 
@@ -560,8 +556,16 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr ""
 
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
+msgstr ""
+
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
 msgstr ""
 
 msgctxt "@action:button"
@@ -570,6 +574,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Available networked printers"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Avoid"
 msgstr ""
 
 msgctxt "@item:inlistbox"
@@ -608,10 +616,6 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr ""
 
-msgctxt "@label"
-msgid "Balanced"
-msgstr ""
-
 msgctxt "@action:label"
 msgid "Base (mm)"
 msgstr ""
@@ -622,6 +626,14 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Brand"
+msgstr ""
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr ""
+
+msgctxt "@label"
+msgid "Brush Size"
 msgstr ""
 
 msgctxt "@title"
@@ -775,8 +787,16 @@ msgid ""
 "\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Circle"
+msgstr ""
+
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
+msgstr ""
+
+msgctxt "@button"
+msgid "Clear all"
 msgstr ""
 
 msgctxt "@option:check"
@@ -921,6 +941,10 @@ msgstr ""
 
 msgctxt "@info:status"
 msgid "Connected via cloud"
+msgstr ""
+
+msgctxt "@label"
+msgid "Connection and Control"
 msgstr ""
 
 msgctxt "@tooltip:button"
@@ -1266,6 +1290,10 @@ msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr ""
 
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr ""
+
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
 msgstr ""
@@ -1330,10 +1358,6 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr ""
 
-msgctxt "@label"
-msgid "Draft"
-msgstr ""
-
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
 msgstr ""
@@ -1384,8 +1408,16 @@ msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr ""
 
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr ""
+
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
+msgstr ""
+
+msgctxt "@button"
+msgid "Enable required extruder(s)"
 msgstr ""
 
 msgctxt "@label"
@@ -1404,10 +1436,6 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr ""
 
-msgctxt "@label"
-msgid "Engineering"
-msgstr ""
-
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr ""
@@ -1418,6 +1446,10 @@ msgstr ""
 
 msgctxt "@text"
 msgid "Enter your printer's IP address."
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Erase"
 msgstr ""
 
 msgctxt "@info:title"
@@ -1597,6 +1629,10 @@ msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr ""
 
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr ""
+
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr ""
@@ -1691,7 +1727,7 @@ msgid "First available"
 msgstr ""
 
 msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
+msgid "Flip model's toolhandle Y axis (* restart required)"
 msgstr ""
 
 msgctxt "@label:listbox"
@@ -1723,7 +1759,7 @@ msgid "For lithophanes dark pixels should correspond to thicker locations in ord
 msgstr ""
 
 msgctxt "@option:check"
-msgid "Force layer view compatibility mode (restart required)"
+msgid "Force layer view compatibility mode (* restart required)"
 msgstr ""
 
 msgid "FreeCAD trackpad"
@@ -2326,12 +2362,20 @@ msgctxt "@label"
 msgid "Manufacturer"
 msgstr ""
 
+msgctxt "@label"
+msgid "Mark as"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr ""
 
 msgctxt "@label"
 msgid "Marketplace"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Material"
 msgstr ""
 
 msgctxt "@action:label"
@@ -2617,6 +2661,10 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr ""
 
+msgctxt "@label"
+msgid "Not retracted"
+msgstr ""
+
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr ""
@@ -2819,6 +2867,22 @@ msgctxt "@header"
 msgid "Package details"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Paint"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr ""
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr ""
@@ -2922,7 +2986,6 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 
@@ -2982,8 +3045,20 @@ msgctxt "@button"
 msgid "Pre-heat"
 msgstr ""
 
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr ""
+
 msgctxt "@item:inmenu"
 msgid "Prepare"
+msgstr ""
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
 msgstr ""
 
 msgctxt "@label:MonitorStatus"
@@ -3008,6 +3083,10 @@ msgstr ""
 
 msgctxt "@tooltip"
 msgid "Prime Tower"
+msgstr ""
+
+msgctxt "@label"
+msgid "Priming"
 msgstr ""
 
 msgctxt "@action:button"
@@ -3126,6 +3205,10 @@ msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr ""
 
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr ""
+
 msgctxt "@label"
 msgid "Printer name"
 msgstr ""
@@ -3164,6 +3247,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Printing Time"
+msgstr ""
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
 msgstr ""
 
 msgctxt "@label:MonitorStatus"
@@ -3293,6 +3380,18 @@ msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr ""
 
 msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr ""
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr ""
+
+msgctxt "@action:button"
 msgid "Refresh"
 msgstr ""
 
@@ -3412,6 +3511,14 @@ msgctxt "@label:status"
 msgid "Resuming..."
 msgstr ""
 
+msgctxt "@label"
+msgid "Retracted"
+msgstr ""
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr ""
+
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr ""
@@ -3515,6 +3622,10 @@ msgctxt "@option:check"
 msgid "Scale large models"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Seam"
+msgstr ""
+
 msgctxt "@placeholder"
 msgid "Search"
 msgstr ""
@@ -3541,6 +3652,10 @@ msgstr ""
 
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
+msgstr ""
+
+msgctxt "@label"
+msgid "Select a single ungrouped model to start painting"
 msgstr ""
 
 msgctxt "@text"
@@ -3855,10 +3970,6 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr ""
 
-msgctxt "@label"
-msgid "Solid"
-msgstr ""
-
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr ""
@@ -3915,6 +4026,10 @@ msgstr ""
 
 msgctxt "@label:button"
 msgid "Sponsor Cura"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Square"
 msgstr ""
 
 msgctxt "@option:radio"
@@ -3994,6 +4109,10 @@ msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Support"
+msgstr ""
+
 msgctxt "@label"
 msgid "Support"
 msgstr ""
@@ -4015,7 +4134,7 @@ msgid "Support Interface"
 msgstr ""
 
 msgctxt "@action:label"
-msgid "Support Type"
+msgid "Support Structure"
 msgstr ""
 
 msgctxt "@action:button"
@@ -4070,10 +4189,6 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr ""
 
-msgctxt "@text"
-msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
-
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
@@ -4082,10 +4197,6 @@ msgstr[1] ""
 
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
-msgstr ""
-
-msgctxt "@text"
-msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4130,14 +4241,6 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr ""
-
-msgctxt "@text"
-msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr ""
-
-msgctxt "@text"
-msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr ""
 
 msgctxt "@label"
@@ -4243,6 +4346,10 @@ msgid "The printer at this address has not yet responded."
 msgstr ""
 
 msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr ""
+
+msgctxt "@info:status"
 msgid "The printer is not connected."
 msgstr ""
 
@@ -4282,16 +4389,12 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr ""
 
-msgctxt "@text"
-msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr ""
-
 msgctxt "@info:tooltip"
 msgid "The width in millimeters on the build plate"
 msgstr ""
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme*:"
+msgid "Theme (* restart required):"
 msgstr ""
 
 msgctxt "@info:status"
@@ -4356,6 +4459,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
+msgstr ""
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
 msgstr ""
 
 msgctxt "info:status"
@@ -4619,11 +4726,6 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr ""
 
-#, python-format
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr ""
-
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -4653,6 +4755,10 @@ msgstr ""
 
 msgctxt "@label"
 msgid "Unavailable printer"
+msgstr ""
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
 msgstr ""
 
 msgctxt "@action:inmenu menubar:edit"
@@ -4716,6 +4822,10 @@ msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr ""
 
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr ""
+
 msgctxt "@button"
 msgid "Update"
 msgstr ""
@@ -4769,7 +4879,7 @@ msgid "Uploading your backup..."
 msgstr ""
 
 msgctxt "@option:check"
-msgid "Use a single instance of Cura"
+msgid "Use a single instance of Cura (* restart required)"
 msgstr ""
 
 msgctxt "@label"
@@ -4810,10 +4920,6 @@ msgstr ""
 
 msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
-msgstr ""
-
-msgctxt "@label"
-msgid "Visual"
 msgstr ""
 
 msgctxt "@label"
@@ -5236,6 +5342,14 @@ msgid "Firmware Updater"
 msgstr ""
 
 msgctxt "description"
+msgid "Provides the paint tools."
+msgstr ""
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr ""
+
+msgctxt "description"
 msgid "Provides support for importing profiles from legacy Cura versions."
 msgstr ""
 
@@ -5642,3 +5756,51 @@ msgstr ""
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
+msgctxt "default intent label"
+msgid "Balanced"
+msgstr ""
+
+msgctxt "default intent description"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr ""
+
+msgctxt "visual intent label"
+msgid "Visual"
+msgstr ""
+
+msgctxt "visual intent description"
+msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgstr ""
+
+msgctxt "engineering intent label"
+msgid "Engineering"
+msgstr ""
+
+msgctxt "engineering intent description"
+msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgstr ""
+
+msgctxt "quick intent label"
+msgid "Draft"
+msgstr ""
+
+msgctxt "quick intent description"
+msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgstr ""
+
+msgctxt "annealing intent label"
+msgid "Annealing"
+msgstr ""
+
+msgctxt "annealing intent description"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
+
+msgctxt "solid intent label"
+msgid "Solid"
+msgstr ""
+
+msgctxt "solid intent description"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
+

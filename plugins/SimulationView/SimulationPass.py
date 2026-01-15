@@ -133,7 +133,8 @@ class SimulationPass(RenderPass):
                 nozzle_node = node
                 nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
-            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
+            elif ((getattr(node, "_outside_buildarea", False) or node.callDecoration("isAssignedToDisabledExtruder")) and
+                  isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh")):
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
 
             elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():

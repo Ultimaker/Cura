@@ -199,7 +199,6 @@
         "bridge_skin_speed": { "value": "speed_topbottom" },
         "bridge_skin_speed_2": { "value": "speed_topbottom" },
         "bridge_skin_speed_3": { "value": "speed_topbottom" },
-        "bridge_sparse_infill_max_density": { "value": 50 },
         "bridge_wall_coast": { "value": 0 },
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
@@ -701,7 +700,7 @@
                 45
             ]
         },
-        "support_infill_rate": { "value": 20.0 },
+        "support_infill_rate": { "value": "0 if support_structure == 'tree' else 20.0" },
         "support_infill_sparse_thickness": { "value": "layer_height" },
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "4*support_infill_sparse_thickness" },
