@@ -1392,7 +1392,7 @@
                 "z_seam_position":
                 {
                     "label": "Z Seam Position",
-                    "description": "The position near where to start printing each part in a layer.",
+                    "description": "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements.",
                     "type": "enum",
                     "options":
                     {
@@ -1403,7 +1403,8 @@
                         "frontright": "Front Right",
                         "front": "Front",
                         "frontleft": "Front Left",
-                        "left": "Left"
+                        "left": "Left",
+                        "middle": "Middle"
                     },
                     "enabled": "z_seam_type == 'back'",
                     "default_value": "back",
@@ -1414,11 +1415,11 @@
                         "z_seam_x":
                         {
                             "label": "Z Seam X",
-                            "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                            "description": "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 100.0,
-                            "value": "(0 if (z_seam_position == 'frontleft' or z_seam_position == 'left' or z_seam_position == 'backleft') else machine_width / 2 if (z_seam_position == 'front' or z_seam_position == 'back') else machine_width) - (machine_width / 2 if z_seam_relative or machine_center_is_zero else 0)",
+                            "value": "(0 if (z_seam_position == 'frontleft' or z_seam_position == 'left' or z_seam_position == 'backleft') else machine_width / 2 if (z_seam_position == 'front' or z_seam_position == 'back' or z_seam_position == 'middle') else machine_width) - (machine_width / 2 if z_seam_relative or machine_center_is_zero else 0)",
                             "enabled": "z_seam_type == 'back'",
                             "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
@@ -1426,11 +1427,11 @@
                         "z_seam_y":
                         {
                             "label": "Z Seam Y",
-                            "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                            "description": "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center.",
                             "unit": "mm",
                             "type": "float",
                             "default_value": 100.0,
-                            "value": "(0 if (z_seam_position == 'frontleft' or z_seam_position == 'front' or z_seam_position == 'frontright') else machine_depth / 2 if (z_seam_position == 'left' or z_seam_position == 'right') else machine_depth) - (machine_depth / 2 if z_seam_relative or machine_center_is_zero else 0)",
+                            "value": "(0 if (z_seam_position == 'frontleft' or z_seam_position == 'front' or z_seam_position == 'frontright') else machine_depth / 2 if (z_seam_position == 'left' or z_seam_position == 'right' or z_seam_position == 'middle') else machine_depth) - (machine_depth / 2 if z_seam_relative or machine_center_is_zero else 0)",
                             "enabled": "z_seam_type == 'back'",
                             "limit_to_extruder": "wall_0_extruder_nr",
                             "settable_per_mesh": true
@@ -1457,7 +1458,7 @@
                 "z_seam_relative":
                 {
                     "label": "Z Seam Relative",
-                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
+                    "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "z_seam_type == 'back'",
@@ -4874,6 +4875,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "layer_start_at_z_seam":
+                {
+                    "label": "Layer Start at Z Seam",
+                    "description": "Start printing at the Z seam position.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "z_seam_type == 'back'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": true
+                },
                 "layer_start_x":
                 {
                     "label": "Layer Start X",
@@ -4881,7 +4893,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "value": "sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x'))",
+                    "value": "(z_seam_x + machine_width / 2 if (not machine_center_is_zero and z_seam_relative) else z_seam_x) if (layer_start_at_z_seam and z_seam_type == 'back') else (sum(extruderValues('machine_extruder_start_pos_x')) / len(extruderValues('machine_extruder_start_pos_x')))",
                     "minimum_value": "machine_width / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -4894,7 +4906,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.0,
-                    "value": "sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y'))",
+                    "value": "(z_seam_y + machine_depth / 2 if (not machine_center_is_zero and z_seam_relative) else z_seam_y) if (layer_start_at_z_seam and z_seam_type == 'back') else (sum(extruderValues('machine_extruder_start_pos_y')) / len(extruderValues('machine_extruder_start_pos_y')))",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
