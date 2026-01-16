@@ -275,7 +275,7 @@ class WelcomePagesModel(ListModel):
                           {"id": "add_cloud_printers",
                            "page_url": self._getBuiltinWelcomePagePath("AddCloudPrintersView.qml"),
                            "next_page_button_text": self._catalog.i18nc("@action:button", "Next"),
-                           "next_page_id": "whats_new",
+                           "next_page_id": "machine_actions",
                            },
                           {"id": "machine_actions",
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
