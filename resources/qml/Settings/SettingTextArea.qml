@@ -30,6 +30,9 @@ Item
     property bool textHasChanged
 
     // Signals for tooltip support (required by Connections in loader)
+    // Note: These signals are declared but intentionally never emitted.
+    // This prevents tooltips from appearing on mouse-over, which would obstruct the text area
+    // while the user is typing or editing multiline content.
     signal showTooltip(string text)
     signal hideTooltip()
 
