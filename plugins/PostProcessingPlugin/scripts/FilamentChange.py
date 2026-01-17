@@ -3,12 +3,13 @@
 
 # Modification 06.09.2020
 # add checkbox, now you can choose and use configuration from the firmware itself.
-# Modification 01.13.2026
-# convert G-code Before and G-Code After inputs to textareas (#21298).
+# Modification 01.13.2026 by @hobbe
+# convert G-code Before and G-Code After inputs to text areas (#21298).
+# Modification 01.17.2026 by @GregValiant
+# Move the inserted text below the ";LAYER:??" line.
 
 from typing import List
 from ..Script import Script
-
 from UM.Application import Application # To get the current printer's settings.
 
 class FilamentChange(Script):
@@ -26,21 +27,21 @@ class FilamentChange(Script):
             "version": 2,
             "settings":
             {
-                "enabled":
+                "enable_filament_change":
                 {
-                    "label": "Enable",
-                    "description": "Uncheck to temporarily disable this feature.",
+                    "label": "Enable 'Filament Change'",
+                    "description": "Uncheck to disable this feature.",
                     "type": "bool",
                     "default_value": true
                 },
                 "layer_number":
                 {
                     "label": "Layer",
-                    "description": "At what layer should color change occur. This will be before the layer starts printing. Specify multiple color changes with a comma.",
-                    "unit": "",
+                    "description": "The layer(s) where the color change occurs. Enter the layer number from the Cura Preview.  The change will occur at the START of the layer(s).  Delimit multiple 'Layer Numbers' with commas (Ex: 12,25,134).",
+                    "unit": "Lay#",
                     "type": "str",
                     "default_value": "1",
-                    "enabled": "enabled"
+                    "enabled": "enable_filament_change"
                 },
                 "firmware_config":
                 {
@@ -48,7 +49,7 @@ class FilamentChange(Script):
                     "description": "Use the settings in your firmware, or customise the parameters of the filament change here.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enabled"
+                    "enabled": "enable_filament_change"
                 },
                 "initial_retract":
                 {
@@ -57,7 +58,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 30.0,
-                    "enabled": "enabled and not firmware_config"
+                    "enabled": "enable_filament_change and not firmware_config"
                 },
                 "later_retract":
                 {
@@ -66,7 +67,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 300.0,
-                    "enabled": "enabled and not firmware_config"
+                    "enabled": "enable_filament_change and not firmware_config"
                 },
                 "x_position":
                 {
@@ -75,7 +76,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "enabled and not firmware_config"
+                    "enabled": "enable_filament_change and not firmware_config"
                 },
                 "y_position":
                 {
@@ -84,7 +85,7 @@ class FilamentChange(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "enabled and not firmware_config"
+                    "enabled": "enable_filament_change and not firmware_config"
                 },
                 "z_position":
                 {
@@ -94,7 +95,7 @@ class FilamentChange(Script):
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": 0,
-                    "enabled": "enabled and not firmware_config"
+                    "enabled": "enable_filament_change and not firmware_config"
                 },
                 "retract_method":
                 {
@@ -103,8 +104,9 @@ class FilamentChange(Script):
                     "type": "enum",
                     "options": {"U": "Marlin (M600 U)", "L": "Reprap (M600 L)"},
                     "default_value": "U",
-                    "enabled": "enabled and not firmware_config"
-                },                    
+                    "value": "\\\"L\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"U\\\"",
+                    "enabled": "enable_filament_change and not firmware_config"
+                },
                 "machine_gcode_flavor":
                 {
                     "label": "G-code flavor",
@@ -131,17 +133,16 @@ class FilamentChange(Script):
                     "description": "Use this to insert a custom G-code macro before the filament change happens",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enabled"
+                    "enabled": "enable_filament_change"
                 },
                 "before_macro":
                 {
                     "label": "G-code Before",
                     "description": "Any custom G-code to run before the filament change happens, for example, M300 S1000 P10000 for a long beep.",
-                    "unit": "",
                     "type": "str",
                     "comments": "multiline",
                     "default_value": "M300 S1000 P10000",
-                    "enabled": "enabled and enable_before_macro"
+                    "enabled": "enable_filament_change and enable_before_macro"
                 },
                 "enable_after_macro":
                 {
@@ -149,17 +150,16 @@ class FilamentChange(Script):
                     "description": "Use this to insert a custom G-code macro after the filament change",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enabled"
+                    "enabled": "enable_filament_change"
                 },
                 "after_macro":
                 {
                     "label": "G-code After",
                     "description": "Any custom G-code to run after the filament has been changed right before continuing the print, for example, you can add a sequence to purge filament and wipe the nozzle.",
-                    "unit": "",
                     "type": "str",
                     "comments": "multiline",
                     "default_value": "M300 S440 P500",
-                    "enabled": "enabled and enable_after_macro"
+                    "enabled": "enable_filament_change and enable_after_macro"
                 }
             }
         }"""
@@ -175,20 +175,19 @@ class FilamentChange(Script):
         for key in ["machine_gcode_flavor"]:
             self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
-        # Set retract method based on gcode flavor
-        gcode_flavor = global_container_stack.getProperty("machine_gcode_flavor", "value")
-        if gcode_flavor == "RepRap (RepRap)":
-            self._instance.setProperty("retract_method", "value", "L")
-        else:
-            self._instance.setProperty("retract_method", "value", "U")
-
     def execute(self, data: List[str]):
         """Inserts the filament change g-code at specific layer numbers.
 
         :param data: A list of layers of g-code.
         :return: A similar list, with filament change commands inserted.
         """
-        enabled = self.getSettingValueByKey("enabled")
+        enabled = self.getSettingValueByKey("enable_filament_change")
+
+        # Return if the script is not enabled
+        if not enabled:
+            return data
+
+        # Initialize variables
         layer_nums = self.getSettingValueByKey("layer_number")
         initial_retract = self.getSettingValueByKey("initial_retract")
         later_retract = self.getSettingValueByKey("later_retract")
@@ -201,50 +200,50 @@ class FilamentChange(Script):
         enable_after_macro = self.getSettingValueByKey("enable_after_macro")
         after_macro = self.getSettingValueByKey("after_macro")
 
-        if not enabled:
-            return data
-
-        color_change = ";BEGIN FilamentChange plugin\n"
+        # Put together the insertion string
+        color_change = "\n;BEGIN FilamentChange\n"
 
         if enable_before_macro:
-            color_change = color_change + before_macro + "\n"
+            color_change += before_macro + "\n"
 
-        color_change = color_change + "M600"
+        color_change += "M600"
 
         if not firmware_config:
             if initial_retract is not None and initial_retract > 0.:
-                color_change = color_change + (" E%.2f" % initial_retract)
+                color_change += (" E%.2f" % initial_retract)
 
             if later_retract is not None and later_retract > 0.:
                 # Reprap uses 'L': https://reprap.org/wiki/G-code#M600:_Filament_change_pause
                 # Marlin uses 'U' https://marlinfw.org/docs/gcode/M600.html
                 retract_method = self.getSettingValueByKey("retract_method")
-                color_change = color_change + (" %s%.2f" % (retract_method, later_retract))
+                color_change += (" %s%.2f" % (retract_method, later_retract))
 
             if x_pos is not None:
-                color_change = color_change + (" X%.2f" % x_pos)
+                color_change += (" X%.2f" % x_pos)
 
             if y_pos is not None:
-                color_change = color_change + (" Y%.2f" % y_pos)
+                color_change += (" Y%.2f" % y_pos)
 
             if z_pos is not None and z_pos > 0.:
-                color_change = color_change + (" Z%.2f" % z_pos)
+                color_change += (" Z%.2f" % z_pos)
 
-        color_change = color_change + "\n"
-
+        color_change += "\n"
         if enable_after_macro:
-            color_change = color_change + after_macro + "\n"
+            color_change += after_macro + "\n"
 
-        color_change = color_change + ";END FilamentChange plugin\n"
+        color_change += ";END FilamentChange\n"
 
+        # Make the insertions
         layer_targets = layer_nums.split(",")
         if len(layer_targets) > 0:
-            for layer_num in layer_targets:
-                try:
-                    layer_num = int(layer_num.strip()) + 1 #Needs +1 because the 1st layer is reserved for start g-code.
-                except ValueError: #Layer number is not an integer.
-                    continue
-                if 0 < layer_num < len(data):
-                    data[layer_num] = color_change + data[layer_num]
-
+            for index, layer in enumerate(data):
+                for layer_num in layer_targets:
+                    try:
+                        layer_str = f"{self._layer_keyword}{int(layer_num.strip()) - 1}\n"
+                    except ValueError: #Layer number is not an integer.
+                        continue
+                    if layer_str in data[index]:
+                        layer_of_interest = data[index].split("\n")
+                        layer_of_interest.insert(1, color_change)
+                        data[index] = "\n".join(layer_of_interest)
         return data
