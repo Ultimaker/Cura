@@ -104,7 +104,6 @@ class FilamentChange(Script):
                     "type": "enum",
                     "options": {"U": "Marlin (M600 U)", "L": "Reprap (M600 L)"},
                     "default_value": "U",
-                    "value": "\\\"L\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"U\\\"",
                     "enabled": "enable_filament_change and not firmware_config"
                 },
                 "machine_gcode_flavor":
