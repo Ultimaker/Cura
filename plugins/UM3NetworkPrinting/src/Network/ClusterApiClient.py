@@ -91,21 +91,21 @@ class ClusterApiClient:
 
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         reply = self._manager.post(self.createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
-        self._addCallback(reply, lambda _: None)
+        self._trackReply(reply)
 
     def forcePrintJob(self, print_job_uuid: str) -> None:
         """Override print job configuration and force it to be printed."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         reply = self._manager.put(self.createEmptyRequest(url), json.dumps({"force": True}).encode())
-        self._addCallback(reply, lambda _: None)
+        self._trackReply(reply)
 
     def deletePrintJob(self, print_job_uuid: str) -> None:
         """Delete a print job from the queue."""
 
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         reply = self._manager.deleteResource(self.createEmptyRequest(url))
-        self._addCallback(reply, lambda _: None)
+        self._trackReply(reply)
 
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
         """Set the state of a print job."""
@@ -114,7 +114,7 @@ class ClusterApiClient:
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
         reply = self._manager.put(self.createEmptyRequest(url), json.dumps({"action": action}).encode())
-        self._addCallback(reply, lambda _: None)
+        self._trackReply(reply)
 
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
         """Get the preview image data of a print job."""
@@ -172,6 +172,25 @@ class ClusterApiClient:
                 on_finished_item(result)
         except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
+
+    def _trackReply(self, reply: QNetworkReply) -> None:
+        """Track a reply to prevent garbage collection and ensure proper completion.
+        
+        Use this for fire-and-forget requests that don't need response handling.
+        :param reply: The reply that should be tracked.
+        """
+        
+        def cleanup() -> None:
+            try:
+                self._anti_gc_callbacks.remove(cleanup)
+            except ValueError:
+                return
+            
+            if reply.error() != QNetworkReply.NetworkError.NoError:
+                Logger.warning(f"Cluster API request error: {reply.errorString()}")
+        
+        self._anti_gc_callbacks.append(cleanup)
+        reply.finished.connect(cleanup)
 
     def _addCallback(self, reply: QNetworkReply, on_finished: Union[Callable[[ClusterApiClientModel], Any],
                            Callable[[List[ClusterApiClientModel]], Any]], model: Type[ClusterApiClientModel] = None,
