@@ -29,9 +29,9 @@ Display Filename and Layer on the LCD by Amanda de Castilho on August 28, 2018
            - 'Add M118 Line' is available with either option.  M118 will bounce the message back to a remote print server through the USB connection.
            - 'Add M73 Line' is used by 'Display Progress' only.  There are options to incluse M73 P(percent) and M73 R(time remaining)
            - Enable 'Finish-Time' Message - when enabled, takes the Print Time and calculates when the print will end.  It uses the Time Fudge Factor.  The user may enter a print start time.
-Date:  June 30, 2025: Cost of Electricity added to the other print statistics in '_add_stats'. (GregValiant)
-Date:  Sept 24, 2025: Disabled countdown to pauses when in 'One-at-a-Time' mode. (GregValiant)
-Date:  Dec 6, 2025:   Added "Filament Cost" to the print statistics.
+Date:  June 30, 2025 Cost of electricity added to the other print statistics in '_add_stats'. (GregValiant)
+Date:  Sept 24, 2025 Disabled countdown to pauses when in 'One-at-a-TIme' mode. (GregValiant)
+Date:  Jan 20, 2026 Added "weight" to the stats inserted in the Gcode.
 """
 
 from ..Script import Script
@@ -53,16 +53,15 @@ class DisplayInfoOnLCD(Script):
             else:
                 enable_countdown = False
                 self._instance.setProperty("enable_countdown", "value", enable_countdown)
-            try:
-                cura_adjust_percent = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
-                self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
-            except:
-                pass
 
+            #cura_adjust_percent = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
+            #self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
         except AttributeError:
             # Handle cases where the global container stack or its properties are not accessible
+            cura_adjust_percent = 100
             pass
         except KeyError:
+            cura_adjust_percent = 100
             # Handle cases where the "print_sequence" property is missing
             pass
 
@@ -211,7 +210,6 @@ class DisplayInfoOnLCD(Script):
                     "label": "Enable Countdown to Pauses",
                     "description": "If print sequence is 'one_at_a_time' this is false.  This setting is always hidden.",
                     "type": "bool",
-                    "default_value": false,
                     "value": false,
                     "enabled": false
                 },
@@ -251,11 +249,11 @@ class DisplayInfoOnLCD(Script):
                 "electricity_cost":
                 {
                     "label": "Electricity Cost per kWh",
-                    "description": "Cost of electricity per kilowatt-hour.  This should be on your electric utility bill.  The 'Electricity Cost' statistic will be added to the gcode file.",
+                    "description": "Cost of electricity per kilowatt-hour.  This should be on your electric utility bill.  The 'Electricity Cost' will be added to the gcode file.",
                     "type": "float",
                     "default_value": 0.151,
                     "minimum_value": 0,
-                    "unit": "/kWh"
+                    "unit": "€/kWh  "
                 },
                 "printer_power_usage":
                 {
@@ -546,7 +544,7 @@ class DisplayInfoOnLCD(Script):
                                 break
 
             # Make the adjustments to the M117 (and M118) lines that are prior to a pause
-            for num in range (2, len(data) - 1,1):
+            for num in range (2, len(data) - 1):
                 layer = data[num]
                 lines = layer.split("\n")
                 for line in lines:
@@ -574,6 +572,8 @@ class DisplayInfoOnLCD(Script):
         """
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
         print_start_time = self.getSettingValueByKey("print_start_time")
+        if print_start_time == "":
+            print_start_time = datatime.datatime.now()
         # If the user entered a print start time make sure it is in the correct format or ignore it.
         if print_start_time == "" or print_start_time == "0" or len(print_start_time) != 5 or not ":" in print_start_time:
             print_start_time = ""
@@ -634,12 +634,9 @@ class DisplayInfoOnLCD(Script):
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         # Set a default value for compatibility with earlier versions
         try:
-            cura_adjust_percent = Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value")
-            if cura_adjust_percent is not None:
-                cura_adjust_percent = int(cura_adjust_percent)
-            else:
-                cura_adjust_percent = 100
-        except:
+            cura_adjust_percent = 100
+            cura_adjust_percent = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
+        except (NameError, ValueError):
             cura_adjust_percent = 100
         if cura_adjust_percent == 100:
             adjusted_str = "Adjusted Time Estimate..." + str(time_change)
@@ -695,7 +692,8 @@ class DisplayInfoOnLCD(Script):
         init_layer_hgt_line = ";Initial Layer Height: " + f"{layheight_0:.2f}".format(layheight_0)
         filament_line_t0 = ";Extruder 1 (T0)\n"
         filament_amount = Application.getInstance().getPrintInformation().materialLengths
-        filament_line_t0 += f";  Filament used: {filament_amount[0]}m\n"
+        filament_weight = Application.getInstance().getPrintInformation().materialWeights
+        filament_line_t0 += f";  Filament used: {filament_amount[0]}m ({round(filament_weight[0],2)}g)\n"
         filament_line_t0 += f";  Filament Type: {self.global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
         filament_line_t0 += f";  Filament Dia.: {self.global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
         filament_line_t0 += f";  Nozzle Size  : {self.global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
@@ -706,7 +704,7 @@ class DisplayInfoOnLCD(Script):
         filament_line_t1 = ""
         if extruder_count > 1:
             filament_line_t1 = "\n;Extruder 2 (T1)\n"
-            filament_line_t1 += f";  Filament used: {filament_amount[1]}m\n"
+            filament_line_t1 += f";  Filament used: {filament_amount[1]}m ({round(filament_weight[1],2)}g)\n"
             filament_line_t1 += f";  Filament Type: {self.global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
             filament_line_t1 += f";  Filament Dia.: {self.global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
             filament_line_t1 += f";  Nozzle Size  : {self.global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
@@ -714,7 +712,6 @@ class DisplayInfoOnLCD(Script):
 
         # Calculate the cost of electricity for the print
         electric_line = self.getElectricCostLine()
-        filament_cost_line = self.getFilamentCost()
 
         # Add the stats to the gcode file
         lines = data[0].split("\n")
@@ -729,7 +726,7 @@ class DisplayInfoOnLCD(Script):
                     lines[index] += f"\n;Custom Quality Name: '{self.global_stack.qualityChanges.getMetaDataEntry("name")}'"
                     lines_inserted = True
             if line.startswith(";Filament used"):
-                lines[index] = filament_line_t0 + filament_line_t1 + electric_line + filament_cost_line
+                lines[index] = filament_line_t0 + filament_line_t1 + "\n;" + electric_line
             # The target machine "machine_name" is actually the printer model.  This adds the user defined printer name to the "TARGET_MACHINE" line.
             if line.startswith(";TARGET_MACHINE"):
                 machine_model = str(self.global_stack.getProperty("machine_name", "value"))
@@ -743,22 +740,9 @@ class DisplayInfoOnLCD(Script):
     def getElectricCostLine(self) -> str:
         electricity_cost = self.getSettingValueByKey("electricity_cost")
         printer_power_usage = self.getSettingValueByKey("printer_power_usage")
-        currency_symbol = Application.getInstance().getPreferences().getValue("cura/currency")
         if electricity_cost == 0 or printer_power_usage == 0:
             return ""
         currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
         total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
-        electric_line = f"\n;Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
+        electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
         return electric_line
-
-    def getFilamentCost(self) -> str:
-        filament_cost = Application.getInstance().getPrintInformation().materialCosts
-        currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
-        tot_cost = 0
-        for cost in filament_cost:
-            tot_cost += float(cost)
-        if round(tot_cost,2) > 0:
-            filament_cost_line = f"\n;Filament Cost: {currency_unit}{float(tot_cost):.2f}"
-        else:
-            filament_cost_line = "\n;Filament Cost: (Not Available)"
-        return filament_cost_line
