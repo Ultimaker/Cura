@@ -39,6 +39,42 @@ UM.Dialog
 
         anchors.fill: parent
 
+        // Helper function to check if a setting should use multiline text area
+        // Supports "multiline" or "@[multiline]" or "@[multiline, other] comment"
+        function isMultilineSetting(definition)
+        {
+            if (!definition || !definition.comments)
+            {
+                return false;
+            }
+            
+            var commentsLower = definition.comments.toLowerCase();
+            
+            // Simple format: exact match
+            if (commentsLower === "multiline")
+            {
+                return true;
+            }
+            
+            // Directive format: parse @[...] and check if multiline is in the list
+            var directiveStart = commentsLower.indexOf("@[");
+            var directiveEnd = commentsLower.indexOf("]", directiveStart);
+            if (directiveStart >= 0 && directiveEnd > directiveStart)
+            {
+                var directivesText = commentsLower.substring(directiveStart + 2, directiveEnd);
+                var directives = directivesText.split(",");
+                for (var i = 0; i < directives.length; i++)
+                {
+                    if (directives[i].trim() === "multiline")
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
         ButtonGroup
         {
             id: selectedScriptGroup
@@ -365,12 +401,7 @@ UM.Dialog
                             case "bool":
                                 return settingCheckBox
                             case "str":
-                                // Check if comments field indicates multiline
-                                if (definition && definition.comments && definition.comments.toLowerCase() === "multiline")
-                                {
-                                    return settingTextArea;
-                                }
-                                return settingTextField
+                                return base.isMultilineSetting(definition) ? settingTextArea : settingTextField
                             case "category":
                                 return settingCategory
                             default:
