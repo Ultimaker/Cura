@@ -431,9 +431,7 @@ UM.Dialog
         {
             id: settingTextArea;
 
-            // Note: Tooltip handling is intentionally not connected for SettingTextArea to prevent
-            // the tooltip from obstructing the text field when the user is typing or editing multiline text.
-            Cura.SettingTextArea { }
+            SettingTextArea { }
         }
 
         Component
