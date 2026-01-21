@@ -22,7 +22,6 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .ClusterApiClient import ClusterApiClient
 from .SendMaterialJob import SendMaterialJob
 from ..ExportFileJob import ExportFileJob
-from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -119,6 +118,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super()._update()
         if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cluster too often
+        self._time_of_last_request = time()
         self.getApiClient().getPrinters(self._updatePrinters)
         self.getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
@@ -197,17 +197,25 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.show()
         parts = [
             self._createFormPart("name=owner", bytes(f"user@{platform.node()}", "utf-8"), "text/plain"),
-            self._createFormPart("name=\"file\"; filename=\"%s\"" % self._active_exported_job.getFileName(),
-                                 self._active_exported_job.getOutput())
+            self._createFormPart(
+                "name=\"file\"; filename=\"%s\"" % self._active_exported_job.getFileName(),
+                self._active_exported_job.getOutput()
+            )
         ]
         # If a specific printer was selected we include the name in the request.
         # FIXME: Connect should allow the printer UUID here instead of the 'unique_name'.
         if unique_name is not None:
             parts.append(self._createFormPart("name=require_printer_name", bytes(unique_name, "utf-8"), "text/plain"))
         # FIXME: move form posting to API client
-        self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
-                               on_progress=self._onPrintJobUploadProgress,
-                               request=self.getApiClient().createEmptyRequest("/cluster-api/v1/print_jobs/", content_type=None, method="POST"))
+        self.postFormWithParts(
+            "/cluster-api/v1/print_jobs/",
+            parts,
+            on_finished=self._onPrintUploadCompleted,
+            on_progress=self._onPrintJobUploadProgress,
+            request=self.getApiClient().createEmptyRequest("/cluster-api/v1/print_jobs/",
+                                                           content_type=None,
+                                                           )
+        )
         self._active_exported_job = None
 
     def _onPrintJobUploadProgress(self, bytes_sent: int, bytes_total: int) -> None:
@@ -217,11 +225,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.setProgress(percentage * 100)
         self.writeProgress.emit()
 
-    def _onPrintUploadCompleted(self, _: QNetworkReply) -> None:
+    def _onPrintUploadCompleted(self, reply: QNetworkReply) -> None:
         """Handler for when the print job was fully uploaded to the cluster."""
 
         self._progress.hide()
-        PrintJobUploadSuccessMessage().show()
+        if reply.error() == QNetworkReply.NetworkError.NoError:
+            PrintJobUploadSuccessMessage().show()
+        else:
+            PrintJobUploadErrorMessage().show()
         self.writeFinished.emit()
 
     def _onUploadError(self, message: str = None) -> None:
@@ -241,12 +252,6 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             if print_job.getPreviewImage() is None:
                 self.getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
 
-    def _onAuthRequired(self, error_msg: str) -> None:
-        active_name = CuraApplication.getInstance().getOutputDeviceManager().getActiveDevice().getName()
-        if self._name == active_name:
-            Logger.info(f"Authorization required for {self._name}: {error_msg}")
-            AuthorizationRequiredMessage.show(self._name, error_msg)
-
     def getApiClient(self) -> ClusterApiClient:
         """Get the API client instance."""
 
@@ -254,6 +259,5 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             self._cluster_api = ClusterApiClient(
                 self._address,
                 on_error = lambda error: Logger.log("e", str(error)),
-                on_auth_required = self._onAuthRequired
             )
         return self._cluster_api
