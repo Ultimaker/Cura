@@ -1,0 +1,39 @@
+{
+    "version": 2,
+    "name": "Infinity3D DEV-200",
+    "inherits": "Infinity3D",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Infinity3D",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains": {
+            "0": "Infinity3D_extruder_0"
+        },
+        "quality_definition": "Infinity3D"
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Infinity3D DEV-200"
+        },
+        "machine_width": {
+            "default_value": 200
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_height": {
+            "default_value": 220
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-23, 38],
+                [-23, -18],
+                [37, 38],
+                [37, -18]
+            ]
+        },
+        "gantry_height": {
+            "value": 23
+        }
+    }
+}
