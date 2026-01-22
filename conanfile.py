@@ -7,8 +7,6 @@ import tarfile
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
-from git import Repo
-from git.exc import GitCommandError
 
 from jinja2 import Template
 
@@ -259,45 +257,47 @@ class CuraConan(ConanFile):
         dependencies[info.get("name", package)] = dependency_description
 
     @staticmethod
-    def _get_license_from_repository(sources_url, version, license_file_name = None):
-        if sources_url.startswith("https://github.com/Ultimaker/") and "private" in sources_url:
-            return None
-
-        git_url = sources_url
-        if git_url.endswith('/'):
-            git_url = git_url[:-1]
+    def _format_git_url(url):
+        """Return a properly formatted git repository URL."""
+        git_url = url.rstrip("/")
         if not git_url.endswith(".git"):
             git_url = f"{git_url}.git"
-        git_url = git_url.replace("/cgit/", "/")
+        return git_url.replace("/cgit/", "/")
 
-        tags = [f"v{version}", version]
-        files = ["LICENSE", "LICENSE.txt", "LICENSE.md", "COPYRIGHT", "COPYING", "COPYING.LIB"] if license_file_name is None else [license_file_name]
+    def _get_license_from_repository(self, repository_url, version, license_file_name=None):
+        # Do not retrieve license if repository is flagged as private.
+        if repository_url.startswith("https://github.com/Ultimaker/") and "private" in repository_url:
+            return None
 
-        with tempfile.TemporaryDirectory() as clone_dir:
-            repo = Repo.clone_from(git_url, clone_dir, depth=1, no_checkout=True)
+        # Prepare the Git URL and candidate lists.
+        git_url = self._format_git_url(repository_url)
+        candidate_tags = [f"v{version}", version]
+        candidate_license_files = (
+            [license_file_name] if license_file_name
+            else ["LICENSE", "LICENSE.txt", "LICENSE.md", "COPYRIGHT", "COPYING", "COPYING.LIB"]
+        )
 
-            for tag in tags:
+        # Clone the repository into a temporary directory.
+        with tempfile.TemporaryDirectory() as clone_directory:
+            git = Git(self, clone_directory)
+            git.clone(url=git_url, target=".", args=["--depth", "1"])
+
+            # Iterate over candidate tags.
+            for tag in candidate_tags:
                 try:
-                    repo.git.fetch('--depth', '1', 'origin', 'tag', tag)
-                except GitCommandError:
-                    continue
+                    git.checkout(commit=tag)
+                except Exception:
+                    continue  # Try next tag if checkout fails.
 
-                repo.git.sparse_checkout('init', '--cone')
-                for file_name in files:
-                    repo.git.sparse_checkout('add', file_name)
-
-                try:
-                    repo.git.checkout(tag)
-                except GitCommandError:
-                    pass
-
-                for file_name in files:
-                    license_file = os.path.join(clone_dir, file_name)
-                    if os.path.exists(license_file):
-                        with open(license_file, 'r', encoding='utf8') as file:
-                            return file.read()
-
+                # Search for any existing license file in the repository.
+                for file_name in candidate_license_files:
+                    license_path = os.path.join(clone_directory, file_name)
+                    if os.path.exists(license_path):
+                        with open(license_path, "r", encoding="utf8") as license_file:
+                            return license_file.read()
+                # Exit if no license file was found for the checked out tag.
                 break
+        return None
 
     def _make_conan_dependency_description(self, dependency, dependencies):
         dependency_description = {
