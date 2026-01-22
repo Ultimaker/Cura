@@ -34,7 +34,7 @@ on:
         type: choice
         options:
           - self-hosted-Windows-X64
-          - self-hosted-Windows-ARM
+          - self-hosted-Windows-ARM64
           - windows-2022
 
 jobs:
