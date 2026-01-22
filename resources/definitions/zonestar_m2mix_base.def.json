@@ -1,0 +1,64 @@
+{
+    "version": 2,
+    "name": "ZONESTAR M2 Mixed Base",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": false,
+        "author": "ZONESTAR",
+        "manufacturer": "ZONESTAR",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "zonestar_m2_vtool_0",
+            "1": "zonestar_m2_vtool_1",
+            "2": "zonestar_m2_vtool_2",
+            "3": "zonestar_m2_vtool_3",
+            "4": "zonestar_m2_vtool_4",
+            "5": "zonestar_m2_vtool_5",
+            "6": "zonestar_m2_vtool_6",
+            "7": "zonestar_m2_vtool_7"
+        },
+        "platform_offset": [
+            0,
+            0,
+            0
+        ]
+    },
+    "overrides":
+    {
+        "gantry_height": { "value": 35 },
+        "layer_height": { "default_value": 0.2 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_depth": { "default_value": 220 },
+        "machine_end_gcode": { "default_value": "G92 E0\nG1 E-3 F2100\nG28 XY\nM104 S0\nG90\nG92 E0\nM140 S0\nM84\n" },
+        "machine_extruder_count": { "default_value": 8 },
+        "machine_extruders_share_heater": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [-30, 35],
+                [-30, -42],
+                [30, -42],
+                [30, 35]
+            ]
+        },
+        "machine_heated_bed": { "default_value": true },
+        "machine_height": { "default_value": 220 },
+        "machine_name": { "default_value": "ZONESTAR M2 Mixed Base" },
+        "machine_start_gcode": { "default_value": "G28\nG1 Z15 F300\nM107\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\nG1 X5 Y10 F1500 ; move to prime\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 Y150 E10 F600 ; prime nozzle\nG1 Y100 F5000 ; quick wipe\n" },
+        "machine_width": { "default_value": 220 },
+        "prime_tower_enable": { "value": "extruders_enabled_count > 1" },
+        "retraction_amount": { "value": "10" },
+        "retraction_combing": { "value": "'no_outer_surfaces'" },
+        "retraction_hop": { "value": "2" },
+        "retraction_hop_enabled": { "value": "extruders_enabled_count > 1" },
+        "retraction_hop_only_when_collides": { "value": "True" },
+        "retraction_min_travel": { "value": "5" },
+        "retraction_prime_speed": { "value": "15" },
+        "retraction_speed": { "value": "45" },
+        "speed_z_hop": { "default_value": 4 },
+        "switch_extruder_retraction_amount": { "value": "0" }
+    }
+}
