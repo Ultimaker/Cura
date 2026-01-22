@@ -5,6 +5,7 @@ from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 from typing import Callable, Any, Tuple, cast, Dict, Optional
 
 from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestData import HttpRequestData
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 
 from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
@@ -44,6 +45,8 @@ class ToolPathUploader:
         self._retries = 0
         self._finished = False
 
+        self._uploader_handle: Optional[HttpRequestData] = None
+
     @property
     def printJob(self):
         """Returns the print job for which this object was created."""
@@ -63,8 +66,18 @@ class ToolPathUploader:
         """Stops uploading the mesh, marking it as finished."""
 
         Logger.log("i", "Finished uploading")
+        self._uploader_handle = None
         self._finished = True  # Signal to any ongoing retries that we should stop retrying.
         self._on_finished()
+
+    def cancel(self):
+        """Cancels the upload, marking it as finished."""
+        if self._uploader_handle is not None:
+            if self._uploader_handle.reply is not None:
+                self._uploader_handle.reply.abort()
+            self._uploader_handle.setDone()
+        self.stop()
+        self._on_error()
 
     def _upload(self) -> None:
         """
@@ -74,7 +87,7 @@ class ToolPathUploader:
             raise ValueError("The upload is already finished")
 
         Logger.log("i", "Uploading print to {upload_url}".format(upload_url = self._print_job.upload_url))
-        self._http.put(
+        self._uploader_handle = self._http.put(
             url = cast(str, self._print_job.upload_url),
             headers_dict = {"Content-Type": cast(str, self._print_job.content_type)},
             data = self._data,

@@ -1,4 +1,4 @@
-# Copyright (c) 2025 UltiMaker
+# Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 import platform
@@ -11,6 +11,7 @@ from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
+from UM.TaskManagement.HttpRequestData import HttpRequestData
 from UM.Version import Version
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -56,6 +57,9 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.setAuthenticationState(AuthState.Authenticated)
         self._setInterfaceElements()
         self._active_camera_url = QUrl()  # type: QUrl
+
+        self._uploader_handle: Optional[QNetworkReply] = None
+        self._progress.actionTriggered.connect(self._onProgressMessageActionTriggered)
 
     def _setInterfaceElements(self) -> None:
         """Set all the interface elements and texts for this output device."""
@@ -145,6 +149,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             PrintJobUploadBlockedMessage().show()
             return
 
+        self._uploader_handle = None
+
         self.writeStarted.emit(self)
 
         # Export the scene to the correct file type.
@@ -207,7 +213,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if unique_name is not None:
             parts.append(self._createFormPart("name=require_printer_name", bytes(unique_name, "utf-8"), "text/plain"))
         # FIXME: move form posting to API client
-        self.postFormWithParts(
+        self._uploader_handle = self.postFormWithParts(
             "/cluster-api/v1/print_jobs/",
             parts,
             on_finished=self._onPrintUploadCompleted,
@@ -228,6 +234,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def _onPrintUploadCompleted(self, reply: QNetworkReply) -> None:
         """Handler for when the print job was fully uploaded to the cluster."""
 
+        self._uploader_handle = None
         self._progress.hide()
         if reply.error() == QNetworkReply.NetworkError.NoError:
             PrintJobUploadSuccessMessage().show()
@@ -241,9 +248,18 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         :param message: The message to display.
         """
 
+        self._uploader_handle = None
         self._progress.hide()
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
+
+    def _onProgressMessageActionTriggered(self, message: "Message", action: str):
+        if action == "abort_upload":
+            if self._uploader_handle is not None:
+                self._uploader_handle.abort()
+            self._onUploadError(I18N_CATALOG.i18nc("@info:message", "The send-print-job process was aborted. Please try again."))
+        else:
+            Logger.warning(f"Unknown action {action} triggered on print-job upload progress message.")
 
     def _updatePrintJobPreviewImages(self):
         """Download all the images from the cluster and load their data in the print job models."""
