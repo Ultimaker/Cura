@@ -12,12 +12,14 @@
         "acceleration_travel": { "value": 1000 },
         "machine_acceleration": { "default_value": 1000 },
         "machine_depth": { "default_value": 300 },
-        "machine_extruder_count": { "value": 1 },
-        "machine_height": { "default_value": 320 },
+
+        "machine_height": { "default_value": 310 },
+	"machine_extruder_count":  { "value": 1 },
         "machine_max_acceleration_x": { "value": 1200 },
         "machine_max_acceleration_y": { "value": 1200 },
         "machine_max_acceleration_z": { "default_value": 100 },
         "machine_max_feedrate_e": { "default_value": 100 },
+
         "machine_max_feedrate_x": { "default_value": 100 },
         "machine_max_feedrate_y": { "default_value": 100 },
         "machine_max_feedrate_z": { "default_value": 3 },
