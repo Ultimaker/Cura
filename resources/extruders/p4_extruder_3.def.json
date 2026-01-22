@@ -1,0 +1,24 @@
+{
+    "version": 2,
+    "name": "Extruder 4 (T3)",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": [ 
+            "makertech_proforge_4"
+			
+		],
+        "position": "3"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 3 },
+		"material_diameter": { "default_value": 1.75 },
+		"machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": { "default_value": "SELECT_T3" },
+        "machine_extruder_end_code": { "default_value": "DOCK_T3" }
+		
+    }
+}
+
+
