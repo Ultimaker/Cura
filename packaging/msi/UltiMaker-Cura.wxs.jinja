@@ -65,7 +65,7 @@
 
         <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
 
-        <UIRef Id="WixUI_Mondo" />
+        <UIRef Id="WixUI_InstallDir" />
 
         <WixVariable Id="WixUILicenseRtf" Value="{{ cura_license_file }}" />
         <WixVariable Id="WixUIDialogBmp" Value="{{ cura_banner_side }}" />
@@ -77,7 +77,7 @@
         <!--Directory structure-->
         <Directory Id="TARGETDIR" Name="SourceDir">
            <Directory Id="ProgramFiles64Folder">
-               <Directory Id="APPLICATIONFOLDER" Name="{{ app_name }} {{ version }}" />
+               <Directory Id="APPLICATIONFOLDER" Name="{{ app_name }}" />
                <Directory Id="ProgramMenuFolder">
                    <Directory Id="ShortCutDir" Name="{{ app_name }}" />
                </Directory>
@@ -137,19 +137,12 @@
 
         <!--Shortcuts-->
         <DirectoryRef Id="ShortCutDir">
-            <Component Id="CMP_Shortcuts" Guid="*">
+            <Component Id="CMP_Shortcut" Guid="*">
                 <Shortcut Id="SHRT_Cura"
-                          Name="{{ app_name }} {{ version }}"
-                          Description="{{ app_name }} {{ version }}"
+                          Name="{{ app_name }}"
+                          Description="{{ app_name }}"
                           Target="[APPLICATIONFOLDER]\{{ main_app }}"
                           Icon="ICO_Cura"  />
-                <Shortcut Id="SHRT_UninstallShortcut"
-                          Name="Uninstall {{ app_name }} {{ version }}"
-                          Description= "Uninstalls {{ app_name }} {{ version }}"
-                          Target="[System64Folder]msiexec.exe"
-                          Arguments="/x [ProductCode]" />
-                <RemoveFolder Id="RemoveMyShortcutsDir"
-                              On="uninstall" />
                 <RegistryValue Root="HKCU"
                                Key="Software\{{ company }}\{{ app_name }}\{{ version }}"
                                Name="installed"
@@ -182,7 +175,7 @@
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
             <ComponentRef Id="CMP_CuraEngine_exe" />
             <ComponentGroupRef Id="NewFilesGroup" />
-            <ComponentRef Id="CMP_Shortcuts" />
+            <ComponentRef Id="CMP_Shortcut" />
             <ComponentRef Id="CuraRegistration"/>
             <ComponentRef Id="SlicerRegistration"/>
         </Feature>
