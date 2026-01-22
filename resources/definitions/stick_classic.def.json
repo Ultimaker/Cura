@@ -1,0 +1,41 @@
+{
+    "name": "Stick Classic",
+    "version": 2,
+    "inherits": "STICK",
+    "overrides": {
+        "machine_name": { "default_value": "Stick Classic" },
+        "machine_start_gcode": {"default_value": "\nG21 ;metric values \nG90 ;absolute positioning \nM82 ;set extruder to absolute mode \nM107 ;start with the fan off \nG28 \nM420 S1 ;MESH LEVELING \nG1 Z5 F3000 ;\nG92 E0 \nG1 X60.0 Y-2 Z0.2 E9.0 F1000.0 ; intro line \nG1 X100.0 E12.5 Z0.3 F1000.0 ; intro line \nG92 E0 ;zero the extruded length \nG1 F1000 E-1 ;extrude 1mm of feed stock \nG1 F{travel_speed} \n"},
+        "machine_end_gcode": { "default_value": "\nM104 S0 ; turn off extruder \nM140 S0 ; turn off bed \nG91 ;relative positioning \nG1 Z+3 E-5 F3000 ;move Z up a bit and retract filament even more \nG90 \nG1 X5 Y10 ;move xy, so the head is out of the way \nM84 ;steppers off\nG90 ;absolute positioning\nM107\n;{profile_string}\n;"BarbieGirl" Aqua\nM300 S1661 P240\nM300 S1318 P240\nM300 S1661 P240\nM300 S2217 P240\nM300 S880 P480\nM300 S0 P480\nM300 S1479 P240\nM300 S1244 P240\nM300 S1479 P240\nM300 S987 P240\nM300 S1661 P480\nM300 S1479 P240\nM300 S1318 P240" },
+        "machine_width": { "default_value": 210 },
+        "machine_depth": { "default_value": 200 },
+        "machine_height": { "default_value": 300 },
+        "z_seam_type": { "value": "'sharpest_corner'"},
+        "z_seam_corner": { "value": "'z_seam_corner_inner'"},
+        "infill_sparse_density": { "value": "10"},
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'grid'"},
+        "infill_overlap":{"value": 10},    
+        "material_print_temperature":{"value": 205},
+        "material_bed_temperature":{"value": 60},
+        "retraction_amount":{"value": 10},  
+        "speed_travel": { "value": 80.0 },
+        "coasting_enable": { "value": true},
+        "coasting_min_volume": { "value": 0.5},
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
+        },
+
+        "gantry_height": { "value": 25 },
+
+        "speed_print": { "value": 50.0 },
+        "speed_wall": { "value": 30.0 }
+
+    },
+    "metadata": {
+        "quality_definition": "stick_base",
+        "visible": true
+    }
+}
