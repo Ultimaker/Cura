@@ -1,0 +1,40 @@
+{
+    "version": 2,
+    "name": "Wanhao Duplicator 10",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+		"author": "Wanhao",
+        "manufacturer": "Wanhao",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "wanhao_extruder_0"
+        }
+
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Wanhao Duplicator 10" },
+        "machine_width": {
+            "default_value": 116
+        },
+        "machine_height": {
+            "default_value": 126
+        },
+        "machine_depth": {
+            "default_value": 116
+        },        
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_extruder_count": {
+            "default_value": 1
+        }
+
+    }
+}
