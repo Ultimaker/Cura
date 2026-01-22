@@ -12,6 +12,7 @@
         "has_materials": true,
         "has_variants": true,
         "machine_extruder_trains": { "0": "xyzprinting_da_vinci_jr_1p0a_pro_extruder_0" },
+        "preferred_material": "xyzprinting_pla",
         "preferred_quality_type": "normal",
         "preferred_variant_name": "Copper 0.4mm Nozzle",
         "quality_definition": "xyzprinting_da_vinci_jr_1p0a_pro",
@@ -43,6 +44,11 @@
         "machine_start_gcode": { "default_value": "G28 ; home all axes\nG1 Z15 F5000 ; lift nozzle\nG92 E0\nG1 F200 E3\n" },
         "machine_width": { "default_value": 175.0 },
         "material_flow_layer_0": { "value": 120 },
-        "skirt_line_count": { "default_value": 5 }
+        "minimum_support_area": { "value": "4" },
+        "skirt_line_count": { "default_value": 5 },
+        "support_use_towers": { "value": "False" },
+        "support_xy_distance": { "value": "1.2" },
+        "support_xy_distance_overhang": { "value": "0.6" },
+        "support_z_distance": { "value": "0.4" }
     }
 }
