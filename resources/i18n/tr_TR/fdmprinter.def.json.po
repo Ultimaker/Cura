@@ -6289,8 +6289,8 @@ msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
 msgstr "Materyal için yazıcının sıkabileceği maksimum akış oranı"
 
-msgctxt "multi_material_paint_deepness label"
-msgid "Multi-material Deepness"
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
 msgstr "Çoklu Materyal Derinliği"
 
 msgctxt "multi_material_paint_resolution label"
@@ -6309,8 +6309,8 @@ msgctxt "machine_scan_first_layer label"
 msgid "Scan the first layer"
 msgstr "İlk katmanı tara"
 
-msgctxt "multi_material_paint_deepness description"
-msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr "Model içerisindeki boyalı detayların derinliği. Daha yüksek bir derinlik, daha iyi bir kenetlenme sağlar, fakat dilimleme süresini ve bellek kullanımını artırır. Mümkün olduğunca derinleştirmek için çok yüksek bir değer seçin. Asıl hesaplanan derinlik farklılık gösterebilir."
 
 msgctxt "build_volume_fan_speed description"

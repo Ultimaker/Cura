@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 08:45+0200\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,6 +202,10 @@ msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
 msgstr ""
 
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 #, python-brace-format
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
@@ -251,10 +255,6 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] ""
 msgstr[1] ""
-
-msgctxt "@text"
-msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
-msgstr ""
 
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
@@ -471,10 +471,6 @@ msgid "An model may appear extremely small if its unit is for example in meters 
 msgstr ""
 
 msgctxt "@label"
-msgid "Annealing"
-msgstr ""
-
-msgctxt "@label"
 msgid "Anonymous"
 msgstr ""
 
@@ -568,6 +564,10 @@ msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr ""
 
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr ""
@@ -614,14 +614,6 @@ msgstr ""
 
 msgctxt "@info:title"
 msgid "Backups"
-msgstr ""
-
-msgctxt "@label"
-msgid "Balanced"
-msgstr ""
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
 msgstr ""
 
 msgctxt "@action:label"
@@ -716,10 +708,6 @@ msgstr ""
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
-msgstr ""
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
 msgstr ""
 
 msgctxt "@info:error"
@@ -1370,10 +1358,6 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr ""
 
-msgctxt "@label"
-msgid "Draft"
-msgstr ""
-
 msgctxt "@action:inmenu menubar:edit"
 msgid "Drop All Models to buildplate"
 msgstr ""
@@ -1432,6 +1416,10 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr ""
 
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
+
 msgctxt "@label"
 msgid "Enabled"
 msgstr ""
@@ -1446,10 +1434,6 @@ msgstr ""
 
 msgctxt "@info:title"
 msgid "EnginePlugin"
-msgstr ""
-
-msgctxt "@label"
-msgid "Engineering"
 msgstr ""
 
 msgctxt "@option:check"
@@ -3002,7 +2986,6 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 
@@ -3672,7 +3655,7 @@ msgid "Select Settings to Customize for this model"
 msgstr ""
 
 msgctxt "@label"
-msgid "Select a single model to start painting"
+msgid "Select a single ungrouped model to start painting"
 msgstr ""
 
 msgctxt "@text"
@@ -3987,10 +3970,6 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr ""
 
-msgctxt "@label"
-msgid "Solid"
-msgstr ""
-
 msgctxt "@item:inmenu"
 msgid "Solid view"
 msgstr ""
@@ -4210,10 +4189,6 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr ""
 
-msgctxt "@text"
-msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
-msgstr ""
-
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
@@ -4222,10 +4197,6 @@ msgstr[1] ""
 
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
-msgstr ""
-
-msgctxt "@text"
-msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4270,14 +4241,6 @@ msgstr ""
 
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr ""
-
-msgctxt "@text"
-msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr ""
-
-msgctxt "@text"
-msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr ""
 
 msgctxt "@label"
@@ -4424,10 +4387,6 @@ msgstr ""
 
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
-msgstr ""
-
-msgctxt "@text"
-msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr ""
 
 msgctxt "@info:tooltip"
@@ -4767,11 +4726,6 @@ msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr ""
 
-#, python-format
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr ""
-
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -4966,10 +4920,6 @@ msgstr ""
 
 msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
-msgstr ""
-
-msgctxt "@label"
-msgid "Visual"
 msgstr ""
 
 msgctxt "@label"
@@ -5806,3 +5756,51 @@ msgstr ""
 msgctxt "name"
 msgid "Version Upgrade 5.4 to 5.5"
 msgstr ""
+msgctxt "default intent label"
+msgid "Balanced"
+msgstr ""
+
+msgctxt "default intent description"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr ""
+
+msgctxt "visual intent label"
+msgid "Visual"
+msgstr ""
+
+msgctxt "visual intent description"
+msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgstr ""
+
+msgctxt "engineering intent label"
+msgid "Engineering"
+msgstr ""
+
+msgctxt "engineering intent description"
+msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgstr ""
+
+msgctxt "quick intent label"
+msgid "Draft"
+msgstr ""
+
+msgctxt "quick intent description"
+msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgstr ""
+
+msgctxt "annealing intent label"
+msgid "Annealing"
+msgstr ""
+
+msgctxt "annealing intent description"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr ""
+
+msgctxt "solid intent label"
+msgid "Solid"
+msgstr ""
+
+msgctxt "solid intent description"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr ""
+

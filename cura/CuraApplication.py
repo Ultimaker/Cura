@@ -1300,6 +1300,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, self.getCuraSceneController, "SceneController")
         qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, self.getExtruderManager, "ExtruderManager")
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, self.getMachineManager, "MachineManager")
+        qmlRegisterSingletonType(MachineErrorChecker, "Cura", 1, 0, self.getMachineErrorChecker, "MachineErrorChecker")
         qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, self.getIntentManager, "IntentManager")
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, self.getSettingInheritanceManager, "SettingInheritanceManager")
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, self.getSimpleModeSettingsManagerWrapper, "SimpleModeSettingsManager")

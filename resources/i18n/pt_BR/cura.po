@@ -3,20 +3,21 @@
 # This file is distributed under the same license as the Cura package.
 # Ultimaker <plugins@ultimaker.com>, 2022.
 #
+# SPDX-FileCopyrightText: 2025 Claudio Sampaio (Patola)
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 08:45+0200\n"
-"PO-Revision-Date: 2025-03-23 17:45+0100\n"
-"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
-"Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
+"PO-Revision-Date: 2025-10-10 05:33+0200\n"
+"Last-Translator: Claudio Sampaio (Patola) <patola@gmail.com>\n"
+"Language-Team: Portuguese <>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
@@ -144,7 +145,7 @@ msgstr "&Ver"
 
 msgctxt "@label"
 msgid "*) You will need to restart the application for these changes to have effect."
-msgstr ""
+msgstr "*) Você precisará reiniciar a aplicação para que as mudanças tenham efeito."
 
 msgctxt "@text"
 msgid ""
@@ -214,6 +215,10 @@ msgstr "<b>Somente ajuste alterados por usuário serão salvos no perfil persona
 
 msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>Pelo menos um extrusor continua sem uso nessa impressão:"
+
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
 msgstr ""
 
 msgctxt "@label OpenGL renderer"
@@ -274,7 +279,7 @@ msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "Conexão de nuvem não está disponível para uma impressora"
 msgstr[1] "Conexão de nuvem não está disponível para algumas impressoras"
 
-msgctxt "@text"
+msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "Uma parte muito densa e forte mas com tempo de impressão maior. Ótimo para partes funcionais."
 
@@ -384,7 +389,7 @@ msgstr "Adicionar um script"
 
 msgctxt "@option:check"
 msgid "Add icon to system tray (* restart required)"
-msgstr ""
+msgstr "Adicionar ícone na bandeja do sistema (* reinício requerido)"
 
 msgctxt "@button"
 msgid "Add local printer"
@@ -506,7 +511,7 @@ msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Um modelo pode ser carregado diminuto se sua unidade for por exemplo em metros ao invés de milímetros. Devem esses modelos ser redimensionados?"
 
-msgctxt "@label"
+msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr "Recozimento"
 
@@ -596,11 +601,15 @@ msgstr "Criar um backup automaticamente toda vez que o Cura iniciar."
 
 msgctxt "@label"
 msgid "Automatically disable the unused extruder(s)"
-msgstr ""
+msgstr "Automaticamente desabilitar o(s) extrusor(es) sem uso"
 
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Automaticamente fazer os modelos caírem na mesa de impressão"
+
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
@@ -612,7 +621,7 @@ msgstr "Impressoras de rede disponíveis"
 
 msgctxt "@action:button"
 msgid "Avoid"
-msgstr ""
+msgstr "Evitar"
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -636,7 +645,7 @@ msgstr "Backup Agora"
 
 msgctxt "@action:button"
 msgid "Backup and Reset Configuration"
-msgstr "Salvar e Restabelecer Configuração"
+msgstr "Fazer Backup e Restabelecer Configuração"
 
 msgctxt "description"
 msgid "Backup and restore your configuration."
@@ -654,13 +663,9 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "Backups"
 
-msgctxt "@label"
+msgctxt "default intent label"
 msgid "Balanced"
 msgstr "Equilibrado"
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -676,11 +681,11 @@ msgstr "Marca"
 
 msgctxt "@label"
 msgid "Brush Shape"
-msgstr ""
+msgstr "Formato do Pincel"
 
 msgctxt "@label"
 msgid "Brush Size"
-msgstr ""
+msgstr "Tamanho do Pincel"
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -753,10 +758,6 @@ msgstr "Não foi possível importar perfil de <filename>{0}</filename> antes de 
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Não é possível abrir nenhum outro arquivo se G-Code estiver sendo carregado. Pulando importação de {0}"
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
-msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -850,15 +851,15 @@ msgstr ""
 
 msgctxt "@action:button"
 msgid "Circle"
-msgstr ""
+msgstr "Círculo"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
-msgstr "Esvaziar a Mesa de Impressão"
+msgstr "Limpar a Mesa de Impressão"
 
 msgctxt "@button"
 msgid "Clear all"
-msgstr ""
+msgstr "Limpar todos"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -1014,7 +1015,7 @@ msgstr "Conectado pela nuvem"
 
 msgctxt "@label"
 msgid "Connection and Control"
-msgstr ""
+msgstr "Conexão e Controle"
 
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
@@ -1386,7 +1387,7 @@ msgstr "Desabilitar Extrusor"
 
 msgctxt "@button"
 msgid "Disable unused extruder(s)"
-msgstr ""
+msgstr "Desabilitar extrusor(es) sem uso"
 
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
@@ -1452,7 +1453,7 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr "Fazendo downgrade..."
 
-msgctxt "@label"
+msgctxt "quick intent label"
 msgid "Draft"
 msgstr "Rascunho"
 
@@ -1506,11 +1507,15 @@ msgstr "Habilitar Extrusor"
 
 msgctxt "@option:check"
 msgid "Enable USB-cable printing (* restart required)"
-msgstr ""
+msgstr "Habilitar impressão pelo cabo USB (* reinício requerido)"
 
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr "Habilita a impressão de brim ou raft. Adicionará uma área plana em volta do objeto ou abaixo dele que seja fácil de destacar depois. Desabilitar este ajuste resulta em um skirt em volta do objeto por default."
+
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1532,7 +1537,7 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr "EnginePlugin"
 
-msgctxt "@label"
+msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr "Engenharia"
 
@@ -1550,7 +1555,7 @@ msgstr "Entre o endereço IP de sua impressora."
 
 msgctxt "@action:button"
 msgid "Erase"
-msgstr ""
+msgstr "Apagar"
 
 msgctxt "@info:title"
 msgid "Error"
@@ -1726,7 +1731,7 @@ msgstr "Favoritos"
 
 msgctxt "@info:backup_status"
 msgid "Fetch re-downloadable package-ids..."
-msgstr ""
+msgstr "Buscar IDs de pacote reobtíveis"
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1830,7 +1835,7 @@ msgstr "Primeira disponível"
 
 msgctxt "@option:check"
 msgid "Flip model's toolhandle Y axis (* restart required)"
-msgstr ""
+msgstr "Virar o eixo Y da ferramenta do modelo (* reinício requerido)"
 
 msgctxt "@label:listbox"
 msgid "Flow"
@@ -1862,7 +1867,7 @@ msgstr "Para litofanos, pixels escuros devem corresponder a locais mais espessos
 
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (* restart required)"
-msgstr ""
+msgstr "Forçar o modo de compatibilidade de visão de camada (* reinício requerido)"
 
 msgid "FreeCAD trackpad"
 msgstr "Trackpad do FreeCAD"
@@ -2505,7 +2510,7 @@ msgstr "Fabricante"
 
 msgctxt "@label"
 msgid "Mark as"
-msgstr ""
+msgstr "Marcar como"
 
 msgctxt "@action:button"
 msgid "Marketplace"
@@ -2521,7 +2526,7 @@ msgstr "Marketplace"
 
 msgctxt "@action:button"
 msgid "Material"
-msgstr ""
+msgstr "Material"
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2817,7 +2822,7 @@ msgstr "Não sobreposto"
 
 msgctxt "@label"
 msgid "Not retracted"
-msgstr ""
+msgstr "Não retraído"
 
 msgctxt "@info:not supported profile"
 msgid "Not supported"
@@ -3022,23 +3027,23 @@ msgstr "Detalhes do pacote"
 
 msgctxt "@action:button"
 msgid "Paint"
-msgstr ""
+msgstr "Pintura"
 
 msgctxt "@info:tooltip"
 msgid "Paint Model"
-msgstr ""
+msgstr "Modelo de Pintura"
 
 msgctxt "name"
 msgid "Paint Tools"
-msgstr ""
+msgstr "Ferramentas de Pintura"
 
 msgctxt "@tooltip"
 msgid "Paint on model to select the material to be used"
-msgstr ""
+msgstr "Pintura do modelo para selecionar o material a ser usado"
 
 msgctxt "@item:inmenu"
 msgid "Paint view"
-msgstr ""
+msgstr "Visão de pintura"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
@@ -3151,12 +3156,10 @@ msgctxt "@info:status"
 msgid ""
 "Please review settings and check if your models:\n"
 "- Fit within the build volume\n"
-"- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
 msgstr ""
 "Por favor revise os ajustes e verifique se seus modelos:\n"
 "- Cabem dentro do volume de impressão\n"
-"- Estão associados a um extrusor habilitado\n"
 "- Não estão todos configurados como malhas de modificação"
 
 msgctxt "@label"
@@ -3221,11 +3224,11 @@ msgstr "Pré-aquecer"
 
 msgctxt "@title:window"
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 msgctxt "@action:button"
 msgid "Preferred"
-msgstr ""
+msgstr "Preferidos"
 
 msgctxt "@item:inmenu"
 msgid "Prepare"
@@ -3237,7 +3240,7 @@ msgstr "Estágio de Preparação"
 
 msgctxt "@label"
 msgid "Preparing model for painting..."
-msgstr ""
+msgstr "Preparando modelo para pintura..."
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3269,7 +3272,7 @@ msgstr "Torre de Prime"
 
 msgctxt "@label"
 msgid "Priming"
-msgstr ""
+msgstr "Priming"
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3389,7 +3392,7 @@ msgstr "A impressora não aceita comandos"
 
 msgctxt "@info:title"
 msgid "Printer inactive"
-msgstr ""
+msgstr "Impressora inativa"
 
 msgctxt "@label"
 msgid "Printer name"
@@ -3433,7 +3436,7 @@ msgstr "Tempo de Impressão"
 
 msgctxt "@info:tooltip"
 msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
-msgstr ""
+msgstr "Imprimir via cabo USB não funciona com todas as impressoras e examinar por portas pode interferir com outros dispositivos seriais conectado (ex.: fones de ouvido). Não é mais 'Automaticamente Habilitado' para novas instalações do Cura. Se você quer usar Impressão USB então habilite sua caixa de seleção e reinicie o Cura. Por favor note: a Impressão USB não é mais mantida. Ou irá funcionaria com sua combinação de computador e impressora ou não funcionará."
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3613,7 +3616,7 @@ msgstr "Provê a ligação ao backend de fatiamento CuraEngine."
 
 msgctxt "description"
 msgid "Provides the paint tools."
-msgstr ""
+msgstr "Provê as ferramentas de pintura."
 
 msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
@@ -3665,15 +3668,15 @@ msgstr "Ajustes recomendados (para <b>%1</b>) foram alterados."
 
 msgctxt "@action:button"
 msgid "Redo Stroke"
-msgstr ""
+msgstr "Refazer Traço"
 
 msgctxt "@tooltip"
 msgid "Refine seam placement by defining preferred/avoidance areas"
-msgstr ""
+msgstr "Refina a colocação da costura definindo áreas preferidas e evitadas"
 
 msgctxt "@tooltip"
 msgid "Refine support placement by defining preferred/avoidance areas"
-msgstr ""
+msgstr "Refina a colocação de suportes definindo áreas preferidas e evitadas"
 
 msgctxt "@action:button"
 msgid "Refresh"
@@ -3801,11 +3804,11 @@ msgstr "Continuando..."
 
 msgctxt "@label"
 msgid "Retracted"
-msgstr ""
+msgstr "Retraído"
 
 msgctxt "@label"
 msgid "Retracting"
-msgstr ""
+msgstr "Retraindo"
 
 msgctxt "@tooltip"
 msgid "Retractions"
@@ -3909,7 +3912,7 @@ msgstr "Redimensionar modelos grandes"
 
 msgctxt "@action:button"
 msgid "Seam"
-msgstr ""
+msgstr "Costura"
 
 msgctxt "@placeholder"
 msgid "Search"
@@ -3940,7 +3943,7 @@ msgid "Select Settings to Customize for this model"
 msgstr "Selecionar Ajustes a Personalizar para este modelo"
 
 msgctxt "@label"
-msgid "Select a single model to start painting"
+msgid "Select a single ungrouped model to start painting"
 msgstr ""
 
 msgctxt "@text"
@@ -4267,7 +4270,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Suavização"
 
-msgctxt "@label"
+msgctxt "solid intent label"
 msgid "Solid"
 msgstr "Sólido"
 
@@ -4341,7 +4344,7 @@ msgstr "Patrocinar o Cura"
 
 msgctxt "@action:button"
 msgid "Square"
-msgstr ""
+msgstr "Quadrado"
 
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
@@ -4425,7 +4428,7 @@ msgstr "Resumo - Universal Cura Project"
 
 msgctxt "@action:button"
 msgid "Support"
-msgstr ""
+msgstr "Suporte"
 
 msgctxt "@label"
 msgid "Support"
@@ -4453,7 +4456,7 @@ msgstr "Interface de Suporte"
 
 msgctxt "@action:label"
 msgid "Support Structure"
-msgstr ""
+msgstr "Estrutura de Suporte"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4507,7 +4510,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "A quantidade de suavização para aplicar na imagem."
 
-msgctxt "@text"
+msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "O perfil de recozimento requer pós-processamento em um forno depois da impressão terminar. Este perfil retém a acuidade dimensional da parte impressão depois do recozimento e melhora a força, rigidez e resistência térmica."
 
@@ -4521,7 +4524,7 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "O backup excede o tamanho máximo de arquivo."
 
-msgctxt "@text"
+msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "O perfil equilibrado é projetado para conseguir um equilíbrio entre produtividade, qualidade de superfície, propriedades mecânicas e acuidade dimensional."
 
@@ -4569,11 +4572,11 @@ msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "A profundidade da mesa de impressão em milímetros"
 
-msgctxt "@text"
+msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
 
-msgctxt "@text"
+msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
 
@@ -4687,7 +4690,7 @@ msgstr "A impressora neste endereço ainda não respondeu."
 
 msgctxt "@info:status"
 msgid "The printer is inactive and cannot accept a new print job."
-msgstr ""
+msgstr "A impressora está inativa e não pode aceitar um novo trabalho de impressão."
 
 msgctxt "@info:status"
 msgid "The printer is not connected."
@@ -4729,7 +4732,7 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "A temperatura com a qual pré-aquecer o hotend."
 
-msgctxt "@text"
+msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
 
@@ -4739,7 +4742,7 @@ msgstr "A largura em milímetros na plataforma de impressão"
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
 msgid "Theme (* restart required):"
-msgstr ""
+msgstr "Tema (* reinício requerido):"
 
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
@@ -4807,7 +4810,7 @@ msgstr "Esta impressora não pode ser adicionada porque é uma impressora descon
 
 msgctxt "@status"
 msgid "This printer is deactivated and can not accept commands or jobs."
-msgstr ""
+msgstr "A impressora está desativada e não pode aceitar comandos ou trabalhos."
 
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
@@ -5102,10 +5105,6 @@ msgid "Unable to slice because the prime tower or prime position(s) are invalid.
 msgstr "Não foi possível fatiar porque a torre de purga ou posição de purga são inválidas."
 
 msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr "Não foi possível fatiar porque há objetos associados com o Extrusor desabilitado %s."
-
-msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
 msgstr "Não foi possível fatiar devido a alguns ajustes por modelo. Os seguintes ajustes têm erros em um dos modelos ou mais: {error_labels}"
 
@@ -5135,7 +5134,7 @@ msgstr "Impressora indisponível"
 
 msgctxt "@action:button"
 msgid "Undo Stroke"
-msgstr ""
+msgstr "Desfazer Traço"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
@@ -5199,7 +5198,7 @@ msgstr "Sem Título"
 
 msgctxt "@message:title"
 msgid "Unused Extruder(s)"
-msgstr ""
+msgstr "Extrusor(es) Sem Uso"
 
 msgctxt "@button"
 msgid "Update"
@@ -5371,7 +5370,7 @@ msgstr "Enviando seu backup..."
 
 msgctxt "@option:check"
 msgid "Use a single instance of Cura (* restart required)"
-msgstr ""
+msgstr "Usar uma única instância do Cura (* reinício requerido)"
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5529,7 +5528,7 @@ msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr "Visita o website da UltiMaker."
 
-msgctxt "@label"
+msgctxt "visual intent label"
 msgid "Visual"
 msgstr "Visual"
 
@@ -5829,6 +5828,10 @@ msgstr "{} complementos falharam em baixar"
 #~ msgid "Application framework"
 #~ msgstr "Framework de Aplicações"
 
+#~ msgctxt "@item:inlistbox"
+#~ msgid "BambuLab 3MF file"
+#~ msgstr "Arquivo 3MF BambuLab"
+
 #~ msgctxt "@tooltip:button"
 #~ msgid "Become a 3D printing expert with UltiMaker e-learning."
 #~ msgstr "Torne-se um especialista em impressão 3D com UltiMaker e-learning."
@@ -5836,6 +5839,10 @@ msgstr "{} complementos falharam em baixar"
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "C/C++ Binding library"
 #~ msgstr "Biblioteca de Ligações C/C++"
+
+#~ msgctxt "@info:error"
+#~ msgid "Can't write GCode to 3MF file"
+#~ msgstr "Não foi possível escrever GCode no arquivo 3MF"
 
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Compatibility between Python 2 and 3"
@@ -5981,6 +5988,10 @@ msgstr "{} complementos falharam em baixar"
 #~ msgid "Save Cura project and print file"
 #~ msgstr "Salvar o projeto Cura e imprimir o arquivo"
 
+#~ msgctxt "@label"
+#~ msgid "Select a single model to start painting"
+#~ msgstr "Selecione um único modelo para começar a pintar"
+
 #~ msgctxt "@label Description for application dependency"
 #~ msgid "Serial communication library"
 #~ msgstr "Biblioteca de comunicação serial"
@@ -6048,6 +6059,10 @@ msgstr "{} complementos falharam em baixar"
 #~ msgctxt "@text:window"
 #~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
 #~ msgstr "Este é um arquivo de projeto Universal do Cura. Você gostaria de abri-lo como um projeto do Cura, ou Cura Universal Project, ou importar os modelos dele?"
+
+#~ msgctxt "@info:status"
+#~ msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+#~ msgstr "Não foi possível fatiar porque há objetos associados com o Extrusor desabilitado %s."
 
 #~ msgctxt "@label Description for development tool"
 #~ msgid "Universal build system configuration"

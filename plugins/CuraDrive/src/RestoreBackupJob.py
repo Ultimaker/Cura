@@ -157,7 +157,7 @@ class RestoreBackupJob(Job):
                     Logger.info("All packages redownloaded!")
                     self._job_done.set()
                 else:
-                    msgs = "\n - ".join(redownload_errors)
+                    msgs = "\n".join([" - " + str(x) for x in redownload_errors])
                     Logger.error(f"Couldn't re-install at least one package(s) because: {msgs}")
                     self.restore_backup_error_message = self.DEFAULT_ERROR_MESSAGE
                     self._job_done.set()

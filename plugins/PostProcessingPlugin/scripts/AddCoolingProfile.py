@@ -47,9 +47,7 @@ class AddCoolingProfile(Script):
                     "description": "If you have 2 or more instances of 'Advanced Cooling Fan Control' running (to cool a portion of a print differently), then you must uncheck this box or the followup instances will remove all the lines inserted by the first instance.  Pay attention to the Start and Stop layers.  Regardless of this setting:  The script always removes M106 lines starting with the lowest layer number (when 'By Layer') or the starting layer number (when 'By Feature').  If you want to keep the M106 lines that Cura inserted up to the point where this post-processor will start making insertions, then un-check the box.",
                     "type": "bool",
                     "enabled": true,
-                    "value": true,
-                    "default_value": true,
-                    "read_only": true
+                    "default_value": true
                 },
                 "feature_fan_start_layer":
                 {
@@ -280,13 +278,21 @@ class AddCoolingProfile(Script):
                     "unit": "%    ",
                     "enabled": "fan_enable_raft"
                 },
+                "enable_off_fan_speed_enable":
+                {
+                    "label": "Hidden setting",
+                    "description": "For dual extruder printers, this enables 'enable_off_fan_speed'.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false
+                },
                 "enable_off_fan_speed":
                 {
                     "label": "Enable 'Off speed' of the idle fan",
                     "description": "For machines with independent layer cooling fans.  Leaving a fan running while the other nozzle is printing can help with oozing.  You can pick the speed % for the idle nozzle layer cooling fan to hold at.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enable_off_fan_speed_enable and self.extruder_count > 1"
+                    "enabled": "enable_off_fan_speed_enable"
                 },
                 "off_fan_speed":
                 {
@@ -297,15 +303,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "enable_off_fan_speed_enable and enable_off_fan_speed and self.extruder_count > 1"
-                },
-                "enable_off_fan_speed_enable":
-                {
-                    "label": "Hidden setting",
-                    "description": "For dual extruder printers, this enables 'enable_off_fan_speed'.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": false
+                    "enabled": "enable_off_fan_speed_enable and enable_off_fan_speed"
                 },
                 "bv_fan_speed_control_enable":
                 {

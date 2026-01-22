@@ -2560,8 +2560,8 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr "上面/底面の方向一貫性"
 
-msgctxt "multi_material_paint_deepness label"
-msgid "Multi-material Deepness"
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
 msgstr "複数材料の深さ"
 
 msgctxt "multi_material_paint_resolution label"
@@ -4324,8 +4324,8 @@ msgctxt "material_brand description"
 msgid "The brand of material used."
 msgstr "使用されている材料のブランドです。"
 
-msgctxt "multi_material_paint_deepness description"
-msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
 msgstr "ペイントした部分に対するモデル内部の深さです。より深くすることでより強く結合しますが、メモリー使用量とスライスにかかる時間が増加します。出来るだけ深くなるよう高い値を設定してください。実際に計算される深さは変わる場合があります。"
 
 msgctxt "machine_acceleration description"
