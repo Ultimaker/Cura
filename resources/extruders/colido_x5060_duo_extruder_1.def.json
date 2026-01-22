@@ -1,0 +1,22 @@
+{
+    "version": 2,
+    "name": "Extruder 2",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "colido_x5060_duo",
+        "position": "1"
+    },
+    "overrides":
+    {
+        "extruder_nr":
+        {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_offset_x": { "default_value": 40.2 },
+        "machine_nozzle_offset_y": { "default_value": -0.3 }
+    }
+}
