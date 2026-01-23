@@ -30,7 +30,7 @@ Display Filename and Layer on the LCD by Amanda de Castilho on August 28, 2018
            - 'Add M73 Line' is used by 'Display Progress' only.  There are options to incluse M73 P(percent) and M73 R(time remaining)
            - Enable 'Finish-Time' Message - when enabled, takes the Print Time and calculates when the print will end.  It uses the Time Fudge Factor.  The user may enter a print start time.
 Date:  June 30, 2025 Cost of electricity added to the other print statistics in '_add_stats'. (GregValiant)
-Date:  Sept 24, 2025 Disabled countdown to pauses when in 'One-at-a-TIme' mode. (GregValiant)
+Date:  Sept 24, 2025 Disabled countdown to pauses when in 'One-at-a-Time' mode. (GregValiant)
 Date:  Jan 20, 2026 Added "weight" to the stats inserted in the Gcode.
 """
 
@@ -573,7 +573,7 @@ class DisplayInfoOnLCD(Script):
         print_time = Application.getInstance().getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)
         print_start_time = self.getSettingValueByKey("print_start_time")
         if print_start_time == "":
-            print_start_time = datatime.datatime.now()
+            print_start_time = datetime.datetime.now().strftime("%H:%M")
         # If the user entered a print start time make sure it is in the correct format or ignore it.
         if print_start_time == "" or print_start_time == "0" or len(print_start_time) != 5 or not ":" in print_start_time:
             print_start_time = ""
@@ -634,7 +634,6 @@ class DisplayInfoOnLCD(Script):
         estimate_str = "Cura Time Estimate.........." + str(print_time)
         # Set a default value for compatibility with earlier versions
         try:
-            cura_adjust_percent = 100
             cura_adjust_percent = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
         except (NameError, ValueError):
             cura_adjust_percent = 100
@@ -744,5 +743,5 @@ class DisplayInfoOnLCD(Script):
             return ""
         currency_unit = Application.getInstance().getPreferences().getValue("cura/currency")
         total_cost_electricity = (printer_power_usage / 1000) * (self.time_total / 3600) * electricity_cost
-        electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}".format(total_cost_electricity)
+        electric_line = f"Electric Cost: {currency_unit}{total_cost_electricity:.2f}"
         return electric_line
