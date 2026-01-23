@@ -692,7 +692,7 @@ class DisplayInfoOnLCD(Script):
         filament_line_t0 = ";Extruder 1 (T0)\n"
         filament_amount = Application.getInstance().getPrintInformation().materialLengths
         filament_weight = Application.getInstance().getPrintInformation().materialWeights
-        filament_line_t0 += f";  Filament used: {filament_amount[0]}m ({round(filament_weight[0],2)}g)\n"
+        filament_line_t0 += f";  Filament used: {filament_amount[0]}m ({round(filament_weight[0], 2)}g)\n"
         filament_line_t0 += f";  Filament Type: {self.global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
         filament_line_t0 += f";  Filament Dia.: {self.global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
         filament_line_t0 += f";  Nozzle Size  : {self.global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
@@ -703,7 +703,7 @@ class DisplayInfoOnLCD(Script):
         filament_line_t1 = ""
         if extruder_count > 1:
             filament_line_t1 = "\n;Extruder 2 (T1)\n"
-            filament_line_t1 += f";  Filament used: {filament_amount[1]}m ({round(filament_weight[1],2)}g)\n"
+            filament_line_t1 += f";  Filament used: {filament_amount[1]}m ({round(filament_weight[1], 2)}g)\n"
             filament_line_t1 += f";  Filament Type: {self.global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
             filament_line_t1 += f";  Filament Dia.: {self.global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
             filament_line_t1 += f";  Nozzle Size  : {self.global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
