@@ -82,7 +82,7 @@ class TweakAtZ(Script):
                 },
                 "enable_one_at_a_time_mode": {
                     "label": "Enable 'One at a Time' mode",
-                    "description": "If your print sequence is 'One at a Time' enable this so each model will have it's own adjustments.  The models are treated as if they are all the same.  If you have different models and model heights you will need to experiment.  NOTE: This setting has no effect on 'All at Once' prints.",
+                    "description": "If your print sequence is 'One at a Time' enable this so each model will have its own adjustments.  The models are treated as if they are all the same.  If you have different models and model heights you will need to experiment.  NOTE: This setting has no effect on 'All at Once' prints.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "taz_enabled"
@@ -468,7 +468,7 @@ class TweakAtZ(Script):
         elif self.print_sequence == "one_at_a_time" and bool(self.getSettingValueByKey("enable_one_at_a_time_mode")):
             # Put together a list of the starts and ends of each model on the build plate.
             starts_and_ends = self.one_at_a_time_lists(data)
-            # To accomodate existing code the temp_start and temp_end were necessary
+            # To accommodate existing code the temp_start and temp_end were necessary
             temp_start = self.start_index
             temp_end = self.end_index
 
@@ -482,7 +482,7 @@ class TweakAtZ(Script):
                     self.end_index = self.start_list[num] + temp_end - self.print_start_adj
                 elif end_layer == -1 and self.by_layer_or_height == "by_layer":
                     self.end_index = self.end_list[num]
-                # Run each prodedure with different starts and ends
+                # Run each procedure with different starts and ends
                 for setting, method in procedures.items():
                     if self.getSettingValueByKey(setting):
                         method(data)
@@ -1039,6 +1039,6 @@ class TweakAtZ(Script):
             if "M140 S0" in layer:
                 self.end_list.append(index-1)
                 break
-        # Delete the inital stop index as it is not requried.  This also leaves both lists the same length.
+        # Delete the initial stop index as it is not required.  This also leaves both lists the same length.
         self.end_list.pop(0)
         return True
