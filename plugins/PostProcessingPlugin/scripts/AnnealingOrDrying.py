@@ -19,6 +19,7 @@ Copyright (c) 2025 GregValiant (Greg Foresi)
 from UM.Application import Application
 from ..Script import Script
 from UM.Message import Message
+from UM.Logger import Logger
 
 class AnnealingOrDrying(Script):
 
@@ -304,7 +305,7 @@ class AnnealingOrDrying(Script):
             data = self._anneal_print(add_messages, data, bed_temperature, chamber_temp, heated_chamber, heating_zone, lowest_temp, max_x, max_y, max_z, park_xy, park_z, speed_travel)
         elif cycle_type == "dry_cycle":
             data = self._dry_filament_only(data, bed_temperature, chamber_temp, heated_chamber, heating_zone, max_y, max_z, speed_travel)
-        
+
         return data
 
     def _anneal_print(
@@ -325,7 +326,7 @@ class AnnealingOrDrying(Script):
         """
         The procedure disables the M140 (and M141) lines at the end of the print, and adds additional bed (and chamber) temperature commands to the end of the G-Code file.
         The bed is allowed to cool down over a period of time.
-                
+
         :param add_messages: Whether to include M117 and M118 messages for LCD and print server
         :param anneal_data: The G-code data to be modified with annealing commands
         :param bed_temperature: Starting bed temperature in degrees Celsius
@@ -483,7 +484,7 @@ class AnnealingOrDrying(Script):
         This procedure turns the bed on, homes the printer, parks the head.  After the time period the bed is turned off.
         There is no actual print in the generated gcode, just a couple of moves to get the nozzle out of the way, and the bed heat (and possibly chamber heat) control.
         It allows a user to use the bed to warm up and hopefully dry a filament roll.
-                
+
         :param bed_temperature: Bed temperature for drying in degrees Celsius
         :param chamber_temp: Chamber/build volume temperature for drying in degrees Celsius
         :param drydata: The G-code data to be replaced with filament drying commands
@@ -494,9 +495,14 @@ class AnnealingOrDrying(Script):
         :param speed_travel: Travel speed for positioning moves in mm/min as string
         :return: Modified G-code data containing only filament drying sequence
         """
+        machine_name = str(self.global_stack.getProperty("machine_name", "value"))
+        machine_gcode_flavor = str(self.global_stack.getProperty("machine_gcode_flavor", "value"))
+        active_machine = ""
+        if machine_gcode_flavor in ["Ultigcode", "Cheetah", "Griffin"] or "Ultimaker" in machine_name:
+            active_machine = "UM"
         for num in range(2, len(drydata)):
             drydata[num] = ""
-        drydata[0] = drydata[0].split("\n")[0] + "\n"
+
         add_messages = bool(self.getSettingValueByKey("add_messages"))
         pause_cmd = self.getSettingValueByKey("pause_cmd")
         if pause_cmd != "":
@@ -567,5 +573,31 @@ class AnnealingOrDrying(Script):
         if heated_chamber and heating_zone == "bed_chamber":
             dry_txt += "; Chamber temperature ....... " + str(chamber_temp) + "°\n"
         Message(title = "[Dry Filament]", text = dry_txt).show()
-        drydata[0] = "; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
+        # UM machines require the existing 'data[0]' with some alteration
+        if active_machine == "UM":
+            drydata[0] = self.prep_for_um_machines(drydata, bed_temperature, chamber_temp, heating_zone, dry_time)
+        drydata[0] += ";\n; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
         return drydata
+
+    def prep_for_um_machines(self, drydata: str, bed_temperature, chamber_temp, heating_zone: str, dry_time):
+        Message(title = "​⚠️⚠️⚠️ ​[Dry Filament]​ ⚠️⚠️⚠️​", text = f"Your printer appears to be a 'UltiMaker' printer.  'Dry Filament' might bring warnings up on the LCD screen (ex: for 'material compatibility').  You should be able to 'Ignore' them and the gcode should run.  In some cases, the machine may not want to run the gcode.  Experimenting may help get past that blockage.  Do not place anything on the Build Plate until the machine has settled down and the bed is heating.").show()
+        # This will alter the bed/chamber/hot end temperatures for drying
+        lines = drydata[0].split("\n")
+        for index, line in enumerate(lines):
+            if ";BUILD_PLATE.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";BUILD_PLATE.INITIAL_TEMPERATURE:{bed_temperature}"
+            if ";EXTRUDER_TRAIN.0.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";EXTRUDER_TRAIN.0.INITIAL_TEMPERATURE:40"
+            if ";EXTRUDER_TRAIN.1.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";EXTRUDER_TRAIN.1.INITIAL_TEMPERATURE:40"
+            if ";BUILD_VOLUME.TEMPERATURE:" in line:
+                if heating_zone == "bed_chamber":
+                    lines[index] = f";BUILD_VOLUME.TEMPERATURE:{chamber_temp}"
+            if ";PRINT.TIME:" in line:
+                lines[index] = f";PRINT.TIME:{dry_time}"
+        drydata[0] = "\n".join(lines)
+        # This line will tell the printer sto skip these processes.  Skipping requires the G28 to be added.
+        um_line = ";SKIP_PROCEDURES:PRE_PRINT_SETUP,PURGE_MATERIAL_MISP,LOAD_MATERIAL_MISP,UNLOAD_MATERIAL_MISP_0,UNLOAD_MATERIAL_MISP_1,PREPARE_MISP_MATERIALS,DEPRIME_FOR_MATERIAL_CHANGE_MISP,SEND_FOLLOW_COMMAND_MISP,BREAK_FAILED_WIZARD,LOADING_FAILURE_RECOVERY_WIZARD,START_COOLDOWN_HOTEND,SET_HOTEND_TEMPERATURE_WAIT\nG28 X Y Z"
+        lines.insert(len(lines)-2, um_line)
+        drydata[0] = "\n".join(lines)
+        return drydata[0]
