@@ -1,8 +1,9 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -135,14 +136,15 @@ msgid "&View"
 msgstr "视图(&V)"
 
 msgctxt "@label"
-msgid "*You will need to restart the application for these changes to have effect."
-msgstr "*需重新启动该应用程序，这些更改才能生效。"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) 您需要重启应用程序才能使这些更改生效。"
 
 msgctxt "@text"
-msgid "- Add material profiles and plug-ins from the Marketplace\n- Back-up and sync your material profiles and plug-ins\n- Share ideas and get help from 48,000+ users in the UltiMaker community"
-msgstr "- 从 Marketplace 添加材料配置文件和插件"
-"- 备份和同步材料配置文件和插件"
-"- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
+msgid ""
+"- Add material profiles and plug-ins from the Marketplace\n"
+"- Back-up and sync your material profiles and plug-ins\n"
+"- Share ideas and get help from 48,000+ users in the UltiMaker community"
+msgstr "- 从 Marketplace 添加材料配置文件和插件- 备份和同步材料配置文件和插件- 在 Ultimaker 社区分享观点并获取 48,000 多名用户的帮助"
 
 msgctxt "@heading"
 msgid "-- incomplete --"
@@ -163,6 +165,10 @@ msgstr "3D 视图"
 msgctxt "@info:tooltip"
 msgid "3D View"
 msgstr "3D 视图"
+
+msgctxt "name"
+msgid "3DConnexion mouses"
+msgstr "3DConnexion鼠标"
 
 msgctxt "@item:inlistbox"
 msgid "3MF File"
@@ -196,6 +202,14 @@ msgctxt "@label %i will be replaced with a profile name"
 msgid "<b>Only user changed settings will be saved in the custom profile.</b><br/>For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
 msgstr "<b>只有用户更改的设置才会保存在自定义配置文件中。</b><br/>对于支持材料，新的自定义配置文件将从 <b>%1</b> 继承属性。"
 
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>本次打印中至少有一个挤出机未被使用:"
+
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr "<li>OpenGL 渲染器： {renderer}</li>"
@@ -209,25 +223,28 @@ msgid "<li>OpenGL Version: {version}</li>"
 msgstr "<li>OpenGL 版本： {version}</li>"
 
 msgctxt "@label crash message"
-msgid "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n        "
-msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>"
-"            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>"
+msgid ""
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
+msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>        "
 
 msgctxt "@label crash message"
-msgid "<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n                    <p>Backups can be found in the configuration folder.</p>\n                    <p>Please send us this Crash Report to fix the problem.</p>\n                "
-msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>"
-"                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>"
-"                    <p>您可在配置文件夹中找到备份。</p>"
-"                    <p>请向我们发送此错误报告，以便解决问题。</p>"
+msgid ""
+"<p><b>Oops, UltiMaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
+msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>                    <p>您可在配置文件夹中找到备份。</p>                    <p>请向我们发送此错误报告，以便解决问题。</p>                "
 
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>"
-"<p>{model_names}</p>"
-"<p>找出如何确保最好的打印质量和可靠性.</p>"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
+msgid ""
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p><p>{model_names}</p><p>找出如何确保最好的打印质量和可靠性.</p><p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -238,7 +255,7 @@ msgid "A cloud connection is not available for a printer"
 msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] "某些打印机无云连接可用"
 
-msgctxt "@text"
+msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr "高密度和高强度的部件,但打印时间较慢。非常适合用于功能部件。"
 
@@ -347,8 +364,8 @@ msgid "Add a script"
 msgstr "添加一个脚本"
 
 msgctxt "@option:check"
-msgid "Add icon to system tray *"
-msgstr "在系统托盘中添加图标 *"
+msgid "Add icon to system tray (* restart required)"
+msgstr "在系统托盘中添加图标（* 需要重启）"
 
 msgctxt "@button"
 msgid "Add local printer"
@@ -438,6 +455,10 @@ msgctxt "description"
 msgid "Allows loading and displaying G-code files."
 msgstr "允许加载和显示 G-code 文件。"
 
+msgctxt "description"
+msgid "Allows working with 3D mouses inside Cura."
+msgstr "允许在Cura中使用3D鼠标。"
+
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "总是询问"
@@ -466,7 +487,7 @@ msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "当模型以米而不是毫米为单位时，模型可能会在打印平台中显得非常小。在此情况下是否进行放大？"
 
-msgctxt "@label"
+msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr "退火"
 
@@ -477,10 +498,6 @@ msgstr "匿名"
 msgctxt "@option:radio"
 msgid "Anonymous crash reports"
 msgstr "匿名崩溃报告"
-
-msgctxt "@label Description for application component"
-msgid "Application framework"
-msgstr "应用框架"
 
 msgctxt "@title:column"
 msgid "Applies on"
@@ -558,9 +575,17 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "在 Cura 每天启动时自动创建备份。"
 
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "自动禁用未使用的挤出机"
+
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "自动下降模型到打印平台"
+
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
 
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
@@ -569,6 +594,10 @@ msgstr "自动升级固件"
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "可用的网络打印机"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "避免"
 
 msgctxt "@item:inlistbox"
 msgid "BMP Image"
@@ -610,7 +639,7 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr "备份"
 
-msgctxt "@label"
+msgctxt "default intent label"
 msgid "Balanced"
 msgstr "平衡"
 
@@ -625,6 +654,14 @@ msgstr "仰视图"
 msgctxt "@label"
 msgid "Brand"
 msgstr "品牌"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "画笔形状"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "画笔尺寸"
 
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -657,10 +694,6 @@ msgstr "购买线轴"
 msgctxt "@label Is followed by the name of an author"
 msgid "By"
 msgstr "由"
-
-msgctxt "@label Description for application dependency"
-msgid "C/C++ Binding library"
-msgstr "C / C++ 绑定库"
 
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
@@ -779,12 +812,25 @@ msgid "Checks models and print configuration for possible printing issues and gi
 msgstr "检查模型和打印配置，以了解潜在的打印问题并给出建议。"
 
 msgctxt "@label"
-msgid "Chooses between the techniques available to generate support. \n\n\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n\n\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
+msgid ""
+"Chooses between the techniques available to generate support. \n"
+"\n"
+"\"Normal\" support creates a support structure directly below the overhanging parts and drops those areas straight down. \n"
+"\n"
+"\"Tree\" support creates branches towards the overhanging areas that support the model on the tips of those branches, and allows the branches to crawl around the model to support it from the build plate as much as possible."
 msgstr "在可用于产生支撑的方法之间进行选择。“普通”支撑在悬垂部分正下方形成一个支撑结构，并直接垂下这些区域。“树形”支撑形成一些分支，它们朝向在这些分支的尖端上支撑模型的悬垂区域，并使这些分支可缠绕在模型周围以尽可能多地从构建板上支撑它。"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "圆形"
 
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "清空打印平台"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "清除全部"
 
 msgctxt "@option:check"
 msgid "Clear buildplate before loading model into the single instance"
@@ -818,6 +864,10 @@ msgctxt "@label"
 msgid "Color scheme"
 msgstr "颜色方案"
 
+msgctxt "@label"
+msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
+msgstr "不推荐的组合。将 BB 内核加载到插槽 1（左侧）以获得更好的可靠性。"
+
 msgctxt "@info"
 msgid "Compare and save."
 msgstr "比较并保存。"
@@ -825,10 +875,6 @@ msgstr "比较并保存。"
 msgctxt "@label"
 msgid "Compatibility Mode"
 msgstr "兼容模式"
-
-msgctxt "@label Description for application dependency"
-msgid "Compatibility between Python 2 and 3"
-msgstr "Python 2 和 3 之间的兼容性"
 
 msgctxt "@title:label"
 msgid "Compatible Printers"
@@ -938,6 +984,10 @@ msgctxt "@info:status"
 msgid "Connected via cloud"
 msgstr "通过云连接"
 
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "连接与控制"
+
 msgctxt "description"
 msgid "Connects to the Digital Library, allowing Cura to open files from and save files to the Digital Library."
 msgstr "连接到 Digital Library，以允许 Cura 从 Digital Library 打开文件并将文件保存到其中。"
@@ -1023,19 +1073,22 @@ msgid "Could not upload the data to the printer."
 msgstr "无法将数据上传到打印机。"
 
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nNo permission to execute process."
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"没有执行进程的权限。"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"No permission to execute process."
+msgstr "无法启用 EnginePlugin：{self._plugin_id}没有执行进程的权限。"
 
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nOperating system is blocking it (antivirus?)"
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"操作系统正在阻止它（杀毒软件？）"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Operating system is blocking it (antivirus?)"
+msgstr "无法启用 EnginePlugin：{self._plugin_id}操作系统正在阻止它（杀毒软件？）"
 
 msgctxt "@info:plugin_failed"
-msgid "Couldn't start EnginePlugin: {self._plugin_id}\nResource is temporarily unavailable"
-msgstr "无法启用 EnginePlugin：{self._plugin_id}"
-"资源暂时不可用"
+msgid ""
+"Couldn't start EnginePlugin: {self._plugin_id}\n"
+"Resource is temporarily unavailable"
+msgstr "无法启用 EnginePlugin：{self._plugin_id}资源暂时不可用"
 
 msgctxt "@title:window"
 msgid "Crash Report"
@@ -1126,9 +1179,10 @@ msgid "Cura has detected material profiles that were not yet installed on the ho
 msgstr "Cura 已检测到材料配置文件尚未安装到组 {0} 中的主机打印机上。"
 
 msgctxt "@info:credit"
-msgid "Cura is developed by UltiMaker in cooperation with the community.\nCura proudly uses the following open source projects:"
-msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。"
-"Cura 使用以下开源项目："
+msgid ""
+"Cura is developed by UltiMaker in cooperation with the community.\n"
+"Cura proudly uses the following open source projects:"
+msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。Cura 使用以下开源项目："
 
 msgctxt "@label"
 msgid "Cura language"
@@ -1141,14 +1195,6 @@ msgstr "Cura 版本"
 msgctxt "name"
 msgid "CuraEngine Backend"
 msgstr "CuraEngine 后端"
-
-msgctxt "description"
-msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
-msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
-
-msgctxt "name"
-msgid "CuraEngineGradualFlow"
-msgstr "CuraEngineGradualFlow"
 
 msgctxt "@label"
 msgid "Currency:"
@@ -1210,10 +1256,6 @@ msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "数据已发送"
 
-msgctxt "@label Description for application dependency"
-msgid "Data interchange format"
-msgstr "数据交换格式"
-
 msgctxt "@button"
 msgid "Decline"
 msgstr "拒绝"
@@ -1274,10 +1316,6 @@ msgctxt "@label"
 msgid "Density"
 msgstr "密度"
 
-msgctxt "@label Description for development tool"
-msgid "Dependency and package manager"
-msgstr "依赖性和程序包管理器"
-
 msgctxt "@action:label"
 msgid "Depth (mm)"
 msgstr "深度 (mm)"
@@ -1309,6 +1347,10 @@ msgstr "禁用"
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "禁用挤出机"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "禁用未使用的挤出机"
 
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
@@ -1374,7 +1416,7 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr "正在降级..."
 
-msgctxt "@label"
+msgctxt "quick intent label"
 msgid "Draft"
 msgstr "草稿"
 
@@ -1426,9 +1468,17 @@ msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "启用挤出机"
 
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "启用 USB 线打印（需要重启）"
+
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr "启用打印边缘或浮边。这将在物体周围或下面添加一个平坦区域，方便之后切断。默认情况下，禁用它会在对象周围形成一个裙边。"
+
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
 
 msgctxt "@label"
 msgid "Enabled"
@@ -1450,7 +1500,7 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr "EnginePlugin"
 
-msgctxt "@label"
+msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr "工程"
 
@@ -1465,6 +1515,10 @@ msgstr "请输入打印机在网络上的 IP 地址。"
 msgctxt "@text"
 msgid "Enter your printer's IP address."
 msgstr "输入您打印机的 IP 地址。"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "擦除"
 
 msgctxt "@info:title"
 msgid "Error"
@@ -1497,6 +1551,10 @@ msgstr "导出所有材料"
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "导出材料"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Export Package For Technical Support"
+msgstr "导出包用于技术支持"
 
 msgctxt "@title:window"
 msgid "Export Profile"
@@ -1538,6 +1596,10 @@ msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "挤出机 %1"
 
+msgctxt "@label"
+msgid "Extruder Change duration"
+msgstr "挤出机更换时间"
+
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "挤出机的结束 G-code"
@@ -1545,6 +1607,10 @@ msgstr "挤出机的结束 G-code"
 msgctxt "@label"
 msgid "Extruder End G-code duration"
 msgstr "推料器结束 G 代码持续时间"
+
+msgctxt "@title:label"
+msgid "Extruder Prestart G-code"
+msgstr "挤出机预启动G代码"
 
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
@@ -1625,6 +1691,10 @@ msgstr "无法写入特定云打印机:{0} 不在远程集群中。"
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "收藏"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "获取可重新下载的软件包 ID..."
 
 msgctxt "@label"
 msgid "Filament Cost"
@@ -1726,6 +1796,10 @@ msgctxt "@label"
 msgid "First available"
 msgstr "第一个可用"
 
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "翻转模型工具手柄Y轴（* 需要重启）"
+
 msgctxt "@label:listbox"
 msgid "Flow"
 msgstr "流量"
@@ -1743,10 +1817,6 @@ msgid "Following a few simple steps, you will be able to synchronize all your ma
 msgstr "只需遵循几个简单步骤，您就可以将所有材料配置文件与打印机同步。"
 
 msgctxt "@label"
-msgid "Font"
-msgstr "字体"
-
-msgctxt "@label"
 msgid "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
 msgstr "在打印头停止的每一个位置下方插入一张纸，并调整平台高度。当纸张恰好被喷嘴的尖端轻微压住时，此时打印平台的高度已被正确校准。"
 
@@ -1759,8 +1829,8 @@ msgid "For lithophanes dark pixels should correspond to thicker locations in ord
 msgstr "在影像浮雕中，为了阻挡更多光源通过，深色像素应对应于较厚的位置。在高度图中，浅色像素代表着更高的地形，因此浅色像素对应于生成的 3D 模型中较厚的位置。"
 
 msgctxt "@option:check"
-msgid "Force layer view compatibility mode (restart required)"
-msgstr "强制层视图兼容模式（需要重新启动）"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "强制启用图层视图兼容模式（* 需要重启）"
 
 msgid "FreeCAD trackpad"
 msgstr "FreeCAD 触控板"
@@ -1801,10 +1871,6 @@ msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-code 风格"
 
-msgctxt "@label Description for application component"
-msgid "G-code generator"
-msgstr "G-code 生成器"
-
 msgctxt "@error:not supported"
 msgid "GCodeGzWriter does not support text mode."
 msgstr "GCodeGzWriter 不支持文本模式。"
@@ -1817,14 +1883,6 @@ msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF 图像"
 
-msgctxt "@label Description for application dependency"
-msgid "GUI framework"
-msgstr "GUI 框架"
-
-msgctxt "@label Description for application dependency"
-msgid "GUI framework bindings"
-msgstr "GUI 框架绑定"
-
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "十字轴高度"
@@ -1836,10 +1894,6 @@ msgstr "基本"
 msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing."
 msgstr "在模型的悬垂（Overhangs）部分生成支撑结构。若不这样做，这些部分在打印时将倒塌。"
-
-msgctxt "@label Description for development tool"
-msgid "Generating Windows installers"
-msgstr "生成 Windows 安装程序"
 
 msgctxt "@label:category menu label"
 msgid "Generic"
@@ -1860,10 +1914,6 @@ msgstr "全球"
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "全局设置"
-
-msgctxt "@label Description for application component"
-msgid "Graphical user interface"
-msgstr "图形用户界面"
 
 msgctxt "@label"
 msgid "Grid Placement"
@@ -2109,10 +2159,6 @@ msgctxt "@label"
 msgid "Interface"
 msgstr "接口"
 
-msgctxt "@label Description for application component"
-msgid "Interprocess communication library"
-msgstr "进程间通信交互使用库"
-
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "IP 地址无效"
@@ -2140,10 +2186,6 @@ msgstr "JPEG 图像"
 msgctxt "@item:inlistbox"
 msgid "JPG Image"
 msgstr "JPG 图像"
-
-msgctxt "@label Description for application dependency"
-msgid "JSON parser"
-msgstr "JSON 解析器"
 
 msgctxt "@label"
 msgid "Job Name"
@@ -2245,6 +2287,10 @@ msgctxt "@action"
 msgid "Level build plate"
 msgstr "调平打印平台"
 
+msgctxt "@title:window The argument is a package name, and the second is the version."
+msgid "License for %1 %2"
+msgstr "%1 %2的许可证"
+
 msgctxt "@item:inlistbox"
 msgid "Lighter is higher"
 msgstr "颜色越浅厚度越大"
@@ -2260,10 +2306,6 @@ msgstr "走线宽度"
 msgctxt "@item:inlistbox"
 msgid "Linear"
 msgstr "线性"
-
-msgctxt "@label Description for development tool"
-msgid "Linux cross-distribution application deployment"
-msgstr "Linux 交叉分布应用程序部署"
 
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
@@ -2353,6 +2395,14 @@ msgctxt "name"
 msgid "Makerbot Printfile Writer"
 msgstr "Makerbot 打印文件编写器"
 
+msgctxt "@item:inlistbox"
+msgid "Makerbot Replicator+ Printfile"
+msgstr "Makerbot Replicator+ 打印文件"
+
+msgctxt "@item:inlistbox"
+msgid "Makerbot Sketch Printfile"
+msgstr "Makerbot 粗样打印文件"
+
 msgctxt "@error"
 msgid "MakerbotWriter could not save to the designated path."
 msgstr "MakerbotWriter 无法保存至指定路径。"
@@ -2421,6 +2471,10 @@ msgctxt "@label"
 msgid "Manufacturer"
 msgstr "制造商"
 
+msgctxt "@label"
+msgid "Mark as"
+msgstr "标记为"
+
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "市场"
@@ -2432,6 +2486,10 @@ msgstr "市场"
 msgctxt "name"
 msgid "Marketplace"
 msgstr "市场"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "材料"
 
 msgctxt "@action:label"
 msgid "Material"
@@ -2723,6 +2781,10 @@ msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "未覆盖"
 
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "未回抽"
+
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "不支持"
@@ -2923,9 +2985,25 @@ msgctxt "@header"
 msgid "Package details"
 msgstr "包详情"
 
-msgctxt "@label Description for development tool"
-msgid "Packaging Python-applications"
-msgstr "打包 Python 应用"
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "喷涂"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "喷涂模型"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "喷涂工具"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "在模型上喷涂以选择要使用的材料"
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "喷涂视图"
 
 msgctxt "@info:status"
 msgid "Parsing G-code"
@@ -2999,11 +3077,12 @@ msgid "Please give the required permissions when authorizing this application."
 msgstr "在授权此应用程序时，须提供所需权限。"
 
 msgctxt "@info"
-msgid "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers."
-msgstr "请确保您的打印机已连接："
-"- 检查打印机是否已启动。"
-"- 检查打印机是否连接至网络。"
-"- 检查您是否已登录查找云连接的打印机。"
+msgid ""
+"Please make sure your printer has a connection:\n"
+"- Check if the printer is turned on.\n"
+"- Check if the printer is connected to the network.\n"
+"- Check if you are signed in to discover cloud-connected printers."
+msgstr "请确保您的打印机已连接：- 检查打印机是否已启动。- 检查打印机是否连接至网络。- 检查您是否已登录查找云连接的打印机。"
 
 msgctxt "@text"
 msgid "Please name your printer"
@@ -3030,10 +3109,11 @@ msgid "Please remove the print"
 msgstr "请取出打印件"
 
 msgctxt "@info:status"
-msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
-msgstr "请检查设置并检查您的模型是否："
-"- 适合构建体积"
-"- 尚未全部设置为修改器网格"
+msgid ""
+"Please review settings and check if your models:\n"
+"- Fit within the build volume\n"
+"- Are not all set as modifier meshes"
+msgstr "请检查设置并检查您的模型是否：- 适合构建体积- 尚未全部设置为修改器网格"
 
 msgctxt "@label"
 msgid "Please select any upgrades made to this UltiMaker Original"
@@ -3075,14 +3155,6 @@ msgctxt "@button"
 msgid "Plugins"
 msgstr "插件"
 
-msgctxt "@label Description for application dependency"
-msgid "Polygon clipping library"
-msgstr "多边形剪辑库"
-
-msgctxt "@label Description for application component"
-msgid "Polygon packing library, developed by Prusa Research"
-msgstr "Prusa Research 开发的多边形打包库"
-
 msgctxt "@item:inmenu"
 msgid "Post Processing"
 msgstr "后期处理"
@@ -3103,6 +3175,14 @@ msgctxt "@button"
 msgid "Pre-heat"
 msgstr "预热"
 
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "首选项"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "首选"
+
 msgctxt "@item:inmenu"
 msgid "Prepare"
 msgstr "准备"
@@ -3110,6 +3190,10 @@ msgstr "准备"
 msgctxt "name"
 msgid "Prepare Stage"
 msgstr "准备阶段"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "正在准备喷涂模型..."
 
 msgctxt "@label:MonitorStatus"
 msgid "Preparing..."
@@ -3138,6 +3222,10 @@ msgstr "预览阶段"
 msgctxt "@tooltip"
 msgid "Prime Tower"
 msgstr "装填塔"
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "回弹"
 
 msgctxt "@action:button"
 msgid "Print"
@@ -3253,6 +3341,10 @@ msgctxt "@label:MonitorStatus"
 msgid "Printer does not accept commands"
 msgstr "打印机不接受命令"
 
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "打印机未活动"
+
 msgctxt "@label"
 msgid "Printer name"
 msgstr "打印机名称"
@@ -3292,6 +3384,10 @@ msgstr "打印"
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "打印时间"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "USB 线打印并非适用于所有打印机,端口扫描可能会干扰其他连接的串行设备（例如:耳机）。新安装的 Cura 默认不再\"自动启用\"此功能。如需使用 USB 打印,请勾选此框后重启 Cura。请注意:USB 打印功能已停止维护。该功能可能兼容或不兼容您的电脑/打印机组合。"
 
 msgctxt "@label:MonitorStatus"
 msgid "Printing..."
@@ -3352,10 +3448,6 @@ msgstr "配置文件"
 msgctxt "@label"
 msgid "Profiles compatible with active printer:"
 msgstr "与处于活动状态的打印机兼容的配置文件："
-
-msgctxt "@label Description for application dependency"
-msgid "Programming language"
-msgstr "编程语言"
 
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
@@ -3474,24 +3566,16 @@ msgid "Provides the link to the CuraEngine slicing backend."
 msgstr "提供 CuraEngine 切片后端的路径。"
 
 msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "提供喷涂工具。"
+
+msgctxt "description"
 msgid "Provides the preview of sliced layerdata."
 msgstr "提供切片层数据的预览。"
 
 msgctxt "@label"
 msgid "PyQt version"
 msgstr "PyQt 版本"
-
-msgctxt "@Label Description for application dependency"
-msgid "Python Error tracking library"
-msgstr "Python 错误跟踪库"
-
-msgctxt "@label Description for application dependency"
-msgid "Python bindings for Clipper"
-msgstr "Clipper 的 Python 绑定"
-
-msgctxt "@label Description for application component"
-msgid "Python bindings for libnest2d"
-msgstr "libnest2d 的 Python 绑定"
 
 msgctxt "@label"
 msgid "Qt version"
@@ -3532,6 +3616,18 @@ msgstr "建议的打印设置"
 msgctxt "@info %1 is the name of a profile"
 msgid "Recommended settings (for <b>%1</b>) were altered."
 msgstr "建议的设置（适用于 <b>%1</b>）已更改。"
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "重做笔画"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "通过定义优先/避让区域来优化接缝位置"
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "通过定义优先/避让区域来优化支撑放置"
 
 msgctxt "@action:button"
 msgid "Refresh"
@@ -3657,6 +3753,14 @@ msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "正在恢复..."
 
+msgctxt "@label"
+msgid "Retracted"
+msgstr "已回抽"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "回抽中"
+
 msgctxt "@tooltip"
 msgid "Retractions"
 msgstr "回抽"
@@ -3672,10 +3776,6 @@ msgstr "右视图"
 msgctxt "@info:tooltip"
 msgid "Right View"
 msgstr "右视图"
-
-msgctxt "@label Description for application dependency"
-msgid "Root Certificates for validating SSL trustworthiness"
-msgstr "用于验证 SSL 可信度的根证书"
 
 msgctxt "@info:title"
 msgid "Safely Remove Hardware"
@@ -3761,9 +3861,17 @@ msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "缩小过大模型"
 
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "接缝"
+
 msgctxt "@placeholder"
 msgid "Search"
 msgstr "搜索"
+
+msgctxt "@label:textbox"
+msgid "Search Printer"
+msgstr "搜索打印机"
 
 msgctxt "@info"
 msgid "Search in the browser"
@@ -3784,6 +3892,10 @@ msgstr "选择打印机"
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "选择对此模型的自定义设置"
+
+msgctxt "@label"
+msgid "Select a single ungrouped model to start painting"
+msgstr ""
 
 msgctxt "@text"
 msgid "Select and install material profiles optimised for your UltiMaker 3D printers."
@@ -3856,10 +3968,6 @@ msgstr "正在将材料发送到打印机"
 msgctxt "name"
 msgid "Sentry Logger"
 msgstr "Sentry 日志记录"
-
-msgctxt "@label Description for application dependency"
-msgid "Serial communication library"
-msgstr "串口通讯库"
 
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
@@ -3970,6 +4078,10 @@ msgid "Should slicing crashes be automatically reported to Ultimaker? Note, no m
 msgstr "切片崩溃是否会被自动报告给 Ultimaker？请注意,除非获得您的明确许可,否则我们不会发送或存储任何模型,IP 地址或其他个人身份信息。"
 
 msgctxt "@info:tooltip"
+msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
+msgstr "是否应翻转平移工具手柄的Y轴？这只会影响模型的Y坐标,其他设置（如机器打印头设置）不受影响,仍按之前的方式运行。"
+
+msgctxt "@info:tooltip"
 msgid "Should the build plate be cleared before loading a new model in the single instance of Cura?"
 msgstr "是否应在清理构建板后再将新模型加载到单个 Cura 实例中？"
 
@@ -3996,10 +4108,6 @@ msgstr "显示自定义"
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "显示在线文档(&D)"
-
-msgctxt "@action:inmenu"
-msgid "Show Online Troubleshooting"
-msgstr "显示联机故障排除"
 
 msgctxt "@label:checkbox"
 msgid "Show all"
@@ -4113,7 +4221,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "平滑"
 
-msgctxt "@label"
+msgctxt "solid intent label"
 msgid "Solid"
 msgstr "固体"
 
@@ -4126,9 +4234,11 @@ msgid "Solid view"
 msgstr "实体视图"
 
 msgctxt "@label"
-msgid "Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."
-msgstr "一些隐藏设置正在使用有别于一般设置的计算值。"
-"单击以使这些设置可见。"
+msgid ""
+"Some hidden settings use values different from their normal calculated value.\n"
+"\n"
+"Click to make these settings visible."
+msgstr "一些隐藏设置正在使用有别于一般设置的计算值。单击以使这些设置可见。"
 
 msgctxt "@info:status"
 msgid "Some of the packages used in the project file are currently not installed in Cura, this might produce undesirable print results. We highly recommend installing the all required packages from the Marketplace."
@@ -4143,9 +4253,11 @@ msgid "Some setting-values defined in <b>%1</b> were overridden."
 msgstr "在 <b>%1</b> 中定义的一些设置值已被覆盖。"
 
 msgctxt "@tooltip"
-msgid "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager."
-msgstr "某些设置/重写值与存储在配置文件中的值不同。"
-"点击打开配置文件管理器。"
+msgid ""
+"Some setting/override values are different from the values stored in the profile.\n"
+"\n"
+"Click to open the profile manager."
+msgstr "某些设置/重写值与存储在配置文件中的值不同。点击打开配置文件管理器。"
 
 msgctxt "@action:label"
 msgid "Some settings from current profile were overwritten."
@@ -4175,6 +4287,10 @@ msgctxt "@label:button"
 msgid "Sponsor Cura"
 msgstr "赞助 Cura"
 
+msgctxt "@action:button"
+msgid "Square"
+msgstr "方形"
+
 msgctxt "@option:radio"
 msgid "Stable and Beta releases"
 msgstr "稳定版和测试版"
@@ -4198,6 +4314,10 @@ msgstr "开始进行打印平台调平"
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "开始 G-code"
+
+msgctxt "@label"
+msgid "Start GCode must be first"
+msgstr "启动G代码必须放在首位"
 
 msgctxt "@label"
 msgid "Start the slicing process"
@@ -4251,6 +4371,10 @@ msgctxt "@action:title Don't translate 'Universal Cura Project'"
 msgid "Summary - Universal Cura Project"
 msgstr "概要—Universal Cura Project"
 
+msgctxt "@action:button"
+msgid "Support"
+msgstr "支撑"
+
 msgctxt "@label"
 msgid "Support"
 msgstr "支持"
@@ -4276,36 +4400,8 @@ msgid "Support Interface"
 msgstr "支撑接触面"
 
 msgctxt "@action:label"
-msgid "Support Type"
-msgstr "支撑类型"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for faster math"
-msgstr "高速运算支持库"
-
-msgctxt "@label Description for application component"
-msgid "Support library for file metadata and streaming"
-msgstr "用于文件元数据和流媒体的支持库"
-
-msgctxt "@label Description for application component"
-msgid "Support library for handling 3MF files"
-msgstr "用于处理 3MF 文件的支持库"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling STL files"
-msgstr "用于处理 STL 文件的支持库"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for handling triangular meshes"
-msgstr "用于处理三角网格的支持库"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for scientific computing"
-msgstr "科学计算支持库"
-
-msgctxt "@label Description for application dependency"
-msgid "Support library for system keyring access"
-msgstr "支持系统密钥环访问库"
+msgid "Support Structure"
+msgstr "支撑结构"
 
 msgctxt "@action:button"
 msgid "Sync"
@@ -4359,7 +4455,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "要应用到图像的平滑量。"
 
-msgctxt "@text"
+msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr "退火轮廓需要在打印完成后在烘箱中进行后处理。这种轮廓可在退火后保留打印部件的尺寸精度，提高强度、刚度和耐热性。"
 
@@ -4372,7 +4468,7 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr "备份超过了最大文件大小。"
 
-msgctxt "@text"
+msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "平衡配置旨在在生产力、表面质量、机械性能和尺寸精度之間取得平衡。"
 
@@ -4420,11 +4516,11 @@ msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "打印平台深度，以毫米为单位"
 
-msgctxt "@text"
+msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr "草稿配置文件用于打印初始原型和概念验证，可大大缩短打印时间。"
 
-msgctxt "@text"
+msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr "工程參数是设计來打印較高精度和較小公差的功能性原型和实际使用零件。"
 
@@ -4494,11 +4590,15 @@ msgid "The nozzle inserted in this extruder."
 msgstr "该挤出机所使用的喷嘴。"
 
 msgctxt "@label"
-msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "打印的填充材料的图案："
-"对于非功能模型快速打印，请选择线条、锯齿状或闪电型填充。 "
-"对于承压不太大的功能性零件，我们建议使用网格、三角形或三角形与六边形组合图案。"
-"对于在多个方向上需要高强度承受力的功能性 3D 打印，请使用立方体、立方体细分、四分之一立方体、八面体和螺旋形。"
+msgid ""
+"The pattern of the infill material of the print:\n"
+"\n"
+"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
+"\n"
+"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
+"\n"
+"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
+msgstr "打印的填充材料的图案：对于非功能模型快速打印，请选择线条、锯齿状或闪电型填充。 对于承压不太大的功能性零件，我们建议使用网格、三角形或三角形与六边形组合图案。对于在多个方向上需要高强度承受力的功能性 3D 打印，请使用立方体、立方体细分、四分之一立方体、八面体和螺旋形。"
 
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
@@ -4523,6 +4623,10 @@ msgstr "该网络地址的打印机尚未响应。"
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "该网络地址的打印机尚未响应。"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "打印机未活动,无法接受新的打印任务。"
 
 msgctxt "@info:status"
 msgid "The printer is not connected."
@@ -4564,7 +4668,7 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "热端的预热温度。"
 
-msgctxt "@text"
+msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr "视觉配置文件用于打印视觉原型和模型，可实现出色的视觉效果和表面质量。"
 
@@ -4573,8 +4677,8 @@ msgid "The width in millimeters on the build plate"
 msgstr "构建板宽度，以毫米为单位"
 
 msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme*:"
-msgstr "主题*："
+msgid "Theme (* restart required):"
+msgstr "主题（* 需要重启）:"
 
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
@@ -4616,9 +4720,13 @@ msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
 msgstr "此配置不可用，因为 %1 未被识别。请访问 %2 以下载正确的材料配置文件。"
 
+msgctxt "@label"
+msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
+msgstr "此配置不可用,因为核心类型%1存在不匹配问题或其他问题。请访问<a href='%2'>支持页面</a>以查看此打印机类型在新切片方面支持哪些核心。"
+
 msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
-msgstr "这是 Cura Universal 项目文件。您想将其作为 Cura 项目或 Cura Universal Project 打开还是从中导入模型？"
+msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
+msgstr "这是一个 Cura 通用项目文件。您想将其作为 Cura 通用项目打开还是导入其中的模型？"
 
 msgctxt "@text:window"
 msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
@@ -4635,6 +4743,10 @@ msgstr "这个包将在重新启动后安装。"
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
 msgstr "由于是未知打印机或不是组内主机，无法添加该打印机。"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "此打印机已停用,无法接收命令或任务。"
 
 msgctxt "info:status"
 msgid "This printer is not linked to the Digital Factory:"
@@ -4666,9 +4778,11 @@ msgid "This project contains materials or plugins that are currently not install
 msgstr "此项目包含 Cura 目前未安装的材料或插件。<br/>请安装缺失程序包，然后重新打开项目。"
 
 msgctxt "@label"
-msgid "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."
-msgstr "此设置的值与配置文件不同。"
-"单击以恢复配置文件的值。"
+msgid ""
+"This setting has a value that is different from the profile.\n"
+"\n"
+"Click to restore the value of the profile."
+msgstr "此设置的值与配置文件不同。单击以恢复配置文件的值。"
 
 msgctxt "@item:tooltip"
 msgid "This setting has been hidden by the active machine and will not be visible."
@@ -4684,9 +4798,11 @@ msgid "This setting is always shared between all extruders. Changing it here wil
 msgstr "此设置始终在所有挤出机之间共享。在此处更改它将改变所有挤出机的值。"
 
 msgctxt "@label"
-msgid "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value."
-msgstr "此设置通常可被自动计算，但其当前已被绝对定义。"
-"单击以恢复自动计算的值。"
+msgid ""
+"This setting is normally calculated, but it currently has an absolute value set.\n"
+"\n"
+"Click to restore the calculated value."
+msgstr "此设置通常可被自动计算，但其当前已被绝对定义。单击以恢复自动计算的值。"
 
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
@@ -4881,9 +4997,10 @@ msgid "Unable to find local EnginePlugin server executable for: {self._plugin_id
 msgstr "无法为以下对象找到本地 EnginePlugin 服务器可执行文件：{self._plugin_id}"
 
 msgctxt "@info:plugin_failed"
-msgid "Unable to kill running EnginePlugin: {self._plugin_id}\nAccess is denied."
-msgstr "无法关闭正在运行的 EnginePlugin：{self._plugin_id}"
-"访问被拒。"
+msgid ""
+"Unable to kill running EnginePlugin: {self._plugin_id}\n"
+"Access is denied."
+msgstr "无法关闭正在运行的 EnginePlugin：{self._plugin_id}访问被拒。"
 
 msgctxt "@info"
 msgid "Unable to reach the UltiMaker account server."
@@ -4892,6 +5009,14 @@ msgstr "无法连接 UltiMaker 帐户服务器。"
 msgctxt "@text"
 msgid "Unable to read example data file."
 msgstr "无法读取示例数据文件。"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try again, or contact support."
+msgstr "无法将模型数据发送到引擎。请重试,或联系支持人员。"
+
+msgctxt "@info:status"
+msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
+msgstr "无法将模型数据发送到引擎。请尝试使用较少细节的模型,或减少实例数量。"
 
 msgctxt "@info:title"
 msgid "Unable to slice"
@@ -4904,10 +5029,6 @@ msgstr "无法切片"
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "无法切片（原因：主塔或主位置无效）。"
-
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr "无法切片，因为存在与已禁用挤出机 %s 相关联的对象。"
 
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -4937,6 +5058,10 @@ msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "不可用的打印机"
 
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "撤销笔画"
+
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "拆分模型"
@@ -4956,10 +5081,6 @@ msgstr "Universal Cura Project"
 msgctxt "@action:description Don't translate 'Universal Cura Project'"
 msgid "Universal Cura Project files can be printed on different 3D printers while retaining positional data and selected settings. When exported, all models present on the build plate will be included along with their current position, orientation, and scale. You can also select which per-extruder or per-model settings should be included to ensure proper printing."
 msgstr "Universal Cura Project 文件可以在不同的 3D 打印机上打印,同时保留位置数据和选定的设置。导出时,构建板上显示的所有模型都将包含其当前位置,方向和比例。您还可以选择需要保留哪个推料器预设置或模型预设置,以确保正确打印。"
-
-msgctxt "@label Description for development tool"
-msgid "Universal build system configuration"
-msgstr "通用构建系统配置"
 
 msgctxt "@label"
 msgid "Unknown"
@@ -5000,6 +5121,10 @@ msgstr "未命名"
 msgctxt "@text Print job name"
 msgid "Untitled"
 msgstr "未命名"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "未使用的挤出机"
 
 msgctxt "@button"
 msgid "Update"
@@ -5149,6 +5274,14 @@ msgctxt "description"
 msgid "Upgrades configurations from Cura 5.6 to Cura 5.7."
 msgstr "将配置从 Cura 5.6 升级到 Cura 5.7。"
 
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
+msgstr "将配置从 Cura 5.8 升级到 Cura 5.9。"
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
+msgstr "将配置从Cura 5.9升级到Cura 5.10"
+
 msgctxt "@action:button"
 msgid "Upload custom Firmware"
 msgstr "上传自定义固件"
@@ -5162,8 +5295,8 @@ msgid "Uploading your backup..."
 msgstr "正在上传您的备份..."
 
 msgctxt "@option:check"
-msgid "Use a single instance of Cura"
-msgstr "使用单个 Cura 实例"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "使用单例 Cura（* 需要重启）"
 
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
@@ -5172,14 +5305,6 @@ msgstr "用胶粘和此材料组合以产生更好的附着。"
 msgctxt "@label"
 msgid "User Agreement"
 msgstr "用户协议"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility functions, including an image loader"
-msgstr "实用程序函数，包括图像加载器"
-
-msgctxt "@label Description for application dependency"
-msgid "Utility library, including Voronoi generation"
-msgstr "实用程序库，包括 Voronoi 图生成"
 
 msgctxt "@title:column"
 msgid "Value"
@@ -5293,6 +5418,14 @@ msgctxt "name"
 msgid "Version Upgrade 5.6 to 5.7"
 msgstr "升级版本 5.6 至 5.7"
 
+msgctxt "name"
+msgid "Version Upgrade 5.8 to 5.9"
+msgstr "版本升级 5.8 到 5.9"
+
+msgctxt "name"
+msgid "Version Upgrade 5.9 to 5.10"
+msgstr "版本升级 5.9 到 5.10"
+
 msgctxt "@button"
 msgid "View printers in Digital Factory"
 msgstr "在 Digital Factory 中查看打印机"
@@ -5321,7 +5454,7 @@ msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr "访问 UltiMaker 网站。"
 
-msgctxt "@label"
+msgctxt "visual intent label"
 msgid "Visual"
 msgstr "视觉"
 
@@ -5454,26 +5587,33 @@ msgid "Y (Depth)"
 msgstr "Y (深度)"
 
 msgctxt "@label"
-msgid "Y max"
-msgstr "Y 最大值"
+msgid "Y max ( '+' towards front)"
+msgstr "Y轴最大值（\"+\"朝前）"
 
 msgctxt "@label"
-msgid "Y min"
-msgstr "Y 最小值"
+msgid "Y min ( '-' towards back)"
+msgstr "Y轴最小值（\"-\"朝后）"
 
 msgctxt "@info"
 msgid "Yes"
 msgstr "是"
 
 msgctxt "@label"
-msgid "You are about to remove all printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。"
-"是否确定继续？"
+msgid ""
+"You are about to remove all printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr "您即将从 Cura 中删除所有打印机。此操作无法撤消。是否确定继续？"
 
 msgctxt "@label"
-msgid "You are about to remove {0} printer from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgid_plural "You are about to remove {0} printers from Cura. This action cannot be undone.\nAre you sure you want to continue?"
-msgstr[0] "您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n是否确实要继续？"
+msgid ""
+"You are about to remove {0} printer from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgid_plural ""
+"You are about to remove {0} printers from Cura. This action cannot be undone.\n"
+"Are you sure you want to continue?"
+msgstr[0] ""
+"您即将从 Cura 中删除 {0} 台打印机。此操作无法撤消。\n"
+"是否确实要继续？"
 
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running UltiMaker Connect. Please update the printer to the latest firmware."
@@ -5489,9 +5629,7 @@ msgstr "您目前没有任何备份。使用“立即备份”按钮创建一个
 
 msgctxt "@text:window, %1 is a profile name"
 msgid "You have customized some profile settings. Would you like to Keep these changed settings after switching profiles? Alternatively, you can discard the changes to load the defaults from '%1'."
-msgstr "您已经自定义了若干配置文件设置。"
-"是否要在切换配置文件后保留这些更改的设置？"
-"或者，也可舍弃更改以从“%1”加载默认值。"
+msgstr "您已经自定义了若干配置文件设置。是否要在切换配置文件后保留这些更改的设置？或者，也可舍弃更改以从“%1”加载默认值。"
 
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
@@ -5522,9 +5660,10 @@ msgid "Your new printer will automatically appear in Cura"
 msgstr "新打印机将自动出现在 Cura 中"
 
 msgctxt "@info:status"
-msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。"
-"只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
+msgid ""
+"Your printer <b>{printer_name}</b> could be connected via cloud.\n"
+" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "未能通过云连接您的打印机 <b>{printer_name}</b>。只需将您的打印机连接到 Digital Factory，即可随时随地管理您的打印作业队列并监控您的打印结果"
 
 msgctxt "@label"
 msgid "Z"
@@ -5533,10 +5672,6 @@ msgstr "Z"
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (高度)"
-
-msgctxt "@label Description for application dependency"
-msgid "ZeroConf discovery library"
-msgstr "ZeroConf 发现库"
 
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
@@ -5594,290 +5729,206 @@ msgctxt "@info:generic"
 msgid "{} plugins failed to download"
 msgstr "{} 个插件下载失败"
 
-msgctxt "@label"
-msgid "Combination not recommended. Load BB core to slot 1 (left) for better reliability."
-msgstr "不推荐的组合。将 BB 内核加载到插槽 1（左侧）以获得更好的可靠性。"
-
-msgctxt "@item:inlistbox"
-msgid "Makerbot Sketch Printfile"
-msgstr "Makerbot 粗样打印文件"
-
-msgctxt "@label:textbox"
-msgid "Search Printer"
-msgstr "搜索打印机"
-
-msgctxt "@text:window"
-msgid "This is a Cura Universal project file. Would you like to open it as a Cura Universal Project or import the models from it?"
-msgstr "这是一个 Cura 通用项目文件。您想将其作为 Cura 通用项目打开还是导入其中的模型？"
-
-msgctxt "@action:inmenu menubar:help"
-msgid "Export Package For Technical Support"
-msgstr "导出包用于技术支持"
-
-msgctxt "@info:status"
-msgid "Unable to send the model data to the engine. Please try again, or contact support."
-msgstr "无法将模型数据发送到引擎。请重试,或联系支持人员。"
-
-msgctxt "@info:status"
-msgid "Unable to send the model data to the engine. Please try to use a less detailed model, or reduce the number of instances."
-msgstr "无法将模型数据发送到引擎。请尝试使用较少细节的模型,或减少实例数量。"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.8 to Cura 5.9."
-msgstr "将配置从 Cura 5.8 升级到 Cura 5.9。"
-
-msgctxt "name"
-msgid "Version Upgrade 5.8 to 5.9"
-msgstr "版本升级 5.8 到 5.9"
-
-msgctxt "name"
-msgid "3DConnexion mouses"
-msgstr "3DConnexion鼠标"
-
-msgctxt "description"
-msgid "Allows working with 3D mouses inside Cura."
-msgstr "允许在Cura中使用3D鼠标。"
-
-msgctxt "@label"
-msgid "Extruder Change duration"
-msgstr "挤出机更换时间"
-
-msgctxt "@title:label"
-msgid "Extruder Prestart G-code"
-msgstr "挤出机预启动G代码"
-
-msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (restart required)"
-msgstr "翻转模型的工具手柄Y轴（需要重启）"
-
-msgctxt "@title:window The argument is a package name, and the second is the version."
-msgid "License for %1 %2"
-msgstr "%1 %2的许可证"
-
-msgctxt "@item:inlistbox"
-msgid "Makerbot Replicator+ Printfile"
-msgstr "Makerbot Replicator+ 打印文件"
-
-msgctxt "@info:tooltip"
-msgid "Should the Y axis of the translate toolhandle be flipped? This will only affect model's Y coordinate, all other settings such as machine Printhead settings are unaffected and still behave as before."
-msgstr "是否应翻转平移工具手柄的Y轴？这只会影响模型的Y坐标,其他设置（如机器打印头设置）不受影响,仍按之前的方式运行。"
-
-msgctxt "@label"
-msgid "Start GCode must be first"
-msgstr "启动G代码必须放在首位"
-
-msgctxt "@label"
-msgid "This configuration is not available because there is a mismatch or other problem with core-type %1. Please visit <a href='%2'>the support page</a> to check which cores this printer-type supports w.r.t. new slices."
-msgstr "此配置不可用,因为核心类型%1存在不匹配问题或其他问题。请访问<a href='%2'>支持页面</a>以查看此打印机类型在新切片方面支持哪些核心。"
-
-msgctxt "description"
-msgid "Upgrades configurations from Cura 5.9 to Cura 5.10"
-msgstr "将配置从Cura 5.9升级到Cura 5.10"
-
-msgctxt "name"
-msgid "Version Upgrade 5.9 to 5.10"
-msgstr "版本升级 5.9 到 5.10"
-
-msgctxt "@label"
-msgid "Y max ( '+' towards front)"
-msgstr "Y轴最大值（\"+\"朝前）"
-
-msgctxt "@label"
-msgid "Y min ( '-' towards back)"
-msgstr "Y轴最小值（\"-\"朝后）"
-
-msgctxt "@label"
-msgid "*) You will need to restart the application for these changes to have effect."
-msgstr "*) 您需要重启应用程序才能使这些更改生效。"
-
-msgctxt "@message"
-msgid "<html>At least one extruder remains unused in this print:"
-msgstr "<html>本次打印中至少有一个挤出机未被使用:"
-
-msgctxt "@option:check"
-msgid "Add icon to system tray (* restart required)"
-msgstr "在系统托盘中添加图标（* 需要重启）"
-
-msgctxt "@label"
-msgid "Automatically disable the unused extruder(s)"
-msgstr "自动禁用未使用的挤出机"
-
-msgctxt "@action:button"
-msgid "Avoid"
-msgstr "避免"
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
-msgstr "BambuLab 3MF 文件"
-
-msgctxt "@label"
-msgid "Brush Shape"
-msgstr "画笔形状"
-
-msgctxt "@label"
-msgid "Brush Size"
-msgstr "画笔尺寸"
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
-msgstr "无法将 GCode 写入 3MF 文件"
-
-msgctxt "@action:button"
-msgid "Circle"
-msgstr "圆形"
-
-msgctxt "@button"
-msgid "Clear all"
-msgstr "清除全部"
-
-msgctxt "@label"
-msgid "Connection and Control"
-msgstr "连接与控制"
-
-msgctxt "@button"
-msgid "Disable unused extruder(s)"
-msgstr "禁用未使用的挤出机"
-
-msgctxt "@option:check"
-msgid "Enable USB-cable printing (* restart required)"
-msgstr "启用 USB 线打印（需要重启）"
-
-msgctxt "@action:button"
-msgid "Erase"
-msgstr "擦除"
-
-msgctxt "@info:backup_status"
-msgid "Fetch re-downloadable package-ids..."
-msgstr "获取可重新下载的软件包 ID..."
-
-msgctxt "@option:check"
-msgid "Flip model's toolhandle Y axis (* restart required)"
-msgstr "翻转模型工具手柄Y轴（* 需要重启）"
-
-msgctxt "@option:check"
-msgid "Force layer view compatibility mode (* restart required)"
-msgstr "强制启用图层视图兼容模式（* 需要重启）"
-
-msgctxt "@label"
-msgid "Mark as"
-msgstr "标记为"
-
-msgctxt "@action:button"
-msgid "Material"
-msgstr "材料"
-
-msgctxt "@label"
-msgid "Not retracted"
-msgstr "未回抽"
-
-msgctxt "@action:button"
-msgid "Paint"
-msgstr "喷涂"
-
-msgctxt "@info:tooltip"
-msgid "Paint Model"
-msgstr "喷涂模型"
-
-msgctxt "name"
-msgid "Paint Tools"
-msgstr "喷涂工具"
-
-msgctxt "@tooltip"
-msgid "Paint on model to select the material to be used"
-msgstr "在模型上喷涂以选择要使用的材料"
-
-msgctxt "@item:inmenu"
-msgid "Paint view"
-msgstr "喷涂视图"
-
-msgctxt "@title:window"
-msgid "Preferences"
-msgstr "首选项"
-
-msgctxt "@action:button"
-msgid "Preferred"
-msgstr "首选"
-
-msgctxt "@label"
-msgid "Preparing model for painting..."
-msgstr "正在准备喷涂模型..."
-
-msgctxt "@label"
-msgid "Priming"
-msgstr "回弹"
-
-msgctxt "@info:title"
-msgid "Printer inactive"
-msgstr "打印机未活动"
-
-msgctxt "@info:tooltip"
-msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
-msgstr "USB 线打印并非适用于所有打印机,端口扫描可能会干扰其他连接的串行设备（例如:耳机）。新安装的 Cura 默认不再\"自动启用\"此功能。如需使用 USB 打印,请勾选此框后重启 Cura。请注意:USB 打印功能已停止维护。该功能可能兼容或不兼容您的电脑/打印机组合。"
-
-msgctxt "description"
-msgid "Provides the paint tools."
-msgstr "提供喷涂工具。"
-
-msgctxt "@action:button"
-msgid "Redo Stroke"
-msgstr "重做笔画"
-
-msgctxt "@tooltip"
-msgid "Refine seam placement by defining preferred/avoidance areas"
-msgstr "通过定义优先/避让区域来优化接缝位置"
-
-msgctxt "@tooltip"
-msgid "Refine support placement by defining preferred/avoidance areas"
-msgstr "通过定义优先/避让区域来优化支撑放置"
-
-msgctxt "@label"
-msgid "Retracted"
-msgstr "已回抽"
-
-msgctxt "@label"
-msgid "Retracting"
-msgstr "回抽中"
-
-msgctxt "@action:button"
-msgid "Seam"
-msgstr "接缝"
-
-msgctxt "@label"
-msgid "Select a single model to start painting"
-msgstr "选择单个模型开始喷涂"
-
-msgctxt "@action:button"
-msgid "Square"
-msgstr "方形"
-
-msgctxt "@action:button"
-msgid "Support"
-msgstr "支撑"
-
-msgctxt "@action:label"
-msgid "Support Structure"
-msgstr "支撑结构"
-
-msgctxt "@info:status"
-msgid "The printer is inactive and cannot accept a new print job."
-msgstr "打印机未活动,无法接受新的打印任务。"
-
-msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
-msgid "Theme (* restart required):"
-msgstr "主题（* 需要重启）:"
-
-msgctxt "@status"
-msgid "This printer is deactivated and can not accept commands or jobs."
-msgstr "此打印机已停用,无法接收命令或任务。"
-
-msgctxt "@action:button"
-msgid "Undo Stroke"
-msgstr "撤销笔画"
-
-msgctxt "@message:title"
-msgid "Unused Extruder(s)"
-msgstr "未使用的挤出机"
-
-msgctxt "@option:check"
-msgid "Use a single instance of Cura (* restart required)"
-msgstr "使用单例 Cura（* 需要重启）"
+#~ msgctxt "@label"
+#~ msgid "*You will need to restart the application for these changes to have effect."
+#~ msgstr "*需重新启动该应用程序，这些更改才能生效。"
+
+#~ msgctxt "@option:check"
+#~ msgid "Add icon to system tray *"
+#~ msgstr "在系统托盘中添加图标 *"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Application framework"
+#~ msgstr "应用框架"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "BambuLab 3MF file"
+#~ msgstr "BambuLab 3MF 文件"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "C/C++ Binding library"
+#~ msgstr "C / C++ 绑定库"
+
+#~ msgctxt "@info:error"
+#~ msgid "Can't write GCode to 3MF file"
+#~ msgstr "无法将 GCode 写入 3MF 文件"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Compatibility between Python 2 and 3"
+#~ msgstr "Python 2 和 3 之间的兼容性"
+
+#~ msgctxt "description"
+#~ msgid "CuraEngine plugin for gradually smoothing the flow to limit high-flow jumps"
+#~ msgstr "通过逐渐平滑流量来限制高流量跳变的 CuraEngine 插件"
+
+#~ msgctxt "name"
+#~ msgid "CuraEngineGradualFlow"
+#~ msgstr "CuraEngineGradualFlow"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Data interchange format"
+#~ msgstr "数据交换格式"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Dependency and package manager"
+#~ msgstr "依赖性和程序包管理器"
+
+#~ msgctxt "@option:check"
+#~ msgid "Flip model's toolhandle Y axis (restart required)"
+#~ msgstr "翻转模型的工具手柄Y轴（需要重启）"
+
+#~ msgctxt "@label"
+#~ msgid "Font"
+#~ msgstr "字体"
+
+#~ msgctxt "@option:check"
+#~ msgid "Force layer view compatibility mode (restart required)"
+#~ msgstr "强制层视图兼容模式（需要重新启动）"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "G-code generator"
+#~ msgstr "G-code 生成器"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework"
+#~ msgstr "GUI 框架"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "GUI framework bindings"
+#~ msgstr "GUI 框架绑定"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Generating Windows installers"
+#~ msgstr "生成 Windows 安装程序"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Graphical user interface"
+#~ msgstr "图形用户界面"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Interprocess communication library"
+#~ msgstr "进程间通信交互使用库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "JSON parser"
+#~ msgstr "JSON 解析器"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Linux cross-distribution application deployment"
+#~ msgstr "Linux 交叉分布应用程序部署"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Packaging Python-applications"
+#~ msgstr "打包 Python 应用"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Polygon clipping library"
+#~ msgstr "多边形剪辑库"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Polygon packing library, developed by Prusa Research"
+#~ msgstr "Prusa Research 开发的多边形打包库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Programming language"
+#~ msgstr "编程语言"
+
+#~ msgctxt "@Label Description for application dependency"
+#~ msgid "Python Error tracking library"
+#~ msgstr "Python 错误跟踪库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Python bindings for Clipper"
+#~ msgstr "Clipper 的 Python 绑定"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Python bindings for libnest2d"
+#~ msgstr "libnest2d 的 Python 绑定"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Root Certificates for validating SSL trustworthiness"
+#~ msgstr "用于验证 SSL 可信度的根证书"
+
+#~ msgctxt "@label"
+#~ msgid "Select a single model to start painting"
+#~ msgstr "选择单个模型开始喷涂"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Serial communication library"
+#~ msgstr "串口通讯库"
+
+#~ msgctxt "@action:inmenu"
+#~ msgid "Show Online Troubleshooting"
+#~ msgstr "显示联机故障排除"
+
+#~ msgctxt "@action:label"
+#~ msgid "Support Type"
+#~ msgstr "支撑类型"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for faster math"
+#~ msgstr "高速运算支持库"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for file metadata and streaming"
+#~ msgstr "用于文件元数据和流媒体的支持库"
+
+#~ msgctxt "@label Description for application component"
+#~ msgid "Support library for handling 3MF files"
+#~ msgstr "用于处理 3MF 文件的支持库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling STL files"
+#~ msgstr "用于处理 STL 文件的支持库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for handling triangular meshes"
+#~ msgstr "用于处理三角网格的支持库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for scientific computing"
+#~ msgstr "科学计算支持库"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Support library for system keyring access"
+#~ msgstr "支持系统密钥环访问库"
+
+#~ msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+#~ msgid "Theme*:"
+#~ msgstr "主题*："
+
+#~ msgctxt "@text:window"
+#~ msgid "This is a Cura Universal project file. Would you like to open it as a Cura project or Cura Universal Project or import the models from it?"
+#~ msgstr "这是 Cura Universal 项目文件。您想将其作为 Cura 项目或 Cura Universal Project 打开还是从中导入模型？"
+
+#~ msgctxt "@info:status"
+#~ msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+#~ msgstr "无法切片，因为存在与已禁用挤出机 %s 相关联的对象。"
+
+#~ msgctxt "@label Description for development tool"
+#~ msgid "Universal build system configuration"
+#~ msgstr "通用构建系统配置"
+
+#~ msgctxt "@option:check"
+#~ msgid "Use a single instance of Cura"
+#~ msgstr "使用单个 Cura 实例"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Utility functions, including an image loader"
+#~ msgstr "实用程序函数，包括图像加载器"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "Utility library, including Voronoi generation"
+#~ msgstr "实用程序库，包括 Voronoi 图生成"
+
+#~ msgctxt "@label"
+#~ msgid "Y max"
+#~ msgstr "Y 最大值"
+
+#~ msgctxt "@label"
+#~ msgid "Y min"
+#~ msgstr "Y 最小值"
+
+#~ msgctxt "@label Description for application dependency"
+#~ msgid "ZeroConf discovery library"
+#~ msgstr "ZeroConf 发现库"

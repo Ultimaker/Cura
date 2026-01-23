@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-22 08:45+0200\n"
+"POT-Creation-Date: 2025-11-03 09:09+0100\n"
 "PO-Revision-Date: 2022-07-15 10:53+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -213,6 +213,10 @@ msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
 msgstr ""
 
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr ""
+
 msgctxt "@label OpenGL renderer"
 msgid "<li>OpenGL Renderer: {renderer}</li>"
 msgstr ""
@@ -259,7 +263,7 @@ msgid_plural "A cloud connection is not available for some printers"
 msgstr[0] ""
 msgstr[1] ""
 
-msgctxt "@text"
+msgctxt "solid intent description"
 msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
 msgstr ""
 
@@ -491,7 +495,7 @@ msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Malli voi vaikuttaa erittäin pieneltä, jos sen koko on ilmoitettu esimerkiksi metreissä eikä millimetreissä. Pitäisikö nämä mallit suurentaa?"
 
-msgctxt "@label"
+msgctxt "annealing intent label"
 msgid "Annealing"
 msgstr ""
 
@@ -587,6 +591,10 @@ msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Pudota mallit automaattisesti alustalle"
 
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr ""
+
 msgctxt "@action:button"
 msgid "Automatically upgrade Firmware"
 msgstr "Päivitä laiteohjelmisto automaattisesti"
@@ -639,13 +647,9 @@ msgctxt "@info:title"
 msgid "Backups"
 msgstr ""
 
-msgctxt "@label"
+msgctxt "default intent label"
 msgid "Balanced"
 msgstr "Tasapainotettu"
-
-msgctxt "@item:inlistbox"
-msgid "BambuLab 3MF file"
-msgstr ""
 
 msgctxt "@action:label"
 msgid "Base (mm)"
@@ -738,10 +742,6 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Muita tiedostoja ei voida ladata, kun G-code latautuu. Tiedoston {0} tuonti ohitettiin."
-
-msgctxt "@info:error"
-msgid "Can't write GCode to 3MF file"
-msgstr ""
 
 msgctxt "@info:error"
 msgid "Can't write to UFP file:"
@@ -1426,7 +1426,7 @@ msgctxt "@button"
 msgid "Downgrading..."
 msgstr ""
 
-msgctxt "@label"
+msgctxt "quick intent label"
 msgid "Draft"
 msgstr ""
 
@@ -1486,6 +1486,10 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards. Disabling it results in a skirt around object by default."
 msgstr ""
 
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr ""
+
 msgctxt "@label"
 msgid "Enabled"
 msgstr ""
@@ -1506,7 +1510,7 @@ msgctxt "@info:title"
 msgid "EnginePlugin"
 msgstr ""
 
-msgctxt "@label"
+msgctxt "engineering intent label"
 msgid "Engineering"
 msgstr ""
 
@@ -3905,7 +3909,7 @@ msgid "Select Settings to Customize for this model"
 msgstr "Valitse tätä mallia varten mukautettavat asetukset"
 
 msgctxt "@label"
-msgid "Select a single model to start painting"
+msgid "Select a single ungrouped model to start painting"
 msgstr ""
 
 msgctxt "@text"
@@ -4232,7 +4236,7 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Tasoitus"
 
-msgctxt "@label"
+msgctxt "solid intent label"
 msgid "Solid"
 msgstr ""
 
@@ -4472,7 +4476,7 @@ msgctxt "@info:tooltip"
 msgid "The amount of smoothing to apply to the image."
 msgstr "Kuvassa käytettävän tasoituksen määrä."
 
-msgctxt "@text"
+msgctxt "annealing intent description"
 msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
 msgstr ""
 
@@ -4486,7 +4490,7 @@ msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
 msgstr ""
 
-msgctxt "@text"
+msgctxt "default intent description"
 msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
 msgstr "Tasapainotettu profiili on suunniteltu tasapainottamaan tuottavuutta, pinnanlaatua, mekaanisia ominaisuuksia ja dimensionaalista tarkkuutta."
 
@@ -4534,11 +4538,11 @@ msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
 msgstr "Syvyys millimetreinä alustalla"
 
-msgctxt "@text"
+msgctxt "quick intent description"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
 msgstr ""
 
-msgctxt "@text"
+msgctxt "engineering intent description"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
 msgstr ""
 
@@ -4687,7 +4691,7 @@ msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr ""
 
-msgctxt "@text"
+msgctxt "visual intent description"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
 msgstr ""
 
@@ -5056,10 +5060,6 @@ msgstr ""
 msgctxt "@info:status"
 msgid "Unable to slice because the prime tower or prime position(s) are invalid."
 msgstr "Viipalointi ei onnistu, koska esitäyttötorni tai esitäytön sijainti tai sijainnit eivät kelpaa."
-
-msgctxt "@info:status"
-msgid "Unable to slice because there are objects associated with disabled Extruder %s."
-msgstr ""
 
 msgctxt "@info:status"
 msgid "Unable to slice due to some per-model settings. The following settings have errors on one or more models: {error_labels}"
@@ -5485,7 +5485,7 @@ msgctxt "@tooltip:button"
 msgid "Visit the UltiMaker website."
 msgstr ""
 
-msgctxt "@label"
+msgctxt "visual intent label"
 msgid "Visual"
 msgstr ""
 
