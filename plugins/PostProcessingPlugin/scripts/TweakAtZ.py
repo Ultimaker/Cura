@@ -1026,7 +1026,7 @@ class TweakAtZ(Script):
     def one_at_a_time_lists(self, data):
         """
         This puts together a list of starts and their related list of ends.  
-        This is requried for One-at-a-Time mode.
+        This is required for One-at-a-Time mode.
         """
         self.start_list = []
         self.end_list = []
