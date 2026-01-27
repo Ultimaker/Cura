@@ -425,7 +425,7 @@
         "material_pressure_advance_factor":
         {
             "enabled": true,
-            "value": 0.5
+            "value": 0.75
         },
         "material_print_temperature": { "maximum_value_warning": 320 },
         "material_print_temperature_layer_0": { "maximum_value_warning": 320 },
