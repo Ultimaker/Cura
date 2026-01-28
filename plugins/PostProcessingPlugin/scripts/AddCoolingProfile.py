@@ -1055,13 +1055,17 @@ class AddCoolingProfile(Script):
                 if line.startswith("M106 S0") or line.startswith("M107"):
                     fan_is_on = False
                 elif line.startswith("M106 S") and float(self.getValue(line, 'S')) != 0:
-                    try:
-                        if not fan_is_on:
-                            lines[index - 5] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
-                            fan_is_on = True
-                    except IndexError:
-                        lines[0] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
+                    if not fan_is_on:
+                        # Insert a jump start command a few lines before the first non-zero fan speed,
+                        # without modifying existing comment/header lines in place.
+                        if index >= 5:
+                            insert_index = index - 5
+                        else:
+                            # Keep any initial header/comment line (e.g. ";LAYER:5") intact by
+                            # inserting after it when possible.
+                            insert_index = 1 if len(lines) > 1 else 0
+                        jump_start_cmd = "M106 S179 ; Jump start" if fan_mode else "M106 S0.7 ; Jump start"
+                        lines.insert(insert_index, jump_start_cmd)
                         fan_is_on = True
-                        continue
             data[lay_index] = "\n".join(lines)
         return data
