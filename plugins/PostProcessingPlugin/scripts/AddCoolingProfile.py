@@ -1069,7 +1069,7 @@ class AddCoolingProfile(Script):
                             lines[index - 5] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
                             fan_is_on = True
                     except:# IndexError:
-                        lines[0] += "\nM106 S179 ; Junp start" if fan_mode else "\nM106 S0.7 ; Jump start"
+                        lines[0] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
                         fan_is_on = True
                         continue
             data[lay_index] = "\n".join(lines)
