@@ -43,9 +43,14 @@ import math
 from UM.Message import Message
 
 class DisplayInfoOnLCD(Script):
-
-    def initialize(self) -> None:
+ 
+    minimumCuraVersion = 5110
+ 
+    def initialize(self) -> None:        
         super().initialize()
+        cura_version = Application.getInstance().getVersion()
+        cura_version_str = cura_version.split("-")[0]
+        cura_version_int = int(cura_version_str.replace(".", ""))
         try:
             if Application.getInstance().getGlobalContainerStack().getProperty("print_sequence", "value") == "all_at_once":
                 enable_countdown = True
@@ -53,17 +58,12 @@ class DisplayInfoOnLCD(Script):
             else:
                 enable_countdown = False
                 self._instance.setProperty("enable_countdown", "value", enable_countdown)
-
-            #cura_adjust_percent = float(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
-            #self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
-        except AttributeError:
+            if cura_version_int > self.minimumCuraVersion:
+                cura_adjust_percent = Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value")
+                self._instance.setProperty("time_adj_percentage", "value", cura_adjust_percent)
+        except (AttributeError, KeyError):
             # Handle cases where the global container stack or its properties are not accessible
-            cura_adjust_percent = 100
-            pass
-        except KeyError:
-            cura_adjust_percent = 100
-            # Handle cases where the "print_sequence" property is missing
-            pass
+            cura_adjust_percent = 100       
 
     def getSettingDataString(self):
         return """{
