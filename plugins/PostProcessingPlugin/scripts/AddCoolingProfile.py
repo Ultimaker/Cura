@@ -276,7 +276,7 @@ class AddCoolingProfile(Script):
                     "description": "Enable the fan for the raft layers.  When enabled the Raft Fan Speed will continue until another Layer or Feature setting over-rides it.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled":  "enable_cooling_profile"
+                    "enabled": "enable_cooling_profile"
                 },
                 "fan_raft_percent":
                 {
