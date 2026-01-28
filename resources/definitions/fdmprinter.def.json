@@ -2189,7 +2189,7 @@
                             "default_value": 2,
                             "minimum_value": "0",
                             "minimum_value_warning": "infill_line_width",
-                            "value": "0 if infill_sparse_density == 0 else (infill_line_width * 100) / infill_sparse_density * (2 if infill_pattern == 'grid' else (3 if infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' else (2 if infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' else (1 if infill_pattern == 'cross' or infill_pattern == 'cross_3d' else (1.6 if infill_pattern == 'lightning' else 1)))))",
+                            "value": "0 if infill_sparse_density == 0 else (((infill_line_width * 100) / infill_sparse_density) * (((4/3) - (1/3) * (infill_sparse_density / 100.0)) if infill_pattern in ['honeycomb', 'octagon'] else (2 if infill_pattern == 'grid' else (3 if infill_pattern in ['triangles', 'trihexagon', 'cubic', 'cubicsubdiv'] else (2 if infill_pattern in ['tetrahedral', 'quarter_cubic'] else (1 if infill_pattern in ['cross', 'cross_3d'] else (1.6 if infill_pattern == 'lightning' else 1)))))))",
                             "limit_to_extruder": "infill_extruder_nr",
                             "settable_per_mesh": true
                         }
@@ -2198,7 +2198,7 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.",
+                    "description": "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, Honeycomb, Octagon, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.",
                     "type": "enum",
                     "options":
                     {
@@ -2215,7 +2215,9 @@
                         "cross": "Cross",
                         "cross_3d": "Cross 3D",
                         "gyroid": "Gyroid",
-                        "lightning": "Lightning"
+                        "lightning": "Lightning",
+                        "honeycomb": "Honeycomb",
+                        "octagon": "Octagon"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
@@ -2230,7 +2232,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'honeycomb' or infill_pattern == 'octagon'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2251,7 +2253,8 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'gyroid', 'lightning') and infill_sparse_density > 0",
+                    "value": "[0, 90] if infill_pattern == 'octagon' else [0, 60, 120] if infill_pattern == 'honeycomb' else [0] if infill_pattern == 'gyroid' else [ ]",
+                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'lightning') and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -5575,7 +5578,9 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
-                        "gyroid": "Gyroid"
+                        "gyroid": "Gyroid",
+                        "honeycomb": "Honeycomb",
+                        "octagon": "Octagon"
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable or support_meshes_present",
@@ -5656,8 +5661,8 @@
                     "description": "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material.",
                     "type": "bool",
                     "default_value": false,
-                    "value": "support_pattern == 'cross' or support_pattern == 'gyroid'",
-                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'lines' or support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid')",
+                    "value": "support_pattern == 'cross' or support_pattern == 'gyroid' or support_pattern == 'honeycomb' or support_pattern == 'octagon'",
+                    "enabled": "(support_enable or support_meshes_present) and (support_pattern == 'lines' or support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid' or support_pattern == 'honeycomb' or support_pattern == 'octagon')",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
