@@ -393,7 +393,6 @@ class AddCoolingProfile(Script):
         }"""
 
     def initialize(self) -> None:
-
         super().initialize()
         self.global_stack = Application.getInstance().getGlobalContainerStack()
         self.extruder_list = self.global_stack.extruderList
