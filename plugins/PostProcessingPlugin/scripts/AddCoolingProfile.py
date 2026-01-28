@@ -1054,7 +1054,7 @@ class AddCoolingProfile(Script):
             for index, line in enumerate(lines):
                 if line.startswith("M106 S0") or line.startswith("M107"):
                     fan_is_on = False
-                elif line.startswith("M106 S") and f"{float(self.getValue(line, 'S'))}" != "0":
+                elif line.startswith("M106 S") and float(self.getValue(line, 'S')) != 0:
                     try:
                         if not fan_is_on:
                             lines[index - 5] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
