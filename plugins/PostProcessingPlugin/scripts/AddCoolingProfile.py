@@ -26,6 +26,9 @@ from UM.Logger import Logger
 
 class AddCoolingProfile(Script):
 
+    jump_speed_marlin = 179 # ~70% of 255
+    jump_speed_reprap = 0.70 # used if fan_scale_0_to_1 is true
+    
     def getSettingDataString(self):
         return """{
             "name": "Advanced Cooling Fan Control",
@@ -1064,7 +1067,7 @@ class AddCoolingProfile(Script):
                             # Keep any initial header/comment line (e.g. ";LAYER:5") intact by
                             # inserting after it when possible.
                             insert_index = 1 if len(lines) > 1 else 0
-                        jump_start_cmd = "M106 S179 ; Jump start" if fan_mode else "M106 S0.7 ; Jump start"
+                        jump_start_cmd = f"M106 S{self.jump_speed_marlin} ; Jump start" if fan_mode else "M106 S{self.jump_speed_reprap} ; Jump start"
                         lines.insert(insert_index, jump_start_cmd)
                         fan_is_on = True
             data[lay_index] = "\n".join(lines)
