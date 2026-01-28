@@ -1068,7 +1068,7 @@ class AddCoolingProfile(Script):
                         if not fan_is_on:
                             lines[index - 5] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
                             fan_is_on = True
-                    except:# IndexError:
+                    except IndexError:
                         lines[0] += "\nM106 S179 ; Jump start" if fan_mode else "\nM106 S0.7 ; Jump start"
                         fan_is_on = True
                         continue
