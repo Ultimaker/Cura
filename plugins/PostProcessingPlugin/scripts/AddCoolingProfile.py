@@ -297,14 +297,6 @@ class AddCoolingProfile(Script):
                     "default_value": false,
                     "enabled": false
                 },
-                "enable_off_fan_speed_enable":
-                {
-                    "label": "Hidden setting",
-                    "description": "For dual extruder printers, this enables 'enable_off_fan_speed'.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": false
-                },
                 "enable_off_fan_speed":
                 {
                     "label": "Enable 'Off speed' of the idle fan",
