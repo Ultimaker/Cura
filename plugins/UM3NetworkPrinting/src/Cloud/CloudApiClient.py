@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import urllib.parse
@@ -11,6 +11,7 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestData import HttpRequestData
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.API import Account
@@ -119,7 +120,7 @@ class CloudApiClient:
                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def requestUpload(self, request: CloudPrintJobUploadRequest,
-                      on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
+                      on_finished: Callable[[CloudPrintJobResponse], Any]) -> HttpRequestData:
 
         """Requests the cloud to register the upload of a print job mesh.
 
@@ -130,14 +131,14 @@ class CloudApiClient:
         url = f"{self.CURA_API_ROOT}/jobs/upload"
         data = json.dumps({"data": request.toDict()}).encode()
 
-        self._http.put(url,
+        return self._http.put(url,
                        scope=self._scope,
                        data=data,
                        callback=self._parseCallback(on_finished, CloudPrintJobResponse),
                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
 
     def uploadToolPath(self, print_job: CloudPrintJobResponse, mesh: bytes, on_finished: Callable[[], Any],
-                       on_progress: Callable[[int], Any], on_error: Callable[[], Any]):
+                       on_progress: Callable[[int], Any], on_error: Callable[[], Any]) -> ToolPathUploader:
         """Uploads a print job tool path to the cloud.
 
         :param print_job: The object received after requesting an upload with `self.requestUpload`.
@@ -149,6 +150,7 @@ class CloudApiClient:
 
         self._upload = ToolPathUploader(self._http, print_job, mesh, on_finished, on_progress, on_error)
         self._upload.start()
+        return self._upload
 
     # Requests a cluster to print the given print job.
     #  \param cluster_id: The ID of the cluster.

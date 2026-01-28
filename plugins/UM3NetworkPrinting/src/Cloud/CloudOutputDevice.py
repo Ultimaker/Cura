@@ -1,4 +1,4 @@
-#  Copyright (c) 2022 UltiMaker
+#  Copyright (c) 2026 UltiMaker
 #  Cura is released under the terms of the LGPLv3 or higher.
 
 from time import time
@@ -13,6 +13,7 @@ from UM import i18nCatalog
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
+from UM.TaskManagement.HttpRequestData import HttpRequestData
 from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
@@ -21,6 +22,7 @@ from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 
 from .CloudApiClient import CloudApiClient
+from .ToolPathUploader import ToolPathUploader
 from ..ExportFileJob import ExportFileJob
 from ..Messages.PrintJobAwaitingApprovalMessage import PrintJobPendingApprovalMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
@@ -117,6 +119,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         CuraApplication.getInstance().getBackend().backendDone.connect(self._resetPrintJob)
         CuraApplication.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
+        self._pre_uploader_handle: Optional[HttpRequestData] = None
+        self._uploader_handle: Optional[ToolPathUploader] = None
+        self._progress.actionTriggered.connect(self._onProgressMessageActionTriggered)
+
     def connect(self) -> None:
         """Connects this device."""
 
@@ -139,11 +145,22 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if node.getDecorator(GCodeListDecorator) or node.getDecorator(SliceableObjectDecorator):
             self._resetPrintJob()
 
+    def _cancelInProgressJobs(self):
+        if self._pre_uploader_handle is not None:
+            if self._pre_uploader_handle.reply is not None:
+                self._pre_uploader_handle.reply.abort()
+            self._pre_uploader_handle.setDone()
+            self._pre_uploader_handle = None
+        if self._uploader_handle is not None:
+            self._uploader_handle.cancel()
+            self._uploader_handle = None
+
     def _resetPrintJob(self) -> None:
         """Resets the print job that was uploaded to force a new upload, runs whenever slice finishes."""
         self._tool_path = None
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
+        self._cancelInProgressJobs()
 
     def matchesNetworkKey(self, network_key: str) -> bool:
         """Checks whether the given network key is found in the cloud's host name"""
@@ -240,7 +257,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             file_size=len(output),
             content_type=job.getMimeType(),
         )
-        self._api.requestUpload(request, self._uploadPrintJob)
+        self._pre_uploader_handle = self._api.requestUpload(request, self._uploadPrintJob)
 
     def _uploadPrintJob(self, job_response: CloudPrintJobResponse) -> None:
         """Uploads the mesh when the print job was registered with the cloud API.
@@ -250,9 +267,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         if not self._tool_path:
             return self._onUploadError()
+        self._pre_uploader_handle = None
         self._pre_upload_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
-        self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded, self._progress.update,
-                                 self._onUploadError)
+        self._uploader_handle = self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded,
+                                                  self._progress.update, self._onUploadError)
 
     def _onPrintJobUploaded(self) -> None:
         """
@@ -267,6 +285,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             # error, which sets self._pre_uploaded_print_job to `None`.
             self._pre_upload_print_job = None
             self._uploaded_print_job = None
+            self._pre_uploader_handle = None
+            self._uploader_handle = None
             Logger.log("w", "Interference from another job uploaded at roughly the same time, not uploading print!")
             return  # Prevent a crash.
         self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted,
@@ -315,6 +335,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.hide()
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
+        self._pre_uploader_handle = None
+        self._uploader_handle = None
         self.writeError.emit()
 
     def _onUploadError(self, message: str = None) -> None:
@@ -327,8 +349,15 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.hide()
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
+        self._cancelInProgressJobs()
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
+
+    def _onProgressMessageActionTriggered(self, message: "Message", action: str):
+        if action == "abort_upload":
+            self._onUploadError(I18N_CATALOG.i18nc("@info:message", "The send-print-job process was aborted. Please try again."))
+        else:
+            Logger.warning(f"Unknown action {action} triggered on print-job upload progress message.")
 
     @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def isMethod(self) -> bool:
