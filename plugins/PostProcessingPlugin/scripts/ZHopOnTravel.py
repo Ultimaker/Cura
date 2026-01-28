@@ -119,7 +119,7 @@ class ZHopOnTravel(Script):
                 },
                 "interface_only": {
                     "label": "Add Z-hops to Support Interface Only",
-                    "description": "Only add Z-hops to 'Support Interface' within the layer range.  (NOTE: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'cross the interface'.) (NOTE2: You may use 'Infill Only' or 'Interface Only', but not both in a single instance of this post-processor.  If you want both then add another instance.)",
+                    "description": "Only add Z-hops to 'Support Interface' within the layer range.  (NOTE1: For technical reasons it is not possible to add Z-hops to travel moves that start somewhere and just 'cross the interface'.) (NOTE2: You may use 'Infill Only' or 'Interface Only', but not both in a single instance of this post-processor.  If you want both then add another instance.)",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "zhop_travel_enabled and not infill_only"
