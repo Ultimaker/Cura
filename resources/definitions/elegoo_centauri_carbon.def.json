@@ -16,8 +16,7 @@
         "preferred_material": "generic_pla_175",
         "preferred_quality_type": "elegoo_cc_layer_020",
         "preferred_variant_name": "0.40mm_Elegoo_Nozzle",
-        "variants_name": "Nozzle Size",
-        "quality_definition": "elegoo_centauri_carbon"
+        "variants_name": "Nozzle Size"
     },
     "overrides":
     {
