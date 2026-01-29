@@ -635,7 +635,7 @@ class DisplayInfoOnLCD(Script):
         # Set a default value for compatibility with earlier versions
         try:
             cura_adjust_percent = int(Application.getInstance().getGlobalContainerStack().getProperty("machine_time_estimation_factor", "value"))
-        except (NameError, ValueError):
+        except (NameError, ValueError, TypeError):
             cura_adjust_percent = 100
         if cura_adjust_percent == 100:
             adjusted_str = "Adjusted Time Estimate..." + str(time_change)
