@@ -42,6 +42,7 @@ class AddCoolingProfile(Script):
                     "label": "Enable Advanced Cooling",
                     "description": "Enable the script so it will run.",
                     "type": "bool",
+                    "default_value": true,
                     "enabled": true
                 },
                 "fan_layer_or_feature":
