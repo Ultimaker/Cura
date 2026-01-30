@@ -786,6 +786,27 @@ UM.MainWindow
         }
     }
 
+    Connections
+    {
+        target: Cura.Actions.openCuraLogFile
+        function onTriggered()
+        {
+            // Get the Resources storage folder path, then append the log filename
+            var path = UM.Resources.getPath(UM.Resources.Preferences, "");
+            var filePath = path + "cura.log";
+            
+            if(Qt.platform.os == "windows")
+            {
+                filePath = "file:///" + filePath.replace(/\\/g, "/");
+            }
+            else
+            {
+                filePath = "file://" + filePath;
+            }
+            Qt.openUrlExternally(filePath);
+        }
+    }
+
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
