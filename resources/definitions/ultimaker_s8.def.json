@@ -577,6 +577,7 @@
             "maximum_value_warning": 300,
             "value": "speed_wall"
         },
+        "split_infill_close_to_seam": { "default_value":  true },
         "support_angle": { "value": 60 },
         "support_bottom_distance":
         {
