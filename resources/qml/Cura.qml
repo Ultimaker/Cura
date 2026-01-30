@@ -798,12 +798,8 @@ UM.MainWindow
             if(Qt.platform.os == "windows")
             {
                 filePath = "file:///" + filePath.replace(/\\/g, "/");
+                Qt.openUrlExternally(filePath);
             }
-            else
-            {
-                filePath = "file://" + filePath;
-            }
-            Qt.openUrlExternally(filePath);
         }
     }
 
