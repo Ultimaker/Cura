@@ -791,15 +791,19 @@ UM.MainWindow
         target: Cura.Actions.openCuraLogFile
         function onTriggered()
         {
-            // Get the Resources storage folder path, then append the log filename
-            var path = UM.Resources.getPath(UM.Resources.Preferences, "");
-            var filePath = path + "cura.log";
-            
-            if(Qt.platform.os == "windows")
+            var configurationPath = Qt.platform.os == "linux" 
+                ? UM.Resources.getPath(UM.Resources.Resources, "")
+                : UM.Resources.getPath(UM.Resources.Preferences, "");
+            var logFilePath = configurationPath + "cura.log";
+            if (Qt.platform.os == "windows")
             {
-                filePath = "file:///" + filePath.replace(/\\/g, "/");
-                Qt.openUrlExternally(filePath);
+                logFilePath = "file:///" + logFilePath.replace(/\\/g, "/");
             }
+            else if (Qt.platform.os == "linux")
+            {
+                logFilePath = "file://" + logFilePath;
+            }
+            Qt.openUrlExternally(logFilePath);
         }
     }
 
