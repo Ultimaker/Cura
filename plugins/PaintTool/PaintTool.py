@@ -51,6 +51,7 @@ class PaintTool(Tool):
         self._view: PaintView = view
         self._view.canUndoChanged.connect(self._onCanUndoChanged)
         self._view.canRedoChanged.connect(self._onCanRedoChanged)
+        self._view.currentPaintedObjectMeshDataChanged.connect(self._updateState)
 
         self._picking_pass: Optional[PickingPass] = None
         self._faces_selection_pass: Optional[SelectionPass] = None
@@ -453,7 +454,7 @@ class PaintTool(Tool):
     def _updateState(self):
         painted_object = self._view.getPaintedObject()
         if painted_object is not None and self._controller.getActiveTool() == self:
-            if painted_object.callDecoration("getPaintTexture") is not None:
+            if painted_object.callDecoration("getPaintTexture") is not None and painted_object.getMeshData().hasUVCoordinates():
                 new_state = PaintTool.Paint.State.READY
             else:
                 new_state = PaintTool.Paint.State.PREPARING_MODEL
@@ -472,6 +473,7 @@ class PaintTool(Tool):
             self._prepare_texture_job = None
             self._state = PaintTool.Paint.State.READY
             self.propertyChanged.emit()
+            self._updateScene()
 
     def _updateIgnoreUnselectedObjects(self):
         ignore_unselected_objects = self._controller.getActiveView().name == "PaintTool"
