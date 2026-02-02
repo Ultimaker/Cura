@@ -199,40 +199,6 @@ class PaintTool(Tool):
         self._view.clearPaint()
         self._updateScene(update_node = True)
 
-    @staticmethod
-    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
-        # compute the intersection of (param) A - pt with (param) B - (param) C
-        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
-            return 1.0
-
-        # compute unit vectors of directions of lines A and B
-        udir_a = a - pt
-        udir_a /= numpy.linalg.norm(udir_a)
-        udir_b = b - c
-        udir_b /= numpy.linalg.norm(udir_b)
-
-        # find unit direction vector for line C, which is perpendicular to lines A and B
-        udir_res = numpy.cross(udir_b, udir_a)
-        udir_res_len = numpy.linalg.norm(udir_res)
-        if udir_res_len == 0:
-            return 1.0
-        udir_res /= udir_res_len
-
-        # solve system of equations
-        rhs = b - a
-        lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        try:
-            solved = numpy.linalg.solve(lhs, rhs)
-        except numpy.linalg.LinAlgError:
-            return 1.0
-
-        # get the ratio
-        intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        a_intersect_dist = numpy.linalg.norm(a - intersect)
-        if a_intersect_dist == 0:
-            return 1.0
-        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
-
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
 
