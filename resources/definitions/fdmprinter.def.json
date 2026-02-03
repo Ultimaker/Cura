@@ -8951,7 +8951,7 @@
                 "bridge_over_support":
                 {
                     "label": "Bridging over Support",
-                    "description": "Treat support as open air as far as bridging is concerned. Turning this off treats any supported areas as something that can be bridged to, and stops bridign over supported areas.",
+                    "description": "Treat support as open air as far as bridging is concerned. Turning this off treats any supported areas as something that can be bridged to, and stops bridging over supported areas.",
                     "type": "bool",
                     "default_value": true,
                     "resolve": "any(extruderValues('support_enable')) and any(extruderValues('bridge_settings_enabled'))",
