@@ -15,8 +15,6 @@ _REMOVED_SETTINGS = {
 }
 
 _HIGH_SPEED_PRINTERS = {
-    "ultimaker_s6",
-    "ultimaker_s8",
     "ultimaker_factor4",
 }
 
