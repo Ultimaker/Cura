@@ -227,6 +227,7 @@
         "skin_monotonic": { "value": true },
         "skin_outline_count": { "value": 0 },
         "skin_overlap": { "value": 10 },
+        "skin_support": { "value": "infill_sparse_density < 15" },
         "skirt_brim_minimal_length": { "value": 250 },
         "skirt_gap": { "value": 1.2 },
         "skirt_height": { "value": 1 },

@@ -456,6 +456,7 @@
         "seam_overhang_angle": { "value": 35 },
         "skin_material_flow": { "value": 93 },
         "skin_outline_count": { "value": 0 },
+        "skin_support": { "value": "infill_sparse_density < 20" },
         "skin_support_speed": { "value": "speed_infill * infill_material_flow / skin_support_material_flow" },
         "skirt_brim_minimal_length": { "value": 1000 },
         "skirt_line_count": { "value": 5 },
