@@ -34,6 +34,7 @@ Cura.ComboBox
         // Used if a hidden option ends up selected anyway.
         text: propertyProvider.properties.options ? propertyProvider.properties.options[propertyProvider.properties.value] : ""
         visible: currentIndex < 0
+        enabled: false
         background:
             Rectangle
             {
