@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2025 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -60,6 +60,7 @@ RecommendedSettingSection
                 width: parent.width
                 settingName: "infill_pattern"
                 updateAllExtruders: true
+                hideOptions: ["ultimaker_s6", "ultimaker_s8", "ultimaker_factor4", "ultimaker_factor4_plus"].includes(Cura.MachineManager.activeMachine.definition.id) ? ["grid", "triangles", "cubic"] : []
             }
         },
         RecommendedSettingItem

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2025 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -24,7 +24,23 @@ Cura.ComboBox
     // This is only used if updateAllExtruders == true
     property int defaultExtruderIndex: Cura.ExtruderManager.activeExtruderIndex
 
+    // For dropdown boxes, settings included in this property are hidden from the user on _selection_ (not show).
+    property list<string> hideOptions: []
+
     UM.I18nCatalog { id: settings_catalog; name: "fdmprinter.def.json" }
+
+    TextField
+    {
+        // Used if a hidden option ends up selected anyway.
+        text: propertyProvider.properties.options ? propertyProvider.properties.options[propertyProvider.properties.value] : ""
+        visible: currentIndex < 0
+        background:
+            Rectangle
+            {
+                color: "transparent"
+                border.color: "transparent"
+            }
+    }
 
     model:  ListModel
     {
@@ -44,6 +60,10 @@ Cura.ComboBox
             for (var i = 0; i < propertyProvider.properties["options"].keys().length; i++)
             {
                 var key = propertyProvider.properties["options"].keys()[i]
+                if (hideOptions.includes(key))
+                {
+                    continue;
+                }
                 var value = propertyProvider.properties["options"][key]
                 value = settings_catalog.i18nc(settingName + " option " + key, value)
                 comboboxModel.append({ text: value, code: key})

@@ -2202,11 +2202,8 @@
                     "type": "enum",
                     "options":
                     {
-                        "grid": "Grid",
                         "lines": "Lines",
-                        "triangles": "Triangles",
                         "trihexagon": "Tri-Hexagon",
-                        "cubic": "Cubic",
                         "cubicsubdiv": "Cubic Subdivision",
                         "tetrahedral": "Octet",
                         "quarter_cubic": "Quarter Cubic",
@@ -2217,7 +2214,10 @@
                         "gyroid": "Gyroid",
                         "lightning": "Lightning",
                         "honeycomb": "Honeycomb",
-                        "octagon": "Octagon"
+                        "octagon": "Octagon",
+                        "grid": "Grid",
+                        "cubic": "Cubic",
+                        "triangles": "Triangles"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
