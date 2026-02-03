@@ -8955,6 +8955,7 @@
                     "type": "bool",
                     "default_value": true,
                     "resolve": "any(extruderValues('support_enable')) and any(extruderValues('bridge_settings_enabled'))",
+                    "enabled": "any(extruderValues('support_enable')) and any(extruderValues('bridge_settings_enabled'))",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
