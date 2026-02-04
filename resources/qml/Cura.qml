@@ -786,6 +786,27 @@ UM.MainWindow
         }
     }
 
+    Connections
+    {
+        target: Cura.Actions.openCuraLogFile
+        function onTriggered()
+        {
+            var configurationPath = Qt.platform.os == "linux" 
+                ? UM.Resources.getPath(UM.Resources.Resources, "")
+                : UM.Resources.getPath(UM.Resources.Preferences, "");
+            var logFilePath = configurationPath + "cura.log";
+            if (Qt.platform.os == "windows")
+            {
+                logFilePath = "file:///" + logFilePath.replace(/\\/g, "/");
+            }
+            else if (Qt.platform.os == "linux")
+            {
+                logFilePath = "file://" + logFilePath;
+            }
+            Qt.openUrlExternally(logFilePath);
+        }
+    }
+
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
