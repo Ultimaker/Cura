@@ -807,6 +807,41 @@ UM.MainWindow
         }
     }
 
+    Cura.MessageDialog
+    {
+        id: clearConfigurationCacheDialog
+
+        title: catalog.i18nc("@title:window", "Clear Configuration Cache")
+        text: catalog.i18nc("@info:question", "Are you sure you want to clear the configuration cache? This will remove cached data and may improve performance if you're experiencing issues.")
+        standardButtons: Dialog.Yes | Dialog.No
+        property bool clearAllVersions: clearAllVersionsCheckBox.checked
+        
+        Column
+        {
+            spacing: UM.Theme.getSize("default_margin").height
+            
+            UM.CheckBox
+            {
+                id: clearAllVersionsCheckBox
+                text: catalog.i18nc("@option:check", "Also clear cache from previous Cura versions")
+            }
+        }
+        
+        onAccepted:
+        {
+            CuraActions.clearConfigurationCache(clearAllVersions)
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.clearConfigurationCache
+        function onTriggered()
+        {
+            clearConfigurationCacheDialog.visible = true
+        }
+    }
+
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent

@@ -15,6 +15,7 @@ Cura.Menu
 
     Cura.MenuItem { action: Cura.Actions.showProfileFolder }
     Cura.MenuItem { action: Cura.Actions.openCuraLogFile }
+    Cura.MenuItem { action: Cura.Actions.clearConfigurationCache }
     Cura.MenuSeparator { }
     Cura.MenuItem { action: Cura.Actions.documentation }
     Cura.MenuItem { action: Cura.Actions.reportBug }
