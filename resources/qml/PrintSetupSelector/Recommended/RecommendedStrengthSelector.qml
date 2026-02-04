@@ -53,7 +53,7 @@ RecommendedSettingSection
         {
             settingName: catalog.i18nc("@action:label", "Infill Pattern")
             tooltipText: catalog.i18nc("@label",
-            "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid.")
+            "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non functional model choose line, zig zag or lightning infill.</li><li>For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.</li><li>For functional 3D prints which require high strength in multiple directions use honeycomb, cubic, cubic subdivision, quarter cubic, octet, gyroid and octagon.</li></ul>⚠ Grid, triangles and cubic infill contain intersecting lines, that may cause your nozzle to print over solid lines, and your printer to vibrate. Use with caution.<html>")
 
             settingControl: Cura.SingleSettingComboBox
             {
