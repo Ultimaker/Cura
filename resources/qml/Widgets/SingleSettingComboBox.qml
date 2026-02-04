@@ -29,18 +29,16 @@ Cura.ComboBox
 
     UM.I18nCatalog { id: settings_catalog; name: "fdmprinter.def.json" }
 
-    TextField
+    Text
     {
         // Used if a hidden option ends up selected anyway.
         text: propertyProvider.properties.options ? propertyProvider.properties.options[propertyProvider.properties.value] : ""
         visible: currentIndex < 0
-        enabled: false
-        background:
-            Rectangle
-            {
-                color: "transparent"
-                border.color: "transparent"
-            }
+        color: UM.Theme.getColor("text")
+        anchors.fill: parent
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignLeft
+        leftPadding: UM.Theme.getSize("narrow_margin").width
     }
 
     model:  ListModel
