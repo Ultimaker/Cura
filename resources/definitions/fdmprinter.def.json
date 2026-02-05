@@ -2465,7 +2465,7 @@
                     "description": "Print a solid infill pattern just below skin to avoid printing the skin over air.",
                     "type": "bool",
                     "default_value": true,
-                    "value": "infill_sparse_density < 50",
+                    "value": "infill_sparse_density < 40",
                     "enabled": "infill_sparse_density > 0 and top_layers > 0",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
