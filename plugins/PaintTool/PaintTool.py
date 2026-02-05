@@ -37,6 +37,7 @@ class PaintTool(Tool):
         class Shape(IntEnum):
             SQUARE = 0
             CIRCLE = 1
+            FACE = 2
 
     class Paint(QObject):
         @pyqtEnum
@@ -276,6 +277,101 @@ class PaintTool(Tool):
                             face_id)
         return [Polygon(points) for points in res]
 
+    def _getCoplanarConnectedFaces(self, face_id: int, angle_threshold: float = 0.99) -> List[int]:
+        """Find all connected faces that are coplanar (or nearly coplanar) with the given face.
+        
+        This allows painting of "visual faces" - all triangles that form a flat surface together.
+        
+        :param face_id: The starting face ID
+        :param angle_threshold: Cosine of the maximum angle difference (0.99 ≈ 8 degrees)
+        :return: List of all connected coplanar face IDs including the starting face
+        """
+        mesh_data = self._mesh_transformed_cache
+        original_mesh_data = self._node_cache.getMeshData()
+        
+        if mesh_data is None or face_id < 0 or face_id >= mesh_data.getFaceCount():
+            return [face_id]
+        
+        # Get the normal of the starting face
+        try:
+            _, start_normal = mesh_data.getFacePlane(face_id)
+            start_normal = start_normal / numpy.linalg.norm(start_normal)  # Normalize
+        except:
+            return [face_id]
+        
+        # Use flood-fill to find all connected coplanar faces
+        visited = set()
+        to_visit = [face_id]
+        coplanar_faces = []
+        
+        while to_visit:
+            current_face = to_visit.pop(0)
+            
+            if current_face in visited or current_face < 0:
+                continue
+            
+            visited.add(current_face)
+            
+            # Check if this face is coplanar with the start face
+            try:
+                _, current_normal = mesh_data.getFacePlane(current_face)
+                current_normal = current_normal / numpy.linalg.norm(current_normal)
+                
+                # Calculate dot product (cosine of angle between normals)
+                dot_product = abs(numpy.dot(start_normal, current_normal))
+                
+                if dot_product >= angle_threshold:
+                    coplanar_faces.append(current_face)
+                    
+                    # Add neighboring faces to the queue
+                    neighbors = original_mesh_data.getFaceNeighbourIDs(current_face)
+                    for neighbor_id in neighbors:
+                        if neighbor_id >= 0 and neighbor_id not in visited:
+                            to_visit.append(neighbor_id)
+            except:
+                continue
+        
+        return coplanar_faces if coplanar_faces else [face_id]
+
+    def _getUvAreasForFace(self, face_id: int) -> List[Polygon]:
+        """Get UV polygon(s) for an entire face.
+        
+        In face mode, this gets all connected coplanar triangles that form a "visual face".
+
+        :param face_id: the ID of the face to get UV areas for
+        :return: A list of UV-mapped polygons representing the entire face
+        """
+        mesh_data = self._node_cache.getMeshData()
+        
+        if not mesh_data.hasUVCoordinates():
+            return []
+        
+        # Get all coplanar connected faces
+        coplanar_faces = self._getCoplanarConnectedFaces(face_id)
+        
+        # Collect UV polygons for all coplanar faces
+        uv_polygons = []
+        tex_width, tex_height = self._view.getUvTexDimensions()
+        
+        for face in coplanar_faces:
+            # Use the built-in method to get UV coordinates for this face
+            uv_coords = mesh_data.getFaceUvCoords(face)
+            if uv_coords is None:
+                continue
+            
+            uv_a, uv_b, uv_c = uv_coords
+            
+            # Create array of UV coordinates
+            uv_polygon_points = numpy.array([uv_a, uv_b, uv_c], dtype=numpy.float32)
+            
+            # Scale to texture dimensions
+            uv_polygon_points[:, 0] *= tex_width
+            uv_polygon_points[:, 1] *= tex_height
+            
+            uv_polygons.append(Polygon(uv_polygon_points))
+        
+        return uv_polygons
+
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
 
@@ -362,7 +458,13 @@ class PaintTool(Tool):
             event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                
+                # In face mode, paint/preview the entire face
+                if self._brush_shape == PaintTool.Brush.Shape.FACE:
+                    uv_areas_cursor = self._getUvAreasForFace(face_id)
+                else:
+                    uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -370,7 +472,12 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    # In face mode, paint the entire face
+                    if self._brush_shape == PaintTool.Brush.Shape.FACE:
+                        uv_areas = self._getUvAreasForFace(face_id)
+                    else:
+                        uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
