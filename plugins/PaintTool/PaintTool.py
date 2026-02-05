@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import math
 
+from collections import deque
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
@@ -281,6 +282,7 @@ class PaintTool(Tool):
         """Find all connected faces that are coplanar (or nearly coplanar) with the given face.
         
         This allows painting of "visual faces" - all triangles that form a flat surface together.
+        Uses BFS with deque for efficient face traversal.
         
         :param face_id: The starting face ID
         :param angle_threshold: Cosine of the maximum angle difference (0.99 ≈ 8 degrees)
@@ -295,17 +297,17 @@ class PaintTool(Tool):
         # Get the normal of the starting face
         try:
             _, start_normal = mesh_data.getFacePlane(face_id)
-            start_normal = start_normal / numpy.linalg.norm(start_normal)  # Normalize
+            start_normal = start_normal / numpy.linalg.norm(start_normal)
         except:
             return [face_id]
         
-        # Use flood-fill to find all connected coplanar faces
+        # BFS using deque for O(1) popleft
         visited = set()
-        to_visit = [face_id]
+        to_visit = deque([face_id])
         coplanar_faces = []
         
         while to_visit:
-            current_face = to_visit.pop(0)
+            current_face = to_visit.popleft()
             
             if current_face in visited or current_face < 0:
                 continue
@@ -323,11 +325,9 @@ class PaintTool(Tool):
                 if dot_product >= angle_threshold:
                     coplanar_faces.append(current_face)
                     
-                    # Add neighboring faces to the queue
+                    # Add unvisited neighbors to the queue
                     neighbors = original_mesh_data.getFaceNeighbourIDs(current_face)
-                    for neighbor_id in neighbors:
-                        if neighbor_id >= 0 and neighbor_id not in visited:
-                            to_visit.append(neighbor_id)
+                    to_visit.extend(n for n in neighbors if n >= 0 and n not in visited)
             except:
                 continue
         
@@ -337,6 +337,7 @@ class PaintTool(Tool):
         """Get UV polygon(s) for an entire face.
         
         In face mode, this gets all connected coplanar triangles that form a "visual face".
+        The brush size controls the angle threshold: smaller brush = stricter coplanarity check.
 
         :param face_id: the ID of the face to get UV areas for
         :return: A list of UV-mapped polygons representing the entire face
@@ -346,29 +347,26 @@ class PaintTool(Tool):
         if not mesh_data.hasUVCoordinates():
             return []
         
-        # Get all coplanar connected faces
-        coplanar_faces = self._getCoplanarConnectedFaces(face_id)
+        # Map brush size (1-100) to angle threshold (0.999-0.90)
+        # Smaller brush = stricter angle (only very coplanar faces)
+        # Larger brush = looser angle (more faces included)
+        angle_threshold = 0.999 - (self._brush_size / 100.0) * 0.099
         
-        # Collect UV polygons for all coplanar faces
-        uv_polygons = []
+        # Get all coplanar connected faces
+        coplanar_faces = self._getCoplanarConnectedFaces(face_id, angle_threshold)
+        
+        # Batch process UV polygons using list comprehension
         tex_width, tex_height = self._view.getUvTexDimensions()
         
+        uv_polygons = []
         for face in coplanar_faces:
-            # Use the built-in method to get UV coordinates for this face
             uv_coords = mesh_data.getFaceUvCoords(face)
-            if uv_coords is None:
-                continue
-            
-            uv_a, uv_b, uv_c = uv_coords
-            
-            # Create array of UV coordinates
-            uv_polygon_points = numpy.array([uv_a, uv_b, uv_c], dtype=numpy.float32)
-            
-            # Scale to texture dimensions
-            uv_polygon_points[:, 0] *= tex_width
-            uv_polygon_points[:, 1] *= tex_height
-            
-            uv_polygons.append(Polygon(uv_polygon_points))
+            if uv_coords is not None:
+                uv_a, uv_b, uv_c = uv_coords
+                uv_polygon_points = numpy.array([uv_a, uv_b, uv_c], dtype=numpy.float32)
+                uv_polygon_points[:, 0] *= tex_width
+                uv_polygon_points[:, 1] *= tex_height
+                uv_polygons.append(Polygon(uv_polygon_points))
         
         return uv_polygons
 

@@ -210,7 +210,6 @@ Item
             id: shapeSizeSlider
             width: parent.width
             indicatorVisible: false
-            enabled: UM.Controller.properties.getValue("BrushShape") !== Cura.PaintToolBrush.FACE
 
             from: 1
             to: 100
