@@ -2198,7 +2198,7 @@
                 "infill_pattern":
                 {
                     "label": "Infill Pattern",
-                    "description": "<html>The pattern of the infill material of the print.<ul><li>The line and zig zag infill swap direction on alternate layers, reducing material cost.</li><li>The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>\u26a0 Grid, triangles and cubic infill contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>",
+                    "description": "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>\u26a0 Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>",
                     "type": "enum",
                     "options":
                     {
