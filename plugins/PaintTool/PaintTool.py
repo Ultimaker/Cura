@@ -63,6 +63,8 @@ class PaintTool(Tool):
         self._node_cache: Optional[SceneNode] = None
         self._mesh_transformed_cache: Optional[MeshData] = None
         self._cache_dirty: bool = True
+        self._face_neighbors_cache: Optional[numpy.ndarray] = None
+        self._indices_cache: Optional[numpy.ndarray] = None
 
         self._brush_size: int = 10
         self._brush_color: str = "preferred"
@@ -112,6 +114,8 @@ class PaintTool(Tool):
             case PaintTool.Brush.Shape.SQUARE:
                 pen.setCapStyle(Qt.PenCapStyle.SquareCap)
             case PaintTool.Brush.Shape.CIRCLE:
+                pen.setCapStyle(Qt.PenCapStyle.RoundCap)
+            case PaintTool.Brush.Shape.FACE:
                 pen.setCapStyle(Qt.PenCapStyle.RoundCap)
             case _:
                 Logger.error(f"Unknown brush shape '{self._brush_shape}', painting may not work.")
@@ -203,6 +207,8 @@ class PaintTool(Tool):
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
+        self._face_neighbors_cache = None
+        self._indices_cache = None
 
     @staticmethod
     def _getBarycentricCoordinates(points: numpy.array, triangle: numpy.array) -> Optional[numpy.array]:
@@ -279,10 +285,7 @@ class PaintTool(Tool):
         return [Polygon(points) for points in res]
 
     def _getCoplanarConnectedFaces(self, face_id: int, angle_threshold: float = 0.99) -> List[int]:
-        """Find all connected faces that are coplanar (or nearly coplanar) with the given face.
-        
-        This allows painting of "visual faces" - all triangles that form a flat surface together.
-        Uses BFS with deque for efficient face traversal.
+        """Find all connected faces that are coplanar with the given face.
         
         :param face_id: The starting face ID
         :param angle_threshold: Cosine of the maximum angle difference (0.99 ≈ 8 degrees)
@@ -294,50 +297,37 @@ class PaintTool(Tool):
         if mesh_data is None or face_id < 0 or face_id >= mesh_data.getFaceCount():
             return [face_id]
         
-        # Get the normal of the starting face
-        try:
-            _, start_normal = mesh_data.getFacePlane(face_id)
-            start_normal = start_normal / numpy.linalg.norm(start_normal)
-        except:
+        vertices = mesh_data.getVertices()
+        if vertices is None:
             return [face_id]
         
-        # BFS using deque for O(1) popleft
-        visited = set()
-        to_visit = deque([face_id])
-        coplanar_faces = []
+        if self._indices_cache is None:
+            indices = original_mesh_data.getIndices()
+            if indices is None:
+                vertex_count = vertices.shape[0] if len(vertices.shape) > 1 else len(vertices) // 3
+                indices = numpy.arange(vertex_count, dtype=numpy.int32)
+            self._indices_cache = indices.flatten().astype(numpy.int32)
         
-        while to_visit:
-            current_face = to_visit.popleft()
-            
-            if current_face in visited or current_face < 0:
-                continue
-            
-            visited.add(current_face)
-            
-            # Check if this face is coplanar with the start face
-            try:
-                _, current_normal = mesh_data.getFacePlane(current_face)
-                current_normal = current_normal / numpy.linalg.norm(current_normal)
-                
-                # Calculate dot product (cosine of angle between normals)
-                dot_product = abs(numpy.dot(start_normal, current_normal))
-                
-                if dot_product >= angle_threshold:
-                    coplanar_faces.append(current_face)
-                    
-                    # Add unvisited neighbors to the queue
-                    neighbors = original_mesh_data.getFaceNeighbourIDs(current_face)
-                    to_visit.extend(n for n in neighbors if n >= 0 and n not in visited)
-            except:
-                continue
+        if self._face_neighbors_cache is None:
+            face_connections = original_mesh_data.getFacesConnections()
+            if face_connections is not None:
+                self._face_neighbors_cache = face_connections.flatten().astype(numpy.int32)
+            else:
+                face_count = int(mesh_data.getFaceCount())
+                self._face_neighbors_cache = numpy.full(face_count * 3, -1, dtype=numpy.int32)
+        
+        coplanar_faces = uvula.getCoplanarConnectedFaces(
+            vertices.flatten().astype(numpy.float32),
+            self._indices_cache,
+            self._face_neighbors_cache,
+            face_id,
+            angle_threshold
+        )
         
         return coplanar_faces if coplanar_faces else [face_id]
-
+    
     def _getUvAreasForFace(self, face_id: int) -> List[Polygon]:
         """Get UV polygon(s) for an entire face.
-        
-        In face mode, this gets all connected coplanar triangles that form a "visual face".
-        The brush size controls the angle threshold: smaller brush = stricter coplanarity check.
 
         :param face_id: the ID of the face to get UV areas for
         :return: A list of UV-mapped polygons representing the entire face
@@ -347,26 +337,38 @@ class PaintTool(Tool):
         if not mesh_data.hasUVCoordinates():
             return []
         
-        # Map brush size (1-100) to angle threshold (0.999-0.90)
-        # Smaller brush = stricter angle (only very coplanar faces)
-        # Larger brush = looser angle (more faces included)
         angle_threshold = 0.999 - (self._brush_size / 100.0) * 0.099
-        
-        # Get all coplanar connected faces
         coplanar_faces = self._getCoplanarConnectedFaces(face_id, angle_threshold)
         
-        # Batch process UV polygons using list comprehension
         tex_width, tex_height = self._view.getUvTexDimensions()
+        uv_coords = mesh_data.getUVCoordinates()
+        indices = mesh_data.getIndices()
+        
+        if uv_coords is None:
+            return []
+        
+        if indices is None:
+            vertices = mesh_data.getVertices()
+            if vertices is not None:
+                vertex_count = vertices.shape[0] if len(vertices.shape) > 1 else len(vertices) // 3
+                indices = numpy.arange(vertex_count, dtype=numpy.int32)
+        
+        uv_flat = uvula.getUvPolygonsForFaces(
+            coplanar_faces,
+            uv_coords.flatten().astype(numpy.float32),
+            indices.flatten().astype(numpy.int32),
+            tex_width,
+            tex_height
+        )
         
         uv_polygons = []
-        for face in coplanar_faces:
-            uv_coords = mesh_data.getFaceUvCoords(face)
-            if uv_coords is not None:
-                uv_a, uv_b, uv_c = uv_coords
-                uv_polygon_points = numpy.array([uv_a, uv_b, uv_c], dtype=numpy.float32)
-                uv_polygon_points[:, 0] *= tex_width
-                uv_polygon_points[:, 1] *= tex_height
-                uv_polygons.append(Polygon(uv_polygon_points))
+        for i in range(0, len(uv_flat), 6):
+            polygon_points = numpy.array([
+                [uv_flat[i], uv_flat[i+1]],
+                [uv_flat[i+2], uv_flat[i+3]],
+                [uv_flat[i+4], uv_flat[i+5]]
+            ], dtype=numpy.float32)
+            uv_polygons.append(Polygon(polygon_points))
         
         return uv_polygons
 
