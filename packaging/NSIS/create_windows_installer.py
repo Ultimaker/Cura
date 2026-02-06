@@ -44,7 +44,7 @@ def generate_nsi(source_path: str, dist_path: str, filename: str, version: str):
 
 
     nsis_content = template.render(
-        app_name = f"UltiMaker Cura {version}",
+        app_name = f"UltiMaker Cura",
         main_app = "UltiMaker-Cura.exe",
         version = version,
         version_major = str(parsed_version.major),

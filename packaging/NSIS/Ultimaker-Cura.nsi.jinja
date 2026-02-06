@@ -1,6 +1,8 @@
 # Copyright (c) 2025 UltiMaker
 # Cura's build system is released under the terms of the AGPLv3 or higher.
 
+ManifestDPIAware true
+
 !define APP_NAME "{{ app_name }}"
 !define COMP_NAME "{{ company }}"
 !define VERSION "{{ version }}"
@@ -143,17 +145,8 @@ ${INSTALL_TYPE}{% for files in mapped_out_paths.values() %}{% for file in files 
 Delete "{{ file[1] }}"{% endfor %}{% endfor %}{% for rem_dir in rmdir_paths %}
 RmDir "{{ rem_dir }}"{% endfor %}
 
-# FIXME: dirty solution, but for some reason these directories aren't removed
-RmDir "$INSTDIR\share\cura\resources\scripts"
-RmDir "$INSTDIR\share\cura\resources"
-RmDir "$INSTDIR\share\cura"
-RmDir "$INSTDIR\share\uranium\resources\scripts"
-RmDir "$INSTDIR\share\uranium\resources"
-RmDir "$INSTDIR\share\uranium"
-RmDir "$INSTDIR\share"
-
+Delete "$INSTDIR\*"
 Delete "$INSTDIR\uninstall.exe"
-
 RmDir /r /REBOOTOK "$INSTDIR"
 
 !ifdef REG_START_MENU
@@ -163,6 +156,8 @@ Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 !ifndef REG_START_MENU
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 !endif
+
+Delete "$DESKTOP\${APP_NAME}.lnk"
 
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
 !insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
@@ -175,5 +170,6 @@ DeleteRegKey HKCR "slicer"
 
 DeleteRegKey ${REG_ROOT} "${REG_APP_PATH}"
 DeleteRegKey ${REG_ROOT} "${UNINSTALL_PATH}"
+SetAutoClose true
 SectionEnd
 
