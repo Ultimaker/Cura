@@ -1,0 +1,49 @@
+{
+    "version": 2,	
+    "name": "Bambulabs X1",
+    # NOTE(Krey): Seems unique -> We can't inherit
+    # "inherits": "ultimaker",
+    "metadata":
+    {
+        "visible": false, # WIP(Krey): Do not show in the machine list due to it being work in progress
+        "author": "Kreyren",
+        "manufacturer": "Bambulabs",
+        "file_formats": "text/x-gcode",
+	# FIXME(Krey): This is a 3D Model and texture of the machine's platform (bed), we are using ultimaker for the time being
+        "platform": "ultimaker_platform.3mf",
+	"platform_texture": "Ultimaker3backplate.png",
+	"platform_offset": [0, 0, 0],
+	"has_materials": true,
+	"has_variants": false, # No known alternative nozzles
+	"preferred_variant_name": "FIXME_VARIANT_NAME",
+	"has_machine_materials": true,
+	"preferred_quality_type": "normal",
+
+	# FIXME(Krey): List of prohibited materials can be found on https://github.com/bambulab/BambuStudio/blob/master/resources/printers/filaments_blacklist.json and needs to be implemented
+        # "exclude_materials": [
+        #    "generic_hips",
+        # ],
+	// NOTE(Krey): No known alternative firmware
+        // "firmware_file": "MarlinUltimaker-{baudrate}.hex",
+        // "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}.hex",
+	// NOTE(Krey): No idea
+        // "first_start_actions": [
+        //     "UMOUpgradeSelection",
+        //     "BedLevel"
+        // ],
+        "machine_extruder_trains": { "0": "ultimaker_original_extruder_0" },
+	# FIXME(Krey): No idea what this is
+        # "supported_actions": [
+        #     "UMOUpgradeSelection",
+        #     "BedLevel"
+        # ],
+	# FIXME(Krey): No idea what this is
+	# "weight": 4
+    },
+    "overrides":
+    {
+        # Add GCODE values
+        "machine_start_gcode": { "default_value": ""},
+        "machine_end_gcode": { "default_value": "" },
+    }
+}
