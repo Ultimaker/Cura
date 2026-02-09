@@ -278,61 +278,6 @@ class PaintTool(Tool):
                             face_id)
         return [Polygon(points) for points in res]
 
-    def _getCoplanarConnectedFaces(self, face_id: int, angle_threshold: float = 0.99) -> List[int]:
-        """Find all connected faces that are coplanar (or nearly coplanar) with the given face.
-        
-        This allows painting of "visual faces" - all triangles that form a flat surface together.
-        Uses BFS with deque for efficient face traversal.
-        
-        :param face_id: The starting face ID
-        :param angle_threshold: Cosine of the maximum angle difference (0.99 ≈ 8 degrees)
-        :return: List of all connected coplanar face IDs including the starting face
-        """
-        mesh_data = self._mesh_transformed_cache
-        original_mesh_data = self._node_cache.getMeshData()
-        
-        if mesh_data is None or face_id < 0 or face_id >= mesh_data.getFaceCount():
-            return [face_id]
-        
-        # Get the normal of the starting face
-        try:
-            _, start_normal = mesh_data.getFacePlane(face_id)
-            start_normal = start_normal / numpy.linalg.norm(start_normal)
-        except:
-            return [face_id]
-        
-        # BFS using deque for O(1) popleft
-        visited = set()
-        to_visit = deque([face_id])
-        coplanar_faces = []
-        
-        while to_visit:
-            current_face = to_visit.popleft()
-            
-            if current_face in visited or current_face < 0:
-                continue
-            
-            visited.add(current_face)
-            
-            # Check if this face is coplanar with the start face
-            try:
-                _, current_normal = mesh_data.getFacePlane(current_face)
-                current_normal = current_normal / numpy.linalg.norm(current_normal)
-                
-                # Calculate dot product (cosine of angle between normals)
-                dot_product = abs(numpy.dot(start_normal, current_normal))
-                
-                if dot_product >= angle_threshold:
-                    coplanar_faces.append(current_face)
-                    
-                    # Add unvisited neighbors to the queue
-                    neighbors = original_mesh_data.getFaceNeighbourIDs(current_face)
-                    to_visit.extend(n for n in neighbors if n >= 0 and n not in visited)
-            except:
-                continue
-        
-        return coplanar_faces if coplanar_faces else [face_id]
-
     def _getUvAreasForFace(self, face_id: int) -> List[Polygon]:
         """Get UV polygon(s) for an entire face.
         
@@ -347,26 +292,25 @@ class PaintTool(Tool):
         if not mesh_data.hasUVCoordinates():
             return []
         
-        # Map brush size (1-100) to angle threshold (0.999-0.90)
+        # Map brush size (1-100) to angle threshold (0.0-PI/2)
         # Smaller brush = stricter angle (only very coplanar faces)
         # Larger brush = looser angle (more faces included)
-        angle_threshold = 0.999 - (self._brush_size / 100.0) * 0.099
+        angle_threshold = (self._brush_size / 100.0) * math.pi / 2.0
         
         # Get all coplanar connected faces
-        coplanar_faces = self._getCoplanarConnectedFaces(face_id, angle_threshold)
-        
-        # Batch process UV polygons using list comprehension
-        tex_width, tex_height = self._view.getUvTexDimensions()
-        
-        uv_polygons = []
-        for face in coplanar_faces:
-            uv_coords = mesh_data.getFaceUvCoords(face)
-            if uv_coords is not None:
-                uv_a, uv_b, uv_c = uv_coords
-                uv_polygon_points = numpy.array([uv_a, uv_b, uv_c], dtype=numpy.float32)
-                uv_polygon_points[:, 0] *= tex_width
-                uv_polygon_points[:, 1] *= tex_height
-                uv_polygons.append(Polygon(uv_polygon_points))
+        mesh_indices = self._mesh_transformed_cache.getIndices()
+        if mesh_indices is None:
+            mesh_indices = numpy.array([], dtype=numpy.int32)
+
+        coplanar_faces = uvula.getConnectedFaces(self._mesh_transformed_cache.getVertices(),
+                                                 mesh_indices,
+                                                 self._node_cache.getMeshData().getUVCoordinates(),
+                                                 self._node_cache.getMeshData().getFacesConnections(),
+                                                 self._view.getUvTexDimensions()[0],
+                                                 self._view.getUvTexDimensions()[1],
+                                                 face_id,
+                                                 angle_threshold)
+        uv_polygons = [Polygon(points) for points in coplanar_faces]
         
         return uv_polygons
 
