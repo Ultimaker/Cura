@@ -1405,11 +1405,11 @@ msgstr "Modifier"
 
 msgctxt "@action:button"
 msgid "Eject"
-msgstr "Ejecter"
+msgstr "Éjecter"
 
 msgctxt "@action"
 msgid "Eject removable device {0}"
-msgstr "Ejecter le lecteur amovible {0}"
+msgstr "Éjecter le lecteur amovible {0}"
 
 msgctxt "@info:status"
 msgid "Ejected {0}. You can now safely remove the drive."
