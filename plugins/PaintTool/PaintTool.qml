@@ -332,4 +332,20 @@ Item
             horizontalAlignment: Text.AlignHCenter
         }
     }
+
+    Rectangle
+    {
+        id: warningLegacyOpenGLItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.NOT_SUPPORTED
+
+        UM.Label
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@label", "Painting is not available in OpenGL compatibility mode. Please use a different system.")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
 }
