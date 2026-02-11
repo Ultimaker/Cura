@@ -210,6 +210,7 @@ UM.PreferencesPage
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
+                        append({ text: "日本語", code: "ja_JP" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -220,7 +221,6 @@ UM.PreferencesPage
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
                         append({ text: "Čeština", code: "cs_CZ" })
-                        append({ text: "日本語", code: "ja_JP" })
                         append({ text: "한국어", code: "ko_KR" })
                         append({ text: "Nederlands", code: "nl_NL" })
                         append({ text: "Português", code: "pt_PT" })
