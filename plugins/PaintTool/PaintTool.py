@@ -13,7 +13,6 @@ from UM.Application import Application
 from UM.Event import Event, MouseEvent
 from UM.Job import Job
 from UM.Logger import Logger
-from UM.Math.AxisAlignedBox2D import AxisAlignedBox2D
 from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshData import MeshData
@@ -71,6 +70,7 @@ class PaintTool(Tool):
         self._mouse_held: bool = False
 
         self._last_world_coords: Optional[numpy.ndarray] = None
+        self._last_clicked_coords: Optional[numpy.ndarray] = None
 
         self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
@@ -309,6 +309,8 @@ class PaintTool(Tool):
             self._last_world_coords = None
             return True
 
+        shift_modifier = Qt.KeyboardModifier.ShiftModifier
+        shift_pressed = (CuraApplication.getInstance().keyboardModifiers() & shift_modifier) == shift_modifier
         is_moved = event.type == Event.MouseMoveEvent
         is_pressed = event.type == Event.MousePressEvent
         if (is_moved or is_pressed) and self._controller.getToolsEnabled():
@@ -359,10 +361,11 @@ class PaintTool(Tool):
             if self._last_world_coords is None:
                 self._last_world_coords = world_coords
 
-            event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
+            event_caught = is_pressed # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                start_position = world_coords if not shift_pressed or self._last_clicked_coords is None else self._last_clicked_coords
+                uv_areas_cursor = self._getUvAreasForStroke(start_position, world_coords, face_id)
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -370,7 +373,8 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    start_position = self._last_world_coords if not shift_pressed or self._last_clicked_coords is None else self._last_clicked_coords
+                    uv_areas = self._getUvAreasForStroke(start_position, world_coords, face_id)
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
@@ -378,6 +382,8 @@ class PaintTool(Tool):
             except:
                 Logger.logException("e", "Error when adding paint stroke")
 
+            if self._mouse_held:
+                self._last_clicked_coords = world_coords
             self._last_world_coords = world_coords
             self._updateScene(painted_object, update_node = event_caught)
             return event_caught
