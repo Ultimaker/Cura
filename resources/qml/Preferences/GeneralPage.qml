@@ -117,7 +117,7 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-//        /setDefaultCameraMode(defaultCameraMode)
+        //setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -241,7 +241,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -311,7 +311,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
