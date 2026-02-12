@@ -2,10 +2,7 @@
 #  Cura is released under the terms of the LGPLv3 or higher.
 import uuid
 
-import os
-
 import numpy
-from string import Formatter
 from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set, Tuple
@@ -26,7 +23,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Scene import Scene #For typing.
 from UM.Settings.Validator import ValidatorState
 from UM.Settings.SettingRelation import RelationType
-from UM.Settings.SettingFunction import SettingFunction
 
 from cura.CuraApplication import CuraApplication
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -47,181 +43,6 @@ class StartJobResult(IntEnum):
     BuildPlateError = 6
     ObjectSettingError = 7 #When an error occurs in per-object settings.
     ObjectsWithDisabledExtruder = 8
-
-
-class GcodeConditionState(IntEnum):
-    OutsideCondition = 1
-    ConditionFalse = 2
-    ConditionTrue = 3
-    ConditionDone = 4
-
-
-class GcodeInstruction(IntEnum):
-    Skip = 1
-    Evaluate = 2
-    EvaluateAndWrite = 3
-
-
-class GcodeStartEndFormatter:
-    # Formatter class that handles token expansion in start/end gcode
-    # Example of a start/end gcode string:
-    # ```
-    # M104 S{material_print_temperature_layer_0, 0} ;pre-heat
-    # M140 S{material_bed_temperature_layer_0} ;heat bed
-    # M204 P{acceleration_print, 0} T{acceleration_travel, 0}
-    # M205 X{jerk_print, 0}
-    # ```
-    # Any expression between curly braces will be evaluated and replaced with the result, using the
-    # context of the provided default extruder. If no default extruder is provided, the global stack
-    # will be used. Alternatively, if the expression is formatted as "{[expression], [extruder_nr]}",
-    # then the expression will be evaluated with the extruder stack of the specified extruder_nr.
-
-    _instruction_regex = re.compile(r"{(?P<condition>if|else|elif|endif)?\s*(?P<expression>[^{}]*?)\s*(?:,\s*(?P<extruder_nr_expr>[^{}]*))?\s*}(?P<end_of_line>\n?)")
-
-    def __init__(self, all_extruder_settings: Dict[str, Dict[str, Any]], default_extruder_nr: int = -1) -> None:
-        super().__init__()
-        self._all_extruder_settings: Dict[str, Dict[str, Any]] = all_extruder_settings
-        self._default_extruder_nr: int = default_extruder_nr
-        self._cura_application = CuraApplication.getInstance()
-        self._extruder_manager = ExtruderManager.getInstance()
-
-    def format(self, text: str) -> str:
-        remaining_text: str = text
-        result: str = ""
-
-        self._condition_state: GcodeConditionState = GcodeConditionState.OutsideCondition
-
-        while len(remaining_text) > 0:
-            next_code_match = self._instruction_regex.search(remaining_text)
-            if next_code_match is not None:
-                expression_start, expression_end = next_code_match.span()
-
-                if expression_start > 0:
-                    result += self._process_statement(remaining_text[:expression_start])
-
-                result += self._process_code(next_code_match)
-
-                remaining_text = remaining_text[expression_end:]
-
-            else:
-                result += self._process_statement(remaining_text)
-                remaining_text = ""
-
-        return result
-
-    def _process_statement(self, statement: str) -> str:
-        if self._condition_state in [GcodeConditionState.OutsideCondition, GcodeConditionState.ConditionTrue]:
-            return statement
-        else:
-            return ""
-
-    def _process_code(self, code: re.Match) -> str:
-        condition: Optional[str] = code.group("condition")
-        expression: Optional[str] = code.group("expression")
-        extruder_nr_expr: Optional[str] = code.group("extruder_nr_expr")
-        end_of_line: Optional[str] = code.group("end_of_line")
-
-        # The following variables are not settings, but only become available after slicing.
-        # when these variables are encountered, we return them as-is. They are replaced later
-        # when the actual values are known.
-        post_slice_data_variables = ["filament_cost", "print_time", "filament_amount", "filament_weight", "jobname"]
-        if expression in post_slice_data_variables:
-            return f"{{{expression}}}"
-
-        extruder_nr: str = str(self._default_extruder_nr)
-        instruction: GcodeInstruction = GcodeInstruction.Skip
-
-        # The settings may specify a specific extruder to use. This is done by
-        # formatting the expression as "{expression}, {extruder_nr_expr}". If the
-        # expression is formatted like this, we extract the extruder_nr and use
-        # it to get the value from the correct extruder stack.
-        if condition is None:
-            # This is a classic statement
-            if self._condition_state in [GcodeConditionState.OutsideCondition, GcodeConditionState.ConditionTrue]:
-                # Skip and move to next
-                instruction = GcodeInstruction.EvaluateAndWrite
-        else:
-            # This is a condition statement, first check validity
-            if condition == "if":
-                if self._condition_state != GcodeConditionState.OutsideCondition:
-                    raise SyntaxError("Nested conditions are not supported")
-            else:
-                if self._condition_state == GcodeConditionState.OutsideCondition:
-                    raise SyntaxError("Condition should start with an 'if' statement")
-
-            if condition == "if":
-                # First instruction, just evaluate it
-                instruction = GcodeInstruction.Evaluate
-
-            else:
-                if self._condition_state == GcodeConditionState.ConditionTrue:
-                    # We have reached the next condition after a valid one has been found, skip the rest
-                    self._condition_state = GcodeConditionState.ConditionDone
-
-                if condition == "elif":
-                    if self._condition_state == GcodeConditionState.ConditionFalse:
-                        # New instruction, and valid condition has not been reached so far => evaluate it
-                        instruction = GcodeInstruction.Evaluate
-                    else:
-                        # New instruction, but valid condition has already been reached => skip it
-                        instruction = GcodeInstruction.Skip
-
-                elif condition == "else":
-                    instruction = GcodeInstruction.Skip # Never evaluate, expression should be empty
-                    if self._condition_state == GcodeConditionState.ConditionFalse:
-                        # Fallback instruction, and valid condition has not been reached so far => active next
-                        self._condition_state = GcodeConditionState.ConditionTrue
-
-                elif condition == "endif":
-                    instruction = GcodeInstruction.Skip  # Never evaluate, expression should be empty
-                    self._condition_state = GcodeConditionState.OutsideCondition
-
-        if instruction >= GcodeInstruction.Evaluate and extruder_nr_expr is not None:
-            extruder_nr_function = SettingFunction(extruder_nr_expr)
-            container_stack = self._cura_application.getGlobalContainerStack()
-
-            # We add the variables contained in `_all_extruder_settings["-1"]`, which is a dict-representation of the
-            # global container stack, with additional properties such as `initial_extruder_nr`. As users may enter such
-            # expressions we can't use the global container stack. The variables contained in the global container stack
-            # will then be inserted twice, which is not optimal but works well.
-            extruder_nr = str(extruder_nr_function(container_stack, additional_variables=self._all_extruder_settings["-1"]))
-
-        if instruction >= GcodeInstruction.Evaluate:
-            if extruder_nr in self._all_extruder_settings:
-                additional_variables = self._all_extruder_settings[extruder_nr].copy()
-            else:
-                Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
-                additional_variables = self._all_extruder_settings["-1"].copy()
-
-            if extruder_nr == "-1":
-                container_stack = self._cura_application.getGlobalContainerStack()
-            else:
-                container_stack = self._extruder_manager.getExtruderStack(extruder_nr)
-                if not container_stack:
-                    Logger.warning(f"Extruder {extruder_nr} does not exist, using global settings")
-                    container_stack = self._cura_application.getGlobalContainerStack()
-
-            setting_function = SettingFunction(expression)
-            value = setting_function(container_stack, additional_variables=additional_variables)
-
-            if instruction == GcodeInstruction.Evaluate:
-                if value:
-                    self._condition_state = GcodeConditionState.ConditionTrue
-                else:
-                    self._condition_state = GcodeConditionState.ConditionFalse
-
-                return ""
-            else:
-                value_str = str(value)
-
-                if end_of_line is not None:
-                    # If we are evaluating an expression that is not a condition, restore the end of line
-                    value_str += end_of_line
-
-                return value_str
-
-        else:
-            return ""
 
 
 class StartSliceJob(Job):
@@ -413,6 +234,9 @@ class StartSliceJob(Job):
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
                 if not is_non_printing_mesh:
                     for used_extruder in StartSliceJob._getMainExtruders(node):
+                        if used_extruder >= len(extruders_enabled):
+                            continue
+
                         if not extruders_enabled[used_extruder]:
                             skip_group = True
                             has_model_with_disabled_extruders = True
@@ -580,25 +404,6 @@ class StartSliceJob(Job):
             self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
-    def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
-        """Replace setting tokens in a piece of g-code.
-
-        :param value: A piece of g-code to replace tokens in.
-        :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
-        """
-        if not self._all_extruders_settings:
-            self._cacheAllExtruderSettings()
-
-        try:
-            # Get "replacement-keys" for the extruders. In the formatter the settings stack is used to get the
-            # replacement values for the setting-keys. However, the values for `material_id`, `material_type`,
-            # etc are not in the settings stack.
-            fmt = GcodeStartEndFormatter(self._all_extruders_settings, default_extruder_nr=default_extruder_nr)
-            return str(fmt.format(value))
-        except:
-            Logger.logException("w", "Unable to do token replacement on start/end g-code")
-            return str(value)
-
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
         """Create extruder message from stack"""
 
@@ -615,12 +420,6 @@ class StartSliceJob(Job):
 
         # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
-
-        # Replace the setting tokens in start and end g-code.
-        extruder_nr = stack.getProperty("extruder_nr", "value")
-        settings["machine_extruder_prestart_code"] = self._expandGcodeTokens(settings["machine_extruder_prestart_code"], extruder_nr)
-        settings["machine_extruder_start_code"] = self._expandGcodeTokens(settings["machine_extruder_start_code"], extruder_nr)
-        settings["machine_extruder_end_code"] = self._expandGcodeTokens(settings["machine_extruder_end_code"], extruder_nr)
 
         global_definition = cast(ContainerInterface, cast(ContainerStack, stack.getNextStack()).getBottom())
         own_definition = cast(ContainerInterface, stack.getBottom())
@@ -665,12 +464,6 @@ class StartSliceJob(Job):
             print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature", "print_temperature"]
             pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
             settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) is None
-
-        # Replace the setting tokens in start and end g-code.
-        # Use values from the first used extruder by default so we get the expected temperatures
-        initial_extruder_nr = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
-        settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
-        settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
         # Manually add 'nozzle offsetting', since that is a metadata-entry instead for some reason.
         # NOTE: This probably needs to be an actual setting at some point.
