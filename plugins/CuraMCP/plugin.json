@@ -1,0 +1,9 @@
+{
+    "name": "CuraMCP",
+    "version": "0.1.0",
+    "api": 8,
+    "description": "Model Context Protocol Server for Cura",
+    "author": "Ralph Wiggum",
+    "website": "https://github.com/Ultimaker/Cura",
+    "supported_sdk_versions": ["8.0.0"]
+}
