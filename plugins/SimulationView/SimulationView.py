@@ -387,8 +387,6 @@ class SimulationView(CuraView):
         return self._nozzle_node
 
     def _onSceneChanged(self, node: "SceneNode") -> None:
-        if node.getMeshData() is None:
-            return
         self.setActivity(False)
         self._calculateLayerHeightsCache()
         self.calculateColorSchemeLimits()
