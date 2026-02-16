@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-03 09:09+0100\n"
+"POT-Creation-Date: 2026-02-05 14:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+msgctxt "@label"
+msgid "%"
+msgstr ""
 
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
@@ -147,6 +151,10 @@ msgctxt "@label"
 msgid "*) You will need to restart the application for these changes to have effect."
 msgstr ""
 
+msgctxt "@label"
+msgid "*User Adjusted"
+msgstr ""
+
 msgctxt "@text"
 msgid ""
 "- Add material profiles and plug-ins from the Marketplace\n"
@@ -200,6 +208,10 @@ msgstr ""
 
 msgctxt "@message"
 msgid "<html>At least one extruder remains unused in this print:"
+msgstr ""
+
+msgctxt "@label"
+msgid "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<html>"
 msgstr ""
 
 msgctxt "@message"
@@ -264,6 +276,10 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr ""
 
+msgctxt "@action:button"
+msgid "Abort"
+msgstr ""
+
 msgctxt "@label"
 msgid "Abort"
 msgstr ""
@@ -274,6 +290,10 @@ msgstr ""
 
 msgctxt "@window:title"
 msgid "Abort print"
+msgstr ""
+
+msgctxt "@action:label"
+msgid "Abort upload"
 msgstr ""
 
 msgctxt "@label:status"
@@ -2750,6 +2770,10 @@ msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
 msgstr ""
 
+msgctxt "@action:inmenu menubar:help"
+msgid "Open Cura Log File"
+msgstr ""
+
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr ""
@@ -3112,6 +3136,10 @@ msgid "Print Selected Model with %1"
 msgid_plural "Print Selected Models with %1"
 msgstr[0] ""
 msgstr[1] ""
+
+msgctxt "@label"
+msgid "Print Time Estimation Factor"
+msgstr ""
 
 msgctxt "@label"
 msgid "Print as support"
@@ -4310,17 +4338,6 @@ msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr ""
 
-msgctxt "@label"
-msgid ""
-"The pattern of the infill material of the print:\n"
-"\n"
-"For quick prints of non functional model choose line, zig zag or lightning infill.\n"
-"\n"
-"For functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n"
-"\n"
-"For functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr ""
-
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr ""
@@ -4371,6 +4388,10 @@ msgstr ""
 
 msgctxt "@text:error"
 msgid "The response from Digital Factory is missing important information."
+msgstr ""
+
+msgctxt "@info:message"
+msgid "The send-print-job process was aborted. Please try again."
 msgstr ""
 
 msgctxt "@tooltip"
@@ -5747,6 +5768,14 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 4.6.2 to 4.7"
+msgstr ""
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.11 to Cura 5.12"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.11 to 5.12"
 msgstr ""
 
 msgctxt "description"
