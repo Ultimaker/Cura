@@ -27,13 +27,24 @@ Item
     width: parent.width
     height: childrenRect.height
 
-    UM.Label
+    UM.SettingPropertyProvider
     {
-        id: header
-        text: catalog.i18nc("@header", "Custom")
-        font: UM.Theme.getFont("medium")
-        color: UM.Theme.getColor("small_button_text")
-        height: contentHeight
+        id: machineExtruderCountProvider
+        containerStack: Cura.MachineManager.activeMachine
+        key: "machine_extruder_count"
+        watchedProperties: ["value"]
+        storeIndex: 0
+    }
+
+    property int currentExtruderCount: machineExtruderCountProvider.properties.value ? machineExtruderCountProvider.properties.value : 1
+    property int maxExtruderCount: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.maxExtruderCount : 1
+
+    Row
+    {
+        id: headerRow
+        width: parent.width
+        height: header.height
+        spacing: UM.Theme.getSize("default_margin").width
 
         anchors
         {
@@ -41,12 +52,71 @@ Item
             left: parent.left
             right: parent.right
         }
+
+        UM.Label
+        {
+            id: header
+            text: catalog.i18nc("@header", "Custom")
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("small_button_text")
+            height: contentHeight
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        // Spacer to push buttons to the right
+        Item
+        {
+            width: parent.width - header.width - decreaseExtruderButton.width - increaseExtruderButton.width - parent.spacing * 3
+            height: 1
+        }
+
+        UM.SimpleButton
+        {
+            id: decreaseExtruderButton
+            width: UM.Theme.getSize("medium_button_icon").width
+            height: UM.Theme.getSize("medium_button_icon").height
+            iconSource: UM.Theme.getIcon("Minus")
+            color: UM.Theme.getColor("icon")
+            hoverColor: UM.Theme.getColor("icon_hover")
+            anchors.verticalCenter: parent.verticalCenter
+            
+            enabled: currentExtruderCount > 1
+            
+            onClicked: 
+            {
+                if (currentExtruderCount > 1)
+                {
+                    Cura.MachineManager.setActiveMachineExtruderCount(currentExtruderCount - 1);
+                }
+            }
+        }
+
+        UM.SimpleButton
+        {
+            id: increaseExtruderButton
+            width: UM.Theme.getSize("medium_button_icon").width
+            height: UM.Theme.getSize("medium_button_icon").height
+            iconSource: UM.Theme.getIcon("Plus")
+            color: UM.Theme.getColor("icon")
+            hoverColor: UM.Theme.getColor("icon_hover")
+            anchors.verticalCenter: parent.verticalCenter
+            
+            enabled: currentExtruderCount < maxExtruderCount
+            
+            onClicked: 
+            {
+                if (currentExtruderCount < maxExtruderCount)
+                {
+                    Cura.MachineManager.setActiveMachineExtruderCount(currentExtruderCount + 1);
+                }
+            }
+        }
     }
 
     UM.TabRow
     {
         id: tabBar
-        anchors.top: header.bottom
+        anchors.top: headerRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         visible: extrudersModel.count > 1
 
