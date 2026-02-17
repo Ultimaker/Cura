@@ -934,6 +934,7 @@ class MachineManager(QObject):
             user_changes_container.setProperty(setting_key, "value", new_value)
             Logger.log("d", "Setting '{}' in '{}' to '{}' because there are more than 1 enabled extruders.".format(setting_key, user_changes_container, new_value))
 
+    @pyqtSlot(int)
     def setActiveMachineExtruderCount(self, extruder_count: int) -> None:
         """Set the amount of extruders on the active machine (global stack)
 
