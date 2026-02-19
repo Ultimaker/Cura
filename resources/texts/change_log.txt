@@ -5,11 +5,11 @@
 - Updated combing behavior for thin parts so it doesn't ooze over the walls by updating the behavior for Inside Travel Avoid Distance
 - Added a warning in the preview if the reason you are not seeing your model is that the extruder is unchecked
 - Self-intersecting infills like Grid, Triangular, and Cubic are hidden for some printers in recommended mode because they introduce artifacts at high speeds. They are still available in Custom mode
-- Added height of the layer in preview mode in mm in addition to the layer number., contributed by @HellAholic
+- Added height of the layer in preview mode in mm in addition to the layer number, contributed by @HellAholic
 - Added a pop-up to help with using the Select Face mode when rotating a model, contributed by @HellAholic
-Improved the reliability and maintainability of the Cura UI and post-processing plugins, contributed by @HellAholic
+- Improved the reliability and maintainability of the Cura UI and post-processing plugins, contributed by @HellAholic
 - Added a new button under the Help dropdown to quickly open the logfiles, contributed by @HellAholic
-- Updated the filament Change script of the Post Processing plugin to support multiline G-Code Before and G-Code, contributed by @Hobbe and @GregValiant
+- Updated the filament Change script of the Post Processing plugin to support multiline G-Code Before and G-Code After, contributed by @Hobbe and @GregValiant
 - Updated the Z-Hop on Travel post-processing script to include an option for Support Interface Only, contributed by @GregValiant
 - Updated the Post Processing Plug-in with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
 - Updated the Advanced Cooling Fan Control post processing plug-in to add an Enable and Fan Jump Start setting, contributed by @GregValiant
@@ -24,13 +24,13 @@ Improved the reliability and maintainability of the Cura UI and post-processing 
 - Introduced a Print Estimation Factor to the Printer Settings that allows you to adjust the predicted printing time when you notice it deviates consistently from reality, contributed by @HellAholic
 
 * Bug fixes:
-- Improved responsiveness when working with printers who are connected over Digital Factory. 
+- Improved responsiveness when working with printers who are connected over Digital Factory.
 - Improved Scarf Seam behavior when used on overhangs and the visualisation of these seams in the preview for improved troubleshooting
 - Added an option to abort sending a cloudprint job if the loading bar gets stuck
 - Updated the behavior for One At a Time printjobs to reduce the chance of collisions at the end of the printing process
 - Improved the placement of custom Extruder End Gcode
 - Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
-- Fixed an issue were in some models there would be an unretracted travel over a top surface
+- Fixed an issue where in some models there would be an unretracted travel over a top surface
 - Fixed an issue where paint strokes on rotated models would not be picked up correctly
 - Updated the behavior of the preview tab when dragging and dropping in a gcode
 - Fixed an issue where enabling Z hop when retracted moved the nozzle to X0 Y0 at start of the print
@@ -44,7 +44,7 @@ Improved the reliability and maintainability of the Cura UI and post-processing 
 - Introduced a generic ASA profile for the Factor 4
 - Updated the Brim Gap settings for UltiMaker 2+ Connect
 - Introduced Elegoo Centauri Carbon, contributed by @darthmolen
-- Introduced Toybox Alpha name to include Toybox ALpha Three, contributed by @lukbrew25
+- Introduced Toybox Alpha name to include Toybox Alpha Three, contributed by @lukbrew25
 - Updated settings for Elegoo Neptune 2 and Flsun V400, to have better default top layers with the infill set to 100%, contributed by @asterchades
 
 
