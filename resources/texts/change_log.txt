@@ -8,14 +8,14 @@
 - Settings for disabled extruders are now visually dimmed to make it clearer that they’re inactive
 - Added height of the layer in preview mode in mm in addition to the layer number, contributed by @HellAholic
 - Added a pop-up to help with using the Select Face mode when rotating a model, contributed by @HellAholic
-- Improved the reliability and maintainability of the Cura UI and post-processing plugins, contributed by @HellAholic
+- Improved the reliability and maintainability of the Cura UI and Post Processing plugin, contributed by @HellAholic
 - Added a new button under the Help dropdown to quickly open the log files, contributed by @HellAholic
-- Updated the filament Change script of the Post Processing plugin to support multiline Gcode Before and Gcode After, contributed by @Hobbe and @GregValiant
-- Updated the Z-Hop on Travel post-processing script to include an option for Support Interface Only, contributed by @GregValiant
-- Updated the Post Processing Plug-in with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
-- Updated the Advanced Cooling Fan Control post processing plug-in to add an Enable and Fan Jump Start setting, contributed by @GregValiant
-- Updated the Display Info on LCD Post Processing Plugin to reflect Filament Cost and allow for the adjustment of the Cura estimated time, contributed by @GregValiant
-- Updated the Purge Lines and Unload Post Processing plug-in so the CUSTOM addition in the Gcode doesn't trigger an error, contributed by @GregValiant
+- Updated the Filament Change script of the Post Processing plugin to support multiline Gcode Before and Gcode After, contributed by @Hobbe and @GregValiant
+- Updated the Z-Hop on Travel Post Processing script to include an option for Support Interface Only, contributed by @GregValiant
+- Updated the Post Processing plugin with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
+- Updated the Advanced Cooling Fan Control Post Processing plugin to add an Enable and Fan Jump Start setting, contributed by @GregValiant
+- Updated the Display Info on LCD Post Processing plugin to reflect Filament Cost and allow for the adjustment of the Cura estimated time, contributed by @GregValiant
+- Updated the Purge Lines and Unload Post Processing plugin so the CUSTOM addition in the Gcode doesn't trigger an error, contributed by @GregValiant
 
 * New Settings:
 - Introduced Honeycomb and Octagon infill types that are fast and do not self-intersect, reducing ringing at high speeds
@@ -34,8 +34,8 @@
 - Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
 - Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
 - Fixed an issue where combing would add a lot of unnecessary travels due to a very small slit in layer outline
-- Updated the behavior of the preview tab when dragging and dropping in a Gcode
-- Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and moved the nozzle to X0 Y0 at start of the print
+- Updated the behavior of the preview tab when dragging and dropping in a Gcode file
+- Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and move the nozzle to X0 Y0 at start of the print
 - Fixed an inconsistency in the Language and Theme Combobox in preferences
 - Fixed an issue that would cause a crash if the model was reloaded inside the paint mode
 - Fixed an issue where Top Surface Expansion was being applied inside the model without any Top Surface area
@@ -44,7 +44,7 @@
 - Fixed a crash that could occur when exporting and sending very large print jobs over the network or Digital Factory Cloud
 - Improved the robustness of network printing to reduce crashes and error states when communication with printers fails
 - Fixed an issue where the configured build volume temperature limits could be bypassed in certain cases
-- Updated the Annealing or Drying Post Processing Plug-in so it now also works on UltiMaker 3D printers, contributed by @GregValiant
+- Updated the Annealing or Drying Post Processing plugin so it now also works on UltiMaker 3D printers, contributed by @GregValiant
 
 * Printer definitions, profiles and materials:
 - Updated wall settings for the UltiMaker S6 and S8 to improve wall strength
