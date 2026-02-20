@@ -29,16 +29,15 @@
 - Improved Scarf Seam behavior when used on overhangs and the visualisation of these seams in the preview for improved troubleshooting
 - Added an option to abort sending a cloudprint job if the loading bar gets stuck
 - Updated the behavior for One At a Time printjobs to reduce the chance of collisions at the end of the printing process
-- Improved the placement of custom Extruder End Gcode
+- Extruder End GCode is now added to the end of the print process before Machine End GCode
 - Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
-- Fixed an issue where in some models there would be an unretracted travel over a top surface
-- Fixed an issue where paint strokes on rotated models would not be picked up correctly
+- Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
+- Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
 - Fixed an issue where combing would add a lot of unnecessary travels due to a very small slit in layer outline
 - Updated the behavior of the preview tab when dragging and dropping in a gcode
-- Fixed an issue where enabling Z hop when retracted moved the nozzle to X0 Y0 at start of the print
+- Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and moved the nozzle to X0 Y0 at start of the print
 - Fixed an inconsistency in the Language and Theme Combobox in preferences
 - Fixed an issue that would cause a crash if model was reloaded inside the paint mode
-- Fixed an issue with displaying loaded gcode from disk directly in simulation view
 - Fixed an issue where Top Surface Expansion was being applied inside the model without any Top Surface area
 - Fixed an issue where the flow of a fractional layer was not adjusted as expected
 - Fixed an issue where UV unwrapping sometimes failed on complex shapes, leading to incorrect color or material painting
