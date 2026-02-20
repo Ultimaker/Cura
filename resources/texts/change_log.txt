@@ -9,8 +9,8 @@
 - Added height of the layer in preview mode in mm in addition to the layer number, contributed by @HellAholic
 - Added a pop-up to help with using the Select Face mode when rotating a model, contributed by @HellAholic
 - Improved the reliability and maintainability of the Cura UI and post-processing plugins, contributed by @HellAholic
-- Added a new button under the Help dropdown to quickly open the logfiles, contributed by @HellAholic
-- Updated the filament Change script of the Post Processing plugin to support multiline G-Code Before and G-Code After, contributed by @Hobbe and @GregValiant
+- Added a new button under the Help dropdown to quickly open the log files, contributed by @HellAholic
+- Updated the filament Change script of the Post Processing plugin to support multiline Gcode Before and Gcode After, contributed by @Hobbe and @GregValiant
 - Updated the Z-Hop on Travel post-processing script to include an option for Support Interface Only, contributed by @GregValiant
 - Updated the Post Processing Plug-in with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
 - Updated the Advanced Cooling Fan Control post processing plug-in to add an Enable and Fan Jump Start setting, contributed by @GregValiant
@@ -25,10 +25,10 @@
 - Introduced a Print Estimation Factor to the Printer Settings that allows you to adjust the predicted printing time when you notice it deviates consistently from reality, contributed by @HellAholic
 
 * Bug fixes:
-- Improved responsiveness when working with printers who are connected over Digital Factory
-- Improved Scarf Seam behavior when used on overhangs and the visualisation of these seams in the preview for improved troubleshooting
-- Added an option to abort sending a cloudprint job if the loading bar gets stuck
-- Updated the behavior for One At a Time printjobs to reduce the chance of collisions at the end of the printing process
+- Improved responsiveness when working with printers that are connected over Digital Factory
+- Improved Scarf Seam behavior when used on overhangs and the visualization of these seams in the preview for improved troubleshooting
+- Added an option to abort sending a cloud print job if the loading bar gets stuck
+- Updated the behavior for One At a Time print jobs to reduce the chance of collisions at the end of the printing process
 - Extruder End GCode is now added to the end of the print process before Machine End GCode
 - Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
 - Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
@@ -37,7 +37,7 @@
 - Updated the behavior of the preview tab when dragging and dropping in a gcode
 - Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and moved the nozzle to X0 Y0 at start of the print
 - Fixed an inconsistency in the Language and Theme Combobox in preferences
-- Fixed an issue that would cause a crash if model was reloaded inside the paint mode
+- Fixed an issue that would cause a crash if the model was reloaded inside the paint mode
 - Fixed an issue where Top Surface Expansion was being applied inside the model without any Top Surface area
 - Fixed an issue where the flow of a fractional layer was not adjusted as expected
 - Fixed an issue where UV unwrapping sometimes failed on complex shapes, leading to incorrect color or material painting
