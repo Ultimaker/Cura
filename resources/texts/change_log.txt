@@ -29,12 +29,12 @@
 - Improved Scarf Seam behavior when used on overhangs and the visualization of these seams in the preview for improved troubleshooting
 - Added an option to abort sending a cloud print job if the loading bar gets stuck
 - Updated the behavior for One At a Time print jobs to reduce the chance of collisions at the end of the printing process
-- Extruder End GCode is now added to the end of the print process before Machine End GCode
+- Extruder End Gcode is now added to the end of the print process before Machine End Gcode
 - Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
 - Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
 - Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
 - Fixed an issue where combing would add a lot of unnecessary travels due to a very small slit in layer outline
-- Updated the behavior of the preview tab when dragging and dropping in a gcode
+- Updated the behavior of the preview tab when dragging and dropping in a Gcode
 - Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and moved the nozzle to X0 Y0 at start of the print
 - Fixed an inconsistency in the Language and Theme Combobox in preferences
 - Fixed an issue that would cause a crash if the model was reloaded inside the paint mode
