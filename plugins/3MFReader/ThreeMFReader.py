@@ -137,11 +137,11 @@ class ThreeMFReader(MeshReader):
 
         mesh_data = savitar_node.getMeshData()
 
-        vertices_data = numpy.fromstring(mesh_data.getFlatVerticesAsBytes(), dtype=numpy.float32)
+        vertices_data = numpy.frombuffer(mesh_data.getFlatVerticesAsBytes(), dtype=numpy.float32)
         vertices = numpy.resize(vertices_data, (int(vertices_data.size / 3), 3))
 
         texture_path = mesh_data.getTexturePath(scene)
-        uv_data = numpy.fromstring(mesh_data.getUVCoordinatesPerVertexAsBytes(scene), dtype=numpy.float32)
+        uv_data = numpy.frombuffer(mesh_data.getUVCoordinatesPerVertexAsBytes(scene), dtype=numpy.float32)
         uv_coordinates = numpy.resize(uv_data, (int(uv_data.size / 2), 2))
 
         mesh_builder.setVertices(vertices)
