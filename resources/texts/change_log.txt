@@ -1,3 +1,63 @@
+[5.12]
+
+* New features and improvements:
+- Bridging behavior over rectangular empty spaces and infill are now placed in a smarter way. The bridge lines are now anchored to layers below where possible. Bridge lines can now also be interlaced for improved quality.
+- Updated combing behavior for thin parts so it doesn't ooze over the walls by updating the behavior for Inside Travel Avoid Distance
+- Added a warning in the preview if the reason you are not seeing your model is that the extruder is unchecked
+- Self-intersecting infills like Grid, Triangular, and Cubic are hidden for some printers in recommended mode because they introduce artifacts at high speeds. They are still available in Custom mode
+- Settings for disabled extruders are now visually dimmed to make it clearer that they’re inactive
+- Added height of the layer in preview mode in mm in addition to the layer number, contributed by @HellAholic
+- Added a pop-up to help with using the Select Face mode when rotating a model, contributed by @HellAholic
+- Improved the reliability and maintainability of the Cura UI and Post Processing plugin, contributed by @HellAholic
+- Added a new button under the Help dropdown to quickly open the log files, contributed by @HellAholic
+- Updated the Filament Change script of the Post Processing plugin to support multiline Gcode Before and Gcode After, contributed by @Hobbe and @GregValiant
+- Updated the Z-Hop on Travel Post Processing script to include an option for Support Interface Only, contributed by @GregValiant
+- Updated the Post Processing plugin with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
+- Updated the Advanced Cooling Fan Control Post Processing plugin to add an Enable and Fan Jump Start setting, contributed by @GregValiant
+- Updated the Display Info on LCD Post Processing plugin to reflect Filament Cost and allow for the adjustment of the Cura estimated time, contributed by @GregValiant
+- Updated the Purge Lines and Unload Post Processing plugin so the CUSTOM addition in the Gcode doesn't trigger an error, contributed by @GregValiant
+
+* New Settings:
+- Introduced Honeycomb and Octagon infill types that are fast and do not self-intersect, reducing ringing at high speeds
+- Introduced Infill Start/End Move Inwards Length settings that add an extra line at the beginning and the end of your infill to prime the infill and prevent blobs on the outside wall
+- Introduced Infill Skin Support to consolidate and replace Extra Infill Lines to Support Skin, Skin Edge Support Layer, and Bridging Over Infill Settings.
+- Introduced a Middle option to the Z Seam Positions, contributed by @GregValiant
+- Introduced a Print Estimation Factor to the Printer Settings that allows you to adjust the predicted printing time when you notice it deviates consistently from reality, contributed by @HellAholic
+
+* Bug fixes:
+- Improved responsiveness when working with printers that are connected over Digital Factory
+- Improved Scarf Seam behavior when used on overhangs and the visualization of these seams in the preview for improved troubleshooting
+- Added an option to abort sending a cloud print job if the loading bar gets stuck
+- Updated the behavior for One At a Time print jobs to reduce the chance of collisions at the end of the printing process
+- Extruder End Gcode is now added to the end of the print process before Machine End Gcode
+- Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
+- Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
+- Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
+- Fixed an issue where combing would add a lot of unnecessary travels due to a very small slit in layer outline
+- Updated the behavior of the preview tab when dragging and dropping in a Gcode file
+- Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and move the nozzle to X0 Y0 at start of the print
+- Fixed an inconsistency in the Language and Theme Combobox in preferences
+- Fixed an issue that would cause a crash if the model was reloaded inside the paint mode
+- Fixed an issue where Top Surface Expansion was being applied inside the model without any Top Surface area
+- Fixed an issue where the flow of a fractional layer was not adjusted as expected
+- Fixed an issue where UV unwrapping sometimes failed on complex shapes, leading to incorrect color or material painting
+- Fixed a crash that could occur when exporting and sending very large print jobs over the network or Digital Factory Cloud
+- Improved the robustness of network printing to reduce crashes and error states when communication with printers fails
+- Fixed an issue where the configured build volume temperature limits could be bypassed in certain cases
+- Updated the Annealing or Drying Post Processing plugin so it now also works on UltiMaker 3D printers, contributed by @GregValiant
+
+* Printer definitions, profiles and materials:
+- Updated wall settings for the UltiMaker S6 and S8 to improve wall strength
+- Updated infill, skin, and shell settings for the UltiMaker S6 and S8 to reduce printing time and improve printed part quality
+- Introduced Visual Intent for ABS and PETG for the S8
+- Updated Retraction settings to reduce oozing and stringing in the UltiMaker S6 and S8
+- Introduced a generic ASA profile for the Factor 4
+- Updated the Brim Gap settings for UltiMaker 2+ Connect
+- Introduced Elegoo Centauri Carbon, contributed by @darthmolen
+- Introduced Toybox Alpha name to include Toybox Alpha Three, contributed by @lukbrew25
+- Updated settings for Elegoo Neptune 2 and Flsun V400, to have better default top layers with the infill set to 100%, contributed by @asterchades
+
+
 [5.11]
 
 * New features and improvements:
