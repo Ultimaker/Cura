@@ -907,23 +907,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Handle quality changes if any
                 self._processQualityChanges(global_stack)
 
-                # Prepare the machine
+                # Prepare the machine - but skip materials for now
+                # Materials will be applied after machine activation in a deferred callback
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
 
-            Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-            # Actually change the active machine.
-            #
-            # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
-            # data, but those managers will only update upon a container/container metadata changed signal. Because this
-            # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
-            # they won't take effect until this function is done.
-            # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
-
-            self._updateActiveMachine(global_stack)
-
-            if self._is_ucp:
-                # Now we have switched, apply the user settings
-                self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
+                # Defer machine activation to allow container signals to propagate
+                Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
+                Application.getInstance().callLater(self._finalizeMachineActivation, global_stack, extruder_stack_dict, False)
+            else:
+                # For UCP files, just activate machine and apply user settings (no materials)
+                Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
+                Application.getInstance().callLater(self._finalizeUcpActivation, global_stack, extruder_stack_dict, True)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1293,7 +1287,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._applyDefinitionChanges(global_stack, extruder_stack_dict)
         self._applyUserChanges(global_stack, extruder_stack_dict)
         self._applyVariants(global_stack, extruder_stack_dict)
-        self._applyMaterials(global_stack, extruder_stack_dict)
 
         # prepare the quality to select
         if self._machine_info.quality_changes_info is not None:
@@ -1316,6 +1309,37 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
+    def _finalizeMachineActivation(self, global_stack, extruder_stack_dict, is_ucp):
+        """Complete machine activation by activating the machine and then applying materials."""
+        # First activate the machine
+        self._updateActiveMachine(global_stack, is_ucp)
+        
+        # Then apply materials in another deferred call to ensure machine is fully activated
+        # and ContainerTree has been accessed (which triggers lazy loading)
+        Application.getInstance().callLater(self._applyMaterialsAndFinalize, global_stack, extruder_stack_dict)
+
+    def _applyMaterialsAndFinalize(self, global_stack, extruder_stack_dict):
+        """Apply materials after machine is activated."""
+        self._applyMaterials(global_stack, extruder_stack_dict)
+
+        # Trigger a re-validation to pick up the newly applied changes
+        global_stack.containersChanged.emit(global_stack.getTop())
+
+    def _finalizeUcpActivation(self, global_stack, extruder_stack_dict, is_ucp):
+        """Complete UCP file activation by activating the machine and then applying user settings."""
+        # First activate the machine
+        self._updateActiveMachine(global_stack, is_ucp)
+        
+        # Then apply UCP user settings in another deferred call
+        Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
+
+    def _applyUcpUserSettings(self, global_stack, extruder_stack_dict):
+        """Apply UCP user settings after machine is activated."""
+        self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
+        
+        # Trigger a re-validation to pick up the newly applied settings
+        global_stack.containersChanged.emit(global_stack.getTop())
+
     def _settingIsFromMissingPackage(self, key, value):
         # Check if the key and value pair is from the missing package
         for package in self._dialog.missingPackages:
@@ -1325,7 +1349,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     return True
         return False
 
-    def _updateActiveMachine(self, global_stack):
+    def _updateActiveMachine(self, global_stack, is_ucp):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
         container_tree = ContainerTree.getInstance()
@@ -1333,7 +1357,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Set metadata fields that are missing from the global stack
-        if not self._is_ucp:
+        if not is_ucp:
             for key, value in self._machine_info.metadata_dict.items():
                 if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                     global_stack.setMetaDataEntry(key, value)
@@ -1366,8 +1390,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     else:
                         # if no intent is provided, reset to the default (balanced) intent
                         machine_manager.resetIntents()
-        # Notify everything/one that is to notify about changes.
-        global_stack.containersChanged.emit(global_stack.getTop())
 
     @staticmethod
     def _stripFileToId(file):
