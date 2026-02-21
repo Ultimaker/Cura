@@ -577,7 +577,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                  message_type = Message.MessageType.WARNING)
             message.show()
 
-            Logger.info(f"Could unknown machine definition {self._machine_info.definition_id} in project file {file_name}, cannot import it.")
+            Logger.info(f"Found unknown machine definition {self._machine_info.definition_id} in project file {file_name}, cannot import it.")
             return WorkspaceReader.PreReadResult.failed
 
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
