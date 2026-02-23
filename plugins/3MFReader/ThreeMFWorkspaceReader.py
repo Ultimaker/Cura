@@ -907,11 +907,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Defer machine activation to allow container signals to propagate
                 Logger.debug("Workspace loading is notifying rest of the code of changes...")
-                Application.getInstance().callLater(self._finalizeMachineActivation, global_stack, extruder_stack_dict, False)
+                Application.getInstance().callLater(self._finalizeMachineActivation, global_stack, extruder_stack_dict)
             else:
                 # For UCP files, just activate machine and apply user settings (no materials)
                 Logger.debug("Workspace loading is notifying rest of the code of changes...")
-                Application.getInstance().callLater(self._finalizeUcpActivation, global_stack, extruder_stack_dict, True)
+                Application.getInstance().callLater(self._finalizeUcpActivation, global_stack, extruder_stack_dict)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -1301,10 +1301,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
-    def _finalizeMachineActivation(self, global_stack, extruder_stack_dict, is_ucp):
+    def _finalizeMachineActivation(self, global_stack, extruder_stack_dict):
         """Complete machine activation by activating the machine and then applying materials."""
         # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp)
+        self._updateActiveMachine(global_stack, is_ucp = False)
         
         # Then apply materials in another deferred call to ensure machine is fully activated
         # and ContainerTree has been accessed (which triggers lazy loading)
@@ -1317,10 +1317,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Trigger a re-validation to pick up the newly applied changes
         global_stack.containersChanged.emit(global_stack.getTop())
 
-    def _finalizeUcpActivation(self, global_stack, extruder_stack_dict, is_ucp):
+    def _finalizeUcpActivation(self, global_stack, extruder_stack_dict):
         """Complete UCP file activation by activating the machine and then applying user settings."""
         # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp)
+        self._updateActiveMachine(global_stack, is_ucp = True)
         
         # Then apply UCP user settings in another deferred call
         Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
