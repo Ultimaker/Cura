@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-05 14:52+0100\n"
-"PO-Revision-Date: 2026-02-20 14:09+0000\n"
+"PO-Revision-Date: 2026-02-23 11:33+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -464,11 +464,11 @@ msgstr "サポート材の配置を調整します。配置はTouching Buildplat
 
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
-msgstr "次によって影響を受ける"
+msgstr "以下の設定により影響を受ける"
 
 msgctxt "@label Header for list of settings."
 msgid "Affects"
-msgstr "影響"
+msgstr "以下の設定に影響"
 
 msgctxt "@button"
 msgid "Agree"
