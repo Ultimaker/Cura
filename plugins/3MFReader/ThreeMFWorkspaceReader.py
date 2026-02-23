@@ -965,7 +965,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return result
 
-    def _processQualityChanges(self, global_stack):
+    def _processQualityChanges(self, global_stack: GlobalStack):
         if self._machine_info.quality_changes_info is None:
             return
 
@@ -1151,7 +1151,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges.clear()
 
-    def _applyDefinitionChanges(self, global_stack, extruder_stack_dict):
+    def _applyDefinitionChanges(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         values_to_set_for_extruders = {}
         if self._machine_info.definition_changes_info is not None:
             parser = self._machine_info.definition_changes_info.parser
@@ -1177,7 +1177,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if not self._settingIsFromMissingPackage(key, value):
                         extruder_stack.definitionChanges.setProperty(key, "value", value)
 
-    def _applyUserChanges(self, global_stack, extruder_stack_dict):
+    def _applyUserChanges(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         values_to_set_for_extruder_0 = {}
         if self._machine_info.user_changes_info is not None:
             parser = self._machine_info.user_changes_info.parser
@@ -1203,7 +1203,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if not self._settingIsFromMissingPackage(key, value):
                             extruder_stack.userChanges.setProperty(key, "value", value)
 
-    def _applyVariants(self, global_stack, extruder_stack_dict):
+    def _applyVariants(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
         # Take the global variant from the machine info if available.
@@ -1226,7 +1226,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants.get(variant_name, next(iter(machine_node.variants.values())))
             extruder_stack.variant = node.container
 
-    def _applyMaterials(self, global_stack, extruder_stack_dict):
+    def _applyMaterials(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1272,7 +1272,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for setting_to_import, setting_value in user_settings.items():
             user_settings_container.setProperty(setting_to_import, 'value', setting_value)
 
-    def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
+    def _applyChangesToMachine(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         # Clear all first
         self._clearMachineSettings(global_stack, extruder_stack_dict)
 
@@ -1301,7 +1301,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
-    def _finalizeMachineActivation(self, global_stack, extruder_stack_dict):
+    def _finalizeMachineActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete machine activation by activating the machine and then applying materials."""
         # First activate the machine
         self._updateActiveMachine(global_stack, is_ucp = False)
@@ -1310,14 +1310,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # and ContainerTree has been accessed (which triggers lazy loading)
         Application.getInstance().callLater(self._applyMaterialsAndFinalize, global_stack, extruder_stack_dict)
 
-    def _applyMaterialsAndFinalize(self, global_stack, extruder_stack_dict):
+    def _applyMaterialsAndFinalize(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Apply materials after machine is activated."""
         self._applyMaterials(global_stack, extruder_stack_dict)
 
         # Trigger a re-validation to pick up the newly applied changes
         global_stack.containersChanged.emit(global_stack.getTop())
 
-    def _finalizeUcpActivation(self, global_stack, extruder_stack_dict):
+    def _finalizeUcpActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete UCP file activation by activating the machine and then applying user settings."""
         # First activate the machine
         self._updateActiveMachine(global_stack, is_ucp = True)
@@ -1325,7 +1325,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Then apply UCP user settings in another deferred call
         Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
 
-    def _applyUcpUserSettings(self, global_stack, extruder_stack_dict):
+    def _applyUcpUserSettings(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Apply UCP user settings after machine is activated."""
         self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
         
@@ -1341,7 +1341,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     return True
         return False
 
-    def _updateActiveMachine(self, global_stack, is_ucp):
+    def _updateActiveMachine(self, global_stack: GlobalStack, is_ucp: bool):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
         container_tree = ContainerTree.getInstance()
