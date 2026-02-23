@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2026-02-05 14:52+0000\n"
-"PO-Revision-Date: 2026-02-20 14:09+0000\n"
+"PO-Revision-Date: 2026-02-23 11:33+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -18,7 +18,7 @@ msgstr "<html>プライムタワーの生成方法:<ul><li><b>通常:</b>2番目
 
 msgctxt "infill_pattern description"
 msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
-msgstr "<html>プリントのインフィル材料パターンです。<ul><li>ラインとジグザグはレイヤーの交互に入れ替え、材料の使用を抑えます。</li><li>グリッド、トライアングル、トリヘキサゴン、キュービック、オクテット、クォーターキュービック、クロス、そしてコンセントリックパターンは各レイヤーで必ず印刷されます。</li><li>ジャイロイド、ハニカム構造、オクタゴン、キュービック、クオーターキュービック、およびオクテットのインフィルは全方向に対して強度を発揮するようレイヤーごとに変化します。</li><li>ライトニングはインフィルを最小化しようとしますが、オブジェクトの底面によってのみ支えられます。</li></ul>⚠グリッド、三角形、およびキュービックのインフィルパターンは交差するラインを含み、ノズルがプリントされたラインとの衝突を起こしたり、プリンターが振動したりする場合がありますのでご注意ください。<br/></html>"
+msgstr "<html>プリントのインフィル材料パターンです。<ul><li>ラインとジグザグはレイヤーの交互に入れ替え、材料の使用を抑えます。</li><li>グリッド、トライアングル、トリヘキサゴン、キュービック、オクテット、クォーターキュービック、クロス、そしてコンセントリックパターンは各レイヤーで必ず印刷されます。</li><li>ジャイロイド、ハニカム構造、オクタゴン、キュービック、クオーターキュービック、およびオクテットのインフィルは全方向に対して強度を発揮するようレイヤーごとに変化します。</li><li>ライトニングはインフィルを最小化しようとしますが、オブジェクトの底面によってのみ支えられます。</li></ul>⚠グリッド、トライアングル、およびキュービックのインフィルパターンは交差するラインを含み、ノズルがプリントされたラインとの衝突を起こしたり、プリンターが振動したりする場合がありますのでご注意ください。<br/></html>"
 
 msgctxt "prime_during_travel_ratio description"
 msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
@@ -1014,7 +1014,7 @@ msgstr "プライムタワーを有効にする"
 
 msgctxt "cool_fan_enabled label"
 msgid "Enable Print Cooling"
-msgstr "印刷中の冷却を有効にする"
+msgstr "プリント中の冷却を有効にする"
 
 msgctxt "ppr_enable label"
 msgid "Enable Print Process Reporting"
@@ -1074,7 +1074,7 @@ msgstr "プリントヘッドのスピード調整を有効にします。加速
 
 msgctxt "cool_fan_enabled description"
 msgid "Enables the print cooling fans while printing. The fans improve print quality on layers with short layer times and bridging / overhangs."
-msgstr "印刷中の冷却ファンを有効にします。ファンは、短いレイヤープリントやブリッジ/オーバーハングのレイヤーがある印刷物の品質を向上させます。"
+msgstr "プリント中の冷却ファンを有効にします。ファンは、短いレイヤープリントやブリッジ/オーバーハングのレイヤーがあるプリントの品質が向上します。"
 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
@@ -4186,7 +4186,7 @@ msgstr "プリント開始時における主要ノズル地点のZ座標。"
 
 msgctxt "acceleration_print_layer_0 description"
 msgid "The acceleration during the printing of the initial layer."
-msgstr "初期レイヤーの印刷中の加速度。"
+msgstr "初期レイヤーのプリント中の加速度。"
 
 msgctxt "acceleration_layer_0 description"
 msgid "The acceleration for the initial layer."
@@ -4394,7 +4394,7 @@ msgstr "プリントヘッド移動のデフォルトの加速度。"
 
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
-msgstr "印刷中のデフォルトの温度。これは材料の基本温度となります。他のすべての造形温度はこの値に基づいてオフセットされます"
+msgstr "プリント中のデフォルト温度。これは材料の基本温度となります。他のすべての造形温度はこの値に基づいてオフセットされます"
 
 msgctxt "default_material_bed_temperature description"
 msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
@@ -4530,7 +4530,7 @@ msgstr "インフィルラインのエンドポイントは短縮され、材料
 
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
-msgstr "印刷中にノズルが冷える際の速度。同じ値が、加熱する際の加熱速度に割当られます。"
+msgstr "押出し中にノズルを冷却するため追加される速度。同じ値が、加熱する際のスピード減少量に割り当てられます。"
 
 msgctxt "support_extruder_nr_layer_0 description"
 msgid "The extruder train to use for printing the first layer of support infill. This is used in multi-extrusion."
@@ -5398,7 +5398,7 @@ msgstr "最初の層を印刷するために使用される温度です。"
 
 msgctxt "material_print_temperature description"
 msgid "The temperature used for printing."
-msgstr "印刷中の温度。"
+msgstr "プリント中の温度。"
 
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer."
@@ -5810,7 +5810,7 @@ msgstr "適応レイヤーの使用"
 
 msgctxt "support_use_towers label"
 msgid "Use Towers"
-msgstr "使用タワー"
+msgstr "タワーを使用"
 
 msgctxt "acceleration_travel_enabled description"
 msgid "Use a separate acceleration rate for travel moves. If disabled, travel moves will use the acceleration value of the printed line at their destination."
