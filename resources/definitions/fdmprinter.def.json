@@ -1229,6 +1229,20 @@
                     "default_value": "inside_out",
                     "settable_per_mesh": true
                 },
+                "initial_layer_inset_direction":
+                {
+                    "label": "Initial Layer Wall Ordering",
+                    "description": "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When set to 'Not Overridden', the regular Wall Ordering setting is used. For better adhesion with small inner features, 'Outside To Inside' is recommended.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "inside_out": "Inside To Outside",
+                        "outside_in": "Outside To Inside"
+                    },
+                    "default_value": "inside_out",
+                    "value": "inset_direction",
+                    "settable_per_mesh": true
+                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
