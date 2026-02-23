@@ -807,6 +807,75 @@ UM.MainWindow
         }
     }
 
+    UM.Dialog
+    {
+        id: clearConfigurationCacheDialog
+
+        title: catalog.i18nc("@title:window", "Clear Configuration Cache")
+        width: UM.Theme.getSize("small_popup_dialog").width
+        height: UM.Theme.getSize("small_popup_dialog").height
+        backgroundColor: UM.Theme.getColor("main_background")
+
+        maximumHeight: height
+        maximumWidth: width
+        minimumHeight: maximumHeight
+        minimumWidth: maximumWidth
+
+        modality: Qt.ApplicationModal
+
+        Column
+        {
+            anchors.fill: parent
+            spacing: UM.Theme.getSize("default_margin").height
+
+            UM.Label
+            {
+                width: parent.width
+                text: catalog.i18nc("@info:question", "Are you sure you want to clear the configuration cache? This will remove cached data and may improve performance if you're experiencing issues.")
+                wrapMode: Text.WordWrap
+            }
+
+            UM.CheckBox
+            {
+                id: clearAllVersionsCheckBox
+                text: catalog.i18nc("@option:check", "Also clear cache from previous Cura versions")
+            }
+        }
+
+        rightButtons:
+        [
+            Cura.SecondaryButton
+            {
+                text: catalog.i18nc("@action:button", "Cancel")
+                onClicked: clearConfigurationCacheDialog.reject()
+            },
+            Cura.PrimaryButton
+            {
+                text: catalog.i18nc("@action:button", "Clear Cache")
+                onClicked: clearConfigurationCacheDialog.accept()
+            }
+        ]
+
+        onAccepted:
+        {
+            CuraActions.clearConfigurationCache(clearAllVersionsCheckBox.checked)
+            clearConfigurationCacheDialog.hide()
+        }
+        onRejected:
+        {
+            clearConfigurationCacheDialog.hide()
+        }
+    }
+
+    Connections
+    {
+        target: Cura.Actions.clearConfigurationCache
+        function onTriggered()
+        {
+            clearConfigurationCacheDialog.visible = true
+        }
+    }
+
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
