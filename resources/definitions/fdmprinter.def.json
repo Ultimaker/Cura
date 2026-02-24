@@ -1870,6 +1870,51 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "wall_line_count_skin":
+                {
+                    "label": "Wall Line Count Top/Initial",
+                    "description": "The number of walls in the top-skin and initial-layer-skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air' (except for bottom parts higher up in the model).",
+                    "default_value": 1,
+                    "value": "wall_line_count",
+                    "minimum_value": "0",
+                    "maximum_value_warning": "10",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0)",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_line_count_layer_0":
+                        {
+                            "label": "Wall Line Count Initial Layer",
+                            "description": "The number of walls in the initial layer.",
+                            "default_value": 1,
+                            "value": "wall_line_count_skin",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "enabled": "bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "wall_line_count_roofing":
+                        {
+                            "label": "Wall Line Count Top",
+                            "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
+                            "default_value": 1,
+                            "value": "wall_line_count_skin",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "enabled": "top_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "ironing_enabled":
                 {
                     "label": "Enable Ironing",
