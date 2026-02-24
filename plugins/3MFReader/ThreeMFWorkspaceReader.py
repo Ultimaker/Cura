@@ -188,7 +188,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             # sanity check
             if not stack_config.has_option("metadata", "type"):
-                Logger.log("e", "%s in %s doesn't seem to be valid stack file", file_name, project_file_name)
+                Logger.error(f"{file_name} in {project_file_name} doesn't seem to be valid stack file")
                 continue
 
             stack_type = stack_config.get("metadata", "type")
@@ -197,14 +197,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             elif stack_type == "machine":
                 global_stack_file_list.append(file_name)
             else:
-                Logger.log("w", "Unknown container stack type '%s' from %s in %s",
-                           stack_type, file_name, project_file_name)
+                Logger.warning(f"Unknown container stack type '{stack_type}' from {file_name} in {project_file_name}")
 
         if len(global_stack_file_list) > 1:
-            Logger.log("e", "More than one global stack file found: [{file_list}]".format(file_list = global_stack_file_list))
+            Logger.error(f"More than one global stack file found: [{global_stack_file_list}]")
             #But we can recover by just getting the first global stack file.
         if len(global_stack_file_list) == 0:
-            Logger.log("e", "No global stack file found!")
+            Logger.error("No global stack file found!")
             raise FileNotFoundError("No global stack file found!")
 
         return global_stack_file_list[0], extruder_stack_file_list
@@ -232,7 +231,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if self._3mf_mesh_reader and self._3mf_mesh_reader.preRead(file_name) == WorkspaceReader.PreReadResult.accepted:
             pass
         else:
-            Logger.log("w", "Could not find reader that was able to read the scene data for 3MF workspace")
+            Logger.warning("Could not find reader that was able to read the scene data for 3MF workspace")
             return WorkspaceReader.PreReadResult.failed
 
         self._machine_info = MachineInfo()
@@ -281,8 +280,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             elif definition_container_type == "extruder":
                 extruder_definition_container_count += 1
             else:
-                Logger.log("w", "Unknown definition container type %s for %s",
-                           definition_container_type, definition_container_file)
+                Logger.warning(f"Unknown definition container type {definition_container_type} for {definition_container_file}")
             Job.yieldThread()
 
         if machine_definition_container_count != 1:
@@ -366,8 +364,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     try:
                         instance_container.deserialize(serialized, file_name = instance_container_file_name)
                     except ContainerFormatError:
-                        Logger.logException("e", "Failed to deserialize InstanceContainer %s from project file %s",
-                                            instance_container_file_name, file_name)
+                        Logger.logException("e", f"Failed to deserialize InstanceContainer {instance_container_file_name} from project file {file_name}")
                         return ThreeMFWorkspaceReader.PreReadResult.failed
                     if quality_changes[0] != instance_container:
                         quality_changes_conflict = True
@@ -382,7 +379,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 num_user_settings += len(parser["values"])
             elif container_type in self._ignored_instance_container_types:
                 # Ignore certain instance container types
-                Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
+                Logger.warning(f"Ignoring instance container [{container_id}] with type [{container_type}]")
                 continue
             Job.yieldThread()
 
@@ -566,7 +563,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
         except KeyError:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
-            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            Logger.warning(f"File {file_name} is not a valid workspace.")
             return WorkspaceReader.PreReadResult.failed
 
         # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
@@ -580,8 +577,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                  message_type = Message.MessageType.WARNING)
             message.show()
 
-            Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
-                       self._machine_info.definition_id, file_name)
+            Logger.info(f"Found unknown machine definition {self._machine_info.definition_id} in project file {file_name}, cannot import it.")
             return WorkspaceReader.PreReadResult.failed
 
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
@@ -638,7 +634,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                                                    settings)
             except KeyError as e:
                 # If there is no user settings file, it's not a UCP, so notify user of failure.
-                Logger.log("w", "File %s is not a valid UCP.", file_name)
+                Logger.warning(f"File {file_name} is not a valid UCP.")
                 message = Message(
                     i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                        "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
@@ -767,7 +763,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = archive.open("Cura/preferences.cfg").read().decode("utf-8")
         except KeyError as e:
             # If there is no preferences file, it's not a workspace, so notify user of failure.
-            Logger.log("w", "File %s is not a valid workspace.", file_name)
+            Logger.warning(f"File {file_name} is not a valid workspace.")
             message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
                                                  "Project file <filename>{0}</filename> is corrupt: <message>{1}</message>.",
                                                  file_name, str(e)),
@@ -783,14 +779,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         visible_settings = temp_preferences.getValue("general/visible_settings")
         if visible_settings is None:
-            Logger.log("w", "Workspace did not contain visible settings. Leaving visibility unchanged")
+            Logger.warning("Workspace did not contain visible settings. Leaving visibility unchanged")
         else:
             global_preferences.setValue("general/visible_settings", visible_settings)
             global_preferences.setValue("cura/active_setting_visibility_preset", "custom")
 
         categories_expanded = temp_preferences.getValue("cura/categories_expanded")
         if categories_expanded is None:
-            Logger.log("w", "Workspace did not contain expanded categories. Leaving them unchanged")
+            Logger.warning("Workspace did not contain expanded categories. Leaving them unchanged")
         else:
             global_preferences.setValue("cura/categories_expanded", categories_expanded)
 
@@ -832,7 +828,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 stack.setNextStack(global_stack, connect_signals = False)
 
         if not self._is_ucp:
-            Logger.log("d", "Workspace loading is checking definitions...")
+            Logger.debug("Workspace loading is checking definitions...")
             # Get all the definition files & check if they exist. If not, add them.
             definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
             for definition_container_file in definition_container_files:
@@ -847,13 +843,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     except ContainerFormatError:
                         # We cannot just skip the definition file because everything else later will just break if the
                         # machine definition cannot be found.
-                        Logger.logException("e", "Failed to deserialize definition file %s in project file %s",
-                                            definition_container_file, file_name)
+                        Logger.logException("e", f"Failed to deserialize definition file {definition_container_file} in project file {file_name}")
                         definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
                     self._container_registry.addContainer(definition_container)
                 Job.yieldThread()
 
-            Logger.log("d", "Workspace loading is checking materials...")
+            Logger.debug("Workspace loading is checking materials...")
             # Get all the material files and check if they exist. If not, add them.
             xml_material_profile = self._getXmlProfileClass()
             if self._material_container_suffix is None:
@@ -892,8 +887,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                             material_container.deserialize(archive.open(material_container_file).read().decode("utf-8"),
                                                            file_name = container_id + "." + self._material_container_suffix)
                         except ContainerFormatError:
-                            Logger.logException("e", "Failed to deserialize material file %s in project file %s",
-                                                material_container_file, file_name)
+                            Logger.logException("e", f"Failed to deserialize material file {material_container_file} in project file {file_name}")
                             continue
                         if need_new_name:
                             new_name = ContainerRegistry.getInstance().uniqueName(material_container.getName())
@@ -907,23 +901,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Handle quality changes if any
                 self._processQualityChanges(global_stack)
 
-                # Prepare the machine
+                # Prepare the machine - but skip materials for now
+                # Materials will be applied after machine activation in a deferred callback
                 self._applyChangesToMachine(global_stack, extruder_stack_dict)
 
-            Logger.log("d", "Workspace loading is notifying rest of the code of changes...")
-            # Actually change the active machine.
-            #
-            # This is scheduled for later is because it depends on the Variant/Material/Qualitiy Managers to have the latest
-            # data, but those managers will only update upon a container/container metadata changed signal. Because this
-            # function is running on the main thread (Qt thread), although those "changed" signals have been emitted, but
-            # they won't take effect until this function is done.
-            # To solve this, we schedule _updateActiveMachine() for later so it will have the latest data.
-
-            self._updateActiveMachine(global_stack)
-
-            if self._is_ucp:
-                # Now we have switched, apply the user settings
-                self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
+                # Defer machine activation to allow container signals to propagate
+                Logger.debug("Workspace loading is notifying rest of the code of changes...")
+                Application.getInstance().callLater(self._finalizeMachineActivation, global_stack, extruder_stack_dict)
+            else:
+                # For UCP files, just activate machine and apply user settings (no materials)
+                Logger.debug("Workspace loading is notifying rest of the code of changes...")
+                Application.getInstance().callLater(self._finalizeUcpActivation, global_stack, extruder_stack_dict)
 
         # Load all the nodes / mesh data of the workspace
         nodes = self._3mf_mesh_reader.read(file_name)
@@ -960,10 +948,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
-            Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname = file_name))
+            Logger.logException("w", f"Unable to retrieve metadata from {file_name}: 3MF archive is corrupt.")
             return result
         except EnvironmentError as e:
-            Logger.logException("w", "Unable to retrieve metadata from {fname}: File is inaccessible. Error: {err}".format(fname = file_name, err = str(e)))
+            Logger.logException("w", f"Unable to retrieve metadata from {file_name}: File is inaccessible. Error: {str(e)}")
             return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
@@ -973,19 +961,18 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 plugin_id = metadata_file.split("/")[0]
                 result[plugin_id] = json.loads(archive.open("%s/plugin_metadata.json" % plugin_id).read().decode("utf-8"))
             except Exception:
-                Logger.logException("w", "Unable to retrieve metadata for %s", metadata_file)
+                Logger.logException("w", f"Unable to retrieve metadata for {metadata_file}")
 
         return result
 
-    def _processQualityChanges(self, global_stack):
+    def _processQualityChanges(self, global_stack: GlobalStack):
         if self._machine_info.quality_changes_info is None:
             return
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
         if self._machine_info.quality_changes_info is not None:
-            Logger.log("i", "Loading custom profile [%s] from project file",
-                       self._machine_info.quality_changes_info.name)
+            Logger.info(f"Loading custom profile [{self._machine_info.quality_changes_info.name}] from project file")
 
             # Get the correct extruder definition IDs for quality changes
             machine_definition_id_for_quality = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
@@ -1019,7 +1006,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container_info.container = container
                     self._container_registry.addContainer(container)
 
-                    Logger.log("d", "Created new quality changes container [%s]", container.getId())
+                    Logger.debug(f"Created new quality changes container [{container.getId()}]")
 
             else:
                 # Find the existing containers
@@ -1053,7 +1040,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_info.container = container
                 self._container_registry.addContainer(container)
 
-                Logger.log("d", "Created new quality changes container [%s]", container.getId())
+                Logger.debug(f"Created new quality changes container [{container.getId()}]")
 
             # Clear all existing containers
             quality_changes_info.global_info.container.clear()
@@ -1108,8 +1095,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # as an integer.
                 machine_extruder_count = int(self._machine_info.definition_changes_info.parser["values"]["machine_extruder_count"])
             except ValueError:
-                Logger.log("w", "'machine_extruder_count' in file '{file_name}' is not a number."
-                           .format(file_name = self._machine_info.definition_changes_info.file_name))
+                Logger.warning(f"'machine_extruder_count' in file '{self._machine_info.definition_changes_info.file_name}' is not a number.")
         return machine_extruder_count
 
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
@@ -1165,7 +1151,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges.clear()
 
-    def _applyDefinitionChanges(self, global_stack, extruder_stack_dict):
+    def _applyDefinitionChanges(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         values_to_set_for_extruders = {}
         if self._machine_info.definition_changes_info is not None:
             parser = self._machine_info.definition_changes_info.parser
@@ -1191,7 +1177,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     if not self._settingIsFromMissingPackage(key, value):
                         extruder_stack.definitionChanges.setProperty(key, "value", value)
 
-    def _applyUserChanges(self, global_stack, extruder_stack_dict):
+    def _applyUserChanges(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         values_to_set_for_extruder_0 = {}
         if self._machine_info.user_changes_info is not None:
             parser = self._machine_info.user_changes_info.parser
@@ -1217,7 +1203,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if not self._settingIsFromMissingPackage(key, value):
                             extruder_stack.userChanges.setProperty(key, "value", value)
 
-    def _applyVariants(self, global_stack, extruder_stack_dict):
+    def _applyVariants(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
         # Take the global variant from the machine info if available.
@@ -1226,7 +1212,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if variant_name in machine_node.variants:
                 global_stack.variant = machine_node.variants[variant_name].container
             else:
-                Logger.log("w", "Could not find global variant '{0}'.".format(variant_name))
+                Logger.warning(f"Could not find global variant '{variant_name}'.")
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1240,7 +1226,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants.get(variant_name, next(iter(machine_node.variants.values())))
             extruder_stack.variant = node.container
 
-    def _applyMaterials(self, global_stack, extruder_stack_dict):
+    def _applyMaterials(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -1286,14 +1272,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for setting_to_import, setting_value in user_settings.items():
             user_settings_container.setProperty(setting_to_import, 'value', setting_value)
 
-    def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
+    def _applyChangesToMachine(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         # Clear all first
         self._clearMachineSettings(global_stack, extruder_stack_dict)
 
         self._applyDefinitionChanges(global_stack, extruder_stack_dict)
         self._applyUserChanges(global_stack, extruder_stack_dict)
         self._applyVariants(global_stack, extruder_stack_dict)
-        self._applyMaterials(global_stack, extruder_stack_dict)
 
         # prepare the quality to select
         if self._machine_info.quality_changes_info is not None:
@@ -1316,16 +1301,47 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if key not in _ignored_machine_network_metadata:
                 global_stack.setMetaDataEntry(key, value)
 
+    def _finalizeMachineActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
+        """Complete machine activation by activating the machine and then applying materials."""
+        # First activate the machine
+        self._updateActiveMachine(global_stack, is_ucp = False)
+        
+        # Then apply materials in another deferred call to ensure machine is fully activated
+        # and ContainerTree has been accessed (which triggers lazy loading)
+        Application.getInstance().callLater(self._applyMaterialsAndFinalize, global_stack, extruder_stack_dict)
+
+    def _applyMaterialsAndFinalize(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
+        """Apply materials after machine is activated."""
+        self._applyMaterials(global_stack, extruder_stack_dict)
+
+        # Trigger a re-validation to pick up the newly applied changes
+        global_stack.containersChanged.emit(global_stack.getTop())
+
+    def _finalizeUcpActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
+        """Complete UCP file activation by activating the machine and then applying user settings."""
+        # First activate the machine
+        self._updateActiveMachine(global_stack, is_ucp = True)
+        
+        # Then apply UCP user settings in another deferred call
+        Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
+
+    def _applyUcpUserSettings(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
+        """Apply UCP user settings after machine is activated."""
+        self._applyUserSettings(global_stack, extruder_stack_dict, self._user_settings)
+        
+        # Trigger a re-validation to pick up the newly applied settings
+        global_stack.containersChanged.emit(global_stack.getTop())
+
     def _settingIsFromMissingPackage(self, key, value):
         # Check if the key and value pair is from the missing package
         for package in self._dialog.missingPackages:
             if value.startswith("PLUGIN::"):
                 if (package['id'] + "@" + package['package_version']) in value:
-                    Logger.log("w", f"Ignoring {key} value {value} from missing package")
+                    Logger.warning(f"Ignoring {key} value {value} from missing package")
                     return True
         return False
 
-    def _updateActiveMachine(self, global_stack):
+    def _updateActiveMachine(self, global_stack: GlobalStack, is_ucp: bool):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
         container_tree = ContainerTree.getInstance()
@@ -1333,7 +1349,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager.setActiveMachine(global_stack.getId())
 
         # Set metadata fields that are missing from the global stack
-        if not self._is_ucp:
+        if not is_ucp:
             for key, value in self._machine_info.metadata_dict.items():
                 if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                     global_stack.setMetaDataEntry(key, value)
@@ -1342,7 +1358,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
                 quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
                 if not quality_changes_group:
-                    Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
+                    Logger.error(f"Could not find quality_changes [{self._quality_changes_to_apply}]")
                     return
                 machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
             else:
@@ -1350,12 +1366,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if self._quality_type_to_apply in quality_group_dict:
                     quality_group = quality_group_dict[self._quality_type_to_apply]
                 else:
-                    Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
+                    Logger.info(f"Could not find quality type [{self._quality_type_to_apply}], switch to default")
                     preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
                     quality_group = quality_group_dict.get(preferred_quality_type)
                     if quality_group is None:
-                        Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
-
+                        Logger.error(f"Could not get preferred quality type [{preferred_quality_type}]")
                 if quality_group is not None:
                     machine_manager.setQualityGroup(quality_group, no_dialog = True)
 
@@ -1366,8 +1381,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     else:
                         # if no intent is provided, reset to the default (balanced) intent
                         machine_manager.resetIntents()
-        # Notify everything/one that is to notify about changes.
-        global_stack.containersChanged.emit(global_stack.getTop())
 
     @staticmethod
     def _stripFileToId(file):
