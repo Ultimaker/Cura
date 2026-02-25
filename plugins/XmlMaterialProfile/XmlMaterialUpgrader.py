@@ -16,7 +16,10 @@ class XmlMaterialUpgrader(VersionUpgrade):
         return XmlMaterialProfile.xmlVersionToSettingVersion(xml_version)
 
     def upgradeMaterial(self, serialised, filename):
-        data = ET.fromstring(serialised)
+        # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialised, parser=parser)
 
         # update version
         metadata = data.iterfind("./um:metadata/*", {"um": "http://www.ultimaker.com/material"})
