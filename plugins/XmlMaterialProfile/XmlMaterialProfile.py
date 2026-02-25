@@ -394,7 +394,10 @@ class XmlMaterialProfile(InstanceContainer):
             contents = f.read()
 
         self._inherited_files.append(path)
-        return ET.fromstring(contents)
+        # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        return ET.fromstring(contents, parser=parser)
 
     # The XML material profile can have specific settings for machines.
     # Some machines share profiles, so they are only created once.
@@ -500,7 +503,10 @@ class XmlMaterialProfile(InstanceContainer):
 
     @classmethod
     def getVersionFromSerialized(cls, serialized: str) -> int:
-        data = ET.fromstring(serialized)
+        # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialized, parser=parser)
 
         version = XmlMaterialProfile.Version
         # get setting version
@@ -513,7 +519,10 @@ class XmlMaterialProfile(InstanceContainer):
 
     @classmethod
     def getMetadataFromSerialized(cls, serialized: str, property_name: str) -> str:
-        data = ET.fromstring(serialized)
+        # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialized, parser=parser)
         metadata = data.find("./um:metadata", cls.__namespaces)
         property = metadata.find("./um:" + property_name, cls.__namespaces)
 
@@ -531,7 +540,10 @@ class XmlMaterialProfile(InstanceContainer):
         serialized = ContainerInterface.deserialize(self, serialized, file_name)
 
         try:
-            data = ET.fromstring(serialized)
+            # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialized, parser=parser)
         except:
             Logger.logException("e", "An exception occurred while parsing the material profile")
             return
@@ -863,7 +875,10 @@ class XmlMaterialProfile(InstanceContainer):
         }
 
         try:
-            data = ET.fromstring(serialized)
+            # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialized, parser=parser)
         except:
             Logger.logException("e", "An exception occurred while parsing the material profile")
             return []

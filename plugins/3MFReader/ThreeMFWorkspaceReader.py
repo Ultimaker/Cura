@@ -1424,7 +1424,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _getMaterialLabelFromSerialized(serialized):
-        data = ET.fromstring(serialized)
+        # Secure XML parsing: disable entity expansion to prevent XXE attacks
+        parser = ET.XMLParser()
+        parser.entity = {} # Disable entity resolution
+        data = ET.fromstring(serialized, parser=parser)
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:
             return entry.text
