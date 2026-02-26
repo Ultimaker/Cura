@@ -2652,6 +2652,16 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "split_infill_close_to_seam":
+                {
+                    "label": "Split Infill Close To Seam",
+                    "description": "When enabled, the infill will be split when required, to provide an ending position as close as possible to the walls seam. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "enabled": "infill_sparse_density > 0 and infill_before_walls"
                 }
             }
         },
