@@ -1,16 +1,16 @@
-version: "5.12.0-beta.0"
+version: "5.12.0-beta.1"
 commit: "unknown"
 requirements:
-  - "cura_resources/5.12.0-beta.0"
-  - "uranium/5.12.0-beta.0"
-  - "curaengine/5.12.0-beta.0"
-  - "cura_binary_data/5.12.0-beta.0"
-  - "fdm_materials/5.12.0-beta.0"
+  - "cura_resources/5.12.0-beta.1"
+  - "uranium/5.12.0-beta.1"
+  - "curaengine/5.12.0-beta.1"
+  - "cura_binary_data/5.12.0-beta.1"
+  - "fdm_materials/5.12.0-beta.1"
   - "dulcificum/5.10.0"
   - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
-  - "fdm_materials/5.12.0-beta.0"
+  - "fdm_materials/5.12.0-beta.1"
   - "cura_private_data/5.12.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
