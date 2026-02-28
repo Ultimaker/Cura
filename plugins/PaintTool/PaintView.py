@@ -61,11 +61,13 @@ class PaintView(CuraView):
 
     canUndoChanged = pyqtSignal(bool)
     canRedoChanged = pyqtSignal(bool)
+    currentPaintedObjectMeshDataChanged = pyqtSignal()
 
     def setPaintedObject(self, painted_object: Optional[SceneNode]):
         if self._painted_object is not None:
             texture_changed_signal = self._painted_object.callDecoration("getPaintTextureChangedSignal")
             texture_changed_signal.disconnect(self._onCurrentPaintedObjectTextureChanged)
+            self._painted_object.meshDataChanged.disconnect(self._onCurrentPaintedObjectMesDataChanged)
 
         self._paint_texture = None
         self._cursor_texture = None
@@ -78,6 +80,7 @@ class PaintView(CuraView):
             if texture_changed_signal is not None:
                 texture_changed_signal.connect(self._onCurrentPaintedObjectTextureChanged)
             self._onCurrentPaintedObjectTextureChanged()
+            self._painted_object.meshDataChanged.connect(self._onCurrentPaintedObjectMesDataChanged)
 
         self._updateCurrentBitsRanges()
 
@@ -98,6 +101,10 @@ class PaintView(CuraView):
             self._cursor_texture.setImage(image)
         else:
             self._cursor_texture = None
+
+    def _onCurrentPaintedObjectMesDataChanged(self, object: SceneNode) -> None:
+        if object == self._painted_object:
+            self.currentPaintedObjectMeshDataChanged.emit()
 
     def canUndo(self):
         stack = self._getUndoStack()
