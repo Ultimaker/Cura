@@ -129,6 +129,7 @@ pyinstaller:
         - "stl"
         - "keyrings.alt"
         - "pynavlib"
+        - "scipy"
     collect_all_WINDOWS_ONLY:
         - "PyQt6.Qt"
         - "PyQt6.Qt6"
