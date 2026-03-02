@@ -4819,7 +4819,7 @@
                 "retraction_combing_avoid_distance":
                 {
                     "label": "Inside Travel Avoid Distance",
-                    "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
+                    "description": "The distance between the nozzle and outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
