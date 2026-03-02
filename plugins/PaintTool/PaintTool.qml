@@ -184,11 +184,25 @@ Item
                     color: UM.Theme.getColor("icon")
                 }
             }
+
+            BrushShapeButton
+            {
+                id: buttonBrushFace
+                shape: Cura.PaintToolBrush.FACE
+
+                text: catalog.i18nc("@action:button", "Face")
+                toolItem: UM.ColorImage
+                {
+                    source: UM.Theme.getIcon("LayFlatOnFace")
+                    color: UM.Theme.getColor("icon")
+                }
+            }
         }
 
         UM.Label
         {
             text: catalog.i18nc("@label", "Brush Size")
+            enabled: UM.Controller.properties.getValue("BrushShape") !== Cura.PaintToolBrush.FACE
         }
 
         UM.Slider

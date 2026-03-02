@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import math
 
+from collections import deque
 from enum import IntEnum
 import numpy
 from PyQt6.QtCore import Qt, QObject, pyqtEnum, QPointF
@@ -37,6 +38,7 @@ class PaintTool(Tool):
         class Shape(IntEnum):
             SQUARE = 0
             CIRCLE = 1
+            FACE = 2
 
     class Paint(QObject):
         @pyqtEnum
@@ -276,6 +278,42 @@ class PaintTool(Tool):
                             face_id)
         return [Polygon(points) for points in res]
 
+    def _getUvAreasForFace(self, face_id: int) -> List[Polygon]:
+        """Get UV polygon(s) for an entire face.
+        
+        In face mode, this gets all connected coplanar triangles that form a "visual face".
+        The brush size controls the angle threshold: smaller brush = stricter coplanarity check.
+
+        :param face_id: the ID of the face to get UV areas for
+        :return: A list of UV-mapped polygons representing the entire face
+        """
+        mesh_data = self._node_cache.getMeshData()
+        
+        if not mesh_data.hasUVCoordinates():
+            return []
+        
+        # Map brush size (1-100) to angle threshold (0.0-PI/2)
+        # Smaller brush = stricter angle (only very coplanar faces)
+        # Larger brush = looser angle (more faces included)
+        angle_threshold = (self._brush_size / 100.0) * math.pi / 2.0
+        
+        # Get all coplanar connected faces
+        mesh_indices = self._mesh_transformed_cache.getIndices()
+        if mesh_indices is None:
+            mesh_indices = numpy.array([], dtype=numpy.int32)
+
+        coplanar_faces = uvula.getConnectedFaces(self._mesh_transformed_cache.getVertices(),
+                                                 mesh_indices,
+                                                 self._node_cache.getMeshData().getUVCoordinates(),
+                                                 self._node_cache.getMeshData().getFacesConnections(),
+                                                 self._view.getUvTexDimensions()[0],
+                                                 self._view.getUvTexDimensions()[1],
+                                                 face_id,
+                                                 angle_threshold)
+        uv_polygons = [Polygon(points) for points in coplanar_faces]
+        
+        return uv_polygons
+
     def event(self, event: Event) -> bool:
         """Handle mouse and keyboard events.
 
@@ -362,7 +400,13 @@ class PaintTool(Tool):
             event_caught = False # Propagate mouse event if only moving the cursor, not to block e.g. rotation
             try:
                 brush_color = self._brush_color if self.getPaintType() != "extruder" else str(self._brush_extruder)
-                uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                
+                # In face mode, paint/preview the entire face
+                if self._brush_shape == PaintTool.Brush.Shape.FACE:
+                    uv_areas_cursor = self._getUvAreasForFace(face_id)
+                else:
+                    uv_areas_cursor = self._getUvAreasForStroke(world_coords, world_coords, face_id)
+                
                 if len(uv_areas_cursor) > 0:
                     cursor_path = self._createStrokePath(uv_areas_cursor)
                     self._view.setCursorStroke(cursor_path, brush_color)
@@ -370,7 +414,12 @@ class PaintTool(Tool):
                     self._view.clearCursorStroke()
 
                 if self._mouse_held:
-                    uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    # In face mode, paint the entire face
+                    if self._brush_shape == PaintTool.Brush.Shape.FACE:
+                        uv_areas = self._getUvAreasForFace(face_id)
+                    else:
+                        uv_areas = self._getUvAreasForStroke(self._last_world_coords, world_coords, face_id)
+                    
                     if len(uv_areas) == 0:
                         return False
                     event_caught = True
