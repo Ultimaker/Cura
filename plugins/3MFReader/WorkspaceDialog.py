@@ -406,7 +406,7 @@ class WorkspaceDialog(QObject):
         marketplace_plugin.showInstallMissingPackageDialog(self._missing_package_metadata, self.showMissingMaterialsWarning)  # type: ignore
 
     def getResult(self) -> Dict[str, Optional[str]]:
-        if "machine" in self._result and self.updatableMachinesModel.count <= 1:
+        if "machine" in self._result and self.updatableMachinesModel.count <= 1 and not self._is_ucp:
             self._result["machine"] = None
         if "quality_changes" in self._result and not self._has_quality_changes_conflict:
             self._result["quality_changes"] = None
