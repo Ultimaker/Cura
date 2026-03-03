@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Vector import Vector
+from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Util import parseBool
 from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
@@ -145,12 +146,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info = None
 
         self._user_settings: Dict[str, Dict[str, Any]] = {}
+        self._deferred_node_file_name: Optional[str] = None
 
     def _clearState(self):
         self._id_mapping = {}
         self._old_new_materials = {}
         self._machine_info = None
         self._user_settings = {}
+        self._deferred_node_file_name = None
 
     def clearOpenAsUcp(self):
         self._is_ucp =  None
@@ -907,39 +910,23 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 # Defer machine activation to allow container signals to propagate
                 Logger.debug("Workspace loading is notifying rest of the code of changes...")
+                # Store file name for deferred node loading after machine activation
+                self._deferred_node_file_name = file_name
                 Application.getInstance().callLater(self._finalizeMachineActivation, global_stack, extruder_stack_dict)
             else:
                 # For UCP files, just activate machine and apply user settings (no materials)
                 Logger.debug("Workspace loading is notifying rest of the code of changes...")
+                # Store file name for deferred node loading after machine activation
+                self._deferred_node_file_name = file_name
                 Application.getInstance().callLater(self._finalizeUcpActivation, global_stack, extruder_stack_dict)
 
-        # Load all the nodes / mesh data of the workspace
-        nodes = self._3mf_mesh_reader.read(file_name)
-        if nodes is None:
-            nodes = []
-
-        if self._is_ucp:
-            # We might be on a different printer than the one this project was made on.
-            # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
-            full_extents = None
-            for node in nodes:
-                extents = node.getMeshData().getExtents() if node.getMeshData() else None
-                if extents is not None:
-                    pos = node.getPosition()
-                    node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
-                    if full_extents is None:
-                        full_extents = node_box
-                    else:
-                        full_extents = full_extents + node_box
-            if full_extents and full_extents.isValid():
-                for node in nodes:
-                    pos = node.getPosition()
-                    node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
+        # Defer node loading until after machine activation to ensure correct build volume
+        # Return empty list for now; nodes will be loaded and added to scene in finalize callbacks
+        nodes = []
 
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
 
-        self._is_ucp = None
         return nodes, self._loadMetadata(file_name)
 
     @staticmethod
@@ -1304,7 +1291,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _finalizeMachineActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete machine activation by activating the machine and then applying materials."""
         # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp = False)
+        self._updateActiveMachine(global_stack, is_ucp = self._is_ucp)
         
         # Then apply materials in another deferred call to ensure machine is fully activated
         # and ContainerTree has been accessed (which triggers lazy loading)
@@ -1317,10 +1304,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Trigger a re-validation to pick up the newly applied changes
         global_stack.containersChanged.emit(global_stack.getTop())
 
+        # Load and add nodes to scene after machine activation
+        if self._deferred_node_file_name:
+            self._loadAndAddNodesToScene(self._deferred_node_file_name, is_ucp = self._is_ucp)
+            self._deferred_node_file_name = None
+        self._is_ucp = None
+
     def _finalizeUcpActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete UCP file activation by activating the machine and then applying user settings."""
         # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp = True)
+        self._updateActiveMachine(global_stack, is_ucp = self._is_ucp)
         
         # Then apply UCP user settings in another deferred call
         Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
@@ -1331,6 +1324,44 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         
         # Trigger a re-validation to pick up the newly applied settings
         global_stack.containersChanged.emit(global_stack.getTop())
+
+        # Load and add nodes to scene after machine activation
+        if self._deferred_node_file_name:
+            self._loadAndAddNodesToScene(self._deferred_node_file_name, is_ucp = self._is_ucp)
+            self._deferred_node_file_name = None
+        self._is_ucp = None
+
+    def _loadAndAddNodesToScene(self, file_name: str, is_ucp: bool):
+        """Load nodes from 3MF file and add them to the scene."""
+        # Load all the nodes / mesh data of the workspace
+        nodes = self._3mf_mesh_reader.read(file_name)
+        if nodes is None:
+            nodes = []
+
+        if is_ucp:
+            # We might be on a different printer than the one this project was made on.
+            # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
+            full_extents = None
+            for node in nodes:
+                extents = node.getMeshData().getExtents() if node.getMeshData() else None
+                if extents is not None:
+                    pos = node.getPosition()
+                    node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
+                    if full_extents is None:
+                        full_extents = node_box
+                    else:
+                        full_extents = full_extents + node_box
+            if full_extents and full_extents.isValid():
+                for node in nodes:
+                    pos = node.getPosition()
+                    node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
+
+        # Add nodes to the scene
+        scene = Application.getInstance().getController().getScene()
+        for node in nodes:
+            op = AddSceneNodeOperation(node, scene.getRoot())
+            op.push()
+            scene.sceneChanged.emit(node)
 
     def _settingIsFromMissingPackage(self, key, value):
         # Check if the key and value pair is from the missing package
