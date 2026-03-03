@@ -343,7 +343,7 @@ Item
         UM.Label
         {
             anchors.fill: parent
-            text: catalog.i18nc("@label", "Painting is not available in OpenGL compatibility mode. Please use a different system.")
+            text: catalog.i18nc("@label", "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature.")
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
         }
