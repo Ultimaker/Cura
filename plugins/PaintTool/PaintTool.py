@@ -408,11 +408,26 @@ class PaintTool(Tool):
                 scene = self.getController().getScene()
                 scene.sceneChanged.emit(scene.getRoot())
 
+    @staticmethod
+    def _isModifierMesh(node: SceneNode) -> bool:
+        """Returns True if the node is a modifier/special mesh type that should not be painted.
+
+        Painting modifier meshes (e.g. support blockers) triggers UV-unwrapping and texture preparation
+        that corrupts their mesh data and causes slicing to fail.
+        """
+        modifier_mesh_decorations = ("isAntiOverhangMesh", "isSupportMesh", "isCuttingMesh", "isInfillMesh")
+
+        return any(node.callDecoration(d) for d in modifier_mesh_decorations)
+
     def _onSelectionChanged(self) -> None:
         super()._onSelectionChanged()
 
         single_selection = len(Selection.getAllSelectedObjects()) == 1
-        self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        selected_object = Selection.getSelectedObject(0) if single_selection else None
+        if selected_object is not None and self._isModifierMesh(selected_object):
+            selected_object = None
+
+        self._view.setPaintedObject(selected_object)
         self._updateActiveView()
         self._updateState()
 
