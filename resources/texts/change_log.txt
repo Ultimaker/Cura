@@ -33,7 +33,7 @@
 - Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
 - Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
 - Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
-- Fixed an issue where combing would add a lot of unnecessary travels due to a very small slit in layer outline
+- Fixed an issue where combing would add a lot of unnecessary travel due to a very small slit in layer outline
 - Updated the behavior of the preview tab when dragging and dropping in a Gcode file
 - Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and move the nozzle to X0 Y0 at start of the print
 - Fixed an inconsistency in the Language and Theme Combobox in preferences
@@ -46,6 +46,25 @@
 - Fixed an issue where the configured build volume temperature limits could be bypassed in certain cases
 - Updated the Annealing or Drying Post Processing plugin so it now also works on UltiMaker 3D printers, contributed by @GregValiant
 
+* Bugs resolved since the Beta release
+- Fixed crashes when loading certain project files (3MF) on Linux
+- Prevented slice crashes when trying to paint on support blockers or modifier meshes by not allowing that unsupported operation
+- Fixed a bug where Overhanging Wall Speeds would be applied to tree support in multi extrusion printjobs
+- Updated bridging behavior so the lines prefer to align with the axis if the geometry allows
+- Fixed an issue where bridging logic caused large, inconsistent flow changes on some surfaces, leading to visible blobs and rough areas; flow is now more stable in those regions.
+- Corrected how flow is applied when using gradual flow adjustments so that extrusion transitions are smoother, align better with the expected behavior, and more consistent, improving overall quality.
+- Fixed a case where infill extrusion moves could skip the intended inward move, improving infill start placement and reducing small artefacts at infill boundaries.
+- Addressed a CuraEngine issue that caused slicing to crash when generating the inward infill move, making slicing more robust for tricky geometries.
+- Removed the nozzle move to X0 Y0 when Z Hop When Retracted was enabled
+- Fixed a bug where the Infill Skin Support would move through the Extra Infill Walls
+- Fixed an issue where bridging regions could contain many small dotted line segments, improving both appearance and strength of bridges.
+- Fixed a bug where 3MFs with custom materials would not be loaded properly
+- Updated file saving behavior so it can handle bigger files to be saved more reliably
+- Displayed clearer messages when using painting and face‑alignment which are unavailable in compatibility mode
+- Gcode now always sends the XY positions even though it's not always needed to make sure non-compliant machines still accept Cura-generated Gcode
+- Updated the material weight to correctly display for UltiMaker PPSS-CF and Nylon-CF Materials
+- Polished the appearance and behavior of combobox controls in the Preferences dialog, making them more consistent and easier to use.
+
 * Printer definitions, profiles and materials:
 - Updated wall settings for the UltiMaker S6 and S8 to improve wall strength
 - Updated infill, skin, and shell settings for the UltiMaker S6 and S8 to reduce printing time and improve printed part quality
@@ -57,6 +76,9 @@
 - Introduced Toybox Alpha name to include Toybox Alpha Three, contributed by @lukbrew25
 - Updated settings for Elegoo Neptune 2 and Flsun V400, to have better default top layers with the infill set to 100%, contributed by @asterchades
 
+* Community Translations
+- Updated Japanese translations by @h1data
+- Brazilian Portuguese by @Patola
 
 [5.11]
 
