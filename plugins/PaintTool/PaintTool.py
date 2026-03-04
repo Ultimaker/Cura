@@ -21,6 +21,7 @@ from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
@@ -44,6 +45,7 @@ class PaintTool(Tool):
             MULTIPLE_SELECTION = 0 # Multiple objects are selected, wait until there is only one
             PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
             READY = 2              # Ready to paint !
+            NOT_SUPPORTED = 3      # Painting is not supported (due to OpenGL compatibility mode)
 
     def __init__(self, view: PaintView) -> None:
         super().__init__()
@@ -72,7 +74,9 @@ class PaintTool(Tool):
 
         self._last_world_coords: Optional[numpy.ndarray] = None
 
-        self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
+        legacy_opengl = OpenGLContext.isLegacyOpenGL()
+        self._state: PaintTool.Paint.State = PaintTool.Paint.State.NOT_SUPPORTED if legacy_opengl else\
+                                                                                PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
         self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
@@ -413,11 +417,17 @@ class PaintTool(Tool):
         self._updateState()
 
     def _updateActiveView(self) -> None:
+        if self._state == PaintTool.Paint.State.NOT_SUPPORTED:
+            return
+
         has_painted_object = self._view.hasPaintedObject()
         stage_is_prepare = self._controller.getActiveStage().stageId == "PrepareStage"
         self.setActiveView("PaintTool" if has_painted_object and stage_is_prepare else None)
 
     def _updateState(self):
+        if self._state == PaintTool.Paint.State.NOT_SUPPORTED:
+            return
+
         painted_object = self._view.getPaintedObject()
         if painted_object is not None and self._controller.getActiveTool() == self:
             if painted_object.callDecoration("getPaintTexture") is not None and painted_object.getMeshData().hasUVCoordinates():
