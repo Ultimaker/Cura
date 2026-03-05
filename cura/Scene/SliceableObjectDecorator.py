@@ -33,6 +33,18 @@ class SliceableObjectDecorator(SceneNodeDecorator):
 
         self._texture_change_timer: Optional[QTimer] = None
 
+    def setNode(self, node: "SceneNode") -> None:
+        if self._node is not None:
+            signal = self._node.callDecoration("getActiveExtruderChangedSignal")
+            if signal is not None:
+                signal.disconnect(self._updateIsAssignedToDisabledExtruder)
+
+        super().setNode(node)
+
+        if self._node is not None:
+            # Make sure all the decorators have been assigned to the node before connecting to the signal
+            QTimer.singleShot(0, self._connectToExtruderChangedSignal)
+
     def isSliceable(self) -> bool:
         return True
 
@@ -124,8 +136,15 @@ class SliceableObjectDecorator(SceneNodeDecorator):
             pass
 
         self._is_assigned_to_disabled_extruder = new_is_assigned_to_disabled_extruder
+
     def getPaintedExtruders(self) -> Optional[List[int]]:
         return self._painted_extruders
+
+    def _connectToExtruderChangedSignal(self):
+        if self._node is not None:
+            signal = self._node.callDecoration("getActiveExtruderChangedSignal")
+            if signal is not None:
+                signal.connect(self._updateIsAssignedToDisabledExtruder)
 
     def __deepcopy__(self, memo) -> "SliceableObjectDecorator":
         copied_decorator = SliceableObjectDecorator()

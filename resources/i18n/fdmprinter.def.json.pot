@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2025-09-22 08:45+0000\n"
+"POT-Creation-Date: 2026-02-05 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -402,6 +402,14 @@ msgstr ""
 
 msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
+msgstr ""
+
+msgctxt "machine_time_estimation_factor label"
+msgid "Print Time Estimation Factor"
+msgstr ""
+
+msgctxt "machine_time_estimation_factor description"
+msgid "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times."
 msgstr ""
 
 msgctxt "machine_nozzle_id label"
@@ -1017,7 +1025,7 @@ msgid "Z Seam Position"
 msgstr ""
 
 msgctxt "z_seam_position description"
-msgid "The position near where to start printing each part in a layer."
+msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
 msgstr ""
 
 msgctxt "z_seam_position option backleft"
@@ -1052,12 +1060,16 @@ msgctxt "z_seam_position option left"
 msgid "Left"
 msgstr ""
 
+msgctxt "z_seam_position option middle"
+msgid "Middle"
+msgstr ""
+
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
 msgstr ""
 
 msgctxt "z_seam_x description"
-msgid "The X coordinate of the position near where to start printing each part in a layer."
+msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
 msgstr ""
 
 msgctxt "z_seam_y label"
@@ -1065,7 +1077,7 @@ msgid "Z Seam Y"
 msgstr ""
 
 msgctxt "z_seam_y description"
-msgid "The Y coordinate of the position near where to start printing each part in a layer."
+msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
 msgstr ""
 
 msgctxt "z_seam_corner label"
@@ -1097,7 +1109,7 @@ msgid "Z Seam Relative"
 msgstr ""
 
 msgctxt "z_seam_relative description"
-msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
+msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements."
 msgstr ""
 
 msgctxt "top_bottom label"
@@ -1166,6 +1178,14 @@ msgstr ""
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr ""
+
+msgctxt "roofing_expansion label"
+msgid "Top Surface Expansion"
+msgstr ""
+
+msgctxt "roofing_expansion description"
+msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
 msgstr ""
 
 msgctxt "flooring_extruder_nr label"
@@ -1585,27 +1605,15 @@ msgid "Infill Pattern"
 msgstr ""
 
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr ""
-
-msgctxt "infill_pattern option grid"
-msgid "Grid"
+msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
 msgstr ""
 
 msgctxt "infill_pattern option lines"
 msgid "Lines"
 msgstr ""
 
-msgctxt "infill_pattern option triangles"
-msgid "Triangles"
-msgstr ""
-
 msgctxt "infill_pattern option trihexagon"
 msgid "Tri-Hexagon"
-msgstr ""
-
-msgctxt "infill_pattern option cubic"
-msgid "Cubic"
 msgstr ""
 
 msgctxt "infill_pattern option cubicsubdiv"
@@ -1642,6 +1650,26 @@ msgstr ""
 
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
+msgstr ""
+
+msgctxt "infill_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
+msgctxt "infill_pattern option octagon"
+msgid "Octagon"
+msgstr ""
+
+msgctxt "infill_pattern option grid"
+msgid "Grid"
+msgstr ""
+
+msgctxt "infill_pattern option cubic"
+msgid "Cubic"
+msgstr ""
+
+msgctxt "infill_pattern option triangles"
+msgid "Triangles"
 msgstr ""
 
 msgctxt "zig_zaggify_infill label"
@@ -1796,40 +1824,52 @@ msgctxt "infill_support_angle description"
 msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
 msgstr ""
 
-msgctxt "skin_edge_support_thickness label"
-msgid "Skin Edge Support Thickness"
+msgctxt "skin_support label"
+msgid "Infill Skin Support"
 msgstr ""
 
-msgctxt "skin_edge_support_thickness description"
-msgid "The thickness of the extra infill that supports skin edges."
+msgctxt "skin_support description"
+msgid "Print a solid infill pattern just below skin to avoid printing the skin over air."
 msgstr ""
 
-msgctxt "skin_edge_support_layers label"
-msgid "Skin Edge Support Layers"
+msgctxt "skin_support_speed label"
+msgid "Skin Support Speed"
 msgstr ""
 
-msgctxt "skin_edge_support_layers description"
-msgid "The number of infill layers that supports skin edges."
+msgctxt "skin_support_speed description"
+msgid "The speed at which skin support regions are printed."
 msgstr ""
 
-msgctxt "extra_infill_lines_to_support_skins label"
-msgid "Extra Infill Lines To Support Skins"
+msgctxt "skin_support_material_flow label"
+msgid "Skin Support Flow"
 msgstr ""
 
-msgctxt "extra_infill_lines_to_support_skins description"
-msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+msgctxt "skin_support_material_flow description"
+msgid "When printing skin support regions, the amount of material extruded is multiplied by this value."
 msgstr ""
 
-msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
-msgid "Walls and Lines"
+msgctxt "skin_support_density label"
+msgid "Skin Support Density"
 msgstr ""
 
-msgctxt "extra_infill_lines_to_support_skins option walls"
-msgid "Walls Only"
+msgctxt "skin_support_density description"
+msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
 msgstr ""
 
-msgctxt "extra_infill_lines_to_support_skins option none"
-msgid "None"
+msgctxt "skin_support_fan_speed label"
+msgid "Skin Support Fan Speed"
+msgstr ""
+
+msgctxt "skin_support_fan_speed description"
+msgid "Percentage fan speed to use when printing skin support."
+msgstr ""
+
+msgctxt "skin_support_interlace_lines label"
+msgid "Interlace Skin Support Lines"
+msgstr ""
+
+msgctxt "skin_support_interlace_lines description"
+msgid "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
 msgstr ""
 
 msgctxt "lightning_infill_support_angle label"
@@ -1862,6 +1902,30 @@ msgstr ""
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
+
+msgctxt "infill_move_inwards_length label"
+msgid "Infill Start/End Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_start_move_inwards_length label"
+msgid "Infill Start Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_start_move_inwards_length description"
+msgid "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_end_move_inwards_length label"
+msgid "Infill End Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_end_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
 msgstr ""
 
 msgctxt "material label"
@@ -3132,6 +3196,14 @@ msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
 msgstr ""
 
+msgctxt "layer_start_at_z_seam label"
+msgid "Layer Start at Z Seam"
+msgstr ""
+
+msgctxt "layer_start_at_z_seam description"
+msgid "Start printing at the Z seam position."
+msgstr ""
+
 msgctxt "layer_start_x label"
 msgid "Layer Start X"
 msgstr ""
@@ -3610,6 +3682,14 @@ msgstr ""
 
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
+msgstr ""
+
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
+msgctxt "support_pattern option octagon"
+msgid "Octagon"
 msgstr ""
 
 msgctxt "support_wall_count label"
@@ -5768,14 +5848,6 @@ msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr ""
 
-msgctxt "bridge_sparse_infill_max_density label"
-msgid "Bridge Sparse Infill Max Density"
-msgstr ""
-
-msgctxt "bridge_sparse_infill_max_density description"
-msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr ""
-
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
 msgstr ""
@@ -5830,6 +5902,14 @@ msgstr ""
 
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
+msgstr ""
+
+msgctxt "bridge_interlace_lines label"
+msgid "Interlace Bridge Lines"
+msgstr ""
+
+msgctxt "bridge_interlace_lines description"
+msgid "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
 msgstr ""
 
 msgctxt "bridge_enable_more_layers label"
@@ -6274,9 +6354,9 @@ msgstr ""
 
 
 msgctxt "variant_name"
-msgid "Print Core"
+msgid "Extruder"
 msgstr ""
 
 msgctxt "variant_name"
-msgid "Extruder"
+msgid "Print Core"
 msgstr ""
