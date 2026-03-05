@@ -21,7 +21,7 @@
 - Introduced Honeycomb and Octagon infill types that are fast and do not self-intersect, reducing ringing at high speeds
 - Introduced Infill Start/End Move Inwards Length settings that add an extra line at the beginning and the end of your infill to prime the infill and prevent blobs on the outside wall
 - Introduced Infill Skin Support to consolidate and replace Extra Infill Lines to Support Skin, Skin Edge Support Layer, and Bridging Over Infill Settings.
-- Introduced a Middle option to the Z Seam Positions, contributed by @GregValiant
+- Introduced a Middle option to the Z Seam Positions, contributed by @GregValiant @HellAholic 
 - Introduced a Print Estimation Factor to the Printer Settings that allows you to adjust the predicted printing time when you notice it deviates consistently from reality, contributed by @HellAholic
 
 * Bug fixes:
@@ -61,8 +61,8 @@
 - Fixed a bug where 3MFs with custom materials would not be loaded properly
 - Updated file saving behavior so it can handle bigger files to be saved more reliably
 - Displayed clearer messages when using painting and face‑alignment which are unavailable in compatibility mode
-- Gcode now always sends the XY positions even though it's not always needed to make sure non-compliant machines still accept Cura-generated Gcode
-- Updated the material weight to correctly display for UltiMaker PPSS-CF and Nylon-CF Materials
+- Gcode now always sends the XY positions when either axis value is changed to make sure non-compliant machines still accept Cura-generated Gcode
+- Updated the material weight to correctly display for UltiMaker PPS CF and Nylon CF Slide materials
 - Polished the appearance and behavior of combobox controls in the Preferences dialog, making them more consistent and easier to use.
 
 * Printer definitions, profiles and materials:
