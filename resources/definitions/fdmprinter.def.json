@@ -2728,7 +2728,7 @@
                 "material_initial_print_temperature":
                 {
                     "label": "Initial Printing Temperature",
-                    "description": "The minimal temperature while heating up to the Printing Temperature at which printing can already start.",
+                    "description": "A multi-extruder setting. The minimal temperature while heating up to the Printing Temperature at which printing can start.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 200,
@@ -2737,14 +2737,14 @@
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
                     "maximum_value": "365",
-                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater and machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "material_final_print_temperature":
                 {
                     "label": "Final Printing Temperature",
-                    "description": "The temperature to which to already start cooling down just before the end of printing.",
+                    "description": "A multi-extruder setting. The temperature to use just before the end of printing.",
                     "unit": "\u00b0C",
                     "type": "float",
                     "default_value": 195,
@@ -2753,7 +2753,7 @@
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
                     "maximum_value": "365",
-                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater and machine_extruder_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4819,7 +4819,7 @@
                 "retraction_combing_avoid_distance":
                 {
                     "label": "Inside Travel Avoid Distance",
-                    "description": "The distance between the nozzle and outer walls when travelling inside a model.",
+                    "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
