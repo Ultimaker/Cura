@@ -70,10 +70,8 @@ Item
     Component.onCompleted:
     {
         const initialSection = "Ultimaker B.V.";
-        base.currentSections.add(initialSection);
+        base.currentSections = new Set([initialSection]);
         updateCurrentItemUponSectionChange(initialSection);
-        // Trigger update on base.currentSections
-        base.currentSections = base.currentSections;
     }
 
     Row
@@ -135,29 +133,20 @@ Item
                     {
                         if (base.hasSearchFilter)
                         {
-                            base.currentSections.clear()
+                            var newSections = new Set()
                             for (var i = 0; i < machineDefinitionsModel.count; i++)
                             {
-                                var sectionexpanded = machineDefinitionsModel.getItem(i)["section"]
-                                if (!base.currentSections.has(sectionexpanded))
-                                {
-                                    base.currentSections.add(sectionexpanded);
-                                }
+                                newSections.add(machineDefinitionsModel.getItem(i)["section"])
                             }
+                            base.currentSections = newSections
                             base.updateCurrentItem(0)
-
-                            // Trigger update on base.currentSections
-                            base.currentSections = base.currentSections;
                         }
                         else
                         {
                             const initialSection = "Ultimaker B.V.";
-                            base.currentSections.clear();
-                            base.currentSections.add(initialSection);
+                            base.currentSections = new Set([initialSection]);
                             updateCurrentItemUponSectionChange(initialSection);
                             updateCurrentItem(0)
-                            // Trigger update on base.currentSections
-                            base.currentSections = base.currentSections;
                         }
 
                     }
@@ -247,17 +236,17 @@ Item
 
                     onClicked:
                     {
-                        if (base.currentSections.has(section))
+                        var updated = new Set(base.currentSections)
+                        if (updated.has(section))
                         {
-                            base.currentSections.delete(section);
+                            updated.delete(section);
                         }
                         else
                         {
-                            base.currentSections.add(section);
+                            updated.add(section);
                             base.updateCurrentItemUponSectionChange(section);
                         }
-                        // Trigger update on base.currentSections
-                        base.currentSections = base.currentSections;
+                        base.currentSections = updated;
                     }
                 }
 
