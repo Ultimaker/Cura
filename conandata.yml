@@ -1,18 +1,18 @@
-version: "5.12.0-alpha.0"
+version: "5.13.0-alpha.0"
 commit: "unknown"
 requirements:
-  - "cura_resources/5.12.0-alpha.0@ultimaker/testing"
-  - "uranium/5.12.0-alpha.0@ultimaker/testing"
-  - "curaengine/5.12.0-alpha.0@ultimaker/testing"
-  - "cura_binary_data/5.12.0-alpha.0@ultimaker/testing"
-  - "fdm_materials/5.12.0-alpha.0@ultimaker/testing"
+  - "cura_resources/5.13.0-alpha.0@ultimaker/testing"
+  - "uranium/5.13.0-alpha.0@ultimaker/testing"
+  - "curaengine/5.13.0-alpha.0@ultimaker/testing"
+  - "cura_binary_data/5.13.0-alpha.0@ultimaker/testing"
+  - "fdm_materials/5.13.0-alpha.0@ultimaker/testing"
   - "dulcificum/5.12.0-alpha.0"
   - "pysavitar/5.12.0-alpha.0"
   - "pynest2d/5.12.0-alpha.0"
   - "shapely/2.1.2"
 requirements_internal:
-  - "fdm_materials/5.12.0-alpha.0@ultimaker/testing"
-  - "cura_private_data/5.12.0-alpha.0@internal/testing"
+  - "fdm_materials/5.13.0-alpha.0@ultimaker/testing"
+  - "cura_private_data/5.13.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
 urls:
@@ -277,7 +277,7 @@ pycharm_targets:
 pip_requirements_core:
   any_os:
     charon:
-      url: "git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon"
+      url: "git+https://github.com/ultimaker/libcharon@cura_main#egg=charon"
     certifi:
       version: "2023.5.7"
       hashes:
