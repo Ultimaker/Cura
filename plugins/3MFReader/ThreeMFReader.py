@@ -30,6 +30,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
+from .ThreeMFWorkspaceReader import ThreeMFWorkspaceReader
 
 try:
     if not TYPE_CHECKING:
@@ -329,6 +330,8 @@ class ThreeMFReader(MeshReader):
 
             if len(result) == 0:
                 self._empty_project = True
+            else:
+                ThreeMFWorkspaceReader.centerNodesToBuildPlate(result)
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")

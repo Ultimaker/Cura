@@ -1331,6 +1331,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             self._deferred_node_file_name = None
         self._is_ucp = None
 
+    @staticmethod
+    def centerNodesToBuildPlate(nodes: List["SceneNode"]):
+        """Centers the given nodes so that their bounding box fits the build plate"""
+        full_extents = None
+        for node in nodes:
+            extents = node.getMeshData().getExtents() if node.getMeshData() else None
+            if extents is not None:
+                pos = node.getPosition()
+                node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
+                if full_extents is None:
+                    full_extents = node_box
+                else:
+                    full_extents = full_extents + node_box
+        if full_extents and full_extents.isValid():
+            for node in nodes:
+                pos = node.getPosition()
+                node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
+
     def _loadAndAddNodesToScene(self, file_name: str, is_ucp: bool):
         """Load nodes from 3MF file and add them to the scene."""
         # Load all the nodes / mesh data of the workspace
@@ -1341,20 +1359,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         if is_ucp:
             # We might be on a different printer than the one this project was made on.
             # The offset to the printers' center isn't saved; instead, try to just fit everything on the buildplate.
-            full_extents = None
-            for node in nodes:
-                extents = node.getMeshData().getExtents() if node.getMeshData() else None
-                if extents is not None:
-                    pos = node.getPosition()
-                    node_box = AxisAlignedBox(extents.minimum + pos, extents.maximum + pos)
-                    if full_extents is None:
-                        full_extents = node_box
-                    else:
-                        full_extents = full_extents + node_box
-            if full_extents and full_extents.isValid():
-                for node in nodes:
-                    pos = node.getPosition()
-                    node.setPosition(Vector(pos.x - full_extents.center.x, pos.y, pos.z - full_extents.center.z))
+            ThreeMFWorkspaceReader.centerNodesToBuildPlate(nodes)
 
         # Add nodes to the scene
         scene = Application.getInstance().getController().getScene()
