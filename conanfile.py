@@ -460,7 +460,7 @@ class CuraConan(ConanFile):
     def _generate_pyinstaller_spec(self, location, entrypoint_location, icon_path, entitlements_file, cura_source_folder):
         pyinstaller_metadata = self.conan_data["pyinstaller"]
         datas = []
-        for data in pyinstaller_metadata["datas"]:
+        for data in pyinstaller_metadata["datas"].values():
             if (not self.options.internal and data.get("internal", False)) or (
                     not self.options.enterprise and data.get("enterprise_only", False)):
                 continue
