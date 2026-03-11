@@ -680,7 +680,7 @@ class CuraConan(ConanFile):
         # Copy internal resources
         if self.options.internal:
             cura_private_data = self.dependencies["cura_private_data"].cpp_info
-            copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
+            copy(self, "*", cura_private_data.resdirs[0], self.source_folder)
 
         if self.options.i18n_extract:
             vb = VirtualBuildEnv(self)
