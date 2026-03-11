@@ -32,62 +32,49 @@ pyinstaller:
     runinfo:
         entrypoint: "cura_app.py"
     datas:
-        cura_plugins:
-            package: "cura"
-            src: "plugins"
-            dst: "share/cura/plugins"
-        native_cad_plugin:
-            package: "native_cad_plugin"
-            src: "res/plugins/NativeCADplugin"
-            dst: "share/cura/plugins/NativeCADplugin"
-            enterprise_only: true
-        native_cad_plugin_bundled:
-            package: "native_cad_plugin"
-            src: "res/bundled_packages"
-            dst: "share/cura/resources/bundled_packages"
-            enterprise_only: true
-        cura_resources:
-            package: "cura"
-            src: "resources"
-            dst: "share/cura/resources"
-        cura_shared_resources:
-            package: "cura_resources"
-            src: "res"
-            dst: "share/cura/resources"
-        cura_private_data:
-            package: "cura_private_data"
-            src: "res"
-            dst: "share/cura"
-            internal: true
-        uranium_plugins:
-            package: "uranium"
-            src: "plugins"
-            dst: "share/uranium/plugins"
-        uranium_resources:
-            package: "uranium"
-            src: "resources"
-            dst: "share/uranium/resources"
-        uranium_um_qt_qml_um:
-            package: "uranium"
-            src: "site-packages/UM/Qt/qml/UM"
-            dst: "PyQt6/Qt6/qml/UM"
-        cura_binary_data:
-            package: "cura_binary_data"
-            src: "resources/cura/resources"
-            dst: "share/cura/resources"
-        uranium_binary_data:
-            package: "cura_binary_data"
-            src: "resources/uranium/resources"
-            dst: "share/uranium/resources"
-        windows_binary_data:
-            package: "cura_binary_data"
-            src: "windows"
-            dst: "share/windows"
-            oses:
-              - "Windows"
-        fdm_materials:
-            package: "fdm_materials"
-            src: "res/resources/materials"
+        - package: "cura"
+          src: "plugins"
+          dst: "share/cura/plugins"
+        - package: "native_cad_plugin"
+          src: "res/plugins/NativeCADplugin"
+          dst: "share/cura/plugins/NativeCADplugin"
+          enterprise_only: true
+        - package: "native_cad_plugin"
+          src: "res/bundled_packages"
+          dst: "share/cura/resources/bundled_packages"
+          enterprise_only: true
+        - package: "cura"
+          src: "resources"
+          dst: "share/cura/resources"
+        - package: "cura_resources"
+          src: "res"
+          dst: "share/cura/resources"
+        - package: "cura_private_data"
+          src: "res"
+          dst: "share/cura"
+          internal: true
+        - package: "uranium"
+          src: "plugins"
+          dst: "share/uranium/plugins"
+        - package: "uranium"
+          src: "resources"
+          dst: "share/uranium/resources"
+        - package: "uranium"
+          src: "site-packages/UM/Qt/qml/UM"
+          dst: "PyQt6/Qt6/qml/UM"
+        - package: "cura_binary_data"
+          src: "resources/cura/resources"
+          dst: "share/cura/resources"
+        - package: "cura_binary_data"
+          src: "resources/uranium/resources"
+          dst: "share/uranium/resources"
+        - package: "cura_binary_data"
+          src: "windows"
+          dst: "share/windows"
+          oses:
+            - "Windows"
+        - package: "fdm_materials"
+          src: "res/resources/materials"
             dst: "share/cura/resources/materials"
     binaries:
         curaengine:
