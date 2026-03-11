@@ -75,7 +75,7 @@ pyinstaller:
             - "Windows"
         - package: "fdm_materials"
           src: "res/resources/materials"
-            dst: "share/cura/resources/materials"
+          dst: "share/cura/resources/materials"
     binaries:
         curaengine:
             package: "curaengine"
