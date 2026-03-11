@@ -715,11 +715,6 @@ class CuraConan(ConanFile):
         for res_dir in cura_resources.resdirs:
             copy(self, "*", res_dir, str(self._share_dir.joinpath("cura", "resources", Path(res_dir).name)), keep_path = True)
 
-        # Copy internal resources, allowing them to override the default ones
-        if self.options.internal:
-            cura_private_data = self.dependencies["cura_private_data"].cpp_info
-            copy(self, "*", cura_private_data.resdirs[0], str(self._share_dir.joinpath("cura")))
-
         # Copy resources of Uranium (keep folder structure)
         uranium = self.dependencies["uranium"].cpp_info
         copy(self, "*", uranium.resdirs[0], str(self._share_dir.joinpath("uranium", "resources")), keep_path = True)
