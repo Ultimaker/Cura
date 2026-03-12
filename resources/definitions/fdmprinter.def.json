@@ -2771,6 +2771,23 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_print_temperature_roofing":
+                {
+                    "label": "Printing Temperature Top Surface",
+                    "description": "The temperature used for printing the top-surface layers.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": 215,
+                    "value": "material_print_temperature",
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "285",
+                    "maximum_value": "365",
+                    "enabled": "machine_nozzle_temp_enabled and roofing_layer_count > 0 and top_layers > 0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "roofing_extruder_nr"
+                },
                 "material_extrusion_cool_down_speed":
                 {
                     "label": "Extrusion Cool Down Speed Modifier",
