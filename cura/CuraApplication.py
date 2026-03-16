@@ -1591,11 +1591,8 @@ class CuraApplication(QtApplication):
                 bounding_box = node.getBoundingBox()
                 volume_bounding_box = self._volume.getBoundingBox()
                 if volume_bounding_box is None:
-                    # Build volume has not been initialised yet (race condition: rebuild() was never
-                    # triggered because globalContainerStackChanged fired before BuildVolume was
-                    # constructed). Trigger a rebuild now and bail out; the user can retry arrange
-                    # once the volume is ready.
                     Logger.warning("_arrangeAll: build volume bounding box is None — rebuild not yet triggered. Requesting rebuild and aborting arrange.")
+                    # Trigger a rebuild now and bail out; the user can retry arrange once the volume is ready.
                     self._volume.rebuild()
                     return
                 if bounding_box is None or bounding_box.width < volume_bounding_box.width or bounding_box.depth < volume_bounding_box.depth:
