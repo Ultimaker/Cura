@@ -66,9 +66,16 @@ InstallDir "$PROGRAMFILES64\${APP_NAME}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${REG_START_MENU}"
 !endif
 
+!define MUI_PAGE_HEADER_TEXT "File Type Associations"
+!define MUI_PAGE_HEADER_SUBTEXT "Select which file types ${APP_NAME} will open by default."
+!define MUI_COMPONENTSPAGE_TEXT_TOP "Select the file types you want ${APP_NAME} to open when double-clicked. Unchecked types will keep their current default application."
+!define MUI_COMPONENTSPAGE_TEXT_COMPLIST "File type associations:"
+!define MUI_COMPONENTSPAGE_SMALLDESC
+!insertmacro MUI_PAGE_COMPONENTS
+
 !insertmacro MUI_PAGE_INSTFILES
 
-# Set up explorer to run Cura instead of directly, so it's not executed elevated (with all negative consequences that brings for an unelevated user).
+# Launch via explorer so Cura runs non-elevated.
 !define MUI_FINISHPAGE_RUN "$WINDIR\explorer.exe"
 !define MUI_FINISHPAGE_RUN_PARAMETERS "$INSTDIR\${MAIN_APP_EXE}"
 !insertmacro MUI_PAGE_FINISH
@@ -92,9 +99,102 @@ File "{{ file[0] }}"{% endfor %}
 
 ######################################################################
 
-Section -Extension_Reg
-!insertmacro APP_ASSOCIATE "stl" "Cura.model" "Standard Tessellation Language (STL) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
-!insertmacro APP_ASSOCIATE "3mf" "Cura.project" "3D Manufacturing Format (3MF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$INSTDIR\${MAIN_APP_EXE} $\"%1$\""
+SectionGroup "File Associations" SEC_FILEASSOC
+
+Section "*.STL files" SEC_STL
+SectionIn 1
+!insertmacro APP_ASSOCIATE "stl" "Cura.model" "Standard Tessellation Language (STL) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.3MF files" SEC_3MF
+SectionIn 1
+!insertmacro APP_ASSOCIATE "3mf" "Cura.project" "3D Manufacturing Format (3MF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.OBJ files" SEC_OBJ
+SectionIn 1
+!insertmacro APP_ASSOCIATE "obj" "Cura.model" "Wavefront OBJ files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.PLY files" SEC_PLY
+SectionIn 1
+!insertmacro APP_ASSOCIATE "ply" "Cura.model" "Stanford Triangle Format (PLY) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.DAE files" SEC_DAE
+!insertmacro APP_ASSOCIATE "dae" "Cura.model" "COLLADA (DAE) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.GLTF files" SEC_GLTF
+!insertmacro APP_ASSOCIATE "gltf" "Cura.model" "glTF JSON files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.GLB files" SEC_GLB
+!insertmacro APP_ASSOCIATE "glb" "Cura.model" "glTF Binary files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.AMF files" SEC_AMF
+!insertmacro APP_ASSOCIATE "amf" "Cura.model" "Additive Manufacturing Format (AMF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section "*.X3D files" SEC_X3D
+!insertmacro APP_ASSOCIATE "x3d" "Cura.model" "X3D files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section /o "*UFP files" SEC_UFP
+!insertmacro APP_ASSOCIATE "ufp" "Cura.ufp" "UltiMaker Format Package (UFP) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+Section /o "*.GCODE files" SEC_GCODE
+!insertmacro APP_ASSOCIATE "gcode" "Cura.gcode" "G-code files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+!insertmacro APP_ASSOCIATE "g" "Cura.gcode" "G-code files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+SectionEnd
+
+SectionGroupEnd
+
+Section "URL Protocol" SEC_URLPROTOCOL
+SectionIn 1
+
+WriteRegStr HKCR "cura" "" "URL:cura"
+WriteRegStr HKCR "cura" "URL Protocol" ""
+WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "cura\shell" "" "open"
+WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+WriteRegStr HKCR "slicer" "" "URL:slicer"
+WriteRegStr HKCR "slicer" "URL Protocol" ""
+WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
+WriteRegStr HKCR "slicer\shell" "" "open"
+WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+SectionEnd
+
+######################################################################
+
+Section -UpdateApplicationsRegistry
+; Update the Applications key for "Open With" to point to current version (only once)
+WriteRegStr HKCR "Applications\${MAIN_APP_EXE}\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+WriteRegStr HKCU "SOFTWARE\Classes\Applications\${MAIN_APP_EXE}\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
+
+; Register capabilities so Cura appears in Windows "Default apps" / "Set Default Programs"
+!define CAPS_KEY "SOFTWARE\${COMP_NAME}\${APP_NAME}\Capabilities"
+WriteRegStr HKLM "${CAPS_KEY}" "ApplicationName" "${APP_NAME}"
+WriteRegStr HKLM "${CAPS_KEY}" "ApplicationDescription" "UltiMaker Cura is the world's most trusted 3D printing slicer."
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".stl"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".3mf"    "Cura.project"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".obj"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".ply"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".dae"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".gltf"   "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".glb"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".amf"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".x3d"    "Cura.model"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".ufp"    "Cura.ufp"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".gcode"  "Cura.gcode"
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".g"      "Cura.gcode"
+WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "cura"    "cura"
+WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "slicer"  "slicer"
+WriteRegStr HKLM "SOFTWARE\RegisteredApplications" "${APP_NAME}" "${CAPS_KEY}"
 SectionEnd
 
 Section -Icons_Reg
@@ -117,25 +217,30 @@ WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayIcon" "$INSTDIR\${MAIN_APP_
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "DisplayVersion" "${VERSION}"
 WriteRegStr ${REG_ROOT} "${UNINSTALL_PATH}"  "Publisher" "${COMP_NAME}"
 
+; Notify the Windows shell that file associations have changed
+!insertmacro UPDATEFILEASSOC
+
 SectionEnd
 
 ######################################################################
 
-Section UrlProtocol
+; Section descriptions
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FILEASSOC} "Associate 3D model file types with {{ app_name }}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_STL} "Associate .STL (Standard Tessellation Language) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_3MF} "Associate .3MF (3D Manufacturing Format) project files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_OBJ} "Associate .OBJ (Wavefront Object) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PLY} "Associate .PLY (Stanford Triangle Format) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DAE} "Associate .DAE (COLLADA) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GLTF} "Associate .GLTF (GL Transmission Format) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GLB} "Associate .GLB (GL Transmission Format Binary) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_AMF} "Associate .AMF (Additive Manufacturing Format) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_X3D} "Associate .X3D (Extensible 3D) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_UFP} "Associate .UFP (UltiMaker Format Package) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GCODE} "Associate .GCODE and .G (G-code) files"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL} "Enable opening models directly from web links (cura:// and slicer:// URL protocols)"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
-WriteRegStr HKCR "cura" "" "URL:cura"
-WriteRegStr HKCR "cura" "URL Protocol" ""
-WriteRegStr HKCR "cura\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
-WriteRegStr HKCR "cura\shell" "" "open"
-WriteRegStr HKCR "cura\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
-
-WriteRegStr HKCR "slicer" "" "URL:slicer"
-WriteRegStr HKCR "slicer" "URL Protocol" ""
-WriteRegStr HKCR "slicer\DefaultIcon" "" "$INSTDIR\${MAIN_APP_EXE},1"
-WriteRegStr HKCR "slicer\shell" "" "open"
-WriteRegStr HKCR "slicer\shell\open\command" "" '"$INSTDIR\${MAIN_APP_EXE}" "%1"'
-
-SectionEnd
 ######################################################################
 
 Section Uninstall
@@ -164,8 +269,27 @@ Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 !endif
 
+; Unassociate all file types
 !insertmacro APP_UNASSOCIATE "stl" "Cura.model"
 !insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
+!insertmacro APP_UNASSOCIATE "obj" "Cura.model"
+!insertmacro APP_UNASSOCIATE "ply" "Cura.model"
+!insertmacro APP_UNASSOCIATE "dae" "Cura.model"
+!insertmacro APP_UNASSOCIATE "gltf" "Cura.model"
+!insertmacro APP_UNASSOCIATE "glb" "Cura.model"
+!insertmacro APP_UNASSOCIATE "amf" "Cura.model"
+!insertmacro APP_UNASSOCIATE "x3d" "Cura.model"
+!insertmacro APP_UNASSOCIATE "ufp" "Cura.ufp"
+!insertmacro APP_UNASSOCIATE "gcode" "Cura.gcode"
+!insertmacro APP_UNASSOCIATE "g" "Cura.gcode"
+
+; Clean up Applications registry entries
+DeleteRegKey HKCR "Applications\${MAIN_APP_EXE}"
+DeleteRegKey HKCU "SOFTWARE\Classes\Applications\${MAIN_APP_EXE}"
+
+; Remove RegisteredApplications / Capabilities entries
+DeleteRegValue HKLM "SOFTWARE\RegisteredApplications" "${APP_NAME}"
+DeleteRegKey HKLM "SOFTWARE\${COMP_NAME}\${APP_NAME}"
 
 ; Unassociate file associations for 'cura' protocol
 DeleteRegKey HKCR "cura"

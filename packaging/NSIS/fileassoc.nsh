@@ -65,11 +65,23 @@
 ;
 
 !macro APP_ASSOCIATE EXT FILECLASS DESCRIPTION ICON COMMANDTEXT COMMAND
-  ; Backup the previously associated file class
+  ; Backup the previously associated file class (from HKLM / all-users context)
   ReadRegStr $R0 SHELL_CONTEXT "Software\Classes\.${EXT}" ""
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "${FILECLASS}_backup" "$R0"
 
+  ; Write to the all-users (HKLM) classes key
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "${FILECLASS}"
+  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
+
+  ; ALSO write to HKCU so the per-user value points to Cura.
+  ; HKCU\SOFTWARE\Classes takes precedence over HKLM in the merged HKCR view,
+  ; so if a stale or empty HKCU entry exists (left by another app) it would
+  ; silently override our HKLM entry. Writing here fixes that.
+  WriteRegStr HKCU "Software\Classes\.${EXT}" "" "${FILECLASS}"
+  WriteRegStr HKCU "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
+
+  ; Remove any per-user shell extension handler overrides
+  DeleteRegKey HKCU "Software\Classes\.${EXT}\shellex"
 
   WriteRegStr SHELL_CONTEXT "Software\Classes\${FILECLASS}" "" `${DESCRIPTION}`
   WriteRegStr SHELL_CONTEXT "Software\Classes\${FILECLASS}\DefaultIcon" "" `${ICON}`
@@ -108,6 +120,11 @@
   ; Backup the previously associated file class
   ReadRegStr $R0 SHELL_CONTEXT "Software\Classes\.${EXT}" `${FILECLASS}_backup`
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "$R0"
+  DeleteRegValue SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}"
+
+  ; Also remove the HKCU entry we wrote during install
+  DeleteRegValue HKCU "Software\Classes\.${EXT}" ""
+  DeleteRegValue HKCU "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}"
 
   DeleteRegKey SHELL_CONTEXT `Software\Classes\${FILECLASS}`
 !macroend
