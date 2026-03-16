@@ -139,6 +139,13 @@ class BuildVolume(SceneNode):
         # Therefore this works.
         self._machine_manager.activeQualityChanged.connect(self._onStackChanged)
 
+        # globalContainerStackChanged and activeQualityChanged both fire during MachineErrorChecker.initialize()
+        # (inside getMachineManager()), which runs *before* BuildVolume is constructed. As a result,
+        # _onStackChanged is never triggered for the initial machine setup and _width/_height/_depth
+        # remain 0. Explicitly queue the timer here so _onStackChangeTimerFinished always runs once
+        # after construction to populate the dimensions regardless of signal ordering.
+        self._onStackChanged()
+
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
 
@@ -699,6 +706,12 @@ class BuildVolume(SceneNode):
     def _onEngineCreated(self) -> None:
         self._engine_ready = True
         self.rebuild()
+        if self._volume_aabb is None:
+            # rebuild() returned early because _width/_height/_depth were still 0 — the stack-change
+            # timer from __init__ may not have fired yet, or the container stack was not ready.
+            # Re-queue it so dimensions are fetched and rebuild() is retried after a short delay.
+            Logger.warning("BuildVolume: _volume_aabb is still None after engine created; re-triggering stack refresh.")
+            self._onStackChanged()
 
     def _onSettingChangeTimerFinished(self) -> None:
         if not self._global_container_stack:
