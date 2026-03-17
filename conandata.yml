@@ -6,7 +6,7 @@ requirements:
   - "curaengine/5.13.0-beta.0"
   - "cura_binary_data/5.13.0-beta.0"
   - "fdm_materials/5.13.0-beta.0"
-  - "dulcificum/5.10.1"
+  - "dulcificum/5.10.2"
   - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
