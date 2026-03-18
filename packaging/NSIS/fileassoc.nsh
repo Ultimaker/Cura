@@ -4,6 +4,8 @@
 ; 
 ; Improved by Nikku<https://github.com/nikku>.
 ;
+; Updated by HellAholic<https://github.com/HellAholic> 2026-March
+;
 ; Features automatic backup system and UPDATEFILEASSOC macro for
 ; shell change notification.
 ;
@@ -65,23 +67,24 @@
 ;
 
 !macro APP_ASSOCIATE EXT FILECLASS DESCRIPTION ICON COMMANDTEXT COMMAND
-  ; Backup the previously associated file class (from HKLM / all-users context)
+  ; Backup the previously associated file class from SHELL_CONTEXT (HKLM or HKCU depending on SetShellVarContext).
   ReadRegStr $R0 SHELL_CONTEXT "Software\Classes\.${EXT}" ""
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "${FILECLASS}_backup" "$R0"
 
-  ; Write to the all-users (HKLM) classes key
-  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "${FILECLASS}"
-  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
-
   ; ALSO write to HKCU so the per-user value points to Cura.
-  ; HKCU\SOFTWARE\Classes takes precedence over HKLM in the merged HKCR view,
+  ; HKCU\Software\Classes takes precedence over HKLM in the merged HKCR view,
   ; so if a stale or empty HKCU entry exists (left by another app) it would
   ; silently override our HKLM entry. Writing here fixes that.
+  ; Back up the pre-existing HKCU default BEFORE writing, so APP_UNASSOCIATE can
+  ; restore it correctly even when SHELL_CONTEXT == HKCU.
+  ReadRegStr $R0 HKCU "Software\Classes\.${EXT}" ""
+  WriteRegStr HKCU "Software\Classes\.${EXT}" "${FILECLASS}_hkcu_backup" "$R0"
+
+  ; Write to the SHELL_CONTEXT classes key
+  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "${FILECLASS}"
+  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
   WriteRegStr HKCU "Software\Classes\.${EXT}" "" "${FILECLASS}"
   WriteRegStr HKCU "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
-
-  ; Remove any per-user shell extension handler overrides
-  DeleteRegKey HKCU "Software\Classes\.${EXT}\shellex"
 
   WriteRegStr SHELL_CONTEXT "Software\Classes\${FILECLASS}" "" `${DESCRIPTION}`
   WriteRegStr SHELL_CONTEXT "Software\Classes\${FILECLASS}\DefaultIcon" "" `${ICON}`
@@ -91,11 +94,20 @@
 !macroend
 
 !macro APP_ASSOCIATE_EX EXT FILECLASS DESCRIPTION ICON VERB DEFAULTVERB SHELLNEW COMMANDTEXT COMMAND
-  ; Backup the previously associated file class
+  ; Backup the previously associated file class from SHELL_CONTEXT (HKLM or HKCU depending on SetShellVarContext).
   ReadRegStr $R0 SHELL_CONTEXT "Software\Classes\.${EXT}" ""
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "${FILECLASS}_backup" "$R0"
 
+  ; Back up the pre-existing HKCU default BEFORE writing, so APP_UNASSOCIATE can
+  ; restore it correctly even when SHELL_CONTEXT == HKCU.
+  ReadRegStr $R0 HKCU "Software\Classes\.${EXT}" ""
+  WriteRegStr HKCU "Software\Classes\.${EXT}" "${FILECLASS}_hkcu_backup" "$R0"
+
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "${FILECLASS}"
+  WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
+  WriteRegStr HKCU "Software\Classes\.${EXT}" "" "${FILECLASS}"
+  WriteRegStr HKCU "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}" ""
+
   StrCmp "${SHELLNEW}" "0" +2
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}\ShellNew" "NullFile" ""
 
@@ -117,13 +129,20 @@
 
 
 !macro APP_UNASSOCIATE EXT FILECLASS
-  ; Backup the previously associated file class
+  ; Restore the previously associated file class in SHELL_CONTEXT and clean up the backup.
   ReadRegStr $R0 SHELL_CONTEXT "Software\Classes\.${EXT}" `${FILECLASS}_backup`
   WriteRegStr SHELL_CONTEXT "Software\Classes\.${EXT}" "" "$R0"
+  DeleteRegValue SHELL_CONTEXT "Software\Classes\.${EXT}" "${FILECLASS}_backup"
   DeleteRegValue SHELL_CONTEXT "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}"
 
-  ; Also remove the HKCU entry we wrote during install
-  DeleteRegValue HKCU "Software\Classes\.${EXT}" ""
+  ; Restore the HKCU default only if it still points to our FILECLASS.
+  ; If the user changed their per-user default after installing Cura, leave it untouched.
+  ; Either way, always clean up the backup value we stored during install.
+  ReadRegStr $R1 HKCU "Software\Classes\.${EXT}" ""
+  StrCmp "$R1" "${FILECLASS}" 0 +3
+    ReadRegStr $R0 HKCU "Software\Classes\.${EXT}" "${FILECLASS}_hkcu_backup"
+    WriteRegStr HKCU "Software\Classes\.${EXT}" "" "$R0"
+  DeleteRegValue HKCU "Software\Classes\.${EXT}" "${FILECLASS}_hkcu_backup"
   DeleteRegValue HKCU "Software\Classes\.${EXT}\OpenWithProgids" "${FILECLASS}"
 
   DeleteRegKey SHELL_CONTEXT `Software\Classes\${FILECLASS}`
