@@ -33,21 +33,6 @@
             />
         </Upgrade>
 
-        <Property Id="ASSOCIATE_URL_PROTOCOLS">
-            <RegistrySearch Id="CheckCuraProtocolHandler"
-                Type="raw"
-                Root="HKCR"
-                Key="cura"
-                Name="URL Protocol"
-            />
-            <RegistrySearch Id="CheckSlicerProtocolHandler"
-                Type="raw"
-                Root="HKCR"
-                Key="slicer"
-                Name="URL Protocol"
-            />
-        </Property>
-
         {% if "Enterprise" in app_name %}
         <Property Id="PREVIOUS_413_INSTALLED" Secure="yes" />
         <Upgrade Id="53C603BB-2B17-4206-A609-29C2E0D0B0AE">
@@ -90,39 +75,6 @@
         <Component Id="CMP_UltiMaker_Cura_exe" Directory="APPLICATIONFOLDER" Guid="*">
             <File Id="FILE_UltiMaker_Cura_exe" KeyPath="yes" Source="$(var.CuraDir)\{{ main_app }}" />
 
-            <ProgId Id="Cura" Description="{{ app_name }}" Icon="ICO_Cura" Advertise="yes">
-                <ProgId Id="3mf" Advertise="yes">
-                    <Extension Id="3mf" ContentType="application/3mf">
-                        <Verb Id="open_3mf" Command="Open" Argument='"%1"' />
-                        <MIME Advertise="yes" ContentType="application/3mf" Default="yes" />
-                    </Extension>
-                </ProgId>
-                <ProgId Id="stl" Advertise="yes">
-                    <Extension Id="stl" ContentType="application/stl">
-                        <Verb Id="open_stl" Command="Open" Argument='"%1"' />
-                        <MIME Advertise="yes" ContentType="application/stl" Default="yes" />
-                    </Extension>
-                </ProgId>
-                <ProgId Id="gcode" Advertise="yes">
-                    <Extension Id="gcode" ContentType="text/x-gcode">
-                        <Verb Id="open_gcode" Command="Open" Argument='"%1"' />
-                        <MIME Advertise="yes" ContentType="text/x-gcode" Default="yes" />
-                    </Extension>
-                </ProgId>
-                <ProgId Id="ufp" Advertise="yes">
-                    <Extension Id="ufp" ContentType="application/x-ufp">
-                        <Verb Id="open_ufp" Command="Open" Argument='"%1"' />
-                        <MIME Advertise="yes" ContentType="application/x-ufp" Default="yes" />
-                    </Extension>
-                </ProgId>
-                <ProgId Id="curapackage" Advertise="yes">
-                    <Extension Id='curapackage' ContentType='application/curapackage'>
-                        <Verb Id='open_curapackage' Command="Open" Argument='"%1"' />
-                        <MIME Advertise="yes" ContentType="application/curapackage" Default="yes" />
-                    </Extension>
-                </ProgId>
-            </ProgId>
-
             <fw:FirewallException Id="FirewallExceptLocalFrontend" Name="Cura (Frontend) Connection (LocalHost)" File="FILE_UltiMaker_Cura_exe" IgnoreFailure="yes">
                 <fw:RemoteAddress>127.0.0.1</fw:RemoteAddress>
             </fw:FirewallException>
@@ -133,6 +85,185 @@
             <fw:FirewallException Id="FirewallExceptLocalEngine" Name="CuraEngine (Backend) Connection (LocalHost)" File="FILE_CuraEngine_exe" IgnoreFailure="yes">
                 <fw:RemoteAddress>127.0.0.1</fw:RemoteAddress>
             </fw:FirewallException>
+        </Component>
+
+        <!--File Association Components-->
+        <Component Id="CMP_Assoc_STL" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.model" Type="string" Value="Standard Tessellation Language (STL) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.model\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.model\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".stl" Type="string" Value="Cura.model" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.model\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.model\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.model\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.model" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".stl" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_3MF" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.project" Type="string" Value="3D Manufacturing Format (3MF) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.project\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.project\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".3mf" Type="string" Value="Cura.project" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.project\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.project\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.project\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.project" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".3mf" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_OBJ" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.obj" Type="string" Value="Wavefront OBJ files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.obj\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.obj\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".obj" Type="string" Value="Cura.obj" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.obj\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.obj\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.obj\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.obj" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".obj" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_PLY" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.ply" Type="string" Value="Stanford Triangle Format (PLY) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.ply\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.ply\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".ply" Type="string" Value="Cura.ply" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ply\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ply\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ply\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ply" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".ply" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_DAE" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.dae" Type="string" Value="COLLADA (DAE) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.dae\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.dae\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".dae" Type="string" Value="Cura.dae" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.dae\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.dae\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.dae\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.dae" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".dae" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_GLTF" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.gltf" Type="string" Value="glTF JSON files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.gltf\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.gltf\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".gltf" Type="string" Value="Cura.gltf" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gltf\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gltf\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gltf\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gltf" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".gltf" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_GLB" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.glb" Type="string" Value="glTF Binary files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.glb\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.glb\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".glb" Type="string" Value="Cura.glb" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.glb\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.glb\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.glb\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.glb" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".glb" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_AMF" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.amf" Type="string" Value="Additive Manufacturing Format (AMF) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.amf\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.amf\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".amf" Type="string" Value="Cura.amf" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.amf\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.amf\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.amf\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.amf" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".amf" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_X3D" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.x3d" Type="string" Value="X3D files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.x3d\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.x3d\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".x3d" Type="string" Value="Cura.x3d" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.x3d\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.x3d\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.x3d\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.x3d" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".x3d" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_UFP" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.ufp" Type="string" Value="UltiMaker Format Package (UFP) files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.ufp\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.ufp\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".ufp" Type="string" Value="Cura.ufp" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ufp\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ufp\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ufp\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.ufp" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".ufp" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_GCODE" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.gcode" Type="string" Value="G-code files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.gcode\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.gcode\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".gcode" Type="string" Value="Cura.gcode" />
+            <RegistryValue Root="HKCR" Key=".g" Type="string" Value="Cura.gcode" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gcode\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gcode\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gcode\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.gcode" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".gcode" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".g" Action="removeOnUninstall" />
+        </Component>
+
+        <Component Id="CMP_Assoc_CuraPackage" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
+            <RegistryValue Root="HKCR" Key="Cura.curapackage" Type="string" Value="Cura Package files" KeyPath="yes" />
+            <RegistryValue Root="HKCR" Key="Cura.curapackage\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Cura.curapackage\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RegistryValue Root="HKCR" Key=".curapackage" Type="string" Value="Cura.curapackage" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.curapackage\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.curapackage\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.curapackage\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Cura.curapackage" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key=".curapackage" Action="removeOnUninstall" />
+        </Component>
+
+        <!--Capabilities / RegisteredApplications Component-->
+        <Component Id="CMP_Capabilities" Guid="*" Directory="APPLICATIONFOLDER">
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities" Name="ApplicationName" Type="string" Value="{{ app_name }}" KeyPath="yes" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities" Name="ApplicationDescription" Type="string" Value="UltiMaker Cura is the world's most trusted 3D printing slicer." />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".stl"    Type="string" Value="Cura.model" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".3mf"    Type="string" Value="Cura.project" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".obj"    Type="string" Value="Cura.obj" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".ply"    Type="string" Value="Cura.ply" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".dae"    Type="string" Value="Cura.dae" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".gltf"   Type="string" Value="Cura.gltf" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".glb"    Type="string" Value="Cura.glb" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".amf"    Type="string" Value="Cura.amf" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".x3d"    Type="string" Value="Cura.x3d" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".ufp"    Type="string" Value="Cura.ufp" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".gcode"  Type="string" Value="Cura.gcode" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Name=".g"      Type="string" Value="Cura.gcode" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\URLAssociations"  Name="cura"   Type="string" Value="cura" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\URLAssociations"  Name="slicer" Type="string" Value="slicer" />
+            <RegistryValue Root="HKLM" Key="SOFTWARE\RegisteredApplications" Name="{{ app_name }}" Type="string" Value="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities" />
+            <RegistryValue Root="HKCR" Key="Applications\{{ main_app }}" Type="string" Value="{{ app_name }}" />
+            <RegistryValue Root="HKCR" Key="Applications\{{ main_app }}\DefaultIcon" Type="string" Value="[APPLICATIONFOLDER]\{{ main_app }},0" />
+            <RegistryValue Root="HKCR" Key="Applications\{{ main_app }}\shell\open\command" Type="string" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
+            <RemoveRegistryKey Root="HKCR" Key="Applications\{{ main_app }}\shell\open" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Applications\{{ main_app }}\shell" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Applications\{{ main_app }}\DefaultIcon" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKCR" Key="Applications\{{ main_app }}" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\URLAssociations" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities\FileAssociations" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}\Capabilities" Action="removeOnUninstall" />
+            <RemoveRegistryKey Root="HKLM" Key="SOFTWARE\{{ company }}\{{ app_name }}" Action="removeOnUninstall" />
         </Component>
 
         <!--Shortcuts-->
@@ -160,32 +291,108 @@
         </DirectoryRef>
 
         <!--Url Scheme-->
-        <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+        <Component Id="CuraRegistration" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
             <RegistryKey Root="HKCR" Key="cura">
-                <RegistryValue Type="string" Value="URL:Cura Protocol"/>
-                <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
-                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+                <RegistryValue Type="string" Value="URL:Cura Protocol" />
+                <RegistryValue Type="string" Name="URL Protocol" Value="" />
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1" />
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
 
-        <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER">
+        <Component Id="SlicerRegistration" Guid="*" Directory="APPLICATIONFOLDER" Location="local">
             <RegistryKey Root="HKCR" Key="slicer">
-                <RegistryValue Type="string" Value="URL:Slicer Protocol"/>
-                <RegistryValue Type="string" Name="URL Protocol" Value=""/>
-                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1"/>
-                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;"/>
+                <RegistryValue Type="string" Value="URL:Slicer Protocol" />
+                <RegistryValue Type="string" Name="URL Protocol" Value="" />
+                <RegistryValue Type="string" Key="DefaultIcon" Value="[APPLICATIONFOLDER]\{{ main_app }},1" />
+                <RegistryValue Type="string" Key="shell\open\command" Value="&quot;[APPLICATIONFOLDER]\{{ main_app }}&quot; &quot;%1&quot;" />
             </RegistryKey>
         </Component>
 
-        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER">
+        <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER"
+                 AllowAdvertise="no" InstallDefault="local">
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
             <ComponentRef Id="CMP_CuraEngine_exe" />
             <ComponentGroupRef Id="NewFilesGroup" />
             <ComponentRef Id="CMP_Shortcuts" />
-            <ComponentRef Id="CuraRegistration"/>
-            <ComponentRef Id="SlicerRegistration"/>
+            <ComponentRef Id="CMP_Capabilities" />
+            <ComponentRef Id="CMP_Assoc_CuraPackage" />
+
+            <Feature Id="FileAssocFeature" Title="File Associations" Level="1"
+                     Description="Associate 3D model file types with {{ app_name }}"
+                     AllowAdvertise="no" InstallDefault="local">
+                <Feature Id="FileAssoc_STL" Title="*.STL files" Level="1"
+                         Description="Associate .STL (Standard Tessellation Language) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_STL" />
+                </Feature>
+                <Feature Id="FileAssoc_3MF" Title="*.3MF files" Level="1"
+                         Description="Associate .3MF (3D Manufacturing Format) project files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_3MF" />
+                </Feature>
+                <Feature Id="FileAssoc_OBJ" Title="*.OBJ files" Level="1"
+                         Description="Associate .OBJ (Wavefront Object) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_OBJ" />
+                </Feature>
+                <Feature Id="FileAssoc_PLY" Title="*.PLY files" Level="1"
+                         Description="Associate .PLY (Stanford Triangle Format) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_PLY" />
+                </Feature>
+                <Feature Id="FileAssoc_DAE" Title="*.DAE files" Level="1"
+                         Description="Associate .DAE (COLLADA) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_DAE" />
+                </Feature>
+                <Feature Id="FileAssoc_GLTF" Title="*.GLTF files" Level="1"
+                         Description="Associate .GLTF (GL Transmission Format) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_GLTF" />
+                </Feature>
+                <Feature Id="FileAssoc_GLB" Title="*.GLB files" Level="1"
+                         Description="Associate .GLB (GL Transmission Format Binary) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_GLB" />
+                </Feature>
+                <Feature Id="FileAssoc_AMF" Title="*.AMF files" Level="1"
+                         Description="Associate .AMF (Additive Manufacturing Format) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_AMF" />
+                </Feature>
+                <Feature Id="FileAssoc_X3D" Title="*.X3D files" Level="1"
+                         Description="Associate .X3D (Extensible 3D) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_X3D" />
+                </Feature>
+                <Feature Id="FileAssoc_UFP" Title="*.UFP files" Level="4"
+                         Description="Associate .UFP (UltiMaker Format Package) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_UFP" />
+                </Feature>
+                <Feature Id="FileAssoc_GCODE" Title="*.GCODE and .G files" Level="4"
+                         Description="Associate .GCODE and .G (G-code) files"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CMP_Assoc_GCODE" />
+                </Feature>
+            </Feature>
+
+            <Feature Id="UrlProtocolFeature" Title="URL Protocols" Level="1"
+                     Description="Enable opening models directly from web links via URL protocols"
+                     AllowAdvertise="no" InstallDefault="local">
+                <Feature Id="UrlProtocol_Cura" Title="cura://" Level="1"
+                         Description="Register the cura:// URL protocol"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="CuraRegistration" />
+                </Feature>
+                <Feature Id="UrlProtocol_Slicer" Title="slicer://" Level="4"
+                         Description="Register the slicer:// URL protocol"
+                         AllowAdvertise="no" InstallDefault="local">
+                    <ComponentRef Id="SlicerRegistration" />
+                </Feature>
+            </Feature>
         </Feature>
-        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..."/>
+        <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..." />
     </Product>
 </Wix>
