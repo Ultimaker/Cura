@@ -6,6 +6,7 @@ import QtQuick.Controls 2.15
 import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -270,11 +271,28 @@ UM.Dialog
                     }
                 }
             }
-            Cura.SecondaryButton
+            RowLayout
             {
-                id: addButton
-                text: catalog.i18nc("@action", "Add a script")
-                onClicked: scriptsMenu.open()
+                anchors.left: parent.left
+                anchors.right: parent.right
+                spacing: UM.Theme.getSize("narrow_margin").width
+
+                Cura.SecondaryButton
+                {
+                    id: addButton
+                    Layout.fillWidth: true
+                    text: catalog.i18nc("@action", "Add a script")
+                    onClicked: scriptsMenu.open()
+                }
+
+                Cura.SecondaryButton
+                {
+                    id: scriptOptionsButton
+                    Layout.preferredWidth: height
+                    iconSource: UM.Theme.getIcon("Hamburger")
+                    tooltip: catalog.i18nc("@info:tooltip", "Import, export or clear scripts")
+                    onClicked: scriptOptionsMenu.open()
+                }
             }
         }
 
@@ -295,6 +313,50 @@ UM.Dialog
                 onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
                 onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
+        }
+
+        Cura.Menu
+        {
+            id: scriptOptionsMenu
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Export scripts")
+                onTriggered: exportScriptsDialog.open()
+            }
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Import scripts")
+                onTriggered: importScriptsDialog.open()
+            }
+
+            Cura.MenuSeparator {}
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Clear scripts")
+                onTriggered: manager.clearScripts()
+            }
+        }
+
+        FileDialog
+        {
+            id: exportScriptsDialog
+            title: catalog.i18nc("@title:window", "Export Post Processing Scripts")
+            fileMode: FileDialog.SaveFile
+            nameFilters: [ catalog.i18nc("@filter:file", "Post Processing Scripts (*.postprocessing)"), catalog.i18nc("@filter:file", "All files (*)") ]
+            defaultSuffix: "postprocessing"
+            onAccepted: manager.exportScripts(selectedFile)
+        }
+
+        FileDialog
+        {
+            id: importScriptsDialog
+            title: catalog.i18nc("@title:window", "Import Post Processing Scripts")
+            fileMode: FileDialog.OpenFile
+            nameFilters: [ catalog.i18nc("@filter:file", "Post Processing Scripts (*.postprocessing)"), catalog.i18nc("@filter:file", "All files (*)") ]
+            onAccepted: manager.importScripts(selectedFile)
         }
 
         Rectangle
