@@ -163,6 +163,29 @@ UM.Dialog
 
                         Item
                         {
+                            id: duplicateButton
+                            Layout.preferredWidth: height
+                            Layout.fillHeight: true
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked: manager.duplicateScriptByIndex(index)
+                            }
+
+                            UM.ColorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: UM.Theme.getSize("standard_arrow").width
+                                height: UM.Theme.getSize("standard_arrow").height
+                                color: UM.Theme.getColor("text")
+                                source: UM.Theme.getIcon("DuplicateScript")
+                            }
+                        }
+
+                        Item
+                        {
                             id: downButton
                             Layout.preferredWidth: height
                             Layout.fillHeight: true

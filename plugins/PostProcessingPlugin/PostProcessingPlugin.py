@@ -256,6 +256,27 @@ class PostProcessingPlugin(QObject, Extension):
         self.scriptListChanged.emit()
         self._propertyChanged()
 
+    @pyqtSlot(int)
+    def duplicateScriptByIndex(self, index: int) -> None:
+        if index < 0 or index >= len(self._script_list):
+            return
+
+        original_script = self._script_list[index]
+        script_key = original_script.getSettingData()["key"]
+
+        new_script = self._loaded_scripts[script_key]()
+        new_script.initialize()
+
+        for setting_key in original_script.getSettingData()["settings"]:
+            setting_value = original_script.getSettingValueByKey(setting_key)
+            if new_script._instance is not None:
+                new_script._instance.setProperty(setting_key, "value", setting_value)
+
+        self._script_list.append(new_script)
+        self.setSelectedScriptIndex(len(self._script_list) - 1)
+        self.scriptListChanged.emit()
+        self._propertyChanged()
+
     def _restoreScriptInforFromMetadata(self):
         self.loadAllScripts()
         new_stack = self._global_container_stack
