@@ -5889,7 +5889,7 @@
                 "support_brim_minimum_hole_area":
                 {
                     "label": "Minimum hole area in brim support",
-                    "description": "Holes in the support brim that have an area lesser this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim",
+                    "description": "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim",
                     "unit": "mm\u00b2",
                     "type": "float",
                     "default_value": 16,
