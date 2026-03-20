@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2026-02-05 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,22 @@ msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>如何空心主塔:<ul><li><b>通常的:</b>创建一个桶状结构,在其中填充辅助材料</li><li><b>交错的:</b> 创建一个尽可能稀疏的主塔。这将节省时间和丝材,但只有当所用材料粘附在每个部件上时才有可能</li></ul></html>"
 
+msgctxt "infill_pattern description"
+msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
+msgstr ""
+
+msgctxt "prime_during_travel_ratio description"
+msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
+msgstr "<html>在空驶移动过程中执行的回弹比例,剩余部分将在空移结束后喷嘴静止时完成<ul><li>设为0时,全部回弹将在空移结束后静止状态下执行</li><li>设为100时,全部回弹将在空驶移动过程中完成,可立即开始打印</li></ul></html>"
+
+msgctxt "retraction_during_travel_ratio description"
+msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
+msgstr "<html>在空驶移动过程中执行的回缩比例,剩余部分将在空移开始前喷嘴静止时完成<ul><li>设为0时,全部回缩将在空移开始前静止状态下执行</li><li>设为100时,全部回缩将在空驶移动过程中完成,跳过静止阶段</li></ul></html>"
+
+msgctxt "cool_during_extruder_switch description"
+msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr "<html>是否在喷嘴切换期间启动冷却风扇。这可以通过更快地冷却喷嘴来帮助减少滴漏:<ul><li><b>不变:</b>保持风扇原状</li><li><b>仅最后一个挤出机:</b> 启动最后一个使用的挤出机的风扇,但关闭其他风扇（如果有）。如果您有完全独立的挤出机,这非常有用。</li><li><b>所有风扇:</b> 在喷嘴开关期间打开所有风扇。如果您有一个单独的冷却风扇或多个彼此靠近的风扇,这非常有用。</li></ul></html>"
+
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
 msgstr "模型周围的裙边可能会触及您不希望接触到的其他模型。此操作会将与其他无裙边的模型小于特定距离的裙边打印区域删除。"
@@ -27,6 +43,10 @@ msgstr "与模型边缘保持的距离。 一直熨平至网格的边缘可能�
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
 msgstr "表示长丝在进料器和喷嘴室之间被压缩多少的系数，用于确定针对长丝开关将材料移动的距离。"
+
+msgctxt "flooring_angles description"
+msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "底部表面皮肤层使用线条或锯齿图案时使用的整数线条方向列表。随着层数的增加,列表中的元素按顺序使用,当到达列表末尾时,从头开始。列表项用逗号分隔,整个列表用方括号括起来。默认值为空列表,表示使用传统的默认角度（45度和135度）。"
 
 msgctxt "roofing_angles description"
 msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
@@ -89,9 +109,10 @@ msgid "Adaptive layers computes the layer heights depending on the shape of the 
 msgstr "自适应图层根据模型形状计算图层高度。"
 
 msgctxt "infill_wall_line_count description"
-msgid "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。"
-"在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
+msgid ""
+"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
+"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
+msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
 
 msgctxt "platform_adhesion description"
 msgid "Adhesion"
@@ -148,6 +169,10 @@ msgstr "所有"
 msgctxt "print_sequence option all_at_once"
 msgid "All at Once"
 msgstr "同时打印"
+
+msgctxt "cool_during_extruder_switch option all_fans"
+msgid "All fans"
+msgstr "所有风扇"
 
 msgctxt "resolution description"
 msgid "All settings that influence the resolution of the print. These settings have a large impact on the quality (and print time)"
@@ -257,6 +282,10 @@ msgctxt "z_seam_position option backright"
 msgid "Back Right"
 msgstr "右后方"
 
+msgctxt "machine_gcode_flavor option BambuLab"
+msgid "BambuLab"
+msgstr "BambuLab"
+
 msgctxt "machine_gcode_flavor option BFB"
 msgid "Bits from Bytes"
 msgstr "Bits from Bytes"
@@ -284,6 +313,74 @@ msgstr "底部皮肤扩展距离"
 msgctxt "bottom_skin_preshrink label"
 msgid "Bottom Skin Removal Width"
 msgstr "底部皮肤移除宽度"
+
+msgctxt "acceleration_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Acceleration"
+msgstr "底部表面内壁加速度"
+
+msgctxt "jerk_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Jerk"
+msgstr "底部表面内壁急动度"
+
+msgctxt "speed_wall_x_flooring label"
+msgid "Bottom Surface Inner Wall Speed"
+msgstr "底部表面内壁速度"
+
+msgctxt "wall_x_material_flow_flooring label"
+msgid "Bottom Surface Inner Wall(s) Flow"
+msgstr "底部表面内壁流量"
+
+msgctxt "acceleration_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Acceleration"
+msgstr "底部表面外壁加速度"
+
+msgctxt "wall_0_material_flow_flooring label"
+msgid "Bottom Surface Outer Wall Flow"
+msgstr "底部表面外壁流量"
+
+msgctxt "jerk_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Jerk"
+msgstr "底部表面外壁急动度"
+
+msgctxt "speed_wall_0_flooring label"
+msgid "Bottom Surface Outer Wall Speed"
+msgstr "底部表面外壁速度"
+
+msgctxt "acceleration_flooring label"
+msgid "Bottom Surface Skin Acceleration"
+msgstr "底部表面皮肤加速度"
+
+msgctxt "flooring_extruder_nr label"
+msgid "Bottom Surface Skin Extruder"
+msgstr "底部表面皮肤挤出机"
+
+msgctxt "flooring_material_flow label"
+msgid "Bottom Surface Skin Flow"
+msgstr "底部表面皮肤流量"
+
+msgctxt "jerk_flooring label"
+msgid "Bottom Surface Skin Jerk"
+msgstr "底部表面皮肤急动度"
+
+msgctxt "flooring_layer_count label"
+msgid "Bottom Surface Skin Layers"
+msgstr "底部表面皮肤层数"
+
+msgctxt "flooring_angles label"
+msgid "Bottom Surface Skin Line Directions"
+msgstr "底部表面皮肤线条方向"
+
+msgctxt "flooring_line_width label"
+msgid "Bottom Surface Skin Line Width"
+msgstr "底部表面皮肤线条宽度"
+
+msgctxt "flooring_pattern label"
+msgid "Bottom Surface Skin Pattern"
+msgstr "底部表面皮肤图案"
+
+msgctxt "speed_flooring label"
+msgid "Bottom Surface Skin Speed"
+msgstr "底部表面皮肤速度"
 
 msgctxt "bottom_thickness label"
 msgid "Bottom Thickness"
@@ -369,10 +466,6 @@ msgctxt "bridge_skin_support_threshold label"
 msgid "Bridge Skin Support Threshold"
 msgstr "连桥表面支撑阈值"
 
-msgctxt "bridge_sparse_infill_max_density label"
-msgid "Bridge Sparse Infill Max Density"
-msgstr "连桥稀疏填充物最大密度"
-
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
 msgstr "连桥第三层表面密度"
@@ -441,10 +534,6 @@ msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
 msgstr "打印平台附着类型"
 
-msgctxt "machine_buildplate_type label"
-msgid "Build Plate Material"
-msgstr "打印平台材料"
-
 msgctxt "machine_shape label"
 msgid "Build Plate Shape"
 msgstr "打印平台形状"
@@ -457,6 +546,22 @@ msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
 msgstr "打印平台温度起始层"
 
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Type"
+msgstr "构建板类型"
+
+msgctxt "build_volume_fan_speed label"
+msgid "Build Volume Fan Speed"
+msgstr "构建腔风扇速度"
+
+msgctxt "build_fan_full_at_height label"
+msgid "Build Volume Fan Speed at Height"
+msgstr "构建腔风扇速度生效高度"
+
+msgctxt "build_fan_full_layer label"
+msgid "Build Volume Fan Speed at Layer"
+msgstr "构建腔风扇速度生效层数"
+
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
 msgstr "打印体积温度"
@@ -468,6 +573,10 @@ msgstr "打印体积温度限制"
 msgctxt "bv_temp_warn_limit label"
 msgid "Build Volume temperature Warning"
 msgstr "打印体积温度警告"
+
+msgctxt "build_volume_fan_nr label"
+msgid "Build volume fan number"
+msgstr "构建体积风扇编号"
 
 msgctxt "prime_tower_brim_enable description"
 msgid "By enabling this setting, your prime-tower will get a brim, even if the model doesn't. If you want a sturdier base for a high tower, you can increase the base height."
@@ -508,6 +617,10 @@ msgstr "梳理可在空驶时让喷嘴保持在已打印区域内。这会使空
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "命令行设置"
+
+msgctxt "flooring_pattern option concentric"
+msgid "Concentric"
+msgstr "同心"
 
 msgctxt "infill_pattern option concentric"
 msgid "Concentric"
@@ -594,8 +707,8 @@ msgid "Connect top/bottom skin paths where they run next to each other. For the 
 msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但由于连接可在填充中途发生，此功能可能会降低顶部表面质量。"
 
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "控制模型轮廓上的角是否影响缝隙的位置。“无”表示各个角不影响缝隙位置。“隐藏缝隙”会使缝隙更可能出现在内侧角上。“外露缝隙”会使缝隙更可能出现在外侧角上。“隐藏或外露缝隙”会使缝隙更可能出现在内侧或外侧角上。“智能隐藏”允许缝隙出现在内侧和外侧角上，如适当，会更多地出现在内侧角上。"
+msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "控制模型轮廓上的转角如何影响接缝位置。\"隐藏接缝\"会使接缝更可能出现在内转角处；\"暴露接缝\"会使接缝更可能出现在外转角处；\"隐藏或暴露接缝\"会使接缝可能出现在内或外转角处；\"智能隐藏\"允许内外转角均可,但会优先选择内转角（如果适用）。"
 
 msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
@@ -612,6 +725,10 @@ msgstr "冷却"
 msgctxt "cooling label"
 msgid "Cooling"
 msgstr "冷却"
+
+msgctxt "cool_during_extruder_switch label"
+msgid "Cooling during extruder switch"
+msgstr "挤出机切换期间的冷却"
 
 msgctxt "infill_pattern option cross"
 msgid "Cross"
@@ -700,6 +817,18 @@ msgstr "耗材电机的默认抖动速度。"
 msgctxt "bridge_settings_enabled description"
 msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
 msgstr "在打印连桥时，检测连桥并修改打印速度、流量和风扇设置。"
+
+msgctxt "roofing_expansion description"
+msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
+msgstr ""
+
+msgctxt "scarf_split_distance description"
+msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
+msgstr "确定在沿着缝合接缝挤出时流量变化中每一步的长度。较小的距离会导致更精确但也更复杂的 G-code。"
+
+msgctxt "scarf_joint_seam_length description"
+msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
+msgstr "确定缝合接缝的长度,这是一种应使 Z 接缝不那么明显的接缝类型。必须大于 0 才能有效。"
 
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
@@ -825,6 +954,10 @@ msgctxt "dual label"
 msgid "Dual Extrusion"
 msgstr "双重挤出"
 
+msgctxt "gradual_flow_discretisation_step_size description"
+msgid "Duration of each step in the gradual flow change"
+msgstr "渐变流量变化中每个步骤的持续时间"
+
 msgctxt "machine_shape option elliptic"
 msgid "Elliptic"
 msgstr "类圆形"
@@ -917,6 +1050,10 @@ msgctxt "ooze_shield_enabled description"
 msgid "Enable exterior ooze shield. This will create a shell around the model which is likely to wipe a second nozzle if it's at the same height as the first nozzle."
 msgstr "启用外部渗出罩。 这将在模型周围创建一个外壳，如果与第一个喷嘴处于相同的高度，则可能会擦拭第二个喷嘴。"
 
+msgctxt "gradual_flow_enabled description"
+msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
+msgstr "启用渐变流量变化。启用之后,流量将会逐渐增加/减少到目标流量。这对于带有波登管的打印机非常有用,因为当挤出机电机启动/停止时,流量并不会立即改变。"
+
 msgctxt "ppr_enable description"
 msgid "Enable print process reporting for setting threshold values for possible fault detection."
 msgstr "启用打印过程报告以设置可能的故障检测的阈值。"
@@ -992,6 +1129,10 @@ msgstr "额外皮肤壁计数"
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
 msgstr "喷嘴切换后的额外装填材料。"
+
+msgctxt "variant_name"
+msgid "Extruder"
+msgstr "挤出机"
 
 msgctxt "extruder_prime_pos_x label"
 msgid "Extruder Prime X Position"
@@ -1089,6 +1230,10 @@ msgctxt "skin_material_flow_layer_0 description"
 msgid "Flow compensation on bottom lines of the first layer"
 msgstr "第一层底部走线的流量补偿"
 
+msgctxt "wall_x_material_flow_flooring description"
+msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
+msgstr "底部表面壁线的流量补偿（除最外层外的所有壁线）。"
+
 msgctxt "infill_material_flow description"
 msgid "Flow compensation on infill lines."
 msgstr "填充走线的流量补偿。"
@@ -1096,6 +1241,10 @@ msgstr "填充走线的流量补偿。"
 msgctxt "support_interface_material_flow description"
 msgid "Flow compensation on lines of support roof or floor."
 msgstr "支撑顶板或底板走线的流量补偿。"
+
+msgctxt "flooring_material_flow description"
+msgid "Flow compensation on lines of the areas at the bottom of the print."
+msgstr "打印底部区域线条的流量补偿"
 
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
@@ -1120,6 +1269,10 @@ msgstr "支撑顶板走线的流量补偿。"
 msgctxt "support_material_flow description"
 msgid "Flow compensation on support structure lines."
 msgstr "支撑结构走线的流量补偿。"
+
+msgctxt "wall_0_material_flow_flooring description"
+msgid "Flow compensation on the bottom surface outermost wall line."
+msgstr "打印底部表面最外层壁线的流量补偿"
 
 msgctxt "wall_0_material_flow_layer_0 description"
 msgid "Flow compensation on the outermost wall line of the first layer."
@@ -1177,6 +1330,10 @@ msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
 msgstr "冲洗清除速度"
 
+msgctxt "reset_flow_duration description"
+msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
+msgstr "对于任何长于此值的移动,材料流量将被重置为路径的目标流量"
+
 msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "对于一倍或两倍于喷嘴孔径的薄结构，需要更改走线宽度以遵循模型的厚度。此设置控制壁允许的最小走线宽度。同样，最小走线宽度内在地决定了最大走线宽度，因为我们在某些几何厚度中从 N 壁过渡到 N+1 壁时，N 壁宽而 N+1 壁窄。允许的最大壁走线宽度是最小壁走线宽度的两倍。"
@@ -1222,14 +1379,16 @@ msgid "G-code Flavor"
 msgstr "G-code 风格"
 
 msgctxt "machine_end_gcode description"
-msgid "G-code commands to be executed at the very end - separated by \n."
-msgstr "在结束前执行的 G-code 命令 - 以 "
-" 分行。"
+msgid ""
+"G-code commands to be executed at the very end - separated by \n"
+"."
+msgstr "在结束前执行的 G-code 命令 - 以  分行。"
 
 msgctxt "machine_start_gcode description"
-msgid "G-code commands to be executed at the very start - separated by \n."
-msgstr "在开始时执行的 G-code 命令 - 以 "
-" 分行。"
+msgid ""
+"G-code commands to be executed at the very start - separated by \n"
+"."
+msgstr "在开始时执行的 G-code 命令 - 以  分行。"
 
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
@@ -1291,6 +1450,18 @@ msgctxt "gradual_support_infill_steps label"
 msgid "Gradual Support Infill Steps"
 msgstr "渐进支撑填充步阶"
 
+msgctxt "gradual_flow_discretisation_step_size label"
+msgid "Gradual flow discretisation step size"
+msgstr "渐变流量离散化步长"
+
+msgctxt "gradual_flow_enabled label"
+msgid "Gradual flow enabled"
+msgstr "启用渐变流量"
+
+msgctxt "max_flow_acceleration label"
+msgid "Gradual flow max acceleration"
+msgstr "渐变流量最大加速度"
+
 msgctxt "cool_min_temperature description"
 msgid "Gradually reduce to this temperature when printing at reduced speeds because of minimum layer time."
 msgstr "当由于最短印层时间而导致打印速度降低时，温度将逐渐降低至该温度。"
@@ -1318,6 +1489,10 @@ msgstr "网格"
 msgctxt "machine_gcode_flavor option Griffin"
 msgid "Griffin"
 msgstr "Griffin"
+
+msgctxt "machine_gcode_flavor option Cheetah"
+msgid "Griffin+Cheetah"
+msgstr "Griffin+Cheetah"
 
 msgctxt "group_outer_walls label"
 msgid "Group Outer Walls"
@@ -1370,6 +1545,14 @@ msgstr "孔洞水平扩展最大直径"
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "将使用微小特征速度打印直径小于此尺寸的孔和零件轮廓。"
+
+msgctxt "infill_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
 
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
@@ -1519,6 +1702,10 @@ msgctxt "infill_sparse_density label"
 msgid "Infill Density"
 msgstr "填充密度"
 
+msgctxt "infill_end_move_inwards_length label"
+msgid "Infill End Move Inwards Length"
+msgstr ""
+
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
 msgstr "填充挤出机"
@@ -1571,9 +1758,21 @@ msgctxt "infill_pattern label"
 msgid "Infill Pattern"
 msgstr "填充图案"
 
+msgctxt "skin_support label"
+msgid "Infill Skin Support"
+msgstr ""
+
 msgctxt "speed_infill label"
 msgid "Infill Speed"
 msgstr "填充速度"
+
+msgctxt "infill_start_move_inwards_length label"
+msgid "Infill Start Move Inwards Length"
+msgstr ""
+
+msgctxt "infill_move_inwards_length label"
+msgid "Infill Start/End Move Inwards Length"
+msgstr ""
 
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
@@ -1679,9 +1878,17 @@ msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "起始层 Z 重叠"
 
+msgctxt "build_volume_fan_speed_0 label"
+msgid "Initial Layers Build Volume Fan Speed"
+msgstr "初始层构建腔风扇速度"
+
 msgctxt "material_initial_print_temperature label"
 msgid "Initial Printing Temperature"
 msgstr "起始打印温度"
+
+msgctxt "layer_0_max_flow_acceleration label"
+msgid "Initial layer max flow acceleration"
+msgstr "初始层最大流量加速"
 
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
@@ -1719,6 +1926,10 @@ msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
 msgstr "从内到外"
 
+msgctxt "retraction_combing_avoid_distance label"
+msgid "Inside Travel Avoid Distance"
+msgstr "内部移动避让距离"
+
 msgctxt "support_interface_priority option interface_lines_overwrite_support_area"
 msgid "Interface lines preferred"
 msgstr "偏好接触面走线"
@@ -1726,6 +1937,14 @@ msgstr "偏好接触面走线"
 msgctxt "support_interface_priority option interface_area_overwrite_support_area"
 msgid "Interface preferred"
 msgstr "偏好接触面"
+
+msgctxt "bridge_interlace_lines label"
+msgid "Interlace Bridge Lines"
+msgstr ""
+
+msgctxt "skin_support_interlace_lines label"
+msgid "Interlace Skin Support Lines"
+msgstr ""
 
 msgctxt "prime_tower_mode option interleaved"
 msgid "Interleaved"
@@ -1807,6 +2026,10 @@ msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
 msgstr "保留断开连接的面"
 
+msgctxt "keep_retracting_during_travel label"
+msgid "Keep Retracting During Travel"
+msgstr "在空驶过程中持续回抽"
+
 msgctxt "layer_height label"
 msgid "Layer Height"
 msgstr "层高"
@@ -1818,6 +2041,10 @@ msgstr "层开始 X"
 msgctxt "layer_start_y label"
 msgid "Layer Start Y"
 msgstr "层开始 Y"
+
+msgctxt "layer_start_at_z_seam label"
+msgid "Layer Start at Z Seam"
+msgstr ""
 
 msgctxt "raft_base_thickness description"
 msgid "Layer thickness of the base raft layer. This should be a thick layer which sticks firmly to the printer build plate."
@@ -1907,6 +2134,10 @@ msgctxt "line_width label"
 msgid "Line Width"
 msgstr "走线宽度"
 
+msgctxt "flooring_pattern option lines"
+msgid "Lines"
+msgstr "线条"
+
 msgctxt "infill_pattern option lines"
 msgid "Lines"
 msgstr "直线"
@@ -1992,9 +2223,10 @@ msgid "Make the extruder prime position absolute rather than relative to the las
 msgstr "使挤出机主要位置为绝对值，而不是与上一已知打印头位置的相对值。"
 
 msgctxt "layer_0_z_overlap description"
-msgid "Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\nIt may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
-msgstr "使模型打印的第一层和第二层在 Z 方向上重叠,以补偿气隙中损失的丝材。模型的第一层上方的所有部分都将向下移动此量。"
-"您可能会发现,进行此设置后,有时第二层会打印在初始层下方。这是正常的"
+msgid ""
+"Make the first and second layer of the model overlap in the Z direction to compensate for the filament lost in the airgap. All models above the first model layer will be shifted down by this amount.\n"
+"It may be noted that sometimes the second layer is printed below initial layer because of this setting. This is intended behavior"
+msgstr "使模型打印的第一层和第二层在 Z 方向上重叠,以补偿气隙中损失的丝材。模型的第一层上方的所有部分都将向下移动此量。您可能会发现,进行此设置后,有时第二层会打印在初始层下方。这是正常的"
 
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
@@ -2003,6 +2235,10 @@ msgstr "使网格更适合 3D 打印。"
 msgctxt "machine_gcode_flavor option Makerbot"
 msgid "Makerbot"
 msgstr "Makerbot"
+
+msgctxt "support_z_seam_away_from_model description"
+msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
+msgstr "管理支撑结构的 z 形接缝与实际 3D 模型之间的空间关系。这个控制非常关键,因为它允许用户在打印后确保无缝去除支撑结构,而不会对打印模型造成损坏或留下痕迹。"
 
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
 msgid "Marlin"
@@ -2027,6 +2263,10 @@ msgstr "材料品牌"
 msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "材料 GUID"
+
+msgctxt "material_max_flowrate label"
+msgid "Material Maximum Flow Rate"
+msgstr "材料最大流量率"
 
 msgctxt "material_type label"
 msgid "Material Type"
@@ -2120,6 +2360,10 @@ msgctxt "meshfix_maximum_travel_resolution label"
 msgid "Maximum Travel Resolution"
 msgstr "空走的最大分辨率"
 
+msgctxt "max_flow_acceleration description"
+msgid "Maximum acceleration for gradual flow changes"
+msgstr "渐变流量变化的最大加速度"
+
 msgctxt "machine_max_acceleration_x description"
 msgid "Maximum acceleration for the motor of the X-direction"
 msgstr "X 轴方向电机的最大加速度"
@@ -2136,13 +2380,13 @@ msgctxt "machine_max_acceleration_e description"
 msgid "Maximum acceleration for the motor of the filament."
 msgstr "耗材电机的最大加速度。"
 
-msgctxt "bridge_sparse_infill_max_density description"
-msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "填充物的最大密度被视为稀疏。稀疏填充物表面被视为不受支持，因此可被视为连桥表面。"
-
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
 msgstr "将由专门的支撑塔支撑的小区域 X/Y 轴方向的最大直径。"
+
+msgctxt "material_max_flowrate description"
+msgid "Maximum flow rate that the printer can extrude for the material"
+msgstr "打印机可挤出该材料的最大流量率"
 
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
@@ -2179,6 +2423,14 @@ msgstr "网格旋转矩阵"
 msgctxt "slicing_tolerance option middle"
 msgid "Middle"
 msgstr "Middle"
+
+msgctxt "z_seam_position option middle"
+msgid "Middle"
+msgstr ""
+
+msgctxt "support_z_seam_min_distance label"
+msgid "Min Z Seam Distance from Model"
+msgstr "模型的最小 Z 形接缝距离"
 
 msgctxt "mold_width label"
 msgid "Minimal Mold Width"
@@ -2220,9 +2472,17 @@ msgctxt "cool_min_layer_time label"
 msgid "Minimum Layer Time"
 msgstr "最短单层冷却时间"
 
+msgctxt "cool_min_layer_time_overhang label"
+msgid "Minimum Layer Time with Overhang"
+msgstr "带悬垂的最小层时间"
+
 msgctxt "min_odd_wall_line_width label"
 msgid "Minimum Odd Wall Line Width"
 msgstr "最小奇数壁走线宽度"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length label"
+msgid "Minimum Overhang Segment Length"
+msgstr "最小悬垂段长度"
 
 msgctxt "minimum_polygon_circumference label"
 msgid "Minimum Polygon Circumference"
@@ -2284,6 +2544,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "支撑顶板的最小面积。面积小于此值的多边形将打印为一般支撑。"
 
+msgctxt "layer_0_max_flow_acceleration description"
+msgid "Minimum speed for gradual flow changes for the first layer"
+msgstr "第一层渐变流量变化的最小速度"
+
 msgctxt "min_feature_size description"
 msgid "Minimum thickness of thin features. Model features that are thinner than this value will not be printed, while features thicker than the Minimum Feature Size will be widened to the Minimum Wall Line Width."
 msgstr "薄特征的最小厚度。将不打印比此值更薄的模型特征，而比最小特征尺寸更厚的特征将加宽到最小壁走线宽度。"
@@ -2304,6 +2568,10 @@ msgctxt "mold_roof_height label"
 msgid "Mold Roof Height"
 msgstr "模具顶板高度"
 
+msgctxt "flooring_monotonic label"
+msgid "Monotonic Bottom Surface Order"
+msgstr "单调底部表面顺序"
+
 msgctxt "ironing_monotonic label"
 msgid "Monotonic Ironing Order"
 msgstr "单调熨平顺序"
@@ -2320,9 +2588,25 @@ msgctxt "skin_monotonic label"
 msgid "Monotonic Top/Bottom Order"
 msgstr "单调顶部/底部顺序"
 
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "多材料打印深度"
+
+msgctxt "multi_material_paint_resolution label"
+msgid "Multi-material Precision"
+msgstr "多材料打印精度"
+
 msgctxt "skirt_line_count description"
 msgid "Multiple skirt lines help to prime your extrusion better for small models. Setting this to 0 will disable the skirt."
 msgstr "多个 Skirt 走线帮助为小型模型更好地装填您的挤出部分。 将其设为 0 将禁用 skirt。"
+
+msgctxt "machine_time_estimation_factor description"
+msgid "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times."
+msgstr ""
+
+msgctxt "support_infill_density_multiplier_initial_layer description"
+msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
+msgstr "支撑初始层填充的倍数。增加这个值可能有助于床附着力。"
 
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
@@ -2341,10 +2625,6 @@ msgid "Non-traditional ways to print your models."
 msgstr "打印模型的非传统方式。"
 
 msgctxt "adhesion_type option none"
-msgid "None"
-msgstr "无"
-
-msgctxt "z_seam_corner option z_seam_corner_none"
 msgid "None"
 msgstr "无"
 
@@ -2387,10 +2667,6 @@ msgstr "喷嘴不允许区域"
 msgctxt "machine_nozzle_id label"
 msgid "Nozzle ID"
 msgstr "喷嘴 ID"
-
-msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle Length"
-msgstr "喷嘴长度"
 
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
@@ -2444,6 +2720,14 @@ msgctxt "gradual_support_infill_steps description"
 msgid "Number of times to reduce the support infill density by half when getting further below top surfaces. Areas which are closer to top surfaces get a higher density, up to the Support Infill Density."
 msgstr "在进入顶层以下时，将支撑填充密度减少一半的次数。 越靠近顶面的区域密度越高，最高达到支撑填充密度。"
 
+msgctxt "infill_pattern option octagon"
+msgid "Octagon"
+msgstr ""
+
+msgctxt "support_pattern option octagon"
+msgid "Octagon"
+msgstr ""
+
 msgctxt "infill_pattern option tetrahedral"
 msgid "Octet"
 msgstr "八角形"
@@ -2479,6 +2763,10 @@ msgstr "在模型上（如需要）"
 msgctxt "print_sequence option one_at_a_time"
 msgid "One at a Time"
 msgstr "排队打印"
+
+msgctxt "cool_during_extruder_switch option only_last_extruder"
+msgid "Only last extruder"
+msgstr "仅最后一台挤出机"
 
 msgctxt "retraction_hop_only_when_collides description"
 msgid "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling."
@@ -2516,6 +2804,14 @@ msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
 msgstr "外壁加速度"
 
+msgctxt "wall_0_deceleration label"
+msgid "Outer Wall End Deceleration"
+msgstr "外壁结束减速"
+
+msgctxt "wall_0_end_speed_ratio label"
+msgid "Outer Wall End Speed Ratio"
+msgstr "外墙结束速度比率"
+
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
 msgstr "外壁挤出机"
@@ -2540,6 +2836,18 @@ msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
 msgstr "速度（外壁）"
 
+msgctxt "wall_0_speed_split_distance label"
+msgid "Outer Wall Speed Split Distance"
+msgstr "外墙速度分割距离"
+
+msgctxt "wall_0_acceleration label"
+msgid "Outer Wall Start Acceleration"
+msgstr "外壁起始加速度"
+
+msgctxt "wall_0_start_speed_ratio label"
+msgid "Outer Wall Start Speed Ratio"
+msgstr "外墙起始速度比率"
+
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
 msgstr "外壁擦嘴长度"
@@ -2560,13 +2868,13 @@ msgctxt "wall_overhang_angle label"
 msgid "Overhanging Wall Angle"
 msgstr "悬垂壁角度"
 
-msgctxt "wall_overhang_speed_factor label"
-msgid "Overhanging Wall Speed"
+msgctxt "wall_overhang_speed_factors label"
+msgid "Overhanging Wall Speeds"
 msgstr "悬垂壁速度"
 
-msgctxt "wall_overhang_speed_factor description"
-msgid "Overhanging walls will be printed at this percentage of their normal print speed."
-msgstr "悬垂壁将以其正常打印速度的此百分比打印。"
+msgctxt "wall_overhang_speed_factors description"
+msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
+msgstr "悬垂壁将以正常打印速度的百分比进行打印。您可以指定多个值,以便更悬垂的壁以更慢的速度打印,例如通过设置[75, 50, 25]。"
 
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
@@ -2575,6 +2883,10 @@ msgstr "在未回抽后暂停。"
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
 msgstr "打印连桥表面和桥壁时使用的风扇百分比速度。"
+
+msgctxt "skin_support_fan_speed description"
+msgid "Percentage fan speed to use when printing skin support."
+msgstr ""
 
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
@@ -2588,6 +2900,10 @@ msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "打印桥梁第三层表面时使用的风扇百分比速度。"
 
+msgctxt "z_seam_on_vertex description"
+msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
+msgstr "将 z 形接缝放置在多边形顶点上。关闭此功能也可以在顶点之间放置接缝。（请注意,这不会覆盖在未支撑悬垂上放置接缝的限制。）"
+
 msgctxt "minimum_polygon_circumference description"
 msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
 msgstr "切片层中周长小于此数值的多边形将被滤除。以切片时间为代价，较低的值可实现较高分辨率的网格。它主要用于高分辨率 SLA 打印机和包含大量细节的极小 3D 模型。"
@@ -2596,9 +2912,17 @@ msgctxt "support_tree_angle_slow label"
 msgid "Preferred Branch Angle"
 msgstr "偏好分支角度"
 
+msgctxt "material_pressure_advance_factor label"
+msgid "Pressure advance factor"
+msgstr "压力推进因子"
+
 msgctxt "wall_transition_filter_deviation description"
 msgid "Prevent transitioning back and forth between one extra wall and one less. This margin extends the range of line widths which follow to [Minimum Wall Line Width - Margin, 2 * Minimum Wall Line Width + Margin]. Increasing this margin reduces the number of transitions, which reduces the number of extrusion starts/stops and travel time. However, large line width variation can lead to under- or overextrusion problems."
 msgstr "防止在多一个壁和少一个壁之间来回过渡。此边距扩展走线宽度的范围，介于 [最小壁走线宽度 - 边距，2 * 最小壁走线宽度 + 边距] 之间。增加此边距将减少过渡数量，从而减少挤出启动/停止次数和行程时间。但是，较大的走线宽度变化会导致挤出不足或挤出过多的问题。"
+
+msgctxt "prime_during_travel_ratio label"
+msgid "Prime During Travel Move"
+msgstr "在空驶移动过程中进行回弹"
 
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
@@ -2636,6 +2960,10 @@ msgctxt "prime_tower_max_bridging_distance label"
 msgid "Prime Tower Maximum Bridging Distance"
 msgstr "主塔最大桥接距离"
 
+msgctxt "prime_tower_min_shell_thickness label"
+msgid "Prime Tower Minimum Shell Thickness"
+msgstr "引导塔最小外壳厚度"
+
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
 msgstr "装填塔最小体积"
@@ -2668,6 +2996,10 @@ msgctxt "acceleration_print label"
 msgid "Print Acceleration"
 msgstr "打印加速度"
 
+msgctxt "variant_name"
+msgid "Print Core"
+msgstr "打印核心"
+
 msgctxt "jerk_print label"
 msgid "Print Jerk"
 msgstr "打印抖动速度"
@@ -2688,13 +3020,25 @@ msgctxt "fill_outline_gaps label"
 msgid "Print Thin Walls"
 msgstr "打印薄壁"
 
+msgctxt "machine_time_estimation_factor label"
+msgid "Print Time Estimation Factor"
+msgstr ""
+
 msgctxt "brim_location description"
 msgid "Print a brim on the outside of the model, inside, or both. Depending on the model, this helps reducing the amount of brim you need to remove afterwards, while ensuring a proper bed adhesion."
 msgstr "在模型的外侧,内侧或两侧同时打印裙边。根据模型的不同,这有助于减少随后需要去除的裙边量,同时保证所需的底座附着力。"
 
+msgctxt "skin_support description"
+msgid "Print a solid infill pattern just below skin to avoid printing the skin over air."
+msgstr ""
+
 msgctxt "prime_tower_enable description"
 msgid "Print a tower next to the print which serves to prime the material after each nozzle switch."
 msgstr "在打印品相邻处打印一个塔，用于在每个喷嘴切换后装填材料。"
+
+msgctxt "flooring_monotonic description"
+msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
+msgstr "以单方向重叠相邻线条的顺序打印底部表面线条。这需要稍长的打印时间,但可以使平坦表面看起来更加一致。"
 
 msgctxt "infill_support_enabled description"
 msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
@@ -2788,6 +3132,18 @@ msgctxt "raft_base_fan_speed label"
 msgid "Raft Base Fan Speed"
 msgstr "Raft 基础风扇速度"
 
+msgctxt "raft_base_flow label"
+msgid "Raft Base Flow"
+msgstr "筏底流量"
+
+msgctxt "raft_base_infill_overlap_mm label"
+msgid "Raft Base Infill Overlap"
+msgstr "筏底填充重叠"
+
+msgctxt "raft_base_infill_overlap label"
+msgid "Raft Base Infill Overlap Percentage"
+msgstr "筏底填充重叠百分比"
+
 msgctxt "raft_base_line_spacing label"
 msgid "Raft Base Line Spacing"
 msgstr "Raft 基础走线间距"
@@ -2827,6 +3183,26 @@ msgstr "Raft 留白"
 msgctxt "raft_fan_speed label"
 msgid "Raft Fan Speed"
 msgstr "Raft 风扇速度"
+
+msgctxt "raft_flow label"
+msgid "Raft Flow"
+msgstr "木筏流量"
+
+msgctxt "raft_interface_flow label"
+msgid "Raft Interface Flow"
+msgstr "筏板界面层流量"
+
+msgctxt "raft_interface_infill_overlap_mm label"
+msgid "Raft Interface Infill Overlap"
+msgstr "筏板界面层填充重叠"
+
+msgctxt "raft_interface_infill_overlap label"
+msgid "Raft Interface Infill Overlap Percentage"
+msgstr "筏板界面层填充重叠百分比"
+
+msgctxt "raft_interface_z_offset label"
+msgid "Raft Interface Z Offset"
+msgstr "筏板界面层 Z 偏移"
 
 msgctxt "raft_interface_margin label"
 msgid "Raft Middle Extra Margin"
@@ -2891,6 +3267,22 @@ msgstr "Raft 打印速度"
 msgctxt "raft_smoothing label"
 msgid "Raft Smoothing"
 msgstr "Raft 平滑度"
+
+msgctxt "raft_surface_flow label"
+msgid "Raft Surface Flow"
+msgstr "木筏表面流量"
+
+msgctxt "raft_surface_infill_overlap_mm label"
+msgid "Raft Surface Infill Overlap"
+msgstr "木筏表面填充重叠"
+
+msgctxt "raft_surface_infill_overlap label"
+msgid "Raft Surface Infill Overlap Percentage"
+msgstr "木筏表面填充重叠百分比"
+
+msgctxt "raft_surface_z_offset label"
+msgid "Raft Surface Z Offset"
+msgstr "木筏表面 Z 偏移"
 
 msgctxt "raft_surface_margin label"
 msgid "Raft Top Extra Margin"
@@ -3056,6 +3448,10 @@ msgctxt "ppr description"
 msgid "Reporting events that go out of set thresholds"
 msgstr "报告超出设定阈值的事件"
 
+msgctxt "reset_flow_duration label"
+msgid "Reset flow duration"
+msgstr "重置流量持续时间"
+
 msgctxt "support_tree_rest_preference label"
 msgid "Rest Preference"
 msgstr "停留偏好"
@@ -3083,6 +3479,10 @@ msgstr "当喷嘴移动到下一层时回抽耗材。"
 msgctxt "retraction_amount label"
 msgid "Retraction Distance"
 msgstr "回抽距离"
+
+msgctxt "retraction_during_travel_ratio label"
+msgid "Retraction During Travel Move"
+msgstr "在空驶移动过程中进行回抽"
 
 msgctxt "retraction_extra_prime_amount label"
 msgid "Retraction Extra Prime Amount"
@@ -3120,6 +3520,22 @@ msgctxt "material_shrinkage_percentage label"
 msgid "Scaling Factor Shrinkage Compensation"
 msgstr "缩放因子收缩补偿"
 
+msgctxt "machine_scan_first_layer label"
+msgid "Scan the first layer"
+msgstr "扫描首层"
+
+msgctxt "scarf_joint_seam_length label"
+msgid "Scarf Seam Length"
+msgstr "缝合接缝长度"
+
+msgctxt "scarf_joint_seam_start_height_ratio label"
+msgid "Scarf Seam Start Height"
+msgstr "缝合接缝起始高度"
+
+msgctxt "scarf_split_distance label"
+msgid "Scarf Seam Step Length"
+msgstr "缝合接缝步长"
+
 msgctxt "support_meshes_present label"
 msgid "Scene Has Support Meshes"
 msgstr "场景具有支撑网格"
@@ -3127,6 +3543,10 @@ msgstr "场景具有支撑网格"
 msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "缝隙角偏好设置"
+
+msgctxt "seam_overhang_angle label"
+msgid "Seam Overhanging Wall Angle"
+msgstr "接缝悬垂墙角度"
 
 msgctxt "user_defined_print_order_enabled label"
 msgid "Set Print Sequence Manually"
@@ -3164,14 +3584,6 @@ msgctxt "machine_show_variants label"
 msgid "Show Machine Variants"
 msgstr "显示打印机变体"
 
-msgctxt "skin_edge_support_layers label"
-msgid "Skin Edge Support Layers"
-msgstr "皮肤边缘支撑层数"
-
-msgctxt "skin_edge_support_thickness label"
-msgid "Skin Edge Support Thickness"
-msgstr "皮肤边缘支撑厚度"
-
 msgctxt "expand_skins_expand_distance label"
 msgid "Skin Expand Distance"
 msgstr "皮肤扩展距离"
@@ -3187,6 +3599,22 @@ msgstr "皮肤重叠百分比"
 msgctxt "skin_preshrink label"
 msgid "Skin Removal Width"
 msgstr "肤移除宽度"
+
+msgctxt "skin_support_density label"
+msgid "Skin Support Density"
+msgstr ""
+
+msgctxt "skin_support_fan_speed label"
+msgid "Skin Support Fan Speed"
+msgstr ""
+
+msgctxt "skin_support_material_flow label"
+msgid "Skin Support Flow"
+msgstr ""
+
+msgctxt "skin_support_speed label"
+msgid "Skin Support Speed"
+msgstr ""
 
 msgctxt "min_skin_width_for_expansion description"
 msgid "Skin areas narrower than this are not expanded. This avoids expanding the narrow skin areas that are created when the model surface has a slope close to the vertical."
@@ -3344,6 +3772,14 @@ msgctxt "machine_start_gcode label"
 msgid "Start G-code"
 msgstr "开始 G-code"
 
+msgctxt "machine_start_gcode_first label"
+msgid "Start GCode must be first"
+msgstr "启动G代码必须放在首位"
+
+msgctxt "layer_start_at_z_seam description"
+msgid "Start printing at the Z seam position."
+msgstr ""
+
 msgctxt "z_seam_type description"
 msgid "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker."
 msgstr "一层中每条路径的起点。 当连续多层的路径从相同点开始时，则打印物上会显示一条垂直缝隙。 如果将这些路径靠近一个用户指定的位置对齐，则缝隙最容易移除。 如果随机放置，则路径起点的不精准度将较不明显。 采用最短的路径时，打印将更为快速。"
@@ -3471,6 +3907,10 @@ msgstr "支撑水平扩展"
 msgctxt "acceleration_support_infill label"
 msgid "Support Infill Acceleration"
 msgstr "支撑填充加速度"
+
+msgctxt "support_infill_density_multiplier_initial_layer label"
+msgid "Support Infill Density Multiplier Initial Layer"
+msgstr "支持填充密度乘数初始层"
 
 msgctxt "support_infill_extruder_nr label"
 msgid "Support Infill Extruder"
@@ -3664,6 +4104,10 @@ msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "支撑 Z 距离"
 
+msgctxt "support_z_seam_away_from_model label"
+msgid "Support Z Seam Away from Model"
+msgstr "支持远离模型的 Z 形接缝"
+
 msgctxt "support_interface_priority option support_lines_overwrite_interface_area"
 msgid "Support lines preferred"
 msgstr "偏好支撑线"
@@ -3713,8 +4157,8 @@ msgid "The X coordinate of the position near where to find the part to start pri
 msgstr "位置的 X 轴坐标，在该位置附近找到开始打印每层的部分。"
 
 msgctxt "z_seam_x description"
-msgid "The X coordinate of the position near where to start printing each part in a layer."
-msgstr "位置的 X 轴坐标，在该位置附近开始打印层中各个部分。"
+msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr ""
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -3725,8 +4169,8 @@ msgid "The Y coordinate of the position near where to find the part to start pri
 msgstr "位置的 Y 轴坐标，在该位置附近找到开始打印每层的部分。"
 
 msgctxt "z_seam_y description"
-msgid "The Y coordinate of the position near where to start printing each part in a layer."
-msgstr "位置的 Y 轴坐标，在该位置附近开始打印层中各个部分。"
+msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr ""
 
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
@@ -3756,6 +4200,10 @@ msgctxt "acceleration_wall_x description"
 msgid "The acceleration with which all inner walls are printed."
 msgstr "打印所有内壁的加速度。"
 
+msgctxt "acceleration_flooring description"
+msgid "The acceleration with which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的加速度"
+
 msgctxt "acceleration_infill description"
 msgid "The acceleration with which infill is printed."
 msgstr "打印填充物的加速度。"
@@ -3771,6 +4219,14 @@ msgstr "打印发生的加速度。"
 msgctxt "raft_base_acceleration description"
 msgid "The acceleration with which the base raft layer is printed."
 msgstr "打印基础 Raft 层的加速度。"
+
+msgctxt "acceleration_wall_x_flooring description"
+msgid "The acceleration with which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的加速度"
+
+msgctxt "acceleration_wall_0_flooring description"
+msgid "The acceleration with which the bottom surface outermost walls are printed."
+msgstr "打印底部表面最外层壁的加速度"
 
 msgctxt "acceleration_support_bottom description"
 msgid "The acceleration with which the floors of support are printed. Printing them at lower acceleration can improve adhesion of support on top of your model."
@@ -3840,6 +4296,22 @@ msgctxt "acceleration_travel description"
 msgid "The acceleration with which travel moves are made."
 msgstr "进行空驶的加速度。"
 
+msgctxt "raft_base_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "相对于正常挤出线,在筏底打印过程中挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
+
+msgctxt "raft_interface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "相对于正常挤出线,在筏板界面打印期间挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
+
+msgctxt "raft_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "相对于正常挤出线,木筏打印过程中挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
+
+msgctxt "raft_surface_flow description"
+msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
+msgstr "相对于正常挤出线,在木筏表面打印期间挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
+
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
 msgstr "熨平期间相对于正常皮肤走线的挤出材料量。 保持喷嘴填充状态有助于填充顶层表面的一些缝隙，但如填充过多则会导致表面上过度挤出和光点。"
@@ -3847,6 +4319,30 @@ msgstr "熨平期间相对于正常皮肤走线的挤出材料量。 保持喷�
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
 msgstr "填充物和壁之间的重叠量占填充走线宽度的百分比。稍微重叠可让各个壁与填充物牢固连接。"
+
+msgctxt "raft_base_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充物与筏底墙壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
+
+msgctxt "raft_base_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充物与筏底壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
+
+msgctxt "raft_interface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充与筏板界面墙壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
+
+msgctxt "raft_interface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充物与筏板界面的墙壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
+
+msgctxt "raft_surface_infill_overlap description"
+msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充与木筏表面壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
+
+msgctxt "raft_surface_infill_overlap_mm description"
+msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
+msgstr "填充物与木筏表面的墙壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
 
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
@@ -3916,6 +4412,10 @@ msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
 msgstr "连桥第二层表面的密度。此值若小于 100 则会增大表面线条的缝隙。"
 
+msgctxt "skin_support_density description"
+msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
+msgstr ""
+
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
 msgstr "连桥第三层表面的密度。此值若小于 100 则会增大表面线条的缝隙。"
@@ -3923,6 +4423,10 @@ msgstr "连桥第三层表面的密度。此值若小于 100 则会增大表面�
 msgctxt "machine_depth description"
 msgid "The depth (Y-direction) of the printable area."
 msgstr "机器可打印区域深度（Y 坐标）"
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "模型内部喷涂细节的深度。较高的深度值可提供更好的咬合效果,但会增加切片时间和内存占用。设置极高的数值可实现最大深度（实际计算深度可能存在浮动）。"
 
 msgctxt "support_tower_diameter description"
 msgid "The diameter of a special tower."
@@ -3948,9 +4452,21 @@ msgctxt "adaptive_layer_height_variation_step description"
 msgid "The difference in height of the next layer height compared to the previous one."
 msgstr "下一层与前一层的高度差。"
 
+msgctxt "machine_head_with_fans_polygon description"
+msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
+msgstr "用于在\"一次打印一个\"时确定\"安全模型距离\"的打印头尺寸。这些数字与第一个挤出机喷嘴的中心线相关。喷嘴左侧为\"X最小值\",必须为负数。喷嘴后方为\"Y最小值\",必须为负数。X最大值（右侧）和Y最大值（前方）为正数。龙门高度是从构建板到X龙门梁的尺寸。"
+
 msgctxt "ironing_line_spacing description"
 msgid "The distance between the lines of ironing."
 msgstr "熨平走线之间的距离。"
+
+msgctxt "support_z_seam_min_distance description"
+msgid "The distance between the model and its support structure at the z-axis seam."
+msgstr "模型与其支撑结构在z 轴接缝处的距离。"
+
+msgctxt "retraction_combing_avoid_distance description"
+msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
+msgstr "喷嘴与已打印外壁之间的内部移动距离"
 
 msgctxt "travel_avoid_distance description"
 msgid "The distance between the nozzle and already printed parts when avoiding during travel moves."
@@ -4060,6 +4576,10 @@ msgctxt "infill_extruder_nr description"
 msgid "The extruder train used for printing infill. This is used in multi-extrusion."
 msgstr "用于打印填充的挤出机组。 用于多重挤出。"
 
+msgctxt "flooring_extruder_nr description"
+msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
+msgstr "用于打印最底部皮肤的挤出机轨道。这用于多挤出机设置。"
+
 msgctxt "wall_x_extruder_nr description"
 msgid "The extruder train used for printing the inner walls. This is used in multi-extrusion."
 msgstr "用于打印内壁的挤出机组。 用于多重挤出。"
@@ -4079,6 +4599,14 @@ msgstr "用于打印最顶部皮肤的挤出机组。 用于多重挤出。"
 msgctxt "wall_extruder_nr description"
 msgid "The extruder train used for printing the walls. This is used in multi-extrusion."
 msgstr "用于打印壁的挤出机组。 用于多重挤出。"
+
+msgctxt "build_volume_fan_speed description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
+msgstr "辅助风扇/构建腔风扇的速度百分比,从达到\"构建腔风扇速度生效层数\"指定的层数开始持续生效。在此之前,风扇速度由\"初始层构建腔风扇速度\"控制。"
+
+msgctxt "build_volume_fan_speed_0 description"
+msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
+msgstr "辅助风扇/构建腔风扇的速度百分比,在达到\"构建腔风扇速度生效层数\"指定的层数之前持续生效。此后,风扇速度将改由\"构建腔风扇速度\"控制（即不再使用此\"初始层\"设置）。"
 
 msgctxt "raft_base_fan_speed description"
 msgid "The fan speed for the base raft layer."
@@ -4120,6 +4648,10 @@ msgctxt "mold_roof_height description"
 msgid "The height above horizontal parts in your model which to print mold."
 msgstr "用于打印模具的模型水平部分上方的高度。"
 
+msgctxt "build_fan_full_at_height description"
+msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
+msgstr "风扇在常规风速下旋转的高度。在下面的层中,风扇速度会逐渐从初始风速增加到常规风速。"
+
 msgctxt "cool_fan_full_at_height description"
 msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
 msgstr "风扇以正常速度旋转的高度。 在下方的层中，风扇速度逐渐从起始风扇速度增加到正常风扇速度。"
@@ -4127,10 +4659,6 @@ msgstr "风扇以正常速度旋转的高度。 在下方的层中，风扇速�
 msgctxt "gantry_height description"
 msgid "The height difference between the tip of the nozzle and the gantry system (X and Y axes)."
 msgstr "喷嘴尖端与十字轴系统（X 轴和 Y 轴）之间的高度差。"
-
-msgctxt "machine_nozzle_head_distance description"
-msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
-msgstr "喷嘴尖端与打印头最低部分之间的高度差。"
 
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
@@ -4181,9 +4709,10 @@ msgid "The horizontal distance between the first brim line and the outline of th
 msgstr "第一条边沿线与打印件第一层轮廓之间的水平距离。较小的间隙可使边沿更容易去除，同时在散热方面仍有优势。"
 
 msgctxt "skirt_gap description"
-msgid "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "skirt 和打印第一层之间的水平距离。"
-"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgid ""
+"The horizontal distance between the skirt and the first layer of the print.\n"
+"This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
+msgstr "skirt 和打印第一层之间的水平距离。这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
@@ -4229,6 +4758,10 @@ msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
 msgstr "将被移除的顶部皮肤区域的最大宽度。 小于此值的所有皮肤区域都将消失。 这有助于限制在模型的倾斜表面打印顶部皮肤时所耗用的时间和材料。"
 
+msgctxt "build_fan_full_layer description"
+msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
+msgstr "构建腔风扇开始全速运转的层数。该值为计算后取整的数值。"
+
 msgctxt "cool_fan_full_layer description"
 msgid "The layer at which the fans spin on regular fan speed. If regular fan speed at height is set, this value is calculated and rounded to a whole number."
 msgstr "风扇以正常风扇速度旋转的层。 如果设置了正常风扇速度（高度），则该值将被计算并舍入为整数。"
@@ -4244,10 +4777,6 @@ msgstr "回抽移动期间回抽的材料长度。"
 msgctxt "prime_tower_base_curve_magnitude description"
 msgid "The magnitude factor used for the slope of the prime tower base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker."
 msgstr "用于 prime tower 底座斜度的幅度因子。如果您增加这个值，底座会变得更细。如果减小它，底座会变得更厚。"
-
-msgctxt "machine_buildplate_type description"
-msgid "The material of the build plate installed on the printer."
-msgstr "打印平台材料已安装在打印机上。"
 
 msgctxt "adaptive_layer_height_variation description"
 msgid "The maximum allowed height different from the base layer height."
@@ -4301,9 +4830,21 @@ msgctxt "jerk_wall_x description"
 msgid "The maximum instantaneous velocity change with which all inner walls are printed."
 msgstr "打印所有内壁时的最大瞬时速度变化。"
 
+msgctxt "jerk_flooring description"
+msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的最大瞬时速度变化"
+
 msgctxt "jerk_infill description"
 msgid "The maximum instantaneous velocity change with which infill is printed."
 msgstr "打印填充物时的最大瞬时速度变化。"
+
+msgctxt "jerk_wall_x_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的最大瞬时速度变化"
+
+msgctxt "jerk_wall_0_flooring description"
+msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
+msgstr "打印底部表面最外层壁的最大瞬时速度变化"
 
 msgctxt "jerk_support_bottom description"
 msgid "The maximum instantaneous velocity change with which the floors of support are printed."
@@ -4441,6 +4982,14 @@ msgctxt "support_bottom_stair_step_min_slope description"
 msgid "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model."
 msgstr "使阶梯生效的区域最小坡度。该值较小可在较浅的坡度上更容易去除支撑，但该值过小可能会在模型的其他部分上产生某些很反常的结果。"
 
+msgctxt "prime_tower_min_shell_thickness description"
+msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
+msgstr "引导塔壳的最小厚度。您可以增加它以使引导塔更坚固。"
+
+msgctxt "cool_min_layer_time_overhang description"
+msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
+msgstr "包含悬垂挤出的层的最小时间。这迫使打印机减速,至少在此处设置的时间内完成一层打印。这允许打印材料在打印下一层之前适当冷却。如果\"提升打印头\"被禁用且最小速度未被违反,则层可能仍然比最小层时间短。"
+
 msgctxt "cool_min_layer_time description"
 msgid "The minimum time spent in a layer. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
 msgstr "在层中花费的最少时间。 这会迫使打印机减速，以便至少在一层中消耗此处所规定的时间。 这会让已打印材料充分冷却后再打印下一层。 如果提升头被禁用，且如果不这么做会违反“最小速度“，则层所花时间可能仍会少于最小层时间。"
@@ -4473,6 +5022,10 @@ msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数。"
 
+msgctxt "flooring_layer_count description"
+msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
+msgstr "最底部皮肤层的数量。通常只需一层最底部皮肤即可生成更高质量的底部表面。"
+
 msgctxt "raft_base_wall_count description"
 msgid "The number of contours to print around the linear pattern in the base layer of the raft."
 msgstr "在 Raft 的底板层中，围绕线型图案打印轮廓的次数。"
@@ -4489,10 +5042,6 @@ msgctxt "raft_wall_count description"
 msgid "The number of contours to print around the linear pattern of the raft."
 msgstr "围绕筏层的线性图案打印的轮廓圈数。"
 
-msgctxt "skin_edge_support_layers description"
-msgid "The number of infill layers that supports skin edges."
-msgstr "支撑皮肤边缘的填充物的层数。"
-
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "从构建板向上算起的初始底层数。在按底层厚度计算时，该值四舍五入为整数。"
@@ -4508,6 +5057,10 @@ msgstr "brim 所用走线数量。 更多 brim 走线可增强与打印平台的
 msgctxt "support_brim_line_count description"
 msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
 msgstr "用于支撑 Brim 的走线数量。更多 Brim 走线可增强与打印平台的附着，但也会增加一些额外材料成本。"
+
+msgctxt "build_volume_fan_nr description"
+msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
+msgstr "冷却构建体积的风扇编号。如果设置为 0,则表示没有构建体积风扇"
 
 msgctxt "raft_surface_layers description"
 msgid "The number of top layers on top of the 2nd raft layer. These are fully filled layers that the model sits on. 2 layers result in a smoother top surface than 1."
@@ -4549,9 +5102,9 @@ msgctxt "machine_nozzle_tip_outer_diameter description"
 msgid "The outer diameter of the tip of the nozzle."
 msgstr "喷嘴尖端的外径。"
 
-msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
-msgstr "打印的填充材料的图案。直线和锯齿形填充交替在各层上变换方向，从而降低材料成本。每层都完整地打印网格、三角形、三六边形、立方体、八角形、四分之一立方体、十字和同心图案。螺旋二十四面体、立方体、四分之一立方体和八角形填充随每层变化，以使各方向的强度分布更均衡。闪电形填充尝试通过仅支撑物体顶部，将填充程度降至最低。"
+msgctxt "flooring_pattern description"
+msgid "The pattern of the bottom most layers."
+msgstr "最底部层的图案"
 
 msgctxt "support_pattern description"
 msgid "The pattern of the support structures of the print. The different options available result in sturdy or easy to remove support."
@@ -4586,8 +5139,12 @@ msgid "The pattern with which the roofs of the support are printed."
 msgstr "打印支撑顶板的图案。"
 
 msgctxt "z_seam_position description"
-msgid "The position near where to start printing each part in a layer."
-msgstr "在该位置附近开始打印层中各个部分。"
+msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
+msgstr ""
+
+msgctxt "multi_material_paint_resolution description"
+msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
+msgstr "基于喷涂数据生成多材料形状时的细节精度。较低的精度值会保留更多细节,但会增加切片时间和内存占用。"
 
 msgctxt "support_tree_angle_slow description"
 msgid "The preferred angle of the branches, when they do not have to avoid the model. Use a lower angle to make them more vertical and more stable. Use a higher angle for branches to merge faster."
@@ -4601,13 +5158,13 @@ msgctxt "jerk_layer_0 description"
 msgid "The print maximum instantaneous velocity change for the initial layer."
 msgstr "起始层的打印最大瞬时速度变化。"
 
+msgctxt "scarf_joint_seam_start_height_ratio description"
+msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
+msgstr "缝合接缝开始的层高比率。较低的数字将导致更大的缝合高度。必须低于 100 才能有效。"
+
 msgctxt "machine_shape description"
 msgid "The shape of the build plate without taking unprintable areas into account."
 msgstr "打印平台形状（不考虑不可打印区域）。"
-
-msgctxt "machine_head_with_fans_polygon description"
-msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
-msgstr "打印头的形状。这些是相对于打印头位置的坐标，打印头通常是其第一个挤出器的位置。打印头左侧和前方的尺寸必须采用负坐标。"
 
 msgctxt "cross_infill_pocket_size description"
 msgid "The size of pockets at four-way crossings in the cross 3D pattern at heights where the pattern is touching itself."
@@ -4629,6 +5186,10 @@ msgctxt "speed_wall_x description"
 msgid "The speed at which all inner walls are printed. Printing the inner wall faster than the outer wall will reduce printing time. It works well to set this in between the outer wall speed and the infill speed."
 msgstr "打印所有内壁的速度。 以比外壁更快的速度打印内壁将减少打印时间。 将该值设为外壁速度和填充速度之间也可行。"
 
+msgctxt "speed_flooring description"
+msgid "The speed at which bottom surface skin layers are printed."
+msgstr "打印底部表面皮肤层的速度"
+
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
 msgstr "打印连桥表面区域的速度。"
@@ -4641,9 +5202,21 @@ msgctxt "speed_print description"
 msgid "The speed at which printing happens."
 msgstr "打印发生的速度。"
 
+msgctxt "skin_support_speed description"
+msgid "The speed at which skin support regions are printed."
+msgstr ""
+
 msgctxt "raft_base_speed description"
 msgid "The speed at which the base raft layer is printed. This should be printed quite slowly, as the volume of material coming out of the nozzle is quite high."
 msgstr "打印基础 Raft 层的速度。 该层应以很慢的速度打印，因为喷嘴所出的材料量非常高。"
+
+msgctxt "speed_wall_x_flooring description"
+msgid "The speed at which the bottom surface inner walls are printed."
+msgstr "打印底部表面内壁的速度"
+
+msgctxt "speed_wall_0_flooring description"
+msgid "The speed at which the bottom surface outermost wall is printed."
+msgstr "打印底部表面最外层壁的速度"
 
 msgctxt "bridge_wall_speed description"
 msgid "The speed at which the bridge walls are printed."
@@ -4837,10 +5410,6 @@ msgctxt "bottom_thickness description"
 msgid "The thickness of the bottom layers in the print. This value divided by the layer height defines the number of bottom layers."
 msgstr "打印品中底层的厚度。 此值除以层高定义底层数量。"
 
-msgctxt "skin_edge_support_thickness description"
-msgid "The thickness of the extra infill that supports skin edges."
-msgstr "支撑皮肤边缘的额外填充物的厚度。"
-
 msgctxt "support_interface_height description"
 msgid "The thickness of the interface of the support where it touches with the model on the bottom or the top."
 msgstr "支撑与模型在底部或顶部接触的接触面厚度。"
@@ -4872,6 +5441,10 @@ msgstr "填充材料每层的厚度。 该值应始终为层高的乘数，否�
 msgctxt "support_infill_sparse_thickness description"
 msgid "The thickness per layer of support infill material. This value should always be a multiple of the layer height and is otherwise rounded."
 msgstr "支撑填充材料每层的厚度。 该值应始终为层高的乘数，否则应进行舍入。"
+
+msgctxt "machine_buildplate_type description"
+msgid "The type of build plate installed on the printer."
+msgstr "打印机上安装的构建板类型。"
 
 msgctxt "machine_gcode_flavor description"
 msgid "The type of g-code to be generated."
@@ -4929,6 +5502,26 @@ msgctxt "bridge_wall_coast description"
 msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
 msgstr "此参数用于控制挤出机在开始打印桥壁前应该滑行的距离。在开始打印连桥之前滑行，可以降低喷嘴中的压力，并保证打印出平滑的连桥。"
 
+msgctxt "wall_0_acceleration description"
+msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
+msgstr "这是打印外墙时达到最高速度的加速度。"
+
+msgctxt "wall_0_deceleration description"
+msgid "This is the deceleration with which to end printing an outer wall."
+msgstr "这是结束打印外墙时的减速度。"
+
+msgctxt "wall_0_speed_split_distance description"
+msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
+msgstr "这是在拆分更长路径以应用外墙加速/减速时挤出路径的最大长度。较小的距离将创建更精确但也更冗长的 G-Code。"
+
+msgctxt "wall_0_end_speed_ratio description"
+msgid "This is the ratio of the top speed to end with when printing an outer wall."
+msgstr "这是打印外墙时在结束时的最高速度比率。"
+
+msgctxt "wall_0_start_speed_ratio description"
+msgid "This is the ratio of the top speed to start with when printing an outer wall."
+msgstr "这是打印外墙时在开始时的最高速度比率。"
+
 msgctxt "raft_base_smoothing description"
 msgid "This setting controls how much inner corners in the raft base outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "此设置用于调整筏层基段轮廓线内角的倒圆角大小。内角被倒角为半圆,其半径等于此处给出的值。此设置还会移除筏层轮廓线中面积小于此半径值圆的孔。"
@@ -4944,6 +5537,10 @@ msgstr "该设置控制 Raft 轮廓中的内角呈圆形的程度。内向角被
 msgctxt "raft_surface_smoothing description"
 msgid "This setting controls how much inner corners in the raft top outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
 msgstr "此设置用于调整筏层顶段轮廓线内角的倒圆角大小。内角被倒角为半圆,其半径等于此处给出的值。此设置还会移除筏层轮廓线中面积小于此半径值圆的孔。"
+
+msgctxt "machine_start_gcode_first description"
+msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
+msgstr "此设置控制启动G代码是否始终强制为第一个G代码。如果没有此选项,其他G代码（如T0）可能会插入到启动G代码之前。"
 
 msgctxt "retraction_count_max description"
 msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
@@ -4980,6 +5577,10 @@ msgstr "顶部皮肤扩展距离"
 msgctxt "top_skin_preshrink label"
 msgid "Top Skin Removal Width"
 msgstr "顶部皮肤移除宽度"
+
+msgctxt "roofing_expansion label"
+msgid "Top Surface Expansion"
+msgstr ""
 
 msgctxt "acceleration_wall_x_roofing label"
 msgid "Top Surface Inner Wall Acceleration"
@@ -5173,9 +5774,21 @@ msgctxt "support_tree_max_diameter label"
 msgid "Trunk Diameter"
 msgstr "主干直径"
 
+msgctxt "seam_overhang_angle description"
+msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
+msgstr "应尽量避免墙壁上的接缝伸出超过此角度。当数值为 90 时,没有墙壁将被视为悬垂。"
+
+msgctxt "material_pressure_advance_factor description"
+msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
+msgstr "压力推进的调整因子,旨在将挤出与运动同步"
+
 msgctxt "machine_gcode_flavor option UltiGCode"
 msgid "Ultimaker 2"
 msgstr "Ultimaker 2"
+
+msgctxt "cool_during_extruder_switch option unchanged"
+msgid "Unchanged"
+msgstr "不变"
 
 msgctxt "meshfix_union_all label"
 msgid "Union Overlapping Volumes"
@@ -5302,12 +5915,20 @@ msgid "Walls"
 msgstr "墙"
 
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。受到支撑支持的悬垂也不会被视为悬垂。"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
+msgstr "超过此角度的悬垂墙将使用悬垂墙设置打印。当值为 90 时,没有墙会被视为悬垂。得到支撑的悬垂也不会被视为悬垂。此外,任何少于一半悬垂的线也不会被视为悬垂。"
 
 msgctxt "meshfix_fluid_motion_enabled description"
 msgid "When enabled tool paths are corrected for printers with smooth motion planners. Small movements that deviate from the general tool path direction are smoothed to improve fluid motions."
 msgstr "当启用时，对具有平滑运动规划器的打印机进行刀具路径校正。对偏离一般刀具轨迹方向的小运动进行平滑，改善流体运动。"
+
+msgctxt "bridge_interlace_lines description"
+msgid "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
+msgstr ""
+
+msgctxt "skin_support_interlace_lines description"
+msgid "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
+msgstr ""
 
 msgctxt "infill_enable_travel_optimization description"
 msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
@@ -5318,8 +5939,8 @@ msgid "When enabled, the print cooling fan speed is altered for the skin regions
 msgstr "启用时，会为支撑正上方的表面区域更改打印冷却风扇速度。"
 
 msgctxt "z_seam_relative description"
-msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
-msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时，坐标定义打印平台上的一个绝对位置。"
+msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements."
+msgstr ""
 
 msgctxt "retraction_combing_max_distance description"
 msgid "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction."
@@ -5341,6 +5962,18 @@ msgctxt "bridge_wall_material_flow description"
 msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
 msgstr "打印桥壁时，将挤出的材料量乘以此值。"
 
+msgctxt "skin_support_material_flow description"
+msgid "When printing skin support regions, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+msgctxt "raft_interface_z_offset description"
+msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
+msgstr "打印第一层的筏板界面时,通过这个偏移来自定义筏底和筏板界面之间的附着力。负偏移量应该可以提高附着力。"
+
+msgctxt "raft_surface_z_offset description"
+msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
+msgstr "打印第一层木筏表面时,通过这个偏移来自定义筏底和筏板界面之间的附着力。负偏移量应该可以提高附着力。"
+
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "打印连桥第二层表面时，将挤出的材料量乘以此值。"
@@ -5348,6 +5981,22 @@ msgstr "打印连桥第二层表面时，将挤出的材料量乘以此值。"
 msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
 msgstr "打印连桥第三层表面时，将挤出的材料量乘以此值。"
+
+msgctxt "keep_retracting_during_travel description"
+msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
+msgstr "当启用空驶回缩且空移时间充足时,将回缩动作分散至整个空移过程并以较低速度执行,避免喷嘴在未回缩状态下移动。这有助于减少渗料现象。"
+
+msgctxt "infill_start_move_inwards_length description"
+msgid "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_end_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
+
+msgctxt "infill_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr ""
 
 msgctxt "cool_lift_head description"
 msgid "When the minimum speed is hit because of minimum layer time, lift the head away from the print and wait the extra time until the minimum layer time is reached."
@@ -5364,6 +6013,10 @@ msgstr "在奇数和偶数壁之间创建过渡时。角度大于此设置的楔
 msgctxt "wall_transition_length description"
 msgid "When transitioning between different numbers of walls as the part becomes thinner, a certain amount of space is allotted to split or join the wall lines."
 msgstr "当随着零件变薄而在不同数量的壁之间过渡时，会分配一定数量的间距来分割或连接壁走线。"
+
+msgctxt "cool_min_layer_time_overhang_min_segment_length description"
+msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
+msgstr "当尝试应用特定于悬垂层的最小层时间时,仅当至少一个连续的悬垂挤出移动长度超过此值时才会应用。"
 
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
@@ -5441,6 +6094,10 @@ msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
 msgstr "是要一次一层地打印所有模型，还是要等待打印完一个模型后再继续打印下一个。如果 a) 仅启用了一个挤出器，并且 b) 分离所有模型的方式使得整个打印头可在这些模型间移动，并且所有模型都低于喷嘴与 X/Y 轴之间的距离，则可使用排队打印模式。"
 
+msgctxt "machine_scan_first_layer description"
+msgid "Whether to scan the first layer for layer adhesion problems."
+msgstr "是否扫描首层以检测层间粘附问题。"
+
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
 msgstr "这台打印机是否需要显示它在不同的 JSON 文件中所描述的不同变化。"
@@ -5460,6 +6117,10 @@ msgstr "单一填充走线宽度。"
 msgctxt "support_interface_line_width description"
 msgid "Width of a single line of support roof or floor."
 msgstr "支撑顶板或底板单一走线宽度。"
+
+msgctxt "flooring_line_width description"
+msgid "Width of a single line of the areas at the bottom of the print."
+msgstr "打印底部区域的单线宽度"
 
 msgctxt "roofing_line_width description"
 msgid "Width of a single line of the areas at the top of the print."
@@ -5637,6 +6298,10 @@ msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Z 缝对齐"
 
+msgctxt "z_seam_on_vertex label"
+msgid "Z Seam On Vertex"
+msgstr "顶点上的 Z 形接缝"
+
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
 msgstr "Z 缝位置"
@@ -5656,6 +6321,10 @@ msgstr "Z 缝 Y"
 msgctxt "support_xy_overrides_z option z_overrides_xy"
 msgid "Z overrides X/Y"
 msgstr "Z 覆盖 X/Y"
+
+msgctxt "flooring_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "锯齿形"
 
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
@@ -5697,646 +6366,126 @@ msgctxt "travel description"
 msgid "travel"
 msgstr "空驶"
 
-msgctxt "cool_during_extruder_switch description"
-msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
-msgstr "<html>是否在喷嘴切换期间启动冷却风扇。这可以通过更快地冷却喷嘴来帮助减少滴漏:<ul><li><b>不变:</b>保持风扇原状</li><li><b>仅最后一个挤出机:</b> 启动最后一个使用的挤出机的风扇,但关闭其他风扇（如果有）。如果您有完全独立的挤出机,这非常有用。</li><li><b>所有风扇:</b> 在喷嘴开关期间打开所有风扇。如果您有一个单独的冷却风扇或多个彼此靠近的风扇,这非常有用。</li></ul></html>"
-
-msgctxt "cool_during_extruder_switch option all_fans"
-msgid "All fans"
-msgstr "所有风扇"
-
-msgctxt "cool_during_extruder_switch label"
-msgid "Cooling during extruder switch"
-msgstr "挤出机切换期间的冷却"
-
-msgctxt "support_z_seam_away_from_model description"
-msgid "Manage the spatial relationship between the z seam of the support structure and the actual 3D model. This control is crucial as it allows users to ensure the seamless removal of support structures post-printing, without inflicting damage or leaving marks on the printed model."
-msgstr "管理支撑结构的 z 形接缝与实际 3D 模型之间的空间关系。这个控制非常关键,因为它允许用户在打印后确保无缝去除支撑结构,而不会对打印模型造成损坏或留下痕迹。"
-
-msgctxt "support_z_seam_min_distance label"
-msgid "Min Z Seam Distance from Model"
-msgstr "模型的最小 Z 形接缝距离"
-
-msgctxt "support_infill_density_multiplier_initial_layer description"
-msgid "Multiplier for the infill on the initial layers of the support. Increasing this may help for bed adhesion."
-msgstr "支撑初始层填充的倍数。增加这个值可能有助于床附着力。"
-
-msgctxt "cool_during_extruder_switch option only_last_extruder"
-msgid "Only last extruder"
-msgstr "仅最后一台挤出机"
-
-msgctxt "z_seam_on_vertex description"
-msgid "Place the z-seam on a polygon vertex. Switching this off can place the seam between vertices as well. (Keep in mind that this won't override the restrictions on placing the seam on an unsupported overhang.)"
-msgstr "将 z 形接缝放置在多边形顶点上。关闭此功能也可以在顶点之间放置接缝。（请注意,这不会覆盖在未支撑悬垂上放置接缝的限制。）"
-
-msgctxt "prime_tower_min_shell_thickness label"
-msgid "Prime Tower Minimum Shell Thickness"
-msgstr "引导塔最小外壳厚度"
-
-msgctxt "raft_base_flow label"
-msgid "Raft Base Flow"
-msgstr "筏底流量"
-
-msgctxt "raft_base_infill_overlap_mm label"
-msgid "Raft Base Infill Overlap"
-msgstr "筏底填充重叠"
-
-msgctxt "raft_base_infill_overlap label"
-msgid "Raft Base Infill Overlap Percentage"
-msgstr "筏底填充重叠百分比"
-
-msgctxt "raft_flow label"
-msgid "Raft Flow"
-msgstr "木筏流量"
-
-msgctxt "raft_interface_flow label"
-msgid "Raft Interface Flow"
-msgstr "筏板界面层流量"
-
-msgctxt "raft_interface_infill_overlap_mm label"
-msgid "Raft Interface Infill Overlap"
-msgstr "筏板界面层填充重叠"
-
-msgctxt "raft_interface_infill_overlap label"
-msgid "Raft Interface Infill Overlap Percentage"
-msgstr "筏板界面层填充重叠百分比"
-
-msgctxt "raft_interface_z_offset label"
-msgid "Raft Interface Z Offset"
-msgstr "筏板界面层 Z 偏移"
-
-msgctxt "raft_surface_flow label"
-msgid "Raft Surface Flow"
-msgstr "木筏表面流量"
-
-msgctxt "raft_surface_infill_overlap_mm label"
-msgid "Raft Surface Infill Overlap"
-msgstr "木筏表面填充重叠"
-
-msgctxt "raft_surface_infill_overlap label"
-msgid "Raft Surface Infill Overlap Percentage"
-msgstr "木筏表面填充重叠百分比"
-
-msgctxt "raft_surface_z_offset label"
-msgid "Raft Surface Z Offset"
-msgstr "木筏表面 Z 偏移"
-
-msgctxt "seam_overhang_angle label"
-msgid "Seam Overhanging Wall Angle"
-msgstr "接缝悬垂墙角度"
-
-msgctxt "support_infill_density_multiplier_initial_layer label"
-msgid "Support Infill Density Multiplier Initial Layer"
-msgstr "支持填充密度乘数初始层"
-
-msgctxt "support_z_seam_away_from_model label"
-msgid "Support Z Seam Away from Model"
-msgstr "支持远离模型的 Z 形接缝"
-
-msgctxt "raft_base_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft base printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "相对于正常挤出线,在筏底打印过程中挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
-
-msgctxt "raft_interface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft interface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "相对于正常挤出线,在筏板界面打印期间挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
-
-msgctxt "raft_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "相对于正常挤出线,木筏打印过程中挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
-
-msgctxt "raft_surface_flow description"
-msgid "The amount of material, relative to a normal extrusion line, to extrude during raft surface printing. Having an increased flow may improve adhesion and raft structural strength."
-msgstr "相对于正常挤出线,在木筏表面打印期间挤出的材料量。增加流量可能会改善附着力和木筏结构强度。"
-
-msgctxt "raft_base_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft base, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充物与筏底墙壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "raft_base_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft base. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充物与筏底壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "raft_interface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft interface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充与筏板界面墙壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "raft_interface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft interface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充物与筏板界面的墙壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "raft_surface_infill_overlap description"
-msgid "The amount of overlap between the infill and the walls of the raft surface, as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充与木筏表面壁之间的重叠量,以填充线宽度的百分比表示。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "raft_surface_infill_overlap_mm description"
-msgid "The amount of overlap between the infill and the walls of the raft surface. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "填充物与木筏表面的墙壁之间的重叠量。轻微重叠可以使墙壁牢固地连接到填充物上。"
-
-msgctxt "support_z_seam_min_distance description"
-msgid "The distance between the model and its support structure at the z-axis seam."
-msgstr "模型与其支撑结构在z 轴接缝处的距离。"
-
-msgctxt "prime_tower_min_shell_thickness description"
-msgid "The minimum thickness of the prime tower shell. You may increase it to make the prime tower stronger."
-msgstr "引导塔壳的最小厚度。您可以增加它以使引导塔更坚固。"
-
-msgctxt "seam_overhang_angle description"
-msgid "Try to prevent seams on walls that overhang more than this angle. When the value is 90, no walls will be treated as overhanging."
-msgstr "应尽量避免墙壁上的接缝伸出超过此角度。当数值为 90 时,没有墙壁将被视为悬垂。"
-
-msgctxt "cool_during_extruder_switch option unchanged"
-msgid "Unchanged"
-msgstr "不变"
-
-msgctxt "raft_interface_z_offset description"
-msgid "When printing the first layer of the raft interface, translate by this offset to customize the adhesion between base and interface. A negative offset should improve the adhesion."
-msgstr "打印第一层的筏板界面时,通过这个偏移来自定义筏底和筏板界面之间的附着力。负偏移量应该可以提高附着力。"
-
-msgctxt "raft_surface_z_offset description"
-msgid "When printing the first layer of the raft surface, translate by this offset to customize the adhesion between interface and surface. A negative offset should improve the adhesion."
-msgstr "打印第一层木筏表面时,通过这个偏移来自定义筏底和筏板界面之间的附着力。负偏移量应该可以提高附着力。"
-
-msgctxt "z_seam_on_vertex label"
-msgid "Z Seam On Vertex"
-msgstr "顶点上的 Z 形接缝"
-
-msgctxt "extra_infill_lines_to_support_skins description"
-msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
-msgstr "在填充模式中添加额外的线条以支撑上面的表皮。这一选项可以防止因下面的填充未能正确支撑上面打印的表皮层而导致的孔洞或塑料块,这在复杂形状的表皮中常见。\"墙\"仅支持表皮的轮廓,而\"墙和线\"还支持构成表皮的线条之末端。"
-
-msgctxt "build_fan_full_at_height label"
-msgid "Build Fan Speed at Height"
-msgstr "在高度处的风扇速度"
-
-msgctxt "build_fan_full_layer label"
-msgid "Build Fan Speed at Layer"
-msgstr "在层上的风扇速度"
-
-msgctxt "build_volume_fan_nr label"
-msgid "Build volume fan number"
-msgstr "构建体积风扇编号"
-
-msgctxt "scarf_split_distance description"
-msgid "Determines the length of each step in the flow change when extruding along the scarf seam. A smaller distance will result in a more precise but also more complex G-code."
-msgstr "确定在沿着缝合接缝挤出时流量变化中每一步的长度。较小的距离会导致更精确但也更复杂的 G-code。"
-
-msgctxt "scarf_joint_seam_length description"
-msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
-msgstr "确定缝合接缝的长度,这是一种应使 Z 接缝不那么明显的接缝类型。必须大于 0 才能有效。"
-
-msgctxt "gradual_flow_discretisation_step_size description"
-msgid "Duration of each step in the gradual flow change"
-msgstr "渐变流量变化中每个步骤的持续时间"
-
-msgctxt "gradual_flow_enabled description"
-msgid "Enable gradual flow changes. When enabled, the flow is gradually increased/decreased to the target flow. This is useful for printers with a bowden tube where the flow is not immediately changed when the extruder motor starts/stops."
-msgstr "启用渐变流量变化。启用之后,流量将会逐渐增加/减少到目标流量。这对于带有波登管的打印机非常有用,因为当挤出机电机启动/停止时,流量并不会立即改变。"
-
-msgctxt "extra_infill_lines_to_support_skins label"
-msgid "Extra Infill Lines To Support Skins"
-msgstr "额外填充线以支撑表皮"
-
-msgctxt "reset_flow_duration description"
-msgid "For any travel move longer than this value, the material flow is reset to the paths target flow"
-msgstr "对于任何长于此值的移动,材料流量将被重置为路径的目标流量"
-
-msgctxt "gradual_flow_discretisation_step_size label"
-msgid "Gradual flow discretisation step size"
-msgstr "渐变流量离散化步长"
-
-msgctxt "gradual_flow_enabled label"
-msgid "Gradual flow enabled"
-msgstr "启用渐变流量"
-
-msgctxt "max_flow_acceleration label"
-msgid "Gradual flow max acceleration"
-msgstr "渐变流量最大加速度"
-
-msgctxt "layer_0_max_flow_acceleration label"
-msgid "Initial layer max flow acceleration"
-msgstr "初始层最大流量加速"
-
-msgctxt "max_flow_acceleration description"
-msgid "Maximum acceleration for gradual flow changes"
-msgstr "渐变流量变化的最大加速度"
-
-msgctxt "layer_0_max_flow_acceleration description"
-msgid "Minimum speed for gradual flow changes for the first layer"
-msgstr "第一层渐变流量变化的最小速度"
-
-msgctxt "extra_infill_lines_to_support_skins option none"
-msgid "None"
-msgstr "无"
-
-msgctxt "wall_0_acceleration label"
-msgid "Outer Wall Acceleration"
-msgstr "外墙加速"
-
-msgctxt "wall_0_deceleration label"
-msgid "Outer Wall Deceleration"
-msgstr "外墙减速"
-
-msgctxt "wall_0_end_speed_ratio label"
-msgid "Outer Wall End Speed Ratio"
-msgstr "外墙结束速度比率"
-
-msgctxt "wall_0_speed_split_distance label"
-msgid "Outer Wall Speed Split Distance"
-msgstr "外墙速度分割距离"
-
-msgctxt "wall_0_start_speed_ratio label"
-msgid "Outer Wall Start Speed Ratio"
-msgstr "外墙起始速度比率"
-
-msgctxt "reset_flow_duration label"
-msgid "Reset flow duration"
-msgstr "重置流量持续时间"
-
-msgctxt "scarf_joint_seam_length label"
-msgid "Scarf Seam Length"
-msgstr "缝合接缝长度"
-
-msgctxt "scarf_joint_seam_start_height_ratio label"
-msgid "Scarf Seam Start Height"
-msgstr "缝合接缝起始高度"
-
-msgctxt "scarf_split_distance label"
-msgid "Scarf Seam Step Length"
-msgstr "缝合接缝步长"
-
-msgctxt "build_fan_full_at_height description"
-msgid "The height at which the fans spin on regular fan speed. At the layers below the fan speed gradually increases from Initial Fan Speed to Regular Fan Speed."
-msgstr "风扇在常规风速下旋转的高度。在下面的层中,风扇速度会逐渐从初始风速增加到常规风速。"
-
-msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
-msgstr "构建风扇以全速旋转的层数。此值经过计算并四舍五入为整数。"
-
-msgctxt "build_volume_fan_nr description"
-msgid "The number of the fan that cools the build volume. If this is set to 0, it's means that there is no build volume fan"
-msgstr "冷却构建体积的风扇编号。如果设置为 0,则表示没有构建体积风扇"
-
-msgctxt "scarf_joint_seam_start_height_ratio description"
-msgid "The ratio of the selected layer height at which the scarf seam will begin. A lower number will result in a larger seam height. Must be lower than 100 to be effective."
-msgstr "缝合接缝开始的层高比率。较低的数字将导致更大的缝合高度。必须低于 100 才能有效。"
-
-msgctxt "wall_0_acceleration description"
-msgid "This is the acceleration with which to reach the top speed when printing an outer wall."
-msgstr "这是打印外墙时达到最高速度的加速度。"
-
-msgctxt "wall_0_deceleration description"
-msgid "This is the deceleration with which to end printing an outer wall."
-msgstr "这是结束打印外墙时的减速度。"
-
-msgctxt "wall_0_speed_split_distance description"
-msgid "This is the maximum length of an extrusion path when splitting a longer path to apply the outer wall acceleration/deceleration. A smaller distance will create a more precise but also more verbose G-Code."
-msgstr "这是在拆分更长路径以应用外墙加速/减速时挤出路径的最大长度。较小的距离将创建更精确但也更冗长的 G-Code。"
-
-msgctxt "wall_0_end_speed_ratio description"
-msgid "This is the ratio of the top speed to end with when printing an outer wall."
-msgstr "这是打印外墙时在结束时的最高速度比率。"
-
-msgctxt "wall_0_start_speed_ratio description"
-msgid "This is the ratio of the top speed to start with when printing an outer wall."
-msgstr "这是打印外墙时在开始时的最高速度比率。"
-
-msgctxt "extra_infill_lines_to_support_skins option walls"
-msgid "Walls Only"
-msgstr "仅墙体"
-
-msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
-msgid "Walls and Lines"
-msgstr "墙体和线条"
-
-msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either. Furthermore, any line that's less than half overhanging will also not be treated as overhang."
-msgstr "超过此角度的悬垂墙将使用悬垂墙设置打印。当值为 90 时,没有墙会被视为悬垂。得到支撑的悬垂也不会被视为悬垂。此外,任何少于一半悬垂的线也不会被视为悬垂。"
-
-msgctxt "flooring_angles description"
-msgid "A list of integer line directions to use when the bottom surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "底部表面皮肤层使用线条或锯齿图案时使用的整数线条方向列表。随着层数的增加,列表中的元素按顺序使用,当到达列表末尾时,从头开始。列表项用逗号分隔,整个列表用方括号括起来。默认值为空列表,表示使用传统的默认角度（45度和135度）。"
-
-msgctxt "acceleration_wall_x_flooring label"
-msgid "Bottom Surface Inner Wall Acceleration"
-msgstr "底部表面内壁加速度"
-
-msgctxt "jerk_wall_x_flooring label"
-msgid "Bottom Surface Inner Wall Jerk"
-msgstr "底部表面内壁急动度"
-
-msgctxt "speed_wall_x_flooring label"
-msgid "Bottom Surface Inner Wall Speed"
-msgstr "底部表面内壁速度"
-
-msgctxt "wall_x_material_flow_flooring label"
-msgid "Bottom Surface Inner Wall(s) Flow"
-msgstr "底部表面内壁流量"
-
-msgctxt "acceleration_wall_0_flooring label"
-msgid "Bottom Surface Outer Wall Acceleration"
-msgstr "底部表面外壁加速度"
-
-msgctxt "wall_0_material_flow_flooring label"
-msgid "Bottom Surface Outer Wall Flow"
-msgstr "底部表面外壁流量"
-
-msgctxt "jerk_wall_0_flooring label"
-msgid "Bottom Surface Outer Wall Jerk"
-msgstr "底部表面外壁急动度"
-
-msgctxt "speed_wall_0_flooring label"
-msgid "Bottom Surface Outer Wall Speed"
-msgstr "底部表面外壁速度"
-
-msgctxt "acceleration_flooring label"
-msgid "Bottom Surface Skin Acceleration"
-msgstr "底部表面皮肤加速度"
-
-msgctxt "flooring_extruder_nr label"
-msgid "Bottom Surface Skin Extruder"
-msgstr "底部表面皮肤挤出机"
-
-msgctxt "flooring_material_flow label"
-msgid "Bottom Surface Skin Flow"
-msgstr "底部表面皮肤流量"
-
-msgctxt "jerk_flooring label"
-msgid "Bottom Surface Skin Jerk"
-msgstr "底部表面皮肤急动度"
-
-msgctxt "flooring_layer_count label"
-msgid "Bottom Surface Skin Layers"
-msgstr "底部表面皮肤层数"
-
-msgctxt "flooring_angles label"
-msgid "Bottom Surface Skin Line Directions"
-msgstr "底部表面皮肤线条方向"
-
-msgctxt "flooring_line_width label"
-msgid "Bottom Surface Skin Line Width"
-msgstr "底部表面皮肤线条宽度"
-
-msgctxt "flooring_pattern label"
-msgid "Bottom Surface Skin Pattern"
-msgstr "底部表面皮肤图案"
-
-msgctxt "speed_flooring label"
-msgid "Bottom Surface Skin Speed"
-msgstr "底部表面皮肤速度"
-
-msgctxt "flooring_pattern option concentric"
-msgid "Concentric"
-msgstr "同心"
-
-msgctxt "variant_name"
-msgid "Extruder"
-msgstr "挤出机"
-
-msgctxt "wall_x_material_flow_flooring description"
-msgid "Flow compensation on bottom surface wall lines for all wall lines except the outermost one."
-msgstr "底部表面壁线的流量补偿（除最外层外的所有壁线）。"
-
-msgctxt "flooring_material_flow description"
-msgid "Flow compensation on lines of the areas at the bottom of the print."
-msgstr "打印底部区域线条的流量补偿"
-
-msgctxt "wall_0_material_flow_flooring description"
-msgid "Flow compensation on the bottom surface outermost wall line."
-msgstr "打印底部表面最外层壁线的流量补偿"
-
-msgctxt "machine_gcode_flavor option Cheetah"
-msgid "Griffin+Cheetah"
-msgstr "Griffin+Cheetah"
-
-msgctxt "retraction_combing_avoid_distance label"
-msgid "Inside Travel Avoid Distance"
-msgstr "内部移动避让距离"
-
-msgctxt "flooring_pattern option lines"
-msgid "Lines"
-msgstr "线条"
-
-msgctxt "cool_min_layer_time_overhang label"
-msgid "Minimum Layer Time with Overhang"
-msgstr "带悬垂的最小层时间"
-
-msgctxt "cool_min_layer_time_overhang_min_segment_length label"
-msgid "Minimum Overhang Segment Length"
-msgstr "最小悬垂段长度"
-
-msgctxt "flooring_monotonic label"
-msgid "Monotonic Bottom Surface Order"
-msgstr "单调底部表面顺序"
-
-msgctxt "wall_0_deceleration label"
-msgid "Outer Wall End Deceleration"
-msgstr "外壁结束减速"
-
-msgctxt "wall_0_acceleration label"
-msgid "Outer Wall Start Acceleration"
-msgstr "外壁起始加速度"
-
-msgctxt "wall_overhang_speed_factors label"
-msgid "Overhanging Wall Speeds"
-msgstr "悬垂壁速度"
-
-msgctxt "wall_overhang_speed_factors description"
-msgid "Overhanging walls will be printed at a percentage of their normal print speed. You can specify multiple values, so that even more overhanging walls will be printed even slower, e.g. by setting [75, 50, 25]"
-msgstr "悬垂壁将以正常打印速度的百分比进行打印。您可以指定多个值,以便更悬垂的壁以更慢的速度打印,例如通过设置[75, 50, 25]。"
-
-msgctxt "material_pressure_advance_factor label"
-msgid "Pressure advance factor"
-msgstr "压力推进因子"
-
-msgctxt "variant_name"
-msgid "Print Core"
-msgstr "打印核心"
-
-msgctxt "flooring_monotonic description"
-msgid "Print bottom surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent."
-msgstr "以单方向重叠相邻线条的顺序打印底部表面线条。这需要稍长的打印时间,但可以使平坦表面看起来更加一致。"
-
-msgctxt "machine_start_gcode_first label"
-msgid "Start GCode must be first"
-msgstr "启动G代码必须放在首位"
-
-msgctxt "acceleration_flooring description"
-msgid "The acceleration with which bottom surface skin layers are printed."
-msgstr "打印底部表面皮肤层的加速度"
-
-msgctxt "acceleration_wall_x_flooring description"
-msgid "The acceleration with which the bottom surface inner walls are printed."
-msgstr "打印底部表面内壁的加速度"
-
-msgctxt "acceleration_wall_0_flooring description"
-msgid "The acceleration with which the bottom surface outermost walls are printed."
-msgstr "打印底部表面最外层壁的加速度"
-
-msgctxt "machine_head_with_fans_polygon description"
-msgid "The dimensions of the print head used to determine 'Safe Model Distance' when printing 'One at a Time'. These numbers relate to the centerline of the first extruder nozzle. Left of the nozzle is 'X Min' and must be negative.  Rear of the nozzle is 'Y Min' and must be negative.  X Max (right) and Y Max (front) are positive numbers.  Gantry height is the dimension from the build plate to the X gantry beam."
-msgstr "用于在\"一次打印一个\"时确定\"安全模型距离\"的打印头尺寸。这些数字与第一个挤出机喷嘴的中心线相关。喷嘴左侧为\"X最小值\",必须为负数。喷嘴后方为\"Y最小值\",必须为负数。X最大值（右侧）和Y最大值（前方）为正数。龙门高度是从构建板到X龙门梁的尺寸。"
-
-msgctxt "retraction_combing_avoid_distance description"
-msgid "The distance between the nozzle and already printed outer walls when travelling inside a model."
-msgstr "喷嘴与已打印外壁之间的内部移动距离"
-
-msgctxt "flooring_extruder_nr description"
-msgid "The extruder train used for printing the bottom most skin. This is used in multi-extrusion."
-msgstr "用于打印最底部皮肤的挤出机轨道。这用于多挤出机设置。"
-
-msgctxt "jerk_flooring description"
-msgid "The maximum instantaneous velocity change with which bottom surface skin layers are printed."
-msgstr "打印底部表面皮肤层的最大瞬时速度变化"
-
-msgctxt "jerk_wall_x_flooring description"
-msgid "The maximum instantaneous velocity change with which the bottom surface inner walls are printed."
-msgstr "打印底部表面内壁的最大瞬时速度变化"
-
-msgctxt "jerk_wall_0_flooring description"
-msgid "The maximum instantaneous velocity change with which the bottom surface outermost walls are printed."
-msgstr "打印底部表面最外层壁的最大瞬时速度变化"
-
-msgctxt "cool_min_layer_time_overhang description"
-msgid "The minimum time spent in a layer that contains overhanging extrusions. This forces the printer to slow down, to at least spend the time set here in one layer. This allows the printed material to cool down properly before printing the next layer. Layers may still take shorter than the minimal layer time if Lift Head is disabled and if the Minimum Speed would otherwise be violated."
-msgstr "包含悬垂挤出的层的最小时间。这迫使打印机减速,至少在此处设置的时间内完成一层打印。这允许打印材料在打印下一层之前适当冷却。如果\"提升打印头\"被禁用且最小速度未被违反,则层可能仍然比最小层时间短。"
-
-msgctxt "flooring_layer_count description"
-msgid "The number of bottom most skin layers. Usually only one bottom most layer is sufficient to generate higher quality bottom surfaces."
-msgstr "最底部皮肤层的数量。通常只需一层最底部皮肤即可生成更高质量的底部表面。"
-
-msgctxt "flooring_pattern description"
-msgid "The pattern of the bottom most layers."
-msgstr "最底部层的图案"
-
-msgctxt "speed_flooring description"
-msgid "The speed at which bottom surface skin layers are printed."
-msgstr "打印底部表面皮肤层的速度"
-
-msgctxt "speed_wall_x_flooring description"
-msgid "The speed at which the bottom surface inner walls are printed."
-msgstr "打印底部表面内壁的速度"
-
-msgctxt "speed_wall_0_flooring description"
-msgid "The speed at which the bottom surface outermost wall is printed."
-msgstr "打印底部表面最外层壁的速度"
-
-msgctxt "machine_start_gcode_first description"
-msgid "This setting controls if the start-gcode is forced to always be the first g-code. Without this option other g-code, such as a T0 can be inserted before the start g-code."
-msgstr "此设置控制启动G代码是否始终强制为第一个G代码。如果没有此选项,其他G代码（如T0）可能会插入到启动G代码之前。"
-
-msgctxt "material_pressure_advance_factor description"
-msgid "Tuning factor for pressure advance, which is meant to synchronize extrusion with motion"
-msgstr "压力推进的调整因子,旨在将挤出与运动同步"
-
-msgctxt "cool_min_layer_time_overhang_min_segment_length description"
-msgid "When trying to apply the minimum layer time specific for overhanging layers, it will be applied only if at least one consecutive overhanging extrusion move is longer than this value."
-msgstr "当尝试应用特定于悬垂层的最小层时间时,仅当至少一个连续的悬垂挤出移动长度超过此值时才会应用。"
-
-msgctxt "flooring_line_width description"
-msgid "Width of a single line of the areas at the bottom of the print."
-msgstr "打印底部区域的单线宽度"
-
-msgctxt "flooring_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "锯齿形"
-
-msgctxt "prime_during_travel_ratio description"
-msgid "<html>The ratio of priming performed during the travel move, with the remainder completed while the nozzle is stationary, after traveling<ul><li>When 0, the entire priming is performed while stationary, after the travel ends</li><li>When 100, the entire priming is performed during the travel move, allowing the print to start immediately</li></ul></html>"
-msgstr "<html>在空驶移动过程中执行的回弹比例,剩余部分将在空移结束后喷嘴静止时完成<ul><li>设为0时,全部回弹将在空移结束后静止状态下执行</li><li>设为100时,全部回弹将在空驶移动过程中完成,可立即开始打印</li></ul></html>"
-
-msgctxt "retraction_during_travel_ratio description"
-msgid "<html>The ratio of retraction performed during the travel move, with the remainder completed while the nozzle is stationary, before traveling<ul><li>When 0, the entire retraction is performed while stationary, before the travel begins</li><li>When 100, the entire retraction is performed during the travel move, bypassing the stationary phase</li></ul></html>"
-msgstr "<html>在空驶移动过程中执行的回缩比例,剩余部分将在空移开始前喷嘴静止时完成<ul><li>设为0时,全部回缩将在空移开始前静止状态下执行</li><li>设为100时,全部回缩将在空驶移动过程中完成,跳过静止阶段</li></ul></html>"
-
-msgctxt "machine_gcode_flavor option BambuLab"
-msgid "BambuLab"
-msgstr "BambuLab"
-
-msgctxt "machine_buildplate_type label"
-msgid "Build Plate Type"
-msgstr "构建板类型"
-
-msgctxt "build_volume_fan_speed label"
-msgid "Build Volume Fan Speed"
-msgstr "构建腔风扇速度"
-
-msgctxt "build_fan_full_at_height label"
-msgid "Build Volume Fan Speed at Height"
-msgstr "构建腔风扇速度生效高度"
-
-msgctxt "build_fan_full_layer label"
-msgid "Build Volume Fan Speed at Layer"
-msgstr "构建腔风扇速度生效层数"
-
-msgctxt "z_seam_corner description"
-msgid "Control how corners on the model outline influence the position of the seam. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "控制模型轮廓上的转角如何影响接缝位置。\"隐藏接缝\"会使接缝更可能出现在内转角处；\"暴露接缝\"会使接缝更可能出现在外转角处；\"隐藏或暴露接缝\"会使接缝可能出现在内或外转角处；\"智能隐藏\"允许内外转角均可,但会优先选择内转角（如果适用）。"
-
-msgctxt "build_volume_fan_speed_0 label"
-msgid "Initial Layers Build Volume Fan Speed"
-msgstr "初始层构建腔风扇速度"
-
-msgctxt "keep_retracting_during_travel label"
-msgid "Keep Retracting During Travel"
-msgstr "在空驶过程中持续回抽"
-
-msgctxt "material_max_flowrate label"
-msgid "Material Maximum Flow Rate"
-msgstr "材料最大流量率"
-
-msgctxt "material_max_flowrate description"
-msgid "Maximum flow rate that the printer can extrude for the material"
-msgstr "打印机可挤出该材料的最大流量率"
-
-msgctxt "multi_material_paint_depth label"
-msgid "Multi-material Depth"
-msgstr "多材料打印深度"
-
-msgctxt "multi_material_paint_resolution label"
-msgid "Multi-material Precision"
-msgstr "多材料打印精度"
-
-msgctxt "prime_during_travel_ratio label"
-msgid "Prime During Travel Move"
-msgstr "在空驶移动过程中进行回弹"
-
-msgctxt "retraction_during_travel_ratio label"
-msgid "Retraction During Travel Move"
-msgstr "在空驶移动过程中进行回抽"
-
-msgctxt "machine_scan_first_layer label"
-msgid "Scan the first layer"
-msgstr "扫描首层"
-
-msgctxt "multi_material_paint_depth description"
-msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
-msgstr "模型内部喷涂细节的深度。较高的深度值可提供更好的咬合效果,但会增加切片时间和内存占用。设置极高的数值可实现最大深度（实际计算深度可能存在浮动）。"
-
-msgctxt "build_volume_fan_speed description"
-msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set from the moment that the layer specified at 'Build Volume Fan Speed at Layer' is reached and onwards. Before that, the speed is set by 'Initial Layers Build Volume Fan Speed' instead."
-msgstr "辅助风扇/构建腔风扇的速度百分比,从达到\"构建腔风扇速度生效层数\"指定的层数开始持续生效。在此之前,风扇速度由\"初始层构建腔风扇速度\"控制。"
-
-msgctxt "build_volume_fan_speed_0 description"
-msgid "The fan speed (as a percentage) for the auxiliary or build-volume fan, that is set until the layer specified at 'Build Volume Fan Speed at Layer' is reached. After that, the speed is set by 'Build Volume Fan Speed' instead (so not this 'Initial Layers' one)."
-msgstr "辅助风扇/构建腔风扇的速度百分比,在达到\"构建腔风扇速度生效层数\"指定的层数之前持续生效。此后,风扇速度将改由\"构建腔风扇速度\"控制（即不再使用此\"初始层\"设置）。"
-
-msgctxt "build_fan_full_layer description"
-msgid "The layer at which the build-volume fans spin on full fan speed. This value is calculated and rounded to a whole number."
-msgstr "构建腔风扇开始全速运转的层数。该值为计算后取整的数值。"
-
-msgctxt "multi_material_paint_resolution description"
-msgid "The precision of the details when generating multi-material shapes based on painting data. A lower precision will provide more details, but increase the slicing time and memory."
-msgstr "基于喷涂数据生成多材料形状时的细节精度。较低的精度值会保留更多细节,但会增加切片时间和内存占用。"
-
-msgctxt "machine_buildplate_type description"
-msgid "The type of build plate installed on the printer."
-msgstr "打印机上安装的构建板类型。"
-
-msgctxt "keep_retracting_during_travel description"
-msgid "When retraction during travel is enabled, and there is more than enough time to perform a full retract during a travel move, spread the retraction over the whole travel move with a lower retraction speed, so that we do not travel with a non-retracting nozzle. This can help reducing oozing."
-msgstr "当启用空驶回缩且空移时间充足时,将回缩动作分散至整个空移过程并以较低速度执行,避免喷嘴在未回缩状态下移动。这有助于减少渗料现象。"
-
-msgctxt "machine_scan_first_layer description"
-msgid "Whether to scan the first layer for layer adhesion problems."
-msgstr "是否扫描首层以检测层间粘附问题。"
+#~ msgctxt "extra_infill_lines_to_support_skins description"
+#~ msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
+#~ msgstr "在填充模式中添加额外的线条以支撑上面的表皮。这一选项可以防止因下面的填充未能正确支撑上面打印的表皮层而导致的孔洞或塑料块,这在复杂形状的表皮中常见。\"墙\"仅支持表皮的轮廓,而\"墙和线\"还支持构成表皮的线条之末端。"
+
+#~ msgctxt "bridge_sparse_infill_max_density label"
+#~ msgid "Bridge Sparse Infill Max Density"
+#~ msgstr "连桥稀疏填充物最大密度"
+
+#~ msgctxt "build_fan_full_at_height label"
+#~ msgid "Build Fan Speed at Height"
+#~ msgstr "在高度处的风扇速度"
+
+#~ msgctxt "build_fan_full_layer label"
+#~ msgid "Build Fan Speed at Layer"
+#~ msgstr "在层上的风扇速度"
+
+#~ msgctxt "machine_buildplate_type label"
+#~ msgid "Build Plate Material"
+#~ msgstr "打印平台材料"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+#~ msgstr "控制模型轮廓上的角是否影响缝隙的位置。“无”表示各个角不影响缝隙位置。“隐藏缝隙”会使缝隙更可能出现在内侧角上。“外露缝隙”会使缝隙更可能出现在外侧角上。“隐藏或外露缝隙”会使缝隙更可能出现在内侧或外侧角上。“智能隐藏”允许缝隙出现在内侧和外侧角上，如适当，会更多地出现在内侧角上。"
+
+#~ msgctxt "extra_infill_lines_to_support_skins label"
+#~ msgid "Extra Infill Lines To Support Skins"
+#~ msgstr "额外填充线以支撑表皮"
+
+#~ msgctxt "bridge_sparse_infill_max_density description"
+#~ msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+#~ msgstr "填充物的最大密度被视为稀疏。稀疏填充物表面被视为不受支持，因此可被视为连桥表面。"
+
+#~ msgctxt "extra_infill_lines_to_support_skins option none"
+#~ msgid "None"
+#~ msgstr "无"
+
+#~ msgctxt "z_seam_corner option z_seam_corner_none"
+#~ msgid "None"
+#~ msgstr "无"
+
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle Length"
+#~ msgstr "喷嘴长度"
+
+#~ msgctxt "wall_0_acceleration label"
+#~ msgid "Outer Wall Acceleration"
+#~ msgstr "外墙加速"
+
+#~ msgctxt "wall_0_deceleration label"
+#~ msgid "Outer Wall Deceleration"
+#~ msgstr "外墙减速"
+
+#~ msgctxt "wall_overhang_speed_factor label"
+#~ msgid "Overhanging Wall Speed"
+#~ msgstr "悬垂壁速度"
+
+#~ msgctxt "wall_overhang_speed_factor description"
+#~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
+#~ msgstr "悬垂壁将以其正常打印速度的此百分比打印。"
+
+#~ msgctxt "skin_edge_support_layers label"
+#~ msgid "Skin Edge Support Layers"
+#~ msgstr "皮肤边缘支撑层数"
+
+#~ msgctxt "skin_edge_support_thickness label"
+#~ msgid "Skin Edge Support Thickness"
+#~ msgstr "皮肤边缘支撑厚度"
+
+#~ msgctxt "z_seam_x description"
+#~ msgid "The X coordinate of the position near where to start printing each part in a layer."
+#~ msgstr "位置的 X 轴坐标，在该位置附近开始打印层中各个部分。"
+
+#~ msgctxt "z_seam_y description"
+#~ msgid "The Y coordinate of the position near where to start printing each part in a layer."
+#~ msgstr "位置的 Y 轴坐标，在该位置附近开始打印层中各个部分。"
+
+#~ msgctxt "machine_nozzle_head_distance description"
+#~ msgid "The height difference between the tip of the nozzle and the lowest part of the print head."
+#~ msgstr "喷嘴尖端与打印头最低部分之间的高度差。"
+
+#~ msgctxt "build_fan_full_layer description"
+#~ msgid "The layer at which the build fans spin on full fan speed. This value is calculated and rounded to a whole number."
+#~ msgstr "构建风扇以全速旋转的层数。此值经过计算并四舍五入为整数。"
+
+#~ msgctxt "machine_buildplate_type description"
+#~ msgid "The material of the build plate installed on the printer."
+#~ msgstr "打印平台材料已安装在打印机上。"
+
+#~ msgctxt "skin_edge_support_layers description"
+#~ msgid "The number of infill layers that supports skin edges."
+#~ msgstr "支撑皮肤边缘的填充物的层数。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction. Lightning infill tries to minimize the infill, by only supporting the ceiling of the object."
+#~ msgstr "打印的填充材料的图案。直线和锯齿形填充交替在各层上变换方向，从而降低材料成本。每层都完整地打印网格、三角形、三六边形、立方体、八角形、四分之一立方体、十字和同心图案。螺旋二十四面体、立方体、四分之一立方体和八角形填充随每层变化，以使各方向的强度分布更均衡。闪电形填充尝试通过仅支撑物体顶部，将填充程度降至最低。"
+
+#~ msgctxt "z_seam_position description"
+#~ msgid "The position near where to start printing each part in a layer."
+#~ msgstr "在该位置附近开始打印层中各个部分。"
+
+#~ msgctxt "machine_head_with_fans_polygon description"
+#~ msgid "The shape of the print head. These are coordinates relative to the position of the print head, which is usually the position of its first extruder. The dimensions left and in front of the print head must be negative coordinates."
+#~ msgstr "打印头的形状。这些是相对于打印头位置的坐标，打印头通常是其第一个挤出器的位置。打印头左侧和前方的尺寸必须采用负坐标。"
+
+#~ msgctxt "skin_edge_support_thickness description"
+#~ msgid "The thickness of the extra infill that supports skin edges."
+#~ msgstr "支撑皮肤边缘的额外填充物的厚度。"
+
+#~ msgctxt "extra_infill_lines_to_support_skins option walls"
+#~ msgid "Walls Only"
+#~ msgstr "仅墙体"
+
+#~ msgctxt "extra_infill_lines_to_support_skins option walls_and_lines"
+#~ msgid "Walls and Lines"
+#~ msgstr "墙体和线条"
+
+#~ msgctxt "wall_overhang_angle description"
+#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+#~ msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。受到支撑支持的悬垂也不会被视为悬垂。"
+
+#~ msgctxt "z_seam_relative description"
+#~ msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate."
+#~ msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时，坐标定义打印平台上的一个绝对位置。"

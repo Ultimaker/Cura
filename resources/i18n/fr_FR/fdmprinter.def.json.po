@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-13 09:02+0100\n"
+"Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
+"POT-Creation-Date: 2024-03-12 15:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6289,8 +6289,8 @@ msgctxt "material_max_flowrate description"
 msgid "Maximum flow rate that the printer can extrude for the material"
 msgstr "Débit maximum que l'imprimante peut extruder pour le matériau."
 
-msgctxt "multi_material_paint_depth label"
-msgid "Multi-material Depth"
+msgctxt "multi_material_paint_deepness label"
+msgid "Multi-material Deepness"
 msgstr "Profondeur multi-matériaux"
 
 msgctxt "multi_material_paint_resolution label"
@@ -6309,8 +6309,8 @@ msgctxt "machine_scan_first_layer label"
 msgid "Scan the first layer"
 msgstr "Numériser la première couche"
 
-msgctxt "multi_material_paint_depth description"
-msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgctxt "multi_material_paint_deepness description"
+msgid "The deepness of the painted details inside the model. A higher deepness will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated deepness may vary."
 msgstr "La profondeur des détails peints à l'intérieur du modèle. Une plus grande profondeur permettra un meilleur emboîtement, mais augmentera le temps de découpage et la mémoire. Définissez une valeur très élevée pour aller aussi loin que possible. La profondeur réellement calculée peut varier."
 
 msgctxt "build_volume_fan_speed description"
@@ -6340,3 +6340,155 @@ msgstr "Lorsque la rétraction pendant le déplacement est activée et qu'il y a
 msgctxt "machine_scan_first_layer description"
 msgid "Whether to scan the first layer for layer adhesion problems."
 msgstr "S'il faut analyser la première couche pour détecter les problèmes d'adhérence de la couche."
+
+msgctxt "infill_pattern description"
+msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
+msgstr "<html>Le motif du matériau de remplissage de l'impression : <ul><li>le remplissage en ligne et en zigzag change de direction à chaque couche, ce qui réduit le coût des matériaux.</li><li>Les motifs grille, triangle, tri-hexagone, cubique, octet, quart cubique, croix et concentrique sont entièrement imprimés sur chaque couche.</li><li>Les remplissages gyroïde, nid d'abeille, octogonal, cubique, quart cubique et octet changent à chaque couche afin d'assurer une répartition plus uniforme de la résistance dans toutes les directions.</li><li>Le remplissage éclair vise à minimiser le remplissage en ne soutenant que le plafond de l'objet.</li></ul>⚠ Les motifs de remplissage grille, triangles et cubique contiennent des lignes qui se croisent, ce qui peut entraîner des chocs entre la buse et les lignes imprimées, ainsi que des vibrations de l'imprimante. À utiliser avec précaution.<br/></html>"
+
+msgctxt "roofing_expansion description"
+msgid "Determines how much the top surfaces are expanded beneath overlapping surfaces. By adjusting this value, you can ensure that the outer edges of the top surfaces are concealed by the layers above, resulting in a better visual quality, particularly for models with curved surfaces."
+msgstr "Détermine le degré d'expansion des surfaces supérieures sous les surfaces superposées. En ajustant cette valeur, vous pouvez masquer les bords extérieurs des surfaces supérieures par les calques supérieurs, ce qui améliore la qualité visuelle, notamment pour les modèles à surfaces courbes."
+
+msgctxt "infill_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr "Nid d'abeille"
+
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr "Nid d'abeille"
+
+msgctxt "infill_end_move_inwards_length label"
+msgid "Infill End Move Inwards Length"
+msgstr "Longueur du mouvement interne de fin de remplissage"
+
+msgctxt "skin_support label"
+msgid "Infill Skin Support"
+msgstr "Support de surface de remplissage"
+
+msgctxt "infill_start_move_inwards_length label"
+msgid "Infill Start Move Inwards Length"
+msgstr "Longueur du mouvement initial du remplissage vers l’intérieur"
+
+msgctxt "infill_move_inwards_length label"
+msgid "Infill Start/End Move Inwards Length"
+msgstr "Longueur de mouvement interne au début/à la fin du remplissage"
+
+msgctxt "bridge_interlace_lines label"
+msgid "Interlace Bridge Lines"
+msgstr "Entrelacer les lignes de pont"
+
+msgctxt "skin_support_interlace_lines label"
+msgid "Interlace Skin Support Lines"
+msgstr "Entrelacer les lignes de support de surface"
+
+msgctxt "layer_start_at_z_seam label"
+msgid "Layer Start at Z Seam"
+msgstr "Début de couche à la couture Z"
+
+msgctxt "z_seam_position option middle"
+msgid "Middle"
+msgstr "Milieu"
+
+msgctxt "multi_material_paint_depth label"
+msgid "Multi-material Depth"
+msgstr "Profondeur multi-matériaux"
+
+msgctxt "machine_time_estimation_factor description"
+msgid "Multiplier for adjusting print time estimates. 100% shows original estimate. Higher values indicate longer actual print times."
+msgstr "Coefficient multiplicateur permettant d'ajuster les estimations de temps d'impression. 100 % correspond à l'estimation initiale. Plus la valeur est élevée, plus le temps d'impression réel est long."
+
+msgctxt "infill_pattern option octagon"
+msgid "Octagon"
+msgstr "Octogone"
+
+msgctxt "support_pattern option octagon"
+msgid "Octagon"
+msgstr "Octogone"
+
+msgctxt "skin_support_fan_speed description"
+msgid "Percentage fan speed to use when printing skin support."
+msgstr "Pourcentage de vitesse du ventilateur à utiliser pour l’impression du support de surface."
+
+msgctxt "machine_time_estimation_factor label"
+msgid "Print Time Estimation Factor"
+msgstr "Facteur d’estimation du temps d’impression"
+
+msgctxt "skin_support description"
+msgid "Print a solid infill pattern just below skin to avoid printing the skin over air."
+msgstr "Imprimer un motif de remplissage plein juste en dessous de la surface pour éviter d'imprimer la surface sur du vide."
+
+msgctxt "skin_support_density label"
+msgid "Skin Support Density"
+msgstr "Densité du support de surface"
+
+msgctxt "skin_support_fan_speed label"
+msgid "Skin Support Fan Speed"
+msgstr "Vitesse du ventilateur du support de surface"
+
+msgctxt "skin_support_material_flow label"
+msgid "Skin Support Flow"
+msgstr "Flux du support de surface"
+
+msgctxt "skin_support_speed label"
+msgid "Skin Support Speed"
+msgstr "Vitesse du support de surface"
+
+msgctxt "layer_start_at_z_seam description"
+msgid "Start printing at the Z seam position."
+msgstr "Commencer l'impression au niveau de la couture Z."
+
+msgctxt "z_seam_x description"
+msgid "The X coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr "Coordonnée X de la position proche du point de départ de l'impression de chaque pièce dans une couche. Lorsque l'option \"Couture Z relative\" est désactivée, il s'agit d'une position absolue sur le plateau d'impression. Lorsqu'elle est activée, cette position est relative au centre de chaque objet."
+
+msgctxt "z_seam_y description"
+msgid "The Y coordinate of the position near where to start printing each part in a layer. When Z Seam Relative is disabled, this is an absolute position on the buildplate. When enabled, this is relative to each object's center."
+msgstr "Coordonnée Y de la position proche du point de départ de l'impression de chaque pièce dans une couche. Lorsque l'option \"Couture Z relative\" est désactivée, il s'agit d'une position absolue sur le plateau d'impression. Lorsqu'elle est activée, cette position est relative au centre de chaque objet."
+
+msgctxt "skin_support_density description"
+msgid "The density of the skin support layer. Values less than 100 will increase the gaps between the lines."
+msgstr "Densité du support de la surface. Les valeurs inférieures à 100 augmentent l'espacement entre les lignes."
+
+msgctxt "multi_material_paint_depth description"
+msgid "The depth of the painted details inside the model. A higher depth will provide a better interlocking, but increase slicing time and memory. Set a very high value to go as deep as possible. The actually calculated depth may vary."
+msgstr "La profondeur des détails peints à l'intérieur du modèle. Une plus grande profondeur permettra un meilleur emboîtement, mais augmentera le temps de découpage et la mémoire. Définissez une valeur très élevée pour aller aussi loin que possible. La profondeur réellement calculée peut varier."
+
+msgctxt "z_seam_position description"
+msgid "The position near where to start printing each part in a layer. Note: For the 'Middle' option, the reference point differs critically based on Z Seam Relative setting - it will be the middle of the buildplate (absolute) or the middle of each object (relative), resulting in completely different seam placements."
+msgstr "Position près de laquelle commencer l'impression de chaque partie dans une couche. Remarque : pour l'option \"Milieu\", le point de référence diffère considérablement en fonction du paramètre Relatif à la couture Z. Il s'agira du milieu du plateau d'impression (absolu) ou du milieu de chaque objet (relatif), ce qui donnera lieu à des emplacements de couture complètement différents."
+
+msgctxt "skin_support_speed description"
+msgid "The speed at which skin support regions are printed."
+msgstr "La vitesse à laquelle les zones du support de surface sont imprimés."
+
+msgctxt "roofing_expansion label"
+msgid "Top Surface Expansion"
+msgstr "Expansion de la surface supérieure"
+
+msgctxt "bridge_interlace_lines description"
+msgid "When enabled, bridging lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
+msgstr "Lorsque cette option est activée, les lignes de pont sont imprimées de manière entrelacée, c'est-à-dire en deux passes successives, afin que les lignes adjacentes ne soient pas imprimées l'une après l'autre. Les lignes de la première passe ont ainsi plus de temps pour refroidir et sont plus résistantes lors de l'ajout de la seconde passe."
+
+msgctxt "skin_support_interlace_lines description"
+msgid "When enabled, skin support lines will be printed interlaced, i.e. in 2 monotonic passes so that adjacent lines won't be printed just after each other. The lines of the first pass then have more time to cool down and are stronger when the second pass is added."
+msgstr "Lorsque cette option est activée, les lignes de support de surface sont imprimées de manière entrelacée, c’est‑à‑dire en deux passes monotones afin que les lignes adjacentes ne soient pas déposées l’une après l’autre. Les lignes de la première passe ont ainsi plus de temps pour refroidir et deviennent plus solides lorsque la seconde passe est imprimée."
+
+msgctxt "z_seam_relative description"
+msgid "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate. This setting is critical for the 'Middle' Z Seam Position option: relative positioning places the seam at the middle of each object, while absolute positioning places it at the middle of the buildplate, resulting in completely different seam placements."
+msgstr "Lorsque cette option est activée, les coordonnées de la couture Z sont relatives au centre de chaque pièce. Lorsqu’elle est désactivée, les coordonnées définissent une position absolue sur le plateau. Ce réglage est crucial pour l’option \"Position de couture Z au milieu\" : le positionnement relatif place la couture au milieu de chaque objet, tandis que le positionnement absolu la place au milieu du plateau, ce qui entraîne des emplacements de couture complètement différents."
+
+msgctxt "skin_support_material_flow description"
+msgid "When printing skin support regions, the amount of material extruded is multiplied by this value."
+msgstr "Lors de l'impression des zones de support de la surface, la quantité de matériau extrudé est multipliée par cette valeur."
+
+msgctxt "infill_start_move_inwards_length description"
+msgid "When starting infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr "Lors du lancement d'une impression avec remplissage, ajoutez un mouvement d'extrusion vers l'intérieur afin que les extrémités du remplissage n'entrent pas en contact avec la paroi extérieure. Ceci peut s'avérer utile lorsque le remplissage est imprimé à très haute vitesse."
+
+msgctxt "infill_end_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr "Lors du début ou de la fin d'une impression de remplissage, ajoutez un mouvement d'extrusion vers l'intérieur afin que les extrémités du remplissage n'entrent pas en contact avec la paroi extérieure. Ceci peut s'avérer utile lorsque le remplissage est imprimé à très haute vitesse."
+
+msgctxt "infill_move_inwards_length description"
+msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
+msgstr "Lorsque vous commencez ou terminez une impression de remplissage, ajoutez un mouvement d'extrusion vers l'intérieur afin que les extrémités du remplissage n'entrent pas en contact avec la paroi extérieure. Ceci peut s'avérer utile lorsque le remplissage est imprimé à très haute vitesse."

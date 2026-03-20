@@ -120,7 +120,7 @@ UM.Dialog
 
                     comboboxTitle: catalog.i18nc("@action:label", "Open With")
                     comboboxTooltipText: catalog.i18nc("@info:tooltip", "Printer settings will be updated to match the settings saved with the project.")
-                    comboboxVisible: workspaceDialog.visible && manager.updatableMachinesModel.count > 1
+                    comboboxVisible: workspaceDialog.visible && (manager.isUcp ? manager.updatableMachinesModel.count >= 1 : manager.updatableMachinesModel.count > 1)
                     combobox: Cura.MachineSelector
                     {
                         id: machineSelector
