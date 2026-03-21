@@ -67,6 +67,7 @@
                    <Directory Id="ShortCutDir" Name="{{ app_name }}" />
                </Directory>
            </Directory>
+           <Directory Id="DesktopFolder" Name="Desktop" />
         </Directory>
 
         <Property Id="ApplicationFolderName" Value="{{ app_name }} {{ version }}" />
@@ -309,6 +310,24 @@
             </RegistryKey>
         </Component>
 
+        <!--Desktop Shortcut Component (optional, off by default)-->
+        <DirectoryRef Id="DesktopFolder">
+            <Component Id="CMP_DesktopShortcut" Guid="*">
+                <Shortcut Id="SHRT_CuraDesktop"
+                          Name="{{ app_name }} {{ version }}"
+                          Description="{{ app_name }} {{ version }}"
+                          Target="[APPLICATIONFOLDER]\{{ main_app }}"
+                          Icon="ICO_Cura" />
+                <RemoveFile Id="RemoveDesktopShortcutFile" On="uninstall" Name="{{ app_name }} {{ version }}.lnk" />
+                <RegistryValue Root="HKCU"
+                               Key="Software\{{ company }}\{{ app_name }}\{{ version }}\DesktopShortcut"
+                               Name="installed"
+                               Type="integer"
+                               Value="1"
+                               KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+
         <Feature Id="ProductFeature" Title="{{ app_name }}" Level="1" ConfigurableDirectory="APPLICATIONFOLDER"
                  AllowAdvertise="no" InstallDefault="local">
             <ComponentRef Id="CMP_UltiMaker_Cura_exe" />
@@ -391,6 +410,12 @@
                          AllowAdvertise="no" InstallDefault="local">
                     <ComponentRef Id="SlicerRegistration" />
                 </Feature>
+            </Feature>
+
+            <Feature Id="DesktopShortcutFeature" Title="Desktop Shortcut" Level="4"
+                     Description="Create a desktop shortcut for {{ app_name }} {{ version }}"
+                     AllowAdvertise="no" InstallDefault="local">
+                <ComponentRef Id="CMP_DesktopShortcut" />
             </Feature>
         </Feature>
         <Feature Id="UninstallOlderVersionFeature" Title="Uninstall previous versions" Level="{{ 1 if "Enterprise" in app_name else 0 }}" Description="..." />
