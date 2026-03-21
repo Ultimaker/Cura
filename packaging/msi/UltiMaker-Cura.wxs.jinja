@@ -271,13 +271,13 @@
         <DirectoryRef Id="ShortCutDir">
             <Component Id="CMP_Shortcuts" Guid="*">
                 <Shortcut Id="SHRT_Cura"
-                          Name="{{ app_name }} {{ version }}"
-                          Description="{{ app_name }} {{ version }}"
+                          Name="{{ app_name }}"
+                          Description="{{ app_name }}"
                           Target="[APPLICATIONFOLDER]\{{ main_app }}"
                           Icon="ICO_Cura"  />
                 <Shortcut Id="SHRT_UninstallShortcut"
-                          Name="Uninstall {{ app_name }} {{ version }}"
-                          Description= "Uninstalls {{ app_name }} {{ version }}"
+                          Name="Uninstall {{ app_name }}"
+                          Description= "Uninstalls {{ app_name }}"
                           Target="[System64Folder]msiexec.exe"
                           Arguments="/x [ProductCode]" />
                 <RemoveFolder Id="RemoveMyShortcutsDir"
@@ -314,11 +314,11 @@
         <DirectoryRef Id="DesktopFolder">
             <Component Id="CMP_DesktopShortcut" Guid="*">
                 <Shortcut Id="SHRT_CuraDesktop"
-                          Name="{{ app_name }} {{ version }}"
-                          Description="{{ app_name }} {{ version }}"
+                          Name="{{ app_name }}"
+                          Description="{{ app_name }}"
                           Target="[APPLICATIONFOLDER]\{{ main_app }}"
                           Icon="ICO_Cura" />
-                <RemoveFile Id="RemoveDesktopShortcutFile" On="uninstall" Name="{{ app_name }} {{ version }}.lnk" />
+                <RemoveFile Id="RemoveDesktopShortcutFile" On="uninstall" Name="{{ app_name }}.lnk" />
                 <RegistryValue Root="HKCU"
                                Key="Software\{{ company }}\{{ app_name }}\{{ version }}\DesktopShortcut"
                                Name="installed"
@@ -413,7 +413,7 @@
             </Feature>
 
             <Feature Id="DesktopShortcutFeature" Title="Desktop Shortcut" Level="4"
-                     Description="Create a desktop shortcut for {{ app_name }} {{ version }}"
+                     Description="Create a desktop shortcut for {{ app_name }}"
                      AllowAdvertise="no" InstallDefault="local">
                 <ComponentRef Id="CMP_DesktopShortcut" />
             </Feature>
