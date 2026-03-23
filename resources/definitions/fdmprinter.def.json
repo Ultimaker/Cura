@@ -2659,13 +2659,13 @@
                 "infill_start_position":
                 {
                     "label": "Infill Start Position",
-                    "description": "<ul><li><b>None:</b> Any starting point of any infill line will be used.</li><li><b>Random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>Close to wall seam:</b> the infill lines will be split when required, to provide an ending position as close as possible to the walls seam. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.</li></ul>",
+                    "description": "<ul><li><b>None:</b> No specific position will be used.</li><li><b>Random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, a line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.</li></ul>",
                     "type": "enum",
                     "options":
                     {
                         "none": "None",
                         "random": "Random",
-                        "close_to_wall_seam": "Close to wall seam"
+                        "close_to_wall_seam": "End close to seam"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "infill_extruder_nr",
