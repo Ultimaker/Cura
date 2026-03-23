@@ -2667,7 +2667,7 @@
                         "random": "Random",
                         "close_to_wall_seam": "End close to seam"
                     },
-                    "default_value": "shortest",
+                    "default_value": "none",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 }
