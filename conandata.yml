@@ -1,17 +1,17 @@
-version: "5.13.0-alpha.0"
+version: "5.14.0-alpha.0"
 commit: "unknown"
 requirements:
-  - "cura_resources/5.13.0-alpha.0@ultimaker/testing"
-  - "uranium/5.13.0-alpha.0@ultimaker/testing"
-  - "curaengine/5.13.0-alpha.0@ultimaker/testing"
-  - "cura_binary_data/5.13.0-alpha.0@ultimaker/testing"
-  - "fdm_materials/5.13.0-alpha.0@ultimaker/testing"
-  - "dulcificum/5.10.0"
+  - "cura_resources/5.14.0-alpha.0@ultimaker/testing"
+  - "uranium/5.14.0-alpha.0@ultimaker/testing"
+  - "curaengine/5.14.0-alpha.0@ultimaker/testing"
+  - "cura_binary_data/5.14.0-alpha.0@ultimaker/testing"
+  - "fdm_materials/5.14.0-alpha.0@ultimaker/testing"
+  - "dulcificum/5.10.2"
   - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
-  - "fdm_materials/5.13.0-alpha.0@ultimaker/testing"
-  - "cura_private_data/5.13.0-alpha.0@internal/testing"
+  - "fdm_materials/5.14.0-alpha.0@ultimaker/testing"
+  - "cura_private_data/5.14.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
 urls:
