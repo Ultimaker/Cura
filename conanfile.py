@@ -34,6 +34,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
+    package_type = "application"
 
     python_requires = "translationextractor/[>=2.2.0]"
 
