@@ -2771,22 +2771,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_delta_temperature_roofing":
-                {
-                    "label": "Temperature Delta Top Surface",
-                    "description": "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low.",
-                    "unit": "\u00b0C",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "-100",
-                    "minimum_value_warning": "-(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
-                    "maximum_value_warning": "(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
-                    "maximum_value": "100",
-                    "enabled": "machine_nozzle_temp_enabled and roofing_layer_count > 0 and top_layers > 0",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true,
-                    "limit_to_extruder": "roofing_extruder_nr"
-                },
                 "material_extrusion_cool_down_speed":
                 {
                     "label": "Extrusion Cool Down Speed Modifier",
@@ -9634,6 +9618,22 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
+                },
+                "material_delta_temperature_roofing":
+                {
+                    "label": "Temperature Delta Top Surface",
+                    "description": "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "minimum_value_warning": "-(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value_warning": "(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value": "100",
+                    "enabled": "machine_nozzle_temp_enabled and roofing_layer_count > 0 and top_layers > 0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "roofing_extruder_nr"
                 }
             }
         },
