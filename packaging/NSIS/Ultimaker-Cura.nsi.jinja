@@ -117,52 +117,14 @@ File "{{ file[0] }}"{% endfor %}
 ######################################################################
 
 SectionGroup "File Associations" SEC_FILEASSOC
-
-Section "*.STL files" SEC_STL
-!insertmacro APP_ASSOCIATE "stl" "Cura.model" "Standard Tessellation Language (STL) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+{% for assoc in file_associations %}
+Section {% if assoc.optional %}/o {% endif %}"{{ assoc.section_title }}" SEC_{{ assoc.ext | upper }}
+!insertmacro APP_ASSOCIATE "{{ assoc.ext }}" "{{ assoc.prog_id }}" "{{ assoc.type_description }}" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+{% for extra in assoc.extra_exts %}
+!insertmacro APP_ASSOCIATE "{{ extra }}" "{{ assoc.prog_id }}" "{{ assoc.type_description }}" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
+{% endfor %}
 SectionEnd
-
-Section "*.3MF files" SEC_3MF
-!insertmacro APP_ASSOCIATE "3mf" "Cura.project" "3D Manufacturing Format (3MF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.OBJ files" SEC_OBJ
-!insertmacro APP_ASSOCIATE "obj" "Cura.obj" "Wavefront OBJ files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.PLY files" SEC_PLY
-!insertmacro APP_ASSOCIATE "ply" "Cura.ply" "Stanford Triangle Format (PLY) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.DAE files" SEC_DAE
-!insertmacro APP_ASSOCIATE "dae" "Cura.dae" "COLLADA (DAE) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.GLTF files" SEC_GLTF
-!insertmacro APP_ASSOCIATE "gltf" "Cura.gltf" "glTF JSON files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.GLB files" SEC_GLB
-!insertmacro APP_ASSOCIATE "glb" "Cura.glb" "glTF Binary files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.AMF files" SEC_AMF
-!insertmacro APP_ASSOCIATE "amf" "Cura.amf" "Additive Manufacturing Format (AMF) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section "*.X3D files" SEC_X3D
-!insertmacro APP_ASSOCIATE "x3d" "Cura.x3d" "X3D files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section /o "*.UFP files" SEC_UFP
-!insertmacro APP_ASSOCIATE "ufp" "Cura.ufp" "UltiMaker Format Package (UFP) files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
-Section /o "*.GCODE files" SEC_GCODE
-!insertmacro APP_ASSOCIATE "gcode" "Cura.gcode" "G-code files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-!insertmacro APP_ASSOCIATE "g" "Cura.gcode" "G-code files" "$INSTDIR\${MAIN_APP_EXE},0" "Open with {{ app_name }}" "$\"$INSTDIR\${MAIN_APP_EXE}$\" $\"%1$\""
-SectionEnd
-
+{% endfor %}
 SectionGroupEnd
 
 SectionGroup "URL Protocols" SEC_URLPROTOCOL
@@ -194,18 +156,11 @@ WriteRegStr HKCU "SOFTWARE\Classes\Applications\${MAIN_APP_EXE}\shell\open\comma
 !define CAPS_KEY "SOFTWARE\${COMP_NAME}\${APP_NAME}\Capabilities"
 WriteRegStr HKLM "${CAPS_KEY}" "ApplicationName" "${APP_NAME}"
 WriteRegStr HKLM "${CAPS_KEY}" "ApplicationDescription" "UltiMaker Cura is the world's most trusted 3D printing slicer."
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".stl"    "Cura.model"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".3mf"    "Cura.project"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".obj"    "Cura.obj"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".ply"    "Cura.ply"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".dae"    "Cura.dae"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".gltf"   "Cura.gltf"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".glb"    "Cura.glb"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".amf"    "Cura.amf"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".x3d"    "Cura.x3d"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".ufp"    "Cura.ufp"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".gcode"  "Cura.gcode"
-WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".g"      "Cura.gcode"
+{% for assoc in file_associations -%}
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".{{ assoc.ext }}" "{{ assoc.prog_id }}"
+{% for extra in assoc.extra_exts -%}
+WriteRegStr HKLM "${CAPS_KEY}\FileAssociations" ".{{ extra }}" "{{ assoc.prog_id }}"
+{% endfor %}{% endfor %}
 WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "cura"    "cura"
 WriteRegStr HKLM "${CAPS_KEY}\URLAssociations"  "slicer"  "slicer"
 WriteRegStr HKLM "SOFTWARE\RegisteredApplications" "${APP_NAME}" "${CAPS_KEY}"
@@ -236,18 +191,8 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_FILEASSOC} "Associate 3D model file types with {{ app_name }}"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_STL} "Associate .STL (Standard Tessellation Language) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_3MF} "Associate .3MF (3D Manufacturing Format) project files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_OBJ} "Associate .OBJ (Wavefront Object) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PLY} "Associate .PLY (Stanford Triangle Format) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DAE} "Associate .DAE (COLLADA) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GLTF} "Associate .GLTF (GL Transmission Format) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GLB} "Associate .GLB (GL Transmission Format Binary) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_AMF} "Associate .AMF (Additive Manufacturing Format) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_X3D} "Associate .X3D (Extensible 3D) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_UFP} "Associate .UFP (UltiMaker Format Package) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_GCODE} "Associate .GCODE and .G (G-code) files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL} "Enable opening models directly from web links via URL protocols"
+{% for assoc in file_associations %}  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_{{ assoc.ext | upper }}} "{{ assoc.feature_description }}"
+{% endfor %}  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL} "Enable opening models directly from web links via URL protocols"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL_CURA} "Register the cura:// URL protocol"
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC_URLPROTOCOL_SLICER} "Register the slicer:// URL protocol"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
@@ -277,18 +222,11 @@ Delete "$SMPROGRAMS\${APP_NAME}.lnk"
 Delete "$DESKTOP\${APP_NAME}.lnk"
 
 ; Unassociate all file types
-!insertmacro APP_UNASSOCIATE "stl" "Cura.model"
-!insertmacro APP_UNASSOCIATE "3mf" "Cura.project"
-!insertmacro APP_UNASSOCIATE "obj" "Cura.obj"
-!insertmacro APP_UNASSOCIATE "ply" "Cura.ply"
-!insertmacro APP_UNASSOCIATE "dae" "Cura.dae"
-!insertmacro APP_UNASSOCIATE "gltf" "Cura.gltf"
-!insertmacro APP_UNASSOCIATE "glb" "Cura.glb"
-!insertmacro APP_UNASSOCIATE "amf" "Cura.amf"
-!insertmacro APP_UNASSOCIATE "x3d" "Cura.x3d"
-!insertmacro APP_UNASSOCIATE "ufp" "Cura.ufp"
-!insertmacro APP_UNASSOCIATE "gcode" "Cura.gcode"
-!insertmacro APP_UNASSOCIATE "g" "Cura.gcode"
+{% for assoc in file_associations -%}
+!insertmacro APP_UNASSOCIATE "{{ assoc.ext }}" "{{ assoc.prog_id }}"
+{% for extra in assoc.extra_exts -%}
+!insertmacro APP_UNASSOCIATE "{{ extra }}" "{{ assoc.prog_id }}"
+{% endfor %}{% endfor %}
 
 ; Clean up Applications registry entries
 DeleteRegKey HKCR "Applications\${MAIN_APP_EXE}"
