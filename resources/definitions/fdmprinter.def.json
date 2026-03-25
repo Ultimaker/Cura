@@ -2257,7 +2257,7 @@
                     "type": "bool",
                     "default_value": true,
                     "value": "(infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_multiplier % 2 == 0) and infill_wall_line_count > 0",
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1",
+                    "enabled": "infill_pattern != 'lightning' and (infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'concentric' or infill_multiplier % 2 == 0 or infill_wall_line_count > 1)",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2279,7 +2279,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern != 'lightning' and (infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2290,7 +2290,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern != 'lightning' and infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern != 'lightning' and (infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
