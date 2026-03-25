@@ -6,7 +6,7 @@ requirements:
   - "curaengine/5.14.0-alpha.0@ultimaker/testing"
   - "cura_binary_data/5.14.0-alpha.0@ultimaker/testing"
   - "fdm_materials/5.14.0-alpha.0@ultimaker/testing"
-  - "dulcificum/5.10.0"
+  - "dulcificum/5.10.2"
   - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
@@ -54,11 +54,6 @@ pyinstaller:
             package: "cura_resources"
             src: "res"
             dst: "share/cura/resources"
-        cura_private_data:
-            package: "cura_private_data"
-            src: "res"
-            dst: "share/cura"
-            internal: true
         uranium_plugins:
             package: "uranium"
             src: "plugins"
