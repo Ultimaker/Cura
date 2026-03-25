@@ -2656,18 +2656,18 @@
                         }
                     }
                 },
-                "infill_start_position":
+                "infill_start_end_preference":
                 {
-                    "label": "Infill Start Position",
-                    "description": "<ul><li><b>None:</b> No specific position will be used.</li><li><b>Random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, a line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.</li></ul>",
+                    "label": "Infill Start/End Preference",
+                    "description": "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>\uD83D\uDEC8 Note that this will be applied only when walls are printed just after infill.</li></ul>",
                     "type": "enum",
                     "options":
                     {
-                        "none": "None",
-                        "random": "Random",
-                        "close_to_wall_seam": "End close to seam"
+                        "start_closest": "Start at closest",
+                        "start_random": "Start at random",
+                        "end_close_to_seam": "End close to seam"
                     },
-                    "default_value": "none",
+                    "default_value": "start_closest",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 }
