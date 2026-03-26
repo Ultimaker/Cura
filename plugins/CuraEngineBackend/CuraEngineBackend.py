@@ -864,29 +864,13 @@ class CuraEngineBackend(QObject, Backend):
         self.processingProgress.emit(1.0)
         self._time_end_slice = time()
 
-        try:
-            gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore
-            # We need to ignore the type because it was generated dynamically.
-        except KeyError:
-            # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
-            gcode_list = []
-        application = CuraApplication.getInstance()
-        for index, line in enumerate(gcode_list):
-            replaced = line.replace("{print_time}", str(application.getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
-            replaced = replaced.replace("{filament_amount}", str(application.getPrintInformation().materialLengths))
-            replaced = replaced.replace("{filament_weight}", str(application.getPrintInformation().materialWeights))
-            replaced = replaced.replace("{filament_cost}", str(application.getPrintInformation().materialCosts))
-            replaced = replaced.replace("{jobname}", str(application.getPrintInformation().jobName))
-
-            gcode_list[index] = replaced
-
         self._slicing = False
         if self._time_start_process:
             Logger.log("d", "Slicing took %s seconds", time() - self._time_start_process)
         Logger.log("d", "Number of models per buildplate: %s", dict(self._numObjectsPerBuildPlate()))
 
         # See if we need to process the sliced layers job.
-        active_build_plate = application.getMultiBuildPlateModel().activeBuildPlate
+        active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         if (
             self._layer_view_active and
             (self._process_layers_job is None or not self._process_layers_job.isRunning()) and
