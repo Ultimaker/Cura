@@ -2294,17 +2294,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "infill_randomize_start_location":
-                {
-                    "label": "Randomize Infill Start",
-                    "description": "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.",
-                    "type": "bool",
-                    "default_value": false,
-                    "warning_value": "True if infill_pattern not in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic') else None",
-                    "enabled": "not (infill_pattern == 'lightning' or (infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "infill_multiplier":
                 {
                     "label": "Infill Line Multiplier",
@@ -2666,6 +2655,21 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "infill_start_end_preference":
+                {
+                    "label": "Infill Start/End Preference",
+                    "description": "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>\u2139\ufe0f Note that this will be applied only when walls are printed just after infill.</li></ul>",
+                    "type": "enum",
+                    "options":
+                    {
+                        "start_closest": "Start at closest",
+                        "start_random": "Start at random",
+                        "end_close_to_seam": "End close to seam"
+                    },
+                    "default_value": "start_closest",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
