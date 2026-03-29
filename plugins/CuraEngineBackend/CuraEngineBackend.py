@@ -52,8 +52,20 @@ class CuraEngineBackend(QObject, Backend):
 
     This also implies the slicing has finished.
     :param time: The amount of time the print will take.
-    :param material_amount: The amount of material the print will use.
+    :param material_amount: The amount of material the print will use, per extruder.
+    :param material_length: The length of filament the print will use, per extruder.
+    :param material_weight: The weight of material the print will use, per extruder.
+    :param material_cost: The cost of material the print will use, per extruder.
+    :param material_name: The name of material the print will use, per extruder.
     """
+
+    initialExtruderMessage = Signal()
+    """Emitted when we get a message containing the initial extruder number.
+
+    This also implies the slicing has finished.
+    :param extruder_nr: The initial extruder number.
+    """
+
     slicingStarted = Signal()
     """Emitted when the slicing process starts."""
 
@@ -145,6 +157,7 @@ class CuraEngineBackend(QObject, Backend):
         self._message_handlers["cura.proto.GCodePrefix"] = self._onGCodePrefixMessage
         self._message_handlers["cura.proto.SliceUUID"] = self._onSliceUUIDMessage
         self._message_handlers["cura.proto.PrintTimeMaterialEstimates"] = self._onPrintTimeMaterialEstimates
+        self._message_handlers["cura.proto.InitialExtruder"] = self._onInitialExtruder
         self._message_handlers["cura.proto.SlicingFinished"] = self._onSlicingFinishedMessage
 
         self._start_slice_job: Optional[StartSliceJob] = None
@@ -714,7 +727,7 @@ class CuraEngineBackend(QObject, Backend):
         for build_plate_number in build_plate_changed:
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
-            self.printDurationMessage.emit(source_build_plate_number, {}, [])
+            self.printDurationMessage.emit(source_build_plate_number, {}, [], [], [], [], [])
         self.processingProgress.emit(0.0)
         self._clearLayerData(build_plate_changed)
 
@@ -960,15 +973,28 @@ class CuraEngineBackend(QObject, Backend):
         """
 
         material_amounts = []
+        material_lengths = []
+        material_weights = []
+        material_costs = []
+        material_names = []
         self._unused_extruders = []
         for index in range(message.repeatedMessageCount("materialEstimates")):
-            material_use_for_tool = message.getRepeatedMessage("materialEstimates", index).material_amount
+            extruder_info = message.getRepeatedMessage("materialEstimates", index)
+            material_use_for_tool = extruder_info.material_amount
             if isnan(material_use_for_tool):
                 material_amounts.append(0.0)
+                material_lengths.append(0.0)
+                material_weights.append(0.0)
+                material_costs.append(0.0)
+                material_names.append("")
                 if self._global_container_stack.extruderList[int(index)].isEnabled:
                     self._unused_extruders.append(index)
             else:
                 material_amounts.append(material_use_for_tool)
+                material_lengths.append(extruder_info.material_length)
+                material_weights.append(extruder_info.material_weight)
+                material_costs.append(extruder_info.material_cost)
+                material_names.append(extruder_info.material_name)
 
         if self._unused_extruders:
             extruder_names = [self._global_container_stack.extruderList[int(idx)].definition.getName() for idx in self._unused_extruders]
@@ -990,7 +1016,14 @@ class CuraEngineBackend(QObject, Backend):
             warning_message.show()
 
         times = self._parseMessagePrintTimes(message)
-        self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts)
+        self.printDurationMessage.emit(self._start_slice_job_build_plate, times, material_amounts, material_lengths, material_weights, material_costs, material_names)
+
+    def _onInitialExtruder(self, message: Arcus.PythonMessage) -> None:
+        """Called when an initial extruder message is received from the engine.
+
+        :param message: The protobuf message containing the extruder number
+        """
+        self.initialExtruderMessage.emit(message.extruder_nr)
 
     def _onMessageActionTriggered(self, message: Message, message_action: str) -> None:
         if message_action == "disable_extruders":

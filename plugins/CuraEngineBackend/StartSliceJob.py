@@ -389,7 +389,6 @@ class StartSliceJob(Job):
         result["time"] = time.strftime("%H:%M:%S")
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
-        result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
         result["jobname"] = f"{CuraApplication.getInstance().getPrintInformation().jobName}"
 
         # If adding or changing a setting here, please update the associated wiki page
