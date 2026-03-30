@@ -44,12 +44,18 @@ class VersionUpgrade512to513(VersionUpgrade):
 
         if "values" in parser:
             # Update the randomize option to infill start/end preference
-            if "infill_randomize_start_location" in parser["values"] and parser["values"]["infill_randomize_start_location"] == "True":
-                parser["values"]["infill_start_end_preference"] = "start_random"
+            if "infill_randomize_start_location" in parser["values"]:
+                if parser["values"]["infill_randomize_start_location"] == "True":
+                    parser["values"]["infill_start_end_preference"] = "start_random"
+                else:
+                    parser["values"]["infill_start_end_preference"] = "start_closest"
 
             # Update the enlarged Retract Before Outer Wall: used to be a bool, is now an enum
-            if "travel_retract_before_outer_wall" in parser["values"] and parser["values"]["travel_retract_before_outer_wall"] == "True":
-                parser["values"]["travel_retract_before_outer_wall"] = "force_retracted"
+            if "travel_retract_before_outer_wall" in parser["values"]:
+                if parser["values"]["travel_retract_before_outer_wall"] == "True":
+                    parser["values"]["travel_retract_before_outer_wall"] = "force_retracted"
+                else:
+                    parser["values"]["travel_retract_before_outer_wall"] = "automatic"
 
             # Remove deleted settings from the instance containers.
             for removed in _REMOVED_SETTINGS:
