@@ -4851,7 +4851,7 @@
                 "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
-                    "description": "<html>Retraction behavior when moving to start an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will not be retracted</li><li><b>First unretracted":</b> The first travel move to an outer wall will not be retracted, others will use automatic</li></ul></html>",
+                    "description": "<html>Retraction behavior when moving to start an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>First unretracted:</b> The first travel move to an outer wall will not be retracted, others will use automatic</li></ul></html>",
                     "type": "enum",
                     "options":
                     {
