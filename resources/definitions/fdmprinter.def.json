@@ -2294,17 +2294,6 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "infill_randomize_start_location":
-                {
-                    "label": "Randomize Infill Start",
-                    "description": "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.",
-                    "type": "bool",
-                    "default_value": false,
-                    "warning_value": "True if infill_pattern not in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic') else None",
-                    "enabled": "not (infill_pattern == 'lightning' or (infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "infill_multiplier":
                 {
                     "label": "Infill Line Multiplier",
@@ -2666,6 +2655,21 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "infill_start_end_preference":
+                {
+                    "label": "Infill Start/End Preference",
+                    "description": "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>\u2139\ufe0f Note that this will be applied only when walls are printed just after infill.</li></ul>",
+                    "type": "enum",
+                    "options":
+                    {
+                        "start_closest": "Start at closest",
+                        "start_random": "Start at random",
+                        "end_close_to_seam": "End close to seam"
+                    },
+                    "default_value": "start_closest",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
                 }
             }
         },
@@ -5593,11 +5597,12 @@
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
                         "gyroid": "Gyroid",
+                        "lightning": "Lightning",
                         "honeycomb": "Honeycomb",
                         "octagon": "Octagon"
                     },
                     "default_value": "zigzag",
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5617,6 +5622,19 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "support_infill_multiplier":
+                {
+                    "label": "Support Infill Line Multiplier",
+                    "description": "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
+                    "default_value": 1,
+                    "type": "int",
+                    "maximum_value": "999999",
+                    "minimum_value": "1",
+                    "maximum_value_warning": "support_line_distance / support_line_width",
+                    "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern != 'zigzag'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true
                 },
                 "support_interface_wall_count":
                 {
@@ -5666,6 +5684,72 @@
                             "limit_to_extruder": "support_interface_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_lightning_angle":
+                {
+                    "label": "Support Lightning Angle",
+                    "description": "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer.",
+                    "unit": "\u00b0",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "90",
+                    "maximum_value_warning": "75",
+                    "default_value": 40,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern == 'lightning'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_lightning_overhang_angle":
+                        {
+                            "label": "Support Lightning Overhang Angle",
+                            "description": "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "support_lightning_angle"
+                        },
+                        "support_lightning_prune_angle":
+                        {
+                            "label": "Support Lightning Prune Angle",
+                            "description": "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "support_lightning_angle"
+                        },
+                        "support_lightning_straightening_angle":
+                        {
+                            "label": "Support Lightning Straightening Angle",
+                            "description": "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line.",
+                            "unit": "\u00b0",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "maximum_value": "90",
+                            "maximum_value_warning": "75",
+                            "default_value": 40,
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern == 'lightning'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "value": "support_lightning_angle"
                         }
                     }
                 },
@@ -5747,7 +5831,7 @@
                     "type": "int",
                     "minimum_value": "1",
                     "default_value": 1,
-                    "enabled": "support_enable or support_meshes_present",
+                    "enabled": "(support_enable or support_meshes_present) and support_line_distance > 0 and support_pattern != 'lightning'",
                     "limit_to_extruder": "support_extruder_nr_layer_0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5805,6 +5889,19 @@
                             "limit_to_extruder": "support_infill_extruder_nr"
                         }
                     }
+                },
+                "support_brim_minimum_hole_area":
+                {
+                    "label": "Minimum hole area in brim support",
+                    "description": "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim",
+                    "unit": "mm\u00b2",
+                    "type": "float",
+                    "default_value": 16,
+                    "value": "skirt_brim_line_width * skirt_brim_line_width * 100",
+                    "enabled": "support_brim_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_z_distance":
                 {
@@ -9618,6 +9715,22 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
+                },
+                "material_delta_temperature_roofing":
+                {
+                    "label": "Temperature Delta Top Surface",
+                    "description": "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "minimum_value_warning": "-(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value_warning": "(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value": "100",
+                    "enabled": "machine_nozzle_temp_enabled and roofing_layer_count > 0 and top_layers > 0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "roofing_extruder_nr"
                 }
             }
         },
