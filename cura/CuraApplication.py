@@ -773,7 +773,7 @@ class CuraApplication(QtApplication):
     def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
         choice = self.getPreferences().getValue("cura/choice_on_profile_override")
-        if not self._currently_loading_files:
+        if self.getloadingWorkspace():
             # opening from a file; don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
         elif choice == "always_discard":
