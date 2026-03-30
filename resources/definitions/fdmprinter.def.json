@@ -4851,9 +4851,16 @@
                 "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
-                    "description": "Always retract when moving to start an outer wall.",
-                    "type": "bool",
-                    "default_value": false,
+                    "description": "<html>Retraction behavior when moving to start an outer wall:<ul><li><b>Automatic:</b> retraction will be calculated according to other settings</li><li><b>Retract:</b> all the travel moves to outer walls will be retracted</li><li><b>No retract:</b> all the travel moves to outer walls will not be retracted</li><li><b>No retract first:</b> the first travel move to an outer wall will not be retracted, others will use automatic</li></ul></html>",
+                    "type": "enum",
+                    "options":
+                    {
+                        "automatic": "Automatic",
+                        "force_retracted": "Retract",
+                        "force_not_retracted": "No retract",
+                        "force_not_retracted_first": "No retract first"
+                    },
+                    "default_value": "automatic",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
