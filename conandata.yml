@@ -54,11 +54,6 @@ pyinstaller:
             package: "cura_resources"
             src: "res"
             dst: "share/cura/resources"
-        cura_private_data:
-            package: "cura_private_data"
-            src: "res"
-            dst: "share/cura"
-            internal: true
         uranium_plugins:
             package: "uranium"
             src: "plugins"
