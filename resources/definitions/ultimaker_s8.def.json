@@ -243,6 +243,7 @@
         "infill_overlap": { "value": 10 },
         "infill_pattern": { "value": "'zigzag'" },
         "infill_sparse_density": { "value": 15 },
+        "infill_start_end_preference": { "value": "'end_close_to_seam'" },
         "infill_wall_line_count": { "value": "1 if infill_sparse_density > 80 else 0" },
         "initial_bottom_layers": { "value": "2 if extruderValueFromContainer(top_bottom_extruder_nr, 'bottom_layers', 2) == bottom_layers else bottom_layers" },
         "jerk_flooring":
@@ -578,7 +579,6 @@
             "maximum_value_warning": 300,
             "value": "speed_wall"
         },
-        "split_infill_close_to_seam": { "value": true },
         "support_angle": { "value": 60 },
         "support_bottom_distance":
         {
@@ -613,6 +613,7 @@
         "top_bottom_thickness": { "value": "wall_thickness" },
         "travel_avoid_other_parts": { "value": true },
         "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": "'force_not_retracted_from_infill'" },
         "wall_0_acceleration": { "value": 1000 },
         "wall_0_deceleration": { "value": 1000 },
         "wall_0_end_speed_ratio": { "value": 100 },
