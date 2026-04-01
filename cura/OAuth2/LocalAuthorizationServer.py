@@ -56,6 +56,7 @@ class LocalAuthorizationServer:
             # We still inject the new verification code though.
             Logger.log("d", "Auth web server was already running. Updating the verification code")
             self._web_server.setVerificationCode(verification_code)
+            self._web_server.setState(state)
             return
 
         if self._web_server_port is None:
