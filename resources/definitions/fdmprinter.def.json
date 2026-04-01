@@ -1791,6 +1791,19 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "top_bottom_skin_merge_distance":
+                {
+                    "label": "Top/Bottom/Skin Merge Distance",
+                    "description": "Merge top/bottom into skin, each other, or vice-versa when areas become too thin.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.4,
+                    "minimum_value": "0.0",
+                    "value": "line_width",
+                    "maximum_value": "min(machine_depth, machine_width)/2.0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
                 "connect_skin_polygons":
                 {
                     "label": "Connect Top/Bottom Polygons",
