@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Unknown",
         "manufacturer": "Unknown",
-        "setting_version": 26,
+        "setting_version": 27,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -4851,9 +4851,16 @@
                 "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
-                    "description": "Always retract when moving to start an outer wall.",
-                    "type": "bool",
-                    "default_value": false,
+                    "description": "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>",
+                    "type": "enum",
+                    "options":
+                    {
+                        "automatic": "Automatic",
+                        "force_retracted": "Always",
+                        "force_not_retracted": "Never",
+                        "force_not_retracted_from_infill": "From infill unretracted"
+                    },
+                    "default_value": "automatic",
                     "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -9715,6 +9722,22 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
+                },
+                "material_delta_temperature_roofing":
+                {
+                    "label": "Temperature Delta Top Surface",
+                    "description": "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low.",
+                    "unit": "\u00b0C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "minimum_value_warning": "-(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value_warning": "(min(machine_nozzle_cool_down_speed + material_extrusion_cool_down_speed, machine_nozzle_heat_up_speed - material_extrusion_cool_down_speed)) * 5",
+                    "maximum_value": "100",
+                    "enabled": "machine_nozzle_temp_enabled and roofing_layer_count > 0 and top_layers > 0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "roofing_extruder_nr"
                 }
             }
         },
