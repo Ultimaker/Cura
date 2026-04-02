@@ -5910,6 +5910,23 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_brim_location":
+                {
+                    "label": "Support Brim Location",
+                    "description": "Where to place the brim for the support: inside the support area only, outside around the support footprint only, or both. The outside brim enhances adhesion to the build plate along the perimeter. Lines already covered by the build plate adhesion brim will not be duplicated.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "inside": "Inside Only",
+                        "outside": "Outside Only",
+                        "everywhere": "Everywhere"
+                    },
+                    "default_value": "inside",
+                    "enabled": "(support_enable or support_meshes_present) and support_brim_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
