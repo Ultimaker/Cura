@@ -592,7 +592,10 @@ class CuraConan(ConanFile):
         for req in self.conan_data["requirements"]:
             if self.options.internal and "fdm_materials" in req:
                 continue
-            self.requires(req)
+            no_skip = False
+            if 'cura_binary_data' in req:
+                no_skip = True
+            self.requires(req, no_skip=no_skip)
         if self.options.internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
