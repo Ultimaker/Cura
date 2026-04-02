@@ -586,6 +586,7 @@
             "value": "support_z_distance"
         },
         "support_bottom_offset": { "value": 0 },
+        "support_brim_minimum_hole_area": { "value": 3 },
         "support_brim_width": { "value": 10 },
         "support_infill_multiplier": { "value": "2 if support_pattern == 'lightning' else 1" },
         "support_infill_rate": { "value": "10 if support_structure == 'tree' else 80 if gradual_support_infill_steps != 0 else 15" },
