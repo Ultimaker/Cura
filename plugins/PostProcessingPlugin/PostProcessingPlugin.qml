@@ -88,14 +88,29 @@ UM.Dialog
 
             spacing: base.textMargin
 
-            UM.Label
+            RowLayout
             {
                 id: activeScriptsHeader
-                text: catalog.i18nc("@label", "Post Processing Scripts")
                 anchors.left: parent.left
                 anchors.right: parent.right
-                font: UM.Theme.getFont("large_bold")
-                elide: Text.ElideRight
+                spacing: UM.Theme.getSize("narrow_margin").width
+
+                Cura.SecondaryButton
+                {
+                    id: scriptOptionsButton
+                    Layout.preferredWidth: height
+                    iconSource: UM.Theme.getIcon("Hamburger")
+                    tooltip: catalog.i18nc("@info:tooltip", "Import, export or clear scripts")
+                    onClicked: scriptOptionsMenu.open()
+                }
+
+                UM.Label
+                {
+                    Layout.fillWidth: true
+                    text: catalog.i18nc("@label", "Post Processing Scripts")
+                    font: UM.Theme.getFont("large_bold")
+                    elide: Text.ElideRight
+                }
             }
             ListView
             {
@@ -271,28 +286,13 @@ UM.Dialog
                     }
                 }
             }
-            RowLayout
+            Cura.SecondaryButton
             {
+                id: addButton
                 anchors.left: parent.left
                 anchors.right: parent.right
-                spacing: UM.Theme.getSize("narrow_margin").width
-
-                Cura.SecondaryButton
-                {
-                    id: addButton
-                    Layout.fillWidth: true
-                    text: catalog.i18nc("@action", "Add a script")
-                    onClicked: scriptsMenu.open()
-                }
-
-                Cura.SecondaryButton
-                {
-                    id: scriptOptionsButton
-                    Layout.preferredWidth: height
-                    iconSource: UM.Theme.getIcon("Hamburger")
-                    tooltip: catalog.i18nc("@info:tooltip", "Import, export or clear scripts")
-                    onClicked: scriptOptionsMenu.open()
-                }
+                text: catalog.i18nc("@action", "Add a script")
+                onClicked: scriptsMenu.open()
             }
         }
 
@@ -336,7 +336,7 @@ UM.Dialog
             Cura.MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Clear scripts")
-                onTriggered: manager.clearScripts()
+                onTriggered: confirmClearScriptsDialog.open()
             }
         }
 
@@ -357,6 +357,15 @@ UM.Dialog
             fileMode: FileDialog.OpenFile
             nameFilters: [ catalog.i18nc("@filter:file", "Post Processing Scripts (*.postprocessing)"), catalog.i18nc("@filter:file", "All files (*)") ]
             onAccepted: manager.importScripts(selectedFile)
+        }
+
+        Cura.MessageDialog
+        {
+            id: confirmClearScriptsDialog
+            title: catalog.i18nc("@dialog:title", "Clear Post-Processing Scripts")
+            text: catalog.i18nc("@dialog:info", "Are you sure you want to clear all Post-Processing Scripts?")
+            standardButtons: Dialog.Yes | Dialog.No
+            onAccepted: manager.clearScripts()
         }
 
         Rectangle
