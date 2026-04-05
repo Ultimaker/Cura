@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "name": "VTOOL5",
+    "inherits": "fdmextruder",
+    "metadata":
+    {
+        "machine": "zonestar_m4mix_base",
+        "position": "5"
+    },
+    "overrides":
+    {
+        "extruder_nr": { "default_value": 5 },
+        "machine_extruder_end_code": { "default_value": ";End G-code for Virual Extuder 5\n" },
+        "machine_extruder_start_code": { "default_value": ";Start G-code for Virual Extuder 5\nM163 S0 P0\nM163 S1 P0\nM163 S2 P83\nM163 S3 P17\nM164 S4\n;Mix Rate=0:0:83:17,Mixed White/Cyan/M/Yellow=Red,change it if need" },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}
