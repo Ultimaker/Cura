@@ -5528,8 +5528,8 @@ msgstr "Ihr neuer Drucker wird automatisch in Cura angezeigt."
 
 msgctxt "@info:status"
 msgid "Your printer <b>{printer_name}</b> could be connected via cloud.\n Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
-msgstr "Your printer <b>{printer_name}</b> could be connected via cloud."
-" Manage your print queue and monitor your prints from anywhere connecting your printer to Digital Factory"
+msgstr "Ihr Drucker <b>{printer_name}</b> könnte über die Cloud verbunden werden."
+" Verwalten Sie Ihre Druckwarteschlange und überwachen Sie Ihre Drucke von überall aus, indem Sie Ihren Drucker mit Digital Factory verbinden"
 
 msgctxt "@label"
 msgid "Z"
