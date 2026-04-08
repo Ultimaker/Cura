@@ -1,17 +1,17 @@
-version: "5.12.0-beta.0"
+version: "5.14.0-alpha.0"
 commit: "unknown"
 requirements:
-  - "cura_resources/5.12.0-beta.0"
-  - "uranium/5.12.0-beta.0"
-  - "curaengine/5.12.0-beta.0"
-  - "cura_binary_data/5.12.0-beta.0"
-  - "fdm_materials/5.12.0-beta.0"
-  - "dulcificum/5.10.0"
+  - "cura_resources/5.14.0-alpha.0@ultimaker/testing"
+  - "uranium/5.14.0-alpha.0@ultimaker/testing"
+  - "curaengine/5.14.0-alpha.0@ultimaker/testing"
+  - "cura_binary_data/5.14.0-alpha.0@ultimaker/testing"
+  - "fdm_materials/5.14.0-alpha.0@ultimaker/testing"
+  - "dulcificum/5.10.2"
   - "pysavitar/5.11.0-alpha.0"
   - "pynest2d/5.10.0"
 requirements_internal:
-  - "fdm_materials/5.12.0-beta.0"
-  - "cura_private_data/5.12.0-alpha.0@internal/testing"
+  - "fdm_materials/5.14.0-alpha.0@ultimaker/testing"
+  - "cura_private_data/5.14.0-alpha.0@internal/testing"
 requirements_enterprise:
   - "native_cad_plugin/2.0.0"
 urls:
@@ -54,11 +54,6 @@ pyinstaller:
             package: "cura_resources"
             src: "res"
             dst: "share/cura/resources"
-        cura_private_data:
-            package: "cura_private_data"
-            src: "res"
-            dst: "share/cura"
-            internal: true
         uranium_plugins:
             package: "uranium"
             src: "plugins"
@@ -275,7 +270,7 @@ pycharm_targets:
 pip_requirements_core:
   any_os:
     charon:
-      url: "git+https://github.com/ultimaker/libcharon@master/s-line#egg=charon"
+      url: "git+https://github.com/ultimaker/libcharon@cura_main#egg=charon"
     certifi:
       version: "2023.5.7"
       hashes:
