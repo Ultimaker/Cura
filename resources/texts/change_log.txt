@@ -1,3 +1,8 @@
+[5.12.1]
+
+* Bug fixes:
+- Fix an issue where the export action for .makerbot file format would fail unexpectedly.
+
 [5.12]
 
 * New features and improvements:
