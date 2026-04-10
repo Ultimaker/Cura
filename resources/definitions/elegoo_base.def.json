@@ -85,7 +85,6 @@
         "raft_surface_line_width": { "value": "machine_nozzle_size * 1.25" },
         "raft_surface_thickness": { "value": "resolveOrValue('machine_nozzle_size')*0.375" },
         "retraction_amount": { "default_value": 5 },
-        "retraction_combing": { "value": "'no_outer_surfaces' if (any(extruderValues('skin_monotonic')) or any(extruderValues('ironing_enabled')) or (any(extruderValues('roofing_monotonic')) and any(extruderValues('roofing_layer_count')))) else 'no_outer_surfaces'" },
         "retraction_combing_max_distance": { "value": "(infill_line_distance)*1.5 + 5  " },
         "retraction_hop": { "value": "layer_height if layer_height > 0.199 else 0.2" },
         "skirt_brim_speed": { "value": "speed_print_layer_0" },
