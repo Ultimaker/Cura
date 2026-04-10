@@ -31,6 +31,10 @@ from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOper
 
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
+from UM.Resources import Resources
+import os
+import re
+import shutil
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -280,3 +284,62 @@ class CuraActions(QObject):
 
     def _openUrl(self, url: QUrl) -> None:
         QDesktopServices.openUrl(url)
+
+    @pyqtSlot(bool)
+    def clearConfigurationCache(self, clear_all_versions: bool = False) -> None:
+        """Clear the configuration cache folder.
+        
+        :param clear_all_versions: If True, also clear cache from previous Cura versions.
+        """
+        from UM.Message import Message
+        from UM.i18n import i18nCatalog
+        catalog = i18nCatalog("cura")
+        
+        try:
+            # Get the current version's data storage path
+            current_data_path = Resources.getDataStoragePath()
+            cache_path = os.path.join(current_data_path, "cache")
+            
+            # Clear current version's cache
+            if os.path.exists(cache_path):
+                shutil.rmtree(cache_path)
+                Logger.log("i", "Cleared cache at: %s", cache_path)
+            
+            # Clear previous versions' caches if requested
+            if clear_all_versions:
+                # Get the parent directory containing all version folders
+                data_storage_root = os.path.dirname(current_data_path)
+                if os.path.exists(data_storage_root):
+                    # Iterate through all directories in the data storage root
+                    version_pattern = re.compile(r'^\d+\.\d+$')  # Pattern to match version folders like "5.0", "5.1"
+                    
+                    for folder_name in os.listdir(data_storage_root):
+                        # Only process folders that look like version numbers
+                        if not version_pattern.match(folder_name):
+                            continue
+                            
+                        folder_path = os.path.join(data_storage_root, folder_name)
+                        # Skip if it's not a directory or if it's the current version
+                        if not os.path.isdir(folder_path) or folder_path == current_data_path:
+                            continue
+                        # Check if it looks like a version folder (has a cache subdirectory)
+                        version_cache_path = os.path.join(folder_path, "cache")
+                        if os.path.exists(version_cache_path):
+                            shutil.rmtree(version_cache_path)
+                            Logger.log("i", "Cleared cache at: %s", version_cache_path)
+            
+            # Show success message
+            message_text = catalog.i18nc("@info:status", "Configuration cache cleared successfully.")
+            if clear_all_versions:
+                message_text = catalog.i18nc("@info:status", "Configuration cache cleared successfully for all versions.")
+            message = Message(message_text, lifetime=5, title=catalog.i18nc("@info:title", "Cache Cleared"))
+            message.show()
+            
+        except Exception as e:
+            Logger.log("e", "Failed to clear configuration cache: %s", str(e))
+            error_message = Message(
+                catalog.i18nc("@info:status", "Failed to clear configuration cache: {0}").format(str(e)),
+                lifetime=0,
+                title=catalog.i18nc("@info:title", "Error")
+            )
+            error_message.show()

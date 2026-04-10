@@ -62,6 +62,7 @@ Item
 
     property alias showProfileFolder: showProfileFolderAction
     property alias openCuraLogFile: openCuraLogFileAction
+    property alias clearConfigurationCache: clearConfigurationCacheAction
     property alias documentation: documentationAction
     property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
@@ -541,6 +542,12 @@ Item
     {
         id: openCuraLogFileAction
         text: catalog.i18nc("@action:inmenu menubar:help","Open Cura Log File")
+    }
+
+    Action
+    {
+        id: clearConfigurationCacheAction
+        text: catalog.i18nc("@action:inmenu menubar:help", "Clear Configuration Cache...")
     }
 
 
