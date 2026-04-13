@@ -52,7 +52,6 @@ Item
             rightMargin: UM.Theme.getSize("thin_margin").width
         }
 
-
         states: [
             State
             {
