@@ -6474,6 +6474,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "support_paint_resolution":
+                {
+                    "label": "Support Painting Precision",
+                    "description": "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "support_enable",
+                    "default_value": 0.8,
+                    "value": "min(line_width, layer_height * 2)",
+                    "minimum_value": "0.05",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "line_width * 10",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -8064,21 +8079,6 @@
                     "value": "line_width * 10",
                     "minimum_value": "line_width",
                     "minimum_value_warning": "line_width * 2",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": true
-                },
-                "support_paint_resolution":
-                {
-                    "label": "Support Painting Precision",
-                    "description": "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
-                    "unit": "mm",
-                    "type": "float",
-                    "enabled": "support_enable",
-                    "default_value": 0.8,
-                    "value": "min(line_width, layer_height * 2)",
-                    "minimum_value": "0.05",
-                    "maximum_value": "10",
-                    "maximum_value_warning": "line_width * 10",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 }
