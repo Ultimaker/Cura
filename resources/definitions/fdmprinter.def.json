@@ -1805,6 +1805,19 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "top_bottom_skin_merge_distance":
+                {
+                    "label": "Top/Bottom/Skin Merge Distance",
+                    "description": "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby (and possibly vice-versa). This will sometimes cause walls not to print well. Merge top/bottom into skin, each other, or vice-versa when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present).",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 1.2,
+                    "minimum_value": "0.0",
+                    "value": "line_width * 3.0",
+                    "maximum_value_warning": "min(machine_depth, machine_width)/2.0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
                 "connect_skin_polygons":
                 {
                     "label": "Connect Top/Bottom Polygons",
