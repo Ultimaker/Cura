@@ -9604,6 +9604,17 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
+                },
+                "minimum_infill_line_length":
+                {
+                    "label": "Minimum Infill Line Length",
+                    "description": "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions.",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "maximum_value_warning": "line_width * 100",
+                    "unit": "mm",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
                 }
             }
         },
