@@ -231,9 +231,9 @@ class StartSliceJob(Job):
             stack = global_stack
             skip_group = False
             for node in group:
-                # Only check if the printing extruder is enabled for printing meshes
-                is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                if not is_non_printing_mesh:
+                # Anti-overhang meshes don't use any extruder, so skip the extruder check for them
+                is_anti_overhang_mesh = node.callDecoration("isAntiOverhangMesh")
+                if not is_anti_overhang_mesh:
                     for used_extruder in StartSliceJob._getMainExtruders(node):
                         if used_extruder >= len(extruders_enabled):
                             continue
