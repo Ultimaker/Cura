@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 14:52+0100\n"
+"POT-Creation-Date: 2026-03-31 08:53+0200\n"
 "PO-Revision-Date: 2021-09-07 08:02+0200\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -3055,6 +3055,10 @@ msgctxt "@item:inmenu"
 msgid "Paint view"
 msgstr ""
 
+msgctxt "@label"
+msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "Analizowanie G-code"
@@ -5332,6 +5336,10 @@ msgid "Upgrades configurations from Cura 5.11 to Cura 5.12"
 msgstr ""
 
 msgctxt "description"
+msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
+msgstr ""
+
+msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
 msgstr "Ulepsza konfigurację z Cura 5.2 do Cura 5.3."
 
@@ -5477,6 +5485,10 @@ msgstr "Uaktualnij wersję 4.9 do 4.10"
 
 msgctxt "name"
 msgid "Version Upgrade 5.11 to 5.12"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.12 to 5.13"
 msgstr ""
 
 msgctxt "name"
