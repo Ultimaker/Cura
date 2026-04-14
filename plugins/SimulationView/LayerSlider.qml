@@ -219,6 +219,11 @@ Item
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
+            if(value == getValue())
+            {
+                return;
+            }
+
             UM.SimulationView.setCurrentLayer(value)
 
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
