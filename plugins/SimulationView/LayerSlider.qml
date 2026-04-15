@@ -219,7 +219,7 @@ Item
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
-            if(value == getValue())
+            if (value == getValue())
             {
                 return;
             }
