@@ -1589,7 +1589,13 @@ class CuraApplication(QtApplication):
             if node.callDecoration("getBuildPlateNumber") == active_build_plate:
                 # Skip nodes that are too big
                 bounding_box = node.getBoundingBox()
-                if bounding_box is None or bounding_box.width < self._volume.getBoundingBox().width or bounding_box.depth < self._volume.getBoundingBox().depth:
+                volume_bounding_box = self._volume.getBoundingBox()
+                if volume_bounding_box is None:
+                    Logger.warning("_arrangeAll: build volume bounding box is None — rebuild not yet triggered. Requesting rebuild and aborting arrange.")
+                    # Trigger a rebuild now and bail out; the user can retry arrange once the volume is ready.
+                    self._volume.rebuild()
+                    return
+                if bounding_box is None or bounding_box.width < volume_bounding_box.width or bounding_box.depth < volume_bounding_box.depth:
                     # Arrange only the unlocked nodes and keep the locked ones in place
                     if node.getSetting(SceneNodeSettings.LockPosition):
                         locked_nodes.append(node)
