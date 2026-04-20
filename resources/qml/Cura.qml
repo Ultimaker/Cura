@@ -71,30 +71,33 @@ UM.MainWindow
 
     }
 
-    Rectangle
+    Component
     {
-        id: greyOutBackground
-        anchors.fill: parent
-        visible: welcomeDialogItem.visible
-        color: UM.Theme.getColor("window_disabled_background")
-        opacity: 0.7
-        z: stageMenu.z + 1
+        id: welcomeDialogComponent
 
-        MouseArea
+        WelcomeDialogItem { model: WelcomePagesModel{} }
+    }
+
+    Component
+    {
+        id: whatsNewModalComponent
+
+        WelcomeDialogItem
         {
-            // Prevent all mouse events from passing through.
-            enabled: parent.visible
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.AllButtons
+            model: WhatsNewPagesModel{}
+            progressBarVisible: false
         }
     }
 
-    WelcomeDialogItem
+    Component
     {
-        id: welcomeDialogItem
-        visible: false
-        z: greyOutBackground.z + 1
+        id: addPrinterModalModalComponent
+
+        WelcomeDialogItem
+        {
+            model: AddPrinterPagesModel{}
+            progressBarVisible: false
+        }
     }
 
     Component.onCompleted:
@@ -112,9 +115,7 @@ UM.MainWindow
             Cura.Actions.parent = backgroundItem
 
             // Reuse the welcome dialog item to show "Add a printer" only.
-            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
-            welcomeDialogItem.progressBarVisible = false
-            welcomeDialogItem.visible = true
+            addPrinterModalModalComponent.createObject(base);
         }
     }
 
@@ -137,28 +138,21 @@ UM.MainWindow
 
             if (CuraApplication.shouldShowWelcomeDialog())
             {
-                welcomeDialogItem.visible = true
-            }
-            else
-            {
-                welcomeDialogItem.visible = false
-            }
-
-            // Reuse the welcome dialog item to show "What's New" only.
-            if (CuraApplication.shouldShowWhatsNewDialog())
-            {
-                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
-                welcomeDialogItem.progressBarVisible = false
-                welcomeDialogItem.visible = true
-            }
-
-            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
-            // machine and the user is logged in.
-            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
-            {
-                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
-                welcomeDialogItem.progressBarVisible = false
-                welcomeDialogItem.visible = true
+                if (CuraApplication.shouldShowWhatsNewDialog())
+                {
+                    // Reuse the welcome dialog item to show "What's New" only.
+                    whatsNewModalComponent.createObject(base);
+                }
+                else if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
+                {
+                    // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+                    // machine and the user is logged in.
+                    addPrinterModalModalComponent.createObject(base);
+                }
+                else
+                {
+                    welcomeDialogComponent.createObject(base);
+                }
             }
         }
     }
@@ -831,7 +825,6 @@ UM.MainWindow
         }
     }
 
-    property var wizardDialog
     Component
     {
         id: addMachineDialogLoader
@@ -841,34 +834,42 @@ UM.MainWindow
             title: catalog.i18nc("@title:window", "Add Printer")
             maximumWidth: Screen.width * 2
             maximumHeight: Screen.height * 2
-            model: CuraApplication.getAddPrinterPagesModel()
+            model: AddPrinterPagesModel{}
             progressBarVisible: false
+
             onVisibleChanged:
             {
                 if(!visible)
                 {
-                    wizardDialog = null
                     Cura.API.account.startSyncing()
                 }
             }
         }
     }
 
-    Cura.WizardDialog
+    Component
     {
-        id: whatsNewDialog
-        title: catalog.i18nc("@title:window", "What's New")
-        minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
-        minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
-        model: CuraApplication.getWhatsNewPagesModel()
-        progressBarVisible: false
-        visible: false
+        id: whatsNewDialogLoader
+
+        Cura.WizardDialog
+        {
+            id: whatsNewDialog
+            title: catalog.i18nc("@title:window", "What's New")
+            minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
+            minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
+            model: Cura.WhatsNewPagesModel{}
+            progressBarVisible: false
+            visible: false
+        }
     }
 
     Connections
     {
         target: Cura.Actions.whatsNew
-        function onTriggered() { whatsNewDialog.show() }
+        function onTriggered()
+        {
+            whatsNewDialogLoader.createObject(base).show();
+        }
     }
 
     Connections
@@ -876,9 +877,8 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
-            Cura.API.account.stopSyncing()
-            wizardDialog = addMachineDialogLoader.createObject()
-            wizardDialog.show()
+            Cura.API.account.stopSyncing();
+            addMachineDialogLoader.createObject(base).show();
         }
     }
 

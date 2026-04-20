@@ -15,7 +15,7 @@ import Cura 1.1 as Cura
 //
 Item
 {
-    property var manager: CuraApplication.getWhatsNewPagesModel()
+    property var manager: Cura.WhatsNewSubPagesModel{}
 
     UM.I18nCatalog { id: catalog; name: "cura" }
 

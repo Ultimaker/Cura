@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
+from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -42,7 +43,8 @@ class WelcomePagesModel(ListModel):
     NextPageButtonTextRole = Qt.ItemDataRole.UserRole + 4  # The text for the next page button
     PreviousPageButtonTextRole = Qt.ItemDataRole.UserRole + 5  # The text for the previous page button
 
-    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
+    @deprecated("Argument 'application' is unused and will be removed", since="5.14.0")
+    def __init__(self, application: "CuraApplication" = None, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.IdRole, "id")
@@ -51,7 +53,8 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.NextPageButtonTextRole, "next_page_button_text")
         self.addRoleName(self.PreviousPageButtonTextRole, "previous_page_button_text")
 
-        self._application = application
+        from cura.CuraApplication import CuraApplication
+        self._application: "CuraApplication" = CuraApplication.getInstance()
         self._catalog = i18nCatalog("cura")
 
         self._default_next_button_text = self._catalog.i18nc("@action:button", "Next")
@@ -65,6 +68,8 @@ class WelcomePagesModel(ListModel):
         # If the welcome flow should be shown. It can show the complete flow or just the changelog depending on the
         # specific case. See initialize() for how this variable is set.
         self._should_show_welcome_flow = False
+
+        self.initialize()
 
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
@@ -102,7 +107,6 @@ class WelcomePagesModel(ListModel):
         Ends the Welcome-Pages. Put as a separate function for cases like the 'decline' in the User-Agreement.
         """
         self.allFinished.emit()
-        self.resetState()
 
     @pyqtSlot()
     def goToNextPage(self, from_index: Optional[int] = None) -> None:
@@ -186,6 +190,7 @@ class WelcomePagesModel(ListModel):
         should_show_function = next_page_item.get("should_show_function", lambda: True)
         return should_show_function()
 
+    @deprecated("This should no more be called, you should create a new model for each view instead", since = "5.14.0")
     @pyqtSlot()
     def resetState(self) -> None:
         """

@@ -3,6 +3,8 @@
 
 from .WelcomePagesModel import WelcomePagesModel
 
+from UM.Decorators import deprecated
+
 
 #
 # This Qt ListModel is more or less the same the WelcomePagesModel, except that this model is only for adding a printer,
@@ -10,6 +12,7 @@ from .WelcomePagesModel import WelcomePagesModel
 #
 class AddPrinterPagesModel(WelcomePagesModel):
 
+    @deprecated("Argument 'cancellable' is unused and will be removed. It was actually effectless already since many versions.", since="5.14.0")
     def initialize(self, cancellable: bool = True) -> None:
         self._pages.append({"id": "add_network_or_local_printer",
                             "page_url": self._getBuiltinWelcomePagePath("AddUltimakerOrThirdPartyPrinterStack.qml"),
@@ -29,8 +32,6 @@ class AddPrinterPagesModel(WelcomePagesModel):
                             "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
                             "should_show_function": self.shouldShowMachineActions,
                             })
-        if cancellable:
-            self._pages[0]["previous_page_button_text"] = self._catalog.i18nc("@action:button", "Cancel")
 
         self.setItems(self._pages)
 
