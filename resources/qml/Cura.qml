@@ -452,10 +452,7 @@ UM.MainWindow
     Component
     {
         id: preferencesDialogComponent
-        Cura.PreferencesDialog
-        {
-            selfDestroy: true
-        }
+        Cura.PreferencesDialog { selfDestroy: true }
     }
 
     function showPreferencesDialog()
@@ -482,7 +479,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         function onTriggered()
         {
-            createNewQualityDialog.visible = true;
+            createNewQualityDialogComponent.createObject(base).show()
         }
     }
 
@@ -821,20 +818,17 @@ UM.MainWindow
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
-        DiscardOrKeepProfileChangesDialog { }
+        DiscardOrKeepProfileChangesDialog { selfDestroy: true }
     }
-    Loader
-    {
-        id: discardOrKeepProfileChangesDialogLoader
-    }
+
     Connections
     {
         target: CuraApplication
         function onShowCompareAndSaveProfileChanges(profileState)
         {
-            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
-            discardOrKeepProfileChangesDialogLoader.item.buttonState = profileState
-            discardOrKeepProfileChangesDialogLoader.item.show()
+            var discardOrKeepProfileChangesDialog = discardOrKeepProfileChangesDialogComponent.createObject(base)
+            discardOrKeepProfileChangesDialog.buttonState = profileState
+            discardOrKeepProfileChangesDialog.show()
         }
         function onShowDiscardOrKeepProfileChanges()
         {
@@ -899,15 +893,16 @@ UM.MainWindow
         }
     }
 
-    AboutDialog
+    Component
     {
-        id: aboutDialog
+        id: aboutDialogComponent
+        AboutDialog { selfDestroy: true }
     }
 
     Connections
     {
         target: Cura.Actions.about
-        function onTriggered() { aboutDialog.visible = true; }
+        function onTriggered() { aboutDialogComponent.createObject(base).show(); }
     }
 
     Timer
@@ -925,47 +920,52 @@ UM.MainWindow
         }
     }
 
-    Cura.RenameDialog
+    Component
     {
-        id: createNewQualityDialog
-        title: catalog.i18nc("@title:window", "Save Custom Profile")
-        objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
-        explanation: catalog.i18nc("@info", "Custom profile name:")
-        extraInfo:
-        [
-            UM.ColorImage
-            {
-                width: UM.Theme.getSize("message_type_icon").width
-                height: UM.Theme.getSize("message_type_icon").height
-                source: UM.Theme.getIcon("Information")
-                color: UM.Theme.getColor("text")
-            },
-            Column
-            {
-                UM.Label
-                {
-                    text: catalog.i18nc
-                    (
-                        "@label %i will be replaced with a profile name",
-                        "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
-                        "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-                    ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
-                    wrapMode: Text.WordWrap
-                    width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
-                }
-                Cura.TertiaryButton
-                {
-                    text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    isIconOnRightSide: true
-                    leftPadding: 0
-                    rightPadding: 0
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
-                }
-            }
-        ]
-        okButtonText: catalog.i18nc("@button", "Save new profile")
-        onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
+        id: createNewQualityDialogComponent
+
+        Cura.RenameDialog
+        {
+            selfDestroy: true
+            title: catalog.i18nc("@title:window", "Save Custom Profile")
+            objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
+            explanation: catalog.i18nc("@info", "Custom profile name:")
+            extraInfo:
+                [
+                    UM.ColorImage
+                    {
+                        width: UM.Theme.getSize("message_type_icon").width
+                        height: UM.Theme.getSize("message_type_icon").height
+                        source: UM.Theme.getIcon("Information")
+                        color: UM.Theme.getColor("text")
+                    },
+                    Column
+                    {
+                        UM.Label
+                        {
+                            text: catalog.i18nc
+                            (
+                                "@label %i will be replaced with a profile name",
+                                "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
+                                "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
+                            ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
+                            wrapMode: Text.WordWrap
+                            width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
+                        }
+                        Cura.TertiaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
+                            iconSource: UM.Theme.getIcon("LinkExternal")
+                            isIconOnRightSide: true
+                            leftPadding: 0
+                            rightPadding: 0
+                            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
+                        }
+                    }
+                ]
+            okButtonText: catalog.i18nc("@button", "Save new profile")
+            onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
+        }
     }
 
     /**
