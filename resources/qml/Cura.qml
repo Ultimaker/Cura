@@ -247,8 +247,7 @@ UM.MainWindow
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
-                                packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
-                                packageInstallDialog.open();
+                                packageInstallDialogComponent.createObject(base).open();
                             }
                             else
                             {
@@ -556,20 +555,25 @@ UM.MainWindow
         }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: exitConfirmationDialog
-        title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
-        text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
-        standardButtons: Dialog.Yes | Dialog.No
-        onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
-        onRejected: CuraApplication.callConfirmExitDialogCallback(false)
-        onClosed:
+        id: exitConfirmationDialogComponent
+
+        Cura.MessageDialog
         {
-            if (!visible)
+            id: exitConfirmationDialog
+            title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
+            standardButtons: Dialog.Yes | Dialog.No
+            onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
+            onRejected: CuraApplication.callConfirmExitDialogCallback(false)
+            selfDestroy: true
+            onClosed:
             {
-                // reset the text to default because other modules may change the message text.
-                text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
+                if (!visible)
+                {
+                    // reset the text to default because other modules may change the message text.
+                    text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
+                }
             }
         }
     }
@@ -579,6 +583,7 @@ UM.MainWindow
         target: CuraApplication
         function onShowConfirmExitDialog(message)
         {
+            var exitConfirmationDialog = exitConfirmationDialogComponent.createObject(base);
             exitConfirmationDialog.text = message;
             exitConfirmationDialog.open();
         }
@@ -655,6 +660,7 @@ UM.MainWindow
             var selectedMultipleFiles = fileUrlList.length > 1;
             if (selectedMultipleFiles && hasGcode)
             {
+                var infoMultipleFilesWithGcodeDialog = infoMultipleFilesWithGcodeDialogComponent.createObject(base)
                 infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
                 infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
                 infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
@@ -709,28 +715,39 @@ UM.MainWindow
         }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: packageInstallDialog
-        title: catalog.i18nc("@window:title", "Install Package")
-        standardButtons: Dialog.Ok
+        id: packageInstallDialogComponent
+
+        Cura.MessageDialog
+        {
+            title: catalog.i18nc("@window:title", "Install Package")
+            text: catalog.i18nc("@label", "This package will be installed after restarting.")
+            standardButtons: Dialog.Ok
+            selfDestroy: true
+        }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: infoMultipleFilesWithGcodeDialog
-        title: catalog.i18nc("@title:window", "Open File(s)")
-        standardButtons: Dialog.Ok
-        text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+        id: infoMultipleFilesWithGcodeDialogComponent
 
-        property var selectedMultipleFiles
-        property var hasProjectFile
-        property var fileUrls
-        property var projectFileUrlList
-
-        onAccepted:
+        Cura.MessageDialog
         {
-            openDialog.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            title: catalog.i18nc("@title:window", "Open File(s)")
+            standardButtons: Dialog.Ok
+            text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+            selfDestroy: true
+
+            property var selectedMultipleFiles
+            property var hasProjectFile
+            property var fileUrls
+            property var projectFileUrlList
+
+            onAccepted:
+            {
+                openDialog.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            }
         }
     }
 

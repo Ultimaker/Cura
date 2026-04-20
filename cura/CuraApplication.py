@@ -283,6 +283,8 @@ class CuraApplication(QtApplication):
 
         self._supported_url_schemes: List[str] = ["cura", "slicer"]
 
+        self._confirm_exit_dialog_callback: Optional[Callable[[bool], None]] = None
+
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
         return UltimakerCloudConstants.CuraCloudAPIRoot
@@ -717,12 +719,13 @@ class CuraApplication(QtApplication):
 
     showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
 
-    def setConfirmExitDialogCallback(self, callback: Callable) -> None:
+    def setConfirmExitDialogCallback(self, callback: Optional[Callable[[bool], None]]) -> None:
         self._confirm_exit_dialog_callback = callback
 
     @pyqtSlot(bool)
     def callConfirmExitDialogCallback(self, yes_or_no: bool) -> None:
-        self._confirm_exit_dialog_callback(yes_or_no)
+        if self._confirm_exit_dialog_callback is not None:
+            self._confirm_exit_dialog_callback(yes_or_no)
 
     showPreferencesWindow = pyqtSignal()
     """Signal to connect preferences action in QML"""
