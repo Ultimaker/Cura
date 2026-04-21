@@ -254,7 +254,7 @@ UM.MainWindow
                                 nonPackages.push(filename);
                             }
                         }
-                        openDialog.handleOpenFileUrls(nonPackages);
+                        base.handleOpenFileUrls(nonPackages);
                     }
                 }
             }
@@ -604,115 +604,28 @@ UM.MainWindow
         function onTriggered() { base.exitFullscreen() }
     }
 
-    FileDialog
+    Component
     {
-        id: openDialog;
+        id: openDialogComponent
 
-        //: File open dialog title
-        title: catalog.i18nc("@title:window","Open file(s)")
-        modality: Qt.WindowModal
-        fileMode: FileDialog.FileMode.OpenFiles
-        nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
-        onAccepted:
+        FileDialog
         {
-            // Because several implementations of the file dialog only update the folder
-            // when it is explicitly set.
-            var f = currentFolder;
-            currentFolder = f;
-
-            CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
-
-            handleOpenFileUrls(selectedFiles);
-        }
-
-        // Yeah... I know... it is a mess to put all those things here.
-        // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
-        // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
-        // and view here may require more effort but make things more difficult to understand.
-        function handleOpenFileUrls(fileUrlList)
-        {
-            // look for valid project files
-            var projectFileUrlList = [];
-            var hasGcode = false;
-            var nonGcodeFileList = [];
-            for (var i in fileUrlList)
+            //: File open dialog title
+            title: catalog.i18nc("@title:window", "Open file(s)")
+            modality: Qt.WindowModal
+            fileMode: FileDialog.FileMode.OpenFiles
+            nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
+            currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
+            onAccepted:
             {
-                var endsWithG = /\.g$/;
-                var endsWithGcode = /\.gcode$/;
-                if (endsWithG.test(fileUrlList[i]) || endsWithGcode.test(fileUrlList[i]))
-                {
-                    continue;
-                }
-                else if (CuraApplication.checkIsValidProjectFile(fileUrlList[i]))
-                {
-                    projectFileUrlList.push(fileUrlList[i]);
-                }
-                nonGcodeFileList.push(fileUrlList[i]);
-            }
-            hasGcode = nonGcodeFileList.length < fileUrlList.length;
+                // Because several implementations of the file dialog only update the folder
+                // when it is explicitly set.
+                var f = currentFolder;
+                currentFolder = f;
 
-            // show a warning if selected multiple files together with Gcode
-            var hasProjectFile = projectFileUrlList.length > 0;
-            var selectedMultipleFiles = fileUrlList.length > 1;
-            if (selectedMultipleFiles && hasGcode)
-            {
-                var infoMultipleFilesWithGcodeDialog = infoMultipleFilesWithGcodeDialogComponent.createObject(base)
-                infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
-                infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
-                infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
-                infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
-                infoMultipleFilesWithGcodeDialog.open();
-            }
-            else
-            {
-                handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList);
-            }
-        }
+                CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
 
-        function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
-        {
-            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
-            const addToRecent = true;
-
-            if (hasProjectFile)
-            {
-                if (selectedMultipleFiles)
-                {
-                    var openFilesIncludingProjectsDialog = openFilesIncludingProjectsDialogComponent.createObject(base,
-                        {"fileUrls": fileUrlList.slice(), "addToRecent": addToRecent});
-                    openFilesIncludingProjectsDialog.show();
-                }
-                else
-                {
-                    var projectFile = projectFileUrlList[0];
-
-                    // check preference
-                    var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                    if (choice == "open_as_project")
-                    {
-                        loadProjectFile(projectFile, addToRecent);
-                    }
-                    else if (choice == "open_as_model")
-                    {
-                        loadModelFiles([projectFile].slice(), addToRecent);
-                    }
-                    else // always ask
-                    {
-                        var askOpenAsProjectOrModelsDialog =
-                            askOpenAsProjectOrModelsDialogComponent.createObject(base,
-                                {
-                                    "is_ucp": CuraApplication.isProjectUcp(projectFile),
-                                    "fileUrl": projectFile,
-                                    "addToRecent": addToRecent
-                                });
-                        askOpenAsProjectOrModelsDialog.show();
-                    }
-                }
-            }
-            else
-            {
-                loadModelFiles(fileUrlList.slice(), addToRecent);
+                base.handleOpenFileUrls(selectedFiles);
             }
         }
     }
@@ -748,7 +661,7 @@ UM.MainWindow
 
             onAccepted:
             {
-                openDialog.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+                base.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
             }
         }
     }
@@ -756,7 +669,7 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.open
-        function onTriggered() { openDialog.open() }
+        function onTriggered() { openDialogComponent.createObject(base).open() }
     }
 
     Component
@@ -799,6 +712,96 @@ UM.MainWindow
         for (var i in fileUrls)
         {
             CuraApplication.readLocalFile(fileUrls[i], "open_as_model", addToRecent);
+        }
+    }
+
+    // Yeah... I know... it is a mess to put all those things here.
+    // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
+    // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
+    // and view here may require more effort but make things more difficult to understand.
+    function handleOpenFileUrls(fileUrlList)
+    {
+        // look for valid project files
+        var projectFileUrlList = [];
+        var hasGcode = false;
+        var nonGcodeFileList = [];
+        for (var i in fileUrlList)
+        {
+            var endsWithG = /\.g$/;
+            var endsWithGcode = /\.gcode$/;
+            if (endsWithG.test(fileUrlList[i]) || endsWithGcode.test(fileUrlList[i]))
+            {
+                continue;
+            }
+            else if (CuraApplication.checkIsValidProjectFile(fileUrlList[i]))
+            {
+                projectFileUrlList.push(fileUrlList[i]);
+            }
+            nonGcodeFileList.push(fileUrlList[i]);
+        }
+        hasGcode = nonGcodeFileList.length < fileUrlList.length;
+
+        // show a warning if selected multiple files together with Gcode
+        var hasProjectFile = projectFileUrlList.length > 0;
+        var selectedMultipleFiles = fileUrlList.length > 1;
+        if (selectedMultipleFiles && hasGcode)
+        {
+            var infoMultipleFilesWithGcodeDialog = infoMultipleFilesWithGcodeDialogComponent.createObject(base)
+            infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+            infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+            infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
+            infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
+            infoMultipleFilesWithGcodeDialog.open();
+        }
+        else
+        {
+            base.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList);
+        }
+    }
+
+    function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
+    {
+        // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+        const addToRecent = true;
+
+        if (hasProjectFile)
+        {
+            if (selectedMultipleFiles)
+            {
+                var openFilesIncludingProjectsDialog = openFilesIncludingProjectsDialogComponent.createObject(base,
+                    {"fileUrls": fileUrlList.slice(), "addToRecent": addToRecent});
+                openFilesIncludingProjectsDialog.show();
+            }
+            else
+            {
+                var projectFile = projectFileUrlList[0];
+
+                // check preference
+                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                if (choice == "open_as_project")
+                {
+                    loadProjectFile(projectFile, addToRecent);
+                }
+                else if (choice == "open_as_model")
+                {
+                    loadModelFiles([projectFile].slice(), addToRecent);
+                }
+                else // always ask
+                {
+                    var askOpenAsProjectOrModelsDialog =
+                        askOpenAsProjectOrModelsDialogComponent.createObject(base,
+                            {
+                                "is_ucp": CuraApplication.isProjectUcp(projectFile),
+                                "fileUrl": projectFile,
+                                "addToRecent": addToRecent
+                            });
+                    askOpenAsProjectOrModelsDialog.show();
+                }
+            }
+        }
+        else
+        {
+            loadModelFiles(fileUrlList.slice(), addToRecent);
         }
     }
 
