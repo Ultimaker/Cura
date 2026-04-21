@@ -673,41 +673,46 @@ UM.MainWindow
         function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
         {
             // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
-            openFilesIncludingProjectsDialog.addToRecent = true;
-
-            // we only allow opening one project file
-            if (selectedMultipleFiles && hasProjectFile)
-            {
-                openFilesIncludingProjectsDialog.fileUrls = fileUrlList.slice();
-                openFilesIncludingProjectsDialog.show();
-                return;
-            }
+            const addToRecent = true;
 
             if (hasProjectFile)
             {
-                var projectFile = projectFileUrlList[0]
-                // check preference
-                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                if (choice == "open_as_project")
+                if (selectedMultipleFiles)
                 {
-                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
+                    var openFilesIncludingProjectsDialog = openFilesIncludingProjectsDialogComponent.createObject(base,
+                        {"fileUrls": fileUrlList.slice(), "addToRecent": addToRecent});
+                    openFilesIncludingProjectsDialog.show();
                 }
-                else if (choice == "open_as_model")
+                else
                 {
-                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
-                }
-                else    // always ask
-                {
-                    // ask whether to open as project or as models
-                    askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(projectFile);
-                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                    askOpenAsProjectOrModelsDialog.addToRecent = true;
-                    askOpenAsProjectOrModelsDialog.show();
+                    var projectFile = projectFileUrlList[0];
+
+                    // check preference
+                    var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                    if (choice == "open_as_project")
+                    {
+                        loadProjectFile(projectFile, addToRecent);
+                    }
+                    else if (choice == "open_as_model")
+                    {
+                        loadModelFiles([projectFile].slice(), addToRecent);
+                    }
+                    else // always ask
+                    {
+                        var askOpenAsProjectOrModelsDialog =
+                            askOpenAsProjectOrModelsDialogComponent.createObject(base,
+                                {
+                                    "is_ucp": CuraApplication.isProjectUcp(projectFile),
+                                    "fileUrl": projectFile,
+                                    "addToRecent": addToRecent
+                                });
+                        askOpenAsProjectOrModelsDialog.show();
+                    }
                 }
             }
             else
             {
-                openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
+                loadModelFiles(fileUrlList.slice(), addToRecent);
             }
         }
     }
@@ -754,14 +759,20 @@ UM.MainWindow
         function onTriggered() { openDialog.open() }
     }
 
-    OpenFilesIncludingProjectsDialog
+    Component
     {
-        id: openFilesIncludingProjectsDialog
+        id: openFilesIncludingProjectsDialogComponent
+        OpenFilesIncludingProjectsDialog
+        {
+            selfDestroy: true
+            onAccepted: base.loadModelFiles(fileUrls, addToRecent)
+        }
     }
 
-    AskOpenAsProjectOrModelsDialog
+    Component
     {
-        id: askOpenAsProjectOrModelsDialog
+        id: askOpenAsProjectOrModelsDialogComponent
+        AskOpenAsProjectOrModelsDialog { selfDestroy: true }
     }
 
     Connections
@@ -769,10 +780,25 @@ UM.MainWindow
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
-            askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(project_file);
-            askOpenAsProjectOrModelsDialog.fileUrl = project_file;
-            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
+            var askOpenAsProjectOrModelsDialog =
+                askOpenAsProjectOrModelsDialogComponent.createObject(base,
+                    {"is_ucp": CuraApplication.isProjectUcp(project_file),
+                              "fileUrl": project_file,
+                              "addToRecent": add_to_recent_files});
             askOpenAsProjectOrModelsDialog.show();
+        }
+    }
+
+    function loadProjectFile(projectFile, addToRecent)
+    {
+        UM.WorkspaceFileHandler.readLocalFile(projectFile, addToRecent);
+    }
+
+    function loadModelFiles(fileUrls, addToRecent)
+    {
+        for (var i in fileUrls)
+        {
+            CuraApplication.readLocalFile(fileUrls[i], "open_as_model", addToRecent);
         }
     }
 
