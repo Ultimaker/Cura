@@ -3,7 +3,7 @@
 
 from .WelcomePagesModel import WelcomePagesModel
 
-from UM.Decorators import deprecated
+from UM.Decorators import deprecated_argument
 
 
 #
@@ -12,7 +12,7 @@ from UM.Decorators import deprecated
 #
 class AddPrinterPagesModel(WelcomePagesModel):
 
-    @deprecated("Argument 'cancellable' is unused and will be removed. It was actually effectless already since many versions.", since="5.14.0")
+    @deprecated_argument(1, "cancellable", "Argument 'cancellable' is unused and will be removed. It was actually effectless already since many versions.", since="5.14.0")
     def initialize(self, cancellable: bool = True) -> None:
         self._pages.append({"id": "add_network_or_local_printer",
                             "page_url": self._getBuiltinWelcomePagePath("AddUltimakerOrThirdPartyPrinterStack.qml"),

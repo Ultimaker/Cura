@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt6.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
-from UM.Decorators import deprecated
+from UM.Decorators import deprecated, deprecated_argument
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -43,7 +43,7 @@ class WelcomePagesModel(ListModel):
     NextPageButtonTextRole = Qt.ItemDataRole.UserRole + 4  # The text for the next page button
     PreviousPageButtonTextRole = Qt.ItemDataRole.UserRole + 5  # The text for the previous page button
 
-    @deprecated("Argument 'application' is unused and will be removed", since="5.14.0")
+    @deprecated_argument(1, "application", "It is unused and will be removed", since="5.14.0")
     def __init__(self, application: "CuraApplication" = None, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
