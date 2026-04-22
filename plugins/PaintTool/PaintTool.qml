@@ -56,7 +56,6 @@ Item
                 icon: "Support"
                 tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
                 mode: "support"
-                visible: false
             }
 
             PaintModeButton
