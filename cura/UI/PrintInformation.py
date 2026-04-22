@@ -40,12 +40,6 @@ class PrintInformation(QObject):
 
         self.slice_uuid: Optional[str] = None
 
-        # Indexed by build plate number
-        self._material_lengths = {}  # type: Dict[int, List[float]]
-        self._material_weights = {}  # type: Dict[int, List[float]]
-        self._material_costs = {}   # type: Dict[int, List[float]]
-        self._material_names = {}  # type: Dict[int, List[str]]
-
         self._pre_sliced = False
 
         self._user_time_estimation_adjusted = False
@@ -53,8 +47,18 @@ class PrintInformation(QObject):
         self._backend = self._application.getBackend()
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
+            self._backend.initialExtruderMessage.connect(self._onInitialExtruderMessage)
 
         self._application.getController().getScene().sceneChanged.connect(self._onSceneChangedDelayed)
+
+        global_stack = self._application.getGlobalContainerStack()
+        nb_extruders = 1 if global_stack is None else len(global_stack.extruderList)
+
+        # Indexed by build plate number
+        self._material_lengths: Dict[int, List[float]] = {}
+        self._material_weights: Dict[int, List[float]] = {}
+        self._material_costs: Dict[int, List[float]] = {}
+        self._material_names: Dict[int, List[str]] = {}
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(100)
@@ -66,6 +70,7 @@ class PrintInformation(QObject):
         self._abbr_machine = ""
         self._job_name = ""
         self._active_build_plate = 0
+        self._initial_extruder_nr: int = 0
         self._initVariablesByBuildPlate(self._active_build_plate)
 
         self._multi_build_plate_model = self._application.getMultiBuildPlateModel()
@@ -75,12 +80,13 @@ class PrintInformation(QObject):
         self._application.fileLoaded.connect(self.setBaseName)
         self._application.workspaceLoaded.connect(self.setProjectName)
         self._application.getOutputDeviceManager().writeStarted.connect(self._onOutputStart)
-        self._application.getMachineManager().rootMaterialChanged.connect(self._onActiveMaterialsChanged)
-        self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
-        self._material_amounts = []  # type: List[float]
-        self._onActiveMaterialsChanged()
+        self._material_amounts: List[float] = []
+        self._material_lengths = {0: [0.0 for index in range(nb_extruders)]}
+        self._material_weights = {0: [0.0 for index in range(nb_extruders)]}
+        self._material_costs = {0: [0.0 for index in range(nb_extruders)]}
+        self._material_names = {0: ['' for index in range(nb_extruders)]}
 
     def initializeCuraMessagePrintTimeProperties(self) -> None:
         self._current_print_time = {}  # type: Dict[int, Duration]
@@ -174,6 +180,9 @@ class PrintInformation(QObject):
     def printTimes(self) -> Dict[str, Duration]:
         return self._print_times_per_feature[self._active_build_plate]
 
+    def initialExtruderNr(self) -> int:
+        return self._initial_extruder_nr
+
     def _getTimeEstimationFactor(self) -> Optional[float]:
         """Returns the time estimation factor as set by the user in the machine settings, or None if not set.
         If a factor is found and differs from 1.0 (100%), the userTimeAdjusted property is set to True.
@@ -215,12 +224,30 @@ class PrintInformation(QObject):
         """Resets the user time adjustment state to False."""
         self._setUserTimeAdjustment(False)
 
-    def _onPrintDurationMessage(self, build_plate_number: int, print_times_per_feature: Dict[str, int], material_amounts: List[float]) -> None:
+    def _onPrintDurationMessage(self,
+                                build_plate_number: int,
+                                print_times_per_feature: Dict[str, int],
+                                material_amounts: List[float],
+                                material_lengths: List[float],
+                                material_weights: List[float],
+                                material_costs: List[float],
+                                material_names: List[str]) -> None:
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
         self.currentPrintTimeChanged.emit()
 
         self._material_amounts = material_amounts
-        self._calculateInformation(build_plate_number)
+        self._material_lengths[build_plate_number] = material_lengths
+        self._material_weights[build_plate_number] = material_weights
+        self._material_costs[build_plate_number] = material_costs
+        self._material_names[build_plate_number] = material_names
+
+        self.materialLengthsChanged.emit()
+        self.materialWeightsChanged.emit()
+        self.materialCostsChanged.emit()
+        self.materialNamesChanged.emit()
+
+    def _onInitialExtruderMessage(self, initial_extruder_nr: int) -> None:
+        self._initial_extruder_nr = initial_extruder_nr
 
     def _updateTotalPrintTimePerFeature(self, build_plate_number: int, print_times_per_feature: Dict[str, int]) -> None:
         total_estimated_time = 0
@@ -249,76 +276,6 @@ class PrintInformation(QObject):
             self._current_print_time[build_plate_number] = Duration(None, self)
         self._current_print_time[build_plate_number].setDuration(total_estimated_time)
 
-    def _calculateInformation(self, build_plate_number: int) -> None:
-        global_stack = self._application.getGlobalContainerStack()
-        if global_stack is None:
-            return
-
-        self._material_lengths[build_plate_number] = []
-        self._material_weights[build_plate_number] = []
-        self._material_costs[build_plate_number] = []
-        self._material_names[build_plate_number] = []
-
-        try:
-            material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
-        except json.JSONDecodeError:
-            Logger.warning("Material preference values are corrupt. Will revert to defaults!")
-            material_preference_values = {}
-
-        for index, extruder_stack in enumerate(global_stack.extruderList):
-            if index >= len(self._material_amounts):
-                continue
-            amount = self._material_amounts[index]
-            # Find the right extruder stack. As the list isn't sorted because it's a annoying generator, we do some
-            # list comprehension filtering to solve this for us.
-            density = extruder_stack.getMetaDataEntry("properties", {}).get("density", 0)
-            material = extruder_stack.material
-            radius = extruder_stack.getProperty("material_diameter", "value") / 2
-
-            weight = float(amount) * float(density) / 1000
-            cost = 0.
-
-            material_guid = material.getMetaDataEntry("GUID")
-            material_name = material.getName()
-
-            if material_guid in material_preference_values:
-                material_values = material_preference_values[material_guid]
-
-                if material_values and "spool_weight" in material_values:
-                    weight_per_spool = float(material_values["spool_weight"])
-                else:
-                    weight_per_spool = float(extruder_stack.getMetaDataEntry("properties", {}).get("weight", 0))
-
-                cost_per_spool = float(material_values["spool_cost"] if material_values and "spool_cost" in material_values else 0)
-
-                if weight_per_spool != 0:
-                    cost = cost_per_spool * weight / weight_per_spool
-                else:
-                    cost = 0
-
-            # Material amount is sent as an amount of mm^3, so calculate length from that
-            if radius != 0:
-                length = round((amount / (math.pi * radius ** 2)) / 1000, 2)
-            else:
-                length = 0
-
-            self._material_weights[build_plate_number].append(weight)
-            self._material_lengths[build_plate_number].append(length)
-            self._material_costs[build_plate_number].append(cost)
-            self._material_names[build_plate_number].append(material_name)
-
-        self.materialLengthsChanged.emit()
-        self.materialWeightsChanged.emit()
-        self.materialCostsChanged.emit()
-        self.materialNamesChanged.emit()
-
-    def _onPreferencesChanged(self, preference: str) -> None:
-        if preference != "cura/material_settings":
-            return
-
-        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
-            self._calculateInformation(build_plate_number)
-
     def _onActiveBuildPlateChanged(self) -> None:
         new_active_build_plate = self._multi_build_plate_model.activeBuildPlate
         if new_active_build_plate != self._active_build_plate:
@@ -332,10 +289,6 @@ class PrintInformation(QObject):
             self.materialCostsChanged.emit()
             self.materialNamesChanged.emit()
             self.currentPrintTimeChanged.emit()
-
-    def _onActiveMaterialsChanged(self, *args, **kwargs) -> None:
-        for build_plate_number in range(self._multi_build_plate_model.maxBuildPlate + 1):
-            self._calculateInformation(build_plate_number)
 
     # Manual override of job name should also set the base name so that when the printer prefix is updated, it the
     # prefix can be added to the manually added name, not the old base name
@@ -481,9 +434,8 @@ class PrintInformation(QObject):
             self._print_times_per_feature[build_plate] = {}
         for key in self._print_times_per_feature[build_plate].keys():
             temp_message[key] = 0
-        temp_material_amounts = [0.]
 
-        self._onPrintDurationMessage(build_plate, temp_message, temp_material_amounts)
+        self._onPrintDurationMessage(build_plate, temp_message, [0.0], [0.0], [0.0], [0.0], [""])
 
     def _onSceneChangedDelayed(self, scene_node: SceneNode) -> None:
         # Ignore any changes that are not related to sliceable objects

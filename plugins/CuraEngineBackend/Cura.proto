@@ -146,6 +146,14 @@ message PrintTimeMaterialEstimates { // The print time for each feature and mate
 message MaterialEstimates {
     int64 id = 1;
     float material_amount = 2; // material used in the extruder
+    float material_length = 3; // Length if used filaments, in meters
+    float material_weight = 4; // Weight of used filament, in grams
+    float material_cost = 5;
+    string material_name = 6;
+}
+
+message InitialExtruder {
+    uint32 extruder_nr = 1;
 }
 
 message SettingList {
