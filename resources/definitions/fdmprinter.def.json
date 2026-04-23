@@ -7833,7 +7833,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5,
-                    "minimum_value": "line_width",
+                    "minimum_value": "0.0",
                     "maximum_value_warning": "10.0",
                     "enabled": "prime_tower_enable",
                     "settable_per_mesh": false,
