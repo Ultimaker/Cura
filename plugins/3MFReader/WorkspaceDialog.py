@@ -28,15 +28,12 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class WorkspaceDialog(QObject):
-    showDialogSignal = pyqtSignal()
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, dialog_closed_event: threading.Event, parent = None) -> None:
         super().__init__(parent)
         self._component = None
         self._context = None
         self._view = None
-        self._qml_url = "WorkspaceDialog.qml"
-        self._lock = threading.Lock()
         self._default_strategy = None
         self._result = {
             "machine": self._default_strategy,
@@ -45,8 +42,7 @@ class WorkspaceDialog(QObject):
             "material": self._default_strategy,
         }
         self._override_machine = None
-        self._visible = False
-        self.showDialogSignal.connect(self.__show)
+        self._dialog_closed_event = dialog_closed_event
 
         self._has_quality_changes_conflict = False
         self._has_definition_changes_conflict = False
@@ -80,6 +76,12 @@ class WorkspaceDialog(QObject):
         self._exported_settings_model.modelChanged.connect(self.exportedSettingModelChanged.emit)
         self._current_machine_pos_index = 0
         self._is_ucp = False
+
+        three_mf_reader_path = PluginRegistry.getInstance().getPluginPath("3MFReader")
+        if three_mf_reader_path:
+            path = os.path.join(three_mf_reader_path, "WorkspaceDialog.qml")
+            self._view = CuraApplication.getInstance().createQmlComponent(path, initial_properties = {"manager": self})
+            self._view.show()
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
@@ -369,6 +371,7 @@ class WorkspaceDialog(QObject):
     @pyqtProperty(int, notify=exportedSettingModelChanged)
     def exportedSettingModelRowCount(self):
         return self._exported_settings_model.rowCount()
+
     @pyqtSlot()
     def closeBackend(self) -> None:
         """Close the backend: otherwise one could end up with "Slicing..."""
@@ -422,76 +425,21 @@ class WorkspaceDialog(QObject):
 
         return self._result
 
-    def _createViewFromQML(self) -> None:
-        three_mf_reader_path = PluginRegistry.getInstance().getPluginPath("3MFReader")
-        if three_mf_reader_path:
-            path = os.path.join(three_mf_reader_path, self._qml_url)
-            self._view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-
-    def show(self) -> None:
-        # Emit signal so the right thread actually shows the view.
-        if threading.current_thread() != threading.main_thread():
-            self._lock.acquire()
-        # Reset the result
-        self._result = {
-            "machine": self._default_strategy,
-            "quality_changes": self._default_strategy,
-            "definition_changes": self._default_strategy,
-            "material": self._default_strategy,
-        }
-        self._visible = True
-        self.showDialogSignal.emit()
-
     @pyqtSlot()
     def notifyClosed(self) -> None:
         """Used to notify the dialog so the lock can be released."""
-
-        self._result = {} # The result should be cleared before hide, because after it is released the main thread lock
-        self._visible = False
-        try:
-            self._lock.release()
-        except:
-            pass
-
-    def hide(self) -> None:
-        self._visible = False
-        self._view.hide()
-        try:
-            self._lock.release()
-        except:
-            pass
-
-    @pyqtSlot(bool)
-    def _onVisibilityChanged(self, visible: bool) -> None:
-        if not visible:
-            try:
-                self._lock.release()
-            except:
-                pass
+        self.onCancelButtonClicked()
 
     @pyqtSlot()
     def onOkButtonClicked(self) -> None:
         self._view.hide()
-        self.hide()
+        self._dialog_closed_event.set()
 
     @pyqtSlot()
     def onCancelButtonClicked(self) -> None:
         self._result = {}
         self._view.hide()
-        self.hide()
-
-    def waitForClose(self) -> None:
-        """Block thread until the dialog is closed."""
-
-        if self._visible:
-            if threading.current_thread() != threading.main_thread():
-                self._lock.acquire()
-                self._lock.release()
-            else:
-                # If this is not run from a separate thread, we need to ensure that the events are still processed.
-                while self._visible:
-                    time.sleep(1 / 50)
-                    QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+        self._dialog_closed_event.set()
 
     @pyqtSlot()
     def showMissingMaterialsWarning(self) -> None:
@@ -527,10 +475,3 @@ class WorkspaceDialog(QObject):
             message.hide()
         elif sync_message_action == "learn_more":
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360011968360-Using-the-Ultimaker-Marketplace"))
-
-
-    def __show(self) -> None:
-        if self._view is None:
-            self._createViewFromQML()
-        if self._view:
-            self._view.show()
