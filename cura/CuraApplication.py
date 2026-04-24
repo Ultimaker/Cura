@@ -1875,11 +1875,16 @@ class CuraApplication(QtApplication):
                             if content_disposition_match is not None:
                                 filename = content_disposition_match.group("filename").strip("\"")
 
-                        tmp = tempfile.NamedTemporaryFile(suffix=filename, delete=False)
-                        with open(tmp.name, "wb") as f:
+                        # Write the download to a fresh temp directory under
+                        # its real filename, so the file shown in Cura keeps
+                        # the original name. Using NamedTemporaryFile(suffix=…)
+                        # would produce `tmpXXXXXX<filename>` instead.
+                        tmp_dir = tempfile.mkdtemp(prefix="cura-open-")
+                        tmp_path = os.path.join(tmp_dir, filename)
+                        with open(tmp_path, "wb") as f:
                             f.write(response.readAll())
 
-                        self.readLocalFile(QUrl.fromLocalFile(tmp.name), add_to_recent_files=False)
+                        self.readLocalFile(QUrl.fromLocalFile(tmp_path), add_to_recent_files=False)
                     except Exception as ex:
                         Logger.warning(f"Exception {str(ex)}")
                         on_error()
