@@ -4837,7 +4837,7 @@
                 "retraction_combing_avoid_distance":
                 {
                     "label": "Inside Travel Avoid Distance",
-                    "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
+                    "description": "The distance between the nozzle and outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
@@ -9720,6 +9720,16 @@
                     "maximum_value": 100.0,
                     "unit": "mm",
                     "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "minimum_infill_line_length": {
+                    "label": "Minimum Infill Line Length",
+                    "description": "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions.",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "maximum_value_warning": "line_width * 100",
+                    "unit": "mm",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
                 },
