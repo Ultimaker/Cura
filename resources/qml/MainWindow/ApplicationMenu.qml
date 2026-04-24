@@ -73,11 +73,16 @@ Item
     // Definition of other components that are linked to the menus
     // ###############################################################################################
 
-    WorkspaceSummaryDialog
+    Component
     {
-        id: saveWorkspaceDialog
-        property var args
-        onAccepted: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+        id: saveWorkspaceDialogComponent
+
+        WorkspaceSummaryDialog
+        {
+            property var args
+            onAccepted: UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
+            selfDestroy: true
+        }
     }
 
     Cura.MessageDialog
