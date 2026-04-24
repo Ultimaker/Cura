@@ -9892,6 +9892,14 @@
                     "type": "str",
                     "default_value": "[[1,0,0], [0,1,0], [0,0,1]]",
                     "enabled": false
+                },
+                "initial_extruder_nr":
+                 {
+                    "label": "Initial Extruder Number",
+                    "description": "Extruder that should be used first when printing.",
+                    "type": "extruder",
+                    "default_value": 0,
+                    "enabled": false
                 }
             }
         }
