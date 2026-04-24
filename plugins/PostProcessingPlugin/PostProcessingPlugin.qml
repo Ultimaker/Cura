@@ -6,6 +6,7 @@ import QtQuick.Controls 2.15
 import QtQml.Models 2.15 as Models
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.2
+import QtQuick.Dialogs
 
 import UM 1.5 as UM
 import Cura 1.0 as Cura
@@ -14,7 +15,7 @@ UM.Dialog
 {
     id: dialog
 
-    title: catalog.i18nc("@title:window", "Post Processing Plugin")
+    title: catalog.i18nc("@title:window", "Post-Processing Scripts")
     width: 700 * screenScaleFactor
     height: 500 * screenScaleFactor
     minimumWidth: 400 * screenScaleFactor
@@ -23,6 +24,7 @@ UM.Dialog
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
+				
         if (!visible)
         {
             manager.writeScriptsToStack()
@@ -33,6 +35,7 @@ UM.Dialog
     {
         UM.I18nCatalog{id: catalog; name: "cura"}
         id: base
+				
         property int columnWidth: Math.round((base.width / 2) - UM.Theme.getSize("default_margin").width)
         property int textMargin: UM.Theme.getSize("narrow_margin").width
         property string activeScriptName
@@ -41,6 +44,7 @@ UM.Dialog
 
         // Helper function to check if a setting should use multiline text area
         // Supports "multiline" or "@[multiline]" or "@[multiline, other] comment"
+				
         function isMultilineSetting(definition)
         {
             if (!definition || !definition.comments)
@@ -51,12 +55,14 @@ UM.Dialog
             var commentsLower = definition.comments.toLowerCase();
             
             // Simple format: exact match
+						
             if (commentsLower === "multiline")
             {
                 return true;
             }
             
             // Directive format: parse @[...] and check if multiline is in the list
+						
             var directiveStart = commentsLower.indexOf("@[");
             var directiveEnd = commentsLower.indexOf("]", directiveStart);
             if (directiveStart >= 0 && directiveEnd > directiveStart)
@@ -82,29 +88,50 @@ UM.Dialog
         Column
         {
             id: activeScripts
+						
             width: base.columnWidth
             height: parent.height
 
             spacing: base.textMargin
 
-            UM.Label
+            RowLayout
             {
-                id: activeScriptsHeader
-                text: catalog.i18nc("@label", "Post Processing Scripts")
                 anchors.left: parent.left
                 anchors.right: parent.right
-                font: UM.Theme.getFont("large_bold")
-                elide: Text.ElideRight
+                spacing: UM.Theme.getSize("narrow_margin").width
+							
+								UM.BurgerButton
+								{
+									id: scriptOptionsMenuIcon
+
+									onClicked:
+									{
+											scriptOptionsMenu.open()
+									}
+								}
+		
+								UM.Label
+								{
+										id: activeScriptsHeader
+										
+										text: catalog.i18nc("@label", "Post-Processing Scripts")
+										anchors.left: scriptOptionsMenuIcon.right
+										font: UM.Theme.getFont("large_bold")
+										elide: Text.ElideRight
+								}
             }
+						
             ListView
             {
                 id: activeScriptsList
+								
                 anchors
                 {
                     left: parent.left
                     right: parent.right
                     rightMargin: base.textMargin
                 }
+								
                 height: Math.min(contentHeight, parent.height - parent.spacing * 2 - activeScriptsHeader.height - addButton.height) //At the window height, start scrolling this one.
 
                 clip: true
@@ -112,6 +139,7 @@ UM.Dialog
                 {
                     id: activeScriptsScrollBar
                 }
+								
                 model: manager.scriptList
 
                 delegate: Button
@@ -163,7 +191,32 @@ UM.Dialog
 
                         Item
                         {
+                            id: duplicateButton
+														
+                            Layout.preferredWidth: height
+                            Layout.fillHeight: true
+
+                            MouseArea
+                            {
+                                anchors.fill: parent
+                                onClicked: manager.duplicateScriptByIndex(index)
+                            }
+
+                            UM.ColorImage
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                width: UM.Theme.getSize("standard_arrow").width
+                                height: UM.Theme.getSize("standard_arrow").height
+                                color: UM.Theme.getColor("text")
+                                source: UM.Theme.getIcon("DuplicateScript")
+                            }
+                        }
+
+                        Item
+                        {
                             id: downButton
+														
                             Layout.preferredWidth: height
                             Layout.fillHeight: true
                             enabled: index != manager.scriptList.length - 1
@@ -177,6 +230,7 @@ UM.Dialog
                                     {
                                         manager.setSelectedScriptIndex(index + 1)
                                     }
+																		
                                     return manager.moveScript(index, index + 1)
                                 }
                             }
@@ -191,9 +245,11 @@ UM.Dialog
                                 source: UM.Theme.getIcon("ChevronSingleDown")
                             }
                         }
+												
                         Item
                         {
                             id: upButton
+														
                             Layout.preferredWidth: height
                             Layout.fillHeight: true
                             enabled: index != 0
@@ -207,6 +263,7 @@ UM.Dialog
                                     {
                                         manager.setSelectedScriptIndex(index - 1)
                                     }
+																		
                                     return manager.moveScript(index, index - 1)
                                 }
                             }
@@ -225,6 +282,7 @@ UM.Dialog
                         Item
                         {
                             id: removeButton
+														
                             Layout.preferredWidth: height
                             Layout.fillHeight: true
 
@@ -247,10 +305,12 @@ UM.Dialog
                     }
                 }
             }
+						
             Cura.SecondaryButton
             {
                 id: addButton
-                text: catalog.i18nc("@action", "Add a script")
+								
+								text: catalog.i18nc("@action", "Add Post-Processing Script")
                 onClicked: scriptsMenu.open()
             }
         }
@@ -274,18 +334,125 @@ UM.Dialog
             }
         }
 
+        Cura.Menu
+        {
+            id: scriptOptionsMenu
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Export Scripts")
+                onTriggered: exportScriptsDialog.open()
+            }
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Import Scripts")
+                onTriggered: importScriptsDialog.open()
+            }
+
+            Cura.MenuSeparator {}
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:inmenu", "Clear Scripts")
+                //onTriggered: manager.clearScripts()
+								onTriggered: confirmRemoveScriptsDialog.open()
+            }
+        }
+
+				// Dialogs
+				
+				UM.Dialog
+				{
+						id: confirmRemoveScriptsDialog
+
+						title: catalog.i18nc("@title:window", "Confirm Script Removal")
+						width: 400 * screenScaleFactor
+						height: 100 * screenScaleFactor
+						minimumWidth: 400 * screenScaleFactor
+						minimumHeight: 100 * screenScaleFactor
+						backgroundColor: UM.Theme.getColor("main_background")
+
+						UM.Label
+						{
+								id: confirmPrompt
+								
+								text: catalog.i18nc("@label", "Are you sure you want to remove ALL Post-Processing Scripts?")
+								anchors.left: parent.left
+								font: UM.Theme.getFont("medium")
+						}
+
+						Item
+						{
+								ButtonGroup 
+								{
+										buttons: [yesButton, noButton]
+										checkedButton: noButton
+								}
+						}
+
+						rightButtons: 
+						[
+								Cura.SecondaryButton
+								{
+										id: yesButton
+										
+										text: catalog.i18nc("@action:button","Yes")
+										onClicked: 										
+										{
+												manager.clearScripts()
+												confirmRemoveScriptsDialog.close()
+										}
+								},
+								
+								Cura.PrimaryButton
+								{
+										id: noButton
+										
+										text: catalog.i18nc("@action:button", "No")
+										onClicked: 										
+										{
+											confirmRemoveScriptsDialog.close()
+										}
+								}
+						]
+				}
+				
+        FileDialog
+        {
+            id: exportScriptsDialog
+						
+            title: catalog.i18nc("@title:window", "Export Post-Processing Scripts")
+            fileMode: FileDialog.SaveFile
+            nameFilters: [ catalog.i18nc("@filter:file", "Post-Processing Scripts (*.postprocessing)"), catalog.i18nc("@filter:file", "All files (*)") ]
+            defaultSuffix: "postprocessing"
+            onAccepted: manager.exportScripts(selectedFile)
+        }
+
+        FileDialog
+        {
+            id: importScriptsDialog
+						
+            title: catalog.i18nc("@title:window", "Import Post-Processing Scripts")
+            fileMode: FileDialog.OpenFile
+            nameFilters: [ catalog.i18nc("@filter:file", "Post-Processing Scripts (*.postprocessing)"), catalog.i18nc("@filter:file", "All files (*)") ]
+            onAccepted: manager.importScripts(selectedFile)
+        }
+
         Rectangle
         {
+				    id: settingsPanel
+
             color: UM.Theme.getColor("main_background")
             anchors.left: activeScripts.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
             height: parent.height
-            id: settingsPanel
 
             UM.Label
             {
                 id: scriptSpecsHeader
+								
                 text: manager.selectedScriptIndex == -1 ? catalog.i18nc("@label", "Settings") : base.activeScriptName
                 anchors
                 {
@@ -305,6 +472,7 @@ UM.Dialog
             ListView
             {
                 id: listview
+								
                 anchors
                 {
                     top: scriptSpecsHeader.bottom
@@ -323,6 +491,7 @@ UM.Dialog
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel
+										
                     containerId: manager.selectedScriptDefinitionId
                     onContainerIdChanged: definitionsModel.setAllVisible(true)
                     showAll: true
@@ -331,7 +500,7 @@ UM.Dialog
                 delegate: Loader
                 {
                     id: settingLoader
-
+										
                     width: listview.width
                     height:
                     {
@@ -341,6 +510,7 @@ UM.Dialog
                             {
                                 return UM.Theme.getSize("standard_list_lineheight").height + UM.Theme.getSize("narrow_margin").height + (UM.Theme.getSize("setting_control").height * 3);
                             }
+														
                             return UM.Theme.getSize("section").height;
                         }
                         else
@@ -348,6 +518,7 @@ UM.Dialog
                             return 0
                         }
                     }
+										
                     Behavior on height { NumberAnimation { duration: 100 } }
                     opacity: provider.properties.enabled == "True" ? 1 : 0
 
@@ -362,6 +533,7 @@ UM.Dialog
                     //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                     //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                     //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
+										
                     asynchronous: model.type != "enum" && model.type != "extruder"
 
                     onLoaded:
@@ -371,16 +543,21 @@ UM.Dialog
                         settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
                         settingLoader.item.doQualityUserSettingEmphasis = false
+												
                         // Pass properties explicitly to custom components that don't extend SettingItem
+												
                         if (settingLoader.item.hasOwnProperty("definition")) {
                             settingLoader.item.definition = settingLoader.definition
                         }
+												
                         if (settingLoader.item.hasOwnProperty("settingDefinitionsModel")) {
                             settingLoader.item.settingDefinitionsModel = settingLoader.settingDefinitionsModel
                         }
+												
                         if (settingLoader.item.hasOwnProperty("propertyProvider")) {
                             settingLoader.item.propertyProvider = settingLoader.propertyProvider
                         }
+												
                         if (settingLoader.item.hasOwnProperty("globalPropertyProvider")) {
                             settingLoader.item.globalPropertyProvider = settingLoader.globalPropertyProvider
                         }
@@ -412,6 +589,7 @@ UM.Dialog
                     UM.SettingPropertyProvider
                     {
                         id: provider
+												
                         containerStackId: manager.selectedScriptStackId
                         key: model.key ? model.key : "None"
                         watchedProperties: [ "value", "enabled", "state", "validationState" ]
@@ -420,9 +598,11 @@ UM.Dialog
 
                     // Specialty provider that only watches global_inherits (we can't filter on what property changed we get events
                     // so we bypass that to make a dedicated provider).
+										
                     UM.SettingPropertyProvider
                     {
                         id: inheritStackProvider
+												
                         containerStack: Cura.MachineManager.activeMachine
                         key: model.key ? model.key : "None"
                         watchedProperties: [ "limit_to_extruder" ]
@@ -454,49 +634,49 @@ UM.Dialog
         Component
         {
             id: settingTextField;
-
+						
             Cura.SettingTextField { }
         }
 
         Component
         {
             id: settingTextArea;
-
+						
             SettingTextArea { }
         }
 
         Component
         {
             id: settingComboBox;
-
+						
             Cura.SettingComboBox { }
         }
 
         Component
         {
             id: settingExtruder;
-
+						
             Cura.SettingExtruder { }
         }
 
         Component
         {
             id: settingCheckBox;
-
+						
             Cura.SettingCheckBox { }
         }
 
         Component
         {
             id: settingCategory;
-
+						
             Cura.SettingCategory { }
         }
 
         Component
         {
             id: settingUnknown;
-
+						
             Cura.SettingUnknown { }
         }
     }
@@ -531,10 +711,13 @@ UM.Dialog
                     {
                         tipText += "<li>" + manager.getScriptLabelByKey(manager.scriptList[i]) + "</li>";
                     }
+										
                     tipText += "</ul>";
                 }
+								
                 return tipText
             }
+						
             toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
             onClicked: dialog.show()
             iconSource: Qt.resolvedUrl("Script.svg")
@@ -544,6 +727,7 @@ UM.Dialog
         Cura.NotificationIcon
         {
             id: activeScriptCountIcon
+						
             visible: activeScriptsList.count > 0
             anchors
             {
