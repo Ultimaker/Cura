@@ -34,7 +34,7 @@ class PostProcessingPlugin(QObject, Extension):
         Extension.__init__(self)
         self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
         self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Modify G-Code"), self.showPopup)
-        self._view = None
+        self._dialog = None
 
         # Loaded scripts are all scripts that can be used
         self._loaded_scripts = {}  # type: Dict[str, Type[Script]]
@@ -50,7 +50,7 @@ class PostProcessingPlugin(QObject, Extension):
 
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)  # When the current printer changes, update the list of scripts.
-        CuraApplication.getInstance().mainWindowChanged.connect(self._createView)  # When the main window is created, create the view so that we can display the post-processing icon if necessary.
+        CuraApplication.getInstance().mainWindowChanged.connect(self._createSaveAreaButton)  # When the main window is created, create the view so that we can display the post-processing icon if necessary.
 
     selectedIndexChanged = pyqtSignal()
 
@@ -346,36 +346,36 @@ class PostProcessingPlugin(QObject, Extension):
         # We do want to listen to other events.
         self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
-    def _createView(self) -> None:
-        """Creates the view used by show popup.
-
-        The view is saved because of the fairly aggressive garbage collection.
-        """
-
-        Logger.log("d", "Creating post processing plugin view.")
+    def _createSaveAreaButton(self) -> None:
+        """Creates the permanently displayed button on the bottom-right area."""
 
         self.loadAllScripts()
 
         # Create the plugin dialog component
-        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")), "PostProcessingPlugin.qml")
-        self._view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
-        if self._view is None:
+        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")), "SaveAreaButton.qml")
+        button = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        if button is None:
             Logger.log("e", "Not creating PostProcessing button near save button because the QML component failed to be created.")
             return
-        Logger.log("d", "Post processing view created.")
 
-        # Create the save button component
-        CuraApplication.getInstance().addAdditionalComponent("saveButton", self._view.findChild(QObject, "postProcessingSaveAreaButton"))
+        # Register the component in the main view
+        CuraApplication.getInstance().addAdditionalComponent("saveButton", button)
+
+        button.clicked.connect(self.showPopup)
 
     def showPopup(self) -> None:
         """Show the (GUI) popup of the post processing plugin."""
 
-        if self._view is None:
-            self._createView()
-            if self._view is None:
-                Logger.log("e", "Not creating PostProcessing window since the QML component failed to be created.")
-                return
-        self._view.show()
+        self.loadAllScripts()
+
+        # Create the plugin dialog component
+        path = os.path.join(cast(str, PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")),
+                            "PostProcessingPlugin.qml")
+        self._dialog = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        if self._dialog is None:
+            return
+
+        self._dialog.show()
 
     def _propertyChanged(self) -> None:
         """Property changed: trigger re-slice
