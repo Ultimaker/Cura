@@ -110,11 +110,6 @@ UM.ManagementPage
                 maximumHeight: minimumHeight * 3
                 backgroundColor: UM.Theme.getColor("main_background")
                 selfDestroy: true
-
-                Component.onCompleted:
-                {
-                    console.log("dialog ready")
-                }
             }
         }
 
