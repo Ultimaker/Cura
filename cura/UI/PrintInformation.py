@@ -82,7 +82,6 @@ class PrintInformation(QObject):
         self._application.getOutputDeviceManager().writeStarted.connect(self._onOutputStart)
 
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
-        self._material_amounts: List[float] = []
         self._material_lengths = {0: [0.0 for index in range(nb_extruders)]}
         self._material_weights = {0: [0.0 for index in range(nb_extruders)]}
         self._material_costs = {0: [0.0 for index in range(nb_extruders)]}
@@ -235,7 +234,6 @@ class PrintInformation(QObject):
         self._updateTotalPrintTimePerFeature(build_plate_number, print_times_per_feature)
         self.currentPrintTimeChanged.emit()
 
-        self._material_amounts = material_amounts
         self._material_lengths[build_plate_number] = material_lengths
         self._material_weights[build_plate_number] = material_weights
         self._material_costs[build_plate_number] = material_costs
