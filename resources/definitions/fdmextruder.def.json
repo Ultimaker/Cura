@@ -310,6 +310,80 @@
             "icon": "Adhesion",
             "label": "Build Plate Adhesion",
             "type": "category"
+        },
+        "command_line_settings":
+        {
+            "label": "Command Line Settings",
+            "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
+            "type": "category",
+            "enabled": false,
+            "children":
+            {
+                "material_guid":
+                {
+                    "label": "Material GUID",
+                    "description": "The unique ID of the material.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": false
+                },
+                "material_id":
+                {
+                    "label": "Cura Material ID",
+                    "description": "The ID of the material that is used internally.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": false
+                },
+                "material_type":
+                {
+                    "label": "Material Type",
+                    "description": "The base type of printed material, e.g. PLA or ABS.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": false
+                },
+                "material_name":
+                {
+                    "label": "Material Name",
+                    "description": "The fully qualified material name, e.g. 'UltiMaker PLA White'.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": false
+                },
+                "material_brand":
+                {
+                    "label": "Material Brand",
+                    "description": "The material brand, e.g. 'UltiMaker'.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": false
+                },
+                "material_density":
+                {
+                    "label": "Material density",
+                    "description": "The printed material density, in g/cm3.",
+                    "type": "float",
+                    "default_value": 0,
+                    "enabled": false
+                },
+                "material_spool_weight":
+                {
+                    "label": "Material Spool Weight",
+                    "description": "The weight of a full spool of material, in grams.",
+                    "type": "float",
+                    "default_value": 0,
+                    "enabled": false
+                },
+                "material_spool_cost":
+                {
+                    "label": "Material Spool Cost",
+                    "description": "The cost of a full spool of material.",
+                    "type": "float",
+                    "default_value": 0,
+                    "enabled": false
+                }
+            }
         }
     }
 }
