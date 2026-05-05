@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 14:52+0100\n"
+"POT-Creation-Date: 2026-03-31 08:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3029,6 +3029,10 @@ msgctxt "@item:inmenu"
 msgid "Paint view"
 msgstr "페인트 보기"
 
+msgctxt "@label"
+msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
+msgstr ""
+
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G 코드 파싱"
@@ -5284,6 +5288,10 @@ msgid "Upgrades configurations from Cura 5.11 to Cura 5.12"
 msgstr ""
 
 msgctxt "description"
+msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
+msgstr ""
+
+msgctxt "description"
 msgid "Upgrades configurations from Cura 5.2 to Cura 5.3."
 msgstr "Cura 5.2에서 Cura 5.3으로 구성을 업그레이드합니다."
 
@@ -5429,6 +5437,10 @@ msgstr "4.9에서 4.10으로 버전 업그레이드"
 
 msgctxt "name"
 msgid "Version Upgrade 5.11 to 5.12"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.12 to 5.13"
 msgstr ""
 
 msgctxt "name"

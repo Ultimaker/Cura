@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-02-05 14:52+0000\n"
+"POT-Creation-Date: 2026-03-31 08:53+0000\n"
 "PO-Revision-Date: 2026-02-23 11:33+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
@@ -15,6 +15,10 @@ msgstr ""
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>プライムタワーの生成方法:<ul><li><b>通常:</b>2番目に優先される材料でバケットを作成します</li><li><b>インターリーブド:</b>プライムタワーをできるだけまばらに作成します。これにより時間とフィラメントが節約されますが、使用できる材料が互いに接着している場合にのみ可能です。</li></ul></html>"
+
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
+msgstr ""
 
 msgctxt "infill_pattern description"
 msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
@@ -31,6 +35,10 @@ msgstr "<html>移動中に引き戻しを行う割合を指定します。移動
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
 msgstr "<html>ノズル切り替え中に冷却ファンを作動させるかどうか。これによりノズルの冷却スピードを上げてにじみを減らすのに役立ちます：<ul><li><b>変更なし：</b>ファンを以前の状態に維持します</li><li><b>最後のエクストルーダーのみ：</b>最後に使用したエクストルーダーのファンをオンにしますが、もし他のエクストルーダーがあればファンをオフにします。これは、完全に別個のエクストルーダーがある場合に有用です。</li><li><b>すべてのファン：</b>ノズル切り替え中にすべてのファンをオンにします。これは、冷却ファンが1つのみの場合、または複数のファンが互いに接近している場合に有用です。</li></ul></html>"
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
+msgstr ""
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -87,6 +95,10 @@ msgstr "プリントヘッドの領域を持つポリゴンのリストは入力
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
 msgstr "枝がサポートポイントからどれくらい移動できるかについての推奨値。枝は、目的地（ビルドプレートまたはモデルの平らな部分）に到達するためであればこの値に違反できます。この値を小さくすることで、サポートをより頑丈にできますが、枝の量が増加します。（材料の使用量やプリント時間も増加します） "
+
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
+msgstr ""
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -204,13 +216,13 @@ msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "アルミニウム"
 
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr ""
+
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
 msgstr "常にアクティブなツールを書き込む"
-
-msgctxt "travel_retract_before_outer_wall description"
-msgid "Always retract when moving to start an outer wall."
-msgstr "移動して外側のウォールをプリントする際、毎回引き戻しをします。"
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -263,6 +275,10 @@ msgstr "エクストルーダーのオフセットを座標システムに適用
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
 msgstr "モデルが接触する箇所に、インターロックビーム構造を生成します。その結果、モデル、特に異なる材料でプリントされたモデル間の接着が向上します。"
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
+msgstr ""
 
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
@@ -716,6 +732,10 @@ msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
 msgstr "各インフィルラインをこの多重ラインに変換します。余分なラインが互いに交差せず、互いを避け合います。これによりインフィルが硬くなり、印刷時間と材料使用量が増えます。"
 
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
 msgstr "冷却速度"
@@ -832,6 +852,10 @@ msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
 msgstr "Zシームをより目立たなくする、スカーフシームの長さを決定します。効果を得るには、0より大きい値にする必要があります。"
 
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr "ウォールをプリントする順序を決定します。外側のウォールを先にプリントすると、内側のウォールの不具合が外側に影響しないため、寸法精度が向上します。一方、外側のウォールを後からプリントすると、オーバーハングをプリントする際にうまく積み重ねることができます。内側のウォールの合計が奇数の場合、「中央の最後のライン」は必ず最後にプリントされます。"
@@ -843,6 +867,14 @@ msgstr "インフィルメッシュの重なりが複数生じた場合のこの
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
 msgstr "ライトニングインフィルレイヤーがその上の物を支える必要がある場合を決定します。レイヤーの厚さを考慮して角度で指定されます。"
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
@@ -1079,6 +1111,10 @@ msgstr "プリント中の冷却ファンを有効にします。ファンは、
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
 msgstr "終了G-code"
+
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr ""
 
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
@@ -1340,6 +1376,10 @@ msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "ノズルサイズの1～2倍程度の薄い構造の場合、ライン幅はモデルの厚さに合わせて接着するよう変更する必要があります。この設定は、ウォールに許容される最小ライン幅を制御します。N番目のウォールが厚くN+1番目のウォールが薄い場合、N番目からN+1番目のウォールの厚さに変更するため、最小ライン幅は本質的に最大ライン幅も決定します。ウォールラインの許容最大幅は、最小ウォールライン幅の2倍です。"
 
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr ""
+
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "前方"
@@ -1547,6 +1587,10 @@ msgstr "穴の水平拡張の最大直径"
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "これより直径が小さな輪郭の穴とパーツは、Small Feature Speedを使用して印刷されます。"
+
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr ""
 
 msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
@@ -1776,6 +1820,10 @@ msgctxt "infill_move_inwards_length label"
 msgid "Infill Start/End Move Inwards Length"
 msgstr "インフィル始端・終端の内側への移動量"
 
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr ""
+
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
 msgstr "インフィルサポート"
@@ -1876,6 +1924,10 @@ msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
 msgstr "初期レイヤー移動速度"
 
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr ""
+
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "初期レイヤーZ座標の重なり"
@@ -1923,6 +1975,10 @@ msgstr "外側ウォールの経路にはめ込む。外側ウォールがノズ
 msgctxt "brim_location option inside"
 msgid "Inside Only"
 msgstr "内側のみ"
+
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr ""
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
@@ -2075,6 +2131,10 @@ msgstr "ヘッド持ち上げ"
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
 msgstr "ライトニング"
+
+msgctxt "support_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
@@ -2548,6 +2608,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "サポートのルーフの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr ""
+
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "第1層のフローを段階的に変化させるための最低速度"
@@ -2615,6 +2679,10 @@ msgstr "サポート材の初期層におけるインフィル密度の倍率で
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
 msgstr "最初のレイヤーにおけるライン幅の乗数です。この値を増やすと、ベッドとの接着が向上します。"
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr ""
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2863,6 +2931,10 @@ msgstr "同じレイヤー内の異なる島の外側ウォールは順次印刷
 msgctxt "brim_location option outside"
 msgid "Outside Only"
 msgstr "外側のみ"
+
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr ""
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -3344,14 +3416,6 @@ msgctxt "z_seam_type option random"
 msgid "Random"
 msgstr "ランダム"
 
-msgctxt "infill_randomize_start_location label"
-msgid "Randomize Infill Start"
-msgstr "インフィル開始のランダム化"
-
-msgctxt "infill_randomize_start_location description"
-msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr "どのインフィルラインが最初に印刷されるかをランダム化します。これによって1つのセグメントが強くなることを回避しますが、追加の移動距離が必要となります。"
-
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "外側のウォールを印刷する際ランダムに振動を起こし、表面を粗くぼやけた見た目にします。"
@@ -3780,6 +3844,14 @@ msgctxt "machine_start_gcode_first label"
 msgid "Start GCode must be first"
 msgstr "開始G-Codeを必ず最初に実行"
 
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr ""
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr ""
+
 msgctxt "layer_start_at_z_seam description"
 msgid "Start printing at the Z seam position."
 msgstr "Zシーム位置からプリントを開始します。"
@@ -3932,6 +4004,10 @@ msgctxt "support_infill_angles label"
 msgid "Support Infill Line Directions"
 msgstr "サポートインフィルラインの向き"
 
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr ""
+
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "サポートインフィル速度"
@@ -3995,6 +4071,22 @@ msgstr "サポートジャーク"
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
 msgstr "サポート接合距離"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr ""
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr ""
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr ""
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4155,6 +4247,10 @@ msgstr "重複するメッシュがどのレイヤーに属しているかを切
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
 msgstr "隣接する2つのレイヤー間の目標水平距離。この設定を小さくすると、レイヤーのエッジが近づくように薄いレイヤーが使用されます。"
+
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
+msgstr ""
 
 msgctxt "layer_start_x description"
 msgid "The X coordinate of the position near where to find the part to start printing each layer."
@@ -4528,6 +4624,10 @@ msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
 msgstr "インフィルラインのエンドポイントは短縮され、材料が節約されます。この設定は、これらのラインのエンドポイントにおけるオーバーハングの角度です。"
 
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
+
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
 msgstr "押出し中にノズルを冷却するため追加される速度。同じ値が、加熱する際のスピード減少量に割り当てられます。"
@@ -4723,6 +4823,10 @@ msgstr ""
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "インフィルラインは矯正され、プリント時間が節約されます。これは、インフィルラインの全長にわたって許可されるオーバーハングの最大角度です。"
+
+msgctxt "support_lightning_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -6376,6 +6480,10 @@ msgstr "移動経路"
 #~ msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
 #~ msgstr "インフィルパターンにラインを追加して、上にあるスキンをサポートします。このオプションは、下のインフィルが上にプリントされるスキンレイヤーを正しくサポートしていないことにより複雑な形状のスキンに時々現れる、穴やプラスチックの塊を防ぎます。「ウォール」はスキンのアウトラインのみをサポートするのに対して、「ウォールとライン」はスキンを構成するラインの端もサポートします。"
 
+#~ msgctxt "travel_retract_before_outer_wall description"
+#~ msgid "Always retract when moving to start an outer wall."
+#~ msgstr "移動して外側のウォールをプリントする際、毎回引き戻しをします。"
+
 #~ msgctxt "bridge_sparse_infill_max_density label"
 #~ msgid "Bridge Sparse Infill Max Density"
 #~ msgstr "ブリッジスパースインフィル最大密度"
@@ -6435,6 +6543,14 @@ msgstr "移動経路"
 #~ msgctxt "wall_overhang_speed_factor description"
 #~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
 #~ msgstr "オーバーハングウォールは、通常の印刷速度に対して指定された割合で印刷されます。"
+
+#~ msgctxt "infill_randomize_start_location label"
+#~ msgid "Randomize Infill Start"
+#~ msgstr "インフィル開始のランダム化"
+
+#~ msgctxt "infill_randomize_start_location description"
+#~ msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+#~ msgstr "どのインフィルラインが最初に印刷されるかをランダム化します。これによって1つのセグメントが強くなることを回避しますが、追加の移動距離が必要となります。"
 
 #~ msgctxt "skin_edge_support_layers label"
 #~ msgid "Skin Edge Support Layers"

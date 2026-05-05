@@ -1290,21 +1290,24 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _finalizeMachineActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete machine activation by activating the machine and then applying materials."""
-        # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp = self._is_ucp)
-        
-        # Then apply materials in another deferred call to ensure machine is fully activated
-        # and ContainerTree has been accessed (which triggers lazy loading)
-        Application.getInstance().callLater(self._applyMaterialsAndFinalize, global_stack, extruder_stack_dict)
+        # Activate the machine, apply materials, and set quality/intent in one step.
+        self._updateActiveMachine(global_stack, extruder_stack_dict, is_ucp = self._is_ucp)
 
-    def _applyMaterialsAndFinalize(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
-        """Apply materials after machine is activated."""
-        self._applyMaterials(global_stack, extruder_stack_dict)
+        # Defer node loading so the build volume has time to update after machine activation.
+        Application.getInstance().callLater(self._finalizeThreeMFActivation, global_stack)
 
-        # Trigger a re-validation to pick up the newly applied changes
-        global_stack.containersChanged.emit(global_stack.getTop())
+    def _finalizeThreeMFActivation(self, global_stack: GlobalStack):
+        """Load nodes into the scene after machine activation.
 
-        # Load and add nodes to scene after machine activation
+        Materials and quality/intent are already applied by _updateActiveMachine.  This
+        deferred callback only exists to ensure the build volume has updated before nodes
+        are placed on the plate.
+        """
+        # Notify the UI that containers have changed so it re-validates the configuration.
+        if global_stack:
+            global_stack.containersChanged.emit(global_stack.getTop())
+
+        # Load and add nodes to scene after machine activation.
         if self._deferred_node_file_name:
             self._loadAndAddNodesToScene(self._deferred_node_file_name, is_ucp = self._is_ucp)
             self._deferred_node_file_name = None
@@ -1313,7 +1316,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _finalizeUcpActivation(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack]):
         """Complete UCP file activation by activating the machine and then applying user settings."""
         # First activate the machine
-        self._updateActiveMachine(global_stack, is_ucp = self._is_ucp)
+        self._updateActiveMachine(global_stack, extruder_stack_dict, is_ucp = self._is_ucp)
         
         # Then apply UCP user settings in another deferred call
         Application.getInstance().callLater(self._applyUcpUserSettings, global_stack, extruder_stack_dict)
@@ -1372,7 +1375,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     return True
         return False
 
-    def _updateActiveMachine(self, global_stack: GlobalStack, is_ucp: bool):
+    def _updateActiveMachine(self, global_stack: GlobalStack, extruder_stack_dict: Dict[str, ExtruderStack], is_ucp: bool):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
         container_tree = ContainerTree.getInstance()
@@ -1381,6 +1384,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         if not is_ucp:
+            self._applyMaterials(global_stack, extruder_stack_dict)
             for key, value in self._machine_info.metadata_dict.items():
                 if key not in global_stack.getMetaData() and key not in _ignored_machine_network_metadata:
                     global_stack.setMetaDataEntry(key, value)
