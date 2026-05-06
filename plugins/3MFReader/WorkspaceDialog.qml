@@ -85,7 +85,6 @@ UM.Dialog
                 // See http://stackoverflow.com/questions/7659442/listelement-fields-as-properties
                 Component.onCompleted:
                 {
-                    console.log("init list")
                     append({"key": "override", "label": catalog.i18nc("@action:ComboBox Update/override existing profile", "Update existing")});
                     append({"key": "new", "label": catalog.i18nc("@action:ComboBox Save settings in a new profile", "Create new")});
 
