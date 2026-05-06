@@ -39,7 +39,7 @@ class WhatsNewSubPagesModel(QObject):
 
     @staticmethod
     def _collectOrdinalFiles(resource_type: int, include: List[str]) -> Tuple[Dict[int, str], int]:
-        result = {}  # type: Dict[int, str]
+        result: Dict[int, str] = {}
         highest = -1
         try:
             folder_path = Resources.getPath(resource_type, "whats_new")
