@@ -20,6 +20,7 @@ UM.Dialog
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 250 * screenScaleFactor
     backgroundColor: UM.Theme.getColor("main_background")
+    selfDestroy: true
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
@@ -505,53 +506,5 @@ UM.Dialog
     {
         text: catalog.i18nc("@action:button", "Close")
         onClicked: dialog.accept()
-    }
-
-    Item
-    {
-        objectName: "postProcessingSaveAreaButton"
-        visible: activeScriptsList.count > 0
-        height: UM.Theme.getSize("action_button").height
-        width: height
-
-        Cura.SecondaryButton
-        {
-            height: UM.Theme.getSize("action_button").height
-            tooltip:
-            {
-                var tipText = catalog.i18nc("@info:tooltip", "Change active post-processing scripts.");
-                if (activeScriptsList.count > 0)
-                {
-                    tipText += "<br><br>" + catalog.i18ncp("@info:tooltip",
-                        "The following script is active:",
-                        "The following scripts are active:",
-                        activeScriptsList.count
-                    ) + "<ul>";
-                    for(var i = 0; i < activeScriptsList.count; i++)
-                    {
-                        tipText += "<li>" + manager.getScriptLabelByKey(manager.scriptList[i]) + "</li>";
-                    }
-                    tipText += "</ul>";
-                }
-                return tipText
-            }
-            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
-            onClicked: dialog.show()
-            iconSource: Qt.resolvedUrl("Script.svg")
-            fixedWidthMode: false
-        }
-
-        Cura.NotificationIcon
-        {
-            id: activeScriptCountIcon
-            visible: activeScriptsList.count > 0
-            anchors
-            {
-                horizontalCenter: parent.right
-                verticalCenter: parent.top
-            }
-
-            labelText: activeScriptsList.count
-        }
     }
 }
