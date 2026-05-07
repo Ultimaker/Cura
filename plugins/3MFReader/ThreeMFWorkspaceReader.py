@@ -6,6 +6,7 @@ import zipfile
 import os
 import json
 import re
+import threading
 from typing import cast, Dict, List, Optional, Tuple, Any, Set
 
 import xml.etree.ElementTree as ET
@@ -116,7 +117,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         super().__init__()
 
         self._supported_extensions = [".3mf"]
-        self._dialog = WorkspaceDialog()
         self._3mf_mesh_reader = None
         self._is_ucp = None
         self._container_registry = ContainerRegistry.getInstance()
@@ -147,6 +147,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._user_settings: Dict[str, Dict[str, Any]] = {}
         self._deferred_node_file_name: Optional[str] = None
+
+        self._updatable_machines_count: int = 0
+        self._machine_to_override: str = ""
+        self._missing_packages: List[Dict[str, str]] = []
 
     def _clearState(self):
         self._id_mapping = {}
@@ -615,23 +619,23 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         missing_package_metadata = self._filter_missing_package_metadata(package_metadata)
 
         # Load the user specifically exported settings
-        self._dialog.exportedSettingModel.clear()
-        self._dialog.setCurrentMachineName("")
+        dialog_closed_event = threading.Event()
+        dialog = self.makePreReadDialog(dialog_closed_event)
         if self._is_ucp:
             try:
                 self._user_settings = json.loads(archive.open("Cura/user-settings.json").read().decode("utf-8"))
                 any_extruder_stack = ExtruderManager.getInstance().getExtruderStack(0)
                 actual_global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-                self._dialog.setCurrentMachineName(actual_global_stack.id)
+                dialog.setCurrentMachineName(actual_global_stack.id)
 
                 for stack_name, settings in self._user_settings.items():
                     if stack_name == 'global':
-                        self._dialog.exportedSettingModel.addSettingsFromStack(actual_global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
+                        dialog.exportedSettingModel.addSettingsFromStack(actual_global_stack, i18n_catalog.i18nc("@label", "Global"), settings)
                     else:
                         extruder_match = re.fullmatch('extruder_([0-9]+)', stack_name)
                         if extruder_match is not None:
                             extruder_nr = int(extruder_match.group(1))
-                            self._dialog.exportedSettingModel.addSettingsFromStack(any_extruder_stack,
+                            dialog.exportedSettingModel.addSettingsFromStack(any_extruder_stack,
                                                                                    i18n_catalog.i18nc("@label",
                                                                                                       "Extruder {0}", extruder_nr + 1),
                                                                                    settings)
@@ -648,28 +652,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 return WorkspaceReader.PreReadResult.failed
 
         # Show the dialog, informing the user what is about to happen.
-        self._dialog.setMachineConflict(machine_conflict)
-        self._dialog.setIsPrinterGroup(is_printer_group)
-        self._dialog.setQualityChangesConflict(quality_changes_conflict)
-        self._dialog.setMaterialConflict(material_conflict)
-        self._dialog.setHasVisibleSettingsField(has_visible_settings_string)
-        self._dialog.setNumVisibleSettings(num_visible_settings)
-        self._dialog.setQualityName(quality_name)
-        self._dialog.setQualityType(quality_type)
-        self._dialog.setIntentName(intent_category)
-        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
-        self._dialog.setNumUserSettings(num_user_settings)
-        self._dialog.setActiveMode(active_mode)
-        self._dialog.setUpdatableMachines(updatable_machines)
-        self._dialog.setMaterialLabels(material_labels)
-        self._dialog.setMachineType(machine_type)
-        self._dialog.setExtruders(extruders)
-        self._dialog.setVariantType(variant_type_name)
-        self._dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
-        self._dialog.setMissingPackagesMetadata(missing_package_metadata)
-        self._dialog.setAllowCreatemachine(not self._is_ucp)
-        self._dialog.setIsUcp(self._is_ucp)
-        self._dialog.show()
+        dialog.setMachineConflict(machine_conflict)
+        dialog.setIsPrinterGroup(is_printer_group)
+        dialog.setQualityChangesConflict(quality_changes_conflict)
+        dialog.setMaterialConflict(material_conflict)
+        dialog.setHasVisibleSettingsField(has_visible_settings_string)
+        dialog.setNumVisibleSettings(num_visible_settings)
+        dialog.setQualityName(quality_name)
+        dialog.setQualityType(quality_type)
+        dialog.setIntentName(intent_category)
+        dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
+        dialog.setNumUserSettings(num_user_settings)
+        dialog.setActiveMode(active_mode)
+        dialog.setUpdatableMachines(updatable_machines)
+        dialog.setMaterialLabels(material_labels)
+        dialog.setMachineType(machine_type)
+        dialog.setExtruders(extruders)
+        dialog.setVariantType(variant_type_name)
+        dialog.setHasObjectsOnPlate(Application.getInstance().platformActivity)
+        dialog.setMissingPackagesMetadata(missing_package_metadata)
+        dialog.setAllowCreatemachine(not self._is_ucp)
+        dialog.setIsUcp(self._is_ucp)
 
 
         # Choosing the initially selected printer in MachineSelector
@@ -679,37 +682,40 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # The machine included in the project file exists locally already, no need to change selected printers.
             is_networked_machine = global_stack.hasNetworkedConnection()
             is_abstract_machine = parseBool(existing_global_stack.getMetaDataEntry("is_abstract_machine", False))
-            self._dialog.setMachineToOverride(global_stack.getId())
-            self._dialog.setResolveStrategy("machine", "override")
-        elif self._dialog.updatableMachinesModel.count > 0:
+            dialog.setMachineToOverride(global_stack.getId())
+            dialog.setResolveStrategy("machine", "override")
+        elif dialog.updatableMachinesModel.count > 0:
             # The machine included in the project file does not exist. There is another machine of the same type.
             # This will always default to an abstract machine first.
-            machine = self._dialog.updatableMachinesModel.getItem(self._dialog.currentMachinePositionIndex)
+            machine = dialog.updatableMachinesModel.getItem(dialog.currentMachinePositionIndex)
             machine_name = machine["name"]
             is_networked_machine = machine["isNetworked"]
             is_abstract_machine = machine["isAbstractMachine"]
-            self._dialog.setMachineToOverride(machine["id"])
-            self._dialog.setResolveStrategy("machine", "override")
+            dialog.setMachineToOverride(machine["id"])
+            dialog.setResolveStrategy("machine", "override")
         else:
             # The machine included in the project file does not exist. There are no other printers of the same type. Default to "Create New".
             machine_name = i18n_catalog.i18nc("@button", "Create new")
             is_networked_machine = False
             is_abstract_machine = False
-            self._dialog.setMachineToOverride(None)
-            self._dialog.setResolveStrategy("machine", "new")
+            dialog.setMachineToOverride(None)
+            dialog.setResolveStrategy("machine", "new")
 
-        self._dialog.setIsNetworkedMachine(is_networked_machine)
-        self._dialog.setIsAbstractMachine(is_abstract_machine)
-        self._dialog.setMachineName(machine_name)
-        self._dialog.updateCompatibleMachine()
+        dialog.setIsNetworkedMachine(is_networked_machine)
+        dialog.setIsAbstractMachine(is_abstract_machine)
+        dialog.setMachineName(machine_name)
+        dialog.updateCompatibleMachine()
 
         # Block until the dialog is closed.
-        self._dialog.waitForClose()
+        dialog_closed_event.wait()
 
-        if self._dialog.getResult() == {}:
+        if dialog.getResult() == {}:
             return WorkspaceReader.PreReadResult.cancelled
 
-        self._resolve_strategies = self._dialog.getResult()
+        self._updatable_machines_count = dialog.updatableMachinesModel.count
+        self._machine_to_override = dialog.getMachineToOverride()
+        self._missing_packages = dialog.missingPackages
+        self._resolve_strategies = dialog.getResult()
         #
         # There can be 3 resolve strategies coming from the dialog:
         #  - new:       create a new container
@@ -724,6 +730,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 continue
             self._resolve_strategies[key] = "override" if containers_found_dict[key] else "new"
         return WorkspaceReader.PreReadResult.accepted
+
+    @call_on_qt_thread
+    def makePreReadDialog(self, dialog_closed_event: threading.Event):
+        return WorkspaceDialog(dialog_closed_event)
 
     @call_on_qt_thread
     def read(self, file_name):
@@ -796,7 +806,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application.expandedCategoriesChanged.emit()  # Notify the GUI of the change
 
         # If there are no machines of the same type, create a new machine.
-        if self._resolve_strategies["machine"] != "override" or self._dialog.updatableMachinesModel.count == 0:
+        if self._resolve_strategies["machine"] != "override" or self._updatable_machines_count == 0:
             # We need to create a new machine
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
@@ -812,7 +822,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 self._container_registry.addContainer(global_stack)
         else:
             # Find the machine which will be overridden
-            global_stacks = self._container_registry.findContainerStacks(id = self._dialog.getMachineToOverride(), type = "machine")
+            global_stacks = self._container_registry.findContainerStacks(id = self._machine_to_override, type = "machine")
             if not global_stacks:
                 message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tag <filename>!",
                                                      "Project file <filename>{0}</filename> is made using profiles that are unknown to this version of UltiMaker Cura.", file_name),
@@ -1368,7 +1378,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _settingIsFromMissingPackage(self, key, value):
         # Check if the key and value pair is from the missing package
-        for package in self._dialog.missingPackages:
+        for package in self._missing_packages:
             if value.startswith("PLUGIN::"):
                 if (package['id'] + "@" + package['package_version']) in value:
                     Logger.warning(f"Ignoring {key} value {value} from missing package")
