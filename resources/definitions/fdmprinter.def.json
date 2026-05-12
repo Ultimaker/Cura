@@ -5606,10 +5606,27 @@
                         "gyroid": "Gyroid",
                         "lightning": "Lightning",
                         "honeycomb": "Honeycomb",
-                        "octagon": "Octagon"
+                        "octagon": "Octagon",
+                        "fibonacci_spiral": "Fibonacci Spiral"
                     },
                     "default_value": "zigzag",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_fibonacci_spiral_start_ratio":
+                {
+                    "label": "Fibonacci Spiral Start Ratio",
+                    "description": "Fraction of the support island perimeter to walk before the inward Fibonacci spiral begins. At 0.75 (75%) the spiral starts three-quarters of the way around the boundary. Increasing this tightens the initial contact point; reducing it loosens it. Only used when 'Support Pattern' is set to 'Fibonacci Spiral'.",
+                    "type": "float",
+                    "unit": "",
+                    "default_value": 0.75,
+                    "minimum_value": "0.0",
+                    "maximum_value": "1.0",
+                    "minimum_value_warning": "0.1",
+                    "maximum_value_warning": "0.95",
+                    "enabled": "support_pattern == 'fibonacci_spiral' and (support_enable or support_meshes_present)",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
