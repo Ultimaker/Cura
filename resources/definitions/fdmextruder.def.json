@@ -12,6 +12,80 @@
     },
     "settings":
     {
+        "command_line_settings":
+        {
+            "children":
+            {
+                "material_brand":
+                {
+                    "default_value": "",
+                    "description": "The material brand, e.g. 'UltiMaker'.",
+                    "enabled": false,
+                    "label": "Material Brand",
+                    "type": "str"
+                },
+                "material_density":
+                {
+                    "default_value": 0,
+                    "description": "The printed material density, in g/cm3.",
+                    "enabled": false,
+                    "label": "Material density",
+                    "type": "float"
+                },
+                "material_guid":
+                {
+                    "default_value": "",
+                    "description": "The unique ID of the material.",
+                    "enabled": false,
+                    "label": "Material GUID",
+                    "type": "str"
+                },
+                "material_id":
+                {
+                    "default_value": "",
+                    "description": "The ID of the material that is used internally.",
+                    "enabled": false,
+                    "label": "Cura Material ID",
+                    "type": "str"
+                },
+                "material_name":
+                {
+                    "default_value": "",
+                    "description": "The fully qualified material name, e.g. 'UltiMaker PLA White'.",
+                    "enabled": false,
+                    "label": "Material Name",
+                    "type": "str"
+                },
+                "material_spool_cost":
+                {
+                    "default_value": 0,
+                    "description": "The cost of a full spool of material.",
+                    "enabled": false,
+                    "label": "Material Spool Cost",
+                    "type": "float"
+                },
+                "material_spool_weight":
+                {
+                    "default_value": 0,
+                    "description": "The weight of a full spool of material, in grams.",
+                    "enabled": false,
+                    "label": "Material Spool Weight",
+                    "type": "float"
+                },
+                "material_type":
+                {
+                    "default_value": "",
+                    "description": "The base type of printed material, e.g. PLA or ABS.",
+                    "enabled": false,
+                    "label": "Material Type",
+                    "type": "str"
+                }
+            },
+            "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
+            "enabled": false,
+            "label": "Command Line Settings",
+            "type": "category"
+        },
         "machine_settings":
         {
             "children":

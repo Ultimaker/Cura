@@ -7,6 +7,7 @@ from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set, Tuple
 import re
+import json
 import pyArcus as Arcus  # For typing.
 from PyQt6.QtCore import QCoreApplication
 
@@ -366,25 +367,70 @@ class StartSliceJob(Job):
             result[key] = stack.getProperty(key, "value")
             Job.yieldThread()
 
-        # Material identification in addition to non-human-readable GUID
-        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
-        result["material_type"] = stack.material.getMetaDataEntry("material", "")
-        result["material_name"] = stack.material.getMetaDataEntry("name", "")
-        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+        return result
+
+    def _buildReplacementTokensGlobalStack(self, stack: ContainerStack) -> Dict[str, Any]:
+        """Creates a dictionary of tokens to replace in g-code pieces.
+
+        This indicates what should be replaced in the start and end g-codes.
+        :param stack: The stack to get the settings from to replace the tokens with.
+        :return: A dictionary of replacement tokens to the values they should be replaced with.
+        """
+
+        result = self._buildReplacementTokens(stack)
 
         result["quality_name"] = stack.quality.getMetaDataEntry("name", "")
         result["quality_changes_name"] = stack.qualityChanges.getMetaDataEntry("name")
 
         # Renamed settings.
         result["print_bed_temperature"] = result["material_bed_temperature"]
-        result["print_temperature"] = result["material_print_temperature"]
-        result["travel_speed"] = result["speed_travel"]
 
         #Some extra settings.
         result["time"] = time.strftime("%H:%M:%S")
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
-        result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
+        result["jobname"] = f"{CuraApplication.getInstance().getPrintInformation().jobName}"
+
+        # If adding or changing a setting here, please update the associated wiki page
+        # https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code
+
+        return result
+
+    def _buildReplacementTokensExtruderStack(self, stack: ContainerStack, material_preference_values: Dict[str, Any]) -> Dict[str, Any]:
+        """Creates a dictionary of tokens to replace in g-code pieces.
+
+        This indicates what should be replaced in the start and end g-codes.
+        :param stack: The stack to get the settings from to replace the tokens with.
+        :return: A dictionary of replacement tokens to the values they should be replaced with.
+        """
+
+        result = self._buildReplacementTokens(stack)
+
+        # Material identification in addition to non-human-readable GUID
+        material_guid = stack.material.getMetaDataEntry("GUID", "")
+        result["material_guid"] = material_guid
+        result["material_id"] = stack.material.getMetaDataEntry("base_file", "")
+        result["material_type"] = stack.material.getMetaDataEntry("material", "")
+        result["material_name"] = stack.material.getMetaDataEntry("name", "")
+        result["material_brand"] = stack.material.getMetaDataEntry("brand", "")
+        result["material_density"] = stack.getMetaDataEntry("properties", {}).get("density", 0)
+
+        material_spool_weight = stack.getMetaDataEntry("properties", {}).get("weight", 0)
+        material_spool_cost = 0.0
+        if material_guid in material_preference_values:
+            material_values = material_preference_values[material_guid]
+            if material_values:
+                if "spool_weight" in material_values:
+                    material_spool_weight = material_values["spool_weight"]
+                if "spool_cost" in material_values:
+                    material_spool_cost = material_values["spool_cost"]
+
+        result["material_spool_weight"] = material_spool_weight
+        result["material_spool_cost"] = material_spool_cost
+
+        # Renamed settings.
+        result["print_temperature"] = result["material_print_temperature"]
+        result["travel_speed"] = result["speed_travel"]
 
         # If adding or changing a setting here, please update the associated wiki page
         # https://github.com/Ultimaker/Cura/wiki/Start-End-G%E2%80%90Code
@@ -396,12 +442,19 @@ class StartSliceJob(Job):
 
         # NB: keys must be strings for the string formatter
         self._all_extruders_settings = {
-            "-1": self._buildReplacementTokens(global_stack)
+            "-1": self._buildReplacementTokensGlobalStack(global_stack)
         }
         QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
+
+        try:
+            material_preference_values = json.loads(CuraApplication.getInstance().getPreferences().getValue("cura/material_settings"))
+        except json.JSONDecodeError:
+            Logger.warning("Material preference values are corrupt. Will revert to defaults!")
+            material_preference_values = {}
+
         for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
-            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokensExtruderStack(extruder_stack, material_preference_values)
             QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
@@ -418,18 +471,21 @@ class StartSliceJob(Job):
         extruder_nr = stack.getProperty("extruder_nr", "value")
         settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
-        # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
-        settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
-
         global_definition = cast(ContainerInterface, cast(ContainerStack, stack.getNextStack()).getBottom())
         own_definition = cast(ContainerInterface, stack.getBottom())
 
         for key, value in settings.items():
             # Do not send settings that are not settable_per_extruder.
             # Since these can only be set in definition files, we only have to ask there.
-            if not global_definition.getProperty(key, "settable_per_extruder") and \
-                    not own_definition.getProperty(key, "settable_per_extruder"):
-                    continue
+            # Settings that have no definition are those added manually, so include them.
+
+            settable_per_extruder_global = global_definition.getProperty(key, "settable_per_extruder")
+            settable_per_extruder_own = own_definition.getProperty(key, "settable_per_extruder")
+
+            if (settable_per_extruder_global is not None or settable_per_extruder_own is not None) and not settable_per_extruder_global and \
+                not settable_per_extruder_own:
+                continue
+
             setting = message.getMessage("settings").addRepeatedMessage("settings")
             setting.name = key
             setting.value = str(value).encode("utf-8")
