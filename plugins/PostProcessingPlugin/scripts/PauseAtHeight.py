@@ -919,7 +919,7 @@ class PauseAtHeight(Script):
                     # Change the extrusion mode as required
                     extrusion_mode_string = "absolute"
                     extrusion_mode_numeric = 82
-                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    relative_extrusion = self.global_stack.getProperty("relative_extrusion", "value")
                     if relative_extrusion:
                         extrusion_mode_string = "relative"
                         extrusion_mode_numeric = 83
@@ -990,7 +990,7 @@ class PauseAtHeight(Script):
                     extrusion_mode_string = "absolute"
                     extrusion_mode_numeric = 82
 
-                    relative_extrusion = Application.getInstance().getGlobalContainerStack().getProperty("relative_extrusion", "value")
+                    relative_extrusion = self.global_stack.getProperty("relative_extrusion", "value")
                     if relative_extrusion:
                         extrusion_mode_string = "relative"
                         extrusion_mode_numeric = 83
@@ -1010,9 +1010,7 @@ class PauseAtHeight(Script):
                         else:
                             self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ; Reset extruder location ~ unretracted")
                             self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
-
-                    elif self.redo_layer and self.reason_for_pause == "reason_other":
-                        self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
+                            
                 # Add the end line
                 self.pause_lines_list.append(f";{'-' * 26}; End of the Pause code")
 
