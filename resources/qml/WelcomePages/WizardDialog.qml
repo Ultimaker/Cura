@@ -46,4 +46,12 @@ Window
         target: model
         function onAllFinished() { dialog.hide() }
     }
+
+    onVisibleChanged:
+    {
+        if(!visible)
+        {
+            destroy();
+        }
+    }
 }
