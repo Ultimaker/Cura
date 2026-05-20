@@ -199,7 +199,7 @@ Item
         anchors.bottom: parent.bottom
 
         text: catalog.i18nc("@text", "Create a free UltiMaker Account")
-        onClicked:  Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up?utm_source=cura&utm_medium=software&utm_campaign=onboarding-signup")
+        onClicked: Qt.openUrlExternally("https://ultimaker.com/app/ultimaker-cura-account-sign-up")
     }
 
     // Sign in Button
