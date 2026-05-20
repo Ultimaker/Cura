@@ -81,6 +81,7 @@ class WorkspaceDialog(QObject):
         if three_mf_reader_path:
             path = os.path.join(three_mf_reader_path, "WorkspaceDialog.qml")
             self._view = CuraApplication.getInstance().createQmlComponent(path, initial_properties = {"manager": self})
+            self._view.setTransientParent(CuraApplication.getInstance().getMainWindow())
             self._view.show()
 
     machineConflictChanged = pyqtSignal()
