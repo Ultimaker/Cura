@@ -53,7 +53,8 @@ def collectAllIntents():
     result = []
     for root, directories, filenames in os.walk(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "intent"))):
         for filename in filenames:
-            result.append(os.path.join(root, filename))
+            if filename != "intents.json":
+                result.append(os.path.join(root, filename))
     return result
 
 all_definition_ids = collecAllDefinitionIds()

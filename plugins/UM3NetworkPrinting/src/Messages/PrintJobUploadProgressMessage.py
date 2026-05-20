@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 from UM import i18nCatalog
 from UM.Message import Message
@@ -18,6 +18,12 @@ class PrintJobUploadProgressMessage(Message):
             lifetime = 0,
             dismissable = False,
             use_inactivity_timer = False
+        )
+        self.addAction(
+            "abort_upload",
+            I18N_CATALOG.i18nc("@action:button", "Abort"),
+            "",
+            I18N_CATALOG.i18nc("@action:label", "Abort upload"),
         )
 
     def show(self):

@@ -15,14 +15,20 @@ Designed in January 2023 by GregValiant (Greg Foresi)
         01/05/24  (GV) Revised the regex replacements.
         12/11/24  (GV) Added 'off_fan_speed' for the idle nozzle layer cooling fan.  It does not have to go to 0%.
         03/22/25  (GV) Added 'Chamber Cooling Fan / Auxiliary Fan' control.
+        12/26/25  (GV) Added 'Enable Script' setting so it can be left installed, but not run.
+        12/26/25  (GV) Added 'Jump Start' option to get the fan spinning just before it is actually called.
 """
 
 from ..Script import Script
 from UM.Application import Application
 import re
+from UM.Logger import Logger
 
 class AddCoolingProfile(Script):
 
+    jump_speed_marlin = 179 # ~70% of 255
+    jump_speed_reprap = 0.70 # used if fan_scale_0_to_1 is true
+    
     def getSettingDataString(self):
         return """{
             "name": "Advanced Cooling Fan Control",
@@ -31,6 +37,14 @@ class AddCoolingProfile(Script):
             "version": 2,
             "settings":
             {
+                "enable_cooling_profile":
+                {
+                    "label": "Enable Advanced Cooling",
+                    "description": "Enable the script so it will run.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": true
+                },
                 "fan_layer_or_feature":
                 {
                     "label": "Cooling Control by:",
@@ -39,17 +53,16 @@ class AddCoolingProfile(Script):
                     "options": {
                         "by_layer": "Layer Numbers",
                         "by_feature": "Feature Types"},
-                    "default_value": "by_layer"
+                    "default_value": "by_layer",
+                    "enabled": "enable_cooling_profile"
                 },
                 "delete_existing_m106":
                 {
                     "label": "Remove M106 lines prior to inserting new.",
                     "description": "If you have 2 or more instances of 'Advanced Cooling Fan Control' running (to cool a portion of a print differently), then you must uncheck this box or the followup instances will remove all the lines inserted by the first instance.  Pay attention to the Start and Stop layers.  Regardless of this setting:  The script always removes M106 lines starting with the lowest layer number (when 'By Layer') or the starting layer number (when 'By Feature').  If you want to keep the M106 lines that Cura inserted up to the point where this post-processor will start making insertions, then un-check the box.",
                     "type": "bool",
-                    "enabled": true,
-                    "value": true,
-                    "default_value": true,
-                    "read_only": true
+                    "enabled": "enable_cooling_profile",
+                    "default_value": true
                 },
                 "feature_fan_start_layer":
                 {
@@ -59,7 +72,7 @@ class AddCoolingProfile(Script):
                     "default_value": 5,
                     "minimum_value": 1,
                     "unit": "Lay#   ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_end_layer":
                 {
@@ -69,7 +82,7 @@ class AddCoolingProfile(Script):
                     "default_value": -1,
                     "minimum_value": -1,
                     "unit": "Lay#   ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "layer_fan_1":
                 {
@@ -78,7 +91,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "5/30",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_2":
                 {
@@ -87,7 +100,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_3":
                 {
@@ -96,7 +109,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_4":
                 {
@@ -105,7 +118,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_5":
                 {
@@ -114,7 +127,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_6":
                 {
@@ -123,7 +136,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_7":
                 {
@@ -132,7 +145,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "layer_fan_8":
                 {
@@ -141,7 +154,7 @@ class AddCoolingProfile(Script):
                     "type": "str",
                     "default_value": "",
                     "unit": "L#/%    ",
-                    "enabled": "fan_layer_or_feature == 'by_layer'"
+                    "enabled": "fan_layer_or_feature == 'by_layer' and enable_cooling_profile"
                 },
                 "feature_fan_skirt":
                 {
@@ -152,7 +165,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_wall_inner":
                 {
@@ -163,7 +176,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_wall_outer":
                 {
@@ -174,7 +187,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_fill":
                 {
@@ -185,7 +198,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_skin":
                 {
@@ -196,7 +209,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_support":
                 {
@@ -207,7 +220,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_support_interface":
                 {
@@ -218,7 +231,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_prime_tower":
                 {
@@ -229,7 +242,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_bridge":
                 {
@@ -240,14 +253,14 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_layer_or_feature == 'by_feature'"
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 },
                 "feature_fan_combing":
                 {
                     "label": "Fan 'OFF' during Combing:",
                     "description": "When checked will set the fan to 0% for combing moves over 5 lines long in the gcode. When un-checked the fan speed during combing is whatever the previous speed is set to.",
                     "type": "bool",
-                    "enabled": "fan_layer_or_feature == 'by_feature'",
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile",
                     "default_value": true
                 },
                 "feature_fan_feature_final":
@@ -259,7 +272,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "(int(feature_fan_end_layer) != -1) and (fan_layer_or_feature == 'by_feature')"
+                    "enabled": "(int(feature_fan_end_layer) != -1) and (fan_layer_or_feature == 'by_feature') and enable_cooling_profile"
                 },
                 "fan_enable_raft":
                 {
@@ -267,7 +280,7 @@ class AddCoolingProfile(Script):
                     "description": "Enable the fan for the raft layers.  When enabled the Raft Fan Speed will continue until another Layer or Feature setting over-rides it.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": true
+                    "enabled": "enable_cooling_profile"
                 },
                 "fan_raft_percent":
                 {
@@ -278,7 +291,15 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "fan_enable_raft"
+                    "enabled": "fan_enable_raft and enable_cooling_profile"
+                },
+                "enable_off_fan_speed_enable":
+                {
+                    "label": "Hidden setting",
+                    "description": "For dual extruder printers, this enables 'enable_off_fan_speed'.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false
                 },
                 "enable_off_fan_speed":
                 {
@@ -286,7 +307,7 @@ class AddCoolingProfile(Script):
                     "description": "For machines with independent layer cooling fans.  Leaving a fan running while the other nozzle is printing can help with oozing.  You can pick the speed % for the idle nozzle layer cooling fan to hold at.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enable_off_fan_speed_enable and self.extruder_count > 1"
+                    "enabled": "enable_off_fan_speed_enable and enable_cooling_profile"
                 },
                 "off_fan_speed":
                 {
@@ -297,15 +318,7 @@ class AddCoolingProfile(Script):
                     "minimum_value": 0,
                     "maximum_value": 100,
                     "unit": "%    ",
-                    "enabled": "enable_off_fan_speed_enable and enable_off_fan_speed and self.extruder_count > 1"
-                },
-                "enable_off_fan_speed_enable":
-                {
-                    "label": "Hidden setting",
-                    "description": "For dual extruder printers, this enables 'enable_off_fan_speed'.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": false
+                    "enabled": "enable_off_fan_speed_enable and enable_off_fan_speed and enable_cooling_profile"
                 },
                 "bv_fan_speed_control_enable":
                 {
@@ -313,7 +326,7 @@ class AddCoolingProfile(Script):
                     "description": "Controls the 'Build Volume Fan' or an 'Auxiliary Fan' on printers with that hardware.  Provides: 'On' layer, 'Off' layer, and PWM speed control of a secondary fan.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "enable_bv_fan"
+                    "enabled": "enable_bv_fan and enable_cooling_profile"
                 },
                 "bv_fan_nr":
                 {
@@ -323,7 +336,7 @@ class AddCoolingProfile(Script):
                     "unit": "#    ",
                     "default_value": 0,
                     "minimum_value": 0,
-                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
+                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable and enable_cooling_profile"
                 },
                 "bv_fan_speed":
                 {
@@ -334,7 +347,7 @@ class AddCoolingProfile(Script):
                     "default_value": 50,
                     "maximum_value": 100,
                     "minimum_value": 0,
-                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
+                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable and enable_cooling_profile"
                 },
                 "bv_fan_start_layer":
                 {
@@ -344,7 +357,7 @@ class AddCoolingProfile(Script):
                     "unit": "Layer#    ",
                     "default_value": 1,
                     "minimum_value": 1,
-                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
+                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable and enable_cooling_profile"
                 },
                 "bv_fan_end_layer":
                 {
@@ -354,7 +367,7 @@ class AddCoolingProfile(Script):
                     "unit": "Layer#    ",
                     "default_value": -1,
                     "minimum_value": -1,
-                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable"
+                    "enabled": "enable_bv_fan and bv_fan_speed_control_enable and enable_cooling_profile"
                 },
                 "enable_bv_fan":
                 {
@@ -363,6 +376,14 @@ class AddCoolingProfile(Script):
                     "type": "bool",
                     "default_value": false,
                     "enabled": false
+                },
+                "jump_start_enable":
+                {
+                    "label": "Enable Jump Starting",
+                    "description": "Some fans take a bit of time to get up to speed.  This option will enter a 75% fan speed line 5 lines before the M106 fan setting line.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "fan_layer_or_feature == 'by_feature' and enable_cooling_profile"
                 }
             }
         }"""
@@ -404,12 +425,17 @@ class AddCoolingProfile(Script):
                 feature_fan_combing:  Whether or not to shut the cooling fan off during travel moves.
                 the_start_layer:  When in By Feature this is the user selected start of the fan changes.
                 the_end_layer:  When in By Feature this is the user selected end of the fan changes
-                the_end_is_enabled:  When in By Feature, if the fan control ends before the print ends, then this will enable the Final Fan Speed to carry through to the print end.                
-                
+                the_end_is_enabled:  When in By Feature, if the fan control ends before the print ends, then this will enable the Final Fan Speed to carry through to the print end.
+
         """
         # Exit if the gcode has been previously post-processed.
         if ";POSTPROCESSED" in data[0]:
             return data
+
+        # Return if the script is not enabled.
+        if not bool(self.getSettingValueByKey("enable_cooling_profile")):
+            return data
+
         # Initialize variables that are buried in if statements.
         t0_fan = " P0"; t1_fan = " P0"; t2_fan = " P0"; t3_fan = " P0"; is_multi_extr_print = True
 
@@ -421,9 +447,8 @@ class AddCoolingProfile(Script):
         except AttributeError:
             pass
 
-        bed_adhesion = (self.extruder_list[0].getProperty("adhesion_type", "value"))
+        bed_adhesion = self.extruder_list[0].getProperty("adhesion_type", "value")
         print_sequence = str(self.global_stack.getProperty("print_sequence", "value"))
-
         # Assign the fan numbers to the tools
         if self.extruder_count == 1:
             is_multi_fan = False
@@ -454,6 +479,8 @@ class AddCoolingProfile(Script):
         if  by_layer_or_feature == "by_layer":
             # By layer doesn't do any feature search so there is no need to look for combing moves
             feature_fan_combing = False
+            # Don't need to jump start fans when By Layer
+            self._jump_start = False
             fan_list[0] = self.getSettingValueByKey("layer_fan_1")
             fan_list[2] = self.getSettingValueByKey("layer_fan_2")
             fan_list[4] = self.getSettingValueByKey("layer_fan_3")
@@ -470,6 +497,7 @@ class AddCoolingProfile(Script):
 
         # Assign the variable values if "By Feature"
         elif by_layer_or_feature == "by_feature":
+            self._jump_start = self.getSettingValueByKey("jump_start_enable")
             the_start_layer = self.getSettingValueByKey("feature_fan_start_layer") - 1
             the_end_layer = self.getSettingValueByKey("feature_fan_end_layer")
             try:
@@ -693,6 +721,8 @@ class AddCoolingProfile(Script):
                         if layer_number == str(fan_list[num]):
                             layer = layer.replace(fan_lines[0],fan_lines[0] + "\n" + fan_list[num + 1] + str(t0_fan))
                             single_fan_data[l_index] = layer
+        if self._jump_start:
+            single_fan_data = self._jump_start_layer_cooling_fan(single_fan_data, layer_0_index)
         return single_fan_data
 
     # Multi-Fan "By Layer"
@@ -761,6 +791,8 @@ class AddCoolingProfile(Script):
         # Insure the fans get shut off if 'off_fan_speed' was enabled
         if self.extruder_count > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
+        if self._jump_start:
+            multi_fan_data = self._jump_start_layer_cooling_fan(multi_fan_data, layer_0_index)
         return multi_fan_data
 
     # Single fan by feature
@@ -788,12 +820,14 @@ class AddCoolingProfile(Script):
                         if feature_fan_combing == True:
                             modified_data += "M106 S0" + t0_fan + "\n"
                 modified_data += line + "\n"
-                
+
                 # If an End Layer is defined and is less than the last layer then insert the Final Speed
                 if line == ";LAYER:" + str(the_end_layer) and the_end_is_enabled == True:
                     modified_data += feature_speed_list[len(feature_speed_list) - 1] + t0_fan + "\n"
             if modified_data.endswith("\n"): modified_data = modified_data[0: - 1]
             single_fan_data[l_index] = modified_data
+        if self._jump_start:
+            single_fan_data = self._jump_start_layer_cooling_fan(single_fan_data, layer_0_index)
         return single_fan_data
 
     # Multi-fan by feature
@@ -892,6 +926,8 @@ class AddCoolingProfile(Script):
         # Insure the fans get shut off if 'off_fan_speed' was enabled
         if self.extruder_count > 1 and self.getSettingValueByKey("enable_off_fan_speed"):
             multi_fan_data[-1] += "M106 S0 P1\nM106 S0 P0\n"
+        if self._jump_start:
+            multi_fan_data = self._jump_start_layer_cooling_fan(multi_fan_data, layer_0_index)
         return multi_fan_data
 
     # Try to catch layer input errors, set the minimum speed to 12%, and put the strings together
@@ -1008,3 +1044,32 @@ class AddCoolingProfile(Script):
                     bv_data[index] = "\n".join(lines)
                     break
         return bv_data
+
+    def _jump_start_layer_cooling_fan(self, data: str, layer_0_index: int):
+        """
+        If the fan is off - run the speed up to ~70% prior to setting the actual speed to insure the fan starts spinning.
+        """
+        fan_mode = not bool(self.extruder_list[0].getProperty("machine_scale_fan_speed_zero_to_one", "value"))
+        fan_is_on = False
+        for lay_index, layer in enumerate(data):
+            if lay_index < layer_0_index:
+                continue
+            lines = layer.split("\n")
+            for index, line in enumerate(lines):
+                if line.startswith("M106 S0") or line.startswith("M107"):
+                    fan_is_on = False
+                elif line.startswith("M106 S") and float(self.getValue(line, 'S')) != 0:
+                    if not fan_is_on:
+                        # Insert a jump start command a few lines before the first non-zero fan speed,
+                        # without modifying existing comment/header lines in place.
+                        if index >= 5:
+                            insert_index = index - 5
+                        else:
+                            # Keep any initial header/comment line (e.g. ";LAYER:5") intact by
+                            # inserting after it when possible.
+                            insert_index = 1 if len(lines) > 1 else 0
+                        jump_start_cmd = f"M106 S{self.jump_speed_marlin} ; Jump start" if fan_mode else "M106 S{self.jump_speed_reprap} ; Jump start"
+                        lines.insert(insert_index, jump_start_cmd)
+                        fan_is_on = True
+            data[lay_index] = "\n".join(lines)
+        return data

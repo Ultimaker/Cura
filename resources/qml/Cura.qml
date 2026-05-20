@@ -71,30 +71,33 @@ UM.MainWindow
 
     }
 
-    Rectangle
+    Component
     {
-        id: greyOutBackground
-        anchors.fill: parent
-        visible: welcomeDialogItem.visible
-        color: UM.Theme.getColor("window_disabled_background")
-        opacity: 0.7
-        z: stageMenu.z + 1
+        id: welcomeDialogComponent
 
-        MouseArea
+        WelcomeDialogItem { model: WelcomePagesModel{} }
+    }
+
+    Component
+    {
+        id: whatsNewModalComponent
+
+        WelcomeDialogItem
         {
-            // Prevent all mouse events from passing through.
-            enabled: parent.visible
-            anchors.fill: parent
-            hoverEnabled: true
-            acceptedButtons: Qt.AllButtons
+            model: WhatsNewPagesModel{}
+            progressBarVisible: false
         }
     }
 
-    WelcomeDialogItem
+    Component
     {
-        id: welcomeDialogItem
-        visible: false
-        z: greyOutBackground.z + 1
+        id: addPrinterModalModalComponent
+
+        WelcomeDialogItem
+        {
+            model: AddPrinterPagesModel{}
+            progressBarVisible: false
+        }
     }
 
     Component.onCompleted:
@@ -112,9 +115,7 @@ UM.MainWindow
             Cura.Actions.parent = backgroundItem
 
             // Reuse the welcome dialog item to show "Add a printer" only.
-            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
-            welcomeDialogItem.progressBarVisible = false
-            welcomeDialogItem.visible = true
+            addPrinterModalModalComponent.createObject(base);
         }
     }
 
@@ -137,28 +138,21 @@ UM.MainWindow
 
             if (CuraApplication.shouldShowWelcomeDialog())
             {
-                welcomeDialogItem.visible = true
-            }
-            else
-            {
-                welcomeDialogItem.visible = false
-            }
-
-            // Reuse the welcome dialog item to show "What's New" only.
-            if (CuraApplication.shouldShowWhatsNewDialog())
-            {
-                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
-                welcomeDialogItem.progressBarVisible = false
-                welcomeDialogItem.visible = true
-            }
-
-            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
-            // machine and the user is logged in.
-            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
-            {
-                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
-                welcomeDialogItem.progressBarVisible = false
-                welcomeDialogItem.visible = true
+                if (CuraApplication.shouldShowWhatsNewDialog())
+                {
+                    // Reuse the welcome dialog item to show "What's New" only.
+                    whatsNewModalComponent.createObject(base);
+                }
+                else if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
+                {
+                    // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+                    // machine and the user is logged in.
+                    addPrinterModalModalComponent.createObject(base);
+                }
+                else
+                {
+                    welcomeDialogComponent.createObject(base);
+                }
             }
         }
     }
@@ -253,15 +247,14 @@ UM.MainWindow
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.installPackageViaDragAndDrop(filename);
-                                packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
-                                packageInstallDialog.open();
+                                packageInstallDialogComponent.createObject(base).open();
                             }
                             else
                             {
                                 nonPackages.push(filename);
                             }
                         }
-                        openDialog.handleOpenFileUrls(nonPackages);
+                        base.handleOpenFileUrls(nonPackages);
                     }
                 }
             }
@@ -459,10 +452,7 @@ UM.MainWindow
     Component
     {
         id: preferencesDialogComponent
-        Cura.PreferencesDialog
-        {
-            selfDestroy: true
-        }
+        Cura.PreferencesDialog { selfDestroy: true }
     }
 
     function showPreferencesDialog()
@@ -489,7 +479,7 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         function onTriggered()
         {
-            createNewQualityDialog.visible = true;
+            createNewQualityDialogComponent.createObject(base).show()
         }
     }
 
@@ -562,20 +552,25 @@ UM.MainWindow
         }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: exitConfirmationDialog
-        title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
-        text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
-        standardButtons: Dialog.Yes | Dialog.No
-        onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
-        onRejected: CuraApplication.callConfirmExitDialogCallback(false)
-        onClosed:
+        id: exitConfirmationDialogComponent
+
+        Cura.MessageDialog
         {
-            if (!visible)
+            id: exitConfirmationDialog
+            title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
+            standardButtons: Dialog.Yes | Dialog.No
+            onAccepted: CuraApplication.callConfirmExitDialogCallback(true)
+            onRejected: CuraApplication.callConfirmExitDialogCallback(false)
+            selfDestroy: true
+            onClosed:
             {
-                // reset the text to default because other modules may change the message text.
-                text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
+                if (!visible)
+                {
+                    // reset the text to default because other modules may change the message text.
+                    text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
+                }
             }
         }
     }
@@ -585,6 +580,7 @@ UM.MainWindow
         target: CuraApplication
         function onShowConfirmExitDialog(message)
         {
+            var exitConfirmationDialog = exitConfirmationDialogComponent.createObject(base);
             exitConfirmationDialog.text = message;
             exitConfirmationDialog.open();
         }
@@ -608,152 +604,88 @@ UM.MainWindow
         function onTriggered() { base.exitFullscreen() }
     }
 
-    FileDialog
+    Component
     {
-        id: openDialog;
+        id: openDialogComponent
 
-        //: File open dialog title
-        title: catalog.i18nc("@title:window","Open file(s)")
-        modality: Qt.WindowModal
-        fileMode: FileDialog.FileMode.OpenFiles
-        nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
-        onAccepted:
+        FileDialog
         {
-            // Because several implementations of the file dialog only update the folder
-            // when it is explicitly set.
-            var f = currentFolder;
-            currentFolder = f;
-
-            CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
-
-            handleOpenFileUrls(selectedFiles);
-        }
-
-        // Yeah... I know... it is a mess to put all those things here.
-        // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
-        // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
-        // and view here may require more effort but make things more difficult to understand.
-        function handleOpenFileUrls(fileUrlList)
-        {
-            // look for valid project files
-            var projectFileUrlList = [];
-            var hasGcode = false;
-            var nonGcodeFileList = [];
-            for (var i in fileUrlList)
+            //: File open dialog title
+            title: catalog.i18nc("@title:window", "Open file(s)")
+            modality: Qt.WindowModal
+            fileMode: FileDialog.FileMode.OpenFiles
+            nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
+            currentFolder: CuraApplication.getDefaultPath("dialog_load_path")
+            onAccepted:
             {
-                var endsWithG = /\.g$/;
-                var endsWithGcode = /\.gcode$/;
-                if (endsWithG.test(fileUrlList[i]) || endsWithGcode.test(fileUrlList[i]))
-                {
-                    continue;
-                }
-                else if (CuraApplication.checkIsValidProjectFile(fileUrlList[i]))
-                {
-                    projectFileUrlList.push(fileUrlList[i]);
-                }
-                nonGcodeFileList.push(fileUrlList[i]);
-            }
-            hasGcode = nonGcodeFileList.length < fileUrlList.length;
+                // Because several implementations of the file dialog only update the folder
+                // when it is explicitly set.
+                var f = currentFolder;
+                currentFolder = f;
 
-            // show a warning if selected multiple files together with Gcode
-            var hasProjectFile = projectFileUrlList.length > 0;
-            var selectedMultipleFiles = fileUrlList.length > 1;
-            if (selectedMultipleFiles && hasGcode)
-            {
-                infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
-                infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
-                infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
-                infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
-                infoMultipleFilesWithGcodeDialog.open();
-            }
-            else
-            {
-                handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList);
-            }
-        }
+                CuraApplication.setDefaultPath("dialog_load_path", currentFolder);
 
-        function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
-        {
-            // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
-            openFilesIncludingProjectsDialog.addToRecent = true;
-
-            // we only allow opening one project file
-            if (selectedMultipleFiles && hasProjectFile)
-            {
-                openFilesIncludingProjectsDialog.fileUrls = fileUrlList.slice();
-                openFilesIncludingProjectsDialog.show();
-                return;
-            }
-
-            if (hasProjectFile)
-            {
-                var projectFile = projectFileUrlList[0]
-                // check preference
-                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-                if (choice == "open_as_project")
-                {
-                    openFilesIncludingProjectsDialog.loadProjectFile(projectFile);
-                }
-                else if (choice == "open_as_model")
-                {
-                    openFilesIncludingProjectsDialog.loadModelFiles([projectFile].slice());
-                }
-                else    // always ask
-                {
-                    // ask whether to open as project or as models
-                    askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(projectFile);
-                    askOpenAsProjectOrModelsDialog.fileUrl = projectFile;
-                    askOpenAsProjectOrModelsDialog.addToRecent = true;
-                    askOpenAsProjectOrModelsDialog.show();
-                }
-            }
-            else
-            {
-                openFilesIncludingProjectsDialog.loadModelFiles(fileUrlList.slice());
+                base.handleOpenFileUrls(selectedFiles);
             }
         }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: packageInstallDialog
-        title: catalog.i18nc("@window:title", "Install Package")
-        standardButtons: Dialog.Ok
+        id: packageInstallDialogComponent
+
+        Cura.MessageDialog
+        {
+            title: catalog.i18nc("@window:title", "Install Package")
+            text: catalog.i18nc("@label", "This package will be installed after restarting.")
+            standardButtons: Dialog.Ok
+            selfDestroy: true
+        }
     }
 
-    Cura.MessageDialog
+    Component
     {
-        id: infoMultipleFilesWithGcodeDialog
-        title: catalog.i18nc("@title:window", "Open File(s)")
-        standardButtons: Dialog.Ok
-        text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+        id: infoMultipleFilesWithGcodeDialogComponent
 
-        property var selectedMultipleFiles
-        property var hasProjectFile
-        property var fileUrls
-        property var projectFileUrlList
-
-        onAccepted:
+        Cura.MessageDialog
         {
-            openDialog.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            title: catalog.i18nc("@title:window", "Open File(s)")
+            standardButtons: Dialog.Ok
+            text: catalog.i18nc("@text:window", "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one.")
+            selfDestroy: true
+
+            property var selectedMultipleFiles
+            property var hasProjectFile
+            property var fileUrls
+            property var projectFileUrlList
+
+            onAccepted:
+            {
+                base.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrls, projectFileUrlList);
+            }
         }
     }
 
     Connections
     {
         target: Cura.Actions.open
-        function onTriggered() { openDialog.open() }
+        function onTriggered() { openDialogComponent.createObject(base).open() }
     }
 
-    OpenFilesIncludingProjectsDialog
+    Component
     {
-        id: openFilesIncludingProjectsDialog
+        id: openFilesIncludingProjectsDialogComponent
+        OpenFilesIncludingProjectsDialog
+        {
+            selfDestroy: true
+            onAccepted: base.loadModelFiles(fileUrls, addToRecent)
+        }
     }
 
-    AskOpenAsProjectOrModelsDialog
+    Component
     {
-        id: askOpenAsProjectOrModelsDialog
+        id: askOpenAsProjectOrModelsDialogComponent
+        AskOpenAsProjectOrModelsDialog { selfDestroy: true }
     }
 
     Connections
@@ -761,10 +693,115 @@ UM.MainWindow
         target: CuraApplication
         function onOpenProjectFile(project_file, add_to_recent_files)
         {
-            askOpenAsProjectOrModelsDialog.is_ucp = CuraApplication.isProjectUcp(project_file);
-            askOpenAsProjectOrModelsDialog.fileUrl = project_file;
-            askOpenAsProjectOrModelsDialog.addToRecent = add_to_recent_files;
+            var askOpenAsProjectOrModelsDialog =
+                askOpenAsProjectOrModelsDialogComponent.createObject(base,
+                    {"is_ucp": CuraApplication.isProjectUcp(project_file),
+                              "fileUrl": project_file,
+                              "addToRecent": add_to_recent_files});
             askOpenAsProjectOrModelsDialog.show();
+        }
+    }
+
+    function loadProjectFile(projectFile, addToRecent)
+    {
+        UM.WorkspaceFileHandler.readLocalFile(projectFile, addToRecent);
+    }
+
+    function loadModelFiles(fileUrls, addToRecent)
+    {
+        for (var i in fileUrls)
+        {
+            CuraApplication.readLocalFile(fileUrls[i], "open_as_model", addToRecent);
+        }
+    }
+
+    // Yeah... I know... it is a mess to put all those things here.
+    // There are lots of user interactions in this part of the logic, such as showing a warning dialog here and there,
+    // etc. This means it will come back and forth from time to time between QML and Python. So, separating the logic
+    // and view here may require more effort but make things more difficult to understand.
+    function handleOpenFileUrls(fileUrlList)
+    {
+        // look for valid project files
+        var projectFileUrlList = [];
+        var hasGcode = false;
+        var nonGcodeFileList = [];
+        for (var i in fileUrlList)
+        {
+            var endsWithG = /\.g$/;
+            var endsWithGcode = /\.gcode$/;
+            if (endsWithG.test(fileUrlList[i]) || endsWithGcode.test(fileUrlList[i]))
+            {
+                continue;
+            }
+            else if (CuraApplication.checkIsValidProjectFile(fileUrlList[i]))
+            {
+                projectFileUrlList.push(fileUrlList[i]);
+            }
+            nonGcodeFileList.push(fileUrlList[i]);
+        }
+        hasGcode = nonGcodeFileList.length < fileUrlList.length;
+
+        // show a warning if selected multiple files together with Gcode
+        var hasProjectFile = projectFileUrlList.length > 0;
+        var selectedMultipleFiles = fileUrlList.length > 1;
+        if (selectedMultipleFiles && hasGcode)
+        {
+            var infoMultipleFilesWithGcodeDialog = infoMultipleFilesWithGcodeDialogComponent.createObject(base)
+            infoMultipleFilesWithGcodeDialog.selectedMultipleFiles = selectedMultipleFiles;
+            infoMultipleFilesWithGcodeDialog.hasProjectFile = hasProjectFile;
+            infoMultipleFilesWithGcodeDialog.fileUrls = nonGcodeFileList.slice();
+            infoMultipleFilesWithGcodeDialog.projectFileUrlList = projectFileUrlList.slice();
+            infoMultipleFilesWithGcodeDialog.open();
+        }
+        else
+        {
+            base.handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList);
+        }
+    }
+
+    function handleOpenFiles(selectedMultipleFiles, hasProjectFile, fileUrlList, projectFileUrlList)
+    {
+        // Make sure the files opened through the openFilesIncludingProjectDialog are added to the recent files list
+        const addToRecent = true;
+
+        if (hasProjectFile)
+        {
+            if (selectedMultipleFiles)
+            {
+                var openFilesIncludingProjectsDialog = openFilesIncludingProjectsDialogComponent.createObject(base,
+                    {"fileUrls": fileUrlList.slice(), "addToRecent": addToRecent});
+                openFilesIncludingProjectsDialog.show();
+            }
+            else
+            {
+                var projectFile = projectFileUrlList[0];
+
+                // check preference
+                var choice = UM.Preferences.getValue("cura/choice_on_open_project");
+                if (choice == "open_as_project")
+                {
+                    loadProjectFile(projectFile, addToRecent);
+                }
+                else if (choice == "open_as_model")
+                {
+                    loadModelFiles([projectFile].slice(), addToRecent);
+                }
+                else // always ask
+                {
+                    var askOpenAsProjectOrModelsDialog =
+                        askOpenAsProjectOrModelsDialogComponent.createObject(base,
+                            {
+                                "is_ucp": CuraApplication.isProjectUcp(projectFile),
+                                "fileUrl": projectFile,
+                                "addToRecent": addToRecent
+                            });
+                    askOpenAsProjectOrModelsDialog.show();
+                }
+            }
+        }
+        else
+        {
+            loadModelFiles(fileUrlList.slice(), addToRecent);
         }
     }
 
@@ -786,23 +823,41 @@ UM.MainWindow
         }
     }
 
+    Connections
+    {
+        target: Cura.Actions.openCuraLogFile
+        function onTriggered()
+        {
+            var configurationPath = Qt.platform.os == "linux" 
+                ? UM.Resources.getPath(UM.Resources.Resources, "")
+                : UM.Resources.getPath(UM.Resources.Preferences, "");
+            var logFilePath = configurationPath + "cura.log";
+            if (Qt.platform.os == "windows")
+            {
+                logFilePath = "file:///" + logFilePath.replace(/\\/g, "/");
+            }
+            else if (Qt.platform.os == "linux")
+            {
+                logFilePath = "file://" + logFilePath;
+            }
+            Qt.openUrlExternally(logFilePath);
+        }
+    }
+
     Component
     {
         id: discardOrKeepProfileChangesDialogComponent
-        DiscardOrKeepProfileChangesDialog { }
+        DiscardOrKeepProfileChangesDialog { selfDestroy: true }
     }
-    Loader
-    {
-        id: discardOrKeepProfileChangesDialogLoader
-    }
+
     Connections
     {
         target: CuraApplication
         function onShowCompareAndSaveProfileChanges(profileState)
         {
-            discardOrKeepProfileChangesDialogLoader.sourceComponent = discardOrKeepProfileChangesDialogComponent
-            discardOrKeepProfileChangesDialogLoader.item.buttonState = profileState
-            discardOrKeepProfileChangesDialogLoader.item.show()
+            var discardOrKeepProfileChangesDialog = discardOrKeepProfileChangesDialogComponent.createObject(base)
+            discardOrKeepProfileChangesDialog.buttonState = profileState
+            discardOrKeepProfileChangesDialog.show()
         }
         function onShowDiscardOrKeepProfileChanges()
         {
@@ -810,7 +865,6 @@ UM.MainWindow
         }
     }
 
-    property var wizardDialog
     Component
     {
         id: addMachineDialogLoader
@@ -820,34 +874,42 @@ UM.MainWindow
             title: catalog.i18nc("@title:window", "Add Printer")
             maximumWidth: Screen.width * 2
             maximumHeight: Screen.height * 2
-            model: CuraApplication.getAddPrinterPagesModel()
+            model: AddPrinterPagesModel{}
             progressBarVisible: false
+
             onVisibleChanged:
             {
                 if(!visible)
                 {
-                    wizardDialog = null
                     Cura.API.account.startSyncing()
                 }
             }
         }
     }
 
-    Cura.WizardDialog
+    Component
     {
-        id: whatsNewDialog
-        title: catalog.i18nc("@title:window", "What's New")
-        minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
-        minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
-        model: CuraApplication.getWhatsNewPagesModel()
-        progressBarVisible: false
-        visible: false
+        id: whatsNewDialogLoader
+
+        Cura.WizardDialog
+        {
+            id: whatsNewDialog
+            title: catalog.i18nc("@title:window", "What's New")
+            minimumWidth: UM.Theme.getSize("welcome_wizard_window").width
+            minimumHeight: UM.Theme.getSize("welcome_wizard_window").height
+            model: Cura.WhatsNewPagesModel{}
+            progressBarVisible: false
+            visible: false
+        }
     }
 
     Connections
     {
         target: Cura.Actions.whatsNew
-        function onTriggered() { whatsNewDialog.show() }
+        function onTriggered()
+        {
+            whatsNewDialogLoader.createObject(base).show();
+        }
     }
 
     Connections
@@ -855,21 +917,21 @@ UM.MainWindow
         target: Cura.Actions.addMachine
         function onTriggered()
         {
-            Cura.API.account.stopSyncing()
-            wizardDialog = addMachineDialogLoader.createObject()
-            wizardDialog.show()
+            Cura.API.account.stopSyncing();
+            addMachineDialogLoader.createObject(base).show();
         }
     }
 
-    AboutDialog
+    Component
     {
-        id: aboutDialog
+        id: aboutDialogComponent
+        AboutDialog { selfDestroy: true }
     }
 
     Connections
     {
         target: Cura.Actions.about
-        function onTriggered() { aboutDialog.visible = true; }
+        function onTriggered() { aboutDialogComponent.createObject(base).show(); }
     }
 
     Timer
@@ -887,47 +949,52 @@ UM.MainWindow
         }
     }
 
-    Cura.RenameDialog
+    Component
     {
-        id: createNewQualityDialog
-        title: catalog.i18nc("@title:window", "Save Custom Profile")
-        objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
-        explanation: catalog.i18nc("@info", "Custom profile name:")
-        extraInfo:
-        [
-            UM.ColorImage
-            {
-                width: UM.Theme.getSize("message_type_icon").width
-                height: UM.Theme.getSize("message_type_icon").height
-                source: UM.Theme.getIcon("Information")
-                color: UM.Theme.getColor("text")
-            },
-            Column
-            {
-                UM.Label
-                {
-                    text: catalog.i18nc
-                    (
-                        "@label %i will be replaced with a profile name",
-                        "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
-                        "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
-                    ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
-                    wrapMode: Text.WordWrap
-                    width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
-                }
-                Cura.TertiaryButton
-                {
-                    text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    isIconOnRightSide: true
-                    leftPadding: 0
-                    rightPadding: 0
-                    onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
-                }
-            }
-        ]
-        okButtonText: catalog.i18nc("@button", "Save new profile")
-        onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
+        id: createNewQualityDialogComponent
+
+        Cura.RenameDialog
+        {
+            selfDestroy: true
+            title: catalog.i18nc("@title:window", "Save Custom Profile")
+            objectPlaceholder: catalog.i18nc("@textfield:placeholder", "New Custom Profile")
+            explanation: catalog.i18nc("@info", "Custom profile name:")
+            extraInfo:
+                [
+                    UM.ColorImage
+                    {
+                        width: UM.Theme.getSize("message_type_icon").width
+                        height: UM.Theme.getSize("message_type_icon").height
+                        source: UM.Theme.getIcon("Information")
+                        color: UM.Theme.getColor("text")
+                    },
+                    Column
+                    {
+                        UM.Label
+                        {
+                            text: catalog.i18nc
+                            (
+                                "@label %i will be replaced with a profile name",
+                                "<b>Only user changed settings will be saved in the custom profile.</b><br/>" +
+                                "For materials that support it, the new custom profile will inherit properties from <b>%1</b>."
+                            ).arg(Cura.MachineManager.activeQualityOrQualityChangesName)
+                            wrapMode: Text.WordWrap
+                            width: parent.parent.width - 2 * UM.Theme.getSize("message_type_icon").width
+                        }
+                        Cura.TertiaryButton
+                        {
+                            text: catalog.i18nc("@action:button", "Learn more about Cura print profiles")
+                            iconSource: UM.Theme.getIcon("LinkExternal")
+                            isIconOnRightSide: true
+                            leftPadding: 0
+                            rightPadding: 0
+                            onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337576882")
+                        }
+                    }
+                ]
+            okButtonText: catalog.i18nc("@button", "Save new profile")
+            onAccepted: CuraApplication.getQualityManagementModel().createQualityChanges(newName, true);
+        }
     }
 
     /**

@@ -28,6 +28,20 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
     work_loc.mkdir(parents=True, exist_ok=True)
     parsed_version = semver.Version.parse(version)
 
+    file_associations = [
+        {"ext": "stl",   "prog_id": "Cura.model",       "type_description": "Standard Tessellation Language (STL) files",  "section_title": "*.STL files",      "feature_description": "Associate .STL (Standard Tessellation Language) files",     "optional": False,  "extra_exts": []},
+        {"ext": "3mf",   "prog_id": "Cura.project",     "type_description": "3D Manufacturing Format (3MF) files",         "section_title": "*.3MF files",      "feature_description": "Associate .3MF (3D Manufacturing Format) project files",    "optional": False,  "extra_exts": []},
+        {"ext": "obj",   "prog_id": "Cura.obj",         "type_description": "Wavefront OBJ files",                         "section_title": "*.OBJ files",      "feature_description": "Associate .OBJ (Wavefront Object) files",                   "optional": True,   "extra_exts": []},
+        {"ext": "ply",   "prog_id": "Cura.ply",         "type_description": "Stanford Triangle Format (PLY) files",        "section_title": "*.PLY files",      "feature_description": "Associate .PLY (Stanford Triangle Format) files",           "optional": True,   "extra_exts": []},
+        {"ext": "dae",   "prog_id": "Cura.dae",         "type_description": "COLLADA (DAE) files",                         "section_title": "*.DAE files",      "feature_description": "Associate .DAE (COLLADA) files",                            "optional": True,   "extra_exts": []},
+        {"ext": "gltf",  "prog_id": "Cura.gltf",        "type_description": "glTF JSON files",                             "section_title": "*.GLTF files",     "feature_description": "Associate .GLTF (GL Transmission Format) files",            "optional": True,   "extra_exts": []},
+        {"ext": "glb",   "prog_id": "Cura.glb",         "type_description": "glTF Binary files",                           "section_title": "*.GLB files",      "feature_description": "Associate .GLB (GL Transmission Format Binary) files",      "optional": True,   "extra_exts": []},
+        {"ext": "amf",   "prog_id": "Cura.amf",         "type_description": "Additive Manufacturing Format (AMF) files",   "section_title": "*.AMF files",      "feature_description": "Associate .AMF (Additive Manufacturing Format) files",      "optional": True,   "extra_exts": []},
+        {"ext": "x3d",   "prog_id": "Cura.x3d",         "type_description": "X3D files",                                   "section_title": "*.X3D files",      "feature_description": "Associate .X3D (Extensible 3D) files",                      "optional": True,   "extra_exts": []},
+        {"ext": "ufp",   "prog_id": "Cura.ufp",         "type_description": "UltiMaker Format Package (UFP) files",        "section_title": "*.UFP files",      "feature_description": "Associate .UFP (UltiMaker Format Package) files",           "optional": False,  "extra_exts": []},
+        {"ext": "gcode", "prog_id": "Cura.gcode",       "type_description": "G-code files",                                "section_title": "*.GCODE files",    "feature_description": "Associate .GCODE and .G (G-code) files",                    "optional": True,   "extra_exts": ["g"]},
+    ]
+
     jinja_template_path = Path(source_loc.joinpath("packaging", "msi", "UltiMaker-Cura.wxs.jinja"))
     with open(jinja_template_path, "r") as f:
         template = Template(f.read())
@@ -46,6 +60,7 @@ def generate_wxs(source_path: Path, dist_path: Path, filename: Path, app_name: s
         cura_banner_top=str(source_loc.joinpath("packaging", "msi", "banner_top.bmp")),
         cura_banner_side=str(source_loc.joinpath("packaging", "msi", "banner_side.bmp")),
         cura_icon=str(source_loc.joinpath("packaging", "icons", "Cura.ico")),
+        file_associations=file_associations,
     )
 
     with open(work_loc.joinpath("UltiMaker-Cura.wxs"), "w") as f:
