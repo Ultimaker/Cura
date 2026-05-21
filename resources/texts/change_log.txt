@@ -2,6 +2,7 @@
 
 * New features and improvements:
 - Added the new UltiMaker Factor 4+ printer, including profiles
+- Added option to specifify file association during the installation of Cura for windows, contributed by @hellAholic
 
 * New Settings:
 - Introduced Infill Start/End Preference settings that give control over the starting location of infill
@@ -10,6 +11,7 @@
 - Introduced Minimum Hole Area in Brim Support, which filters out small holes in the support brim, resulting in a more consistent brim
 - Added Temperature Delta Top Surface, which allows you to print top surfaces at a different temperature
 - Added more options to Retract Before Outer Wall to give more control over retraction behavior when traveling to the outer wall
+- Added Initial Layer Wall Ordering which gives control over the order in which the walls are printed for the initial layer, contributed by @hellAholic
 
 * Bug fixes:
 - Adding support blockers is no longer assigned to the first extruder if the first extruder is disabled
@@ -30,7 +32,7 @@
 * Printer definitions, profiles and materials:
 - Improved high-speed S-Line profiles to improve tree support strength and improved seam behavior by ending infill close to the seam and traveling to the seam unretracted
 - Improved material detection for Method line printers to automatically select support material for the raft interface
-- Automatically disable Infill Skin Support if Gradual Infill Steps is enabled, since these are conflicting settings
+- Automatically disable Infill Skin Support if Gradual Infill Steps is enabled, since these are conflicting settings, contributed by @hellAholic
 
 [5.12]
 
