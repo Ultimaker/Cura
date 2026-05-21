@@ -47,31 +47,20 @@
     },
     "overrides":
     {
-        "acceleration_infill": { "value": "acceleration_print" },
         "acceleration_layer_0": { "value": "acceleration_print*2/5" },
-        "acceleration_prime_tower": { "value": "acceleration_print" },
         "acceleration_print": { "value": 10000 },
-        "acceleration_print_layer_0": { "value": "acceleration_layer_0" },
         "acceleration_roofing": { "value": "acceleration_wall" },
         "acceleration_skirt_brim": { "value": "acceleration_print" },
-        "acceleration_support": { "value": "acceleration_print" },
         "acceleration_support_bottom": { "value": "acceleration_support_interface" },
-        "acceleration_support_infill": { "value": "acceleration_support" },
         "acceleration_support_interface": { "value": "acceleration_support" },
         "acceleration_support_roof": { "value": "acceleration_support_interface" },
-        "acceleration_topbottom": { "value": "acceleration_print" },
         "acceleration_travel": { "value": 5000 },
         "acceleration_travel_enabled": { "value": "True" },
         "acceleration_travel_layer_0": { "value": "acceleration_layer_0" },
-        "acceleration_wall": { "value": "acceleration_print" },
-        "acceleration_wall_0": { "value": "acceleration_wall" },
         "acceleration_wall_0_roofing": { "value": "acceleration_wall" },
         "acceleration_wall_x": { "value": "acceleration_print" },
         "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
         "bottom_skin_expand_distance": { "value": "expand_skins_expand_distance / 2" },
-        "bridge_enable_more_layers": { "value": "True" },
-        "bridge_fan_speed_2": { "value": "(cool_fan_speed_max + cool_fan_speed_min) / 2" },
-        "bridge_settings_enabled": { "value": "True" },
         "bridge_skin_density": { "value": "70" },
         "bridge_skin_material_flow":
         {
@@ -96,8 +85,6 @@
         "expand_skins_expand_distance": { "value": "wall_thickness * 2" },
         "gradual_flow_discretisation_step_size": { "value": 0.05 },
         "gradual_flow_enabled": { "value": "True" },
-        "infill_angles": { "value": "[-40, 50] if infill_pattern in ('grid', 'lines', 'zigzag') else [0, 60, 120] if infill_pattern == 'honeycomb' else [ ]" },
-        "infill_material_flow": { "value": "(1 + (skin_material_flow-infill_sparse_density) / 100 if infill_sparse_density > skin_material_flow else 1) * material_flow" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'honeycomb'" },
         "infill_sparse_density": { "value": 10 },
         "infill_start_end_preference": { "value": "'end_close_to_seam'" },
@@ -118,8 +105,7 @@
         "jerk_prime_tower":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_print"
+            "unit": "m/s\u00b3"
         },
         "jerk_print":
         {
@@ -143,14 +129,12 @@
         "jerk_skirt_brim":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_layer_0"
+            "unit": "m/s\u00b3"
         },
         "jerk_support":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_print"
+            "unit": "m/s\u00b3"
         },
         "jerk_support_bottom":
         {
@@ -161,14 +145,12 @@
         "jerk_support_infill":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_support"
+            "unit": "m/s\u00b3"
         },
         "jerk_support_interface":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_support"
+            "unit": "m/s\u00b3"
         },
         "jerk_support_roof":
         {
@@ -205,14 +187,12 @@
         "jerk_wall_0":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_wall"
+            "unit": "m/s\u00b3"
         },
         "jerk_wall_0_roofing":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
-            "unit": "m/s\u00b3",
-            "value": "jerk_wall_0"
+            "unit": "m/s\u00b3"
         },
         "jerk_wall_x":
         {
@@ -264,7 +244,6 @@
         "prime_tower_max_bridging_distance": { "value": "line_width" },
         "prime_tower_min_volume": { "value": 15 },
         "retraction_amount": { "value": 1.2 },
-        "retraction_combing": { "value": "'no_outer_surfaces'" },
         "retraction_combing_avoid_distance": { "value": 1.2 },
         "retraction_combing_max_distance": { "value": 30 },
         "retraction_count_max": { "value": 130 },
@@ -276,7 +255,6 @@
         "roofing_layer_count": { "value": 2 },
         "roofing_material_flow": { "value": "material_flow" },
         "roofing_pattern": { "value": "'lines'" },
-        "seam_overhang_angle": { "value": 30 },
         "skin_angles": { "value": "[-40, 50]" },
         "skin_material_flow": { "value": "material_flow * 0.97" },
         "skin_material_flow_layer_0": { "value": "material_flow_layer_0 * 0.9" },
@@ -284,20 +262,12 @@
         "skin_preshrink": { "value": "wall_thickness" },
         "skin_support_density": { "value": "material_flow * 0.5" },
         "skin_support_speed": { "value": "speed_wall_0" },
-        "skirt_brim_speed":
-        {
-            "maximum_value": 125,
-            "value": "speed_layer_0"
-        },
+        "skirt_brim_speed": { "maximum_value": 125 },
         "small_hole_max_size": { "value": "machine_nozzle_size*15" },
         "small_skin_on_surface": { "value": false },
         "small_skin_width": { "value": "machine_nozzle_size*6" },
         "speed_equalize_flow_width_factor": { "value": 0 },
-        "speed_infill":
-        {
-            "maximum_value": 125,
-            "value": "speed_print"
-        },
+        "speed_infill": { "maximum_value": 125 },
         "speed_ironing": { "value": 20 },
         "speed_layer_0":
         {
@@ -314,11 +284,7 @@
             "maximum_value": 125,
             "value": 125
         },
-        "speed_print_layer_0":
-        {
-            "maximum_value": 125,
-            "value": "speed_layer_0"
-        },
+        "speed_print_layer_0": { "maximum_value": 125 },
         "speed_roofing":
         {
             "maximum_value": 125,
@@ -335,11 +301,7 @@
             "maximum_value": 125,
             "value": "speed_support_interface"
         },
-        "speed_support_infill":
-        {
-            "maximum_value": 125,
-            "value": "speed_support"
-        },
+        "speed_support_infill": { "maximum_value": 125 },
         "speed_support_interface":
         {
             "maximum_value": 125,
@@ -350,21 +312,13 @@
             "maximum_value": 125,
             "value": "speed_support_interface"
         },
-        "speed_topbottom":
-        {
-            "maximum_value": 125,
-            "value": "speed_print"
-        },
+        "speed_topbottom": { "maximum_value": 125 },
         "speed_travel":
         {
             "maximum_value": 125,
             "value": 125
         },
-        "speed_travel_layer_0":
-        {
-            "maximum_value": 125,
-            "value": "speed_travel"
-        },
+        "speed_travel_layer_0": { "maximum_value": 125 },
         "speed_wall":
         {
             "maximum_value": 125,
@@ -375,11 +329,7 @@
             "maximum_value": 125,
             "value": "min(50, speed_print)"
         },
-        "speed_wall_0_roofing":
-        {
-            "maximum_value": 125,
-            "value": "speed_wall_0"
-        },
+        "speed_wall_0_roofing": { "maximum_value": 125 },
         "speed_wall_x":
         {
             "maximum_value": 125,
@@ -402,7 +352,6 @@
         "support_infill_multiplier": { "value": "2 if support_pattern == 'lightning' else 1" },
         "support_infill_rate": { "value": "10 if support_structure == 'tree' else 80 if gradual_support_infill_steps != 0 else 15" },
         "support_interface_enable": { "value": true },
-        "support_interface_offset": { "value": "support_offset" },
         "support_interface_pattern": { "value": "'lines'" },
         "support_interface_wall_count": { "value": 1 },
         "support_lightning_angle": { "value": 40 },
@@ -437,8 +386,6 @@
                 20
             ]
         },
-        "wall_x_material_flow_roofing": { "value": "roofing_material_flow" },
-        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
-        "z_seam_type": { "value": "'sharpest_corner'" }
+        "wall_x_material_flow_roofing": { "value": "roofing_material_flow" }
     }
 }
