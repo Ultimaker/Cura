@@ -5,7 +5,8 @@
 
 * New Settings:
 - Introduced Infill Start/End Preference settings that give control over the starting location of infill
-- Added Support Infill Line Multiplier, Support Lightning Angle, Support Lightning Overhang Angle, Support Lightning Prune Angle, and Support Lightning Straightening Angle, which together allow you to add and control lightning infill generated for support structures
+- Added Support Infill option "Lightning", and in addition the following supporting settings: Support Lightning Angle, Support Lightning Overhang Angle, Support Lightning Prune Angle, and Support Lightning Straightening Angle, which together allow you to add and control lightning infill generated for support structures
+- Added Support Infill Line Multiplier which multiplies the number if infill lines, using this setting equal to 2 in combination with lightning support results in a single extrusion line per island
 - Introduced Minimum Hole Area in Brim Support, which filters out small holes in the support brim, resulting in a more consistent brim
 - Added Temperature Delta Top Surface, which allows you to print top surfaces at a different temperature
 - Added more options to Retract Before Outer Wall to give more control over retraction behavior when traveling to the outer wall
