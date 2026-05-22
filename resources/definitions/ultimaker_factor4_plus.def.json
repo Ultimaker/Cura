@@ -171,7 +171,6 @@
             "unit": "m/s\u00b3",
             "value": "jerk_print"
         },
-        "jerk_travel_enabled": { "value": true },
         "jerk_travel_layer_0":
         {
             "maximum_value_warning": "machine_max_jerk_xy / 2",
@@ -255,7 +254,6 @@
         "roofing_layer_count": { "value": 2 },
         "roofing_material_flow": { "value": "material_flow" },
         "roofing_pattern": { "value": "'lines'" },
-        "skin_angles": { "value": "[-40, 50]" },
         "skin_material_flow": { "value": "material_flow * 0.97" },
         "skin_material_flow_layer_0": { "value": "material_flow_layer_0 * 0.9" },
         "skin_outline_count": { "value": 0 },
@@ -340,7 +338,6 @@
             "maximum_value": 125,
             "value": "min(math.ceil(speed_wall_0_roofing*wall_line_width_0/wall_line_width_x), speed_wall)"
         },
-        "support_angle": { "value": 60 },
         "support_bottom_distance":
         {
             "maximum_value_warning": "3*layer_height",
@@ -354,7 +351,6 @@
         "support_interface_enable": { "value": true },
         "support_interface_pattern": { "value": "'lines'" },
         "support_interface_wall_count": { "value": 1 },
-        "support_lightning_angle": { "value": 40 },
         "support_line_width": { "value": "1.25*line_width" },
         "support_offset": { "value": 0.8 },
         "support_pattern": { "value": "'lightning' if support_structure == 'tree' else 'zigzag'" },
@@ -364,7 +360,6 @@
         "support_tree_angle": { "value": 45 },
         "support_tree_angle_slow": { "value": 40 },
         "support_tree_bp_diameter": { "value": 40 },
-        "support_tree_branch_diameter": { "value": 5 },
         "support_tree_branch_diameter_angle": { "value": 5 },
         "support_tree_max_diameter": { "value": 15 },
         "support_tree_tip_diameter": { "value": 3 },
