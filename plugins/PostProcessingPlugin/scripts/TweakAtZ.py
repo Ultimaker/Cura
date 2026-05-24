@@ -217,7 +217,7 @@ class TweakAtZ(Script):
                 "d_bedTemp": {
                     "label": "    Bed Temp",
                     "description": "New Bed Temperature",
-                    "unit": "°C  ",
+                    "unit": "\u00b0C  ",
                     "type": "int",
                     "default_value": 60,
                     "minimum_value": 0,
@@ -242,7 +242,7 @@ class TweakAtZ(Script):
                 "e_build_volume_temperature": {
                     "label": "    Build Volume Temperature",
                     "description": "New Build Volume Temperature.  This will revert at the end of the End Layer.",
-                    "unit": "°C  ",
+                    "unit": "\u00b0C  ",
                     "type": "int",
                     "default_value": 20,
                     "minimum_value": 0,
@@ -260,7 +260,7 @@ class TweakAtZ(Script):
                 "f_extruder_temperature_t0": {
                     "label": "    Extruder 1 Temp (T0)",
                     "description": "New temperature for Extruder 1 (T0).",
-                    "unit": "°C  ",
+                    "unit": "\u00b0C  ",
                     "type": "int",
                     "default_value": 190,
                     "minimum_value": 0,
@@ -271,7 +271,7 @@ class TweakAtZ(Script):
                 "f_extruder_temperature_t1": {
                     "label": "    Extruder 2 Temp (T1)",
                     "description": "New temperature for Extruder 2 (T1).",
-                    "unit": "°C  ",
+                    "unit": "\u00b0C  ",
                     "type": "int",
                     "default_value": 190,
                     "minimum_value": 0,
