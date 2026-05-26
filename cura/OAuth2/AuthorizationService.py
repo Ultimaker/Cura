@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
-MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff"
+MYCLOUD_LOGOFF_URL = "https://account.ultimaker.com/logoff?utm_source=cura&utm_medium=software&utm_campaign=change-account-before-adding-printers"
 
 REFRESH_TOKEN_MAX_RETRIES = 15
 REFRESH_TOKEN_RETRY_INTERVAL = 1000

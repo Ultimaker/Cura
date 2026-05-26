@@ -34,7 +34,7 @@ class CloudFlowMessage(Message):
 
     def _onCloudFlowStarted(self, message_id: str, action_id: str) -> None:
         if action_id == "get_started":
-            QDesktopServices.openUrl(QUrl("https://digitalfactory.ultimaker.com/app/printers"))
+            QDesktopServices.openUrl(QUrl("https://digitalfactory.ultimaker.com/app/printers?add_printer=true&utm_source=cura&utm_medium=software&utm_campaign=message-networkprinter-added"))
             self.hide()
         else:
             QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1872100986572"))

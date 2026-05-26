@@ -117,7 +117,7 @@ Item
                 id: visitDigitalLibraryButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Visit Digital Library"
-                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library")
+                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl + "/app/library?utm_source=cura&utm_medium=software&utm_campaign=empty-library")
                 visible: searchBar.text === "" //Show the link to Digital Library when there are no projects in the user's Library.
             }
         }

@@ -32,28 +32,28 @@ Popup
                     displayName: catalog.i18nc("@label:button", "My printers"),
                     thumbnail: UM.Theme.getIcon("PrinterTriple", "high"),
                     description: catalog.i18nc("@tooltip:button", "Monitor printers in Ultimaker Digital Factory."),
-                    link: "https://digitalfactory.ultimaker.com/app/printers",
+                    link: "https://digitalfactory.ultimaker.com/app/printers?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printers",
                     permissionsRequired: ["digital-factory.printer.read"]
                 },
                 {
                     displayName: "Digital Library", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Library", "high"),
                     description: catalog.i18nc("@tooltip:button", "Create print projects in Digital Library."),
-                    link: "https://digitalfactory.ultimaker.com/app/library",
+                    link: "https://digitalfactory.ultimaker.com/app/library?utm_source=cura&utm_medium=software&utm_campaign=switcher-library",
                     permissionsRequired: ["digital-factory.project.read.shared"]
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Print jobs"),
                     thumbnail: UM.Theme.getIcon("Nozzle"),
                     description: catalog.i18nc("@tooltip:button", "Monitor print jobs and reprint from your print history."),
-                    link: "https://digitalfactory.ultimaker.com/app/print-jobs",
+                    link: "https://digitalfactory.ultimaker.com/app/print-jobs?utm_source=cura&utm_medium=software&utm_campaign=switcher-digital-factory-printjobs",
                     permissionsRequired: ["digital-factory.print-job.read"]
                 },
                 {
                     displayName: "UltiMaker Marketplace", //Not translated, since it's a brand name.
                     thumbnail: UM.Theme.getIcon("Shop", "high"),
                     description: catalog.i18nc("@tooltip:button", "Extend UltiMaker Cura with plugins and material profiles."),
-                    link: "https://marketplace.ultimaker.com/app/cura/materials",
+                    link: "https://marketplace.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-marketplace-materials",
                     permissionsRequired: []
                 },
                 {
