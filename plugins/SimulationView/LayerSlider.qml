@@ -219,13 +219,6 @@ Item
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
-            if (value == getValue())
-            {
-                return;
-            }
-
-            UM.SimulationView.setCurrentLayer(value)
-
             var diff = (value - sliderRoot.maximumValue) / (sliderRoot.minimumValue - sliderRoot.maximumValue)
             // In case there is only one layer, the diff value results in a NaN, so this is for catching this specific case
             if (isNaN(diff))
@@ -233,6 +226,15 @@ Item
                 diff = 0
             }
             var newUpperYPosition = Math.round(diff * (sliderRoot.height - (2 * sliderRoot.handleSize + sliderRoot.minimumRangeHandleSize)))
+
+            // Skip update only when both the value and pixel position are already correct,
+            // preventing signal feedback loops while allowing re-initialization after a new slice.
+            if (value == sliderRoot.upperValue && newUpperYPosition == y)
+            {
+                return;
+            }
+
+            UM.SimulationView.setCurrentLayer(value)
             y = newUpperYPosition
 
             // update the range handle
