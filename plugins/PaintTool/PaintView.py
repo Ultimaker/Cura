@@ -9,7 +9,7 @@ from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
 from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
 from typing import Optional, Tuple, Dict, List
 
-from UM.Logger import Logger
+from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
@@ -24,6 +24,7 @@ from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 from UM.Math.Polygon import Polygon
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Settings.GlobalStack import GlobalStack
 
 from .PaintStrokeCommand import PaintStrokeCommand
 from .PaintClearCommand import PaintClearCommand
@@ -368,6 +369,18 @@ class PaintView(CuraView):
 
         return start_index, end_index
 
+    def _getSupportAngleShaderValue(self) -> float:
+        if self._current_paint_type != "support":
+            return 1.0
+        global_container_stack: GlobalStack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return 1.0
+        extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
+        if extruder_nr < 0 or extruder_nr >= len(global_container_stack.extruderList):
+            return 1.0
+        angle = global_container_stack.extruderList[extruder_nr].getProperty("support_angle", "value") or 90.0
+        return max(0.0, min(1.0, math.cos(math.radians(90.0 - angle))))
+
     def beginRendering(self) -> None:
         if self._painted_object is None or self._current_paint_type not in self._paint_modes:
             return
@@ -404,3 +417,5 @@ class PaintView(CuraView):
 
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
+
+        self._paint_shader.setUniformValue("u_overhangAngle", self._getSupportAngleShaderValue())
