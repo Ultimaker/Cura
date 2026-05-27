@@ -14,7 +14,7 @@
 - Added Initial Layer Wall Ordering which gives control over the order in which the walls are printed for the initial layer, contributed by @hellAholic
 
 * Bug fixes:
-- Adding support blockers is no longer assigned to the first extruder if the first extruder is disabled
+- Support blockers now function correctly even when assigned to a disabled extruder; they no longer cause slicing conflicts and continue to effectively block support
 - Fixed an issue where thin support structures would be generated within tree support
 - Fixed an issue where the tree support interface layer would be missing
 - Randomized infill now also works for infill skin support
