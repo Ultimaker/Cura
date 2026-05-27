@@ -27,7 +27,7 @@
 - Fixed an issue where overhang speed would be applied inconsistently when both Split Infill and Overhang Speed settings were enabled
 - Fixed an issue where the profile has changes notification would overlap with UI elements
 - Fixed an issue where certain setting configurations would cause a large amount of small line segments to be generated for the prime tower
-- Fixed an issue where clicking the "Login to Digital Factory" button twice would fail the authentication
+- Fixed an issue where clicking the "Sign in to Digital Factory" button twice would fail to log in
 
 * Printer definitions, profiles and materials:
 - Updated high-speed S-Line profiles to improve tree support strength and improved seam behavior by ending infill close to the seam and traveling to the seam unretracted
