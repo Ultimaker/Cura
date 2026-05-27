@@ -24,13 +24,13 @@
 - Fixed an issue where certain 3MF files would incorrectly load with an invalid setting configuration
 - Fixed an issue where certain setting combinations would skip parts of the skin and walls sections
 - Resolved an issue where slicing would fail when both Raft build plate adhesion and Support Lightning Infill were enabled
-- Fixed an issue where overhang speed would be applied inconsistently when both Split Infill and Overhang Speed settings are enabled
+- Fixed an issue where overhang speed would be applied inconsistently when both Split Infill and Overhang Speed settings were enabled
 - Fixed an issue where the profile has changes notification would overlap with UI elements
 - Fixed an issue where certain setting configurations would cause a large amount of small line segments to be generated for the prime tower
-- Fixed an issue where clicking the "Log in to Digital Factory" button twice would fail authentication
+- Fixed an issue where clicking the "Login to Digital Factory" button twice would fail the authentication
 
 * Printer definitions, profiles and materials:
-- Improved high-speed S-Line profiles to improve tree support strength and improved seam behavior by ending infill close to the seam and traveling to the seam unretracted
+- Updated high-speed S-Line profiles to improve tree support strength and improved seam behavior by ending infill close to the seam and traveling to the seam unretracted
 - Improved material detection for Method line printers to automatically select support material for the raft interface
 - Automatically disable Infill Skin Support if Gradual Infill Steps is enabled, since these are conflicting settings, contributed by @hellAholic
 
