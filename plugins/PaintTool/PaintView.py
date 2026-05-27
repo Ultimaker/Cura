@@ -190,6 +190,10 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
+            theme = CuraApplication.getInstance().getTheme()
+            overhang_color = Color(*theme.getColor("model_overhang_paint").getRgb())
+            self._paint_shader.setUniformValue("u_overhangColor", overhang_color)
+
     def setCursorStroke(self, cursor_path: QPainterPath, brush_color: str):
         if self._cursor_texture is None or self._cursor_texture.getImage() is None:
             return
