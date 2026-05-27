@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2026 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -13,7 +13,7 @@ RecommendedSettingSection
 {
     id: enableSupportRow
 
-    title: catalog.i18nc("@label", "Support")
+    title: catalog.i18nc("@label", "Auto-Support")
     icon: UM.Theme.getIcon("Support")
     enableSectionSwitchVisible: supportEnabled.properties.enabled == "True"
     enableSectionSwitchChecked: supportEnabled.properties.value == "True"

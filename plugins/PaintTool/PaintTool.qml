@@ -1,4 +1,4 @@
-// Copyright (c) 2025 UltiMaker
+// Copyright (c) 2026 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick
@@ -209,6 +209,47 @@ Item
             }
         }
 
+        UM.Label
+        {
+            text: catalog.i18nc("@label", "Auto-Support Overhang")
+            visible: UM.Controller.properties.getValue("PaintType") === "support"
+        }
+
+        RowLayout
+        {
+            width: parent.width
+            visible: UM.Controller.properties.getValue("PaintType") === "support"
+            height: childrenRect.height
+
+            Cura.SingleSettingSlider
+            {
+                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
+                Layout.fillHeight: true
+                Layout.minimumWidth: parent.width / 2.0
+                Layout.fillWidth: true
+
+                from: 0
+                to: 90
+                stepSize: 5
+                tooltipUnit: "°"
+                settingName: "support_angle"
+                updateAllExtruders: true
+            }
+
+            Cura.SingleSettingTextField
+            {
+                Layout.minimumHeight: parent.visible ? UM.Theme.getSize("combobox").height : 0.0
+                Layout.fillHeight: true
+                Layout.minimumWidth: UM.Theme.getSize("large_button").width
+                Layout.fillWidth: false
+
+                settingName: "support_angle"
+                updateAllExtruders: true
+                validator: UM.FloatValidator {}
+                unitText: "°"
+            }
+        }
+
         //Line between the sections.
         Rectangle
         {
@@ -224,7 +265,7 @@ Item
                 id: undoButton
 
                 enabled: undoAction.enabled
-                text: catalog.i18nc("@action:button", "Undo Stroke")
+                text: catalog.i18nc("@action:button", "Undo Stroke (Ctrl+L)")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
@@ -239,7 +280,7 @@ Item
                 id: redoButton
 
                 enabled: redoAction.enabled
-                text: catalog.i18nc("@action:button", "Redo Stroke")
+                text: catalog.i18nc("@action:button", "Redo Stroke (Ctrl+Shift+L)")
                 toolItem: UM.ColorImage
                 {
                     source: UM.Theme.getIcon("ArrowReset")
