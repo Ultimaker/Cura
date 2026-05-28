@@ -6643,17 +6643,18 @@
                 "adhesion_type":
                 {
                     "label": "Build Plate Adhesion Type",
-                    "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping. Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model.",
+                    "description": "Different options that help to improve both priming your extrusion and adhesion to the build plate. Brim adds a single layer flat area around the base of your model to prevent warping (Select Auto-Brim to detect the need for a Brim automatically; if not, Skirt will be printed instead). Raft adds a thick grid with a roof below the model. Skirt is a line printed around the model, but not connected to the model.",
                     "type": "enum",
                     "options":
                     {
                         "skirt": "Skirt",
                         "brim": "Brim",
+                        "autobrim": "Auto-Brim",
                         "raft": "Raft",
                         "none": "None"
                     },
                     "default_value": "brim",
-                    "resolve": "min(extruderValues('adhesion_type'), key=('raft', 'brim', 'skirt', 'none').index)",
+                    "resolve": "min(extruderValues('adhesion_type'), key=('raft', 'brim', 'autobrim', 'skirt', 'none').index)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
