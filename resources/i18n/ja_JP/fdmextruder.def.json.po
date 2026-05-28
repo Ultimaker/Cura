@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
 "POT-Creation-Date: 2025-02-21 15:37+0000\n"
-"PO-Revision-Date: 2025-02-25 12:01+0000\n"
+"PO-Revision-Date: 2026-02-21 03:36+0000\n"
 "Last-Translator: h1data <h1data@users.noreply.github.com>\n"
 "Language-Team: Japanese <https://github.com/h1data/Cura/wiki>\n"
 "Language: ja_JP\n"
@@ -146,11 +146,11 @@ msgstr "ノズルY座標オフセット"
 
 msgctxt "machine_extruder_prestart_code description"
 msgid "Prestart g-code to execute before switching to this extruder."
-msgstr "このエクストルーダーに切り替える前に実行される開始前G-Code。"
+msgstr "このエクストルーダーへの切り替え前に実行される開始前G-Code。"
 
 msgctxt "machine_extruder_start_code description"
 msgid "Start g-code to execute when switching to this extruder."
-msgstr "このエクストルーダーに切り替えた時に開始G-Codeを実行します。"
+msgstr "このエクストルーダーへの切り替え時に実行される開始G-Code。"
 
 msgctxt "extruder_prime_pos_x description"
 msgid "The X coordinate of the position where the nozzle primes at the start of printing."
@@ -182,7 +182,7 @@ msgstr "\"AA 0.4\" や \"BB 0.8\" など、エクストルーダーのノズルI
 
 msgctxt "machine_extruder_cooling_fan_number description"
 msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
-msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの数です。デフォルト値は0(ゼロ)です。各エクストルーダーに対してプリント冷却ファンが異なる場合にのみ変更します。"
+msgstr "このエクストルーダーに関連付けられているプリント冷却ファンの数です。各エクストルーダーに対して個別のプリント冷却ファンがある場合のみ、この値を既定値の0から変更してください。"
 
 msgctxt "machine_extruder_end_code_duration description"
 msgid "The time it takes to execute the end g-code, when switching away from this extruder."
@@ -190,7 +190,7 @@ msgstr "このエクストルーダーから切り替えるときに、終了G�
 
 msgctxt "machine_extruder_start_code_duration description"
 msgid "The time it'll take to execute the start g-code, when switching to this extruder."
-msgstr "このエクストルーダーに切り替えるときに、開始Gコードを実行するのにかかる時間。"
+msgstr "このエクストルーダーに切り替えるとき、開始Gコードの実行にかかる時間。"
 
 msgctxt "machine_extruder_end_pos_x description"
 msgid "The x-coordinate of the ending position when turning the extruder off."

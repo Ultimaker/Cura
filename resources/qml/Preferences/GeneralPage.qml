@@ -117,7 +117,7 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-//        /setDefaultCameraMode(defaultCameraMode)
+        //setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -205,19 +205,12 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
-                        append({ text: "한국어", code: "ko_KR" })
-                        append({ text: "Nederlands", code: "nl_NL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
-                        append({ text: "Português", code: "pt_PT" })
-                        append({ text: "Русский", code: "ru_RU" })
-                        append({ text: "Türkçe", code: "tr_TR" })
-                        append({ text: "简体中文", code: "zh_CN" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -227,6 +220,13 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
                         append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
@@ -241,7 +241,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -311,7 +311,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {

@@ -61,14 +61,6 @@ class SliceInfo(QObject, Extension):
         self._more_info_dialog = None
         self._example_data_content = None
 
-        self._application.initializationFinished.connect(self._onAppInitialized)
-
-    def _onAppInitialized(self):
-        # DO NOT read any preferences values in the constructor because at the time plugins are created, no version
-        # upgrade has been performed yet because version upgrades are plugins too!
-        if self._more_info_dialog is None:
-            self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
-
     def messageActionTriggered(self, message_id, action_id):
         """Perform action based on user input.
 

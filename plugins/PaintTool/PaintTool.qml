@@ -332,4 +332,20 @@ Item
             horizontalAlignment: Text.AlignHCenter
         }
     }
+
+    Rectangle
+    {
+        id: warningLegacyOpenGLItem
+        anchors.fill: parent
+        color: UM.Theme.getColor("main_background")
+        visible: UM.Controller.properties.getValue("State") === Cura.PaintToolState.NOT_SUPPORTED
+
+        UM.Label
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@label", "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature.")
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+        }
+    }
 }
