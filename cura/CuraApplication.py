@@ -115,6 +115,7 @@ from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.TextManager import TextManager
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
+from cura.UI.WhatsNewSubPagesModel import WhatsNewSubPagesModel
 from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.Utils.NetworkingUtil import NetworkingUtil
 from . import BuildVolume
@@ -140,7 +141,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 26
+    SettingVersion = 27
 
     Created = False
 
@@ -228,10 +229,6 @@ class CuraApplication(QtApplication):
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = None
-        self._welcome_pages_model = WelcomePagesModel(self, parent = self)
-        self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
-        self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
-        self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
         self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -285,6 +282,8 @@ class CuraApplication(QtApplication):
         self._python_installs = ApplicationMetadata.PYTHON_INSTALLS
 
         self._supported_url_schemes: List[str] = ["cura", "slicer"]
+
+        self._confirm_exit_dialog_callback: Optional[Callable[[bool], None]] = None
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
@@ -720,12 +719,13 @@ class CuraApplication(QtApplication):
 
     showConfirmExitDialog = pyqtSignal(str, arguments = ["message"])
 
-    def setConfirmExitDialogCallback(self, callback: Callable) -> None:
+    def setConfirmExitDialogCallback(self, callback: Optional[Callable[[bool], None]]) -> None:
         self._confirm_exit_dialog_callback = callback
 
     @pyqtSlot(bool)
     def callConfirmExitDialogCallback(self, yes_or_no: bool) -> None:
-        self._confirm_exit_dialog_callback(yes_or_no)
+        if self._confirm_exit_dialog_callback is not None:
+            self._confirm_exit_dialog_callback(yes_or_no)
 
     showPreferencesWindow = pyqtSignal()
     """Signal to connect preferences action in QML"""
@@ -773,7 +773,7 @@ class CuraApplication(QtApplication):
     def discardOrKeepProfileChanges(self) -> bool:
         has_user_interaction = False
         choice = self.getPreferences().getValue("cura/choice_on_profile_override")
-        if not self._currently_loading_files:
+        if self.getloadingWorkspace():
             # opening from a file; don't show dialog and KEEP the profile
             self.discardOrKeepProfileChangesClosed("keep")
         elif choice == "always_discard":
@@ -928,10 +928,6 @@ class CuraApplication(QtApplication):
         self._cura_API.initialize()
         self.processEvents()
         self._output_device_manager.start()
-        self._welcome_pages_model.initialize()
-        self._add_printer_pages_model.initialize()
-        self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
-        self._whats_new_pages_model.initialize()
 
         # Initialize the FileProviderModel
         self._file_provider_model.initialize(self._onFileProviderEnabledChanged)
@@ -1067,21 +1063,25 @@ class CuraApplication(QtApplication):
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
 
+    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
-        return self._welcome_pages_model
+        return WelcomePagesModel()
 
+    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
-        return self._add_printer_pages_model
+        return AddPrinterPagesModel()
 
+    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
-        return self._add_printer_pages_model_without_cancel
+        return AddPrinterPagesModel()
 
+    @deprecated("This should no more be called, you should directly create a new model instead", since="5.14.0")
     @pyqtSlot(result = QObject)
     def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
-        return self._whats_new_pages_model
+        return WhatsNewPagesModel()
 
     @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
@@ -1313,6 +1313,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
+        qmlRegisterType(WhatsNewSubPagesModel, "Cura", 1, 0, "WhatsNewSubPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
         qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
