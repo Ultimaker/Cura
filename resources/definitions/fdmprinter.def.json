@@ -1883,26 +1883,12 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "skin_outline_count":
+                "wall_line_count_skin":
                 {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "value": "0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1",
-                    "default_value": 1,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10",
-                    "maximum_value": "999999",
-                    "type": "int",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric' or (roofing_layer_count > 0 and roofing_pattern != 'concentric'))",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "wall_line_count_roofing_flooring":
-                {
-                    "label": "Wall Line Count Top/Bottom",
-                    "description": "The number of walls in the top-most and bottom-most skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air'.",
-                    "default_value": 2,
-                    "value": "wall_line_count",
+                    "label": "Wall Line Count Skin",
+                    "description": "The number of walls in the skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air'.",
+                    "default_value": 3,
+                    "value": "wall_line_count + (0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1)",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "maximum_value": "999999",
@@ -1912,12 +1898,26 @@
                     "settable_per_mesh": true,
                     "children":
                     {
+                        "wall_line_count_inside_skin":
+                        {
+                            "label": "Wall Line Count Inside Skin",
+                            "description": "The number of walls in the inside skin parts, not 'exposed to air'.",
+                            "default_value": 3,
+                            "value": "wall_line_count_skin",
+                            "minimum_value": "0",
+                            "maximum_value_warning": "10",
+                            "maximum_value": "999999",
+                            "type": "int",
+                            "enabled": "bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
                         "wall_line_count_layer_0":
                         {
                             "label": "Wall Line Count Initial Layer",
                             "description": "The number of walls in the initial layer.",
-                            "default_value": 2,
-                            "value": "wall_line_count_roofing_flooring",
+                            "default_value": 3,
+                            "value": "wall_line_count_skin",
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "maximum_value": "999999",
@@ -1930,8 +1930,8 @@
                         {
                             "label": "Wall Line Count Top",
                             "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
-                            "default_value": 2,
-                            "value": "wall_line_count_roofing_flooring",
+                            "default_value": 3,
+                            "value": "wall_line_count_skin",
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "maximum_value": "999999",
@@ -1944,8 +1944,8 @@
                         {
                             "label": "Wall Line Count Bottom",
                             "description": "The number of walls in the bottom-most skin parts, 'exposed to air'.",
-                            "default_value": 2,
-                            "value": "wall_line_count_roofing_flooring",
+                            "default_value": 3,
+                            "value": "wall_line_count_skin",
                             "minimum_value": "0",
                             "maximum_value_warning": "10",
                             "maximum_value": "999999",
