@@ -49,7 +49,7 @@ jobs:
     name: Create installers
     needs: find-packages
     if: ${{ inputs.start_builds == true && needs.find-packages.outputs.discovered_packages != '' }}
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@main
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installers.yml@CURA-12814
     with:
       cura_conan_version: ${{ inputs.cura_conan_version != '' && inputs.cura_conan_version || needs.find-packages.outputs.cura_package }}
       package_overrides: ${{ needs.find-packages.outputs.package_overrides }} ${{ inputs.package_overrides }}
