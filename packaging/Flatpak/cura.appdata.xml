@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>com.ultimaker.cura</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>LGPL-3.0</project_license>
+	<name>UltiMaker Cura</name>
+	<summary>Slicer to prepare your 3D printing projects</summary>
+	<description>
+		<p>UltiMaker Cura is a slicer, an application that prepares your model for 3D printing. Optimized, expert-tested profiles for 3D printers and materials mean you can start printing reliably in no time. And with industry-standard software integration, you can streamline your workflow for maximum efficiency.</p>
+		<p>Features:</p>
+		<ul>
+			<li>Easy to use interface for beginners and professionals</li>
+			<li>Expert-tested print profiles for many 3D printers and materials</li>
+			<li>Advanced settings for experienced users</li>
+			<li>Support for multiple file formats (STL, 3MF, OBJ, etc.)</li>
+			<li>Plugin system for extending functionality</li>
+			<li>Cross-platform compatibility</li>
+		</ul>
+	</description>
+	<launchable type="desktop-id">cura.desktop</launchable>
+	<provides>
+		<binary>UltiMaker-Cura</binary>
+	</provides>
+	<url type="homepage">https://ultimaker.com/software/ultimaker-cura</url>
+	<url type="bugtracker">https://github.com/Ultimaker/Cura/issues</url>
+	<url type="help">https://support.ultimaker.com/</url>
+	<url type="donation">https://github.com/sponsors/Ultimaker</url>
+	<url type="vcs-browser">https://github.com/Ultimaker/Cura</url>
+	<screenshots>
+		<screenshot type="default">
+			<caption>Print preparation screen</caption>
+			<image>https://raw.githubusercontent.com/Ultimaker/Cura/main/cura-logo.PNG</image>
+		</screenshot>
+	</screenshots>
+	<releases>
+		<release version="5.8.1" date="2024-09-12"/>
+	</releases>
+	<categories>
+		<category>Graphics</category>
+		<category>Engineering</category>
+	</categories>
+	<keywords>
+		<keyword>3D</keyword>
+		<keyword>Printing</keyword>
+		<keyword>Slicer</keyword>
+		<keyword>Engineering</keyword>
+		<keyword>Design</keyword>
+		<keyword>Manufacturing</keyword>
+	</keywords>
+	<content_rating type="oars-1.1"/>
+</component>
