@@ -1119,7 +1119,96 @@
                             "type": "int",
                             "value": "1 if magic_spiralize else max(1, round((wall_thickness - wall_line_width_0) / wall_line_width_x) + 1) if wall_thickness != 0 else 0",
                             "limit_to_extruder": "wall_x_extruder_nr",
-                            "settable_per_mesh": true
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_line_count_skin":
+                                {
+                                    "label": "Wall Line Count Skin",
+                                    "description": "The number of walls in the skin parts. This allows for setting less (or more) walls to parts of the model 'exposed to air'.",
+                                    "default_value": 3,
+                                    "value": "wall_line_count + (0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1)",
+                                    "minimum_value": "0",
+                                    "maximum_value_warning": "10",
+                                    "maximum_value": "999999",
+                                    "type": "int",
+                                    "enabled": "((top_layers > 0 and roofing_layer_count > 0) or (bottom_layers > 0 and flooring_layer_count > 0))",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true,
+                                    "children":
+                                    {
+                                        "wall_line_count_inside_skin":
+                                        {
+                                            "label": "Wall Line Count Inside Skin",
+                                            "description": "The number of walls in the inside skin parts, not 'exposed to air'.",
+                                            "default_value": 3,
+                                            "value": "wall_line_count_skin",
+                                            "minimum_value": "0",
+                                            "maximum_value_warning": "10",
+                                            "maximum_value": "999999",
+                                            "type": "int",
+                                            "enabled": "bottom_layers > 0",
+                                            "limit_to_extruder": "top_bottom_extruder_nr",
+                                            "settable_per_mesh": true
+                                        },
+                                        "wall_line_count_layer_0":
+                                        {
+                                            "label": "Wall Line Count Initial Layer",
+                                            "description": "The number of walls in the initial layer.",
+                                            "default_value": 3,
+                                            "value": "wall_line_count_skin",
+                                            "minimum_value": "0",
+                                            "maximum_value_warning": "10",
+                                            "maximum_value": "999999",
+                                            "type": "int",
+                                            "enabled": "bottom_layers > 0",
+                                            "limit_to_extruder": "top_bottom_extruder_nr",
+                                            "settable_per_mesh": true
+                                        },
+                                        "wall_line_count_roofing":
+                                        {
+                                            "label": "Wall Line Count Top",
+                                            "description": "The number of walls in the top-most skin parts, 'exposed to air'.",
+                                            "default_value": 3,
+                                            "value": "wall_line_count_skin",
+                                            "minimum_value": "0",
+                                            "maximum_value_warning": "10",
+                                            "maximum_value": "999999",
+                                            "type": "int",
+                                            "enabled": "top_layers > 0 and roofing_layer_count > 0",
+                                            "limit_to_extruder": "top_bottom_extruder_nr",
+                                            "settable_per_mesh": true
+                                        },
+                                        "wall_line_count_flooring":
+                                        {
+                                            "label": "Wall Line Count Bottom",
+                                            "description": "The number of walls in the bottom-most skin parts, 'exposed to air'.",
+                                            "default_value": 3,
+                                            "value": "wall_line_count_skin",
+                                            "minimum_value": "0",
+                                            "maximum_value_warning": "10",
+                                            "maximum_value": "999999",
+                                            "type": "int",
+                                            "enabled": "bottom_layers > 0 and flooring_layer_count > 0",
+                                            "limit_to_extruder": "top_bottom_extruder_nr",
+                                            "settable_per_mesh": true
+                                        }
+                                    }
+                                },
+                                "infill_wall_line_count":
+                                {
+                                    "label": "Wall Line Count Infill",
+                                    "description": "The number of walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
+                                    "default_value": 2,
+                                    "value": "wall_line_count",
+                                    "type": "int",
+                                    "minimum_value": "0",
+                                    "maximum_value": "999999",
+                                    "enabled": "infill_sparse_density > 0",
+                                    "limit_to_extruder": "infill_extruder_nr",
+                                    "settable_per_mesh": true
+                                }
+                            }
                         }
                     }
                 },
@@ -1883,20 +1972,6 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "skin_outline_count":
-                {
-                    "label": "Extra Skin Wall Count",
-                    "description": "Replaces the outermost part of the top/bottom pattern with a number of concentric lines. Using one or two lines improves roofs that start on infill material.",
-                    "value": "0 if top_bottom_pattern == 'concentric' and top_bottom_pattern_0 == 'concentric' and roofing_layer_count <= 0 else 1",
-                    "default_value": 1,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "10",
-                    "maximum_value": "999999",
-                    "type": "int",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern != 'concentric' or top_bottom_pattern_0 != 'concentric' or (roofing_layer_count > 0 and roofing_pattern != 'concentric'))",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "ironing_enabled":
                 {
                     "label": "Enable Ironing",
@@ -2317,18 +2392,6 @@
                     "minimum_value": "1",
                     "maximum_value_warning": "infill_line_distance / infill_line_width",
                     "enabled": "infill_sparse_density > 0 and infill_pattern != 'zigzag' and (gradual_infill_steps == 0 or not zig_zaggify_infill)",
-                    "limit_to_extruder": "infill_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "infill_wall_line_count":
-                {
-                    "label": "Extra Infill Wall Count",
-                    "description": "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\nThis feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right.",
-                    "default_value": 0,
-                    "type": "int",
-                    "minimum_value": "0",
-                    "maximum_value": "999999",
-                    "enabled": "infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
