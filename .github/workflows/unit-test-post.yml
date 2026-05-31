@@ -9,5 +9,8 @@ jobs:
   publish-test-results:
     uses: ultimaker/cura-workflows/.github/workflows/unit-test-post.yml@main
     with:
-      workflow_run_json: ${{ toJSON(github.event.workflow_run) }}
+      workflow_run_conclusion: ${{ github.event.workflow_run.conclusion }}
+      workflow_run_id: ${{ github.event.workflow_run.id }}
+      workflow_run_head_sha: ${{ github.event.workflow_run.head_sha }}
+      workflow_run_event: ${{ github.event.workflow_run.event }}
     secrets: inherit

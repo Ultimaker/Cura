@@ -1,4 +1,4 @@
-# Copyright (c) 2025 UltiMaker
+# Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 import platform
@@ -11,6 +11,7 @@ from PyQt6.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
 from PyQt6.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
+from UM.TaskManagement.HttpRequestData import HttpRequestData
 from UM.Version import Version
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -22,7 +23,6 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .ClusterApiClient import ClusterApiClient
 from .SendMaterialJob import SendMaterialJob
 from ..ExportFileJob import ExportFileJob
-from ..Messages.AuthorizationRequiredMessage import AuthorizationRequiredMessage
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
@@ -57,6 +57,9 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.setAuthenticationState(AuthState.Authenticated)
         self._setInterfaceElements()
         self._active_camera_url = QUrl()  # type: QUrl
+
+        self._uploader_handle: Optional[QNetworkReply] = None
+        self._progress.actionTriggered.connect(self._onProgressMessageActionTriggered)
 
     def _setInterfaceElements(self) -> None:
         """Set all the interface elements and texts for this output device."""
@@ -119,6 +122,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super()._update()
         if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
             return  # avoid calling the cluster too often
+        self._time_of_last_request = time()
         self.getApiClient().getPrinters(self._updatePrinters)
         self.getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
@@ -144,6 +148,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if self._progress.visible:
             PrintJobUploadBlockedMessage().show()
             return
+
+        self._uploader_handle = None
 
         self.writeStarted.emit(self)
 
@@ -197,17 +203,25 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.show()
         parts = [
             self._createFormPart("name=owner", bytes(f"user@{platform.node()}", "utf-8"), "text/plain"),
-            self._createFormPart("name=\"file\"; filename=\"%s\"" % self._active_exported_job.getFileName(),
-                                 self._active_exported_job.getOutput())
+            self._createFormPart(
+                "name=\"file\"; filename=\"%s\"" % self._active_exported_job.getFileName(),
+                self._active_exported_job.getOutput()
+            )
         ]
         # If a specific printer was selected we include the name in the request.
         # FIXME: Connect should allow the printer UUID here instead of the 'unique_name'.
         if unique_name is not None:
             parts.append(self._createFormPart("name=require_printer_name", bytes(unique_name, "utf-8"), "text/plain"))
         # FIXME: move form posting to API client
-        self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
-                               on_progress=self._onPrintJobUploadProgress,
-                               request=self.getApiClient().createEmptyRequest("/cluster-api/v1/print_jobs/", content_type=None, method="POST"))
+        self._uploader_handle = self.postFormWithParts(
+            "/cluster-api/v1/print_jobs/",
+            parts,
+            on_finished=self._onPrintUploadCompleted,
+            on_progress=self._onPrintJobUploadProgress,
+            request=self.getApiClient().createEmptyRequest("/cluster-api/v1/print_jobs/",
+                                                           content_type=None,
+                                                           )
+        )
         self._active_exported_job = None
 
     def _onPrintJobUploadProgress(self, bytes_sent: int, bytes_total: int) -> None:
@@ -217,11 +231,15 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.setProgress(percentage * 100)
         self.writeProgress.emit()
 
-    def _onPrintUploadCompleted(self, _: QNetworkReply) -> None:
+    def _onPrintUploadCompleted(self, reply: QNetworkReply) -> None:
         """Handler for when the print job was fully uploaded to the cluster."""
 
+        self._uploader_handle = None
         self._progress.hide()
-        PrintJobUploadSuccessMessage().show()
+        if reply.error() == QNetworkReply.NetworkError.NoError:
+            PrintJobUploadSuccessMessage().show()
+        else:
+            PrintJobUploadErrorMessage().show()
         self.writeFinished.emit()
 
     def _onUploadError(self, message: str = None) -> None:
@@ -230,9 +248,18 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         :param message: The message to display.
         """
 
+        self._uploader_handle = None
         self._progress.hide()
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
+
+    def _onProgressMessageActionTriggered(self, message: "Message", action: str):
+        if action == "abort_upload":
+            if self._uploader_handle is not None:
+                self._uploader_handle.abort()
+            self._onUploadError(I18N_CATALOG.i18nc("@info:message", "The send-print-job process was aborted. Please try again."))
+        else:
+            Logger.warning(f"Unknown action {action} triggered on print-job upload progress message.")
 
     def _updatePrintJobPreviewImages(self):
         """Download all the images from the cluster and load their data in the print job models."""
@@ -241,12 +268,6 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             if print_job.getPreviewImage() is None:
                 self.getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
 
-    def _onAuthRequired(self, error_msg: str) -> None:
-        active_name = CuraApplication.getInstance().getOutputDeviceManager().getActiveDevice().getName()
-        if self._name == active_name:
-            Logger.info(f"Authorization required for {self._name}: {error_msg}")
-            AuthorizationRequiredMessage.show(self._name, error_msg)
-
     def getApiClient(self) -> ClusterApiClient:
         """Get the API client instance."""
 
@@ -254,6 +275,5 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             self._cluster_api = ClusterApiClient(
                 self._address,
                 on_error = lambda error: Logger.log("e", str(error)),
-                on_auth_required = self._onAuthRequired
             )
         return self._cluster_api

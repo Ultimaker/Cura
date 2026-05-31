@@ -61,6 +61,7 @@ Item
     property alias preferences: preferencesAction
 
     property alias showProfileFolder: showProfileFolderAction
+    property alias openCuraLogFile: openCuraLogFileAction
     property alias documentation: documentationAction
     property alias openSponsershipPage: openSponsershipPageAction
     property alias reportBug: reportBugAction
@@ -534,6 +535,12 @@ Item
     {
         id: showProfileFolderAction
         text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder")
+    }
+
+    Action
+    {
+        id: openCuraLogFileAction
+        text: catalog.i18nc("@action:inmenu menubar:help","Open Cura Log File")
     }
 
 

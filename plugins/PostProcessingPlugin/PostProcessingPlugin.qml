@@ -20,6 +20,7 @@ UM.Dialog
     minimumWidth: 400 * screenScaleFactor
     minimumHeight: 250 * screenScaleFactor
     backgroundColor: UM.Theme.getColor("main_background")
+    selfDestroy: true
     onVisibleChanged:
     {
         // Whenever the window is closed (either via the "Close" button or the X on the window frame), we want to update it in the stack.
@@ -38,6 +39,42 @@ UM.Dialog
         property string activeScriptName
 
         anchors.fill: parent
+
+        // Helper function to check if a setting should use multiline text area
+        // Supports "multiline" or "@[multiline]" or "@[multiline, other] comment"
+        function isMultilineSetting(definition)
+        {
+            if (!definition || !definition.comments)
+            {
+                return false;
+            }
+            
+            var commentsLower = definition.comments.toLowerCase();
+            
+            // Simple format: exact match
+            if (commentsLower === "multiline")
+            {
+                return true;
+            }
+            
+            // Directive format: parse @[...] and check if multiline is in the list
+            var directiveStart = commentsLower.indexOf("@[");
+            var directiveEnd = commentsLower.indexOf("]", directiveStart);
+            if (directiveStart >= 0 && directiveEnd > directiveStart)
+            {
+                var directivesText = commentsLower.substring(directiveStart + 2, directiveEnd);
+                var directives = directivesText.split(",");
+                for (var i = 0; i < directives.length; i++)
+                {
+                    if (directives[i].trim() === "multiline")
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
 
         ButtonGroup
         {
@@ -301,6 +338,10 @@ UM.Dialog
                     {
                         if (provider.properties.enabled == "True" && model.type != undefined)
                         {
+                            if (definition && definition.comments && definition.comments.toLowerCase() === "multiline")
+                            {
+                                return UM.Theme.getSize("standard_list_lineheight").height + UM.Theme.getSize("narrow_margin").height + (UM.Theme.getSize("setting_control").height * 3);
+                            }
                             return UM.Theme.getSize("section").height;
                         }
                         else
@@ -331,6 +372,19 @@ UM.Dialog
                         settingLoader.item.showLinkedSettingIcon = false
                         settingLoader.item.doDepthIndentation = false
                         settingLoader.item.doQualityUserSettingEmphasis = false
+                        // Pass properties explicitly to custom components that don't extend SettingItem
+                        if (settingLoader.item.hasOwnProperty("definition")) {
+                            settingLoader.item.definition = settingLoader.definition
+                        }
+                        if (settingLoader.item.hasOwnProperty("settingDefinitionsModel")) {
+                            settingLoader.item.settingDefinitionsModel = settingLoader.settingDefinitionsModel
+                        }
+                        if (settingLoader.item.hasOwnProperty("propertyProvider")) {
+                            settingLoader.item.propertyProvider = settingLoader.propertyProvider
+                        }
+                        if (settingLoader.item.hasOwnProperty("globalPropertyProvider")) {
+                            settingLoader.item.globalPropertyProvider = settingLoader.globalPropertyProvider
+                        }
                     }
 
                     sourceComponent:
@@ -348,7 +402,7 @@ UM.Dialog
                             case "bool":
                                 return settingCheckBox
                             case "str":
-                                return settingTextField
+                                return base.isMultilineSetting(definition) ? settingTextArea : settingTextField
                             case "category":
                                 return settingCategory
                             default:
@@ -407,6 +461,13 @@ UM.Dialog
 
         Component
         {
+            id: settingTextArea;
+
+            SettingTextArea { }
+        }
+
+        Component
+        {
             id: settingComboBox;
 
             Cura.SettingComboBox { }
@@ -445,53 +506,5 @@ UM.Dialog
     {
         text: catalog.i18nc("@action:button", "Close")
         onClicked: dialog.accept()
-    }
-
-    Item
-    {
-        objectName: "postProcessingSaveAreaButton"
-        visible: activeScriptsList.count > 0
-        height: UM.Theme.getSize("action_button").height
-        width: height
-
-        Cura.SecondaryButton
-        {
-            height: UM.Theme.getSize("action_button").height
-            tooltip:
-            {
-                var tipText = catalog.i18nc("@info:tooltip", "Change active post-processing scripts.");
-                if (activeScriptsList.count > 0)
-                {
-                    tipText += "<br><br>" + catalog.i18ncp("@info:tooltip",
-                        "The following script is active:",
-                        "The following scripts are active:",
-                        activeScriptsList.count
-                    ) + "<ul>";
-                    for(var i = 0; i < activeScriptsList.count; i++)
-                    {
-                        tipText += "<li>" + manager.getScriptLabelByKey(manager.scriptList[i]) + "</li>";
-                    }
-                    tipText += "</ul>";
-                }
-                return tipText
-            }
-            toolTipContentAlignment: UM.Enums.ContentAlignment.AlignLeft
-            onClicked: dialog.show()
-            iconSource: Qt.resolvedUrl("Script.svg")
-            fixedWidthMode: false
-        }
-
-        Cura.NotificationIcon
-        {
-            id: activeScriptCountIcon
-            visible: activeScriptsList.count > 0
-            anchors
-            {
-                horizontalCenter: parent.right
-                verticalCenter: parent.top
-            }
-
-            labelText: activeScriptsList.count
-        }
     }
 }

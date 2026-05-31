@@ -16,7 +16,7 @@ SettingItem
     {
         id: control
 
-        model: definition.options
+        model: definition ? definition.options : []
         textRole: "value"
         forceHighlight: base.hovered
 
@@ -25,7 +25,9 @@ SettingItem
         onActivated:
         {
             forceActiveFocus()
-            propertyProvider.setPropertyValue("value", definition.options[index].key)
+            if (definition && definition.options && index >= 0 && index < definition.options.length) {
+                propertyProvider.setPropertyValue("value", definition.options[index].key)
+            }
         }
 
         onActiveFocusChanged:

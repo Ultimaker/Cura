@@ -34,6 +34,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
+    package_type = "application"
 
     python_requires = "translationextractor/[>=2.2.0]"
 
@@ -591,7 +592,10 @@ class CuraConan(ConanFile):
         for req in self.conan_data["requirements"]:
             if self.options.internal and "fdm_materials" in req:
                 continue
-            self.requires(req)
+            no_skip = False
+            if 'cura_binary_data' in req:
+                no_skip = True
+            self.requires(req, no_skip=no_skip)
         if self.options.internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
@@ -751,6 +755,11 @@ class CuraConan(ConanFile):
         cura_resources = self.dependencies["cura_resources"].cpp_info
         for res_dir in cura_resources.resdirs:
             rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], Path(res_dir).name))
+
+        # Copy internal resources
+        if self.options.internal:
+            cura_private_data = self.dependencies["cura_private_data"].cpp_info
+            copy(self, "*", cura_private_data.resdirs[0], self.package_folder)
 
     def package_info(self):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))

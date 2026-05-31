@@ -50,7 +50,7 @@ class ColorMix(Script):
                     "description": "Select model to apply to for print one at a time print sequence. 0 = everything",
                     "type": "int",
                     "default_value": 0,
-                    "minimum_value": "0"
+                    "minimum_value": 0
                 },
                 "start_height":
                 {
@@ -58,7 +58,7 @@ class ColorMix(Script):
                     "description": "Value to start at (mm or layer)",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "0"
+                    "minimum_value": 0
                 },
                 "behavior":
                 {
@@ -74,7 +74,7 @@ class ColorMix(Script):
                     "description": "Value to stop at (mm or layer)",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "start_height",
                     "enabled": "behavior == 'blend_value'" 
                 },
@@ -84,7 +84,7 @@ class ColorMix(Script):
                     "description": "First extruder percentage 0-100",
                     "type": "float",
                     "default_value": 100,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100"
                 },
@@ -94,7 +94,7 @@ class ColorMix(Script):
                     "description": "First extruder percentage 0-100 to finish blend",
                     "type": "float",
                     "default_value": 0,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
                     "enabled": "behavior == 'blend_value'"
@@ -112,7 +112,7 @@ class ColorMix(Script):
             m = re.search("^[+-]?[0-9]*", subPart)
         else:
             #the minus at the beginning allows for negative values, e.g. for delta printers
-            m = re.search("^[-]?[0-9]*\.?[0-9]*", subPart)
+            m = re.search("^[-]?[0-9]*\\.?[0-9]*", subPart)
         if m == None:
             return default
         try:

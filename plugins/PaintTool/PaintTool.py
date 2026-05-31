@@ -21,6 +21,7 @@ from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Tool import Tool
+from UM.View.GL.OpenGLContext import OpenGLContext
 
 from cura.CuraApplication import CuraApplication
 from cura.PickingPass import PickingPass
@@ -44,6 +45,7 @@ class PaintTool(Tool):
             MULTIPLE_SELECTION = 0 # Multiple objects are selected, wait until there is only one
             PREPARING_MODEL = 1    # Model is being prepared (UV-unwrapping, texture generation)
             READY = 2              # Ready to paint !
+            NOT_SUPPORTED = 3      # Painting is not supported (due to OpenGL compatibility mode)
 
     def __init__(self, view: PaintView) -> None:
         super().__init__()
@@ -51,6 +53,7 @@ class PaintTool(Tool):
         self._view: PaintView = view
         self._view.canUndoChanged.connect(self._onCanUndoChanged)
         self._view.canRedoChanged.connect(self._onCanRedoChanged)
+        self._view.currentPaintedObjectMeshDataChanged.connect(self._updateState)
 
         self._picking_pass: Optional[PickingPass] = None
         self._faces_selection_pass: Optional[SelectionPass] = None
@@ -71,7 +74,9 @@ class PaintTool(Tool):
 
         self._last_world_coords: Optional[numpy.ndarray] = None
 
-        self._state: PaintTool.Paint.State = PaintTool.Paint.State.MULTIPLE_SELECTION
+        legacy_opengl = OpenGLContext.isLegacyOpenGL()
+        self._state: PaintTool.Paint.State = PaintTool.Paint.State.NOT_SUPPORTED if legacy_opengl else\
+                                                                                PaintTool.Paint.State.MULTIPLE_SELECTION
         self._prepare_texture_job: Optional[PrepareTextureJob] = None
 
         self.setExposedProperties("PaintType", "BrushSize", "BrushColor", "BrushShape", "BrushExtruder", "State", "CanUndo", "CanRedo")
@@ -197,40 +202,6 @@ class PaintTool(Tool):
     def clear(self) -> None:
         self._view.clearPaint()
         self._updateScene(update_node = True)
-
-    @staticmethod
-    def _get_intersect_ratio_via_pt(a: numpy.ndarray, pt: numpy.ndarray, b: numpy.ndarray, c: numpy.ndarray) -> float:
-        # compute the intersection of (param) A - pt with (param) B - (param) C
-        if all(a == pt) or all(b == c) or all(a == c) or all(a == b):
-            return 1.0
-
-        # compute unit vectors of directions of lines A and B
-        udir_a = a - pt
-        udir_a /= numpy.linalg.norm(udir_a)
-        udir_b = b - c
-        udir_b /= numpy.linalg.norm(udir_b)
-
-        # find unit direction vector for line C, which is perpendicular to lines A and B
-        udir_res = numpy.cross(udir_b, udir_a)
-        udir_res_len = numpy.linalg.norm(udir_res)
-        if udir_res_len == 0:
-            return 1.0
-        udir_res /= udir_res_len
-
-        # solve system of equations
-        rhs = b - a
-        lhs = numpy.array([udir_a, -udir_b, udir_res]).T
-        try:
-            solved = numpy.linalg.solve(lhs, rhs)
-        except numpy.linalg.LinAlgError:
-            return 1.0
-
-        # get the ratio
-        intersect = ((a + solved[0] * udir_a) + (b + solved[1] * udir_b)) * 0.5
-        a_intersect_dist = numpy.linalg.norm(a - intersect)
-        if a_intersect_dist == 0:
-            return 1.0
-        return numpy.linalg.norm(pt - intersect) / a_intersect_dist
 
     def _nodeTransformChanged(self, *args) -> None:
         self._cache_dirty = True
@@ -437,23 +408,44 @@ class PaintTool(Tool):
                 scene = self.getController().getScene()
                 scene.sceneChanged.emit(scene.getRoot())
 
+    @staticmethod
+    def _isModifierMesh(node: SceneNode) -> bool:
+        """Returns True if the node is a modifier/special mesh type that should not be painted.
+
+        Painting modifier meshes (e.g. support blockers) triggers UV-unwrapping and texture preparation
+        that corrupts their mesh data and causes slicing to fail.
+        """
+        modifier_mesh_decorations = ("isAntiOverhangMesh", "isSupportMesh", "isCuttingMesh", "isInfillMesh")
+
+        return any(node.callDecoration(d) for d in modifier_mesh_decorations)
+
     def _onSelectionChanged(self) -> None:
         super()._onSelectionChanged()
 
         single_selection = len(Selection.getAllSelectedObjects()) == 1
-        self._view.setPaintedObject(Selection.getSelectedObject(0) if single_selection else None)
+        selected_object = Selection.getSelectedObject(0) if single_selection else None
+        if selected_object is not None and self._isModifierMesh(selected_object):
+            selected_object = None
+
+        self._view.setPaintedObject(selected_object)
         self._updateActiveView()
         self._updateState()
 
     def _updateActiveView(self) -> None:
+        if self._state == PaintTool.Paint.State.NOT_SUPPORTED:
+            return
+
         has_painted_object = self._view.hasPaintedObject()
         stage_is_prepare = self._controller.getActiveStage().stageId == "PrepareStage"
         self.setActiveView("PaintTool" if has_painted_object and stage_is_prepare else None)
 
     def _updateState(self):
+        if self._state == PaintTool.Paint.State.NOT_SUPPORTED:
+            return
+
         painted_object = self._view.getPaintedObject()
         if painted_object is not None and self._controller.getActiveTool() == self:
-            if painted_object.callDecoration("getPaintTexture") is not None:
+            if painted_object.callDecoration("getPaintTexture") is not None and painted_object.getMeshData().hasUVCoordinates():
                 new_state = PaintTool.Paint.State.READY
             else:
                 new_state = PaintTool.Paint.State.PREPARING_MODEL
@@ -472,6 +464,7 @@ class PaintTool(Tool):
             self._prepare_texture_job = None
             self._state = PaintTool.Paint.State.READY
             self.propertyChanged.emit()
+            self._updateScene()
 
     def _updateIgnoreUnselectedObjects(self):
         ignore_unselected_objects = self._controller.getActiveView().name == "PaintTool"
