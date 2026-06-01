@@ -581,7 +581,6 @@
         "skin_material_flow": { "value": "material_flow" },
         "skin_material_flow_layer_0": { "value": "material_flow" },
         "skin_monotonic": { "value": true },
-        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_overlap": { "value": 0 },
         "skin_preshrink": { "value": 0 },
         "skirt_brim_extruder_nr":
@@ -740,6 +739,7 @@
         "wall_0_material_flow": { "value": "material_flow" },
         "wall_0_material_flow_layer_0": { "value": "material_flow" },
         "wall_0_wipe_dist": { "value": 0.8 },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "wall_material_flow": { "value": "material_flow" },
         "wall_x_material_flow": { "value": "material_flow" },
         "wall_x_material_flow_layer_0": { "value": "material_flow" },

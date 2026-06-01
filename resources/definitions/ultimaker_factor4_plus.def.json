@@ -256,7 +256,6 @@
         "roofing_pattern": { "value": "'lines'" },
         "skin_material_flow": { "value": "material_flow * 0.97" },
         "skin_material_flow_layer_0": { "value": "material_flow_layer_0 * 0.9" },
-        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_preshrink": { "value": "wall_thickness" },
         "skin_support_density": { "value": "material_flow * 0.5" },
         "skin_support_speed": { "value": "speed_wall_0" },
@@ -371,6 +370,7 @@
         "top_bottom_pattern": { "value": "'lines'" },
         "travel_retract_before_outer_wall": { "value": "'force_not_retracted_from_infill'" },
         "wall_0_material_flow_roofing": { "value": "roofing_material_flow" },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "wall_overhang_angle": { "value": 30 },
         "wall_overhang_speed_factors":
         {

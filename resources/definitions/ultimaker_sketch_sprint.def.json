@@ -225,7 +225,6 @@
         "skin_material_flow": { "value": "material_flow" },
         "skin_material_flow_layer_0": { "value": "material_flow * 0.95" },
         "skin_monotonic": { "value": true },
-        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_overlap": { "value": 10 },
         "skirt_brim_minimal_length": { "value": 250 },
         "skirt_gap": { "value": 1.2 },
@@ -379,6 +378,7 @@
         "wall_0_inset": { "value": "0" },
         "wall_0_material_flow_layer_0": { "value": "material_flow * 0.95" },
         "wall_0_wipe_dist": { "value": 0.2 },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "wall_line_width_x": { "value": 0.58 },
         "wall_overhang_angle": { "value": 35 },
         "wall_overhang_speed_factors":

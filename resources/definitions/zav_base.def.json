@@ -75,7 +75,6 @@
         "retraction_combing_max_distance": { "value": "10" },
         "retraction_min_travel": { "value": "3" },
         "skin_line_width": { "value": "round(line_width * 1.0, 2)" },
-        "wall_line_count_skin": { "value": "wall_line_count" },
         "skirt_brim_line_width": { "value": "round(line_width * 1.1, 2)" },
         "speed_layer_0": { "value": "25" },
         "speed_print": { "value": "80" },
@@ -89,6 +88,7 @@
         "top_bottom_pattern": { "value": "'zigzag'" },
         "top_bottom_pattern_0": { "value": "'zigzag'" },
         "travel_avoid_other_parts": { "value": "False" },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "z_seam_type": { "value": "'shortest'" },
         "zig_zaggify_infill": { "value": "True" }
     }
