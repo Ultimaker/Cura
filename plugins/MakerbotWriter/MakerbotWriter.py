@@ -16,6 +16,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.i18n import i18nCatalog
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.FormatMaps import FormatMaps
@@ -149,16 +150,16 @@ class MakerbotWriter(MeshWriter):
                 metadata_json = api.interface.settings.getSliceMetadata()
 
                 # All the mapping stuff we have to do:
-                product_to_id_map = FormatMaps.getProductIdMap()
                 printer_name_map = FormatMaps.getInversePrinterNameMap()
                 extruder_type_map = FormatMaps.getInverseExtruderTypeMap()
                 material_map = FormatMaps.getInverseMaterialMap()
+                definition_name_to_id = {d.get("name", "").lower(): d["id"]
+                                         for d in ContainerRegistry.getInstance().findDefinitionContainersMetadata()}
                 for key, value in metadata_json.items():
                     if "all_settings" in value:
                         if "machine_name" in value["all_settings"]:
                             machine_name = value["all_settings"]["machine_name"]
-                            if machine_name in product_to_id_map:
-                                machine_name = product_to_id_map[machine_name][0]
+                            machine_name = definition_name_to_id.get(machine_name.lower(), machine_name)
                             value["all_settings"]["machine_name"] = printer_name_map.get(machine_name, machine_name)
                         if "machine_nozzle_id" in value["all_settings"]:
                             extruder_type = value["all_settings"]["machine_nozzle_id"]

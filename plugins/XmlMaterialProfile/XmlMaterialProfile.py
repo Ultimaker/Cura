@@ -3,8 +3,6 @@
 
 import copy
 import io
-import json # To parse the product-to-id mapping file.
-import os.path # To find the product-to-id mapping.
 from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
@@ -18,7 +16,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.FormatMaps import FormatMaps
 from cura.Machines.VariantType import VariantType
 
 try:
@@ -252,18 +249,11 @@ class XmlMaterialProfile(InstanceContainer):
                             "material_container": container}
             machine_variant_map[definition_id][variant_name] = variant_dict
 
-        # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
-
         for definition_id, container in machine_container_map.items():
             definition_id = container.getMetaDataEntry("definition")
             definition_metadata = registry.findDefinitionContainersMetadata(id = definition_id)[0]
 
-            product = definition_id
-            for product_name, product_id_list in product_id_map.items():
-                if definition_id in product_id_list:
-                    product = product_name
-                    break
+            product = definition_metadata.get("name", definition_id)
 
             builder.start("machine", {}) # type: ignore
             builder.start("machine_identifier", {
@@ -653,9 +643,6 @@ class XmlMaterialProfile(InstanceContainer):
         self.setMetaData(meta_data)
         self._dirty = False
 
-        # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
-
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
             machine_compatibility = common_compatibility
@@ -699,9 +686,11 @@ class XmlMaterialProfile(InstanceContainer):
 
             identifiers = machine.iterfind("./um:machine_identifier", self.__namespaces)
             for identifier in identifiers:
-                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                product_name = identifier.get("product", "")
+                machine_id_list = [d["id"] for d in ContainerRegistry.getInstance().findDefinitionContainersMetadata()
+                                   if d.get("name", "").lower() == product_name.lower()]
                 if not machine_id_list:
-                    machine_id_list = self.getPossibleDefinitionIDsFromName(identifier.get("product"))
+                    machine_id_list = self.getPossibleDefinitionIDsFromName(product_name)
                 for machine_id in machine_id_list:
                     definitions = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
                     if not definitions:
@@ -926,9 +915,6 @@ class XmlMaterialProfile(InstanceContainer):
         base_metadata["compatible"] = common_compatibility
         result_metadata.append(base_metadata)
 
-        # Map machine human-readable names to IDs
-        product_id_map = FormatMaps.getProductIdMap()
-
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
             for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
@@ -936,9 +922,11 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id_list = product_id_map.get(identifier.get("product", ""), [])
+                product_name = identifier.get("product", "")
+                machine_id_list = [d["id"] for d in ContainerRegistry.getInstance().findDefinitionContainersMetadata()
+                                   if d.get("name", "").lower() == product_name.lower()]
                 if not machine_id_list:
-                    machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
+                    machine_id_list = cls.getPossibleDefinitionIDsFromName(product_name)
 
                 for machine_id in machine_id_list:
                     definition_metadatas = ContainerRegistry.getInstance().findDefinitionContainersMetadata(id = machine_id)
