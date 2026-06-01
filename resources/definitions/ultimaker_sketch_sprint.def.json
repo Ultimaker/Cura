@@ -225,7 +225,7 @@
         "skin_material_flow": { "value": "material_flow" },
         "skin_material_flow_layer_0": { "value": "material_flow * 0.95" },
         "skin_monotonic": { "value": true },
-        "skin_outline_count": { "value": 0 },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_overlap": { "value": 10 },
         "skirt_brim_minimal_length": { "value": 250 },
         "skirt_gap": { "value": 1.2 },

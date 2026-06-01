@@ -76,7 +76,7 @@
         "retraction_combing_max_distance": { "value": "10" },
         "retraction_min_travel": { "value": "3" },
         "skin_line_width": { "value": "round(line_width * 1.0, 2)" },
-        "skin_outline_count": { "value": "0" },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skirt_brim_line_width": { "value": "round(line_width * 1.1, 2)" },
         "speed_layer_0": { "value": "25" },
         "speed_print": { "value": "80" },

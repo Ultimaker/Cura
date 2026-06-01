@@ -146,7 +146,7 @@
         "retraction_hop_enabled": { "value": false },
         "retraction_min_travel": { "value": "(round(line_width * 10))" },
         "roofing_layer_count": { "value": "0" },
-        "skin_outline_count": { "value": "0" },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skirt_brim_minimal_length": { "value": 50 },
         "skirt_gap": { "value": 1 },
         "speed_ironing": { "value": "150" },

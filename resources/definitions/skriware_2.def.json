@@ -183,7 +183,7 @@
         "roofing_material_flow": { "value": "99" },
         "skin_material_flow": { "value": "99" },
         "skin_no_small_gaps_heuristic": { "default_value": true },
-        "skin_outline_count": { "value": 0 },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_overlap": { "value": "15" },
         "skin_overlap_mm": { "value": "0.06" },
         "skin_preshrink": { "value": "0.0" },

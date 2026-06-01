@@ -144,7 +144,7 @@
         },
         "skin_line_width": { "minimum_value_warning": "machine_nozzle_size" },
         "skin_no_small_gaps_heuristic": { "value": "False" },
-        "skin_outline_count": { "value": 0 },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skin_overlap": { "value": 5 },
         "skirt_brim_line_width": { "minimum_value_warning": "machine_nozzle_size" },
         "speed_infill": { "maximum_value_warning": "300" },

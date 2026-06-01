@@ -227,7 +227,7 @@
         "retraction_hop_after_extruder_switch": { "default_value": false },
         "retraction_min_travel": { "value": 0.8 },
         "retraction_speed": { "default_value": 28.0 },
-        "skin_outline_count": { "value": "0" },
+        "wall_line_count_skin": { "value": "wall_line_count" },
         "skirt_brim_speed": { "value": 26.0 },
         "skirt_line_count": { "default_value": 2 },
         "speed_layer_0": { "value": 26.0 },

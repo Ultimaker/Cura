@@ -291,7 +291,7 @@
         "retraction_hop_enabled": { "value": true },
         "retraction_speed": { "value": 45 },
         "roofing_layer_count": { "value": 2 },
-        "skin_outline_count": { "value": 2 },
+        "wall_line_count_skin": { "value": "wall_line_count + 2" },
         "skirt_brim_minimal_length": { "value": 500 },
         "skirt_gap": { "value": 10 },
         "skirt_line_count": { "value": 5 },
