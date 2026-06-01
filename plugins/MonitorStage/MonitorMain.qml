@@ -151,7 +151,7 @@ Rectangle
             {
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: Qt.openUrlExternally("https://ultimaker.com/in/cura/troubleshooting/network?utm_source=cura&utm_medium=software&utm_campaign=monitor-not-connected")
+                onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667337573408")
                 onEntered: manageQueueText.font.underline = true
                 onExited: manageQueueText.font.underline = false
             }
