@@ -33,6 +33,15 @@ Item
         onTriggered: UM.Controller.triggerAction("redoStackAction")
     }
 
+    property UM.SettingPropertyProvider supportEnabled: UM.SettingPropertyProvider
+    {
+        id: supportEnabled
+        containerStack: Cura.MachineManager.activeMachine
+        key: "support_enable"
+        watchedProperties: [ "value", "enabled", "description" ]
+        storeIndex: 0
+    }
+
     Column
     {
         id: mainColumn
@@ -53,18 +62,18 @@ Item
 
             PaintModeButton
             {
-                text: catalog.i18nc("@action:button", "Support")
-                icon: "Support"
-                tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
-                mode: "support"
-            }
-
-            PaintModeButton
-            {
                 text: catalog.i18nc("@action:button", "Material")
                 icon: "Extruder"
                 tooltipText: catalog.i18nc("@tooltip", "Paint on model to select the material to be used")
                 mode: "extruder"
+            }
+
+            PaintModeButton
+            {
+                text: catalog.i18nc("@action:button", "Support")
+                icon: "Support"
+                tooltipText: catalog.i18nc("@tooltip", "Refine support placement by defining preferred/avoidance areas")
+                mode: "support"
             }
         }
 
@@ -212,14 +221,24 @@ Item
 
         UM.Label
         {
+            id: supportAngleLabel
             text: catalog.i18nc("@label", "Auto-Support Overhang")
-            visible: UM.Controller.properties.getValue("PaintType") === "support"
+            visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
+        }
+
+        Cura.TertiaryButton
+        {
+            text: catalog.i18nc("@label", "<b>Enable auto-support</b>")
+            visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "False"
+            onClicked: supportEnabled.setPropertyValue("value", true)
+            height: supportAngleLabel.height + supportAngleSlider.height + UM.Theme.getSize("default_margin").height
         }
 
         RowLayout
         {
+            id: supportAngleSlider
             width: parent.width
-            visible: UM.Controller.properties.getValue("PaintType") === "support"
+            visible: UM.Controller.properties.getValue("PaintType") === "support" && supportEnabled.properties.value == "True"
             height: childrenRect.height
 
             Cura.SingleSettingSlider
