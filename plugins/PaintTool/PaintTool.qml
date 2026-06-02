@@ -12,8 +12,9 @@ Item
 {
     id: base
 
-    width: childrenRect.width
-    height: childrenRect.height
+    // NOTE: Uses the main 'kid's dimensions directly, since childrenRect is only updated on _growing_, not _shrinking_.
+    width: mainColumn.width
+    height: mainColumn.height
     UM.I18nCatalog { id: catalog; name: "cura"}
 
     Action
