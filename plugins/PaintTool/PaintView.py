@@ -379,6 +379,8 @@ class PaintView(CuraView):
         global_container_stack: GlobalStack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return 1.0
+        if not global_container_stack.getValue("support_enable"):
+            return 1.0
         extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
         if extruder_nr < 0 or extruder_nr >= len(global_container_stack.extruderList):
             return 1.0
