@@ -18,6 +18,7 @@ RecommendedSettingSection
     enableSectionSwitchVisible: supportEnabled.properties.enabled == "True"
     enableSectionSwitchChecked: supportEnabled.properties.value == "True"
     enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
+    keepSettingListOpen: true  // Keep related settings open, since we may need it w.r.t. paint-on support even if 'auto' support is off.
     tooltipText: catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing.")
 
     function onEnableSectionChanged(state)
