@@ -218,10 +218,14 @@
         "wall_0_material_flow_layer_0": { "value": "1.10 * material_flow_layer_0" },
         "wall_thickness": { "value": "wall_line_width_0 + wall_line_width_x" },
         "wall_x_material_flow_layer_0": { "value": "0.95 * material_flow_layer_0" },
-	"z_seam_on_vertex": { "default_value": false, "value": false },
         "xy_offset": { "value": "-layer_height * 0.1" },
         "xy_offset_layer_0": { "value": "-wall_line_width_0 / 5 + xy_offset" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        "z_seam_on_vertex":
+        {
+            "default_value": false,
+            "value": false
+        },
         "z_seam_relative": { "value": "True" },
         "zig_zaggify_support": { "value": true }
     }
