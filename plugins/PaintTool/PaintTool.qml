@@ -12,7 +12,7 @@ Item
 {
     id: base
 
-    // NOTE: Uses the main 'kid's dimensions directly, since childrenRect is only updated on _growing_, not _shrinking_.
+    // NOTE: Uses the main child's dimensions directly, since childrenRect is only updated on _growing_, not _shrinking_.
     width: mainColumn.width
     height: mainColumn.height
     UM.I18nCatalog { id: catalog; name: "cura"}
@@ -38,7 +38,7 @@ Item
         id: supportEnabled
         containerStack: Cura.MachineManager.activeMachine
         key: "support_enable"
-        watchedProperties: [ "value", "enabled", "description" ]
+        watchedProperties: [ "value" ]
         storeIndex: 0
     }
 
