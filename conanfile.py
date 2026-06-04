@@ -366,7 +366,7 @@ class CuraConan(ConanFile):
 
         pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
         with open(pip_requirements_summary, 'r') as file:
-            for package_name, package_version in (yaml.safe_load(file) or {}).items():
+            for package_name, package_version in yaml.safe_load(file).items():
                 jobs.append((self._make_pip_dependency_description, (package_name, package_version)))
 
         if not jobs:
