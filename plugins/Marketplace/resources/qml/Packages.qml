@@ -22,6 +22,7 @@ ListView
     property var onRemoveBanner
 
     property bool showUpdateButton
+    property bool showUpdateAllButton: false
     property bool showDisableButton
     property bool showInstallButton
 

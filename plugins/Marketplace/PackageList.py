@@ -5,7 +5,7 @@ import json
 import os.path
 
 from PyQt6.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, Qt
-from typing import cast, Dict, Optional, Set, TYPE_CHECKING
+from typing import cast, Dict, List, Optional, Set, TYPE_CHECKING
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -51,11 +51,26 @@ class PackageList(ListModel):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._license_dialogs: Dict[str, QObject] = {}
 
+        # Queue for sequential bulk updates triggered from the tab-level "Update all" button.
+        self._pending_bulk_update_ids: List[str] = []
+        self._active_bulk_update_id: Optional[str] = None
+        self._bulk_update_in_progress = False
+        self._package_manager.packageInstalled.connect(self._onBulkUpdateFinished)
+        self._package_manager.packageInstallingFailed.connect(self._onBulkUpdateFinished)
+        self._package_manager.packagesWithUpdateChanged.connect(self.hasUpdatablePackagesChanged)
+
     def __del__(self) -> None:
         """ When this object is deleted it will loop through all registered API requests and aborts them """
         try:
             self.isLoadingChanged.disconnect()
             self.hasMoreChanged.disconnect()
+        except RuntimeError:
+            pass
+
+        try:
+            self._package_manager.packageInstalled.disconnect(self._onBulkUpdateFinished)
+            self._package_manager.packageInstallingFailed.disconnect(self._onBulkUpdateFinished)
+            self._package_manager.packagesWithUpdateChanged.disconnect(self.hasUpdatablePackagesChanged)
         except RuntimeError:
             pass
 
@@ -137,6 +152,73 @@ class PackageList(ListModel):
         if data:
             return data.get("package")
         return None
+
+    bulkUpdateInProgressChanged = pyqtSignal()
+
+    def setBulkUpdateInProgress(self, value: bool) -> None:
+        if self._bulk_update_in_progress != value:
+            self._bulk_update_in_progress = value
+            self.bulkUpdateInProgressChanged.emit()
+            self.hasUpdatablePackagesChanged.emit()
+
+    @pyqtProperty(bool, notify = bulkUpdateInProgressChanged)
+    def bulkUpdateInProgress(self) -> bool:
+        return self._bulk_update_in_progress
+
+    hasUpdatablePackagesChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = hasUpdatablePackagesChanged)
+    def hasUpdatablePackages(self) -> bool:
+        """True when at least one package in this list has a pending update available."""
+        for index in range(self.rowCount()):
+            data = self.getItem(index)
+            package = data.get("package") if data else None
+            if package and package.canUpdate and not package.isMissingPackageInformation:
+                return True
+        return False
+
+    @pyqtSlot()
+    def updateAllPackages(self) -> None:
+        """Queue updates for all currently listed packages that can be updated.
+
+        This acts only on the package models present in this specific list instance, which keeps
+        the action scoped to the currently visible tab.
+        """
+        if self._active_bulk_update_id:
+            return
+
+        self._pending_bulk_update_ids = []
+        for index in range(self.rowCount()):
+            data = self.getItem(index)
+            package = data.get("package") if data else None
+            if not package or not package.canUpdate or package.isMissingPackageInformation:
+                continue
+            self._pending_bulk_update_ids.append(package.packageId)
+
+        self.setBulkUpdateInProgress(len(self._pending_bulk_update_ids) > 0)
+
+        self._startNextBulkUpdate()
+
+    def _startNextBulkUpdate(self) -> None:
+        while self._pending_bulk_update_ids:
+            package_id = self._pending_bulk_update_ids.pop(0)
+            package = self.getPackageModel(package_id)
+            if not package or not package.canUpdate or package.isMissingPackageInformation or package.busy:
+                continue
+
+            self._active_bulk_update_id = package_id
+            package.update()
+            return
+
+        self._active_bulk_update_id = None
+        self.setBulkUpdateInProgress(False)
+
+    @pyqtSlot(str)
+    def _onBulkUpdateFinished(self, package_id: str) -> None:
+        if package_id != self._active_bulk_update_id:
+            return
+        self._active_bulk_update_id = None
+        self._startNextBulkUpdate()
 
     def _openLicenseDialog(self, package_id: str, license_content: str) -> None:
         plugin_path = self._plugin_registry.getPluginPath("Marketplace")

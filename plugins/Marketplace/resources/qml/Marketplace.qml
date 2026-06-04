@@ -172,17 +172,36 @@ UM.Dialog
                     font: UM.Theme.getFont("default")
                 }
 
-                Cura.TertiaryButton
+                Item
                 {
-                    text: catalog.i18nc("@info", "Search in the browser")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
-                    visible: pageSelectionTabBar.currentItem.hasSearch && searchHeader.visible
-                    isIconOnRightSide: true
-                    height: fontMetrics.height
-                    textFont: fontMetrics.font
-                    textColor: UM.Theme.getColor("text")
+                    implicitHeight: Math.max(fontMetrics.height, updateAllButton.implicitHeight)
+                    Layout.fillWidth: true
 
-                    onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+                    Cura.TertiaryButton
+                    {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: catalog.i18nc("@info", "Search in the browser")
+                        iconSource: UM.Theme.getIcon("LinkExternal")
+                        visible: pageSelectionTabBar.currentItem.hasSearch && searchHeader.visible
+                        isIconOnRightSide: true
+                        height: fontMetrics.height
+                        textFont: fontMetrics.font
+                        textColor: UM.Theme.getColor("text")
+
+                        onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+                    }
+
+                    Cura.SecondaryButton
+                    {
+                        id: updateAllButton
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        text: catalog.i18nc("@button", "Update all")
+                        visible: content.item !== null && content.item.showUpdateAllButton
+                        enabled: content.item !== null && !content.item.model.isLoading && content.item.model.hasUpdatablePackages
+                        onClicked: if (content.item) { content.item.model.updateAllPackages() }
+                    }
                 }
 
                 // Page contents.
