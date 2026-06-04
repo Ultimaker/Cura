@@ -102,6 +102,8 @@ class PackageList(ListModel):
         if self._is_loading != value:
             self._is_loading = value
             self.isLoadingChanged.emit()
+            if not value:
+                self.hasUpdatablePackagesChanged.emit()
 
     @pyqtProperty(bool, fset = setIsLoading, notify = isLoadingChanged)
     def isLoading(self) -> bool:
@@ -176,6 +178,17 @@ class PackageList(ListModel):
             if package and package.canUpdate and not package.isMissingPackageInformation:
                 return True
         return False
+
+    @pyqtProperty(int, notify = hasUpdatablePackagesChanged)
+    def updatablePackagesCount(self) -> int:
+        """Returns the number of packages in this list that have a pending update available."""
+        count = 0
+        for index in range(self.rowCount()):
+            data = self.getItem(index)
+            package = data.get("package") if data else None
+            if package and package.canUpdate and not package.isMissingPackageInformation:
+                count += 1
+        return count
 
     @pyqtSlot()
     def updateAllPackages(self) -> None:
