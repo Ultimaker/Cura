@@ -79,6 +79,7 @@ class PackageModel(QObject):
         self._package_manager.packageUninstalled.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packageInstallingFailed.connect(lambda pkg_id: self._packageInstalled(pkg_id))
         self._package_manager.packagesWithUpdateChanged.connect(self._processUpdatedPackages)
+        self._processUpdatedPackages()  # Initialize canUpdate based on current state, in case the signal already fired.
 
         self._is_busy = False
 
