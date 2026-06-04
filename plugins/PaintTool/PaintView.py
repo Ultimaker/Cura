@@ -33,8 +33,11 @@ from .MultiMaterialExtruderConverter import MultiMaterialExtruderConverter
 catalog = i18nCatalog("cura")
 
 
+
 class PaintView(CuraView):
     """View for model-painting."""
+
+    _IGNORE_OVERHANG_ANGLE = 1.00001  # A bit higher than 1.0 to prevent potential rounding-error confusion with 90-degree.
 
     class PaintType:
         def __init__(self, display_color: Color, value: int):
@@ -375,13 +378,13 @@ class PaintView(CuraView):
 
     def _getSupportAngleShaderValue(self) -> float:
         if self._current_paint_type != "support":
-            return 1.0
+            return PaintView._IGNORE_OVERHANG_ANGLE
         global_container_stack: GlobalStack = Application.getInstance().getGlobalContainerStack()
         if not global_container_stack or not global_container_stack.getValue("support_enable"):
-            return 1.0
+            return PaintView._IGNORE_OVERHANG_ANGLE
         extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
         if extruder_nr < 0 or extruder_nr >= len(global_container_stack.extruderList):
-            return 1.0
+            return PaintView._IGNORE_OVERHANG_ANGLE
         angle = global_container_stack.extruderList[extruder_nr].getProperty("support_angle", "value") or 90.0
         return max(0.0, min(1.0, math.cos(math.radians(90.0 - angle))))
 
