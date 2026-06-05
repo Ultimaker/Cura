@@ -51,6 +51,9 @@ class PackageList(ListModel):
         self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._license_dialogs: Dict[str, QObject] = {}
 
+        self._sort_by_install_status = False
+        self._pre_sort_order: List[str] = []  # Package IDs in order before install-status sort was applied.
+
         # Queue for sequential bulk updates triggered from the tab-level "Update all" button.
         self._pending_bulk_update_ids: List[str] = []
         self._active_bulk_update_id: Optional[str] = None
@@ -189,6 +192,58 @@ class PackageList(ListModel):
             if package and package.canUpdate and not package.isMissingPackageInformation:
                 count += 1
         return count
+
+    sortByInstallStatusChanged = pyqtSignal()
+
+    def setSortByInstallStatus(self, value: bool) -> None:
+        if self._sort_by_install_status != value:
+            self._sort_by_install_status = value
+            self.sortByInstallStatusChanged.emit()
+            if value:
+                self._saveOrder()
+                self._applyInstallStatusSort()
+            else:
+                self._restoreOrder()
+
+    @pyqtProperty(bool, fset = setSortByInstallStatus, notify = sortByInstallStatusChanged)
+    def sortByInstallStatus(self) -> bool:
+        """When True the list is sorted so packages with updates bubble to the top, followed by
+        installed packages without updates, then the rest ordered by their original release date."""
+        return self._sort_by_install_status
+
+    def _applyInstallStatusSort(self) -> None:
+        """Re-sort the current items using install/update-status as the primary key.
+
+        Priority order (lower number = closer to top):
+          0 – installed and has an update available (Update button)
+          1 – installed, no update pending (Uninstall button)
+          2 – not installed; preserves original relative order (release date from API)
+        Within each priority group the existing relative order is preserved (stable sort).
+        """
+        def _priority(model) -> int:
+            if model.canUpdate:
+                return 0
+            if model.isInstalled or model.isToBeInstalled:
+                return 1
+            return 2
+        self.sort(_priority, key = "package")
+
+    def _saveOrder(self) -> None:
+        """Snapshot the current package ID order so it can be restored later."""
+        self._pre_sort_order = []
+        for index in range(self.rowCount()):
+            data = self.getItem(index)
+            package = data.get("package") if data else None
+            if package:
+                self._pre_sort_order.append(package.packageId)
+
+    def _restoreOrder(self) -> None:
+        """Restore the item order that was saved before the install-status sort was applied."""
+        if not self._pre_sort_order:
+            return
+        order_map = {pkg_id: i for i, pkg_id in enumerate(self._pre_sort_order)}
+        self.sort(lambda model: order_map.get(model.packageId, len(self._pre_sort_order)), key = "package")
+        self._pre_sort_order = []
 
     @pyqtSlot()
     def updateAllPackages(self) -> None:
