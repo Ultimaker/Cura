@@ -13,6 +13,9 @@ Item
     property bool loggedIn: Cura.API.account.isLoggedIn
     property var profileImage: Cura.API.account.profileImageUrl
 
+    implicitWidth: accountOperations.implicitWidth
+    implicitHeight: accountOperations.implicitHeight
+
     Loader
     {
         id: accountOperations
