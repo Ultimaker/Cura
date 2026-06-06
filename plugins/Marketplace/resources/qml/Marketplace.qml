@@ -198,8 +198,6 @@ UM.Dialog
                     UM.CheckBox
                     {
                         id: sortByInstallStatusCheckbox
-                        LayoutMirroring.enabled: true
-                        LayoutMirroring.childrenInherit: false
                         text: catalog.i18nc("@option:check", "Sort by installed")
                         checked: packageBrowse.sortByInstallStatus
                         onClicked:
