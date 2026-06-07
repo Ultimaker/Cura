@@ -4,6 +4,7 @@ import requests
 import yaml
 import tempfile
 import tarfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -34,6 +35,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
+    package_type = "application"
 
     python_requires = "translationextractor/[>=2.2.0]"
 
@@ -344,20 +346,37 @@ class CuraConan(ConanFile):
 
         dependencies[dependency_name] = dependency_description
 
+    @staticmethod
+    def _run_dependency_description_job(job):
+        job_function, args = job
+        dependency = {}
+        job_function(*args, dependency)
+        return dependency
+
     def _dependencies_description(self):
         dependencies = {}
+        jobs = []
 
         for dependency in [self] + list(self.dependencies.values()):
-            self._make_conan_dependency_description(dependency, dependencies)
+            jobs.append((self._make_conan_dependency_description, (dependency,)))
 
             if "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
-                    self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
+                    jobs.append((self._make_extra_dependency_description, (dependency_name, dependency_data)))
 
         pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
         with open(pip_requirements_summary, 'r') as file:
             for package_name, package_version in yaml.safe_load(file).items():
-                self._make_pip_dependency_description(package_name, package_version, dependencies)
+                jobs.append((self._make_pip_dependency_description, (package_name, package_version)))
+
+        if not jobs:
+            return dependencies
+
+        max_workers = min(32, len(jobs))
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(self._run_dependency_description_job, job) for job in jobs]
+            for future in as_completed(futures):
+                dependencies.update(future.result())
 
         return dependencies
 
@@ -591,7 +610,10 @@ class CuraConan(ConanFile):
         for req in self.conan_data["requirements"]:
             if self.options.internal and "fdm_materials" in req:
                 continue
-            self.requires(req)
+            no_skip = False
+            if 'cura_binary_data' in req:
+                no_skip = True
+            self.requires(req, no_skip=no_skip)
         if self.options.internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
@@ -751,6 +773,11 @@ class CuraConan(ConanFile):
         cura_resources = self.dependencies["cura_resources"].cpp_info
         for res_dir in cura_resources.resdirs:
             rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], Path(res_dir).name))
+
+        # Copy internal resources
+        if self.options.internal:
+            cura_private_data = self.dependencies["cura_private_data"].cpp_info
+            copy(self, "*", cura_private_data.resdirs[0], self.package_folder)
 
     def package_info(self):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))

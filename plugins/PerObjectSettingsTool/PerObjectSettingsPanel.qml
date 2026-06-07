@@ -422,7 +422,7 @@ Item
 
             onClicked:
             {
-                settingPickDialog.visible = true;
+                var settingPickDialog = settingPickDialogComponent.createObject(base)
                 if (currentMeshType === "support_mesh")
                 {
                     settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
@@ -431,14 +431,16 @@ Item
                 {
                     settingPickDialog.additional_excluded_settings = [];
                 }
+                settingPickDialog.show();
             }
         }
 
     }
 
-    SettingPickDialog
+    Component
     {
-        id: settingPickDialog
+        id: settingPickDialogComponent
+        SettingPickDialog { selfDestroy: true; }
     }
 
     UM.SettingPropertyProvider
