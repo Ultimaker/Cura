@@ -45,6 +45,8 @@ UM.Dialog
             {
                 id: packageBrowse
 
+                property bool sortByInstallStatus: false
+
                 spacing: UM.Theme.getSize("narrow_margin").height
 
                 // Page title.
@@ -172,17 +174,41 @@ UM.Dialog
                     font: UM.Theme.getFont("default")
                 }
 
-                Cura.TertiaryButton
+                RowLayout
                 {
-                    text: catalog.i18nc("@info", "Search in the browser")
-                    iconSource: UM.Theme.getIcon("LinkExternal")
+                    Layout.fillWidth: true
+                    Layout.leftMargin: UM.Theme.getSize("default_margin").width
+                    Layout.rightMargin: UM.Theme.getSize("default_margin").width
                     visible: pageSelectionTabBar.currentItem.hasSearch && searchHeader.visible
-                    isIconOnRightSide: true
-                    height: fontMetrics.height
-                    textFont: fontMetrics.font
-                    textColor: UM.Theme.getColor("text")
 
-                    onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+                    Cura.TertiaryButton
+                    {
+                        text: catalog.i18nc("@info", "Search in the browser")
+                        iconSource: UM.Theme.getIcon("LinkExternal")
+                        isIconOnRightSide: true
+                        height: fontMetrics.height
+                        textFont: fontMetrics.font
+                        textColor: UM.Theme.getColor("text")
+
+                        onClicked: content.item && Qt.openUrlExternally(content.item.searchInBrowserUrl)
+                    }
+
+                    Item { Layout.fillWidth: true }
+
+                    UM.CheckBox
+                    {
+                        id: sortByInstallStatusCheckbox
+                        text: catalog.i18nc("@option:check", "Sort by installed")
+                        checked: packageBrowse.sortByInstallStatus
+                        onClicked:
+                        {
+                            packageBrowse.sortByInstallStatus = checked
+                            if (content.item && content.item.model)
+                            {
+                                content.item.model.sortByInstallStatus = checked
+                            }
+                        }
+                    }
                 }
 
                 // Page contents.
@@ -208,6 +234,10 @@ UM.Dialog
                             {
                                 pageTitle.text = content.item.pageTitle
                                 searchStringChanged.connect(handleSearchStringChanged)
+                                if (content.item.model)
+                                {
+                                    content.item.model.sortByInstallStatus = packageBrowse.sortByInstallStatus
+                                }
                             }
 
                             function handleSearchStringChanged(new_search)

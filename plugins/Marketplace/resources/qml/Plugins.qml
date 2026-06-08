@@ -17,7 +17,9 @@ Packages
     }
     searchInBrowserUrl: "https://marketplace.ultimaker.com/app/cura/plugins?utm_source=cura&utm_medium=software&utm_campaign=marketplace-search-plugins-browser"
     showUpdateButton: true
+    showUpdateAllButton: true
     showInstallButton: true
+    updateAllText: catalog.i18nc("@label", "Update all the Plugins: %1 plugins have a new version available.").arg(updatablePackagesCount)
 
     model: manager.PluginPackageList
 }
