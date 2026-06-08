@@ -58,7 +58,7 @@ class PauseAtHeight(Script):
                     "label": "Method",
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
-                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier/OctoPrint (@pause)"},
+                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier/OctoPrint (@pause)", "klipper": "Klipper (PAUSE)"},
                     "default_value": "marlin",
                     "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name or \\\"Flying Bear Ghost 4S\\\" in machine_name  else \\\"marlin\\\""
                 },
@@ -68,7 +68,7 @@ class PauseAtHeight(Script):
                     "description": "Keep the steppers engaged to allow change of filament without moving the head. Applying too much force will move the head/bed anyway",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "disarm_timeout":
                 {
@@ -88,7 +88,7 @@ class PauseAtHeight(Script):
                     "description": "Instruct the head to move to a safe location when pausing. Leave this unchecked if your printer handles parking for you.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "head_park_x":
                 {
@@ -97,7 +97,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "head_park_y":
                 {
@@ -106,7 +106,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 190,
-                    "enabled": "head_park_enabled and pause_method != \\\"griffin\\\""
+                    "enabled": "head_park_enabled and pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "head_move_z":
                 {
@@ -115,7 +115,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 15.0,
-                    "enabled": "head_park_enabled and pause_method == \\\"repetier\\\""
+                    "enabled": "head_park_enabled and pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "retraction_amount":
                 {
@@ -124,7 +124,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "retraction_speed":
                 {
@@ -133,7 +133,7 @@ class PauseAtHeight(Script):
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 25,
-                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\", \\\"klipper\\\"]"
                 },
                 "extrude_amount":
                 {
@@ -142,7 +142,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"klipper\\\"]"
                 },
                 "extrude_speed":
                 {
@@ -151,7 +151,7 @@ class PauseAtHeight(Script):
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 3.3333,
-                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\", \\\"klipper\\\"]"
                 },
                 "redo_layer":
                 {
@@ -166,7 +166,7 @@ class PauseAtHeight(Script):
                     "description": "Wait for hot end after Resume? (If your standby temperature is lower than the Printing temperature CHECK and use M109",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"                                              
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\", \\\"klipper\\\"]"                                              
                 },
                 "standby_temperature":
                 {
@@ -175,7 +175,7 @@ class PauseAtHeight(Script):
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0,
-                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\", \\\"klipper\\\"]"
                 },
                 "display_text":
                 {
@@ -183,7 +183,7 @@ class PauseAtHeight(Script):
                     "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
                     "type": "str",
                     "default_value": "",
-                    "enabled": "pause_method != \\\"repetier\\\""
+                    "enabled": "pause_method not in [\\\"repetier\\\", \\\"klipper\\\"]"
                 },
                 "machine_name":
                 {
@@ -305,6 +305,7 @@ class PauseAtHeight(Script):
         pause_method = self.getSettingValueByKey("pause_method")
         pause_command = {
             "marlin": self.putValue(M = 0),
+            "klipper": self.putValue("PAUSE"),
             "griffin": self.putValue(M = 0),
             "bq": self.putValue(M = 25),
             "reprap": self.putValue(M = 226),
@@ -449,7 +450,7 @@ class PauseAtHeight(Script):
                     #Disable the E steppers
                     prepend_gcode += self.putValue(M = 84, E = 0) + "\n"
 
-                elif pause_method != "griffin":
+                elif pause_method not in {"griffin", "klipper"}:
                     # Retraction
                     prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
@@ -478,7 +479,7 @@ class PauseAtHeight(Script):
                     prepend_gcode += "M117 " + display_text + "\n"
 
                 # Set the disarm timeout
-                if pause_method != "griffin":
+                if pause_method not in {"griffin", "klipper"}:
                     if hold_steppers_on:
                         prepend_gcode += self.putValue(M = 84, S = 3600) + " ; Keep steppers engaged for 1h\n"
                     elif disarm_timeout > 0:
@@ -541,7 +542,7 @@ class PauseAtHeight(Script):
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
-                elif pause_method != "griffin":
+                elif pause_method not in {"griffin", "klipper"}:
                     if control_temperatures:
                         # Set extruder resume temperature
                         if standby_wait_for_temperature_enabled:
