@@ -1703,7 +1703,7 @@
                             "unit": "mm",
                             "default_value": 0.8,
                             "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "minimum_value_warning": "(resolveOrValue('layer_height') * 2)",
                             "maximum_value": "machine_height",
                             "type": "float",
                             "value": "top_bottom_thickness",
@@ -1721,7 +1721,7 @@
                                     "maximum_value": "999999",
                                     "type": "int",
                                     "minimum_value_warning": "2",
-                                    "value": "math.ceil(round(top_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "int(round(top_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -1734,7 +1734,7 @@
                             "unit": "mm",
                             "default_value": 0.6,
                             "minimum_value": "0",
-                            "minimum_value_warning": "0.2 + resolveOrValue('layer_height')",
+                            "minimum_value_warning": "min((resolveOrValue('layer_height') + layer_height_0), (resolveOrValue('layer_height') * 2))",
                             "type": "float",
                             "value": "top_bottom_thickness",
                             "maximum_value": "machine_height",
@@ -1751,7 +1751,7 @@
                                     "default_value": 6,
                                     "maximum_value": "999999",
                                     "type": "int",
-                                    "value": "math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
+                                    "value": "int(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 },
@@ -1764,7 +1764,7 @@
                                     "maximum_value": "999999",
                                     "default_value": 6,
                                     "type": "int",
-                                    "value": "bottom_layers",
+                                    "value": "max(0, int(round((bottom_thickness - layer_height_0) / resolveOrValue('layer_height'), 4) + 1))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
                                 }
@@ -3845,7 +3845,7 @@
                     "type": "float",
                     "enabled": "speed_slowdown_layers > 0",
                     "default_value": 30,
-                    "value": "speed_print * 30 / 60",
+                    "value": "speed_print / 2",
                     "minimum_value": "0.1",
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
@@ -7476,7 +7476,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "200",
                     "enabled": "resolveOrValue('adhesion_type') == 'raft'",
-                    "value": "speed_print / 60 * 30",
+                    "value": "speed_print / 2",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr",
