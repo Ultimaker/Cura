@@ -5923,6 +5923,128 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "support_base_height":
+                {
+                    "label": "Support Base Height",
+                    "description": "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                    "value": "resolveOrValue('layer_height')",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "support_enable",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_height",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_inside_base_height":
+                        {
+                            "label": "Support Inside Base Height",
+                            "description": "The height of the inside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_height",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable') and resolveOrValue('support_line_distance') == 0",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_height",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_outside_base_height":
+                        {
+                            "label": "Support Outside Base Height",
+                            "description": "The height of the outside support base. Increasing this value will result in a sturdier support because the base will be thicker. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_height",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "machine_height",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_base_outside_width":
+                {
+                    "label": "Support Base Outside Width",
+                    "description": "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                    "value": "extruderValue(support_extruder_nr, 'brim_width')",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "support_enable",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('adhesion_type') == 'brim' else None",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_base_inside_width":
+                {
+                    "label": "Support Base Inside Width",
+                    "description": "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base.",
+                    "value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "support_enable and resolveOrValue('support_brim_enable') and resolveOrValue('support_line_distance') == 0",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_base_curve_magnitude":
+                {
+                    "label": "Support Base Slope",
+                    "description": "The magnitude factor used for the slope of the support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                    "type": "float",
+                    "enabled": "support_enable",
+                    "default_value": 4,
+                    "minimum_value": "0",
+                    "maximum_value": "10",
+                    "limit_to_extruder": "support_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_inside_base_curve_magnitude":
+                        {
+                            "label": "Support Inside Base Slope",
+                            "description": "The magnitude factor used for the slope of the inside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                            "value": "support_base_curve_magnitude",
+                            "type": "float",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable') and resolveOrValue('support_line_distance') == 0",
+                            "default_value": 4,
+                            "minimum_value": "0",
+                            "maximum_value": "10",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_outside_base_curve_magnitude":
+                        {
+                            "label": "Support Outside Base Slope",
+                            "description": "The magnitude factor used for the slope of the outside support base. If you increase this value, the base will become slimmer. If you decrease it, the base will become thicker.",
+                            "value": "support_base_curve_magnitude",
+                            "type": "float",
+                            "enabled": "support_enable",
+                            "default_value": 4,
+                            "minimum_value": "0",
+                            "maximum_value": "10",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
                 "support_z_distance":
                 {
                     "label": "Support Z Distance",
