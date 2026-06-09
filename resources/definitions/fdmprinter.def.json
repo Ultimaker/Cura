@@ -1541,7 +1541,8 @@
                             {
                                 "lines": "Lines",
                                 "concentric": "Concentric",
-                                "zigzag": "Zig Zag"
+                                "zigzag": "Zig Zag",
+                                "fibonacci_spiral": "Fibonacci Spiral"
                             },
                             "default_value": "lines",
                             "value": "top_bottom_pattern",
@@ -1638,7 +1639,8 @@
                             {
                                 "lines": "Lines",
                                 "concentric": "Concentric",
-                                "zigzag": "Zig Zag"
+                                "zigzag": "Zig Zag",
+                                "fibonacci_spiral": "Fibonacci Spiral"
                             },
                             "default_value": "lines",
                             "value": "top_bottom_pattern",
@@ -1781,7 +1783,8 @@
                     {
                         "lines": "Lines",
                         "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "fibonacci_spiral": "Fibonacci Spiral"
                     },
                     "default_value": "lines",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
@@ -1797,11 +1800,27 @@
                     {
                         "lines": "Lines",
                         "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "fibonacci_spiral": "Fibonacci Spiral"
                     },
                     "default_value": "lines",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
                     "value": "top_bottom_pattern",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "skin_fibonacci_spiral_start_ratio":
+                {
+                    "label": "Skin Fibonacci Spiral Start Ratio",
+                    "description": "Fraction of the skin island perimeter to walk before the inward Fibonacci spiral begins. At 0.75 (75%) the spiral starts three-quarters of the way around the boundary. Only used when a skin pattern (Top/Bottom, Top Surface Skin, Bottom Surface Skin, or Initial Layer) is set to 'Fibonacci Spiral'.",
+                    "type": "float",
+                    "unit": "",
+                    "default_value": 0.75,
+                    "minimum_value": "0.0",
+                    "maximum_value": "1.0",
+                    "minimum_value_warning": "0.1",
+                    "maximum_value_warning": "0.95",
+                    "enabled": "top_bottom_pattern == 'fibonacci_spiral' or top_bottom_pattern_0 == 'fibonacci_spiral' or roofing_pattern == 'fibonacci_spiral' or flooring_pattern == 'fibonacci_spiral'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2244,11 +2263,27 @@
                         "octagon": "Octagon",
                         "grid": "Grid",
                         "cubic": "Cubic",
-                        "triangles": "Triangles"
+                        "triangles": "Triangles",
+                        "fibonacci_spiral": "Fibonacci Spiral"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_fibonacci_spiral_start_ratio":
+                {
+                    "label": "Infill Fibonacci Spiral Start Ratio",
+                    "description": "Fraction of the infill island perimeter to walk before the inward Fibonacci spiral begins. At 0.75 (75%) the spiral starts three-quarters of the way around the boundary. Only used when 'Infill Pattern' is set to 'Fibonacci Spiral'.",
+                    "type": "float",
+                    "unit": "",
+                    "default_value": 0.75,
+                    "minimum_value": "0.0",
+                    "maximum_value": "1.0",
+                    "minimum_value_warning": "0.1",
+                    "maximum_value_warning": "0.95",
+                    "enabled": "infill_pattern == 'fibonacci_spiral' and infill_line_distance > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
