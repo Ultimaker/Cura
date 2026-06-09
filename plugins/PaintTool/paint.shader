@@ -35,6 +35,9 @@ fragment =
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
 
+    uniform lowp float u_overhangAngle;
+    uniform lowp vec4 u_overhangColor;
+
     varying highp vec3 v_vertex;
     varying highp vec3 v_normal;
     varying highp vec2 v_uvs;
@@ -65,6 +68,9 @@ fragment =
             vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
             highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
             final_color += (n_dot_l * diffuse_color);
+
+            /* Can show overhang; mostly (exclusively?) used w.r.t. support-painting. */
+            final_color = (color_index == 0 && v_vertex.y >= 0.0 && -normal.y > u_overhangAngle) ? u_overhangColor : final_color;
         }
 
         /* Output */
@@ -110,6 +116,9 @@ fragment41core =
     uniform mediump int u_bitsRangesEnd;
     uniform mediump vec3 u_renderColors[16];
 
+    uniform lowp float u_overhangAngle;
+    uniform lowp vec4 u_overhangColor;
+
     in highp vec3 v_vertex;
     in highp vec3 v_normal;
     in highp vec2 v_uvs;
@@ -141,15 +150,21 @@ fragment41core =
             vec4 diffuse_color = vec4(u_renderColors[color_index] / 255.0, 1.0);
             highp float n_dot_l = mix(0.3, 0.7, dot(normal, light_dir));
             final_color += (n_dot_l * diffuse_color);
+
+            /* Can show overhang; mostly (exclusively?) used w.r.t. support-painting. */
+            final_color = (color_index == 0 && v_vertex.y >= 0.0 && -normal.y > u_overhangAngle) ? u_overhangColor : final_color;
         }
 
         /* Output */
         final_color.a = 1.0;
+
         frag_color = final_color;
     }
 
 [defaults]
 u_ambientColor = [0.3, 0.3, 0.3, 1.0]
+u_overhangColor = [0.65625, 0.84375, 0.5390625, 1.0]
+u_overhangAngle = 1.0
 u_texture = 0
 u_texture_cursor = 1
 

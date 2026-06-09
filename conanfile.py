@@ -4,6 +4,7 @@ import requests
 import yaml
 import tempfile
 import tarfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -345,20 +346,37 @@ class CuraConan(ConanFile):
 
         dependencies[dependency_name] = dependency_description
 
+    @staticmethod
+    def _run_dependency_description_job(job):
+        job_function, args = job
+        dependency = {}
+        job_function(*args, dependency)
+        return dependency
+
     def _dependencies_description(self):
         dependencies = {}
+        jobs = []
 
         for dependency in [self] + list(self.dependencies.values()):
-            self._make_conan_dependency_description(dependency, dependencies)
+            jobs.append((self._make_conan_dependency_description, (dependency,)))
 
             if "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
-                    self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
+                    jobs.append((self._make_extra_dependency_description, (dependency_name, dependency_data)))
 
         pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
         with open(pip_requirements_summary, 'r') as file:
             for package_name, package_version in yaml.safe_load(file).items():
-                self._make_pip_dependency_description(package_name, package_version, dependencies)
+                jobs.append((self._make_pip_dependency_description, (package_name, package_version)))
+
+        if not jobs:
+            return dependencies
+
+        max_workers = min(32, len(jobs))
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(self._run_dependency_description_job, job) for job in jobs]
+            for future in as_completed(futures):
+                dependencies.update(future.result())
 
         return dependencies
 
