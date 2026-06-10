@@ -5641,6 +5641,42 @@
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_wall_thickness":
+                        {
+                            "label": "Support Wall Thickness",
+                            "description": "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0.4,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "line_width",
+                            "maximum_value_warning": "10 * line_width",
+                            "maximum_value": "999999 * line_width",
+                            "type": "float",
+                            "unit": "mm",
+                            "value": "support_wall_count * support_line_width",
+                            "enabled": "support_enable or support_meshes_present",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_enlarged_wall_thickness":
+                {
+                    "label": "Support Enlarged Wall Thickness",
+                    "description": "The thickness the walls with which to surround support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier.",
+                    "default_value": 0.4,
+                    "minimum_value": "support_wall_thickness",
+                    "maximum_value_warning": "10 * line_width",
+                    "maximum_value": "999999 * line_width",
+                    "type": "float",
+                    "unit": "mm",
+                    "value": "support_wall_thickness",
+                    "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "support_infill_multiplier":
