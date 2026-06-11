@@ -5963,7 +5963,7 @@
                 {
                     "label": "Support Base Height",
                     "description": "The height of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
-                    "value": "resolveOrValue('layer_height')",
+                    "value": 0,
                     "type": "float",
                     "unit": "mm",
                     "enabled": "support_enable",
