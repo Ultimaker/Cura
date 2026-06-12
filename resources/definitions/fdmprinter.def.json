@@ -5419,6 +5419,20 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
                 },
+                "support_tree_smooth_layers":
+                {
+                    "label": "Branch Smoothing Layers",
+                    "description": "The branches of the support will be smoothed on an average on the given number of layers.",
+                    "type": "int",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "maximum_value_warning": "15",
+                    "default_value": 0,
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "enabled": "support_enable and support_structure=='tree'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "support_z_seam_away_from_model":
                 {
                     "label": "Support Z Seam Away from Model",
