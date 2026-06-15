@@ -36,9 +36,7 @@ Cura.Menu
                 };
                 if (UM.Preferences.getValue("cura/dialog_on_project_save"))
                 {
-                    saveWorkspaceDialog.deviceId = model.id
-                    saveWorkspaceDialog.args = args
-                    saveWorkspaceDialog.open()
+                    saveWorkspaceDialogComponent.createObject(base, {"args": args, "deviceId": model.id}).open()
                 }
                 else
                 {
@@ -52,11 +50,15 @@ Cura.Menu
         onObjectRemoved: function(index, object) {  saveProjectMenu.removeItem(object)}
     }
 
-    WorkspaceSummaryDialog
+    Component
     {
-        id: saveWorkspaceDialog
-        property var args
-        property var deviceId
-        onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+        id: saveWorkspaceDialogComponent
+        WorkspaceSummaryDialog
+        {
+            property var args
+            property var deviceId
+            onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+            selfDestroy: true
+        }
     }
 }

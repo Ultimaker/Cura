@@ -1805,6 +1805,19 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "top_bottom_skin_merge_distance":
+                {
+                    "label": "Top/Bottom/Skin Merge Distance",
+                    "description": "On sloped areas especially, top/bottom can become very small or narrow, while skin is nearby. This will sometimes cause walls not to print well. Merge top/bottom into skin when areas become too thin, where 'too thin' is defined by the merge distance (any thinner is merged into a neighbouring area if present).",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 1.2,
+                    "minimum_value": "0.0",
+                    "value": "line_width * 3.0",
+                    "maximum_value_warning": "min(machine_depth, machine_width)/2.0",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
                 "connect_skin_polygons":
                 {
                     "label": "Connect Top/Bottom Polygons",
@@ -2468,7 +2481,7 @@
                     "description": "Print a solid infill pattern just below skin to avoid printing the skin over air.",
                     "type": "bool",
                     "default_value": true,
-                    "value": "infill_sparse_density < 40",
+                    "value": "infill_sparse_density < 40 and gradual_infill_steps == 0 and infill_sparse_thickness == layer_height",
                     "enabled": "infill_sparse_density > 0 and top_layers > 0",
                     "settable_per_mesh": true,
                     "settable_per_extruder": true
@@ -4837,7 +4850,7 @@
                 "retraction_combing_avoid_distance":
                 {
                     "label": "Inside Travel Avoid Distance",
-                    "description": "The distance between the nozzle and already printed outer walls when travelling inside a model.",
+                    "description": "The distance between the nozzle and outer walls when travelling inside a model.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0.6,
@@ -6609,6 +6622,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
+                },
+                "support_paint_resolution":
+                {
+                    "label": "Support Painting Precision",
+                    "description": "The precision of the details when generating support based on painting data. A lower precision will provide more details, but increase the slicing time and memory.",
+                    "unit": "mm",
+                    "type": "float",
+                    "enabled": "support_enable",
+                    "default_value": 0.8,
+                    "value": "min(line_width, layer_height * 2)",
+                    "minimum_value": "0.05",
+                    "maximum_value": "10",
+                    "maximum_value_warning": "line_width * 10",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -7850,7 +7878,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5,
-                    "minimum_value": "line_width",
+                    "minimum_value": "0.0",
                     "maximum_value_warning": "10.0",
                     "enabled": "prime_tower_enable",
                     "settable_per_mesh": false,
@@ -9737,6 +9765,17 @@
                     "maximum_value": 100.0,
                     "unit": "mm",
                     "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": true
+                },
+                "minimum_infill_line_length":
+                {
+                    "label": "Minimum Infill Line Length",
+                    "description": "When an infill area generates lines with a total length lower than this value, they will be discarded to avoid printing lots of tiny useless lines. It can help reduce travel moves, retractions and unretractions.",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "maximum_value_warning": "line_width * 100",
+                    "unit": "mm",
                     "settable_per_extruder": true,
                     "settable_per_mesh": true
                 },

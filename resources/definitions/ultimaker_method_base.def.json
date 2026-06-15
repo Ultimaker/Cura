@@ -478,7 +478,7 @@
         },
         "raft_base_wall_count": { "value": "raft_wall_count" },
         "raft_interface_acceleration": { "enabled": false },
-        "raft_interface_extruder_nr": { "value": "max(extruderValues('extruder_nr'))" },
+        "raft_interface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable else adhesion_extruder_nr" },
         "raft_interface_fan_speed": { "value": 0 },
         "raft_interface_infill_overlap":
         {
@@ -522,7 +522,7 @@
         "raft_smoothing": { "value": 9.5 },
         "raft_speed": { "value": 10 },
         "raft_surface_acceleration": { "enabled": false },
-        "raft_surface_extruder_nr": { "value": "max(extruderValues('extruder_nr'))" },
+        "raft_surface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable else adhesion_extruder_nr" },
         "raft_surface_fan_speed": { "value": 0 },
         "raft_surface_flow":
         {

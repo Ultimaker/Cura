@@ -746,6 +746,7 @@ class SimulationView(CuraView):
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
         # Update the currentPath
+        new_max_paths = 0
         scene = self.getController().getScene()
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
@@ -753,14 +754,14 @@ class SimulationView(CuraView):
                 continue
 
             layer = layer_data.getLayer(layer_num)
-            if layer is None:
-                return
-            new_max_paths = layer.lineMeshElementCount()
-            if new_max_paths >= 0 and new_max_paths != self._max_paths:
-                self._max_paths = new_max_paths
-                self.maxPathsChanged.emit()
+            if layer is not None:
+                new_max_paths = layer.lineMeshElementCount()
 
-            self.setPath(int(new_max_paths))
+        if new_max_paths != self._max_paths:
+            self._max_paths = new_max_paths
+            self.maxPathsChanged.emit()
+
+        self.setPath(int(new_max_paths))
 
     maxLayersChanged = Signal()
     maxPathsChanged = Signal()

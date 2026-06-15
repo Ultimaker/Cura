@@ -86,7 +86,7 @@ class SolidView(View):
         Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
 
     def _onNonManifoldLearnMoreClicked(self, action, message) -> None:
-        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360014055959"))
+        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1633018228456"))
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:

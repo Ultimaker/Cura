@@ -60,21 +60,21 @@ Popup
                     displayName: catalog.i18nc("@label:button", "Sponsor Cura"),
                     thumbnail: UM.Theme.getIcon("Heart"),
                     description: catalog.i18nc("@tooltip:button", "Show your support for Cura with a donation."),
-                    link: "https://ultimaker.com/software/ultimaker-cura/sponsor/",
+                    link: "https://github.com/sponsors/Ultimaker",
                     permissionsRequired: []
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "UltiMaker support"),
                     thumbnail: UM.Theme.getIcon("Help", "high"),
                     description: catalog.i18nc("@tooltip:button", "Learn how to get started with UltiMaker Cura."),
-                    link: "https://support.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-support",
+                    link: "https://support.ultimaker.com",
                     permissionsRequired: []
                 },
                 {
                     displayName: catalog.i18nc("@label:button", "Ask a question"),
                     thumbnail: UM.Theme.getIcon("Speak", "high"),
                     description: catalog.i18nc("@tooltip:button", "Consult the UltiMaker Community."),
-                    link: "https://community.ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-community",
+                    link: "https://community.ultimaker.com",
                     permissionsRequired: []
                 },
                 {
@@ -88,7 +88,7 @@ Popup
                     displayName: "Ultimaker.com", //Not translated, since it's a URL.
                     thumbnail: UM.Theme.getIcon("Browser"),
                     description: catalog.i18nc("@tooltip:button", "Visit the UltiMaker website."),
-                    link: "https://ultimaker.com/?utm_source=cura&utm_medium=software&utm_campaign=switcher-umwebsite",
+                    link: "https://ultimaker.com",
                     permissionsRequired: []
                 }
             ]

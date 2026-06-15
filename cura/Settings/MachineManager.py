@@ -837,14 +837,14 @@ class MachineManager(QObject):
         result = True
         if not self._global_container_stack:
             return result
-        if self.activeMachine.definition.id != "ultimaker_factor4":
+        if self.activeMachine.definition.id not in ("ultimaker_factor4", "ultimaker_factor4_plus"):
             return result
 
         for extruder_container in self._global_container_stack.extruderList:
-            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right"):
+            if extruder_container.definition.id.startswith("ultimaker_factor4_extruder_right") or extruder_container.definition.id.startswith("ultimaker_factor4_plus_extruder_right"):
                 if extruder_container.material == empty_material_container:
                     return True
-                if extruder_container.variant.id.startswith("ultimaker_factor4_bb"):
+                if extruder_container.variant.id.startswith("ultimaker_factor4_bb") or extruder_container.variant.id.startswith("ultimaker_factor4_plus_bb"):
                     return False
         return True
 
