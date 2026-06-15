@@ -17,23 +17,27 @@ jobs:
       - name: Setup the build environment
         uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
 
-      - uses: greguintow/get-diff-action@v7
+      - id: get-diff
+        uses: ultimaker/cura-workflows/.github/actions/get-diff@main
         with:
-          DIFF_FILTER: AMRCD
-          PATTERNS: |
-            resources/+(extruders|definitions)/*.def.json
-            resources/+(intent|quality|variants)/**/*.inst.cfg
+          files: |
+            resources/extruders/*.def.json
+            resources/definitions/*.def.json
+            resources/intent/**/*.inst.cfg
+            resources/quality/**/*.inst.cfg
+            resources/variants/**/*.inst.cfg
+          include_deleted: 'true'
 
       - name: Create results directory
         run: mkdir printer-linter-result
 
       - name: Diagnose file(s)
-        if: env.GIT_DIFF && !env.MATCHED_FILES
-        run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ env.GIT_DIFF_FILTERED }}
+        if: steps.get-diff.outputs.files != ''
+        run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ steps.get-diff.outputs.files_quoted }}
 
       - name: Check Deleted Files(s)
-        if: env.GIT_DIFF
-        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ env.GIT_DIFF_FILTERED }}
+        if: steps.get-diff.outputs.files != ''
+        run: python printer-linter/src/terminal.py --deleted --report printer-linter-result/comment.md ${{ steps.get-diff.outputs.files_quoted }}
 
       - name: Save PR metadata
         run: |
