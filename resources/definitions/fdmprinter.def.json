@@ -5425,8 +5425,8 @@
                     "description": "The branches of the support will be smoothed on an average on the given number of layers.",
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value": "100",
-                    "maximum_value_warning": "15",
+                    "maximum_value": "500",
+                    "maximum_value_warning": "200",
                     "default_value": 0,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_enable and support_structure=='tree'",
@@ -5689,6 +5689,32 @@
                     "unit": "mm",
                     "value": "support_wall_thickness",
                     "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_minimum_overlap_area":
+                {
+                    "label": "Support Minimum Overlap Area",
+                    "description": "The minimum overlapping area between two layers of support. If this threshold is not reached, support walls will be enlarged up to 'Support Enlarged Wall Thickness' to ensure a proper interlayer adhesion and avoid breakages.",
+                    "default_value": 50,
+                    "minimum_value": "0",
+                    "type": "float",
+                    "unit": "mm\u00b2",
+                    "enabled": "(support_enable or support_meshes_present) and support_enlarged_wall_thickness > support_wall_thickness",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_minimum_enlargement_area":
+                {
+                    "label": "Support Minimum Enlargement Area",
+                    "description": "When using 'Support Enlarged Wall Thickness', the support parts that have an area smaller than this value are ignored and will use the normal thickness, because they are less subject to mechanical stress and don't require multiple walls.",
+                    "default_value": 50,
+                    "minimum_value": "0",
+                    "type": "float",
+                    "unit": "mm\u00b2",
+                    "enabled": "(support_enable or support_meshes_present) and support_enlarged_wall_thickness > support_wall_thickness",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
