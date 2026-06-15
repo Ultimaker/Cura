@@ -52,11 +52,10 @@ class LocalAuthorizationServer:
         """
 
         if self._web_server:
-            # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
-            # We still inject the new verification code though.
-            Logger.log("d", "Auth web server was already running. Updating the verification code")
-            self._web_server.setVerificationCode(verification_code)
-            return
+            # Previously, we re-injected the verification code. This went wrong when the server was going to restart when it's in the middle of starting though.
+            Logger.log("d", "Auth web server was already running. Shut-down & restart.")
+            self._web_server.shutdown()
+            # NOTE: The above shutdown will also end the associated thread, so don't manually join that thread here.
 
         if self._web_server_port is None:
             raise Exception("Unable to start server without specifying the port.")

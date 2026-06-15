@@ -1,0 +1,386 @@
+{
+    "version": 2,
+    "name": "UltiMaker Factor 4+",
+    "inherits": "ultimaker_factor4",
+    "metadata":
+    {
+        "visible": true,
+        "author": "UltiMaker",
+        "manufacturer": "Ultimaker B.V.",
+        "file_formats": "application/x-ufp;text/x-gcode",
+        "platform": "ultimaker_factor4_platform.obj",
+        "bom_numbers": [
+            10500
+        ],
+        "firmware_update_info":
+        {
+            "check_urls": [ "http://software.ultimaker.com/releases/firmware/227380/stable/um-update.swu.version" ],
+            "id": 10500,
+            "update_url": "https://ultimaker.com/firmware"
+        },
+        "first_start_actions": [ "DiscoverUM3Action" ],
+        "has_machine_materials": true,
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker_factor4_plus_extruder_left",
+            "1": "ultimaker_factor4_plus_extruder_right"
+        },
+        "nozzle_offsetting_for_disallowed_areas": false,
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "platform_texture": "UltimakerFactor4PlusBackplate.png",
+        "preferred_quality_type": "draft",
+        "preferred_variant_name": "AA+ 0.4",
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "supports_material_export": true,
+        "supports_network_connection": true,
+        "supports_usb_connection": false,
+        "variants_name": "Print Core",
+        "variants_name_has_translation": true,
+        "weight": -1
+    },
+    "overrides":
+    {
+        "acceleration_layer_0": { "value": "acceleration_print*2/5" },
+        "acceleration_print": { "value": 10000 },
+        "acceleration_roofing": { "value": "acceleration_wall" },
+        "acceleration_skirt_brim": { "value": "acceleration_print" },
+        "acceleration_support_bottom": { "value": "acceleration_support_interface" },
+        "acceleration_support_interface": { "value": "acceleration_support" },
+        "acceleration_support_roof": { "value": "acceleration_support_interface" },
+        "acceleration_travel": { "value": 5000 },
+        "acceleration_travel_enabled": { "value": "True" },
+        "acceleration_travel_layer_0": { "value": "acceleration_layer_0" },
+        "acceleration_wall_0_roofing": { "value": "acceleration_wall" },
+        "acceleration_wall_x": { "value": "acceleration_print" },
+        "acceleration_wall_x_roofing": { "value": "acceleration_wall" },
+        "bottom_skin_expand_distance": { "value": "expand_skins_expand_distance / 2" },
+        "bridge_skin_density": { "value": "70" },
+        "bridge_skin_material_flow":
+        {
+            "maximum_value": "250",
+            "value": "(bridge_wall_material_flow + material_flow) / 2"
+        },
+        "bridge_skin_material_flow_2": { "maximum_value": "250" },
+        "bridge_skin_material_flow_3": { "maximum_value": "250" },
+        "bridge_skin_speed": { "value": "bridge_wall_speed" },
+        "bridge_skin_speed_2": { "value": "speed_wall" },
+        "bridge_wall_material_flow":
+        {
+            "maximum_value": "250",
+            "value": "150"
+        },
+        "bridge_wall_min_length": { "value": "line_width*2" },
+        "bridge_wall_speed": { "value": "speed_wall/2" },
+        "cool_min_layer_time": { "value": 6.5 },
+        "cool_min_layer_time_overhang": { "value": 12 },
+        "cool_min_layer_time_overhang_min_segment_length": { "value": 1.5 },
+        "cool_min_speed": { "value": 6 },
+        "expand_skins_expand_distance": { "value": "wall_thickness * 2" },
+        "gradual_flow_discretisation_step_size": { "value": 0.05 },
+        "gradual_flow_enabled": { "value": "True" },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'honeycomb'" },
+        "infill_sparse_density": { "value": 10 },
+        "infill_start_end_preference": { "value": "'end_close_to_seam'" },
+        "initial_layer_line_width_factor": { "value": 125 },
+        "inset_direction": { "value": "'outside_in'" },
+        "jerk_infill":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_print if infill_sparse_density < 50 else jerk_wall_0"
+        },
+        "jerk_layer_0":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_print/2"
+        },
+        "jerk_prime_tower":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_print":
+        {
+            "maximum_value": "machine_max_jerk_xy",
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "5000"
+        },
+        "jerk_print_layer_0":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_layer_0"
+        },
+        "jerk_roofing":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_wall/2"
+        },
+        "jerk_skirt_brim":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_support":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_support_bottom":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_support_interface"
+        },
+        "jerk_support_infill":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_support_interface":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_support_roof":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_support_interface"
+        },
+        "jerk_topbottom":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_wall_0"
+        },
+        "jerk_travel":
+        {
+            "maximum_value": "machine_max_jerk_xy",
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_print"
+        },
+        "jerk_travel_layer_0":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_travel"
+        },
+        "jerk_wall":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_print/5"
+        },
+        "jerk_wall_0":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_wall_0_roofing":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3"
+        },
+        "jerk_wall_x":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_print"
+        },
+        "jerk_wall_x_roofing":
+        {
+            "maximum_value_warning": "machine_max_jerk_xy / 2",
+            "unit": "m/s\u00b3",
+            "value": "jerk_wall_0"
+        },
+        "line_width": { "value": "machine_nozzle_size*1.05" },
+        "machine_gcode_flavor": { "default_value": "Cheetah" },
+        "machine_max_acceleration_x": { "default_value": 20000 },
+        "machine_max_acceleration_y": { "default_value": 20000 },
+        "machine_max_feedrate_x": { "default_value": 300 },
+        "machine_max_feedrate_y": { "default_value": 300 },
+        "machine_max_jerk_e":
+        {
+            "default_value": 20000,
+            "unit": "m/s\u00b3",
+            "value": "20000 if machine_gcode_flavor == 'Cheetah' else 100"
+        },
+        "machine_max_jerk_xy":
+        {
+            "default_value": 1000000,
+            "unit": "m/s\u00b3",
+            "value": "1000000 if machine_gcode_flavor == 'Cheetah' else 500"
+        },
+        "machine_max_jerk_z":
+        {
+            "default_value": 20000,
+            "unit": "m/s\u00b3",
+            "value": "20000 if machine_gcode_flavor == 'Cheetah' else 100"
+        },
+        "machine_name": { "default_value": "Ultimaker Factor 4+" },
+        "material_pressure_advance_factor":
+        {
+            "enabled": true,
+            "value": 0.125
+        },
+        "max_flow_acceleration": { "value": 3.5 },
+        "meshfix_maximum_resolution": { "value": 0.15 },
+        "min_bead_width": { "value": "machine_nozzle_size" },
+        "min_feature_size": { "value": "machine_nozzle_size/4" },
+        "min_wall_line_width": { "value": "machine_nozzle_size*3/4" },
+        "prime_tower_max_bridging_distance": { "value": "line_width" },
+        "prime_tower_min_volume": { "value": 15 },
+        "retraction_amount": { "value": 1.2 },
+        "retraction_combing_avoid_distance": { "value": 1.2 },
+        "retraction_combing_max_distance": { "value": 30 },
+        "retraction_count_max": { "value": 130 },
+        "retraction_hop": { "value": 0.5 },
+        "retraction_min_travel": { "value": 1.5 },
+        "retraction_prime_speed": { "value": 10 },
+        "roofing_angles": { "value": "[30, -60]" },
+        "roofing_expansion": { "value": "wall_thickness * 1.5" },
+        "roofing_layer_count": { "value": 2 },
+        "roofing_material_flow": { "value": "material_flow" },
+        "roofing_pattern": { "value": "'lines'" },
+        "skin_material_flow": { "value": "material_flow * 0.97" },
+        "skin_material_flow_layer_0": { "value": "material_flow_layer_0 * 0.9" },
+        "skin_outline_count": { "value": 0 },
+        "skin_preshrink": { "value": "wall_thickness" },
+        "skin_support_density": { "value": "material_flow * 0.5" },
+        "skin_support_speed": { "value": "speed_wall_0" },
+        "skirt_brim_speed": { "maximum_value": 125 },
+        "small_hole_max_size": { "value": "machine_nozzle_size*15" },
+        "small_skin_on_surface": { "value": false },
+        "small_skin_width": { "value": "machine_nozzle_size*6" },
+        "speed_equalize_flow_width_factor": { "value": 0 },
+        "speed_infill": { "maximum_value": 125 },
+        "speed_ironing": { "value": 20 },
+        "speed_layer_0":
+        {
+            "maximum_value": 125,
+            "value": "speed_wall_0"
+        },
+        "speed_prime_tower":
+        {
+            "maximum_value": 125,
+            "value": "speed_print"
+        },
+        "speed_print":
+        {
+            "maximum_value": 125,
+            "value": 125
+        },
+        "speed_print_layer_0": { "maximum_value": 125 },
+        "speed_roofing":
+        {
+            "maximum_value": 125,
+            "value": "speed_wall_0/2"
+        },
+        "speed_slowdown_layers": { "value": 3 },
+        "speed_support":
+        {
+            "maximum_value": 125,
+            "value": "(speed_print+speed_wall_0)/2"
+        },
+        "speed_support_bottom":
+        {
+            "maximum_value": 125,
+            "value": "speed_support_interface"
+        },
+        "speed_support_infill": { "maximum_value": 125 },
+        "speed_support_interface":
+        {
+            "maximum_value": 125,
+            "value": "speed_support"
+        },
+        "speed_support_roof":
+        {
+            "maximum_value": 125,
+            "value": "speed_support_interface"
+        },
+        "speed_topbottom": { "maximum_value": 125 },
+        "speed_travel":
+        {
+            "maximum_value": 125,
+            "value": 125
+        },
+        "speed_travel_layer_0": { "maximum_value": 125 },
+        "speed_wall":
+        {
+            "maximum_value": 125,
+            "value": "min(150, speed_print)"
+        },
+        "speed_wall_0":
+        {
+            "maximum_value": 125,
+            "value": "min(50, speed_print)"
+        },
+        "speed_wall_0_roofing": { "maximum_value": 125 },
+        "speed_wall_x":
+        {
+            "maximum_value": 125,
+            "value": "min(math.ceil(speed_print*line_width/wall_line_width_x), speed_print)"
+        },
+        "speed_wall_x_roofing":
+        {
+            "maximum_value": 125,
+            "value": "min(math.ceil(speed_wall_0_roofing*wall_line_width_0/wall_line_width_x), speed_wall)"
+        },
+        "support_bottom_distance":
+        {
+            "maximum_value_warning": "3*layer_height",
+            "value": "support_z_distance"
+        },
+        "support_bottom_offset": { "value": 0 },
+        "support_brim_minimum_hole_area": { "value": 3 },
+        "support_brim_width": { "value": "4*line_width" },
+        "support_infill_multiplier": { "value": "2 if support_pattern == 'lightning' else 1" },
+        "support_infill_rate": { "value": "10 if support_structure == 'tree' else 80 if gradual_support_infill_steps != 0 else 15" },
+        "support_interface_enable": { "value": true },
+        "support_interface_pattern": { "value": "'lines'" },
+        "support_interface_wall_count": { "value": 1 },
+        "support_line_width": { "value": "1.25*line_width" },
+        "support_offset": { "value": 0.8 },
+        "support_pattern": { "value": "'lightning' if support_structure == 'tree' else 'zigzag'" },
+        "support_roof_height": { "minimum_value_warning": 0 },
+        "support_structure": { "value": "'tree'" },
+        "support_top_distance": { "maximum_value_warning": "3*layer_height" },
+        "support_tree_angle": { "value": 45 },
+        "support_tree_angle_slow": { "value": 40 },
+        "support_tree_bp_diameter": { "value": 40 },
+        "support_tree_branch_diameter_angle": { "value": 5 },
+        "support_tree_max_diameter": { "value": 15 },
+        "support_tree_tip_diameter": { "value": 3 },
+        "support_tree_top_rate": { "value": 30 },
+        "support_wall_count": { "value": "1 if (support_structure == 'tree' and support_pattern != 'lightning') else 0" },
+        "support_xy_distance": { "value": 1.2 },
+        "support_xy_distance_overhang": { "value": 0.8 },
+        "support_z_distance": { "value": "2*layer_height" },
+        "top_bottom_pattern": { "value": "'lines'" },
+        "travel_retract_before_outer_wall": { "value": "'force_not_retracted_from_infill'" },
+        "wall_0_material_flow_roofing": { "value": "roofing_material_flow" },
+        "wall_overhang_angle": { "value": 30 },
+        "wall_overhang_speed_factors":
+        {
+            "value": [
+                80,
+                60,
+                40,
+                20
+            ]
+        },
+        "wall_x_material_flow_roofing": { "value": "roofing_material_flow" }
+    }
+}

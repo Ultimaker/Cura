@@ -97,7 +97,7 @@ class ModelChecker(QObject, Extension):
             "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
             "<p>{model_names}</p>\n"
             "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-            "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+            "<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
             ).format(model_names = ", ".join([n.getName() for n in warning_nodes])))
 
         return len(warning_nodes) > 0

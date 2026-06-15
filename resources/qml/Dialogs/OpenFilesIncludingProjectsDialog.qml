@@ -27,21 +27,6 @@ UM.Dialog
     property var fileUrls: []
     property var addToRecent: true
 
-    function loadProjectFile(projectFile)
-    {
-        UM.WorkspaceFileHandler.readLocalFile(projectFile, base.addToRecent);
-    }
-
-    function loadModelFiles(fileUrls)
-    {
-        for (var i in fileUrls)
-        {
-            CuraApplication.readLocalFile(fileUrls[i], "open_as_model", base.addToRecent);
-        }
-    }
-
-    onAccepted: loadModelFiles(base.fileUrls)
-
     UM.Label
     {
         text: catalog.i18nc("@text:window", "We have found one or more project file(s) within the files you have selected. You can open only one project file at a time. We suggest to only import models from those files. Would you like to proceed?")

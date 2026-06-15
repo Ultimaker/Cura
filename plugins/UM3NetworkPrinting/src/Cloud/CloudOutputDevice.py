@@ -297,6 +297,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         :param response: The response from the cloud API.
         """
+        self._uploader_handle = None
         self._uploaded_print_job = self._pre_upload_print_job
         self._progress.hide()
 
@@ -349,6 +350,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress.hide()
         self._pre_upload_print_job = None
         self._uploaded_print_job = None
+        self._uploader_handle = None
         self._cancelInProgressJobs()
         PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()

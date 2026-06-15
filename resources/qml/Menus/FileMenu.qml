@@ -55,8 +55,7 @@ Cura.Menu
             };
             if (UM.Preferences.getValue("cura/dialog_on_project_save"))
             {
-                saveWorkspaceDialog.args = args
-                saveWorkspaceDialog.open()
+                saveWorkspaceDialogComponent.createObject(base, {"args": args}).open()
             }
             else
             {

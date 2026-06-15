@@ -49,7 +49,8 @@ UM.ManagementPage
 
     onCreateProfile:
     {
-        createQualityDialog.object = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
+        var name = Cura.ContainerManager.makeUniqueName(Cura.MachineManager.activeQualityOrQualityChangesName);
+        var createQualityDialog = createQualityDialogComponent.createObject(base, {"object": name});
         createQualityDialog.open();
         createQualityDialog.selectText();
     }
@@ -86,7 +87,7 @@ UM.ManagementPage
         Cura.SecondaryButton
         {
             text: catalog.i18nc("@action:button", "Import")
-            onClicked:importDialog.open()
+            onClicked: importDialogComponent.createObject(base).open()
         },
         Cura.SecondaryButton
         {
@@ -98,9 +99,10 @@ UM.ManagementPage
             tooltip: catalog.i18nc("@action:tooltip", "Create new profile from current settings/overrides")
             onClicked:
             {
-                createQualityDialog.object = Cura.ContainerManager.makeUniqueName("<new name>")
-                createQualityDialog.open()
-                createQualityDialog.selectText()
+                var name = Cura.ContainerManager.makeUniqueName("<new name>");
+                var createQualityDialog = createQualityDialogComponent.createObject(base, {"object": name});
+                createQualityDialog.open();
+                createQualityDialog.selectText();
             }
         }
     ]
@@ -265,24 +267,35 @@ UM.ManagementPage
                 base.toActivateNewQuality = false;
             }
         }
-        Cura.MessageDialog
+
+        Component
         {
-            id: messageDialog
-            standardButtons: Dialog.Ok
+            id: messageDialogComponent
+
+            Cura.MessageDialog
+            {
+                standardButtons: Dialog.Ok
+                selfDestroy: true
+            }
         }
 
         // Dialog to request a name when creating a new profile
-        Cura.RenameDialog
+        Component
         {
-            id: createQualityDialog
-            title: catalog.i18nc("@title:window", "Create Profile")
-            object: "<new name>"
-            explanation: catalog.i18nc("@info", "Please provide a name for this profile.")
-            onAccepted:
+            id: createQualityDialogComponent
+
+            Cura.RenameDialog
             {
-                base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
-                base.toActivateNewQuality = true;
-                base.qualityManagementModel.createQualityChanges(newName);
+                title: catalog.i18nc("@title:window", "Create Profile")
+                object: "<new name>"
+                explanation: catalog.i18nc("@info", "Please provide a name for this profile.")
+                selfDestroy: true
+                onAccepted:
+                {
+                    base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
+                    base.toActivateNewQuality = true;
+                    base.qualityManagementModel.createQualityChanges(newName);
+                }
             }
         }
 
@@ -313,7 +326,7 @@ UM.ManagementPage
                 onTriggered:
                 {
                     forceActiveFocus()
-                    duplicateQualityDialog.open()
+                    duplicateQualityDialogComponent.createObject(base).open()
                 }
             }
             Cura.MenuItem
@@ -323,7 +336,7 @@ UM.ManagementPage
                 onTriggered:
                 {
                     forceActiveFocus()
-                    confirmRemoveQualityDialog.open()
+                    confirmRemoveQualityDialogComponent.createObject(base).open()
                 }
             }
             Cura.MenuItem
@@ -332,7 +345,7 @@ UM.ManagementPage
                 enabled: base.hasCurrentItem && !base.currentItem.is_read_only
                 onTriggered:
                 {
-                    renameQualityDialog.object = base.currentItem.name
+                    var renameQualityDialog = renameQualityDialogComponent.createObject(base, {"object": base.currentItem.name})
                     renameQualityDialog.open()
                     renameQualityDialog.selectText()
                 }
@@ -341,95 +354,124 @@ UM.ManagementPage
             {
                 text: catalog.i18nc("@action:button", "Export")
                 enabled: base.hasCurrentItem && !base.currentItem.is_read_only
-                onTriggered: exportDialog.open()
+                onTriggered: exportDialogComponent.createObject(base).open()
             }
         }
 
         // Dialog for exporting a quality profile
-        FileDialog
+        Component
         {
-            id: exportDialog
-            title: catalog.i18nc("@title:window", "Export Profile")
-            fileMode: FileDialog.SaveFile
-            nameFilters: base.qualityManagementModel.getFileNameFilters("profile_writer")
-            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
-            onAccepted:
+            id: exportDialogComponent
+
+            FileDialog
             {
-
-                // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
-                // This fetches the nameFilter at index selectedNameFilter.index if it is positive
-                const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
-
-                var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
-                                                                             selectedFile, nameFilterString);
-
-                if (result && result.status == "error")
+                title: catalog.i18nc("@title:window", "Export Profile")
+                fileMode: FileDialog.SaveFile
+                nameFilters: base.qualityManagementModel.getFileNameFilters("profile_writer")
+                currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
+                onAccepted:
                 {
-                    messageDialog.title = catalog.i18nc("@title:window", "Export Profile")
-                    messageDialog.text = result.message;
-                    messageDialog.open();
-                }
 
-                // else pop-up Message thing from python code
-                CuraApplication.setDefaultPath("dialog_profile_path", currentFolder);
+                    // If nameFilters contains only 1 item, the index of selectedNameFilter will always be -1
+                    // This fetches the nameFilter at index selectedNameFilter.index if it is positive
+                    const nameFilterString = selectedNameFilter.index >= 0 ? nameFilters[selectedNameFilter.index] : nameFilters[0];
+
+                    var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
+                        selectedFile, nameFilterString);
+
+                    if (result && result.status == "error")
+                    {
+                        var messageDialog = messageDialogComponent.createObject(base,
+                            {
+                                "title": catalog.i18nc("@title:window", "Export Profile"),
+                                "text": result.message
+                            }
+                        )
+                        messageDialog.open();
+                    }
+
+                    // else pop-up Message thing from python code
+                    CuraApplication.setDefaultPath("dialog_profile_path", currentFolder);
+                }
             }
         }
 
         // Dialog to request a name when duplicating a new profile
-        Cura.RenameDialog
+        Component
         {
-            id: duplicateQualityDialog
-            title: catalog.i18nc("@title:window", "Duplicate Profile")
-            object: "<new name>"
-            onAccepted: base.qualityManagementModel.duplicateQualityChanges(newName, base.currentItem)
+            id: duplicateQualityDialogComponent
+
+            Cura.RenameDialog
+            {
+                title: catalog.i18nc("@title:window", "Duplicate Profile")
+                object: "<new name>"
+                selfDestroy: true
+                onAccepted: base.qualityManagementModel.duplicateQualityChanges(newName, base.currentItem)
+            }
         }
 
         // Confirmation dialog for removing a profile
-        Cura.MessageDialog
+        Component
         {
-            id: confirmRemoveQualityDialog
+            id: confirmRemoveQualityDialogComponent
 
-            title: catalog.i18nc("@title:window", "Confirm Remove")
-            text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
-            standardButtons: Dialog.Yes | Dialog.No
-            modal: true
-
-            onAccepted:
+            Cura.MessageDialog
             {
-                base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
-                // reset current item to the first if available
-                qualityListView.currentIndex = -1;  // Reset selection.
+                title: catalog.i18nc("@title:window", "Confirm Remove")
+                text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItemName)
+                standardButtons: Dialog.Yes | Dialog.No
+                selfDestroy: true
+
+                onAccepted:
+                {
+                    base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+                    // reset current item to the first if available
+                    qualityListView.currentIndex = -1;  // Reset selection.
+                }
             }
         }
 
         // Dialog to rename a quality profile
-        Cura.RenameDialog
+        Component
         {
-            id: renameQualityDialog
-            title: catalog.i18nc("@title:window", "Rename Profile")
-            object: "<new name>"
-            onAccepted:
+            id: renameQualityDialogComponent
+
+            Cura.RenameDialog
             {
-                var actualNewName = base.qualityManagementModel.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
-                base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
+                title: catalog.i18nc("@title:window", "Rename Profile")
+                object: "<new name>"
+                selfDestroy: true
+                onAccepted:
+                {
+                    var actualNewName = base.qualityManagementModel.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+                    base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
+                }
             }
         }
 
         // Dialog for importing a quality profile
-        FileDialog
+        Component
         {
-            id: importDialog
-            title: catalog.i18nc("@title:window", "Import Profile")
-            fileMode: FileDialog.OpenFile
-            nameFilters: base.qualityManagementModel.getFileNameFilters("profile_reader")
-            currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
-            onAccepted:
+            id: importDialogComponent
+
+            FileDialog
             {
-                var result = Cura.ContainerManager.importProfile(selectedFile);
-                messageDialog.title = catalog.i18nc("@title:window", "Import Profile")
-                messageDialog.text = result.message;
-                messageDialog.open();
-                CuraApplication.setDefaultPath("dialog_profile_path", folder);
+                title: catalog.i18nc("@title:window", "Import Profile")
+                fileMode: FileDialog.OpenFile
+                nameFilters: base.qualityManagementModel.getFileNameFilters("profile_reader")
+                currentFolder: CuraApplication.getDefaultPath("dialog_profile_path")
+                onAccepted:
+                {
+                    var result = Cura.ContainerManager.importProfile(selectedFile);
+                    var messageDialog = messageDialogComponent.createObject(base,
+                        {
+                            "title": catalog.i18nc("@title:window", "Import Profile"),
+                            "text": result.message
+                        }
+                    )
+                    messageDialog.open();
+                    CuraApplication.setDefaultPath("dialog_profile_path", folder);
+                }
             }
         }
     }
