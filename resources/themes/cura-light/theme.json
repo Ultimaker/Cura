@@ -446,7 +446,8 @@
         "disallowed_area": [0, 0, 0, 40],
         "error_area": [255, 0, 0, 127],
 
-        "model_overhang": [255, 0, 0, 255],
+        "model_overhang": [232, 127, 0, 255],
+        "model_overhang_paint": [168, 216, 138, 255],
         "model_unslicable": [122, 122, 122, 255],
         "model_unslicable_alt": [172, 172, 127, 255],
         "model_selection_outline": [50, 130, 255, 255],
