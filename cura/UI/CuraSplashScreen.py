@@ -15,6 +15,12 @@ import time
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
+        # Set the window flags to make the splash screen a tool window, frameless, and always on top
+        self.setWindowFlags(
+            Qt.WindowType.Tool |
+            Qt.WindowType.FramelessWindowHint |
+            Qt.WindowType.WindowStaysOnTopHint
+        )
         self._scale = 1
         self._version_y_offset = 0  # when extra visual elements are in the background image, move version text down
 
