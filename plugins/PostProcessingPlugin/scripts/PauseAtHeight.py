@@ -39,13 +39,15 @@ from typing import Tuple
 from UM.Message import Message
 
 class PauseAtHeight(Script):
+    #def __init__(self) -> None:
+    #    super().__init__()
 
     # Pause Constants:
     MAXIMUM_E_CHUNK = 150
     FILAMENT_RATIO = 0.38  # Ratio of filament volume/mm between 1.75 and 2.85. Affects purge speeds.
     MAX_SAFE_E_SPEED = 100  # mm/s - firmware safety limit
-    DEFAULT_PURGE_SPEED_MULTIPLIER = 500  # mm/min per mm nozzle diameter based on nozzle area
-    PURGE_SPEED_CONSTANT = 1000  # multiplier for the purge speed flow adjustment based on nozzle area, E speed, and conversion from mm/sec to mm/min 
+    INITIAL_PURGE_SPEED_MULTIPLIER = 500  # mm/min per mm nozzle diameter based on nozzle area
+    INITIAL_PURGE_SPEED_CONSTANT = 1000  # multiplier for the purge speed flow adjustment based on nozzle area, E speed, and conversion from mm/sec to mm/min
     BOWDEN_PURGE_OFFSET = 2.5  # retraction distance multiplier for bowden systems
     DIRECT_DRIVE_ADJUSTMENT = 7  # retraction adder for DD systems
     RELOAD_FAST_PERCENTAGE = 0.9  # 90% of reload amount at high speed and remainder at purge speed.
@@ -65,8 +67,8 @@ class PauseAtHeight(Script):
             self._instance.setProperty(key, "value", self.global_stack.getProperty(key, "value"))
 
         machine_extruder_count = int(self.global_stack.getProperty("machine_extruder_count", "value"))
-        self._instance.setProperty("tool_temp_overide_enable", "value", machine_extruder_count > 1)
-        self._instance.setProperty("tool_temp_overide", "value", machine_extruder_count > 1)
+        self._instance.setProperty("tool_temp_override_enable", "value", machine_extruder_count > 1)
+        self._instance.setProperty("tool_temp_override", "value", machine_extruder_count > 1)
 
         extruder = self.global_stack.extruderList
         standby_temperature = extruder[0].getProperty("material_standby_temperature", "value")
@@ -87,8 +89,12 @@ class PauseAtHeight(Script):
         origin_at_center = bool(self.global_stack.getProperty("machine_center_is_zero", "value"))
         # Make an E-speed adjustment for printers that use 2.85 filament
         if extruder[0].getProperty("material_diameter", "value") > 2:
-            self.DEFAULT_PURGE_SPEED_MULTIPLIER *= self.FILAMENT_RATIO
-            self.PURGE_SPEED_CONSTANT *= self.FILAMENT_RATIO
+            self.PURGE_SPEED_MULTIPLIER = self.INITIAL_PURGE_SPEED_MULTIPLIER * self.FILAMENT_RATIO
+            self.PURGE_SPEED_CONSTANT = self.INITIAL_PURGE_SPEED_CONSTANT * self.FILAMENT_RATIO
+        else:
+            self.PURGE_SPEED_MULTIPLIER = self.INITIAL_PURGE_SPEED_MULTIPLIER
+            self.PURGE_SPEED_CONSTANT = self.INITIAL_PURGE_SPEED_CONSTANT
+            
         if not origin_at_center:
             self._instance.setProperty("x_max_value", "value", self._machine_width)
             self._instance.setProperty("y_max_value", "value", self._machine_depth)
@@ -413,21 +419,21 @@ class PauseAtHeight(Script):
                     "default_value": 200,
                     "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
-                "tool_temp_overide_enable":
+                "tool_temp_override_enable":
                 {
-                    "label": "Hidden setting Temp Overide Enable",
-                    "description": "Enable tool changes to overide the print temperature.",
+                    "label": "Hidden setting Temp Override Enable",
+                    "description": "Enable tool changes to override the print temperature.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": false
                 },
-                "tool_temp_overide":
+                "tool_temp_override":
                 {
                     "label": "Tool changes set resume temperature",
                     "description": "For multi-extruder printers - resume the print at the temperature of the current extruder.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "tool_temp_overide_enable and enable_pause_at_height"
+                    "enabled": "tool_temp_override_enable and enable_pause_at_height"
                 },
                 "resume_temperature_cmd":
                 {
@@ -439,7 +445,7 @@ class PauseAtHeight(Script):
                         "m109_cmd_r": "M109 R",
                         "m109_cmd_s": "M109 S"},
                     "default_value": "m104_cmd",
-                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_overide"
+                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_override"
                 },
                 "resume_print_temperature":
                 {
@@ -448,7 +454,7 @@ class PauseAtHeight(Script):
                     "unit": "°C   ",
                     "type": "int",
                     "default_value": 200,
-                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_overide"
+                    "enabled": "enable_pause_at_height and pause_method not in [\\\"griffin\\\", \\\"repetier\\\"] and not tool_temp_override"
                 },
                 "display_text":
                 {
@@ -634,7 +640,7 @@ class PauseAtHeight(Script):
             extra_prime_amount = "0"
 
         # Calculate the purge speed based on the nozzle size.  A 0.4 will be 200 and a 0.8 will be 400 mm/min.
-        purge_speed = round(self.nozzle_size * self.DEFAULT_PURGE_SPEED_MULTIPLIER)
+        purge_speed = round(self.nozzle_size * self.PURGE_SPEED_MULTIPLIER)
 
         # The slow_reload_speed is used at the end of the reloading to slow down the filament
         slow_reload_speed = purge_speed * 2
@@ -657,7 +663,7 @@ class PauseAtHeight(Script):
             resume_temperature_param = "R"
 
         standby_temperature = self.getSettingValueByKey("standby_temperature")
-        use_tool_temperature = bool(self.getSettingValueByKey("tool_temp_overide"))
+        use_tool_temperature = bool(self.getSettingValueByKey("tool_temp_override"))
         resume_print_temperature = self.getSettingValueByKey("resume_print_temperature")
 
         # Temperature setting from Cura
