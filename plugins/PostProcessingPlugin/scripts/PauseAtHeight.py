@@ -39,8 +39,6 @@ from typing import Tuple
 from UM.Message import Message
 
 class PauseAtHeight(Script):
-    #def __init__(self) -> None:
-    #    super().__init__()
 
     # Pause Constants:
     MAXIMUM_E_CHUNK = 150
