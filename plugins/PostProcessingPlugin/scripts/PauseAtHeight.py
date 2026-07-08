@@ -139,8 +139,9 @@ class PauseAtHeight(Script):
                     "label": "Pause at End of layer(s)",
                     "description": "Enter the number of the LAST layer you want to finish prior to the pause. Use the layer numbers from the Cura preview.  If you want to use these exact same settings for more than one pause then use a comma to delimit the layer numbers.  If the settings are different then you must add another instance of PauseAtLayerOrHeight.",
                     "type": "str",
-                    "value": "25",
+                    "default_value": "25",
                     "enabled": "enable_pause_at_height and pause_at == 'layer_no'"
+                }
                 },
                 "pause_height":
                 {
