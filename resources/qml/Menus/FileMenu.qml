@@ -13,25 +13,47 @@ Cura.Menu
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
     property var fileProviderModel: CuraApplication.getFileProviderModel()
 
+    Timer {
+        id: menuRefreshTimerOpen
+        interval: 25
+        onTriggered: {
+            base.open()
+        }
+    }
+
+    Timer {
+        id: menuRefreshTimerClose
+        interval: 50
+        onTriggered: {
+            base.close()
+        }
+    }
+    
+    Connections {
+        target: base.fileProviderModel
+        function onCountChanged() {
+            // workaround for a bug where the menu does not refresh (properly) when the model changes
+            if (Qt.platform.os == "osx")
+            {
+                menuRefreshTimerOpen.restart()
+                menuRefreshTimerClose.restart()
+            }
+        }
+    }
 
     Cura.MenuItem
     {
-        id: newProjectMenu
         action: Cura.Actions.newProject
     }
 
     Cura.MenuItem
     {
-        id: openMenu
         action: Cura.Actions.open
         visible: base.fileProviderModel.count == 1
-        enabled: base.fileProviderModel.count == 1
     }
 
     OpenFilesMenu
     {
-        id: openFilesMenu
-
         shouldBeVisible: base.fileProviderModel.count > 1
         enabled: shouldBeVisible
     }
@@ -40,28 +62,8 @@ Cura.Menu
 
     Cura.MenuItem
     {
-        id: saveWorkspaceMenu
-        shortcut: StandardKey.Save
-        text: catalog.i18nc("@title:menu menubar:file", "&Save Project...")
+        action: Cura.Actions.save
         visible: saveProjectMenu.model.count == 1
-        enabled: UM.WorkspaceFileHandler.enabled && saveProjectMenu.model.count == 1
-        onTriggered:
-        {
-            const args = {
-                "filter_by_machine": false,
-                "file_type": "workspace",
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-                "limit_mimetypes":["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
-            };
-            if (UM.Preferences.getValue("cura/dialog_on_project_save"))
-            {
-                saveWorkspaceDialogComponent.createObject(base, {"args": args}).open()
-            }
-            else
-            {
-                UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args)
-            }
-        }
     }
 
     UM.ProjectOutputDevicesModel { id: projectOutputDevicesModel }
@@ -76,48 +78,25 @@ Cura.Menu
 
     Cura.MenuItem
     {
-        id: saveUCPMenu
-        text: catalog.i18nc("@title:menu menubar:file Don't translate 'Universal Cura Project'", "&Save Universal Cura Project...")
-        enabled: UM.WorkspaceFileHandler.enabled && CuraApplication.getPackageManager().allEnabledPackages.includes("3MFWriter")
-        onTriggered: CuraApplication.exportUcp()
+        action: Cura.Actions.saveUCP
     }
 
     Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
-        id: saveAsMenu
-        text: catalog.i18nc("@title:menu menubar:file", "&Export...")
-        onTriggered:
-        {
-            const args = {
-                "filter_by_machine": false,
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-            };
-            UM.OutputDeviceManager.requestWriteToDevice("local_file", PrintInformation.jobName, args);
-        }
+        action: Cura.Actions.export_
     }
 
     Cura.MenuItem
     {
-        id: exportSelectionMenu
-        text: catalog.i18nc("@action:inmenu menubar:file", "Export Selection...")
-        enabled: UM.Selection.hasSelection
-        icon.name: "document-save-as"
-        onTriggered: {
-            const args = {
-                "filter_by_machine": false,
-                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
-            };
-            UM.OutputDeviceManager.requestWriteSelectionToDevice("local_file", PrintInformation.jobName, args);
-        }
+        action: Cura.Actions.exportSelection
     }
 
     Cura.MenuSeparator { }
 
     Cura.MenuItem
     {
-        id: reloadAllMenu
         action: Cura.Actions.reloadAll
     }
 
