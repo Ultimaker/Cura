@@ -12,7 +12,6 @@ Item
 {
     property alias newProject: newProjectAction
     property alias open: openAction
-    property alias openMultiple: openMultipleAction
     property alias quit: quitAction
 
     property alias undo: undoAction
@@ -514,21 +513,10 @@ Item
     Action
     {
         id: openAction
-        property var fileProviderModel: CuraApplication.getFileProviderModel()
 
         text: catalog.i18nc("@action:inmenu menubar:file", "&Open File(s)...")
         icon.name: "document-open"
-        // Unassign the shortcut when there are more than one file providers, since then the file provider's shortcut is
-        // enabled instead, and Ctrl+O is assigned to the local file provider
-        shortcut: fileProviderModel.count == 1 ? StandardKey.Open : ""
-        enabled: fileProviderModel.count == 1
-    }
-
-    Action
-    {
-        id: openMultipleAction
-        // property var fileProviderModel: CuraApplication.getFileProviderModel()
-        // enabled: fileProviderModel.count > 1
+        shortcut: StandardKey.Open
     }
 
     Action

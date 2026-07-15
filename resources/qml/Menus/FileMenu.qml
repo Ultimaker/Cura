@@ -7,39 +7,13 @@ import QtQuick.Controls 2.1
 import UM 1.6 as UM
 import Cura 1.0 as Cura
 
+import "../Dialogs"
+
 Cura.Menu
 {
     id: base
     title: catalog.i18nc("@title:menu menubar:toplevel", "&File")
     property var fileProviderModel: CuraApplication.getFileProviderModel()
-
-    Timer {
-        id: menuRefreshTimerOpen
-        interval: 25
-        onTriggered: {
-            base.open()
-        }
-    }
-
-    Timer {
-        id: menuRefreshTimerClose
-        interval: 50
-        onTriggered: {
-            base.close()
-        }
-    }
-    
-    Connections {
-        target: base.fileProviderModel
-        function onCountChanged() {
-            // workaround for a bug where the menu does not refresh (properly) when the model changes
-            if (Qt.platform.os == "osx")
-            {
-                menuRefreshTimerOpen.restart()
-                menuRefreshTimerClose.restart()
-            }
-        }
-    }
 
     Cura.MenuItem
     {
@@ -49,13 +23,21 @@ Cura.Menu
     Cura.MenuItem
     {
         action: Cura.Actions.open
-        visible: base.fileProviderModel.count == 1
     }
 
-    OpenFilesMenu
+    Instantiator
     {
-        shouldBeVisible: base.fileProviderModel.count > 1
-        enabled: shouldBeVisible
+        id: fileProviderShortcuts
+        model: base.fileProviderModel
+        delegate: QtObject { readonly property string itemShortcut: model.shortcut }
+    }
+
+    Cura.MenuItem
+    {
+        text: catalog.i18nc("@action:inmenu menubar:file", "Open from Digital Library")
+        enabled: base.fileProviderModel.count > 1
+        shortcut: base.fileProviderModel.count > 1 ? fileProviderShortcuts.objectAt(1).itemShortcut : ""
+        onTriggered: CuraApplication.getFileProviderModel().trigger("DigitalLibrary")
     }
 
     RecentFilesMenu { }
@@ -63,17 +45,55 @@ Cura.Menu
     Cura.MenuItem
     {
         action: Cura.Actions.save
-        visible: saveProjectMenu.model.count == 1
     }
 
     UM.ProjectOutputDevicesModel { id: projectOutputDevicesModel }
 
-    SaveProjectMenu
+    Instantiator
     {
-        id: saveProjectMenu
+        id: outputDeviceShortcuts
         model: projectOutputDevicesModel
-        shouldBeVisible: model.count > 1
-        enabled: UM.WorkspaceFileHandler.enabled
+        delegate: QtObject { readonly property string itemShortcut: model.shortcut }
+    }
+
+    Cura.MenuItem
+    {
+        text: catalog.i18nc("@action:inmenu menubar:file", "Save Project to Digital Library")
+        enabled: projectOutputDevicesModel.count > 1 && UM.WorkspaceFileHandler.enabled
+        shortcut: projectOutputDevicesModel.count > 1 ? outputDeviceShortcuts.objectAt(1).itemShortcut : ""
+        onTriggered:
+        {
+            if (!UM.WorkspaceFileHandler.enabled)
+            {
+                return
+            }
+            const args = {
+                "filter_by_machine": false,
+                "file_type": "workspace",
+                "preferred_mimetypes": "application/vnd.ms-package.3dmanufacturing-3dmodel+xml",
+                "limit_mimetypes": ["application/vnd.ms-package.3dmanufacturing-3dmodel+xml"],
+            };
+            if (UM.Preferences.getValue("cura/dialog_on_project_save"))
+            {
+                saveWorkspaceDialogComponent.createObject(base, {"args": args, "deviceId": "digital_factory"}).open()
+            }
+            else
+            {
+                UM.OutputDeviceManager.requestWriteToDevice("digital_factory", PrintInformation.jobName, args)
+            }
+        }
+    }
+
+    Component
+    {
+        id: saveWorkspaceDialogComponent
+        WorkspaceSummaryDialog
+        {
+            property var args
+            property var deviceId
+            onAccepted: UM.OutputDeviceManager.requestWriteToDevice(deviceId, PrintInformation.jobName, args)
+            selfDestroy: true
+        }
     }
 
     Cura.MenuItem
@@ -104,3 +124,4 @@ Cura.Menu
 
     Cura.MenuItem { action: Cura.Actions.quit }
 }
+
