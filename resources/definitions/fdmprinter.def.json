@@ -5682,7 +5682,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "support_line_width_bottom_layers":
+                "support_wall_thickness_bottom_layers":
                 {
                     "label": "Support Wall Unenlarged Bottom Layers",
                     "description": "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
@@ -5695,7 +5695,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "support_line_width_top_layers":
+                "support_wall_thickness_top_layers":
                 {
                     "label": "Support Wall Unenlarged Top Layers",
                     "description": "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
@@ -5708,13 +5708,13 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "support_line_width_layer_smooth":
+                "support_wall_thickness_layer_smooth":
                 {
                     "label": "Support Wall Smooth Layer Width",
                     "description": "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)",
                     "default_value": 15,
                     "minimum_value": "0",
-                    "maximum_value": "min(support_line_width_bottom_layers, support_line_width_top_layers)",
+                    "maximum_value": "min(support_wall_thickness_bottom_layers, support_wall_thickness_top_layers)",
                     "type": "int",
                     "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
                     "limit_to_extruder": "support_infill_extruder_nr",
