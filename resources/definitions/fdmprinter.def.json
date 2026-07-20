@@ -5985,35 +5985,53 @@
                         }
                     }
                 },
-                "support_base_inside_width":
+                "support_base_width":
                 {
-                    "label": "Support Base Inside Width",
-                    "description": "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base.",
-                    "value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "label": "Support Base Width",
+                    "description": "The width of the support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                    "value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('support_outer_brim_enable') else extruderValue(support_extruder_nr, 'support_brim_width')",
                     "type": "float",
                     "unit": "mm",
-                    "enabled": "support_enable and resolveOrValue('support_brim_enable')",
+                    "enabled": "support_enable and (resolveOrValue('support_brim_enable') or resolveOrValue('support_outer_brim_enable'))",
                     "default_value": 0,
                     "minimum_value": "0",
-                    "maximum_value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                    "maximum_value": "extruderValue(support_extruder_nr, 'support_brim_width') if resolveOrValue('support_brim_enable') else extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('support_outer_brim_enable') and resolveOrValue('adhesion_type') == 'brim' else None",
                     "limit_to_extruder": "support_extruder_nr",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "support_base_outside_width":
-                {
-                    "label": "Support Base Outside Width",
-                    "description": "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
-                    "value": "extruderValue(support_extruder_nr, 'brim_width')",
-                    "type": "float",
-                    "unit": "mm",
-                    "enabled": "support_enable and resolveOrValue('support_outer_brim_enable')",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('adhesion_type') == 'brim' else None",
-                    "limit_to_extruder": "support_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_base_inside_width":
+                        {
+                            "label": "Support Base Inside Width",
+                            "description": "The width of the inside support base. Increasing this value will result in a sturdier support. If this setting is too low, the supports will not have a sturdy inside base.",
+                            "value": "min(extruderValue(support_extruder_nr, 'support_brim_width'), support_base_width)",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'support_brim_width')",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_base_outside_width":
+                        {
+                            "label": "Support Base Outside Width",
+                            "description": "The width of the outside support base. Increasing this value will result in a sturdier support because the base will be wider. If this setting is too low, the supports will not have a sturdy base.",
+                            "value": "support_base_width",
+                            "type": "float",
+                            "unit": "mm",
+                            "enabled": "support_enable and resolveOrValue('support_outer_brim_enable')",
+                            "default_value": 0,
+                            "minimum_value": "0",
+                            "maximum_value": "extruderValue(support_extruder_nr, 'brim_width') if resolveOrValue('adhesion_type') == 'brim' else None",
+                            "limit_to_extruder": "support_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "support_base_curve_magnitude":
                 {
