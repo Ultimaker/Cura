@@ -2,6 +2,15 @@ name: printer-linter-pr-diagnose
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Target branch to run the workflow on'
+        required: false
+        default: 'main'
+      printer:
+        description: 'Printer name to lint all related files (e.g. ultimaker_s5). Runs instead of the PR diff when set.'
+        required: false
+        default: ''
   pull_request:
     paths:
       - "resources/**"
@@ -17,7 +26,8 @@ jobs:
     steps:
       - name: Setup the build environment
         uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
-
+        with:
+          branch: ${{ github.event.inputs.branch || 'main' }}
       - uses: greguintow/get-diff-action@v7
         with:
           DIFF_FILTER: AMRCD
@@ -27,6 +37,33 @@ jobs:
 
       - name: Create results directory
         run: mkdir printer-linter-result
+
+      - name: Collect printer files specified by input (UM only, optional)
+        id: collect-printer-files
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.printer != '' }}
+        env:
+          PRINTER_INPUT: ${{ github.event.inputs.printer }}
+        run: |
+          if ! [[ "$PRINTER_INPUT" =~ ^[a-zA-Z0-9_]+$ ]]; then
+            echo "::error::Invalid printer name '${PRINTER_INPUT}'. Only letters, digits, and underscores are allowed."
+            exit 1
+          fi
+          FILES=$(find resources \( \
+            -path "resources/definitions/${PRINTER_INPUT}.def.json" \
+            -o -path "resources/extruders/${PRINTER_INPUT}_*.def.json" \
+            -o -path "resources/quality/${PRINTER_INPUT}/*.inst.cfg" \
+            -o -path "resources/variants/${PRINTER_INPUT}*.inst.cfg" \
+            -o -path "resources/intent/${PRINTER_INPUT}/*.inst.cfg" \
+          \) -type f | tr '\n' ' ')
+          if [ -z "${FILES// }" ]; then
+            echo "::error::No resource files found for printer '${PRINTER_INPUT}'. Verify the printer name is correct."
+            exit 1
+          fi
+          echo "PRINTER_FILES=$FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Diagnose printer file(s) specified by input (UM only, optional)
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.printer != '' }}
+        run: python printer-linter/src/terminal.py --diagnose --report printer-linter-result/fixes.yml ${{ steps.collect-printer-files.outputs.PRINTER_FILES }}
 
       - name: Diagnose file(s)
         if: env.GIT_DIFF && !env.MATCHED_FILES

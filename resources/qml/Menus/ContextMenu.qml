@@ -57,7 +57,8 @@ Cura.Menu
                     extruder_header_location = i + 1;
                 }
             }
-            base.insertItem(extruder_header_location + index, object)
+            base.insertItem(extruder_header_location + index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
         }
         onObjectRemoved: function(index, object) {  base.removeItem(object) }
     }

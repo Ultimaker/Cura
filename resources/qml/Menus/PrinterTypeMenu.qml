@@ -28,7 +28,10 @@ Cura.Menu
                 Cura.MachineManager.switchPrinterType(modelData.machine_type)
             }
         }
-        onObjectAdded: function(index, object) { return menu.insertItem(index, object); }
+onObjectAdded: function(index, object) {
+    menu.insertItem(index, object);
+    if (Qt.platform.os == "osx") object.text += " ";
+}
         onObjectRemoved: function(index, object) { return menu.removeItem(object); }
     }
 }

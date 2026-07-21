@@ -53,12 +53,20 @@ Cura.Menu
                     sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
                 }
 
-                onObjectAdded: function(index, object) { sub_menu.insertItem(index, object.item)}
-                onObjectRemoved: function(index, object) { sub_menu.removeItem(object.item)}
+                onObjectAdded: function(index, object) {
+                    sub_menu.insertItem(index, object.item);
+                    if (Qt.platform.os == "osx") object.item.text += " ";
+                }
+                onObjectRemoved: function(index, object) { sub_menu.removeItem(object.item); }
             }
         }
 
-        onObjectAdded: function(index, object) { if (object.shouldBeVisible) { extensionMenu.insertMenu(index, object) } }
+        onObjectAdded: function(index, object) {
+            if (object.shouldBeVisible) {
+                extensionMenu.insertMenu(index, object);
+                if (Qt.platform.os == "osx") object.title += " ";
+            }
+        }
         onObjectRemoved: function(index, object) { extensionMenu.removeMenu(object) }
     }
 }

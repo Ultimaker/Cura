@@ -270,7 +270,10 @@ UM.Dialog
                     onTriggered: manager.addScriptToList(modelData.toString())
                 }
 
-                onObjectAdded: function(index, object) { scriptsMenu.insertItem(index, object)}
+                onObjectAdded: function(index, object) {
+                    scriptsMenu.insertItem(index, object);
+                    if (Qt.platform.os == "osx") object.text += " ";
+                }
                 onObjectRemoved: function(index, object) {  scriptsMenu.removeItem(object) }
             }
         }

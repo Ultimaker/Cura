@@ -46,7 +46,10 @@ Cura.Menu
             shortcut: model.shortcut
             enabled: saveProjectMenu.shouldBeVisible
         }
-        onObjectAdded: function(index, object) {  saveProjectMenu.insertItem(index, object)}
+        onObjectAdded: function(index, object) {
+            saveProjectMenu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
         onObjectRemoved: function(index, object) {  saveProjectMenu.removeItem(object)}
     }
 

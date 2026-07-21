@@ -696,8 +696,8 @@ class DisplayInfoOnLCD(Script):
         filament_line_t0 += f";  Filament Type: {self.global_stack.extruderList[0].material.getMetaDataEntry("material", "")}\n"
         filament_line_t0 += f";  Filament Dia.: {self.global_stack.extruderList[0].getProperty("material_diameter", "value")}mm\n"
         filament_line_t0 += f";  Nozzle Size  : {self.global_stack.extruderList[0].getProperty("machine_nozzle_size", "value")}mm\n"
-        filament_line_t0 += f";  Print Temp.  : {self.global_stack.extruderList[0].getProperty("material_print_temperature", "value")}°\n"
-        filament_line_t0 += f";  Bed Temp.    : {self.global_stack.extruderList[0].getProperty("material_bed_temperature", "value")}°"
+        filament_line_t0 += f";  Print Temp.  : {self.global_stack.extruderList[0].getProperty("material_print_temperature", "value")}\u00b0\n"
+        filament_line_t0 += f";  Bed Temp.    : {self.global_stack.extruderList[0].getProperty("material_bed_temperature", "value")}\u00b0"
 
         # if there is more than one extruder then get the stats for the second one.
         filament_line_t1 = ""
@@ -707,7 +707,7 @@ class DisplayInfoOnLCD(Script):
             filament_line_t1 += f";  Filament Type: {self.global_stack.extruderList[1].material.getMetaDataEntry("material", "")}\n"
             filament_line_t1 += f";  Filament Dia.: {self.global_stack.extruderList[1].getProperty("material_diameter", "value")}mm\n"
             filament_line_t1 += f";  Nozzle Size  : {self.global_stack.extruderList[1].getProperty("machine_nozzle_size", "value")}mm\n"
-            filament_line_t1 += f";  Print Temp.  : {self.global_stack.extruderList[1].getProperty("material_print_temperature", "value")}°"
+            filament_line_t1 += f";  Print Temp.  : {self.global_stack.extruderList[1].getProperty("material_print_temperature", "value")}\u00b0"
 
         # Calculate the cost of electricity for the print
         electric_line = self.getElectricCostLine()

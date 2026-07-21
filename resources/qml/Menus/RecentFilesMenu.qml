@@ -29,7 +29,10 @@ Cura.Menu
             }
             onTriggered: CuraApplication.readLocalFile(modelData)
         }
-        onObjectAdded: (index, object) => menu.insertItem(index, object)
-        onObjectRemoved: (index, object) => menu.removeItem(object)
+        onObjectAdded: function(index, object) {
+            menu.insertItem(index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
+        }
+        onObjectRemoved: function(index, object) { menu.removeItem(object); }
     }
 }
