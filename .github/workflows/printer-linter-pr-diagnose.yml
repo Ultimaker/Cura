@@ -27,7 +27,7 @@ jobs:
       - name: Setup the build environment
         uses: ultimaker/cura-workflows/.github/actions/setup-build-environment@main
         with:
-          branch: ${{ github.event.inputs.branch || 'main' }}
+          branch: ${{ github.event.inputs.branch || github.event.pull_request.head.sha || 'main' }}
       - uses: greguintow/get-diff-action@v7
         with:
           DIFF_FILTER: AMRCD
