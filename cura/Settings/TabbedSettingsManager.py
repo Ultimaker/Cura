@@ -1,7 +1,7 @@
 # Copyright (c) 2026 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from PyQt6.QtCore import QObject, pyqtSlot
 
@@ -11,12 +11,16 @@ from cura.Settings.PerCategoryVisibilityHandler import PerCategoryVisibilityHand
 from cura.Settings.InstanceContainerVisibilityHandler import InstanceContainerVisibilityHandler
 from cura.Settings.ExtendedSettingPreferenceVisibilityHandler import ExtendedSettingPreferenceVisibilityHandler
 
+if TYPE_CHECKING:
+    from cura.Settings.MachineManager import MachineManager
+
 
 class TabbedSettingsManager(QObject):
     """Provides lazily-created visibility handler singletons to the tabbed settings QML view."""
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
+    def __init__(self, machine_manager: "MachineManager", parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
+        self._machine_manager = machine_manager
         self._visibility_handlers: dict = {}
 
     @pyqtSlot(str, result=QObject)
@@ -28,13 +32,13 @@ class TabbedSettingsManager(QObject):
         if handler_type not in self._visibility_handlers:
             handler: Optional[QObject] = None
             if handler_type == "PerCategory":
-                handler = PerCategoryVisibilityHandler()
+                handler = PerCategoryVisibilityHandler(machine_manager=self._machine_manager)
             elif handler_type == "InstanceContainer":
-                handler = InstanceContainerVisibilityHandler()
+                handler = InstanceContainerVisibilityHandler(machine_manager=self._machine_manager)
             elif handler_type == "ExtendedSettingPreference":
                 handler = ExtendedSettingPreferenceVisibilityHandler()
             else:
-                Logger.log("w", "TabbedSettingsManager: unknown handler type '%s'", handler_type)
+                Logger.warning(f"TabbedSettingsManager: unknown handler type '{handler_type}'")
                 return None  # type: ignore[return-value]
             self._visibility_handlers[handler_type] = handler
 

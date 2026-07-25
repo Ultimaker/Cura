@@ -218,7 +218,7 @@ class CuraApplication(QtApplication):
         self._setting_visibility_presets_model = None
         self._setting_inheritance_manager = None
         self._simple_mode_settings_manager = None
-        self._tabbed_settings_manager = TabbedSettingsManager(parent=self)
+        self._tabbed_settings_manager = None
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
@@ -1297,6 +1297,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
         engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
+        self._tabbed_settings_manager = TabbedSettingsManager(machine_manager=self.getMachineManager(), parent=self)
         engine.rootContext().setContextProperty("TabbedSettingsManager", self._tabbed_settings_manager)
 
         self.processEvents()

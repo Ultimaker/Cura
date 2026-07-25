@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Settings.Models.SettingVisibilityHandler import SettingVisibilityHandler
-from cura.CuraApplication import CuraApplication
 from UM.Logger import Logger
 
 from PyQt6.QtCore import pyqtProperty, pyqtSignal
@@ -11,13 +10,13 @@ from PyQt6.QtCore import pyqtProperty, pyqtSignal
 class InstanceContainerVisibilityHandler(SettingVisibilityHandler):
     """Visibility handler that shows settings that have been modified in a given container stack index (e.g. user changes)."""
 
-    def __init__(self, parent=None, *args, **kwargs):
+    def __init__(self, machine_manager, parent=None, *args, **kwargs):
         super().__init__(parent=parent, *args, **kwargs)
         self._active = False  # inactive until explicitly enabled via the "Changed settings" tab
         self._container_index = -1
         self._visible_settings: set = set()
 
-        self._machine_manager = CuraApplication.getInstance().getMachineManager()
+        self._machine_manager = machine_manager
         self._machine_manager.activeStackChanged.connect(self._update)
         self._machine_manager.activeStackValueChanged.connect(self._update)
 
@@ -50,17 +49,17 @@ class InstanceContainerVisibilityHandler(SettingVisibilityHandler):
             return
 
         if self._container_index == -1:
-            Logger.log("w", "Tried to update InstanceContainerVisibilityHandler, but there is no container index")
+            Logger.warning("Tried to update InstanceContainerVisibilityHandler, but there is no container index")
             return
 
         global_container_stack = self._machine_manager.activeMachine
         if not global_container_stack:
-            Logger.log("w", "Tried to update InstanceContainerVisibilityHandler, but there is no global stack")
+            Logger.warning("Tried to update InstanceContainerVisibilityHandler, but there is no global stack")
             return
 
         extruder_stack = self._machine_manager.activeStack
         if not extruder_stack:
-            Logger.log("w", "Tried to update InstanceContainerVisibilityHandler, but there is no extruder stack")
+            Logger.warning("Tried to update InstanceContainerVisibilityHandler, but there is no extruder stack")
             return
 
         visible_settings: set = set()
