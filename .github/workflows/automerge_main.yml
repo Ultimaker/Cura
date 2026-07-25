@@ -1,0 +1,71 @@
+name: Automerge Main To Branch
+
+on:
+    workflow_dispatch:
+    schedule:
+        -   cron: '15 5 * * 2-6'
+
+jobs:
+    merge:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v3
+
+            -   name: Setup Python
+                uses: actions/setup-python@v4
+
+            -   name: Merge Branches With Main
+                shell: python
+                run: |
+                    from subprocess import run
+                    def rrun(cmd):
+                        res = run(cmd.split(" "), capture_output=True, text=True)
+                        if res.returncode != 0:
+                            err = f"failed to run '{cmd}' because '{res.stderr if res.stderr else res.stdout}'"
+                            print(err)
+                            raise Exception(err)
+                        return res.stdout
+                    def getBranches():
+                        raw_branches=rrun("git branch -r --format=%(refname:short)")
+                        return [x.split("/")[1] for x in raw_branches.split("\n") if x]
+                    print(rrun("git --version"))
+                    rrun("git config pull.rebase false")
+                    rrun("git fetch --all")
+                    for branch in getBranches():
+                        # TODO: Also for the latest version branch (like 5.2.2, 5.4.0, etc.) 
+                        if branch == "main" or branch == "HEAD" or not branch.startswith("CURA-"):
+                            continue
+                        try:
+                            ticket_no = int(branch.split("-")[1])
+                        except:
+                            continue
+                        if ticket_no < 9000:
+                            continue
+                        print(f"branch: {branch}")
+                        hash_pre=""
+                        try:
+                            rrun("git checkout main")
+                            rrun("git pull")
+                            rrun(f"git checkout {branch}")
+                            rrun("git pull")
+                            hash_pre = rrun("git rev-parse HEAD")
+                        except:
+                            rrun("git reset --hard")
+                            continue
+                        try:
+                            rrun("git merge main")
+                        except:
+                            rrun("git merge --abort")
+                            rrun("git reset --hard")
+                            continue
+                        try:
+                            hash_post = rrun("git rev-parse HEAD")
+                            if hash_pre != hash_post:
+                                print("merge successful")
+                                rrun("git push")
+                            else:
+                                print("no merge needed")
+                        except:
+                            continue
