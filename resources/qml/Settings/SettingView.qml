@@ -282,7 +282,7 @@ Item
                 width:   contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
                 // In the Changed Settings tab show every changed setting, even if its parent is disabled.
                 opacity: (selectedKey === "_user" || enabled) ? 1 : 0
-                enabled: provider.properties.enabled === "True"
+                enabled: selectedKey === "_user" || provider.properties.enabled === "True"
 
                 property var  definition:             model
                 property var  settingDefinitionsModel: definitionsModel
@@ -316,8 +316,7 @@ Item
                         case "bool":             return "SettingCheckBox.qml"
                         case "str":              return "SettingTextField.qml"
                         case "optional_extruder": return "SettingOptionalExtruder.qml"
-                        case "category":
-                            return (selectedKey === "_overview") ? "SettingCategory.qml" : "SettingCategoryMinimal.qml"
+                        case "category":         return "SettingCategory.qml"
                         default:                 return "SettingUnknown.qml"
                     }
                 }
