@@ -11,9 +11,13 @@ import UM 1.5 as UM
 Rectangle
 {
     id: base
+    anchors.left: parent.left
+    anchors.right: parent.right
+    categoryIcon: definition ? UM.Theme.getIcon(definition.icon) : ""
 
     height: UM.Theme.getSize("section_header").height
     color: UM.Theme.getColor("setting_category")
+    labelText: definition ? definition.label : ""
 
     property bool expanded: true
     property alias categoryIcon: icon.source
@@ -27,6 +31,16 @@ Rectangle
     signal focusReceived()
     signal setActiveFocusToNextSetting(bool forward)
 
+    Rectangle
+    {
+        id: topBorder
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: UM.Theme.getSize("default_lining").height
+        color: UM.Theme.getColor("border_main")
+    }
+
     Item
     {
         id: content
@@ -36,7 +50,7 @@ Rectangle
         UM.ColorImage
         {
             id: icon
-            source: ""
+            source: base.categoryIcon
             visible: source != ""
             anchors.verticalCenter: parent.verticalCenter
             color: UM.Theme.getColor("setting_category_text")
@@ -55,6 +69,7 @@ Rectangle
             wrapMode: Text.NoWrap
             font: UM.Theme.getFont("medium_bold")
             color: UM.Theme.getColor("setting_category_text")
+            text: base.labelText
         }
     }
 }

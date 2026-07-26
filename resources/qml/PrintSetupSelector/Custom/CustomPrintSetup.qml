@@ -45,16 +45,16 @@ Item
     TabColumn
     {
         id: categoryTabs
+        width: 3 * UM.Theme.getSize("default_margin").width
 
         anchors
         {
             top:        tabBar.visible ? tabBar.bottom : intent.bottom
-            topMargin:  tabBar.visible ? 0 : UM.Theme.getSize("default_margin").height
+            topMargin:  tabBar.visible ? -(UM.Theme.getSize("default_lining").height) : UM.Theme.getSize("default_margin").height
             bottom:     parent.bottom
             left:       parent.left
             leftMargin: UM.Theme.getSize("default_lining").width + UM.Theme.getSize("default_margin").width - width
         }
-        width: 3 * UM.Theme.getSize("default_margin").width
 
         TabColumnButton
         {
@@ -319,7 +319,7 @@ Item
         }
         z: tabBar.z - 1
 
-        border.color: tabBar.visible ? UM.Theme.getColor("border_main") : "transparent"
+        border.color: UM.Theme.getColor("border_main")
         border.width: UM.Theme.getSize("default_lining").width
 
         color: UM.Theme.getColor("main_background")

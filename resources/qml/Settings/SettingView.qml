@@ -316,7 +316,8 @@ Item
                         case "bool":             return "SettingCheckBox.qml"
                         case "str":              return "SettingTextField.qml"
                         case "optional_extruder": return "SettingOptionalExtruder.qml"
-                        case "category":         return "SettingCategory.qml"
+                        case "category":
+                            return selectedKey === "_overview" ? "SettingCategory.qml" : "CategoryHeader.qml"
                         default:                 return "SettingUnknown.qml"
                     }
                 }
