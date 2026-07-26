@@ -229,6 +229,8 @@ Item
     {
         id: contents
         maximumFlickVelocity: 1000 * screenScaleFactor
+        clip:        true
+        cacheBuffer: 1000000   // Cache everything to avoid reloads while scrolling.
 
         anchors
         {
@@ -238,281 +240,279 @@ Item
             right:      parent.right
             left:       parent.left
         }
-            clip:        true
-            cacheBuffer: 1000000   // Cache everything to avoid reloads while scrolling.
 
-            ScrollBar.vertical: UM.ScrollBar
+        ScrollBar.vertical: UM.ScrollBar
+        {
+            id: scrollBar
+            onPositionChanged:
             {
-                id: scrollBar
-                onPositionChanged:
+                // Remove focus from controls while scrolling so combo-box dropdowns close.
+                if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange)
                 {
-                    // Remove focus from controls while scrolling so combo-box dropdowns close.
-                    if (!activeFocus && !filter.activeFocus && loseFocusOnScrollPositionChange)
-                    {
-                        forceActiveFocus()
-                    }
+                    forceActiveFocus()
+                }
+            }
+        }
+
+        model: UM.SettingDefinitionsModel
+        {
+            id: definitionsModel
+            containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id : ""
+            // Initial handler is the preference (favorites) handler; switched by onSelectedKeyChanged.
+            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
+            exclude: ["machine_settings", "command_line_settings", "ppr",
+                        "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]
+            onExpandedChanged:
+            {
+                if (!filterRow.findingSettings && selectedKey === "_overview")
+                {
+                    CuraApplication.setExpandedCategories(expanded)
+                }
+            }
+            onVisibilityChanged: Cura.SettingInheritanceManager.scheduleUpdate()
+        }
+
+        property int    indexWithFocus:  -1
+        property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
+
+        delegate: Loader
+        {
+            id: delegate
+
+            width:   contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
+            // In the Changed Settings tab show every changed setting, even if its parent is disabled.
+            opacity: (selectedKey === "_user" || enabled) ? 1 : 0
+            enabled: selectedKey === "_user" || provider.properties.enabled === "True"
+
+            property var  definition:             model
+            property var  settingDefinitionsModel: definitionsModel
+            property var  propertyProvider:        provider
+            property var  globalPropertyProvider:  inheritStackProvider
+            property bool externalResetHandler:    false
+
+            // Disable async loading for types that break when loaded asynchronously.
+            asynchronous: model.type !== "enum" && model.type !== "extruder" && model.type !== "optional_extruder"
+            active: model.type !== undefined
+
+            // Reactively disable depth indentation for the flat Changed-settings list.
+            // A Binding (not onLoaded) is required so it re-applies when cached delegates are reused.
+            Binding
+            {
+                target:   delegate.item
+                property: "doDepthIndentation"
+                value:    selectedKey !== "_user"
+                when:     delegate.status === Loader.Ready
+            }
+
+            source:
+            {
+                switch (model.type)
+                {
+                    case "int":              return "SettingTextField.qml"
+                    case "[int]":            return "SettingTextField.qml"
+                    case "float":            return "SettingTextField.qml"
+                    case "enum":             return "SettingComboBox.qml"
+                    case "extruder":         return "SettingExtruder.qml"
+                    case "bool":             return "SettingCheckBox.qml"
+                    case "str":              return "SettingTextField.qml"
+                    case "optional_extruder": return "SettingOptionalExtruder.qml"
+                    case "category":
+                        return selectedKey === "_overview" ? "SettingCategory.qml" : "CategoryHeader.qml"
+                    default:                 return "SettingUnknown.qml"
                 }
             }
 
-            model: UM.SettingDefinitionsModel
+            // Keep containerStackId in sync with the active extruder / limit_to_extruder.
+            Binding
             {
-                id: definitionsModel
-                containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id : ""
-                // Initial handler is the preference (favorites) handler; switched by onSelectedKeyChanged.
-                visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-                exclude: ["machine_settings", "command_line_settings", "ppr",
-                          "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]
-                onExpandedChanged:
+                target:   provider
+                property: "containerStackId"
+                when: model.settable_per_extruder ||
+                        (inheritStackProvider.properties.limit_to_extruder !== undefined &&
+                        inheritStackProvider.properties.limit_to_extruder >= 0)
+                value:
                 {
-                    if (!filterRow.findingSettings && selectedKey === "_overview")
+                    if (!model.settable_per_extruder)
                     {
-                        CuraApplication.setExpandedCategories(expanded)
-                    }
-                }
-                onVisibilityChanged: Cura.SettingInheritanceManager.scheduleUpdate()
-            }
-
-            property int    indexWithFocus:  -1
-            property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
-
-            delegate: Loader
-            {
-                id: delegate
-
-                width:   contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
-                // In the Changed Settings tab show every changed setting, even if its parent is disabled.
-                opacity: (selectedKey === "_user" || enabled) ? 1 : 0
-                enabled: selectedKey === "_user" || provider.properties.enabled === "True"
-
-                property var  definition:             model
-                property var  settingDefinitionsModel: definitionsModel
-                property var  propertyProvider:        provider
-                property var  globalPropertyProvider:  inheritStackProvider
-                property bool externalResetHandler:    false
-
-                // Disable async loading for types that break when loaded asynchronously.
-                asynchronous: model.type !== "enum" && model.type !== "extruder" && model.type !== "optional_extruder"
-                active: model.type !== undefined
-
-                // Reactively disable depth indentation for the flat Changed-settings list.
-                // A Binding (not onLoaded) is required so it re-applies when cached delegates are reused.
-                Binding
-                {
-                    target:   delegate.item
-                    property: "doDepthIndentation"
-                    value:    selectedKey !== "_user"
-                    when:     delegate.status === Loader.Ready
-                }
-
-                source:
-                {
-                    switch (model.type)
-                    {
-                        case "int":              return "SettingTextField.qml"
-                        case "[int]":            return "SettingTextField.qml"
-                        case "float":            return "SettingTextField.qml"
-                        case "enum":             return "SettingComboBox.qml"
-                        case "extruder":         return "SettingExtruder.qml"
-                        case "bool":             return "SettingCheckBox.qml"
-                        case "str":              return "SettingTextField.qml"
-                        case "optional_extruder": return "SettingOptionalExtruder.qml"
-                        case "category":
-                            return selectedKey === "_overview" ? "SettingCategory.qml" : "CategoryHeader.qml"
-                        default:                 return "SettingUnknown.qml"
-                    }
-                }
-
-                // Keep containerStackId in sync with the active extruder / limit_to_extruder.
-                Binding
-                {
-                    target:   provider
-                    property: "containerStackId"
-                    when: model.settable_per_extruder ||
-                          (inheritStackProvider.properties.limit_to_extruder !== undefined &&
-                           inheritStackProvider.properties.limit_to_extruder >= 0)
-                    value:
-                    {
-                        if (!model.settable_per_extruder)
-                        {
-                            return contents.activeMachineId
-                        }
-                        if (inheritStackProvider.properties.limit_to_extruder !== undefined &&
-                            inheritStackProvider.properties.limit_to_extruder >= 0)
-                        {
-                            return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder]
-                        }
-                        if (Cura.ExtruderManager.activeExtruderStackId)
-                        {
-                            return Cura.ExtruderManager.activeExtruderStackId
-                        }
                         return contents.activeMachineId
                     }
-                }
-
-                UM.SettingPropertyProvider
-                {
-                    id: inheritStackProvider
-                    containerStackId: contents.activeMachineId
-                    key:              model.key
-                    watchedProperties: ["limit_to_extruder"]
-                }
-
-                UM.SettingPropertyProvider
-                {
-                    id: provider
-                    containerStackId: contents.activeMachineId
-                    key:              model.key
-                    watchedProperties: ["value", "enabled", "state", "validationState",
-                                        "settable_per_extruder", "resolve", "unit"]
-                    storeIndex:       0
-                    removeUnusedValue: model.resolve === undefined
-                }
-
-                Connections
-                {
-                    target: item
-
-                    function onContextMenuRequested()
+                    if (inheritStackProvider.properties.limit_to_extruder !== undefined &&
+                        inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
-                        contextMenu.key           = model.key
-                        contextMenu.settingVisible = settingPreferenceVisibilityHandler.getSettingVisible(model.key)
-                        contextMenu.provider       = provider
-                        contextMenu.popup()
+                        return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder]
                     }
-                    function onShowTooltip(text)
+                    if (Cura.ExtruderManager.activeExtruderStackId)
                     {
-                        base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
+                        return Cura.ExtruderManager.activeExtruderStackId
                     }
-                    function onHideTooltip() { base.hideTooltip() }
-                    function onShowAllHiddenInheritedSettings(category_id)
-                    {
-                        var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
-                        for (var i = 0; i < children_with_override.length; i++)
-                        {
-                            definitionsModel.setVisible(children_with_override[i], true)
-                        }
-                        Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
-                    }
-                    function onFocusReceived()
-                    {
-                        contents.indexWithFocus = index
-                        contents.positionViewAtIndex(index, ListView.Contain)
-                    }
-                    function onSetActiveFocusToNextSetting(forward)
-                    {
-                        if (forward === undefined || forward)
-                        {
-                            contents.currentIndex = contents.indexWithFocus + 1
-                            while (contents.currentItem && contents.currentItem.height <= 0)
-                            {
-                                contents.currentIndex++
-                            }
-                            if (contents.currentItem)
-                            {
-                                contents.currentItem.item.focusItem.forceActiveFocus()
-                            }
-                        }
-                        else
-                        {
-                            contents.currentIndex = contents.indexWithFocus - 1
-                            while (contents.currentItem && contents.currentItem.height <= 0)
-                            {
-                                contents.currentIndex--
-                            }
-                            if (contents.currentItem)
-                            {
-                                contents.currentItem.item.focusItem.forceActiveFocus()
-                            }
-                        }
-                    }
-                    function onSetScrollPositionChangeLoseFocus(lose_focus)
-                    {
-                        settingsView.loseFocusOnScrollPositionChange = lose_focus
-                    }
-                }
-            }
-
-            Cura.Menu
-            {
-                id: contextMenu
-
-                property string key
-                property var    provider
-                property bool   settingVisible
-
-                Cura.MenuItem
-                {
-                    //: Settings context menu action
-                    text:    catalog.i18nc("@action:menu", "Copy value to all extruders")
-                    visible: machineExtruderCount.properties.value > 1
-                    enabled: contextMenu.provider !== undefined &&
-                             contextMenu.provider.properties.settable_per_extruder !== "False"
-                    onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
-                }
-
-                Cura.MenuItem
-                {
-                    //: Settings context menu action
-                    text:    catalog.i18nc("@action:menu", "Copy all changed values to all extruders")
-                    visible: machineExtruderCount.properties.value > 1
-                    enabled: contextMenu.provider !== undefined
-                    onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
-                }
-
-                Cura.MenuSeparator { visible: machineExtruderCount.properties.value > 1 }
-
-                Instantiator
-                {
-                    id: customMenuItems
-                    model: Cura.SidebarCustomMenuItemsModel {}
-                    Cura.MenuItem
-                    {
-                        text: model.name
-                        onTriggered:
-                        {
-                            customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
-                        }
-                    }
-                    onObjectAdded: function(index, object)
-                    {
-                        contextMenu.insertItem(index, object)
-                        if (Qt.platform.os === "osx") object.text += " "
-                    }
-                    onObjectRemoved: function(index, object) { contextMenu.removeItem(object) }
-                }
-
-                Cura.MenuSeparator { visible: customMenuItems.count > 0 }
-
-                Cura.MenuItem
-                {
-                    text:
-                    {
-                        return contextMenu.settingVisible
-                            ? catalog.i18nc("@action:menu", "Remove from visible settings")
-                            : catalog.i18nc("@action:menu", "Add to visible settings")
-                    }
-                    onTriggered:
-                    {
-                        settingPreferenceVisibilityHandler.setSettingVisible(contextMenu.key, !contextMenu.settingVisible)
-                    }
-                }
-
-                Cura.MenuItem
-                {
-                    text: catalog.i18nc("@action:menu", "Configure visible settings...")
-                    onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu)
+                    return contents.activeMachineId
                 }
             }
 
             UM.SettingPropertyProvider
             {
-                id: machineExtruderCount
-                containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
-                key:              "machine_extruder_count"
-                watchedProperties: ["value"]
+                id: inheritStackProvider
+                containerStackId: contents.activeMachineId
+                key:              model.key
+                watchedProperties: ["limit_to_extruder"]
+            }
+
+            UM.SettingPropertyProvider
+            {
+                id: provider
+                containerStackId: contents.activeMachineId
+                key:              model.key
+                watchedProperties: ["value", "enabled", "state", "validationState",
+                                    "settable_per_extruder", "resolve", "unit"]
                 storeIndex:       0
+                removeUnusedValue: model.resolve === undefined
+            }
+
+            Connections
+            {
+                target: item
+
+                function onContextMenuRequested()
+                {
+                    contextMenu.key           = model.key
+                    contextMenu.settingVisible = settingPreferenceVisibilityHandler.getSettingVisible(model.key)
+                    contextMenu.provider       = provider
+                    contextMenu.popup()
+                }
+                function onShowTooltip(text)
+                {
+                    base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
+                }
+                function onHideTooltip() { base.hideTooltip() }
+                function onShowAllHiddenInheritedSettings(category_id)
+                {
+                    var children_with_override = Cura.SettingInheritanceManager.getChildrenKeysWithOverride(category_id)
+                    for (var i = 0; i < children_with_override.length; i++)
+                    {
+                        definitionsModel.setVisible(children_with_override[i], true)
+                    }
+                    Cura.SettingInheritanceManager.manualRemoveOverride(category_id)
+                }
+                function onFocusReceived()
+                {
+                    contents.indexWithFocus = index
+                    contents.positionViewAtIndex(index, ListView.Contain)
+                }
+                function onSetActiveFocusToNextSetting(forward)
+                {
+                    if (forward === undefined || forward)
+                    {
+                        contents.currentIndex = contents.indexWithFocus + 1
+                        while (contents.currentItem && contents.currentItem.height <= 0)
+                        {
+                            contents.currentIndex++
+                        }
+                        if (contents.currentItem)
+                        {
+                            contents.currentItem.item.focusItem.forceActiveFocus()
+                        }
+                    }
+                    else
+                    {
+                        contents.currentIndex = contents.indexWithFocus - 1
+                        while (contents.currentItem && contents.currentItem.height <= 0)
+                        {
+                            contents.currentIndex--
+                        }
+                        if (contents.currentItem)
+                        {
+                            contents.currentItem.item.focusItem.forceActiveFocus()
+                        }
+                    }
+                }
+                function onSetScrollPositionChangeLoseFocus(lose_focus)
+                {
+                    settingsView.loseFocusOnScrollPositionChange = lose_focus
+                }
             }
         }
+
+        Cura.Menu
+        {
+            id: contextMenu
+
+            property string key
+            property var    provider
+            property bool   settingVisible
+
+            Cura.MenuItem
+            {
+                //: Settings context menu action
+                text:    catalog.i18nc("@action:menu", "Copy value to all extruders")
+                visible: machineExtruderCount.properties.value > 1
+                enabled: contextMenu.provider !== undefined &&
+                            contextMenu.provider.properties.settable_per_extruder !== "False"
+                onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
+            }
+
+            Cura.MenuItem
+            {
+                //: Settings context menu action
+                text:    catalog.i18nc("@action:menu", "Copy all changed values to all extruders")
+                visible: machineExtruderCount.properties.value > 1
+                enabled: contextMenu.provider !== undefined
+                onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
+            }
+
+            Cura.MenuSeparator { visible: machineExtruderCount.properties.value > 1 }
+
+            Instantiator
+            {
+                id: customMenuItems
+                model: Cura.SidebarCustomMenuItemsModel {}
+                Cura.MenuItem
+                {
+                    text: model.name
+                    onTriggered:
+                    {
+                        customMenuItems.model.callMenuItemMethod(name, model.actions, {"key": contextMenu.key})
+                    }
+                }
+                onObjectAdded: function(index, object)
+                {
+                    contextMenu.insertItem(index, object)
+                    if (Qt.platform.os === "osx") object.text += " "
+                }
+                onObjectRemoved: function(index, object) { contextMenu.removeItem(object) }
+            }
+
+            Cura.MenuSeparator { visible: customMenuItems.count > 0 }
+
+            Cura.MenuItem
+            {
+                text:
+                {
+                    return contextMenu.settingVisible
+                        ? catalog.i18nc("@action:menu", "Remove from visible settings")
+                        : catalog.i18nc("@action:menu", "Add to visible settings")
+                }
+                onTriggered:
+                {
+                    settingPreferenceVisibilityHandler.setSettingVisible(contextMenu.key, !contextMenu.settingVisible)
+                }
+            }
+
+            Cura.MenuItem
+            {
+                text: catalog.i18nc("@action:menu", "Configure visible settings...")
+                onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu)
+            }
+        }
+
+        UM.SettingPropertyProvider
+        {
+            id: machineExtruderCount
+            containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
+            key:              "machine_extruder_count"
+            watchedProperties: ["value"]
+            storeIndex:       0
+        }
+    }
 
     Item
     {
