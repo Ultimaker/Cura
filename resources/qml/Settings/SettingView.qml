@@ -14,40 +14,25 @@ Item
     id: settingsView
 
     property bool loseFocusOnScrollPositionChange: true
+    UM.I18nCatalog { id: catalog; name: "cura" }
 
-    // Shared visibility handler instances, provided by TabbedSettingsManager (registered
-    // in CuraApplication as a QML context property).
     readonly property var settingPreferenceVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("ExtendedSettingPreference")
     readonly property var perCategoryVisibilityHandler:       TabbedSettingsManager.getVisibilityHandler("PerCategory")
     readonly property var instanceContainerVisibilityHandler: TabbedSettingsManager.getVisibilityHandler("InstanceContainer")
 
-    // Key of the currently active category tab.
-    property string selectedKey:     categoryTabs.count > 0 ? categoryTabs.itemAt(categoryTabs.currentIndex).key : "_favorites"
-    property string lastSelectedKey: ""
+    property string selectedKey: "_overview"
 
     onSelectedKeyChanged:
     {
         clearFilter()
 
-        // Preserve expanded-categories state when leaving / entering the Favorites tab.
-        if (lastSelectedKey === "_favorites" && selectedKey !== "_favorites")
-        {
-            filter.expandedCategories = definitionsModel.expanded.slice()
-            definitionsModel.expanded = ["*"]
-        }
-        if (lastSelectedKey !== "_favorites" && selectedKey === "_favorites")
-        {
-            if (filter.expandedCategories)
-            {
-                definitionsModel.expanded = filter.expandedCategories
-            }
-        }
+        // Restore overview collapse-state when entering Overview; expand everything otherwise.
+        definitionsModel.expanded = (selectedKey === "_overview") ? CuraApplication.expandedCategories : ["*"]
 
-        filterRow.visible               = (selectedKey === "_favorites")
         instanceContainerVisibilityHandler.active = (selectedKey === "_user")
         instanceContainerVisibilityHandler.containerIndex = 0
 
-        if (selectedKey === "_favorites")
+        if (selectedKey === "_overview")
         {
             definitionsModel.visibilityHandler = settingPreferenceVisibilityHandler
         }
@@ -60,8 +45,12 @@ Item
             perCategoryVisibilityHandler.rootKey = selectedKey
             definitionsModel.visibilityHandler   = perCategoryVisibilityHandler
         }
+    }
 
-        lastSelectedKey = selectedKey
+    Component.onCompleted:
+    {
+        definitionsModel.visibilityHandler = settingPreferenceVisibilityHandler
+        definitionsModel.expanded = CuraApplication.expandedCategories
     }
 
     function clearFilter()
@@ -71,92 +60,19 @@ Item
         filter.editingFinished()
     }
 
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
-    // ─── Left-side vertical category tab column ──────────────────────────────
-
-    TabColumn
-    {
-        id: categoryTabs
-
-        anchors
-        {
-            top:    parent.top
-            bottom: parent.bottom
-            left:   parent.left
-        }
-        width: 3 * UM.Theme.getSize("default_margin").width
-
-        // Favorites tab
-        TabColumnButton
-        {
-            key:        "_favorites"
-            text:       catalog.i18nc("@label:category menu label", "Favorites")
-            iconSource: UM.Theme.getIcon("Star")
-            checked:    true
-        }
-
-        // "Changed settings" tab – shows user-modified values
-        TabColumnButton
-        {
-            key:        "_user"
-            text:       catalog.i18nc("@label:category menu label", "Changed settings")
-            iconSource: UM.Theme.getIcon("ArrowReset")
-        }
-
-        // One tab per top-level setting category
-        Repeater
-        {
-            model: categoriesModel
-
-            TabColumnButton
-            {
-                key:        model.key
-                text:       model.label
-                iconSource: UM.Theme.getIcon(model.icon)
-            }
-        }
-
-        // Model that enumerates top-level categories (used only for the tab labels).
-        UM.SettingDefinitionsModel
-        {
-            id: categoriesModel
-            containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id : ""
-            showAll:       true
-            showAncestors: true
-            visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-            exclude:   ["machine_settings", "command_line_settings", "ppr"]
-            expanded:  []
-        }
-    }
-
-    // ─── Right-side settings panel ───────────────────────────────────────────
-
     Item
     {
-        id: settingsPanel
+        id: filterRow
+
+        property bool findingSettings: false
 
         anchors
         {
-            left:        categoryTabs.right
-            right:       parent.right
-            top:         parent.top
-            bottom:      parent.bottom
-            leftMargin:  UM.Theme.getSize("default_margin").width
+            top:   parent.top
+            left:  parent.left
+            right: parent.right
         }
-
-        // Search / filter row – visible only on the Favorites tab.
-        Item
-        {
-            id: filterRow
-
-            property bool findingSettings: false
-
-            // Visibility is driven by onSelectedKeyChanged; default to Favorites tab.
-            visible: true
-
-            width:  parent.width
-            height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
+        height: UM.Theme.getSize("print_setup_big_item").height
 
             Item
             {
@@ -227,7 +143,7 @@ Item
                             expandedCategories = definitionsModel.expanded.slice()
                             definitionsModel.expanded = [""]  // keep closed while building the list
                             definitionsModel.showAncestors = true
-                            definitionsModel.showAll       = true
+                            definitionsModel.showAll       = false  // respect current tab's visibility handler
                             definitionsModel.expanded      = ["*"]
                         }
                         else
@@ -302,29 +218,26 @@ Item
             }
         }
 
-        // Absorb scroll events so they do not propagate to the 3-D view behind the panel.
-        MouseArea
+    MouseArea
+    {
+        anchors.fill:    contents
+        acceptedButtons: Qt.AllButtons
+        onWheel: function(wheel) { wheel.accepted = true }
+    }
+
+    ListView
+    {
+        id: contents
+        maximumFlickVelocity: 1000 * screenScaleFactor
+
+        anchors
         {
-            anchors.fill:    contents
-            acceptedButtons: Qt.AllButtons
-            onWheel: function(wheel) { wheel.accepted = true }
+            top:        filterRow.bottom
+            topMargin:  UM.Theme.getSize("default_margin").height
+            bottom:     parent.bottom
+            right:      parent.right
+            left:       parent.left
         }
-
-        // ─── Settings list ────────────────────────────────────────────────────
-
-        ListView
-        {
-            id: contents
-            maximumFlickVelocity: 1000 * screenScaleFactor
-
-            anchors
-            {
-                top:        filterRow.visible ? filterRow.bottom : parent.top
-                topMargin:  filterRow.visible ? UM.Theme.getSize("default_margin").height : 0
-                bottom:     parent.bottom
-                right:      parent.right
-                left:       parent.left
-            }
             clip:        true
             cacheBuffer: 1000000   // Cache everything to avoid reloads while scrolling.
 
@@ -349,17 +262,9 @@ Item
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 exclude: ["machine_settings", "command_line_settings", "ppr",
                           "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]
-                expanded:
-                {
-                    if (selectedKey !== "_favorites")
-                    {
-                        return ["*"]  // expand everything for per-category and changed-settings tabs
-                    }
-                    return CuraApplication.expandedCategories
-                }
                 onExpandedChanged:
                 {
-                    if (!filterRow.findingSettings && selectedKey === "_favorites")
+                    if (!filterRow.findingSettings && selectedKey === "_overview")
                     {
                         CuraApplication.setExpandedCategories(expanded)
                     }
@@ -375,7 +280,8 @@ Item
                 id: delegate
 
                 width:   contents.width - (scrollBar.width + UM.Theme.getSize("narrow_margin").width)
-                opacity: enabled ? 1 : 0
+                // In the Changed Settings tab show every changed setting, even if its parent is disabled.
+                opacity: (selectedKey === "_user" || enabled) ? 1 : 0
                 enabled: provider.properties.enabled === "True"
 
                 property var  definition:             model
@@ -387,6 +293,16 @@ Item
                 // Disable async loading for types that break when loaded asynchronously.
                 asynchronous: model.type !== "enum" && model.type !== "extruder" && model.type !== "optional_extruder"
                 active: model.type !== undefined
+
+                // Reactively disable depth indentation for the flat Changed-settings list.
+                // A Binding (not onLoaded) is required so it re-applies when cached delegates are reused.
+                Binding
+                {
+                    target:   delegate.item
+                    property: "doDepthIndentation"
+                    value:    selectedKey !== "_user"
+                    when:     delegate.status === Loader.Ready
+                }
 
                 source:
                 {
@@ -401,9 +317,7 @@ Item
                         case "str":              return "SettingTextField.qml"
                         case "optional_extruder": return "SettingOptionalExtruder.qml"
                         case "category":
-                            // In Favorites / search mode show the full collapsible header;
-                            // in per-category mode show the minimal non-collapsible header.
-                            return (selectedKey === "_favorites") ? "SettingCategory.qml" : "SettingCategoryMinimal.qml"
+                            return (selectedKey === "_overview") ? "SettingCategory.qml" : "SettingCategoryMinimal.qml"
                         default:                 return "SettingUnknown.qml"
                     }
                 }
@@ -518,8 +432,6 @@ Item
                 }
             }
 
-            // ─── Context menu ─────────────────────────────────────────────────
-
             Cura.Menu
             {
                 id: contextMenu
@@ -573,12 +485,11 @@ Item
 
                 Cura.MenuItem
                 {
-                    //: Settings context menu action
                     text:
                     {
                         return contextMenu.settingVisible
-                            ? catalog.i18nc("@action:menu", "Remove from favorites")
-                            : catalog.i18nc("@action:menu", "Add to favorites")
+                            ? catalog.i18nc("@action:menu", "Remove from visible settings")
+                            : catalog.i18nc("@action:menu", "Add to visible settings")
                     }
                     onTriggered:
                     {
@@ -588,8 +499,7 @@ Item
 
                 Cura.MenuItem
                 {
-                    //: Settings context menu action
-                    text: catalog.i18nc("@action:menu", "Configure favorites...")
+                    text: catalog.i18nc("@action:menu", "Configure visible settings...")
                     onTriggered: Cura.Actions.configureSettingVisibility.trigger(contextMenu)
                 }
             }
@@ -602,6 +512,29 @@ Item
                 watchedProperties: ["value"]
                 storeIndex:       0
             }
+        }
+
+    Item
+    {
+        anchors
+        {
+            top:       filterRow.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
+            left:      parent.left
+            right:     parent.right
+            bottom:    parent.bottom
+        }
+        visible: selectedKey === "_user" && contents.count === 0
+
+        UM.Label
+        {
+            anchors.centerIn: parent
+            width: parent.width - 2 * UM.Theme.getSize("default_margin").width
+            horizontalAlignment: Text.AlignHCenter
+            wrapMode: Text.WordWrap
+            text: catalog.i18nc("@info:status",
+                "No settings have been changed from the active profile defaults.")
+            color: UM.Theme.getColor("text_inactive")
         }
     }
 }

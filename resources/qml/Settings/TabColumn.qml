@@ -19,13 +19,7 @@ TabBar
 
     background: Rectangle
     {
-        // Right-edge lining that visually connects the column to the settings panel.
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        width: UM.Theme.getSize("default_lining").width
-        color: UM.Theme.getColor("lining")
-        visible: parent.enabled
+        color: "transparent"
     }
 
     // Replace the default horizontal contentItem with a vertical ListView.
@@ -40,5 +34,8 @@ TabBar
         flickableDirection: Flickable.AutoFlickIfNeeded
         snapMode: ListView.SnapToItem
         clip: true
+
+        // Extra bottom padding so the last bookmark tab can scroll fully into view
+        footer: Item { height: UM.Theme.getSize("default_margin").height }
     }
 }

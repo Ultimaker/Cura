@@ -32,7 +32,6 @@ class PerCategoryVisibilityHandler(SettingVisibilityHandler):
             return
 
         visible_settings = set([d.key for d in definitions[0].findDefinitions()])
-        visible_settings.add(root_key)
 
         self.setVisible(visible_settings)
 
