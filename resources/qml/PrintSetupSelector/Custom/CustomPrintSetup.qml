@@ -48,11 +48,11 @@ Item
 
         anchors
         {
-            top:        intent.bottom
-            topMargin:  UM.Theme.getSize("default_margin").height
+            top:        tabBar.visible ? tabBar.bottom : intent.bottom
+            topMargin:  tabBar.visible ? 0 : UM.Theme.getSize("default_margin").height
             bottom:     parent.bottom
             left:       parent.left
-            leftMargin: -(width + UM.Theme.getSize("default_lining").width)
+            leftMargin: UM.Theme.getSize("default_lining").width + UM.Theme.getSize("default_margin").width - width
         }
         width: 3 * UM.Theme.getSize("default_margin").width
 
@@ -250,7 +250,7 @@ Item
         {
             top: intent.bottom
             topMargin: UM.Theme.getSize("default_margin").height
-            left: categoryTabs.right
+            left: parent.left
             leftMargin: parent.padding
             right: parent.right
             rightMargin: parent.padding
@@ -311,7 +311,7 @@ Item
         {
             top: tabBar.visible ? tabBar.bottom : intent.bottom
             topMargin: tabBar.visible ? -UM.Theme.getSize("default_lining").width : UM.Theme.getSize("default_margin").height
-            left: categoryTabs.right
+            left: parent.left
             leftMargin: parent.padding
             right: parent.right
             rightMargin: parent.padding
