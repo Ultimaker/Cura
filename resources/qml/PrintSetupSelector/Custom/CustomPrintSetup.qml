@@ -46,6 +46,7 @@ Item
     {
         id: categoryTabs
         width: 3 * UM.Theme.getSize("default_margin").width
+        z: 1 // Render above the content rectangle so the active tab can cover its top border
 
         anchors
         {
@@ -53,7 +54,7 @@ Item
             topMargin:  tabBar.visible ? -(UM.Theme.getSize("default_lining").height) : UM.Theme.getSize("default_margin").height
             bottom:     parent.bottom
             left:       parent.left
-            leftMargin: UM.Theme.getSize("default_lining").width + UM.Theme.getSize("default_margin").width - width
+            leftMargin: 2 * UM.Theme.getSize("default_lining").width + UM.Theme.getSize("default_margin").width - width
         }
 
         TabColumnButton
