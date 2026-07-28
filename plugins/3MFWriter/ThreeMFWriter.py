@@ -149,12 +149,13 @@ class ThreeMFWriter(MeshWriter):
         savitar_node.setTransformation(matrix_string)
 
         if mesh_data is not None:
-            savitar_node.getMeshData().setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
+            savitar_mesh_data = Savitar.MeshData()
+            savitar_mesh_data.setVerticesFromBytes(mesh_data.getVerticesAsByteArray())
             indices_array = mesh_data.getIndicesAsByteArray()
             if indices_array is not None:
-                savitar_node.getMeshData().setFacesFromBytes(indices_array)
+                savitar_mesh_data.setFacesFromBytes(indices_array)
             else:
-                savitar_node.getMeshData().setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
+                savitar_mesh_data.setFacesFromBytes(numpy.arange(mesh_data.getVertices().size / 3, dtype=numpy.int32).tobytes())
 
             packed_texture = um_node.callDecoration("packTexture") 
             uv_coordinates_array = mesh_data.getUVCoordinatesAsByteArray()
@@ -164,7 +165,7 @@ class ThreeMFWriter(MeshWriter):
                 # Don't try to compress texture file, because the PNG is pretty much as compact as it will get
                 archive.writestr(texture_file, packed_texture)
 
-                savitar_node.getMeshData().setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
+                savitar_mesh_data.setUVCoordinatesPerVertexAsBytes(uv_coordinates_array, texture_path, scene)
 
                 # Add texture relation to model relations file
                 if model_relations_element is not None:
@@ -175,6 +176,8 @@ class ThreeMFWriter(MeshWriter):
                 if content_types_element is not None:
                     ET.SubElement(content_types_element, "Override", PartName=texture_path,
                                   ContentType="application/vnd.ms-package.3dmanufacturing-3dmodeltexture")
+
+            savitar_node.setMeshData(savitar_mesh_data)
 
 
         # Handle per object settings (if any)
