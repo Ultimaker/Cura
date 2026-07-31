@@ -17,12 +17,14 @@ Cura.Menu
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
-    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
     Cura.MenuItem { action: Cura.Actions.centerSelection; }
     Cura.MenuItem { action: Cura.Actions.deleteSelection; }
     Cura.MenuItem { action: Cura.Actions.copy; }
     Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
+
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
 
     // Extruder selection - only visible if there is more than 1 extruder
     Cura.MenuSeparator { visible: base.shouldShowExtruders }
