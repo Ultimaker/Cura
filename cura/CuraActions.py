@@ -1,5 +1,8 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
+import platform
+import subprocess
 from typing import List, cast
 
 from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
@@ -19,6 +22,7 @@ from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -39,7 +43,56 @@ class CuraActions(QObject):
         self._operation_stack = Application.getInstance().getOperationStack()
         self._operation_stack.changed.connect(self._onUndoStackChanged)
 
+        Selection.selectionChanged.connect(self._onSelectionChanged)
+
     undoStackChanged = pyqtSignal()
+    showFileLocationEnabledChanged = pyqtSignal()
+
+    def _onSelectionChanged(self) -> None:
+        self.showFileLocationEnabledChanged.emit()
+
+    @pyqtProperty(bool, notify = showFileLocationEnabledChanged)
+    def canShowFileLocation(self) -> bool:
+        """Returns True when exactly one normal printable model is selected and it has a known file path."""
+        selected = Selection.getAllSelectedObjects()
+        if len(selected) != 1:
+            return False
+        node = selected[0]
+        mesh_data = node.getMeshData()
+        return (
+            isinstance(node, CuraSceneNode)
+            and not node.callDecoration("isGroup")
+            and not node.callDecoration("isAntiOverhangMesh")
+            and not node.callDecoration("isSupportMesh")
+            and not node.callDecoration("isCuttingMesh")
+            and not node.callDecoration("isInfillMesh")
+            and mesh_data is not None
+            and bool(mesh_data.getFileName())
+        )
+
+    @pyqtSlot()
+    def showFileLocation(self) -> None:
+        """Reveal the source file of the selected model in the OS file manager."""
+        selected = Selection.getAllSelectedObjects()
+        if len(selected) != 1:
+            return
+        node = selected[0]
+        mesh_data = node.getMeshData()
+        if not mesh_data:
+            return
+        file_path = mesh_data.getFileName()
+        if not file_path or not os.path.exists(file_path):
+            Logger.warning(f"Cannot show file location: path is missing or does not exist: {file_path}")
+            return
+
+        system = platform.system()
+        if system == "Windows":
+            subprocess.Popen(["explorer", "/select," + os.path.normpath(file_path)])
+        elif system == "Darwin":
+            subprocess.Popen(["open", "-R", file_path])
+        else:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(os.path.dirname(file_path)))
+
     @pyqtSlot()
     def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.

@@ -17,6 +17,7 @@ Cura.Menu
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
+    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
     Cura.MenuItem { action: Cura.Actions.centerSelection; }
     Cura.MenuItem { action: Cura.Actions.deleteSelection; }
     Cura.MenuItem { action: Cura.Actions.copy; }
