@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Check for project file and set output
         id: check_issue_details
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
               const issue = context.payload.issue;
@@ -46,7 +46,7 @@ jobs:
 
       - name: Add comment if project file is missing
         if: ${{ steps.check_issue_details.outputs.needs_info == 'true' }}
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |

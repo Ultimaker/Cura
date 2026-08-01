@@ -48,12 +48,12 @@ class PaintCommand(QUndoCommand):
         painter.drawImage(0, 0, self._original_texture_image)
         painter.end()
 
-        self._setPaintedExtrudersCountDirty()
+        self._setPaintedCountsDirty()
         self._texture.updateImagePart(self._bounding_rect)
 
-    def _setPaintedExtrudersCountDirty(self) -> None:
+    def _setPaintedCountsDirty(self) -> None:
         if self._sliceable_object_decorator is not None:
-            self._sliceable_object_decorator.setPaintedExtrudersCountDirty()
+            self._sliceable_object_decorator.setPaintedCountsDirty(self._bit_range)
 
     def _makeClearedTexture(self, extended = False) -> QPainter:
         painter = QPainter(self._texture.getImage())

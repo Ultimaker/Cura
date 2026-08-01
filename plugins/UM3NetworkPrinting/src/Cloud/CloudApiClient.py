@@ -181,10 +181,16 @@ class CloudApiClient:
 
         body = json.dumps({"data": data}).encode() if data else b""
         url = f"{self.CLUSTER_API_ROOT}/clusters/{cluster_id}/print_jobs/{cluster_job_id}/action/{action}"
+
+        def on_error(cloud_error: CloudError, error: "QNetworkReply.NetworkError", http_code: int):
+            cloud_error_str = f"{cloud_error.title} (id:{cloud_error.id} code:{cloud_error.code}) {cloud_error.detail} ({cloud_error.meta})"
+            Logger.warning(f"CloudApiClient.doPrintJobAction failed for {url} with {http_code}: {cloud_error_str}")
+
         self._http.post(url,
                         scope=self._scope,
                         data=body,
-                        timeout=self.DEFAULT_REQUEST_TIMEOUT)
+                        timeout=self.DEFAULT_REQUEST_TIMEOUT,
+                        error_callback=self._parseError(on_error))
 
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.

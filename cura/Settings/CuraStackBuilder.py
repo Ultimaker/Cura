@@ -64,7 +64,7 @@ class CuraStackBuilder:
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
         for position in extruder_dict:
             try:
-                cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
+                cls.createExtruderStackWithDefaultSetup(new_global_stack, int(position))
             except IndexError as e:
                 Logger.logException("e", "Failed to create an extruder stack for position {pos}: {err}".format(pos = position, err = str(e)))
                 return None
@@ -113,12 +113,13 @@ class CuraStackBuilder:
 
         # Find the preferred containers.
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
-        extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
+        preferred_variant_name = machine_node.preferredVariantName(extruder_position)
+        extruder_variant_node = machine_node.variants.get(preferred_variant_name)
         if not extruder_variant_node:
-            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name = machine_node.preferred_variant_name, fallback = next(iter(machine_node.variants))))
+            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name = preferred_variant_name, fallback = next(iter(machine_node.variants))))
             extruder_variant_node = next(iter(machine_node.variants.values()))
         extruder_variant_container = extruder_variant_node.container
-        material_node = extruder_variant_node.preferredMaterial(approximate_diameter)
+        material_node = extruder_variant_node.preferredMaterial(approximate_diameter, machine_node.preferredMaterialName(extruder_position))
         material_container = material_node.container
         quality_node = material_node.preferredQuality()
 

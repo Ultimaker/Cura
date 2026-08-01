@@ -98,7 +98,7 @@ class CloudMaterialSync(QObject):
             self.openSyncAllWindow()
             sync_message.hide()
         elif sync_message_action == "learn_more":
-            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360013137919?utm_source=cura&utm_medium=software&utm_campaign=sync-material-printer-message"))
+            QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1667337567839"))
 
     @pyqtSlot(result = QUrl)
     def getPreferredExportAllPath(self) -> QUrl:

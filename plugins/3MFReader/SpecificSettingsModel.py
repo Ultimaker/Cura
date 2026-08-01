@@ -8,6 +8,8 @@ from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Qt.ListModel import ListModel
 
+from cura.CuraApplication import CuraApplication
+
 
 class SpecificSettingsModel(ListModel):
     CategoryRole = Qt.ItemDataRole.UserRole + 1
@@ -31,16 +33,14 @@ class SpecificSettingsModel(ListModel):
             unit = stack.getProperty(setting, "unit")
 
             setting_type = stack.getProperty(setting, "type")
-            if setting_type is not None:
-                # This is not very good looking, but will do for now
+            if setting_type in ("enum", "extruder", "optional_extruder"):
+                value = CuraApplication.getInstance().getCuraAPI().interface.settings.getSettingDisplayValue(
+                    setting, value, stack, self._settings_catalog
+                )
+            elif setting_type is not None:
                 value = str(SettingDefinition.settingValueToString(setting_type, value))
                 if unit:
                     value += " " + str(unit)
-                if setting_type  == "enum":
-                    options = stack.getProperty(setting, "options")
-                    value_msgctxt = f"{str(setting)} option {str(value)}"
-                    value_msgid = options[stack.getProperty(setting, "value")]
-                    value = self._settings_catalog.i18nc(value_msgctxt, value_msgid)
             else:
                 value = str(value)
 

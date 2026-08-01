@@ -136,6 +136,8 @@ class QualitySettingsModel(ListModel):
         # We iterate over all definitions instead of settings in a quality/quality_changes group is because in the GUI,
         # the settings are grouped together by categories, and we had to go over all the definitions to figure out
         # which setting belongs in which category.
+        api_settings = self._application.getCuraAPI().interface.settings
+
         current_category = ""
         for definition in definition_container.findDefinitions():
             if definition.type == "category":
@@ -163,10 +165,10 @@ class QualitySettingsModel(ListModel):
                     break
 
             if self._selected_position == self.GLOBAL_STACK_POSITION:
-                user_value = global_container_stack.userChanges.getProperty(definition.key, "value")
+                display_stack = global_container_stack
             else:
-                extruder_stack = global_container_stack.extruderList[self._selected_position]
-                user_value = extruder_stack.userChanges.getProperty(definition.key, "value")
+                display_stack = global_container_stack.extruderList[self._selected_position]
+            user_value = display_stack.userChanges.getProperty(definition.key, "value")
 
             if profile_value is None and user_value is None:
                 continue
@@ -183,7 +185,7 @@ class QualitySettingsModel(ListModel):
                 else:
                     profile_value_display = "Calculated"
             else:
-                profile_value_display = "" if profile_value is None else str(profile_value)
+                profile_value_display = api_settings.getSettingDisplayValue(definition.key, profile_value, display_stack, self._i18n_catalog)
 
             items.append({
                 "key": definition.key,
@@ -191,7 +193,7 @@ class QualitySettingsModel(ListModel):
                 "unit": definition.unit,
                 "profile_value": profile_value_display,
                 "profile_value_source": profile_value_source,
-                "user_value": "" if user_value is None else str(user_value),
+                "user_value": api_settings.getSettingDisplayValue(definition.key, user_value, display_stack, self._i18n_catalog),
                 "category": current_category
             })
 

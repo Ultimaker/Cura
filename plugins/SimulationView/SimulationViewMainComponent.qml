@@ -43,6 +43,7 @@ Item
 
 
         visible: !UM.SimulationView.compatibilityMode
+        enabled: UM.SimulationView.numPaths > 0
 
         // Custom properties
         handleValue: UM.SimulationView.currentPath

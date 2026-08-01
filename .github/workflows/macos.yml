@@ -38,9 +38,10 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'self-hosted-ARM64'
+        default: 'self-hosted-macos-15'
         type: choice
         options:
+          - self-hosted-macos-15
           - self-hosted-X64
           - self-hosted-ARM64
           - macos-12
