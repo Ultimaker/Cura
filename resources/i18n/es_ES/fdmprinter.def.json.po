@@ -6492,3 +6492,119 @@ msgstr "Al iniciar o finalizar la impresión del relleno, añada un movimiento d
 msgctxt "infill_move_inwards_length description"
 msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
 msgstr "Al iniciar o finalizar la impresión del relleno, añada un movimiento de extrusión hacia adentro para que las puntas del relleno no impacten contra la pared exterior. Esto puede ser útil cuando el relleno se imprime a alta velocidad."
+
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
+msgstr "<html>Comportamiento de retracción al desplazarse al inicio de una pared exterior:<ul><li><b>Automático:</b> La retracción se calculará de acuerdo con otros ajustes</li><li><b>Siempre:</b> Todos los movimientos hacia las paredes exteriores se retraerán</li><li><b>Nunca:</b> Todos los movimientos hacia paredes exteriores <b>no</b> se retraerán</li><li><b>Desde relleno sin retraer:</b> El movimiento desde un área de relleno hacia una pared exterior no se retraerá; los demás utilizarán la opción automática</li></ul></html>"
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
+msgstr "<ul><li><b>Comenzar por el punto más cercano:</b> El relleno comenzará en la posición más cercana a la posición anterior.</li><li><b>Comenzar al azar:</b> Utilice una posición aleatoria para cada área de relleno. Esto evita que un segmento resulte ser el más resistente, pero a cambio implica un movimiento adicional. </li><li><b>Finalizar cerca de la junta:</b> las líneas de relleno se ordenarán de modo que terminen lo más cerca posible de la siguiente junta de la pared. Si es necesario, se dividirá una línea de relleno para proporcionar una posición final adecuada. Esto ayuda a acortar el movimiento de desplazamiento entre el relleno y la posición inicial de la pared, lo que debería proporcionar una mejor unión de la pared, a costa de añadir movimientos de desplazamiento durante la impresión del relleno.<br/>ℹ️ Tenga en cuenta que esto solo se aplicará cuando las paredes se impriman justo después del relleno.</li></ul>"
+
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
+msgstr "Un diferencial de temperatura que se aplicará al imprimir las capas de la superficie superior. Esto puede ayudar a conseguir una superficie más lisa al imprimir a muy alta velocidad. Tenga en cuenta que se aplicará sin esperar a que se alcance la temperatura, por lo que debe mantenerse baja."
+
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr "Siempre"
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
+msgstr "Automático"
+
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr "Convierte cada línea de relleno de soporte en este número de líneas. Las líneas adicionales no se cruzan entre sí, sino que se evitan unas a otras. Esto hace que el relleno sea más rígido, pero aumenta el tiempo de impresión y el consumo de material."
+
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
+msgstr "Determina el orden en el que se imprimen las paredes en la capa inicial. Esto permite un orden diferente de las paredes específicamente para la primera capa con el fin de mejorar la adhesión a la base. Si el usuario no lo modifica, se utiliza el valor de configuración de orden de paredes."
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Determina cuándo una capa de relleno ligero debe soportar cualquier elemento situado encima de ella. Se mide en ángulo, teniendo en cuenta el grosor de la capa."
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
+msgstr "Determina cuándo una capa de relleno ligero debe soportar las líneas situadas encima de ella. Se mide en ángulo, teniendo en cuenta el grosor."
+
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr "Final cerca de la costura"
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr "Desde el relleno sin retraer"
+
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr "Los orificios en el borde de soporte que tengan un área inferior a este valor se filtrarán, lo que dará como resultado un borde más uniforme. Establezca el valor en 0 para obtener un borde de soporte generado en su totalidad."
+
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr "Preferencias de inicio/fin del relleno"
+
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr "Orden de las paredes de la capa inicial"
+
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr "De dentro hacia fuera"
+
+msgctxt "support_pattern option lightning"
+msgid "Lightning"
+msgstr "Aligeramiento"
+
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr "Área mínima del orificio en el soporte del borde"
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr "Nunca"
+
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr "De fuera hacia dentro"
+
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr "Comenzar por el más cercano"
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr "Comenzar al azar"
+
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr "Multiplicador de líneas de relleno del soporte"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr "Ángulo de aligeramiento del soporte"
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr "Ángulo de saliente del aligeramiento del soporte"
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr "Ángulo de recorte del aligeramiento del soporte"
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr "Ángulo de enderezamiento del aligeramiento del soporte"
+
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
+msgstr "Diferencial de temperatura de la superficie superior"
+
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "Los extremos de las líneas de relleno se acortan para ahorrar material. Este ajuste corresponde al ángulo de saliente de los extremos de dichas líneas."
+
+msgctxt "support_lightning_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "Las líneas de relleno se enderezan para ahorrar tiempo de impresión. Este es el ángulo máximo de saliente permitido a lo largo de la línea de relleno."

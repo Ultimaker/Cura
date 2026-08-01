@@ -9,7 +9,7 @@ from PyQt6.QtCore import QRect, pyqtSignal, Qt, QPoint
 from PyQt6.QtGui import QImage, QUndoStack, QPainter, QColor, QPainterPath, QBrush, QPen
 from typing import Optional, Tuple, Dict, List
 
-from UM.Logger import Logger
+from UM.Application import Application
 from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.BuildVolume import BuildVolume
@@ -24,6 +24,7 @@ from UM.i18n import i18nCatalog
 from UM.Math.Color import Color
 from UM.Math.Polygon import Polygon
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Settings.GlobalStack import GlobalStack
 
 from .PaintStrokeCommand import PaintStrokeCommand
 from .PaintClearCommand import PaintClearCommand
@@ -32,8 +33,11 @@ from .MultiMaterialExtruderConverter import MultiMaterialExtruderConverter
 catalog = i18nCatalog("cura")
 
 
+
 class PaintView(CuraView):
     """View for model-painting."""
+
+    _IGNORE_OVERHANG_ANGLE = 1.00001  # A bit higher than 1.0 to prevent potential rounding-error confusion with 90-degree.
 
     class PaintType:
         def __init__(self, display_color: Color, value: int):
@@ -189,6 +193,10 @@ class PaintView(CuraView):
             shader_filename = os.path.join(PluginRegistry.getInstance().getPluginPath("PaintTool"), "paint.shader")
             self._paint_shader = OpenGL.getInstance().createShaderProgram(shader_filename)
 
+            theme = CuraApplication.getInstance().getTheme()
+            overhang_color = Color(*theme.getColor("model_overhang_paint").getRgb())
+            self._paint_shader.setUniformValue("u_overhangColor", overhang_color)
+
     def setCursorStroke(self, cursor_path: QPainterPath, brush_color: str):
         if self._cursor_texture is None or self._cursor_texture.getImage() is None:
             return
@@ -254,7 +262,7 @@ class PaintView(CuraView):
                                       self._getSliceableObjectDecorator()))
 
     def _getSliceableObjectDecorator(self) -> Optional[SliceableObjectDecorator]:
-        if self._painted_object is None or self._current_paint_type != "extruder":
+        if self._painted_object is None or self._current_paint_type not in ["extruder", "support"]:
             return None
 
         return self._painted_object.getDecorator(SliceableObjectDecorator)
@@ -368,6 +376,18 @@ class PaintView(CuraView):
 
         return start_index, end_index
 
+    def _getSupportAngleShaderValue(self) -> float:
+        if self._current_paint_type != "support":
+            return PaintView._IGNORE_OVERHANG_ANGLE
+        global_container_stack: GlobalStack = Application.getInstance().getGlobalContainerStack()
+        if not global_container_stack or not global_container_stack.getValue("support_enable"):
+            return PaintView._IGNORE_OVERHANG_ANGLE
+        extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
+        if extruder_nr < 0 or extruder_nr >= len(global_container_stack.extruderList):
+            return PaintView._IGNORE_OVERHANG_ANGLE
+        angle = global_container_stack.extruderList[extruder_nr].getProperty("support_angle", "value") or 90.0
+        return max(0.0, min(1.0, math.cos(math.radians(90.0 - angle))))
+
     def beginRendering(self) -> None:
         if self._painted_object is None or self._current_paint_type not in self._paint_modes:
             return
@@ -404,3 +424,5 @@ class PaintView(CuraView):
 
         colors_values = [[int(color_part * 255) for color_part in [color.r, color.g, color.b]] for color in colors]
         self._paint_shader.setUniformValueArray("u_renderColors", colors_values)
+
+        self._paint_shader.setUniformValue("u_overhangAngle", self._getSupportAngleShaderValue())

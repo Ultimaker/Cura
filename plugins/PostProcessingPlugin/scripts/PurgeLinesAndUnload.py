@@ -91,7 +91,7 @@ class PurgeLinesAndUnload(Script):
                 "purge_line_location":
                 {
                     "label": "    Purge Line Location",
-                    "description": "What edge of the build plate should have the purge lines.  If the printer is 'Elliptical' then it is assumed to be an 'Origin At Center' printer and the purge lines are 90° arcs.",
+                    "description": "What edge of the build plate should have the purge lines.  If the printer is 'Elliptical' then it is assumed to be an 'Origin At Center' printer and the purge lines are 90\u00b0 arcs.",
                     "type": "enum",
                     "options": {
                         "left": "On left edge (Xmin)",
@@ -941,7 +941,7 @@ class PurgeLinesAndUnload(Script):
 
     def _get_initial_tool(self) -> int:
         # Get the Initial Extruder
-        num = Application.getInstance().getExtruderManager().getInitialExtruderNr()
+        num = Application.getInstance().getPrintInformation().initialExtruderNr()
         if num is None or num == -1:
             num = 0
         # If there is an extruder offset X then it will be used to adjust the "machine_right" and a Y offset will adjust the "machine_back"

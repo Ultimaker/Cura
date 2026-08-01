@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-05 14:52+0100\n"
+"POT-Creation-Date: 2026-03-31 08:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -255,7 +255,7 @@ msgid ""
 "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+"<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
 msgstr ""
 
 msgctxt "@label"
@@ -2905,6 +2905,10 @@ msgstr ""
 
 msgctxt "@item:inmenu"
 msgid "Paint view"
+msgstr ""
+
+msgctxt "@label"
+msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
 msgstr ""
 
 msgctxt "@info:status"
@@ -5648,6 +5652,14 @@ msgstr ""
 
 msgctxt "name"
 msgid "Version Upgrade 3.2 to 3.3"
+msgstr ""
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
+msgstr ""
+
+msgctxt "name"
+msgid "Version Upgrade 5.12 to 5.13"
 msgstr ""
 
 msgctxt "description"

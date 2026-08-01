@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-02-05 14:52+0000\n"
+"POT-Creation-Date: 2026-03-31 08:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,6 +15,10 @@ msgstr ""
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
 msgstr "<html>Zo genereer je de voorbereidingstoren:<ul><li><b>Normaal:</b> creëer een emmer waarin secundaire materialen worden voorbereid</li><li><b>Interleaved:</b> creëer een zo minimaal mogelijke voorbereidingstoren. Dit bespaart tijd en filament, maar is alleen mogelijk als de gebruikte materialen aan elkaar hechten</li></ul></html>"
+
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
+msgstr ""
 
 msgctxt "infill_pattern description"
 msgid "<html>The pattern of the infill material of the print.<ul><li>The Line and Zig Zag infill swap direction on alternate layers, reducing material cost.</li><li>The Grid, Triangle, Tri-Hexagon, Cubic, Octet, Quarter Cubic, Cross, and Concentric patterns are fully printed every layer.</li><li>Gyroid, Honeycomb, Octagon, Cubic, Quarter Cubic, and Octet infill change with every layer to provide a more equal distribution of strength over each direction.</li><li>Lightning infill tries to minimize the infill, by only supporting the ceiling of the object.</li></ul>⚠ Grid, Triangles, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.<br/></html>"
@@ -31,6 +35,10 @@ msgstr "<html>De ratio van intrekking uitgevoerd tijdens de verplaatsing, waarbi
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
 msgstr "<html>Of de koelventilatoren moeten worden geactiveerd bij een spuitkopwissel. Dit kan helpen om doorsijpelen te verminderen omdat de sproeier sneller afkoelt: <ul><li><b>Ongewijzigd:</b> houd de ventilatoren zoals ze waren</li><li><b>Alleen laatste extruder:</b>schakel de ventilator van de laatstgebruikte extruder in, maar schakel de andere uit (als die er zijn). Dit is nuttig indien u volledig aparte extruders heeft.</li><li><b>Alle ventilatoren:</b> schakel alle ventilatoren in bij een spuitkopwissel. Dit is nuttig indien u een enkele koelventilator heeft, of meerdere ventilatoren die dicht bij elkaar zitten.</li></ul></html>"
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
+msgstr ""
 
 msgctxt "brim_inside_margin description"
 msgid "A brim around a model may touch an other model where you don't want it. This removes all brim within this distance from brimless models."
@@ -87,6 +95,10 @@ msgstr "Een lijst polygonen met gebieden waarin de printkop niet mag komen."
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
 msgstr "Een aanbeveling over hoe ver takken kunnen bewegen van de punten die ze ondersteunen. Takken kunnen deze waarde overschrijden om hun bestemming te bereiken (bouwplaat of een plat deel van het model). Als u deze waarde verlaagt, wordt de ondersteuning steviger, maar neemt het aantal takken toe (en daardoor materiaalgebruik/printtijd)."
+
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
+msgstr ""
 
 msgctxt "extruder_prime_pos_abs label"
 msgid "Absolute Extruder Prime Position"
@@ -202,13 +214,13 @@ msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Aluminium"
 
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr ""
+
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
 msgstr "Tool voor altijd actief schrijven"
-
-msgctxt "travel_retract_before_outer_wall description"
-msgid "Always retract when moving to start an outer wall."
-msgstr "Altijd intrekken voordat wordt bewogen om met een buitenwand te beginnen."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -261,6 +273,10 @@ msgstr "Pas de extruderoffset toe op het coördinatensysteem. Van toepassing op 
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
 msgstr "Genereer op de plaatsen waar modellen elkaar raken een in elkaar grijpende balkstructuur. Dit verbetert de hechting tussen modellen, vooral modellen die in verschillende materialen zijn geprint."
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
+msgstr ""
 
 msgctxt "travel_avoid_other_parts label"
 msgid "Avoid Printed Parts When Traveling"
@@ -714,6 +730,10 @@ msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
 msgstr "Zet elke vullijn om naar zoveel keer vullijnen. De extra lijnen kruisen elkaar niet, maar mijden elkaar. Hierdoor wordt de vulling stijver, maar duurt het printen langer en wordt er meer materiaal verbruikt."
 
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
 msgstr "Afkoelsnelheid"
@@ -830,6 +850,10 @@ msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
 msgstr "Bepaalt de lengte van de schuine naad, een naadtype dat de Z-naad minder zichtbaar moet maken. Moet hoger zijn dan 0 om effectief te zijn."
 
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr "Bepaalt de volgorde waarin de wanden worden geprint. Wanneer u de buitenwanden het eerst print, bevordert u de nauwkeurigheid van de afmetingen, omdat fouten in de binnenwanden niet worden overgedragen op de buitenzijde. Door ze later te printen kunt u echter beter stapelen wanneer de overhangs worden geprint. Bij een oneven aantal binnenwanden wordt de 'middelste laatste lijn' altijd als laatste afgedrukt."
@@ -841,6 +865,14 @@ msgstr "Bepaalt de prioriteit van dit raster bij meerdere overlappende vulraster
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
 msgstr "Bepaalt wanneer een bliksemvullaag iets moet ondersteunen dat zich boven de vullaag bevindt. Gemeten in de hoek bepaald door de laagdikte."
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle description"
 msgid "Determines when a lightning infill layer has to support the model above it. Measured in the angle given the thickness."
@@ -1077,6 +1109,10 @@ msgstr "Hiermee schakelt u de printkoelventilatoren in tijdens het printen. De v
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
 msgstr "Eind G-code"
+
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr ""
 
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
@@ -1338,6 +1374,10 @@ msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr "Bij dunne structuren die ongeveer één of tweemaal zo groot als de nozzle zijn, moeten de lijnbreedtes worden aangepast aan de dikte van het model. Met deze instelling beheert u de minimum lijnbreedte die voor wanden is toegestaan. De minimum lijnbreedte bepaalt automatisch ook de maximale lijnbreedte, omdat we bij een bepaalde geometriedikte overgaan van wanden van N naar wanden van N+1, waarbij de N-wanden breed zijn en de N+1-wanden smal. De breedst mogelijke wandlijn is tweemaal de minimumbreedte van de wandlijn."
 
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr ""
+
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "Voor"
@@ -1545,6 +1585,10 @@ msgstr "Gat horizontale expansie max diameter"
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Gaten en contouren van onderdelen met een kleinere diameter dan deze worden afgedrukt met behulp van Klein kenmerksnelheid."
+
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr ""
 
 msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
@@ -1774,6 +1818,10 @@ msgctxt "infill_move_inwards_length label"
 msgid "Infill Start/End Move Inwards Length"
 msgstr ""
 
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr ""
+
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
 msgstr "Supportvulling"
@@ -1874,6 +1922,10 @@ msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
 msgstr "Bewegingssnelheid Eerste Laag"
 
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr ""
+
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Z Overlap Eerste Laag"
@@ -1921,6 +1973,10 @@ msgstr "Uitsparing die wordt toegepast in de buitenwand. Als de buitenwand small
 msgctxt "brim_location option inside"
 msgid "Inside Only"
 msgstr "Alleen binnenkant"
+
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr ""
 
 msgctxt "inset_direction option inside_out"
 msgid "Inside To Outside"
@@ -2073,6 +2129,10 @@ msgstr "Printkop Optillen"
 msgctxt "infill_pattern option lightning"
 msgid "Lightning"
 msgstr "Bliksem"
+
+msgctxt "support_pattern option lightning"
+msgid "Lightning"
+msgstr ""
 
 msgctxt "lightning_infill_overhang_angle label"
 msgid "Lightning Infill Overhang Angle"
@@ -2544,6 +2604,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr "Minimumgebied voor de supportdaken. Polygonen met een gebied dat kleiner is dan deze waarde worden geprint als normale ondersteuning."
 
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr ""
+
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr "Minimumsnelheid voor geleidelijke stroomveranderingen voor de eerste laag"
@@ -2611,6 +2675,10 @@ msgstr "Vermenigvuldiging voor de infill op de eerste lagen van de drager. Dit v
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
 msgstr "Vermenigvuldiging van de lijnbreedte van de eerste laag. Door deze te verhogen kan de hechting aan het bed worden verbeterd."
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr ""
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2859,6 +2927,10 @@ msgstr "Buitenwanden van verschillende eilanden in dezelfde laag worden achteree
 msgctxt "brim_location option outside"
 msgid "Outside Only"
 msgstr "Alleen buitenkant"
+
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr ""
 
 msgctxt "inset_direction option outside_in"
 msgid "Outside To Inside"
@@ -3340,14 +3412,6 @@ msgctxt "z_seam_type option random"
 msgid "Random"
 msgstr "Willekeurig"
 
-msgctxt "infill_randomize_start_location label"
-msgid "Randomize Infill Start"
-msgstr "Start willekeurig invullen"
-
-msgctxt "infill_randomize_start_location description"
-msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr "Bepaal willekeurig welke invullijn het eerst wordt geprint. Dit voorkomt dat één segment het sterkst wordt, maar gaat ten koste van een extra beweging."
-
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "Door willekeurig trillen tijdens het printen van de buitenwand wordt het oppervlak hiervan ruw en ongelijk."
@@ -3776,6 +3840,14 @@ msgctxt "machine_start_gcode_first label"
 msgid "Start GCode must be first"
 msgstr "Start GCode moet eerst zijn"
 
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr ""
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr ""
+
 msgctxt "layer_start_at_z_seam description"
 msgid "Start printing at the Z seam position."
 msgstr ""
@@ -3928,6 +4000,10 @@ msgctxt "support_infill_angles label"
 msgid "Support Infill Line Directions"
 msgstr "Lijnrichting Vulling Supportstructuur"
 
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr ""
+
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "Vulsnelheid Supportstructuur"
@@ -3991,6 +4067,22 @@ msgstr "Schok Supportstructuur"
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
 msgstr "Samenvoegafstand Supportstructuur"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr ""
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr ""
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr ""
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4151,6 +4243,10 @@ msgstr "Schakel naar de rastersnijpuntvolumes die bij elke laag horen, zodat de 
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
 msgstr "Horizontale doelafstand tussen twee aangrenzende lagen. Als u deze instelling verkleint, worden dunnere lagen gebruikt om de randen van de lagen dichter bij elkaar te brengen."
+
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
+msgstr ""
 
 msgctxt "layer_start_x description"
 msgid "The X coordinate of the position near where to find the part to start printing each layer."
@@ -4524,6 +4620,10 @@ msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
 msgstr "De eindpunten van de vullijnen worden verkort om materiaal te besparen. Deze instelling is de overhanghoek van de eindpunten van deze lijnen."
 
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
+
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
 msgstr "De extra snelheid waarmee de nozzle tijdens het doorvoeren afkoelt. Met dezelfde waarde wordt ook de verloren verwarmingssnelheid aangeduid wanneer tijdens het doorvoeren wordt verwarmd."
@@ -4717,6 +4817,10 @@ msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.Di
 msgctxt "lightning_infill_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr "De vullijnen zijn rechtgetrokken om printtijd te besparen. Dit is de grootste overhanghoek die over de lengte van de vullijn is toegestaan."
+
+msgctxt "support_lightning_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
 
 msgctxt "infill_offset_x description"
 msgid "The infill pattern is moved this distance along the X axis."
@@ -6370,6 +6474,10 @@ msgstr "beweging"
 #~ msgid "Add extra lines into the infill pattern to support skins above.   This option prevents holes or plastic blobs that sometime show in complex shaped skins due to the infill below not correctly supporting the skin layer being printed above.  'Walls' supports just the outlines of the skin, whereas 'Walls and Lines' also supports the ends of the lines that make up the skin."
 #~ msgstr "Voeg extra lijnen toe aan het invulpatroon om de skins erboven te ondersteunen. Deze optie voorkomt gaten of plastic klodders die soms te zien zijn in complex gevormde skins doordat de invulling eronder de skinlaag die erboven wordt geprint niet correct ondersteunt. 'Wanden' ondersteunt alleen de contouren van de skin, terwijl 'Wanden en lijnen' ook de uiteinden van de lijnen ondersteunt die de skin vormen."
 
+#~ msgctxt "travel_retract_before_outer_wall description"
+#~ msgid "Always retract when moving to start an outer wall."
+#~ msgstr "Altijd intrekken voordat wordt bewogen om met een buitenwand te beginnen."
+
 #~ msgctxt "bridge_sparse_infill_max_density label"
 #~ msgid "Bridge Sparse Infill Max Density"
 #~ msgstr "Maximale dichtheid van dunne vulling brugskin"
@@ -6425,6 +6533,14 @@ msgstr "beweging"
 #~ msgctxt "wall_overhang_speed_factor description"
 #~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
 #~ msgstr "Overhangende wanden worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid."
+
+#~ msgctxt "infill_randomize_start_location label"
+#~ msgid "Randomize Infill Start"
+#~ msgstr "Start willekeurig invullen"
+
+#~ msgctxt "infill_randomize_start_location description"
+#~ msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+#~ msgstr "Bepaal willekeurig welke invullijn het eerst wordt geprint. Dit voorkomt dat één segment het sterkst wordt, maar gaat ten koste van een extra beweging."
 
 #~ msgctxt "skin_edge_support_layers label"
 #~ msgid "Skin Edge Support Layers"

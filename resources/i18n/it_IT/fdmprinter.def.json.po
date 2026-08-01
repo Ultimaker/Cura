@@ -6493,3 +6493,119 @@ msgstr "Quando si inizia o si termina l'infill nella stampa 3D, aggiungere un mo
 msgctxt "infill_move_inwards_length description"
 msgid "When starting or ending infill print, add an inwards extrusion move so that the tips of the infill won't impact the outer wall. This can be useful when the infill is printed at very high speed."
 msgstr "Quando si inizia o si termina l'infill nella stampa 3D, aggiungere un movimento di estrusione verso l'interno in modo che le punte non impattino sulla parete esterna, una soluzione che può rivelarsi particolarmente utile quando il riempimento viene stampato ad altissima velocità."
+
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
+msgstr "<html>Comportamento di retrazione quando ci si sposta all'inizio di una parete esterna:<ul><li><b>Automatico:</b> la retrazione verrà calcolata secondo altre impostazioni</li><li><b>Sempre:</b> tutti i movimenti verso le pareti esterne saranno retratti</li><li><b>Mai:</b> tutti i movimenti verso le pareti esterne <b>non</b> saranno retratti</li><li><b>Da riempimento non retratto:</b> Il movimento da un'area di riempimento verso una parete esterna non verrà retratto, gli altri useranno l'automatico </li></ul></html>"
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
+msgstr "<ul><li><b>Iniziare dal punto più vicino:</b> Il riempimento inizierà dalla posizione più vicina a quella precedente.</li><li><b> Iniziare in modo casuale:</b> Utilizzare una posizione casuale per ciascuna area di riempimento. Ciò impedisce che un segmento diventi più resistente ma comporta uno spostamento aggiuntivo.</li><li><b>Estremità vicina alla giuntura:</b> le linee di riempimento saranno ordinate in modo da terminare il più vicino possibile alla giuntura della parete successiva. Se necessario, una linea di riempimento verrà divisa per fornire una posizione finale appropriata. Questo aiuta ad accorciare il movimento di spostamento tra il riempimento e la posizione di inizio della parete, il che dovrebbe fornire una migliore giuntura della parete, al costo di aggiungere spostamenti durante la stampa di riempimento.<br/>ℹ️ Si noti che ciò verrà applicato solo quando le pareti verranno stampate subito dopo il riempimento.</li></ul>"
+
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
+msgstr "Un differenziale di temperatura da applicare durante la stampa degli strati superiori. Ciò può contribuire a ottenere una superficie più liscia quando si stampa a velocità molto elevata. Si noti che verrà applicato senza attendere che la temperatura venga raggiunta, pertanto dovrebbe rimanere basso."
+
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr "Sempre"
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
+msgstr "Automatico"
+
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr "Convertire ogni linea di riempimento del supporto in questo numero di linee. Le linee aggiuntive non si incrociano, ma si evitano a vicenda. Ciò rende il riempimento più rigido, ma aumenta il tempo di stampa e il consumo di materiale."
+
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
+msgstr "Determina l'ordine in cui vengono stampate le pareti nel primo strato. Ciò consente di impostare un ordine delle pareti diverso appositamente per il primo strato, al fine di migliorare l'adesione al piano di stampa. Se l'utente non modifica questa impostazione, verrà utilizzato il valore predefinito dell'opzione \"Ordine delle pareti\"."
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr "Determina quando uno strato di riempimento lightning deve sostenere gli elementi che si trovano al di sopra di esso. Si misura in base all'angolo, tenuto conto dello spessore dello strato."
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
+msgstr "Determina quando uno strato di riempimento lightning deve sostenere le linee che si trovano al di sopra di esso. Si misura in base all'angolo, tenuto conto dello spessore."
+
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr "Estremità vicina alla giuntura"
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr "Da riempimento non retratto"
+
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr "I fori nel bordo di supporto con un'area inferiore a questo valore verranno eliminati, garantendo un bordo più uniforme. Impostare il valore su 0 per ottenere un bordo di supporto generato integralmente"
+
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr "Preferenze di inizio/fine riempimento"
+
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr "Ordine delle pareti dello strato iniziale"
+
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
+msgstr "Dall'interno verso l'esterno"
+
+msgctxt "support_pattern option lightning"
+msgid "Lightning"
+msgstr "Lightning"
+
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr "Area minima del foro nel bordo di supporto"
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr "Mai"
+
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
+msgstr "Dall'esterno verso l'interno"
+
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr "Iniziare dal più vicino"
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr "Iniziare in modo casuale"
+
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr "Supporto al moltiplicatore linee di riempimento"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr "Supporto angolo Lightning"
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr "Supporto angolo di sporgenza Lightning"
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr "Supporto angolo di potatura Lightning"
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr "Angolo di raddrizzamento Lightning"
+
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
+msgstr "Differenziale di temperatura superficie superiore"
+
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr "Le estremità delle linee di riempimento vengono accorciate per risparmiare materiale. Questa impostazione corrisponde all'angolo di sbalzo delle estremità di tali linee."
+
+msgctxt "support_lightning_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr "Le linee di riempimento vengono raddrizzate per ridurre i tempi di stampa. Questo è l'angolo massimo di sbalzo consentito per tutta la lunghezza della linea di riempimento."

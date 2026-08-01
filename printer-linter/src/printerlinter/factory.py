@@ -7,6 +7,7 @@ from .linters.linter import Linter
 from .linters.meshes import Meshes
 from .linters.directory import Directory
 from .linters.formulas import Formulas
+from .linters.circular_dependency import CircularDependency
 
 
 def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
@@ -15,12 +16,12 @@ def getLinter(file: Path, settings: dict) -> Optional[List[Linter]]:
         return [Directory(file, settings)]
 
     if ".inst" in file.suffixes and file.suffixes[-1] == ".cfg":
-        return [Directory(file, settings), Profile(file, settings), Formulas(file, settings)]
+        return [Directory(file, settings), Profile(file, settings), Formulas(file, settings), CircularDependency(file, settings)]
 
     if ".def" in file.suffixes and file.suffixes[-1] == ".json":
         if file.stem in ("fdmprinter.def", "fdmextruder.def"):
-            return  [Formulas(file, settings)]
-        return [Directory(file, settings), Definition(file, settings), Formulas(file, settings)]
+            return [Formulas(file, settings)]
+        return [Directory(file, settings), Definition(file, settings), Formulas(file, settings), CircularDependency(file, settings)]
 
     if file.parent.stem == "meshes":
         return [Meshes(file, settings)]

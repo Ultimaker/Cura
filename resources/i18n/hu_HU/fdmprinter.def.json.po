@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 5.1\n"
 "Report-Msgid-Bugs-To: plugins@ultimaker.com\n"
-"POT-Creation-Date: 2026-02-05 14:52+0000\n"
+"POT-Creation-Date: 2026-03-31 08:53+0000\n"
 "PO-Revision-Date: 2020-03-24 09:43+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: AT-VLOG\n"
@@ -19,6 +19,10 @@ msgstr ""
 
 msgctxt "prime_tower_mode description"
 msgid "<html>How to generate the prime tower:<ul><li><b>Normal:</b> create a bucket in which secondary materials are primed</li><li><b>Interleaved:</b> create a prime tower as sparse as possible. This will save time and filament, but is only possible if the used materials adhere to each other</li></ul></html>"
+msgstr ""
+
+msgctxt "travel_retract_before_outer_wall description"
+msgid "<html>Retraction behavior when moving to the start of an outer wall:<ul><li><b>Automatic:</b> Retraction will be calculated according to other settings</li><li><b>Always:</b> All the travel moves to outer walls will be retracted</li><li><b>Never:</b> All the travel moves to outer walls will <b>not</b> be retracted</li><li><b>From infill unretracted:</b> The travel move from an infill area to an outer wall will be unretracted, others will use automatic</li></ul></html>"
 msgstr ""
 
 msgctxt "infill_pattern description"
@@ -35,6 +39,10 @@ msgstr ""
 
 msgctxt "cool_during_extruder_switch description"
 msgid "<html>Whether to activate the cooling fans during a nozzle switch. This can help reducing oozing by cooling the nozzle faster:<ul><li><b>Unchanged:</b> keep the fans as they were previously</li><li><b>Only last extruder:</b> turn on the fan of the last used extruder, but turn the others off (if any). This is useful if you have completely separate extruders.</li><li><b>All fans:</b> turn on all fans during nozzle switch. This is useful if you have a single cooling fan, or multiple fans that stay close to each other.</li></ul></html>"
+msgstr ""
+
+msgctxt "infill_start_end_preference description"
+msgid "<ul><li><b>Start at closest:</b> Infill will start at the position that is the closest to the previous position.</li><li><b>Start at random:</b> Use a random position for each infill area. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.</li><li><b>End close to seam:</b> the infill lines will be ordered so that they end as close as possible to the next wall seam. If required, an infill line will be split to provide an appropriate ending position. This helps shortening the travel move between the infill and the wall start position, which should provide a better wall seam, at the cost of adding travel moves during infill print.<br/>ℹ️ Note that this will be applied only when walls are printed just after infill.</li></ul>"
 msgstr ""
 
 msgctxt "brim_inside_margin description"
@@ -91,6 +99,10 @@ msgstr "A sokszögek listája azon területekkel, ahová a nyomtatófej nem lép
 
 msgctxt "support_tree_branch_reach_limit description"
 msgid "A recomendation to how far branches can move from the points they support. Branches can violate this value to reach their destination (buildplate or a flat part of the model). Lowering this value will make the support more sturdy, but increase the amount of branches (and because of that material usage/print time) "
+msgstr ""
+
+msgctxt "material_delta_temperature_roofing description"
+msgid "A temperature delta to be applied when printing the top-surface layers. This can help with getting a smoother surface when printing at very high speed. Note that it will be applied without waiting for the temperature to be reached, so it should remain low."
 msgstr ""
 
 msgctxt "extruder_prime_pos_abs label"
@@ -209,13 +221,13 @@ msgctxt "machine_buildplate_type option aluminum"
 msgid "Aluminum"
 msgstr "Alumínium"
 
+msgctxt "travel_retract_before_outer_wall option force_retracted"
+msgid "Always"
+msgstr ""
+
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
 msgstr ""
-
-msgctxt "travel_retract_before_outer_wall description"
-msgid "Always retract when moving to start an outer wall."
-msgstr "Minden esetben, mikor a külső fal nyomtatása fog történni, a pozicionáláskor szál visszahúzás fog történni."
 
 msgctxt "xy_offset description"
 msgid "Amount of offset applied to all polygons in each layer. Positive values can compensate for too big holes; negative values can compensate for too small holes."
@@ -267,6 +279,10 @@ msgstr ""
 
 msgctxt "interlocking_enable description"
 msgid "At the locations where models touch, generate an interlocking beam structure. This improves the adhesion between models, especially models printed in different materials."
+msgstr ""
+
+msgctxt "travel_retract_before_outer_wall option automatic"
+msgid "Automatic"
 msgstr ""
 
 msgctxt "travel_avoid_other_parts label"
@@ -721,6 +737,10 @@ msgctxt "infill_multiplier description"
 msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
 msgstr "Átkonvertálja az összes kitöltési sort, erre az értékre.Az így keletkező extra vonalak nem fogják egymást keresztezni, hanem elkerülik egymást. Ez növelni fogja a kitöltés erősségét, de a nyomtatási idő, és az anyagköltség is nőni fog."
 
+msgctxt "support_infill_multiplier description"
+msgid "Convert each support infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
 msgstr "Visszahűlési sebesség"
@@ -837,6 +857,10 @@ msgctxt "scarf_joint_seam_length description"
 msgid "Determines the length of the scarf seam, a seam type that should make the Z seam less visible. Must be higher than 0 to be effective."
 msgstr ""
 
+msgctxt "initial_layer_inset_direction description"
+msgid "Determines the order in which walls are printed on the initial layer. This allows different wall ordering specifically for the first layer to improve bed adhesion. When not changed by user, the Wall Ordering setting value is used."
+msgstr ""
+
 msgctxt "inset_direction description"
 msgid "Determines the order in which walls are printed. Printing outer walls earlier helps with dimensional accuracy, as faults from inner walls cannot propagate to the outside. However printing them later allows them to stack better when overhangs are printed. When there is an uneven amount of total innner walls, the 'center last line' is always printed last."
 msgstr ""
@@ -847,6 +871,14 @@ msgstr ""
 
 msgctxt "lightning_infill_support_angle description"
 msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+msgctxt "support_lightning_angle description"
+msgid "Determines when a lightning infill layer has to support anything above it. Measured in the angle given the thickness of a layer."
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle description"
+msgid "Determines when a lightning infill layer has to support the lines above it. Measured in the angle given the thickness."
 msgstr ""
 
 msgctxt "lightning_infill_overhang_angle description"
@@ -1084,6 +1116,10 @@ msgstr "Engedélyezi a tárgyhűtést nyomtatás közben. A hűtés javíthatja 
 msgctxt "machine_end_gcode label"
 msgid "End G-code"
 msgstr "Záró G-kód"
+
+msgctxt "infill_start_end_preference option end_close_to_seam"
+msgid "End close to seam"
+msgstr ""
 
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
@@ -1345,6 +1381,10 @@ msgctxt "min_wall_line_width description"
 msgid "For thin structures around once or twice the nozzle size, the line widths need to be altered to adhere to the thickness of the model. This setting controls the minimum line width allowed for the walls. The minimum line widths inherently also determine the maximum line widths, since we transition from N to N+1 walls at some geometry thickness where the N walls are wide and the N+1 walls are narrow. The widest possible wall line is twice the Minimum Wall Line Width."
 msgstr ""
 
+msgctxt "travel_retract_before_outer_wall option force_not_retracted_from_infill"
+msgid "From infill unretracted"
+msgstr ""
+
 msgctxt "z_seam_position option front"
 msgid "Front"
 msgstr "Előre"
@@ -1556,6 +1596,10 @@ msgstr ""
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
 msgstr "Az ennél kisebb átmérőjű lyukakat és részek körvonalait a Kis funkciósebesség használatával nyomtatják ki."
+
+msgctxt "support_brim_minimum_hole_area description"
+msgid "Holes in the support brim that have an area less than this value will be filtered out, resulting in a more consistent brim. Set to 0 to have a fully generated support brim"
+msgstr ""
 
 msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
@@ -1785,6 +1829,10 @@ msgctxt "infill_move_inwards_length label"
 msgid "Infill Start/End Move Inwards Length"
 msgstr ""
 
+msgctxt "infill_start_end_preference label"
+msgid "Infill Start/End Preference"
+msgstr ""
+
 msgctxt "infill_support_enabled label"
 msgid "Infill Support"
 msgstr "Kitöltés támaszként"
@@ -1885,6 +1933,10 @@ msgctxt "speed_travel_layer_0 label"
 msgid "Initial Layer Travel Speed"
 msgstr "Kezdő réteg utazási sebessége"
 
+msgctxt "initial_layer_inset_direction label"
+msgid "Initial Layer Wall Ordering"
+msgstr ""
+
 msgctxt "layer_0_z_overlap label"
 msgid "Initial Layer Z Overlap"
 msgstr "Első réteg Z átfedés"
@@ -1931,6 +1983,10 @@ msgstr "Eltolás a külső fal útvonalára. Ha a külső fal kisebb, mint a fú
 
 msgctxt "brim_location option inside"
 msgid "Inside Only"
+msgstr ""
+
+msgctxt "initial_layer_inset_direction option inside_out"
+msgid "Inside To Outside"
 msgstr ""
 
 msgctxt "inset_direction option inside_out"
@@ -2082,6 +2138,10 @@ msgid "Lift Head"
 msgstr "Fej emelés"
 
 msgctxt "infill_pattern option lightning"
+msgid "Lightning"
+msgstr ""
+
+msgctxt "support_pattern option lightning"
 msgid "Lightning"
 msgstr ""
 
@@ -2555,6 +2615,10 @@ msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
 msgstr ""
 
+msgctxt "support_brim_minimum_hole_area label"
+msgid "Minimum hole area in brim support"
+msgstr ""
+
 msgctxt "layer_0_max_flow_acceleration description"
 msgid "Minimum speed for gradual flow changes for the first layer"
 msgstr ""
@@ -2622,6 +2686,10 @@ msgstr ""
 msgctxt "initial_layer_line_width_factor description"
 msgid "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion."
 msgstr "Az első réteg vonalszélességének szorzója. Ennek a növelésével javíthatjuk a tapadást a tárgyasztalhoz."
+
+msgctxt "travel_retract_before_outer_wall option force_not_retracted"
+msgid "Never"
+msgstr ""
 
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
@@ -2869,6 +2937,10 @@ msgstr "Az azonos rétegben lévő különböző szigetek külső falait sorban 
 
 msgctxt "brim_location option outside"
 msgid "Outside Only"
+msgstr ""
+
+msgctxt "initial_layer_inset_direction option outside_in"
+msgid "Outside To Inside"
 msgstr ""
 
 msgctxt "inset_direction option outside_in"
@@ -3351,14 +3423,6 @@ msgctxt "z_seam_type option random"
 msgid "Random"
 msgstr "Véletlenszerű"
 
-msgctxt "infill_randomize_start_location label"
-msgid "Randomize Infill Start"
-msgstr "Véletlenszerű kitöltés kezdés"
-
-msgctxt "infill_randomize_start_location description"
-msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr "Az adott rétegben, a kezdő kitöltési sorokat véletlenszerűen választja ki.Ezzel elkerülhető az, hogy a kitöltés az egyik helyen erősebb legyen, mint máshol, vagy éppen valahol gyengébb legyen a kelleténél a kitöltés."
-
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "A külső fal nyomtatása során, véletlenszerűen beremeg a fej. Ennek hatására a külső fal mintázata elmosott, homályos lesz, elnyomja a mintázatot."
@@ -3787,6 +3851,14 @@ msgctxt "machine_start_gcode_first label"
 msgid "Start GCode must be first"
 msgstr ""
 
+msgctxt "infill_start_end_preference option start_closest"
+msgid "Start at closest"
+msgstr ""
+
+msgctxt "infill_start_end_preference option start_random"
+msgid "Start at random"
+msgstr ""
+
 msgctxt "layer_start_at_z_seam description"
 msgid "Start printing at the Z seam position."
 msgstr ""
@@ -3939,6 +4011,10 @@ msgctxt "support_infill_angles label"
 msgid "Support Infill Line Directions"
 msgstr "Támasz kitöltés iránya"
 
+msgctxt "support_infill_multiplier label"
+msgid "Support Infill Line Multiplier"
+msgstr ""
+
 msgctxt "speed_support_infill label"
 msgid "Support Infill Speed"
 msgstr "Támasz kitöltési sebesség"
@@ -4002,6 +4078,22 @@ msgstr "Támasz löket"
 msgctxt "support_join_distance label"
 msgid "Support Join Distance"
 msgstr "Támasz kapcsolódási távolság"
+
+msgctxt "support_lightning_angle label"
+msgid "Support Lightning Angle"
+msgstr ""
+
+msgctxt "support_lightning_overhang_angle label"
+msgid "Support Lightning Overhang Angle"
+msgstr ""
+
+msgctxt "support_lightning_prune_angle label"
+msgid "Support Lightning Prune Angle"
+msgstr ""
+
+msgctxt "support_lightning_straightening_angle label"
+msgid "Support Lightning Straightening Angle"
+msgstr ""
 
 msgctxt "support_line_distance label"
 msgid "Support Line Distance"
@@ -4161,6 +4253,10 @@ msgstr "Bekapcsolja, hogy minden egyes rétegnél, ahol kereszteződő hálók t
 
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
+msgstr ""
+
+msgctxt "material_delta_temperature_roofing label"
+msgid "Temperature Delta Top Surface"
 msgstr ""
 
 msgctxt "layer_start_x description"
@@ -4535,6 +4631,10 @@ msgctxt "lightning_infill_prune_angle description"
 msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
 msgstr ""
 
+msgctxt "support_lightning_prune_angle description"
+msgid "The endpoints of infill lines are shortened to save on material. This setting is the angle of overhang of the endpoints of these lines."
+msgstr ""
+
 msgctxt "material_extrusion_cool_down_speed description"
 msgid "The extra speed by which the nozzle cools while extruding. The same value is used to signify the heat up speed lost when heating up while extruding."
 msgstr "Az a sebesség, amivel a fúvóka lehűl az extrudálás közben.Ugyanezt az értéket kell használni az extrudálás közbeni felmelegedésre is."
@@ -4728,6 +4828,10 @@ msgstr ""
 "Ez a minimális távolság. Ha a szoknya vonalak száma többszörözve van, akkor a szoknya kifelé fog nyövekedni."
 
 msgctxt "lightning_infill_straightening_angle description"
+msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
+msgstr ""
+
+msgctxt "support_lightning_straightening_angle description"
 msgid "The infill lines are straightened out to save on printing time. This is the maximum angle of overhang allowed across the length of the infill line."
 msgstr ""
 
@@ -6383,6 +6487,10 @@ msgstr "fej átpozícionálás"
 #~ msgid "Allows to order the object list to set the print sequence manually. First object from the list will be printed first."
 #~ msgstr "Lehetővé teszi az objektumlista rendezését a nyomtatási sorrend kézi beállításához. A lista első objektuma lesz először nyomtatva."
 
+#~ msgctxt "travel_retract_before_outer_wall description"
+#~ msgid "Always retract when moving to start an outer wall."
+#~ msgstr "Minden esetben, mikor a külső fal nyomtatása fog történni, a pozicionáláskor szál visszahúzás fog történni."
+
 #~ msgctxt "brim_outside_only label"
 #~ msgid "Brim Only on Outside"
 #~ msgstr "Perem csak kívül"
@@ -6422,6 +6530,14 @@ msgstr "fej átpozícionálás"
 #~ msgctxt "wall_overhang_speed_factor description"
 #~ msgid "Overhanging walls will be printed at this percentage of their normal print speed."
 #~ msgstr "A kinyúló falak a normál nyomtatási sebesség százalékos arányában adjuk meg."
+
+#~ msgctxt "infill_randomize_start_location label"
+#~ msgid "Randomize Infill Start"
+#~ msgstr "Véletlenszerű kitöltés kezdés"
+
+#~ msgctxt "infill_randomize_start_location description"
+#~ msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+#~ msgstr "Az adott rétegben, a kezdő kitöltési sorokat véletlenszerűen választja ki.Ezzel elkerülhető az, hogy a kitöltés az egyik helyen erősebb legyen, mint máshol, vagy éppen valahol gyengébb legyen a kelleténél a kitöltés."
 
 #~ msgctxt "support_interface_skip_height label"
 #~ msgid "Support Interface Resolution"

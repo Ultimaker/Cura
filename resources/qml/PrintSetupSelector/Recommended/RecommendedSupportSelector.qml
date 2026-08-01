@@ -1,4 +1,4 @@
-// Copyright (c) 2022 UltiMaker
+// Copyright (c) 2026 UltiMaker
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -13,11 +13,12 @@ RecommendedSettingSection
 {
     id: enableSupportRow
 
-    title: catalog.i18nc("@label", "Support")
+    title: catalog.i18nc("@label", "Auto-Support")
     icon: UM.Theme.getIcon("Support")
     enableSectionSwitchVisible: supportEnabled.properties.enabled == "True"
     enableSectionSwitchChecked: supportEnabled.properties.value == "True"
     enableSectionSwitchEnabled: recommendedPrintSetup.settingsEnabled
+    keepSettingListOpen: true  // Keep related settings open, since we may need it w.r.t. paint-on support even if 'auto' support is off.
     tooltipText: catalog.i18nc("@label", "Generate structures to support parts of the model which have overhangs. Without these structures, these parts would collapse during printing.")
 
     function onEnableSectionChanged(state)
