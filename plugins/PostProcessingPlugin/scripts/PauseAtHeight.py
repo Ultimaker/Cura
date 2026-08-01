@@ -35,12 +35,10 @@ from ..Script import Script
 import re
 from UM.Application import Application
 from UM.Logger import Logger
-from typing import Tuple
+from typing import Tuple, Any
 from UM.Message import Message
 
 class PauseAtHeight(Script):
-    #def __init__(self) -> None:
-    #    super().__init__()
 
     # Pause Constants:
     MAXIMUM_E_CHUNK = 150
@@ -141,7 +139,6 @@ class PauseAtHeight(Script):
                     "type": "str",
                     "default_value": "25",
                     "enabled": "enable_pause_at_height and pause_at == 'layer_no'"
-                }
                 },
                 "pause_height":
                 {
@@ -617,7 +614,8 @@ class PauseAtHeight(Script):
 
     def _find_and_add_pause(self, data: list[str], pause_layer: int, txt_msg: str, pause_index: int) -> list[str]:
         """
-        Goes through the list of pause layers/heights and adds pauses as required
+        Orchestrates inserting a single pause into the gcode at the given layer index.
+        Delegates each logical phase to a dedicated helper method.
 
         :param data: The gcode to be processed
         :param pause_layer: The layer number to pause at
@@ -625,73 +623,18 @@ class PauseAtHeight(Script):
         :param pause_index: The index in the gcode where the pause should be inserted
         :return: the altered data
         """
-
-        # Pause settings from this script
-        hold_steppers_on = self.getSettingValueByKey("hold_steppers_on")
-        disarm_timeout = self.getSettingValueByKey("disarm_timeout") * 60
         self.reason_for_pause = self.getSettingValueByKey("reason_for_pause")
-        unload_amount = self.getSettingValueByKey("unload_amount")
-        unload_quick_purge = self.getSettingValueByKey("enable_quick_purge")
-        unload_reload_speed = int(self.getSettingValueByKey("unload_reload_speed")) * 60
-        reload_amount = self.getSettingValueByKey("reload_amount")
-        purge_amount = self.getSettingValueByKey("purge_amount")
-        extra_prime_amount = self.getSettingValueByKey("extra_prime_amount")
-
-        if self.reason_for_pause == "reason_filament":
-            extra_prime_amount = "0"
-
-        # Calculate the purge speed based on the nozzle size.  A 0.4 will be 200 and a 0.8 will be 400 mm/min.
-        purge_speed = round(self.nozzle_size * self.PURGE_SPEED_MULTIPLIER)
-
-        # The slow_reload_speed is used at the end of the reloading to slow down the filament
-        slow_reload_speed = purge_speed * 2
-
-        # The park location and Z movement
-        park_enabled = self.getSettingValueByKey("head_park_enabled")
-        park_x = self.getSettingValueByKey("head_park_x")
-        park_y = self.getSettingValueByKey("head_park_y")
-        move_z = self.getSettingValueByKey("head_move_z")
-        min_purge_clearance = self.getSettingValueByKey("min_purge_clearance")
-
-        # Flow adjustment for Redo layer
-        redo_layer_flow, redo_layer_flow_reset = self.getRedoLayerFlow()
-
-        # Temperature settings from this script
-        resume_temperature_cmd = self.getSettingValueByKey("resume_temperature_cmd")
-        if resume_temperature_cmd in ["m104_cmd", "m109_cmd_s"]:
-            resume_temperature_param = "S"
-        else:
-            resume_temperature_param = "R"
-
-        standby_temperature = self.getSettingValueByKey("standby_temperature")
         use_tool_temperature = bool(self.getSettingValueByKey("tool_temp_override"))
         resume_print_temperature = self.getSettingValueByKey("resume_print_temperature")
-
-        # Temperature setting from Cura
-        control_temperatures = self.global_stack.getProperty("machine_nozzle_temp_enabled", "value")
-
-        # Firmware retraction
-        firmware_retract = self.global_stack.getProperty("machine_firmware_retract", "value")
-
-        # Consideration for Z-Hops which can interfere with 'By Height'
-        if self.z_hop_enabled:
-            self.z_hop_height = self.extruder_list[0].getProperty("retraction_hop", "value")
-        else:
-            self.z_hop_height = 0
-
-        # The Gcode Before and Gcode After commands
-        gcode_before, gcode_after = self.getGcodeBeforeAndAfter()
-
-        # Beeps
-        beep_at_pause = self.getSettingValueByKey("beep_at_pause")
-        beep_length = self.getSettingValueByKey("beep_length")
-        g4_dwell_time = round(self.getSettingValueByKey("g4_dwell_time") * 60)
+        redo_layer_flow, redo_layer_flow_reset = self.getRedoLayerFlow()
         pause_method = self.getSettingValueByKey("pause_method")
-
-        # The pause command to be used
+        g4_dwell_time = round(self.getSettingValueByKey("g4_dwell_time") * 60)
         pause_command = self._get_pause_command(pause_method, txt_msg, g4_dwell_time)
 
-        # Phase 1: Scan gcode up to the pause point to collect current Z and temperature
+        # Consideration for Z-Hops which can interfere with 'By Height'
+        self.z_hop_height = self.extruder_list[0].getProperty("retraction_hop", "value") if self.z_hop_enabled else 0
+
+        # Scan gcode up to the pause point to collect current Z and temperature
         layers_started, current_z, resume_print_temperature = self._scan_state_to_pause(
             data, pause_index, use_tool_temperature, resume_print_temperature
         )
@@ -699,15 +642,55 @@ class PauseAtHeight(Script):
             self.pause_lines_list = []
             return data
 
-        # Phase 2: Collect state from the layer just before the pause
+        # Collect the printer state from just before the pause point
+        prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y = \
+            self._collect_pre_pause_state(data, pause_index)
+
+        # Optionally inject a redo of the previous layer before the pause
+        data, return_to_x, return_to_y, current_e, is_retracted = \
+            self._apply_redo_layer(data, pause_index, redo_layer_flow, redo_layer_flow_reset,
+                                              prev_layer, prev_lines, current_e, is_retracted,
+                                              return_to_x, return_to_y)
+
+        # Open the pause gcode block with a header comment
+        partial_str = f";TYPE:CUSTOM---------------; Pause at end of Preview Layer {pause_layer}"
+        if not self.one_at_a_time:
+            partial_str += f" (end of Gcode LAYER:{int(pause_layer) - 1})"
+        self.pause_lines_list.append(partial_str)
+        if pause_method != "griffin":
+            self.pause_lines_list.append("M83 ; Relative extrusion")
+
+        # Retract, lift Z, park the head, and unload filament before the pause
+        self._add_pre_pause_movement_gcode(pause_method, current_z, is_retracted)
+
+        # Insert pause notifications and the pause command itself
+        self._add_pause_event_gcode(pause_method, txt_msg, pause_command)
+
+        # Reload filament, move head back to print position, and restore extruder state
+        self._add_resume_gcode(pause_method, current_z, return_to_x, return_to_y,
+                                is_retracted, current_e, resume_print_temperature)
+
+        # Format the gcode block and insert it at the end of the previous layer
+        return self._format_and_insert_pause_gcode(data, pause_index)
+
+    def _collect_pre_pause_state(self, data: list[str], pause_index: int) -> Tuple[str, list[str], Any, bool, float, float]:
+        """
+        Collects the printer state from the layer just before the pause point:
+        the last known E position, retraction status, and XY head position to return to after the pause.
+
+        :param data: The gcode to be processed
+        :param pause_index: The data index at which the pause will be inserted
+        :return: (prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y)
+        """
         prev_layer = data[pause_index - 1]
         prev_lines = prev_layer.split("\n")
         is_retracted = None
         current_e = None
         chk_index = pause_index - 1
 
-        # One at a time print sequence generates additional data[items] between models.  The first is often travel only and the second (if it is there) is a retraction.
-        while current_e is None:
+        # One at a time print sequence generates additional data[items] between models.
+        # The first is often travel only and the second (if it is there) is a retraction.
+        while current_e is None and chk_index > 0:
             current_e, is_retracted = self.getPreviousE(data, chk_index)
             if current_e is None:
                 chk_index -= 1
@@ -721,40 +704,69 @@ class PauseAtHeight(Script):
                     return_to_y = self.getValue(prev_line, "Y")
                     break
 
-        # Maybe redo the previous layer.
-        if self.redo_layer and self.reason_for_pause == "reason_filament" and not self.one_at_a_time:
-            prev_layer = data[pause_index - 1]
-            prev_layer = re.sub(";LAYER:", ";REDO_LAY:", prev_layer)
-            temp_list = prev_layer.split("\n")
-            temp_list[0] = temp_list[0] + str(" " * (29 - len(temp_list[0] + ".1"))) + "; Redo layer from 'Pause at Layer or Height'\n" + redo_layer_flow
-            prev_layer = "\n".join(temp_list)
-            data[pause_index] = prev_layer + redo_layer_flow_reset + data[pause_index]
-            temp_list = []
+        return prev_layer, prev_lines, current_e, is_retracted, return_to_x, return_to_y
 
-            # Get the X Y position and the extruder's absolute position at the beginning of the redone layer.
-            return_to_x, return_to_y = self.getNextXY(data[pause_index - 2])
-            prev_lines = prev_layer.split("\n")
-            for current_line in prev_lines:
-                new_e = self.getValue(current_line, "E", current_e)
-                if new_e != current_e:
-                    if re.search("G1 F(\d+\.\d+|\d+) E(-?\d+\.\d+|-?\d+)", current_line) or "G10" in current_line:
-                        if is_retracted == None:
-                            is_retracted = True
-                        if current_e is not None:
-                            if is_retracted is None:
-                                is_retracted = False
-                    current_e = new_e
-                    break
+    def _apply_redo_layer(self, data: list[str], pause_index: int,
+                                     redo_layer_flow: str, redo_layer_flow_reset: str,
+                                     prev_layer: str, prev_lines: list[str],
+                                     current_e, is_retracted: bool,
+                                     return_to_x: float, return_to_y: float
+                                     ) -> Tuple[list[str], float, float, Any, bool]:
+        """
+        If the 'Redo Layer' setting is active, prepends a copy of the previous layer to the
+        current pause layer so the filament is flowing again on resume.  Updates return_to_x/y
+        so the head moves back to the start of the redo layer instead of the end.
 
-        # Start putting together the pause string 'pause_lines_list'
-        partial_str = f";TYPE:CUSTOM---------------; Pause at end of Preview Layer {pause_layer}"
-        if not self.one_at_a_time:
-            partial_str += f" (end of Gcode LAYER:{int(pause_layer) - 1})"
-        self.pause_lines_list.append(partial_str)
+        :return: (data, return_to_x, return_to_y, current_e, is_retracted)
+        """
+        if not (self.redo_layer and self.reason_for_pause == "reason_filament" and not self.one_at_a_time):
+            return data, return_to_x, return_to_y, current_e, is_retracted
 
-        # Don't change the extrusion mode if pause method is UM 'griffin'
-        if pause_method != "griffin":
-            self.pause_lines_list.append("M83 ; Relative extrusion")
+        prev_layer = data[pause_index - 1]
+        prev_layer = re.sub(";LAYER:", ";REDO_LAY:", prev_layer)
+        layer_lines = prev_layer.split("\n")
+        layer_lines[0] = layer_lines[0] + str(" " * (29 - len(layer_lines[0] + ".1"))) + "; Redo layer from 'Pause at Layer or Height'\n" + redo_layer_flow
+        prev_layer = "\n".join(layer_lines)
+        data[pause_index] = prev_layer + redo_layer_flow_reset + data[pause_index]
+
+        # Get the X Y position and the extruder's absolute position at the beginning of the redone layer.
+        return_to_x, return_to_y = self.getNextXY(data[pause_index - 2])
+        prev_lines = prev_layer.split("\n")
+        for current_line in prev_lines:
+            new_e = self.getValue(current_line, "E", current_e)
+            if new_e != current_e:
+                if re.search("G1 F(\d+\.\d+|\d+) E(-?\d+\.\d+|-?\d+)", current_line) or "G10" in current_line:
+                    if is_retracted is None:
+                        is_retracted = True
+                elif current_e is not None and is_retracted is None:
+                    is_retracted = False
+                current_e = new_e
+                break
+
+        return data, return_to_x, return_to_y, current_e, is_retracted
+
+    def _add_pre_pause_movement_gcode(self, pause_method: str, current_z: float, is_retracted: bool) -> None:
+        """
+        Appends the pre-pause movement commands to pause_lines_list: retraction, Z-lift,
+        parking the head, and (for filament changes) the filament unload sequence.
+
+        For repetier firmware: retracts, parks, then disables steppers.
+        For all other non-griffin firmware: retracts (or issues a firmware retract G10),
+        parks, applies minimum purge clearance, unloads filament, and sets standby temperature.
+        """
+        park_enabled = self.getSettingValueByKey("head_park_enabled")
+        park_x = self.getSettingValueByKey("head_park_x")
+        park_y = self.getSettingValueByKey("head_park_y")
+        move_z = self.getSettingValueByKey("head_move_z")
+        min_purge_clearance = self.getSettingValueByKey("min_purge_clearance")
+        unload_amount = self.getSettingValueByKey("unload_amount")
+        unload_quick_purge = self.getSettingValueByKey("enable_quick_purge")
+        unload_reload_speed = int(self.getSettingValueByKey("unload_reload_speed")) * 60
+        purge_amount = self.getSettingValueByKey("purge_amount")
+        standby_temperature = self.getSettingValueByKey("standby_temperature")
+        firmware_retract = self.global_stack.getProperty("machine_firmware_retract", "value")
+        control_temperatures = self.global_stack.getProperty("machine_nozzle_temp_enabled", "value")
+        purge_speed = round(self.nozzle_size * self.PURGE_SPEED_MULTIPLIER)
 
         if pause_method == "repetier":
             if not is_retracted and self.retraction_enabled:
@@ -812,6 +824,22 @@ class PauseAtHeight(Script):
             if control_temperatures:
                 self.pause_lines_list.append(f"M104 S{round(standby_temperature)} ; Standby temperature")
 
+    def _add_pause_event_gcode(self, pause_method: str, txt_msg: str, pause_command: str) -> None:
+        """
+        Appends the pause notification and pause command to pause_lines_list:
+        LCD message, stepper disarm timeout, optional beep, custom gcode before pause,
+        print-server message, the actual pause command, and custom gcode after pause.
+
+        :param pause_method: The selected pause method key
+        :param txt_msg: The message to display on the LCD and print server
+        :param pause_command: The resolved pause command string (e.g. 'M0', 'PAUSE')
+        """
+        hold_steppers_on = self.getSettingValueByKey("hold_steppers_on")
+        disarm_timeout = self.getSettingValueByKey("disarm_timeout") * 60
+        beep_at_pause = self.getSettingValueByKey("beep_at_pause")
+        beep_length = self.getSettingValueByKey("beep_length")
+        gcode_before, gcode_after = self.getGcodeBeforeAndAfter()
+
         if txt_msg:
             self.pause_lines_list.append(f"M117 {txt_msg} ; Message to LCD")
 
@@ -825,7 +853,6 @@ class PauseAtHeight(Script):
                     temporary_str += " ; Keep motors engaged until printer power turned off (Marlin)."
                 self.pause_lines_list.append(temporary_str)
 
-        # Beep at pause
         if beep_at_pause:
             self.pause_lines_list.append(f"M300 S440 P{beep_length} ; Beep")
 
@@ -843,7 +870,45 @@ class PauseAtHeight(Script):
         if gcode_after:
             self.pause_lines_list.append(gcode_after)
 
-        # If redoing a layer then move back down to the working height of that layer.
+    def _add_resume_gcode(self, pause_method: str, current_z: float,
+                           return_to_x: float, return_to_y: float,
+                           is_retracted: bool, current_e, resume_print_temperature) -> None:
+        """
+        Appends the resume-from-pause commands to pause_lines_list: resume temperature,
+        filament reload and purge, head return to print position, unretraction, optional
+        extra prime, and extruder position reset.
+
+        For repetier firmware: purge, retract, return to position, unretract, reset extruder.
+        For all other non-griffin firmware: heat to resume temperature, reload/purge, return
+        to position, unretract if needed, apply extra prime if set, and reset extruder state.
+
+        :param pause_method: The selected pause method key
+        :param current_z: The Z height at the pause point
+        :param return_to_x: The X coordinate to return to after the pause
+        :param return_to_y: The Y coordinate to return to after the pause
+        :param is_retracted: Whether the extruder was retracted at the pause point
+        :param current_e: The E position at the pause point
+        :param resume_print_temperature: The temperature to heat back up to before resuming
+        """
+        park_enabled = self.getSettingValueByKey("head_park_enabled")
+        reload_amount = self.getSettingValueByKey("reload_amount")
+        purge_amount = self.getSettingValueByKey("purge_amount")
+        unload_reload_speed = int(self.getSettingValueByKey("unload_reload_speed")) * 60
+        extra_prime_amount = self.getSettingValueByKey("extra_prime_amount")
+        if self.reason_for_pause == "reason_filament":
+            extra_prime_amount = "0"
+        resume_temperature_cmd = self.getSettingValueByKey("resume_temperature_cmd")
+        resume_temperature_param = "S" if resume_temperature_cmd in ["m104_cmd", "m109_cmd_s"] else "R"
+        use_tool_temperature = bool(self.getSettingValueByKey("tool_temp_override"))
+        control_temperatures = self.global_stack.getProperty("machine_nozzle_temp_enabled", "value")
+        firmware_retract = self.global_stack.getProperty("machine_firmware_retract", "value")
+        relative_extrusion = self.global_stack.getProperty("relative_extrusion", "value")
+        extrusion_mode_numeric = 83 if relative_extrusion else 82
+        extrusion_mode_string = "relative" if relative_extrusion else "absolute"
+        purge_speed = round(self.nozzle_size * self.PURGE_SPEED_MULTIPLIER)
+        slow_reload_speed = purge_speed * 2
+
+        # Determine the Z height to return to after the pause
         if self.redo_layer:
             working_z = round(current_z - (self.layer_height if not self.z_hop_enabled else 0), 2)
             working_z_txt = "; Move down to redo layer height"
@@ -851,45 +916,29 @@ class PauseAtHeight(Script):
             working_z = current_z
             working_z_txt = "; Move down to resume height"
 
-        relative_extrusion = self.global_stack.getProperty("relative_extrusion", "value")
-        extrusion_mode_numeric = 83 if relative_extrusion else 82
-        extrusion_mode_string = "relative" if relative_extrusion else "absolute"
-
         if pause_method == "repetier":
-            # Optional purge
             if int(purge_amount) != 0:
                 self.pause_lines_list.append(f"G1 F{purge_speed} E{purge_amount} ; Extra extrude after the unpause")
                 self.pause_lines_list.append("     @info wait for cleaning nozzle from previous filament")
                 self.pause_lines_list.append("     @pause remove the waste filament from parking area and press continue printing")
-
-            # Retract after a purge before moving back to the print.
             if purge_amount != 0 and self.retraction_enabled:
                 self.pause_lines_list.append(f"G1 F{self.retraction_retract_speed} E-{self.retraction_amount} ;Retract")
-
-            # Move the head back to the resume position
             if park_enabled:
                 self.pause_lines_list.append(f"G0 F{self.speed_travel} X{return_to_x} Y{return_to_y} ; Return to print location")
                 self.pause_lines_list.append(f"G0 F{self.speed_z_hop} Z{working_z} {working_z_txt}")
-            # Unretract when necessary
             if purge_amount != 0 and self.retraction_enabled:
                 self.pause_lines_list.append(f"G1 F{self.retraction_prime_speed} E{self.retraction_amount} ; Unretract")
-
-            # Change the extrusion mode as required
             self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; switch back to {extrusion_mode_string} ; E values")
-
-            # Reset extruder value to pre pause value
-            self.pause_lines_list.append(f"G92 E{current_e} ;Reset extruder")
+            self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ;Reset extruder")
 
         elif pause_method != "griffin":
             if control_temperatures:
-                # Set extruder resume temperature
                 if resume_temperature_cmd in ["m109_cmd_r", "m109_cmd_s"] or use_tool_temperature:
                     temperature_cmd = 109
                     temperature_resume_str = "; Wait for resume temperature"
                 else:
                     temperature_cmd = 104
                     temperature_resume_str = "; Resume temperature"
-
                 self.pause_lines_list.append(f"M{temperature_cmd} {resume_temperature_param}{int(resume_print_temperature)} {temperature_resume_str}")
 
             # Load and Purge.  Break the load amount in 'self.MAXIMUM_E_CHUNK'mm chunks to avoid 'too long of extrusion' warnings from firmware.
@@ -905,7 +954,6 @@ class PauseAtHeight(Script):
                             self.pause_lines_list.append(f"G1 F{round(float(self.nozzle_size) * self.PURGE_SPEED_CONSTANT)} E{round(reload_amount * (1 - self.RELOAD_FAST_PERCENTAGE))} ; Reload the remaining 10% slow to avoid jamming the nozzle")
                         else:
                             self.pause_lines_list.append(f"G1 F{round(float(self.nozzle_size) * self.PURGE_SPEED_CONSTANT)} E{round(reload_amount * (1 - self.RELOAD_FAST_PERCENTAGE))} ; Reload the remaining 10% slow to avoid jamming the nozzle")
-
                     else:
                         self.pause_lines_list.append(f"G1 F{round(int(unload_reload_speed))} E{round(reload_amount * self.RELOAD_FAST_PERCENTAGE)} ; Fast Reload")
                         self.pause_lines_list.append(f"G1 F{round(slow_reload_speed)} E{round(reload_amount * (1 - self.RELOAD_FAST_PERCENTAGE))} ; Reload the last 10% slower to avoid jamming the nozzle")
@@ -916,7 +964,7 @@ class PauseAtHeight(Script):
                         self.pause_lines_list.append(f"G1 F{int(self.retraction_retract_speed)} E-{self.retraction_amount} ; Retract")
                     elif firmware_retract and self.retraction_enabled:
                         self.pause_lines_list.append("G10 ; Retract")
-                    # If there is a purge then give the user time to grab the string before the head moves back to the print position.
+                    # Give the user time to grab the string before the head moves back to the print position.
                     self.pause_lines_list.append("M400 ; Complete all moves")
                     self.pause_lines_list.append("M300 P250 ; Beep")
                     self.pause_lines_list.append("G4 S2 ; Wait for 2 seconds")
@@ -928,7 +976,7 @@ class PauseAtHeight(Script):
 
             if purge_amount != 0:
                 if firmware_retract and not is_retracted and self.retraction_enabled:
-                    retraction_count = 1 if control_temperatures else 3 # Retract more if we don't control the temperature.
+                    retraction_count = 1 if control_temperatures else 3  # Retract more if we don't control the temperature.
                     for i in range(retraction_count):
                         self.pause_lines_list.append("G11 ; Unretract")
                 else:
@@ -954,16 +1002,23 @@ class PauseAtHeight(Script):
                     self.pause_lines_list.append(f"G92 E{0 if relative_extrusion else current_e} ; Reset extruder location ~ unretracted")
                     self.pause_lines_list.append(f"M{extrusion_mode_numeric} ; Switch back to {extrusion_mode_string} E values")
 
-        # Add the end line
+    def _format_and_insert_pause_gcode(self, data: list[str], pause_index: int) -> list[str]:
+        """
+        Appends the closing comment to pause_lines_list, aligns all inline comments for
+        readability, then inserts the complete pause gcode block at the end of the layer
+        just before the pause point (before the TIME_ELAPSED marker).
+
+        :param data: The gcode to be processed
+        :param pause_index: The data index at which the pause will be inserted
+        :return: The modified gcode data list
+        """
         self.pause_lines_list.append(f";{'-' * 26}; End of the Pause code")
 
-        # Format the Prepend Gcode for readability
         for temp_index, temp_line in enumerate(self.pause_lines_list):
             if ";" in temp_line and not temp_line.startswith(";"):
                 self.pause_lines_list[temp_index] = temp_line.replace(temp_line.split(";")[0], temp_line.split(";")[0] + str(" " * (27 - len(temp_line.split(";")[0]))), 1)
         pause_gcode_string = "\n".join(self.pause_lines_list)
 
-        # Insert the Prepend Gcode at the end of the previous layer just before "TIME_ELAPSED".
         layer_lines = data[pause_index - 1].split("\n")
         layer_lines.insert(len(layer_lines) - 2, pause_gcode_string)
         data[pause_index - 1] = "\n".join(layer_lines)
@@ -1067,11 +1122,7 @@ class PauseAtHeight(Script):
         """
         If 'height' - convert the heights to corresponding layer numbers and return the list.
 
-        :param pause_height_list: A list derived from the pause_height_string
-        :param temporary_layer_list: The list of layers derived from the layer heights
-        :param cur_z: The working Z height
-        :param p_hgt: The pause height currently being considered
-        :param err_str: A string indicating the error for logging and user message
+        :param data: The gcode to be processed
         :return: The list of corresponding layer numbers
         """
         pause_height_list = str(self.getSettingValueByKey("pause_height")).split(",")
@@ -1081,16 +1132,16 @@ class PauseAtHeight(Script):
             pause_height_list = [pause_height_list[0]]
 
         temporary_layer_list = []
-        for p_hgt in pause_height_list:
+        for pause_height in pause_height_list:
             # Get the 'height' equivalent layer number or skip it if it can't be cast to a float.  Inform the user of an error.
             try:
-                p_hgt = float(p_hgt)
+                pause_height = float(pause_height)
             except ValueError:
                 Logger.log("w", "PauseAtLayerOrHeight error - An entered 'Height' could not be converted to a number.")
-                err_str = f"An entered 'Height' ({p_hgt}) could not be converted to a number.  It was skipped."
+                err_str = f"An entered 'Height' ({pause_height}) could not be converted to a number.  It was skipped."
                 Message(title = "[PauseAtLayerOrHeight]", text = err_str).show()
                 continue
-            temporary_layer_list.append(str(self._is_legal_z(data, p_hgt)))
+            temporary_layer_list.append(str(self._is_legal_z(data, pause_height)))
         return temporary_layer_list
 
     def _is_legal_z(self, data: list[str], the_height: float) -> int:
@@ -1141,7 +1192,7 @@ class PauseAtHeight(Script):
                     if " Z" in line:
                         cur_z = float(self.getValue(line, "Z"))
                     # The working Z of the layer is always after a ';TYPE:' line
-                    if cur_z >= the_height and lines[z_index - 1].startswith(";TYPE:"):
+                    if cur_z >= the_height and z_index > 0 and lines[z_index - 1].startswith(";TYPE:"):
                         # Subtract 2 to account for the first two items in the data list as they are not layers
                         the_index = index - 2
                         break
@@ -1219,10 +1270,14 @@ class PauseAtHeight(Script):
         gcode = self.getSettingValueByKey(setting_key)
         if not gcode:
             return gcode
-        comment = f"; {label}"
+
+        def _append_label(cmd: str) -> str:
+            cmd = cmd.strip()
+            return cmd + f" - {label}" if ";" in cmd else cmd + f"; {label}"
+
         if "," in gcode:
-            return "\n".join(cmd.strip() + comment for cmd in gcode.split(","))
-        return gcode + comment
+            return "\n".join(_append_label(cmd) for cmd in gcode.split(","))
+        return _append_label(gcode)
 
     def getGcodeBeforeAndAfter(self) -> Tuple[str, str]:
         """
@@ -1251,9 +1306,22 @@ class PauseAtHeight(Script):
             # When 'By Height' the string of heights must be converted to layers
             pause_layer_list = self._pause_layer_from_height(data)
 
+        # Try sorting the pause layer list numerically, but if it fails (due to non-numeric values) just leave it unsorted.
+        try:
+            pause_layer_list.sort(key=lambda x: float(x.strip()))
+        except ValueError:
+            pass
+
         # Convert the pause layer numbers into their respective data[indexes] from the preview_layer_list.  This is a necessity for pausing in One at a Time mode.
+        # Deduplicate by resolved index so that duplicate layer entries (or two heights that land on the same layer) never produce double pause gcode.
         pause_index_list = []
-        for p_layer in pause_layer_list:
-            if str(p_layer) in self.preview_layer_list:
-                pause_index_list.append(self.preview_layer_list.index(p_layer))
-        return pause_layer_list, pause_index_list
+        seen_indices = set()
+        filtered_pause_layer_list = []
+        for pause_layer in pause_layer_list:
+            if str(pause_layer) in self.preview_layer_list:
+                idx = self.preview_layer_list.index(pause_layer)
+                if idx not in seen_indices:
+                    seen_indices.add(idx)
+                    pause_index_list.append(idx)
+                    filtered_pause_layer_list.append(pause_layer)
+        return filtered_pause_layer_list, pause_index_list
