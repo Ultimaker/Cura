@@ -1208,6 +1208,20 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "wall_x_inset":
+                {
+                    "label": "Inner Wall Inset",
+                    "description": "Inset applied to the path of the inner wall(s). The infill will move along with the new boundary set by the innermost inner wall",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "-wall_line_width_0 + wall_0_inset",
+                    "minimum_value_warning": "(-wall_line_width_0 + wall_0_inset) / 2",
+                    "maximum_value": "wall_line_width_x * 2",
+                    "maximum_value_warning": "wall_line_width_x",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "optimize_wall_printing_order":
                 {
                     "label": "Optimize Wall Printing Order",
