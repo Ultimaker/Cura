@@ -3,7 +3,7 @@
 import os
 import platform
 import subprocess
-from typing import List, cast
+from typing import List, Optional, cast
 
 from UM.i18n import i18nCatalog
 from UM.Message import Message
@@ -60,51 +60,33 @@ class CuraActions(QObject):
     def _onSceneChanged(self, source: SceneNode) -> None:
         self.showFileLocationEnabledChanged.emit()
 
-    @pyqtProperty(bool, notify = showFileLocationEnabledChanged)
-    def canShowFileLocation(self) -> bool:
-        """Returns True when exactly one model is selected and it has a known file path."""
+    def _getSelectedNodeFilePath(self) -> Optional[str]:
+        """Returns the source file path of the selected node if the selection is valid, or None."""
         selected = Selection.getAllSelectedObjects()
         if len(selected) != 1:
-            return False
+            return None
         node = selected[0]
+        if not isinstance(node, CuraSceneNode) or node.callDecoration("isGroup"):
+            return None
         mesh_data = node.getMeshData()
-        return (
-            isinstance(node, CuraSceneNode)
-            and not node.callDecoration("isGroup")
-            and mesh_data is not None
-            and bool(mesh_data.getFileName())
-        )
+        if mesh_data is None:
+            return None
+        return mesh_data.getFileName() or None
+
+    @pyqtProperty(bool, notify = showFileLocationEnabledChanged)
+    def canShowFileLocation(self) -> bool:
+        """Returns True when exactly one model is selected and its source file is accessible."""
+        file_path = self._getSelectedNodeFilePath()
+        return file_path is not None and os.path.exists(file_path)
 
     @pyqtSlot()
     def showFileLocation(self) -> None:
         """Reveal the source file of the selected model in the OS file manager."""
-        selected = Selection.getAllSelectedObjects()
-        if len(selected) != 1:
-            Message(
-                i18n_catalog.i18nc("@info:status", "Please select exactly one object to show its file location."),
-                title=i18n_catalog.i18nc("@info:title", "Show File Location"),
-                message_type=Message.MessageType.WARNING,
-            ).show()
+        file_path = self._getSelectedNodeFilePath()
+        if file_path is None:
             return
-        node = selected[0]
-        if not isinstance(node, CuraSceneNode):
-            Message(
-                i18n_catalog.i18nc("@info:status", "The selected object does not support showing a file location."),
-                title=i18n_catalog.i18nc("@info:title", "Show File Location"),
-                message_type=Message.MessageType.WARNING,
-            ).show()
-            return
-        mesh_data = node.getMeshData()
-        if not mesh_data:
-            Message(
-                i18n_catalog.i18nc("@info:status", "The selected object has no mesh data."),
-                title=i18n_catalog.i18nc("@info:title", "Show File Location"),
-                message_type=Message.MessageType.WARNING,
-            ).show()
-            return
-        file_path = mesh_data.getFileName()
-        if not file_path or not os.path.exists(file_path):
-            Logger.warning(f"Cannot show file location: path is missing or does not exist: {file_path}")
+        if not os.path.exists(file_path):
+            Logger.warning(f"Cannot show file location: file no longer exists: {file_path}")
             Message(
                 i18n_catalog.i18nc("@info:status", "The source file could not be found. It may have been moved or deleted."),
                 title=i18n_catalog.i18nc("@info:title", "File Not Found"),
