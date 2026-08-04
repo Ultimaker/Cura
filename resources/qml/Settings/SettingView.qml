@@ -225,7 +225,7 @@ Item
 
     MouseArea
     {
-        anchors.fill:    contents
+        anchors.fill: contents
         acceptedButtons: Qt.AllButtons
         onWheel: function(wheel)
         {
@@ -344,17 +344,14 @@ Item
             {
                 target: provider
                 property: "containerStackId"
-                when: model.settable_per_extruder ||
-                        (inheritStackProvider.properties.limit_to_extruder !== undefined &&
-                        inheritStackProvider.properties.limit_to_extruder >= 0)
+                when: model.settable_per_extruder ||(inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                 value:
                 {
                     if (!model.settable_per_extruder)
                     {
                         return contents.activeMachineId
                     }
-                    if (inheritStackProvider.properties.limit_to_extruder !== undefined &&
-                        inheritStackProvider.properties.limit_to_extruder >= 0)
+                    if (inheritStackProvider.properties.limit_to_extruder !== undefined && inheritStackProvider.properties.limit_to_extruder >= 0)
                     {
                         return Cura.ExtruderManager.extruderIds[inheritStackProvider.properties.limit_to_extruder]
                     }
