@@ -57,7 +57,7 @@ class CuraActions(QObject):
     def _onSelectionChanged(self) -> None:
         self.showFileLocationEnabledChanged.emit()
 
-    def _onSceneChanged(self, source: SceneNode) -> None:
+    def _onSceneChanged(self, _source: SceneNode) -> None:
         self.showFileLocationEnabledChanged.emit()
 
     def _getSelectedNodeFilePath(self) -> Optional[str]:
