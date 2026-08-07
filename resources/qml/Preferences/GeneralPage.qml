@@ -893,7 +893,15 @@ UM.PreferencesPage
                     id: fixedPathsCheckbox
                     text: catalog.i18nc("@option:check", "Always use the same default locations for opening and saving files")
                     checked: boolCheck(UM.Preferences.getValue("local_file/use_fixed_dialog_paths"))
-                    onCheckedChanged: UM.Preferences.setValue("local_file/use_fixed_dialog_paths", checked)
+                    onCheckedChanged:
+                    {
+                        UM.Preferences.setValue("local_file/use_fixed_dialog_paths", checked)
+                        if (checked)
+                        {
+                            dialogLoadPathField.text = UM.Preferences.getValue("local_file/dialog_load_path")
+                            dialogSavePathField.text = UM.Preferences.getValue("local_file/dialog_save_path")
+                        }
+                    }
                 }
             }
 
