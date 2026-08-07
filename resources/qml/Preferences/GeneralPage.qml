@@ -911,6 +911,8 @@ UM.PreferencesPage
                 height: childrenRect.height
                 enabled: fixedPathsCheckbox.checked
                 opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@info:tooltip", "The default folder to open when loading files.")
 
                 Column
@@ -952,6 +954,8 @@ UM.PreferencesPage
                 height: childrenRect.height
                 enabled: fixedPathsCheckbox.checked
                 opacity: fixedPathsCheckbox.checked ? 1.0 : 0.5
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@info:tooltip", "The default folder to open when saving files.")
 
                 Column
