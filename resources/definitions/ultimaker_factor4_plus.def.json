@@ -377,6 +377,7 @@
         "top_bottom_pattern_0": { "value": "'lines'" },
         "travel_retract_before_outer_wall": { "value": "'force_not_retracted_from_infill'" },
         "wall_0_material_flow_roofing": { "value": "roofing_material_flow" },
+        "wall_0_wipe_dist": { "value": 0.1 },
         "wall_overhang_angle": { "value": 30 },
         "wall_overhang_speed_factors":
         {
