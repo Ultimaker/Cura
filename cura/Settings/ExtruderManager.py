@@ -1,10 +1,11 @@
-# Copyright (c) 2022 Ultimaker B.V.
+# Copyright (c) 2025 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 
 from UM.Application import Application
 from UM.FlameProfiler import pyqtSlot
+from UM.Decorators import deprecated
 
 import cura.CuraApplication # To get the global container stack to find the current machine.
 from UM.Util import parseBool
@@ -248,11 +249,19 @@ class ExtruderManager(QObject):
                 stack_to_use = container_registry.findContainerStacks(id = extruder_stack_id)[0]
 
             if not support_enabled:
-                support_enabled |= stack_to_use.getProperty("support_enable", "value")
+                support_enabled |= parseBool(stack_to_use.getProperty("support_enable", "value"))
             if not support_bottom_enabled:
-                support_bottom_enabled |= stack_to_use.getProperty("support_bottom_enable", "value")
+                support_bottom_enabled |= parseBool(stack_to_use.getProperty("support_bottom_enable", "value"))
             if not support_roof_enabled:
-                support_roof_enabled |= stack_to_use.getProperty("support_roof_enable", "value")
+                support_roof_enabled |= parseBool(stack_to_use.getProperty("support_roof_enable", "value"))
+
+            painted_extruders = node.callDecoration("getPaintedExtruders")
+            if painted_extruders is not None:
+                for extruder_nr in painted_extruders:
+                    try:
+                        used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
+                    except KeyError:
+                        pass
 
         # Check limit to extruders
         limit_to_extruder_feature_list = ["wall_0_extruder_nr",
@@ -310,6 +319,7 @@ class ExtruderManager(QObject):
         sorted_extruders = sorted(used_extruders, key=lambda extruder: extruder.getValue("extruder_nr"))
         return sorted_extruders[0]
 
+    @deprecated("This method is deprecated because it does not always return the actual initial extruder, use PrintInformation.initialExtruderNr", since="5.14.0")
     def getInitialExtruderNr(self) -> int:
         """Get the extruder that the print will start with.
 

@@ -30,6 +30,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
+from .ThreeMFWorkspaceReader import ThreeMFWorkspaceReader
 
 try:
     if not TYPE_CHECKING:
@@ -319,16 +320,21 @@ class ThreeMFReader(MeshReader):
                 node_meshdata = um_node.getMeshData()
                 if node_meshdata is not None:
                     aabb = node_meshdata.getExtents(um_node.getWorldTransformation())
-                    if aabb is not None:
-                        minimum_z_value = aabb.minimum.y  # y is z in transformation coordinates
-                        if minimum_z_value < 0:
-                            um_node.addDecorator(ZOffsetDecorator())
-                            um_node.callDecoration("setZOffset", minimum_z_value)
+                elif len(um_node.getChildren()) > 0:
+                    # For group nodes, use the combined bounding box of all children
+                    aabb = um_node.getBoundingBox()
+                if aabb is not None:
+                    minimum_z_value = aabb.minimum.y  # y is z in transformation coordinates
+                    if minimum_z_value < 0:
+                        um_node.addDecorator(ZOffsetDecorator())
+                        um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 
             if len(result) == 0:
                 self._empty_project = True
+            else:
+                ThreeMFWorkspaceReader.centerNodesToBuildPlate(result)
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")

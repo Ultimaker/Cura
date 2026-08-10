@@ -23,6 +23,9 @@ Cura.Menu
     Cura.MenuItem { action: Cura.Actions.paste; }
     Cura.MenuItem { action: Cura.Actions.multiplySelection; }
 
+    Cura.MenuSeparator {}
+    Cura.MenuItem { action: Cura.Actions.showFileLocation; }
+
     // Extruder selection - only visible if there is more than 1 extruder
     Cura.MenuSeparator { visible: base.shouldShowExtruders }
     Cura.MenuItem
@@ -57,7 +60,8 @@ Cura.Menu
                     extruder_header_location = i + 1;
                 }
             }
-            base.insertItem(extruder_header_location + index, object)
+            base.insertItem(extruder_header_location + index, object);
+            if (Qt.platform.os == "osx") object.text += " ";
         }
         onObjectRemoved: function(index, object) {  base.removeItem(object) }
     }
@@ -101,7 +105,7 @@ Cura.Menu
     Connections
     {
         target: Cura.Actions.multiplySelection
-        function onTriggered() { multiplyDialog.open() }
+        function onTriggered() { multiplyDialogComponent.createObject(base).open() }
     }
 
     UM.SettingPropertyProvider
@@ -113,76 +117,81 @@ Cura.Menu
         watchedProperties: [ "value" ]
     }
 
-    UM.Dialog
+    Component
     {
-        id: multiplyDialog
+        id: multiplyDialogComponent
 
-        title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
-
-        width: UM.Theme.getSize("small_popup_dialog").width
-        height: UM.Theme.getSize("small_popup_dialog").height
-        minimumWidth: UM.Theme.getSize("small_popup_dialog").width
-        minimumHeight: UM.Theme.getSize("small_popup_dialog").height
-        onAccepted: gridPlacementSelected.checked? CuraActions.multiplySelectionToGrid(copiesField.value) : CuraActions.multiplySelection(copiesField.value)
-        buttonSpacing: UM.Theme.getSize("thin_margin").width
-
-        rightButtons:
-        [
-            Cura.SecondaryButton
-            {
-                text: "Cancel"
-                onClicked: multiplyDialog.reject()
-            },
-            Cura.PrimaryButton
-            {
-                text: "Ok"
-                onClicked: multiplyDialog.accept()
-            }
-        ]
-
-        Column
+        UM.Dialog
         {
-            spacing: UM.Theme.getSize("default_margin").height
+            id: multiplyDialog
+            title: catalog.i18ncp("@title:window", "Multiply Selected Model", "Multiply Selected Models", UM.Selection.selectionCount)
 
-            Row
+            width: UM.Theme.getSize("small_popup_dialog").width
+            height: UM.Theme.getSize("small_popup_dialog").height
+            minimumWidth: UM.Theme.getSize("small_popup_dialog").width
+            minimumHeight: UM.Theme.getSize("small_popup_dialog").height
+            onAccepted: gridPlacementSelected.checked ? CuraActions.multiplySelectionToGrid(copiesField.value) : CuraActions.multiplySelection(copiesField.value)
+            buttonSpacing: UM.Theme.getSize("thin_margin").width
+            selfDestroy: true
+
+            rightButtons:
+                [
+                    Cura.SecondaryButton
+                    {
+                        text: "Cancel"
+                        onClicked: multiplyDialog.reject()
+                    },
+                    Cura.PrimaryButton
+                    {
+                        text: "Ok"
+                        onClicked: multiplyDialog.accept()
+                    }
+                ]
+
+            Column
             {
-                spacing: UM.Theme.getSize("default_margin").width
+                spacing: UM.Theme.getSize("default_margin").height
 
-                UM.Label
+                Row
                 {
-                    text: catalog.i18nc("@label", "Number of Copies")
-                    anchors.verticalCenter: copiesField.verticalCenter
-                    width: contentWidth
-                    wrapMode: Text.NoWrap
+                    spacing: UM.Theme.getSize("default_margin").width
+
+                    UM.Label
+                    {
+                        text: catalog.i18nc("@label", "Number of Copies")
+                        anchors.verticalCenter: copiesField.verticalCenter
+                        width: contentWidth
+                        wrapMode: Text.NoWrap
+                    }
+
+                    Cura.SpinBox
+                    {
+                        id: copiesField
+                        editable: true
+                        focus: true
+                        from: 1
+                        to: 99
+                        width: 2 * UM.Theme.getSize("button").width
+                        value: 1
+                    }
                 }
 
-                Cura.SpinBox
+                UM.CheckBox
                 {
-                    id: copiesField
-                    editable: true
-                    focus: true
-                    from: 1
-                    to: 99
-                    width: 2 * UM.Theme.getSize("button").width
-                    value: 1
+                    id: gridPlacementSelected
+                    text: catalog.i18nc("@label", "Grid Placement")
+
+                    UM.ToolTip
+                    {
+                        visible: parent.hovered
+                        targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), parent.y)
+                        x: 0
+                        y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
+                        tooltipText: catalog.i18nc("@info", "Multiply selected item and place them in a grid of build plate.")
+                    }
                 }
+
             }
-
-            UM.CheckBox
-            {
-                id: gridPlacementSelected
-                text: catalog.i18nc("@label", "Grid Placement")
-
-                UM.ToolTip
-                {
-                    visible: parent.hovered
-                    targetPoint: Qt.point(parent.x + Math.round(parent.width / 2), parent.y)
-                    x: 0
-                    y: parent.y + parent.height + UM.Theme.getSize("default_margin").height
-                    tooltipText: catalog.i18nc("@info", "Multiply selected item and place them in a grid of build plate.")
-                }
-            }
-
         }
     }
 }

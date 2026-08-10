@@ -39,7 +39,7 @@ class PauseAtHeight(Script):
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "0.27",
                     "enabled": "pause_at == 'height'"
                 },
@@ -49,7 +49,7 @@ class PauseAtHeight(Script):
                     "description": "Enter the Number of the LAST layer you want to finish prior to the pause. Note that 0 is the first layer printed.",
                     "type": "int",
                     "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "1",
                     "enabled": "pause_at == 'layer_no'"
                 },
@@ -76,7 +76,7 @@ class PauseAtHeight(Script):
                     "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration and disarm immediately.",
                     "type": "int",
                     "value": "0",
-                    "minimum_value": "0",
+                    "minimum_value": 0,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "1800",
                     "unit": "s",

@@ -42,15 +42,15 @@ Item
     {
         id: warning
         visible: fullWarning
-        width: visible ? parent.width - warningIcon.width - (compareAndSaveButton.width + resetToDefaultQualityButton.width) : 0
+        wrapMode: Text.WordWrap
         anchors
         {
             left: warningIcon.right
+            right: resetToDefaultQualityButton.left
             verticalCenter: parent.verticalCenter
             leftMargin: visible ? UM.Theme.getSize("thin_margin").width : 0
+            rightMargin: UM.Theme.getSize("thin_margin").width
         }
-
-        wrapMode: Text.WordWrap
 
         states: [
             State

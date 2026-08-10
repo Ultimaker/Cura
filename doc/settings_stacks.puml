@@ -1,0 +1,28 @@
+@startuml
+
+ExtruderStack -up-|> CuraContainerStack
+CuraContainerStack -up-|> ContainerStack
+ContainerStack -up-|> ContainerInterface
+
+ContainerStack *-up- "*" ContainerInterface : _containers
+ContainerStack *-up- "1" ContainerInterface : _next_stack
+class ContainerStack {
+  <<signal>> propertyChanged
+  <<signal>> propertiesChanged
+}
+
+DefinitionContainer -up-|> DefinitionContainerInterface
+
+DefinitionContainerInterface -up-|> ContainerInterface
+
+InstanceContainer  -up-|> ContainerInterface
+
+InstanceContainer *-- "1" DefinitionContainerInterface
+InstanceContainer *-- "*" SettingInstance
+
+SettingInstance o-- "1" SettingDefinition
+SettingInstance o-- "1" ContainerInterface
+
+DefinitionContainer  *-- "*" SettingDefinition
+
+@enduml

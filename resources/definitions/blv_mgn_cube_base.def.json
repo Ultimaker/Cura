@@ -43,7 +43,7 @@
             "value": "10 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0"
         },
         "infill_pattern": { "value": "'tetrahedral'" },
-        "infill_randomize_start_location": { "default_value": true },
+        "infill_start_end_preference": { "default_value": "start_random" },
         "initial_layer_line_width_factor": { "default_value": 130.0 },
         "jerk_enabled": { "value": false },
         "layer_height_0": { "resolve": "max(0.2, min(extruderValues('layer_height')))" },

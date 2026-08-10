@@ -4,6 +4,7 @@ import requests
 import yaml
 import tempfile
 import tarfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -34,6 +35,7 @@ class CuraConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     generators = "VirtualPythonEnv"
     tool_requires = "gettext/0.22.5"
+    package_type = "application"
 
     python_requires = "translationextractor/[>=2.2.0]"
 
@@ -153,71 +155,110 @@ class CuraConan(ConanFile):
     def _retrieve_pip_license(self, package, sources_url, dependency_description):
         # Download the sources to get the license file inside
         self.output.info(f"Retrieving license for {package}")
-        response = requests.get(sources_url)
-        response.raise_for_status()
+        try:
+            response = requests.get(sources_url)
+            response.raise_for_status()
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            sources_path = os.path.join(temp_dir, "sources.tar.gz")
-            with open(sources_path, 'wb') as sources_file:
-                sources_file.write(response.content)
+            with tempfile.TemporaryDirectory() as temp_dir:
+                sources_path = os.path.join(temp_dir, "sources.tar.gz")
+                with open(sources_path, 'wb') as sources_file:
+                    sources_file.write(response.content)
 
-            with tarfile.open(sources_path, 'r:gz') as sources_archive:
-                license_file = "LICENSE"
+                with tarfile.open(sources_path, 'r:gz') as sources_archive:
+                    license_file = "LICENSE"
 
-                for source_file in sources_archive.getnames():
-                    if Path(source_file).name == license_file:
-                        sources_archive.extract(source_file, temp_dir)
+                    for source_file in sources_archive.getnames():
+                        if Path(source_file).name == license_file:
+                            sources_archive.extract(source_file, temp_dir)
 
-                        license_file_path = os.path.join(temp_dir, source_file)
-                        with open(license_file_path, 'r', encoding='utf8') as file:
-                            dependency_description["license_full"] = file.read()
+                            license_file_path = os.path.join(temp_dir, source_file)
+                            with open(license_file_path, 'r', encoding='utf8') as file:
+                                dependency_description["license_full"] = file.read()
+                            break
+        except Exception as e:
+            self.output.warning(f"Failed to retrieve license for {package} from {sources_url}: {e}")
+            # Don't fail the build, just continue without the license
 
     def _make_pip_dependency_description(self, package, version, dependencies):
         url = ["https://pypi.org/pypi", package]
         if version is not None:
-            url.append(version)
+            # Strip local version identifiers (everything after '+') for PyPI API compatibility
+            # e.g., "1.26.1+mkl" becomes "1.26.1"
+            clean_version = version.split('+')[0] if '+' in version else version
+            url.append(clean_version)
         url.append("json")
 
-        data = requests.get("/".join(url)).json()
+        try:
+            response = requests.get("/".join(url))
+            response.raise_for_status()
+            data = response.json()
+        except (requests.RequestException, ValueError) as e:
+            self.output.warning(f"Failed to retrieve PyPI data for {package}: {e}")
+            # Create minimal dependency description with fallback values
+            dependencies[package] = {
+                "summary": f"Package {package}",
+                "version": version or "unknown",
+                "license": "unknown"
+            }
+            return
 
+        # Check if the response has the expected structure
+        if "info" not in data:
+            self.output.warning(f"PyPI response for {package} missing 'info' field")
+            dependencies[package] = {
+                "summary": f"Package {package}",
+                "version": version or "unknown", 
+                "license": "unknown"
+            }
+            return
+
+        info = data["info"]
         dependency_description = {
-            "summary": data["info"]["summary"],
-            "version": data["info"]["version"],
-            "license": data["info"]["license"]
+            "summary": info.get("summary", f"Package {package}"),
+            "version": version or info.get("version", "unknown"),  # Use original version if available
+            "license": info.get("license", "unknown")
         }
 
-        for url_data in data["urls"]:
-            if url_data["packagetype"] == "sdist":
-                sources_url = url_data["url"]
-                dependency_description["sources_url"] = sources_url
+        # Handle URLs section safely
+        if "urls" in data:
+            for url_data in data["urls"]:
+                if url_data.get("packagetype") == "sdist":
+                    sources_url = url_data.get("url")
+                    if sources_url:
+                        dependency_description["sources_url"] = sources_url
 
-                if not self.options.skip_licenses_download:
-                    self._retrieve_pip_license(package, sources_url, dependency_description)
+                        if not self.options.skip_licenses_download:
+                            try:
+                                self._retrieve_pip_license(package, sources_url, dependency_description)
+                            except Exception as e:
+                                self.output.warning(f"Failed to retrieve license for {package}: {e}")
 
-        for source_url, check_source in [("source", False),
-                                         ("Source", False),
-                                         ("Source Code", False),
-                                         ("Repository", False),
-                                         ("Code", False),
-                                         ("homepage", True),
-                                         ("Homepage", True)]:
-            try:
-                url = data["info"]["project_urls"][source_url]
-                if check_source and not self._is_repository_url(url):
-                    # That will not work for ALL open-source projects, but should already get a large majority of them
-                    self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
-                    continue
-                dependency_description["sources_url"] = url
-                break
-            except KeyError:
-                pass
+        # Handle project URLs safely
+        if "project_urls" in info:
+            for source_url, check_source in [("source", False),
+                                             ("Source", False),
+                                             ("Source Code", False),
+                                             ("Repository", False),
+                                             ("Code", False),
+                                             ("homepage", True),
+                                             ("Homepage", True)]:
+                try:
+                    url = info["project_urls"][source_url]
+                    if check_source and not self._is_repository_url(url):
+                        # That will not work for ALL open-source projects, but should already get a large majority of them
+                        self.output.warning(f"Source URL for {package} ({url}) doesn't seem to be a supported repository")
+                        continue
+                    dependency_description["sources_url"] = url
+                    break
+                except (KeyError, TypeError):
+                    pass
 
         if dependency_description["license"] is not None and len(dependency_description["license"]) > 32:
             # Some packages have their full license in this field
             dependency_description["license_full"] = dependency_description["license"]
-            dependency_description["license"] = data["info"]["name"]
+            dependency_description["license"] = info.get("name", package)
 
-        dependencies[data["info"]["name"]] = dependency_description
+        dependencies[info.get("name", package)] = dependency_description
 
     @staticmethod
     def _get_license_from_repository(sources_url, version, license_file_name = None):
@@ -305,20 +346,37 @@ class CuraConan(ConanFile):
 
         dependencies[dependency_name] = dependency_description
 
+    @staticmethod
+    def _run_dependency_description_job(job):
+        job_function, args = job
+        dependency = {}
+        job_function(*args, dependency)
+        return dependency
+
     def _dependencies_description(self):
         dependencies = {}
+        jobs = []
 
         for dependency in [self] + list(self.dependencies.values()):
-            self._make_conan_dependency_description(dependency, dependencies)
+            jobs.append((self._make_conan_dependency_description, (dependency,)))
 
             if "extra_dependencies" in dependency.conan_data:
                 for dependency_name, dependency_data in dependency.conan_data["extra_dependencies"].items():
-                    self._make_extra_dependency_description(dependency_name, dependency_data, dependencies)
+                    jobs.append((self._make_extra_dependency_description, (dependency_name, dependency_data)))
 
         pip_requirements_summary = os.path.abspath(Path(self.generators_folder, "pip_requirements_summary.yml") )
         with open(pip_requirements_summary, 'r') as file:
             for package_name, package_version in yaml.safe_load(file).items():
-                self._make_pip_dependency_description(package_name, package_version, dependencies)
+                jobs.append((self._make_pip_dependency_description, (package_name, package_version)))
+
+        if not jobs:
+            return dependencies
+
+        max_workers = min(32, len(jobs))
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(self._run_dependency_description_job, job) for job in jobs]
+            for future in as_completed(futures):
+                dependencies.update(future.result())
 
         return dependencies
 
@@ -492,8 +550,44 @@ class CuraConan(ConanFile):
         cura_version = Version(version)
 
         # filter all binary files in binaries on the blacklist
-        blacklist = pyinstaller_metadata["blacklist"]
-        filtered_binaries = [b for b in binaries if not any([all([(part in b[0].lower()) for part in parts]) for parts in blacklist])]
+        # Each entry is either a plain list (legacy) or a dict with a 'patterns' key and optional 'oses'.
+        blacklist = pyinstaller_metadata.get("blacklist", [])
+        current_os = str(self.settings.os)
+
+        def _get_rule_details(entry):
+            """Helper to normalize the entry format (Legacy list vs Dict)."""
+            if isinstance(entry, list):
+                return entry, []  # patterns, oses
+            return entry.get("patterns", []), entry.get("oses", [])
+
+        def _is_blacklisted(binary_path, blacklist, current_os):
+            """
+            Checks if a specific binary path matches any rule in the blacklist.
+            """
+            # Pre-normalize the binary path ONCE per binary
+            norm_path = binary_path.replace("\\", "/").lower()
+            
+            for entry in blacklist:
+                patterns, oses = _get_rule_details(entry)
+                
+                # If 'oses' is None, empty, or missing, it applies to ALL OSs.
+                # If 'oses' is present, current_os MUST be in it.
+                os_matches = not oses or (current_os in oses)
+                
+                if not os_matches:
+                    continue  # Skip this rule, it doesn't apply to this OS
+                    
+                # If all patterns in the rule are found in the path, it's a match!
+                if all(part.lower() in norm_path for part in patterns):
+                    return True # We found a match; this binary IS blacklisted
+                    
+            return False # No rules matched; this binary is safe
+
+        # We use the normalized path (b[0]) to check against the blacklist
+        filtered_binaries = [
+            b for b in binaries 
+            if not _is_blacklisted(b[0], blacklist, current_os)
+        ]
 
         # In case the installer isn't actually pyinstaller (Windows at the moment), outright remove the offending files:
         specifically_delete = set(binaries) - set(filtered_binaries)
@@ -509,6 +603,10 @@ class CuraConan(ConanFile):
         if self.settings.os == "Windows":
             hiddenimports += pyinstaller_metadata["hiddenimports_WINDOWS_ONLY"]
             collect_all += pyinstaller_metadata["collect_all_WINDOWS_ONLY"]
+        
+        # Remove pynavlib on ARM64 Windows (no ARM64 wheels available)
+        if self.settings.os == "Windows" and self.settings.arch == "armv8":
+            collect_all = [item for item in collect_all if item != "pynavlib"]
 
         # Write the actual file:
         with open(os.path.join(location, "UltiMaker-Cura.spec"), "w") as f:
@@ -552,14 +650,17 @@ class CuraConan(ConanFile):
         for req in self.conan_data["requirements"]:
             if self.options.internal and "fdm_materials" in req:
                 continue
-            self.requires(req)
+            no_skip = False
+            if 'cura_binary_data' in req:
+                no_skip = True
+            self.requires(req, no_skip=no_skip)
         if self.options.internal:
             for req in self.conan_data["requirements_internal"]:
                 self.requires(req)
         if self.options.enterprise:
             for req in self.conan_data["requirements_enterprise"]:
                 self.requires(req)
-        self.requires("cpython/3.12.2")
+        self.requires("cpython/3.12.7")
 
     def layout(self):
         self.folders.source = "."
@@ -712,6 +813,11 @@ class CuraConan(ConanFile):
         cura_resources = self.dependencies["cura_resources"].cpp_info
         for res_dir in cura_resources.resdirs:
             rmdir(self, os.path.join(self.package_folder, self.cpp.package.resdirs[0], Path(res_dir).name))
+
+        # Copy internal resources
+        if self.options.internal:
+            cura_private_data = self.dependencies["cura_private_data"].cpp_info
+            copy(self, "*", cura_private_data.resdirs[0], self.package_folder)
 
     def package_info(self):
         self.runenv_info.append_path("PYTHONPATH", os.path.join(self.package_folder, "site-packages"))

@@ -31,3 +31,5 @@ class PrepareTextureJob(Job):
             # Force clear OpenGL buffer so that new UV coordinates will be sent
             delattr(mesh, OpenGL.VertexBufferProperty)
 
+        # Also cache the faces connection, can be quite long to compute
+        self._node.getMeshData().getFacesConnections()

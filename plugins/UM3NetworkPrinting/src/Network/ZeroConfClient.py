@@ -32,6 +32,8 @@ class ZeroConfClient:
         self._service_changed_request_event = None  # type: Optional[Event]
         self._service_changed_request_thread = None  # type: Optional[Thread]
 
+        self._warn_once_no_address_services = set()
+
     def start(self) -> None:
         """The ZeroConf service changed requests are handled in a separate thread so we don't block the UI.
 
@@ -145,9 +147,11 @@ class ZeroConfClient:
                     address = '.'.join(map(str, info.addresses[0]))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
-                    Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)
+                    Logger.warning(f"The type of the found device is '{type_of_device}', not 'printer'.")
         else:
-            Logger.log("w", "Could not get information about %s" % name)
+            if name not in self._warn_once_no_address_services:
+                self._warn_once_no_address_services.add(name)
+                Logger.warning(f"Could not get information about '{name}'.")
             return False
 
         return True

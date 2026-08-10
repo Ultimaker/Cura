@@ -124,7 +124,7 @@ class Snapshot:
     def isNodeRenderable(node):
         return not getattr(node, "_outside_buildarea", False) and node.callDecoration(
             "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
-            "isNonThumbnailVisibleMesh")
+            "isNonThumbnailVisibleMesh") and not node.callDecoration("isAssignedToDisabledExtruder")
 
     @staticmethod
     def nodeBounds(root_node: SceneNode) -> Optional[AxisAlignedBox]:

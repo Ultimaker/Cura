@@ -133,7 +133,8 @@ class SimulationPass(RenderPass):
                 nozzle_node = node
                 nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
-            elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh"):
+            elif ((getattr(node, "_outside_buildarea", False) or node.callDecoration("isAssignedToDisabledExtruder")) and
+                  isinstance(node, SceneNode) and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonPrintingMesh")):
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
 
             elif isinstance(node, SceneNode) and (node.getMeshData() or node.callDecoration("isBlockSlicing")) and node.isVisible():
@@ -150,9 +151,9 @@ class SimulationPass(RenderPass):
                     vertex_distance_ratio = 0.0
                     towards_next_vertex = 0
                     element_counts = layer_data.getElementCounts()
-                    for layer in sorted(element_counts.keys()):
+                    for layer in element_counts.keys():
                         # In the current layer, we show just the indicated paths
-                        if layer == self._layer_view._current_layer_num:
+                        if layer == self._layer_view.getCurrentLayer():
                             # We look for the position of the head, searching the point of the current path
                             index = int(self._layer_view.getCurrentPath()) if not math.isnan(
                                 self._layer_view.getCurrentPath()) else 0
@@ -180,10 +181,12 @@ class SimulationPass(RenderPass):
                                     vertex_after_head = pos_b
                                     towards_next_vertex = 2  # Add two to the index to print the current and next vertices as an 'unfinished' line (to the nozzle).
                                 break
-                            break
-                        if self._layer_view.getMinimumLayer() > layer:
+
+                        if layer < self._layer_view.getMinimumLayer():
                             start += element_counts[layer]
-                        end += element_counts[layer]
+
+                        if layer < self._layer_view.getCurrentLayer():
+                            end += element_counts[layer]
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end

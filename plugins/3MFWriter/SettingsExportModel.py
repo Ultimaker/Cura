@@ -57,7 +57,6 @@ class SettingsExportModel(QObject):
                            'brim_smart_ordering',
                            'ooze_shield_enabled',
                            'bottom_skin_preshrink',
-                           'skin_edge_support_thickness',
                            'alternate_carve_order',
                            'top_skin_preshrink',
                            'interlocking_enable'}
@@ -126,14 +125,14 @@ class SettingsExportModel(QObject):
             value = settings_stack.getProperty(setting_to_export, "value")
             unit = settings_stack.getProperty(setting_to_export, "unit")
             setting_type = settings_stack.getProperty(setting_to_export, "type")
-            value_name = str(SettingDefinition.settingValueToString(setting_type, value))
-            if unit:
-                value_name += " " + str(unit)
-            if setting_type == "enum":
-                options = settings_stack.getProperty(setting_to_export, "options")
-                value_msgctxt = f"{str(setting_to_export)} option {str(value)}"
-                value_msgid = options.get(value, "")
-                value_name = settings_catalog.i18nc(value_msgctxt, value_msgid)
+            if setting_type in ("enum", "extruder", "optional_extruder"):
+                value_name = CuraApplication.getInstance().getCuraAPI().interface.settings.getSettingDisplayValue(
+                    setting_to_export, value, settings_stack, settings_catalog
+                )
+            else:
+                value_name = str(SettingDefinition.settingValueToString(setting_type, value))
+                if unit:
+                    value_name += " " + str(unit)
 
             if setting_type is not None:
                 value = f"{str(SettingDefinition.settingValueToString(setting_type, value))} {unit}"

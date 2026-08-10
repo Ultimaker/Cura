@@ -86,7 +86,7 @@ class SolidView(View):
         Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
 
     def _onNonManifoldLearnMoreClicked(self, action, message) -> None:
-        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/hc/en-us/articles/360014055959"))
+        QDesktopServices.openUrl(QUrl("https://support.ultimaker.com/s/article/1633018228456"))
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
@@ -270,7 +270,7 @@ class SolidView(View):
                         renderer.queueNode(node, shader = self._non_printing_shader, uniforms = uniforms, transparent = True)
                     else:
                         renderer.queueNode(node, shader = self._non_printing_shader, transparent = True)
-                elif getattr(node, "_outside_buildarea", False):
+                elif getattr(node, "_outside_buildarea", False) or node.callDecoration("isAssignedToDisabledExtruder"):
                     disabled_batch.addItem(node.getWorldTransformation(copy = False), node.getMeshData(), normal_transformation = node.getCachedNormalMatrix())
                 elif per_mesh_stack and node.callDecoration("isSupportMesh"):
                     # Render support meshes with a vertical stripe that is darker

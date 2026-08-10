@@ -1,3 +1,11 @@
+
+> [!IMPORTANT]  
+> We switched to a new remote server for our Conan Artifacts.
+> please update your Conan Configuration
+> ```
+> conan config install https://github.com/ultimaker/conan-config.git
+> ```
+
 <br>
 
 <div align = center>

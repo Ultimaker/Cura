@@ -97,7 +97,8 @@ class PreviewPass(RenderPass):
 
         # Fill up the batch with objects that can be sliced.
         for node in DepthFirstIterator(self._root):
-            if hasattr(node, "_outside_buildarea") and not getattr(node, "_outside_buildarea"):
+            if (hasattr(node, "_outside_buildarea") and not getattr(node, "_outside_buildarea") and
+                    not node.callDecoration("isAssignedToDisabledExtruder")):
                 if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                     per_mesh_stack = node.callDecoration("getStack")
                     if node.callDecoration("isNonThumbnailVisibleMesh"):

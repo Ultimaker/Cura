@@ -199,7 +199,6 @@
         "bridge_skin_speed": { "value": "speed_topbottom" },
         "bridge_skin_speed_2": { "value": "speed_topbottom" },
         "bridge_skin_speed_3": { "value": "speed_topbottom" },
-        "bridge_sparse_infill_max_density": { "value": 50 },
         "bridge_wall_coast": { "value": 0 },
         "bridge_wall_material_flow": { "value": "material_flow" },
         "bridge_wall_speed": { "value": "speed_wall" },
@@ -404,6 +403,7 @@
         "machine_start_gcode": { "default_value": "G0 Z20" },
         "machine_width": { "default_value": 283.3 },
         "material_bed_temperature": { "enabled": "machine_heated_bed" },
+        "material_diameter": { "default_value": 1.75 },
         "material_final_print_temperature":
         {
             "maximum_value": "material_print_temperature",
@@ -478,7 +478,7 @@
         },
         "raft_base_wall_count": { "value": "raft_wall_count" },
         "raft_interface_acceleration": { "enabled": false },
-        "raft_interface_extruder_nr": { "value": "max(extruderValues('extruder_nr'))" },
+        "raft_interface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable else adhesion_extruder_nr" },
         "raft_interface_fan_speed": { "value": 0 },
         "raft_interface_infill_overlap":
         {
@@ -522,7 +522,7 @@
         "raft_smoothing": { "value": 9.5 },
         "raft_speed": { "value": 10 },
         "raft_surface_acceleration": { "enabled": false },
-        "raft_surface_extruder_nr": { "value": "max(extruderValues('extruder_nr'))" },
+        "raft_surface_extruder_nr": { "value": "int(anyExtruderWithMaterial('material_is_support_material')) if support_enable else adhesion_extruder_nr" },
         "raft_surface_fan_speed": { "value": 0 },
         "raft_surface_flow":
         {
@@ -701,7 +701,7 @@
                 45
             ]
         },
-        "support_infill_rate": { "value": 20.0 },
+        "support_infill_rate": { "value": "0 if support_structure == 'tree' else 20.0" },
         "support_infill_sparse_thickness": { "value": "layer_height" },
         "support_interface_enable": { "value": true },
         "support_interface_height": { "value": "4*support_infill_sparse_thickness" },

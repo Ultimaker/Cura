@@ -225,11 +225,11 @@ msgstr "<p><b>¡Vaya! UltiMaker Cura ha encontrado un error.</p></b>"
 "                "
 
 msgctxt "@info:status"
-msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
+msgid "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n<p>{model_names}</p>\n<p>Find out how to ensure the best possible print quality and reliability.</p>\n<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">View print quality guide</a></p>"
 msgstr "<p>Es posible que uno o más modelos 3D no se impriman correctamente debido al tamaño del modelo y la configuración del material:</p>"
 "<p>{model_names}</p>"
 "<p>Obtenga más información sobre cómo garantizar la mejor calidad y fiabilidad de impresión posible.</p>"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Ver guía de impresión de calidad</a></p>"
+"<p><a href=\"https://support.ultimaker.com/s/article/1667337573434\">Ver guía de impresión de calidad</a></p>"
 
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
@@ -4504,13 +4504,6 @@ msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Tobera insertada en este extrusor."
 
-msgctxt "@label"
-msgid "The pattern of the infill material of the print:\n\nFor quick prints of non functional model choose line, zig zag or lightning infill.\n\nFor functional part not subjected to a lot of stress we recommend grid or triangle or tri hexagon.\n\nFor functional 3D prints which require high strength in multiple directions use cubic, cubic subdivision, quarter cubic, octet, and gyroid."
-msgstr "Patrón del material de relleno de la impresión:"
-"Para impresiones rpidas de modelos no funcionales, elija lnea, zigzag o relleno ligero."
-"Para una pieza funcional que no est sujeta a mucha tensin, recomendamos rejilla, tringulo o trihexgono."
-"Para las impresiones 3D funcionales que requieran una alta resistencia en varias direcciones, utilice cbico, subdivisin cbica, cbico bitruncado, octeto o giroide."
-
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
 msgstr "El porcentaje de luz que penetra en una impresión con un grosor de 1 milímetro. Bajar este valor aumenta el contraste en las regiones oscuras y disminuye el contraste en las regiones claras de la imagen."
@@ -5698,3 +5691,319 @@ msgstr "Y máx ( '+' hacia delante)"
 msgctxt "@label"
 msgid "Y min ( '-' towards back)"
 msgstr "Y mín ( '+' hacia atrás)"
+
+msgctxt "@label"
+msgid "*) You will need to restart the application for these changes to have effect."
+msgstr "*) Tendrá que reiniciar la aplicación para que se hagan efectivos estos cambios."
+
+msgctxt "@message"
+msgid "<html>At least one extruder remains unused in this print:"
+msgstr "<html>Al menos un extrusor sigue sin usarse en esta impresión:"
+
+msgctxt "@option:check"
+msgid "Add icon to system tray (* restart required)"
+msgstr "Añada el icono a la placa del sistema (* reinicio obligatorio)"
+
+msgctxt "@label"
+msgid "Automatically disable the unused extruder(s)"
+msgstr "Desactive automáticamente el/los extrusor(es) no usados"
+
+msgctxt "@action:button"
+msgid "Avoid"
+msgstr "Evitar"
+
+msgctxt "@item:inlistbox"
+msgid "BambuLab 3MF file"
+msgstr "Archivo 3MF BambuLab"
+
+msgctxt "@label"
+msgid "Brush Shape"
+msgstr "Forma de pincel"
+
+msgctxt "@label"
+msgid "Brush Size"
+msgstr "Tamaño del pincel"
+
+msgctxt "@info:error"
+msgid "Can't write GCode to 3MF file"
+msgstr "No se puede escribir GCode al archivo 3MF"
+
+msgctxt "@action:button"
+msgid "Circle"
+msgstr "Círculo"
+
+msgctxt "@button"
+msgid "Clear all"
+msgstr "Quitar todos"
+
+msgctxt "@label"
+msgid "Connection and Control"
+msgstr "Conexión y control"
+
+msgctxt "@button"
+msgid "Disable unused extruder(s)"
+msgstr "Desactivar extrusor(es) no usado(s)"
+
+msgctxt "@option:check"
+msgid "Enable USB-cable printing (* restart required)"
+msgstr "Habilitar impresión con cable USB (* reinicio obligatorio)"
+
+msgctxt "@action:button"
+msgid "Erase"
+msgstr "Borrar"
+
+msgctxt "@info:backup_status"
+msgid "Fetch re-downloadable package-ids..."
+msgstr "Buscar identificaciones de paquetes redescargables..."
+
+msgctxt "@option:check"
+msgid "Flip model's toolhandle Y axis (* restart required)"
+msgstr "Darle la vuelta al eje Y del mango del modelo (* reinicio obligatorio)"
+
+msgctxt "@option:check"
+msgid "Force layer view compatibility mode (* restart required)"
+msgstr "Forzar el modo compatibilidad de vista de capa (* reinicio obligatorio)"
+
+msgctxt "@label"
+msgid "Mark as"
+msgstr "Marcar como"
+
+msgctxt "@action:button"
+msgid "Material"
+msgstr "Material"
+
+msgctxt "@label"
+msgid "Not retracted"
+msgstr "No retraído"
+
+msgctxt "@action:button"
+msgid "Paint"
+msgstr "Pintar"
+
+msgctxt "@info:tooltip"
+msgid "Paint Model"
+msgstr "Modelo de pintar"
+
+msgctxt "name"
+msgid "Paint Tools"
+msgstr "Herramientas para pintar"
+
+msgctxt "@tooltip"
+msgid "Paint on model to select the material to be used"
+msgstr "Pinte en el modelo para seleccionar el material a usar"
+
+msgctxt "@item:inmenu"
+msgid "Paint view"
+msgstr "Vista de pintar"
+
+msgctxt "@title:window"
+msgid "Preferences"
+msgstr "Preferencias"
+
+msgctxt "@action:button"
+msgid "Preferred"
+msgstr "Preferido"
+
+msgctxt "@label"
+msgid "Preparing model for painting..."
+msgstr "Preparando el modelo para pintar..."
+
+msgctxt "@label"
+msgid "Priming"
+msgstr "Imprimación"
+
+msgctxt "@info:title"
+msgid "Printer inactive"
+msgstr "Impresora inactiva"
+
+msgctxt "@info:tooltip"
+msgid "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't."
+msgstr "La impresión a través de cable USB no funciona con todas las impresoras y el escaneo de puertos puede interferir en otros dispositivos en serie conectados (p. ej., auriculares). Para las nuevas instalaciones de Cura, ya no es \"habilitado automáticamente\". Si desea usar la impresión USB, entonces habilítela marcando la casilla y, después, reiniciando Cura. Tenga en cuenta: ya no se mantiene la impresión USB. Puede que funcione con la combinación de su ordenador/impresora o puede que no."
+
+msgctxt "description"
+msgid "Provides the paint tools."
+msgstr "Proporciona las herramientas para pintar."
+
+msgctxt "@action:button"
+msgid "Redo Stroke"
+msgstr "Rehacer la pincelada"
+
+msgctxt "@tooltip"
+msgid "Refine seam placement by defining preferred/avoidance areas"
+msgstr "Precise la colocación de la juntura definiendo las zonas preferidas/a evitar"
+
+msgctxt "@tooltip"
+msgid "Refine support placement by defining preferred/avoidance areas"
+msgstr "Precise la colocación del apoyo definiendo las zonas preferidas/a evitar"
+
+msgctxt "@label"
+msgid "Retracted"
+msgstr "Retraído"
+
+msgctxt "@label"
+msgid "Retracting"
+msgstr "Retrayendo"
+
+msgctxt "@action:button"
+msgid "Seam"
+msgstr "Juntura"
+
+msgctxt "@label"
+msgid "Select a single model to start painting"
+msgstr "Seleccione un solo modelo para empezar a pintar"
+
+msgctxt "@action:button"
+msgid "Square"
+msgstr "Cuadrado"
+
+msgctxt "@action:button"
+msgid "Support"
+msgstr "Apoyo"
+
+msgctxt "@action:label"
+msgid "Support Structure"
+msgstr "Estructura de apoyo"
+
+msgctxt "@info:status"
+msgid "The printer is inactive and cannot accept a new print job."
+msgstr "La impresora está inactiva y no puede aceptar un nuevo trabajo de impresión."
+
+msgctxt "@label: Please keep the asterix, it's to indicate that a restart is needed."
+msgid "Theme (* restart required):"
+msgstr "Tema (* reinicio obligatorio):"
+
+msgctxt "@status"
+msgid "This printer is deactivated and can not accept commands or jobs."
+msgstr "La impresora esta desactivada y no puede aceptar órdenes o trabajos."
+
+msgctxt "@action:button"
+msgid "Undo Stroke"
+msgstr "Deshacer pincelada"
+
+msgctxt "@message:title"
+msgid "Unused Extruder(s)"
+msgstr "Extrusor(es) no usado(s)"
+
+msgctxt "@option:check"
+msgid "Use a single instance of Cura (* restart required)"
+msgstr "Use un solo ejemplo de Cura (* reinicio obligatorio)"
+
+msgctxt "@label"
+msgid "%"
+msgstr "%"
+
+msgctxt "@label"
+msgid "*User Adjusted"
+msgstr "*Usuario ajustado"
+
+msgctxt "@message"
+msgid "<html>Unable to slice because there are objects associated with at least one disabled extruder:"
+msgstr "<html>No se puede cortar porque hay objetos asociados con al menos un extrusor deshabilitado:"
+
+msgctxt "solid intent description"
+msgid "A highly dense and strong part but at a slower print time. Great for functional parts."
+msgstr "Una pieza muy densa y resistente pero con un tiempo de impresión más lento. Excelente para piezas funcionales."
+
+msgctxt "@action:button"
+msgid "Abort"
+msgstr "Cancelar"
+
+msgctxt "@action:label"
+msgid "Abort upload"
+msgstr "Cancelar carga"
+
+msgctxt "annealing intent label"
+msgid "Annealing"
+msgstr "Recocido"
+
+msgctxt "@label"
+msgid "Automatically enable the required extruder(s)"
+msgstr "Habilitar automáticamente los extrusores necesarios"
+
+msgctxt "default intent label"
+msgid "Balanced"
+msgstr "Equilibrado"
+
+msgctxt "quick intent label"
+msgid "Draft"
+msgstr "Boceto"
+
+msgctxt "@button"
+msgid "Enable required extruder(s)"
+msgstr "Habilitar los extrusores requeridos"
+
+msgctxt "engineering intent label"
+msgid "Engineering"
+msgstr "Engineering"
+
+msgctxt "@action:inmenu menubar:help"
+msgid "Open Cura Log File"
+msgstr "Abrir archivo de registro de Cura"
+
+msgctxt "@info:status"
+msgid "Please review settings and check if your models:\n- Fit within the build volume\n- Are not all set as modifier meshes"
+msgstr "Revise la configuración y compruebe si sus modelos:- Se integran en el volumen de impresión- No están todos definidos como mallas modificadoras"
+
+msgctxt "@label"
+msgid "Print Time Estimation Factor"
+msgstr "Factor de estimación del tiempo de impresión"
+
+msgctxt "@label"
+msgid "Select a single ungrouped model to start painting"
+msgstr "Seleccione un solo modelo no agrupado para comenzar a pintar"
+
+msgctxt "solid intent label"
+msgid "Solid"
+msgstr "Sólido"
+
+msgctxt "annealing intent description"
+msgid "The annealing profile requires post-processing in an oven after the print is finished. This profile retains the dimensional accuracy of the printed part after annealing and improves strength, stiffness, and thermal resistance."
+msgstr "El perfil de recocido requiere un tratamiento posterior en un horno después de que la impresión haya terminado. Este perfil mantiene la precisión dimensional de la pieza impresa tras el recocido y mejora la solidez, rigidez y resistencia térmica."
+
+msgctxt "default intent description"
+msgid "The balanced profile is designed to strike a balance between productivity, surface quality, mechanical properties and dimensional accuracy."
+msgstr "El perfil equilibrado está diseñado para lograr un equilibrio entre la productividad, la calidad de la superficie, las propiedades mecánicas y la precisión dimensional."
+
+msgctxt "quick intent description"
+msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgstr "El perfil del boceto ha sido diseñado para imprimir los prototipos iniciales y la validación del concepto con la intención de reducir el tiempo de impresión de manera considerable."
+
+msgctxt "engineering intent description"
+msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgstr "El perfil de ingeniería ha sido diseñado para imprimir prototipos funcionales y piezas de uso final con la intención de obtener una mayor precisión y tolerancias más precisas."
+
+msgctxt "@info:message"
+msgid "The send-print-job process was aborted. Please try again."
+msgstr "Se interrumpió el proceso de envío de impresión. Inténtelo de nuevo."
+
+msgctxt "visual intent description"
+msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgstr "El perfil visual está diseñado para imprimir prototipos y modelos visuales con la intención de obtener una alta calidad visual y de superficies."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.11 to Cura 5.12"
+msgstr "Actualiza las configuraciones de Cura 5.11 a Cura 5.12"
+
+msgctxt "name"
+msgid "Version Upgrade 5.11 to 5.12"
+msgstr "Actualización de la versión 5.11 a la 5.12"
+
+msgctxt "visual intent label"
+msgid "Visual"
+msgstr "Visual"
+
+msgctxt "@label"
+msgid "<html>The pattern of the infill material of the print:<ul><li>For quick prints of non-functional models, choose Line, Zig Zag or Lightning infill.</li><li>For functional parts not subjected to a lot of stress we recommend Grid, Triangle, or Tri-Hexagon.</li><li>For functional 3D prints requiring high strength in multiple directions use Honeycomb, Cubic, Cubic Subdivision, Quarter Cubic, Octet, Gyroid, and Octagon.</li></ul>⚠ Grid, Triangle, and Cubic infill patterns contain intersecting lines, that may cause your nozzle to bump into printed lines, and your printer to vibrate. Use with caution.</html>"
+msgstr "<html>El patrón del material de relleno de la impresión:<ul><li>Para impresiones rápidas de modelos no funcionales, elija relleno de Línea, Zig Zag o Relámpago.</li><li>Para piezas funcionales que no estén sometidas a mucha tensión, recomendamos Cuadrícula, Triángulo o Trihexágono.</li><li>Para impresiones 3D funcionales que requieren alta resistencia en múltiples direcciones, utilice Panal, Cúbico, Subdivisión cúbica, Cuarto cúbico, Octeto, Giroide y Octágono.</li></ul>⚠ Los patrones de relleno de Cuadrícula, Triángulo y Cúbico contienen líneas que se intersecan, lo que puede provocar que la boquilla choque con las líneas impresas y que la impresora vibre. Úselo con precaución.</html>"
+
+msgctxt "@label"
+msgid "Painting is not available on this device. Your graphics card or drivers do not fully support it. Updating your graphics drivers may enable this feature."
+msgstr "La función de pintar no está disponible en este dispositivo. Su tarjeta gráfica o sus controladores no la admiten por completo. Es posible que la actualización de los controladores gráficos permita activar esta función."
+
+msgctxt "description"
+msgid "Upgrades configurations from Cura 5.12 to Cura 5.13"
+msgstr "Actualizaciones de las configuraciones de Cura 5.12 a Cura 5.13"
+
+msgctxt "name"
+msgid "Version Upgrade 5.12 to 5.13"
+msgstr "Actualización de la versión 5.12 a 5.13"

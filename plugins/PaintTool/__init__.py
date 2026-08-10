@@ -14,7 +14,7 @@ def getMetaData():
         "tool": {
             "name": i18n_catalog.i18nc("@action:button", "Paint"),
             "description": i18n_catalog.i18nc("@info:tooltip", "Paint Model"),
-            "icon": "Visual",
+            "icon": "Brush",
             "tool_panel": "PaintTool.qml",
             "weight": 0
         },

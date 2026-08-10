@@ -73,6 +73,9 @@ UM.PreferencesPage
         var defaultTheme = UM.Preferences.getValue("general/theme")
         setDefaultTheme(defaultTheme)
 
+        UM.Preferences.resetPreference("usb_printing/enabled")
+        usbPrintCheckbox.checked = boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+
         UM.Preferences.resetPreference("general/use_tray_icon")
         trayIconCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/use_tray_icon"))
 
@@ -114,7 +117,7 @@ UM.PreferencesPage
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         //var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
-//        /setDefaultCameraMode(defaultCameraMode)
+        //setDefaultCameraMode(defaultCameraMode)
 
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
@@ -202,19 +205,12 @@ UM.PreferencesPage
                     Component.onCompleted:
                     {
                         append({ text: "English", code: "en_US" })
-                        append({ text: "Čeština", code: "cs_CZ" })
                         append({ text: "Deutsch", code: "de_DE" })
                         append({ text: "Español", code: "es_ES" })
                         append({ text: "Français", code: "fr_FR" })
                         append({ text: "Italiano", code: "it_IT" })
                         append({ text: "日本語", code: "ja_JP" })
-                        append({ text: "한국어", code: "ko_KR" })
-                        append({ text: "Nederlands", code: "nl_NL" })
                         append({ text: "Português do Brasil", code: "pt_BR" })
-                        append({ text: "Português", code: "pt_PT" })
-                        append({ text: "Русский", code: "ru_RU" })
-                        append({ text: "Türkçe", code: "tr_TR" })
-                        append({ text: "简体中文", code: "zh_CN" })
 
                         var date_object = new Date();
                         if (date_object.getUTCMonth() == 8 && date_object.getUTCDate() == 19) //Only add Pirate on the 19th of September.
@@ -224,6 +220,13 @@ UM.PreferencesPage
 
                         // incomplete and/or abandoned
                         append({ text: catalog.i18nc("@heading", "-- incomplete --"), code: "" })
+                        append({ text: "Čeština", code: "cs_CZ" })
+                        append({ text: "한국어", code: "ko_KR" })
+                        append({ text: "Nederlands", code: "nl_NL" })
+                        append({ text: "Português", code: "pt_PT" })
+                        append({ text: "Русский", code: "ru_RU" })
+                        append({ text: "Türkçe", code: "tr_TR" })
+                        append({ text: "简体中文", code: "zh_CN" })
                         append({ text: "正體字", code: "zh_TW" })
                         append({ text: "Magyar", code: "hu_HU" })
                         append({ text: "Suomi", code: "fi_FI" })
@@ -238,7 +241,7 @@ UM.PreferencesPage
                     textRole: "text"
                     model: languageList
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     function setCurrentIndex() {
                         var code = UM.Preferences.getValue("general/language");
@@ -285,7 +288,7 @@ UM.PreferencesPage
                 UM.Label
                 {
                     id: themeLabel
-                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme*:")
+                    text: catalog.i18nc("@label: Please keep the asterix, it's to indicate that a restart is needed.", "Theme (* restart required):")
                 }
 
                 ListModel
@@ -308,7 +311,7 @@ UM.PreferencesPage
                     model: themeList
                     textRole: "text"
                     implicitWidth: UM.Theme.getSize("combobox").width
-                    height: currencyField.height
+                    implicitHeight: currencyField.height
 
                     currentIndex:
                     {
@@ -356,7 +359,37 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("general/use_tray_icon"))
                     onClicked: UM.Preferences.setValue("general/use_tray_icon", checked)
 
-                    text: catalog.i18nc("@option:check", "Add icon to system tray *");
+                    text: catalog.i18nc("@option:check", "Add icon to system tray (* restart required)");
+                }
+            }
+
+            Item
+            {
+                //: Spacer
+                height: UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("default_margin").width
+            }
+
+            UM.Label
+            {
+                font: UM.Theme.getFont("medium_bold")
+                text: catalog.i18nc("@label", "Connection and Control")
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width;
+                height: childrenRect.height;
+
+                text: catalog.i18nc("@info:tooltip", "Printing via USB-cable does not work with all printers and scanning for ports can interfere with other connected serial devices (ex: earbuds). It is no longer 'Automatically Enabled' for new Cura installations. If you wish to use USB Printing then enable it by checking the box and then restarting Cura. Please Note: USB Printing is no longer maintained. It will either work with your computer/printer combination, or it won't.")
+
+                UM.CheckBox
+                {
+                    id: usbPrintCheckbox
+                    checked: boolCheck(UM.Preferences.getValue("usb_printing/enabled"))
+                    onClicked: UM.Preferences.setValue("usb_printing/enabled", checked)
+
+                    text: catalog.i18nc("@option:check", "Enable USB-cable printing (* restart required)")
                 }
             }
 
@@ -536,7 +569,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: forceLayerViewCompatibilityModeCheckbox
-                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
+                    text: catalog.i18nc("@option:check", "Force layer view compatibility mode (* restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
                 }
@@ -663,7 +696,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: flipToolhandleYCheckbox
-                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (restart required)")
+                    text: catalog.i18nc("@option:check", "Flip model's toolhandle Y axis (* restart required)")
                     checked: boolCheck(UM.Preferences.getValue("tool/flip_y_axis_tool_handle"))
                     onCheckedChanged: UM.Preferences.setValue("tool/flip_y_axis_tool_handle", checked)
                 }
@@ -694,7 +727,7 @@ UM.PreferencesPage
                 UM.CheckBox
                 {
                     id: singleInstanceCheckbox
-                    text: catalog.i18nc("@option:check","Use a single instance of Cura *")
+                    text: catalog.i18nc("@option:check","Use a single instance of Cura (* restart required)")
 
                     checked: boolCheck(UM.Preferences.getValue("cura/single_instance"))
                     onCheckedChanged: UM.Preferences.setValue("cura/single_instance", checked)
@@ -1102,7 +1135,7 @@ UM.PreferencesPage
                 id: languageCaption
 
                 //: Language change warning
-                text: catalog.i18nc("@label", "*You will need to restart the application for these changes to have effect.")
+                text: catalog.i18nc("@label", "*) You will need to restart the application for these changes to have effect.")
                 wrapMode: Text.WordWrap
                 font.italic: true
             }

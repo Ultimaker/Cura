@@ -76,6 +76,8 @@ class PrinterConfigurationModel(QObject):
         printers = ContainerRegistry.getInstance().findContainersMetadata(
             ignore_case=True, type="machine", name=self._printer_type, container_type=DefinitionContainer)
         id = printers[0]["id"] if len(printers) > 0 and "id" in printers[0] else ""
+        if id == "":
+            return []
         definitions = ContainerRegistry.getInstance().findContainersMetadata(
             ignore_case=True, type="variant", definition=id+"*")
         return [x["name"] for x in definitions]

@@ -155,7 +155,7 @@ Item
 
             UM.Label   // Title Label
             {
-                text: catalog.i18nc("@title:label", " ")
+                text: " "
                 font: UM.Theme.getFont("medium_bold")
             }
 

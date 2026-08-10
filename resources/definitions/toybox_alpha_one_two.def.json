@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Toybox Alpha One/Two",
+    "name": "Toybox Alpha One/Two/Three",
     "inherits": "fdmprinter",
     "metadata":
     {
@@ -17,7 +17,7 @@
         "machine_depth": { "default_value": 80 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_height": { "default_value": 90 },
-        "machine_name": { "default_value": "Toybox Alpha One/Two" },
+        "machine_name": { "default_value": "Toybox Alpha One/Two/Three" },
         "machine_start_gcode": { "default_value": "G90\nM82" },
         "machine_width": { "default_value": 70 },
         "material_diameter": { "default_value": 1.75 }

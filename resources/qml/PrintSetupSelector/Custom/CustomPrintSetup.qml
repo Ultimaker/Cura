@@ -258,6 +258,10 @@ Item
         border.width: UM.Theme.getSize("default_lining").width
 
         color: UM.Theme.getColor("main_background")
+        
+        // Reduce opacity of the settings when the selected extruder is disabled
+        opacity: Cura.MachineManager.activeStack != null && !Cura.MachineManager.activeStack.isEnabled ? 0.4 : 1.0
+        
         Cura.SettingView
         {
             anchors

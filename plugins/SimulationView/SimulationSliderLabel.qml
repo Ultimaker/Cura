@@ -18,6 +18,7 @@ UM.PointingRectangle
     property var setValue // Function
     property bool busy: false
     property int startFrom: 1
+    property real layerHeight: 0.0  // Height in mm to display
 
     target: Qt.point(parent.width, y + height / 2)
     arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
@@ -83,6 +84,29 @@ UM.PointingRectangle
         {
             bottom: startFrom
             top: sliderLabelRoot.maximumValue + startFrom // +startFrom because maybe we want to start in a different value rather than 0
+        }
+
+        Rectangle
+        {
+            id: layerHeightBackground
+            x: -(width + UM.Theme.getSize("narrow_margin").width)
+            y: (parent.height - height) / 2
+            width: layerHeightText.width + 2 * UM.Theme.getSize("narrow_margin").width
+            height: layerHeightText.height + 2 * UM.Theme.getSize("narrow_margin").height
+            color: UM.Theme.getColor("tool_panel_background")
+            radius: UM.Theme.getSize("default_radius").width
+            border.color: UM.Theme.getColor("lining")
+            border.width: UM.Theme.getSize("default_lining").width
+
+            Text
+            {
+                id: layerHeightText
+                anchors.centerIn: parent
+                text: sliderLabelRoot.layerHeight.toFixed(2) + "mm"
+                color: UM.Theme.getColor("text")
+                font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
+            }
         }
     }
     BusyIndicator

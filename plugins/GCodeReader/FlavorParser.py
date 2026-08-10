@@ -527,6 +527,6 @@ class FlavorParser:
 
         # The "save/print" button's state is bound to the backend state.
         backend = CuraApplication.getInstance().getBackend()
-        backend.backendStateChange.emit(Backend.BackendState.Disabled)
+        backend.setState(Backend.BackendState.Disabled)
 
         return scene_node

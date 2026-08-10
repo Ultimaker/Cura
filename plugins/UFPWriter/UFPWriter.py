@@ -76,7 +76,7 @@ class UFPWriter(MeshWriter):
             gcode.write(gcode_textio.getvalue().encode("UTF-8"))
             archive.addRelation(virtual_path = "/3D/model.gcode",
                                 relation_type = "http://schemas.ultimaker.org/package/2018/relationships/gcode")
-        except EnvironmentError as e:
+        except (EnvironmentError, RuntimeError) as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)
@@ -90,7 +90,7 @@ class UFPWriter(MeshWriter):
             json.dump(api.interface.settings.getSliceMetadata(), setting_textio, separators=(", ", ": "), indent=4)
             steam = archive.getStream(SLICE_METADATA_PATH)
             steam.write(setting_textio.getvalue().encode("UTF-8"))
-        except EnvironmentError as e:
+        except (EnvironmentError, RuntimeError) as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)
@@ -112,7 +112,7 @@ class UFPWriter(MeshWriter):
                 archive.addRelation(virtual_path = "/Metadata/thumbnail.png",
                                     relation_type = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail",
                                     origin = "/3D/model.gcode")
-            except EnvironmentError as e:
+            except (EnvironmentError, RuntimeError) as e:
                 error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
                 self.setInformation(error_msg)
                 Logger.error(error_msg)
@@ -167,7 +167,7 @@ class UFPWriter(MeshWriter):
                 archive.addRelation(virtual_path = material_file_name,
                                     relation_type = "http://schemas.ultimaker.org/package/2018/relationships/material",
                                     origin = "/3D/model.gcode")
-            except EnvironmentError as e:
+            except (EnvironmentError, RuntimeError) as e:
                 error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
                 self.setInformation(error_msg)
                 Logger.error(error_msg)
@@ -177,7 +177,7 @@ class UFPWriter(MeshWriter):
 
         try:
             archive.close()
-        except EnvironmentError as e:
+        except (EnvironmentError, RuntimeError) as e:
             error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
             self.setInformation(error_msg)
             Logger.error(error_msg)

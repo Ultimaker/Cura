@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt6.QtCore import Qt, pyqtSignal, pyqtProperty, QTimer
-from typing import Iterable, TYPE_CHECKING
+from typing import Iterable, TYPE_CHECKING, Optional, Dict, Any
 
 from UM.i18n import i18nCatalog
 from UM.Qt.ListModel import ListModel
@@ -103,6 +103,9 @@ class ExtrudersModel(ListModel):
             self._add_optional_extruder = add_optional_extruder
             self.addOptionalExtruderChanged.emit()
             self._updateExtruders()
+
+    def getExtruderItem(self, extruder_index: int) -> Optional[Dict[str, Any]]:
+        return next((item for item in self.items if item["index"] == extruder_index), None)
 
     @pyqtProperty(bool, fset = setAddOptionalExtruder, notify = addOptionalExtruderChanged)
     def addOptionalExtruder(self):

@@ -49,6 +49,6 @@ Column
         iconSource: UM.Theme.getIcon("LinkExternal")
         isIconOnRightSide: true
 
-        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/hc/en-us/articles/360012909099")
+        onClicked: Qt.openUrlExternally("https://support.ultimaker.com/s/article/1667411313529")
     }
 }

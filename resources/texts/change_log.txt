@@ -1,3 +1,247 @@
+[5.14]
+
+* New features and improvements:
+- Introduced support-painting: paint on the model to indicate where support should and shouldn't be placed
+- Experimental support for Cura on Windows ARM platforms
+- Custom GCode parts are now processed in the engine, to ensure that all the variables have the most accurate value
+- End-of-print GCode variables are now processed in the engine, to ensure that more accurate values are inserted, contributed by @wawanbreton
+- Dialogs that were previously created at application boot are now created only when necessary, which saves some boot time and memory
+- Discard top and bottom surfaces when their settings are identical to skin settings, which avoids printing them separately
+- Discard very thin infill areas that are printed within skin and disrupts the flow
+- Improve positioning of models when loading multiple models from a non-project 3MF file
+- Improved the OpenGL shaders compatibility, contributed by @hellAholic
+
+* New Settings:
+- Introduced Top/Bottom/Skin Merge Distance, which allows merging those areas together wen they are too small to be printed correctly
+- Introduced Minimum Infill Line Length, which allows removing unnecessary lines of infill added in small areas
+
+* Bug fixes:
+- Fixed the most common sources of slicing crashes (those that would have to be worked around by moving the model on the build plate)
+- Removed an unnecessary and long travel move added when printing supported floating models
+- Fixed an issue where top and bottom surfaces could be generated, although they were disabled
+- Fixed the print temperature command of the initial layer when using the 'zigzag' pattern, contributed by @hellAholic
+- Fixed an issue where the project window could be displayed at an unexpected position
+
+* Printer definitions, profiles and materials:
+- Removed hardcoded T0 in start gcode for anycubic ACE PRO enabled K3
+- Fixed multiple bugs in Elegoo Neptune 3 Pro: acceleration, retraction_combing, end gcode
+
+[5.13]
+
+* New features and improvements:
+- Added the new UltiMaker Factor 4+ printer, including profiles
+- Added option to specify file association during the installation of Cura for windows, contributed by @hellAholic
+
+* New Settings:
+- Introduced Infill Start/End Preference settings that give control over the starting location of infill
+- Added Support Infill option "Lightning", and in addition the following supporting settings: Support Lightning Angle, Support Lightning Overhang Angle, Support Lightning Prune Angle, and Support Lightning Straightening Angle, which together allow you to add and control lightning infill generated for support structures
+- The Support Infill Line Multiplier has been introduced to increase the quantity of infill lines. When an even number of lines is specified through this setting and paired with lightning support, it produces a single extrusion line for each island
+- Introduced Minimum Hole Area in Brim Support, which filters out small holes in the support brim, resulting in a more consistent brim
+- Added Temperature Delta Top Surface, which allows you to print top surfaces at a different temperature
+- Added more options to Retract Before Outer Wall to give more control over retraction behavior when traveling to the outer wall
+- Added Initial Layer Wall Ordering which gives control over the order in which the walls are printed for the initial layer, contributed by @hellAholic
+
+* Bug fixes:
+- Support blockers now function correctly even when assigned to a disabled extruder; they no longer cause slicing conflicts and continue to effectively block support
+- Fixed an issue where thin support structures would be generated within tree support
+- Fixed an issue where the tree support interface layer would be missing
+- Randomized infill now also works for infill skin support
+- Fixed an issue where Keep or Discard profile user preference would be ignored
+- Overhanging wall speed was previously applied too aggressively, resulting in extremely slow printing in overhanging areas
+- Travel speed was applied to layer switches, resulting in high-speed Z-travels
+- Fixed an issue where certain 3MF files would incorrectly load with an invalid setting configuration
+- Fixed an issue where certain setting combinations would skip parts of the skin and walls sections
+- Resolved an issue where slicing would fail when both Raft build plate adhesion and Support Lightning Infill were enabled
+- Fixed an issue where overhang speed would be applied inconsistently when both Split Infill and Overhang Speed settings were enabled
+- Fixed an issue where the profile has changes notification would overlap with UI elements
+- Fixed an issue where certain setting configurations would cause a large amount of small line segments to be generated for the prime tower
+- Fixed an issue where clicking the "Sign in to Digital Factory" button twice would fail to log in
+
+* Printer definitions, profiles and materials:
+- Updated high-speed S-Line profiles to improve tree support strength and improved seam behavior by ending infill close to the seam and traveling to the seam unretracted
+- Improved material detection for Method line printers to automatically select support material for the raft interface
+- Automatically disable Infill Skin Support if Gradual Infill Steps is enabled, since these are conflicting settings, contributed by @hellAholic
+
+[5.12]
+
+* New features and improvements:
+- Bridging behavior over rectangular empty spaces and infill are now placed in a smarter way. The bridge lines are now anchored to layers below where possible. Bridge lines can now also be interlaced for improved quality.
+- Updated combing behavior for thin parts so it doesn't ooze over the walls by updating the behavior for Inside Travel Avoid Distance
+- Added a warning in the preview if the reason you are not seeing your model is that the extruder is unchecked
+- Self-intersecting infills like Grid, Triangular, and Cubic are hidden for some printers in recommended mode because they introduce artifacts at high speeds. They are still available in Custom mode
+- Settings for disabled extruders are now visually dimmed to make it clearer that they’re inactive
+- Added height of the layer in preview mode in mm in addition to the layer number, contributed by @HellAholic
+- Added a pop-up to help with using the Select Face mode when rotating a model, contributed by @HellAholic
+- Improved the reliability and maintainability of the Cura UI and Post Processing plugin, contributed by @HellAholic
+- Added a new button under the Help dropdown to quickly open the log files, contributed by @HellAholic
+- Updated the Filament Change script of the Post Processing plugin to support multiline Gcode Before and Gcode After, contributed by @Hobbe and @GregValiant
+- Updated the Z-Hop on Travel Post Processing script to include an option for Support Interface Only, contributed by @GregValiant
+- Updated the Post Processing plugin with a bigger text area in the UI to allow for easier editing of multiple lines of Gcode, contributed by @HellAholic
+- Updated the Advanced Cooling Fan Control Post Processing plugin to add an Enable and Fan Jump Start setting, contributed by @GregValiant
+- Updated the Display Info on LCD Post Processing plugin to reflect Filament Cost and allow for the adjustment of the Cura estimated time, contributed by @GregValiant
+- Updated the Purge Lines and Unload Post Processing plugin so the CUSTOM addition in the Gcode doesn't trigger an error, contributed by @GregValiant
+
+* New Settings:
+- Introduced Honeycomb and Octagon infill types that are fast and do not self-intersect, reducing ringing at high speeds
+- Introduced Infill Start/End Move Inwards Length settings that add an extra line at the beginning and the end of your infill to prime the infill and prevent blobs on the outside wall
+- Introduced Infill Skin Support to consolidate and replace Extra Infill Lines to Support Skin, Skin Edge Support Layer, and Bridging Over Infill Settings.
+- Introduced a Middle option to the Z Seam Positions, contributed by @GregValiant @HellAholic 
+- Introduced a Print Estimation Factor to the Printer Settings that allows you to adjust the predicted printing time when you notice it deviates consistently from reality, contributed by @HellAholic
+
+* Bug fixes:
+- Improved responsiveness when working with printers that are connected over Digital Factory
+- Improved Scarf Seam behavior when used on overhangs and the visualization of these seams in the preview for improved troubleshooting
+- Added an option to abort sending a cloud print job if the loading bar gets stuck
+- Updated the behavior for One At a Time print jobs to reduce the chance of collisions at the end of the printing process
+- Extruder End Gcode is now added to the end of the print process before Machine End Gcode
+- Fixed an issue where a model was still displayed as unprintable after switching the assigned extruder
+- Fixed an issue where unretracted travel moves could be generated over top surfaces when the Inside Travel Avoid Distance could not be applied. Such moves are now retracted instead
+- Fixed an issue where paint strokes on rotated models would not be picked up correctly when slicing
+- Fixed an issue where combing would add a lot of unnecessary travel due to a very small slit in layer outline
+- Updated the behavior of the preview tab when dragging and dropping in a Gcode file
+- Fixed an issue where enabling Z hop when retracted would apply the Z hop twice and move the nozzle to X0 Y0 at start of the print
+- Fixed an inconsistency in the Language and Theme Combobox in preferences
+- Fixed an issue that would cause a crash if the model was reloaded inside the paint mode
+- Fixed an issue where Top Surface Expansion was being applied inside the model without any Top Surface area
+- Fixed an issue where the flow of a fractional layer was not adjusted as expected
+- Fixed an issue where UV unwrapping sometimes failed on complex shapes, leading to incorrect color or material painting
+- Fixed a crash that could occur when exporting and sending very large print jobs over the network or Digital Factory Cloud
+- Improved the robustness of network printing to reduce crashes and error states when communication with printers fails
+- Fixed an issue where the configured build volume temperature limits could be bypassed in certain cases
+- Updated the Annealing or Drying Post Processing plugin so it now also works on UltiMaker 3D printers, contributed by @GregValiant
+
+* Bugs resolved since the Beta release
+- Fixed crashes when loading certain project files (3MF) on Linux
+- Prevented slice crashes when trying to paint on support blockers or modifier meshes by not allowing that unsupported operation
+- Fixed a bug where Overhanging Wall Speeds would be applied to tree support in multi extrusion printjobs
+- Updated bridging behavior so the lines prefer to align with the axis if the geometry allows
+- Fixed an issue where bridging logic caused large, inconsistent flow changes on some surfaces, leading to visible blobs and rough areas; flow is now more stable in those regions.
+- Corrected how flow is applied when using gradual flow adjustments so that extrusion transitions are smoother, align better with the expected behavior, and more consistent, improving overall quality.
+- Fixed a case where infill extrusion moves could skip the intended inward move, improving infill start placement and reducing small artefacts at infill boundaries.
+- Addressed a CuraEngine issue that caused slicing to crash when generating the inward infill move, making slicing more robust for tricky geometries.
+- Removed the nozzle move to X0 Y0 when Z Hop When Retracted was enabled
+- Fixed a bug where the Infill Skin Support would move through the Extra Infill Walls
+- Fixed an issue where bridging regions could contain many small dotted line segments, improving both appearance and strength of bridges.
+- Fixed a bug where 3MFs with custom materials would not be loaded properly
+- Updated file saving behavior so it can handle bigger files to be saved more reliably
+- Displayed clearer messages when using painting and face‑alignment which are unavailable in compatibility mode
+- Gcode now always sends the XY positions when either axis value is changed to make sure non-compliant machines still accept Cura-generated Gcode
+- Updated the material weight to correctly display for UltiMaker PPS CF and Nylon CF Slide materials
+- Polished the appearance and behavior of combobox controls in the Preferences dialog, making them more consistent and easier to use.
+
+* Printer definitions, profiles and materials:
+- Updated wall settings for the UltiMaker S6 and S8 to improve wall strength
+- Updated infill, skin, and shell settings for the UltiMaker S6 and S8 to reduce printing time and improve printed part quality
+- Introduced Visual Intent for ABS and PETG for the S8
+- Updated Retraction settings to reduce oozing and stringing in the UltiMaker S6 and S8
+- Introduced a generic ASA profile for the Factor 4
+- Updated the Brim Gap settings for UltiMaker 2+ Connect
+- Introduced Elegoo Centauri Carbon, contributed by @darthmolen
+- Introduced Toybox Alpha name to include Toybox Alpha Three, contributed by @lukbrew25
+- Updated settings for Elegoo Neptune 2 and Flsun V400, to have better default top layers with the infill set to 100%, contributed by @asterchades
+
+* Community Translations
+- Updated Japanese translations by @h1data
+- Brazilian Portuguese by @Patola
+
+[5.11]
+
+* New features and improvements:
+- Added a new option in the toolbar menu that allows user to paint on model
+- Introduced option to paint on the model to assign the paint to different extruders allowing for multimaterial printing
+- Introduced option to paint on the model to indicate preferred and blocked areas for z-seam placement
+- Enable saving and storing painted on preferences in project files.
+- Expanded available print cores on the UltiMaker S6 and S8, user can now also slice for AA 0.25, AA 0.4, AA 0.8, CC 0.4 and CC 0.6
+- Introduces Retraction During Travel Move, Keep Retracting During Travel, Prime During Travel Move settings to allow for more effective traveling. NOTE:  If the printer has pressure advance or a filament flow sensor, please keep an eye on the print
+- Introduced initial layer build fan speed, and build fan speed settings for more control over the build volume fan
+- Introduced a pop-up that appears if user have an extruder that they are not using, allowing them to disable it for better quality
+- Updated the Release Notification so the team can share more information about what's in the new release.
+- Updated the logic for storing Cura Back-ups to download instead of store Cura plugins when restoring a back-up.
+- Updated the Splash Screen and Header to show the correct UltiMaker logo.
+- Updated local connection to UltiMaker Printers to allow for user verification.
+- If users were not using the USB-Cable Printing in the previous (5.10) version of Cura, it is automatically disabled for them. In addition, an option is added to the Cura Preferences under General where user can easily Enable or Disable the USB-cable printing by checking, unchecking the setting and restarting Cura.
+- Significantly updated the ChangeAtZ Script, to support relative extrusion, firmware retraction. Added "layer range" as an option and Travel moves are separated so changes in print speed don't necessarily affect them, contributed by @GregValiant
+- Introduced a Post Processing Script that allows user to use their printer for Annealing or Drying, contributed by @GregValiant
+- Updated the DisplayInfoOnLCD plug-in so it now correctly displays the Remaining time, contributed by @GregValiant, resolves https://github.com/Ultimaker/Cura/issues/18766
+- Update Create Thumbnail Post Processing Plugin  with an option Thumbnail Begin/End and Use '*' for size of image, contributed by @geekykayaker-anon
+- Updated the Cooling Profile Post Processing Plug-in to include Build Volume Fan, and Idle Speed, contributed by @GregValiant
+- Updated the Filament Change Post Processing Log-in to hide the "Z-Move" when in "use firmware configuration" mode, contributed by @GregValiant
+- Enable more retraction settings to be set per-model, contributed by @jeremysalwen
+- Updated Insert At Layerchange post processing plug-in to allow for lowercase commands, resolves https://github.com/Ultimaker/Cura/issues/20441
+- Introduced a Post Processing Script that allows for defining Z-Hop on Travel, contributed by @GregValiant
+
+* Bugs resolved since the Beta release:
+- Improved slicing time on Windows machines making it significantly faster for a number of models
+- Introduced Top Surface Extension setting to improve quality of details like text on the top of prints
+- Updated traveling directions for monotonic top surface, to reduce traveling and improve part quality
+- Fixed a bug where painting closed shapes would not respect the drawn lines but would close filled shapes
+- Introduced a workaround for deprecated face selection methods to remain backwards compatible for plugins
+- Multi material settings are now settable per mesh
+- Fixed a bug where you had to reslice to see your preview again after saving or sending the model
+- Fixed group handling for painting features, and disabled painting for grouped objects because the painting is currently designed to allow painting a single object at once
+- Fixed a bug where Cura would crash if you switched to another printer with a painted model
+- Fixed a bug where the model and a prime tower could collide when a model was painted
+- Fixed a bug where you could slice with a painted disabled extruder
+- Improved handling of rotating your view when you are in paint on mode
+- Updated settings to improve overhang, top/bottom settings on the UltiMaker S6 and S8
+- Updated settings to improve the Z seam settings for Factor 4
+- Fixed a bug with the translations where French translations had some Italian text in them on the recommended window
+- Fixed a bug where the Makerbot Replicator+ could not start a print with a Smart Extruder+ Tough
+- Introduced messages when you cannot start a printjob over network because the printer Requires Authentication
+
+* Bug fixes:
+- Fixed a bug where Cura would not start if you have an extremely strict AntiVirus program installed on the same PC
+- Fixed a bug on Mac where Pop Up Windows would hide behind the main window
+- Fixed a bug where Overhang Wall Speeds were applied to Walls that were supposed to be bridging
+- Fixed a bug where the Brim Gap would also apply to the support structures that don't need the brim gap
+- Fixed a bug where you could not add a cloud connected printer if you were not already signed in by removing a campaign link
+- Fixed a bug where the nozzle would wipe back on the top layer of a spiralized model
+- Updated warning range for the Inside Travel Avoid Distance
+- Updated Use Towers for Support from Expert to Basic Category
+- Fixed a bug where translations would not show up in Recommended
+- Gracefully supports if Printers, Projects, and Users are deactivated in Digital Factory if a subscription is downgraded
+- Removed the None Corner Preference from the Sharpest Corner Z Seam Alignment
+- Updated the Fine print profile for the FDM printer. It now defaults to a 0.1mm layer height, correcting the previous 0.2mm default setting due to missing value.
+- Fixed a bug where Cura would fail randomly, if the printer was loaded before the MachineErrorChecker, contributed by @0xorial
+- Cleaned up the Windows Start Menu entry after installing. It no longer is folderized and doesn't contain a link anymore, contributed by @RedBlackAka
+- Removed NSIS uninstall shortcut left behind when uninstalling, contributed by @RedBlackAka, resolves #20446 / #20302
+- Updated code quality of the PurgeLinesAndUnload Post Processing Plug-in script, contributed by @hellAholic
+- Fix race condition in TreeSupportBaseCircle which may sometimes cause a crash, contributed by @ThomasRahm
+
+* Printer definitions, profiles and materials:
+- Significantly improved printed part quality for PLA, Tough PLA, ABS, and PETG on the UltiMaker S6 and S8.
+- (Tree) Support is now less prone to falling over and easier to remove
+- Bridging, Walls, and Top Surfaces now have fewer flow jumps
+- Top details, especially around overhangs, look better because of the changes in cooling
+- Dimensional accuracy has improved because of the updated wall printing strategy
+- Seams are no longer printed on overhangs, improving the quality
+- Added new draft intent profiles for PLA, Tough PLA, ABS, and PETG on UltiMaker S6 and S8
+- Introduced support for Nylon material on UltiMaker Method and Method X
+- Updated codequality of the UltiMaker S8 definition to allow for better support for Marketplace materials
+- Updated settings to reduced ringing artifacts on the UltiMaker Factor 4
+- Improve calculation for the Build Volume Temperature for the UltiMaker Factor 4
+- Updated temperature settings for the UltiMaker Method and MethodXL to improve printing rafts with RapidRinse.
+- Updated settings for UltiMaker Sketch Sprint to improve print quality for overhangs and bridges
+- Improved the predicted printing time on the Makerbot Replicator+ to be closer to the actual printing time
+- Introduced 2.85 mm Generic BVOH material profiles
+- Introduced support for BAM materials on BB cores on UltiMaker S line printers
+- Introduced Anycubic Kobra S1, contributed by @takanuva15
+- Updated code quality for zyyx_pro and zyyx_plus definitions
+- Introduced Anycubic Kobra 3 V2, and Anycubic Kobra 3 v2 ACE PRO, contributed by @SamBkamp
+- Updated 100% infill settings for all printers, contributed by @Asterchades
+- Significant speed improvements for the Voron profiles, contributed by @NerdyGriffin, @WCEngineer, and @magnetoxgarage
+- Introduced Sovol SV08, contributed by @sesse
+- Introduced Toybox Alpha One/Two, contributed by @lukbrew25
+- Updated Hellbot Hidra and Hellbot Hidra Plus with bed image, contributed by @DevelopmentHellbot
+- Updated Sovol SV01 definition to be titan style instead of Bowden, contributed by @JoGrob
+- Introduced BIQU B2, contributed by @bjuraga
+- Introduced Geetech M1 and Geetech M1S Profiles, and updated the Geetech Thunder Profiles, contributed by @whoseyoung
+
+* Known Issues
+- When using a model with overlapping meshes, the paint on material may produce unexpected results
+- Painting might still be slow with very detailed models
+
+
 [5.10.2]
 
 * UltiMaker S6 and S8 improvements:

@@ -116,7 +116,8 @@ class BuildVolume(SceneNode):
         self._application.engineCreatedSignal.connect(self._onEngineCreated)
 
         self._has_errors = False
-        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        scene = self._application.getController().getScene()
+        scene.sceneChanged.connect(self._onSceneChanged)
 
         # Objects loaded at the moment. We are connected to the property changed events of these objects.
         self._scene_objects = set()  # type: Set[SceneNode]
@@ -137,6 +138,10 @@ class BuildVolume(SceneNode):
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         self._machine_manager.activeQualityChanged.connect(self._onStackChanged)
+
+        # Explicitly queue the timer here so _onStackChangeTimerFinished always runs once
+        # after construction to populate the dimensions regardless of signal ordering.
+        self._onStackChanged()
 
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
@@ -317,16 +322,6 @@ class BuildVolume(SceneNode):
                 node_bounding_box = node.getBoundingBox()
                 if node_bounding_box and node_bounding_box.top < 0 and not node.getParent().callDecoration("isGroup"):
                     node.setOutsideBuildArea(True)
-                    continue
-                # Mark the node as outside build volume if the set extruder is disabled
-                extruder_position = node.callDecoration("getActiveExtruderPosition")
-                try:
-                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled and not node.callDecoration("isGroup"):
-                        node.setOutsideBuildArea(True)
-                        continue
-                except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
-                    continue
-                except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
                     continue
 
                 node.setOutsideBuildArea(False)
@@ -655,7 +650,7 @@ class BuildVolume(SceneNode):
                     extra_z = retraction_hop
         return extra_z
 
-    def _onStackChanged(self):
+    def _onStackChanged(self, *args) -> None:
         self._stack_change_timer.start()
 
     def _onStackChangeTimerFinished(self) -> None:
@@ -708,6 +703,10 @@ class BuildVolume(SceneNode):
     def _onEngineCreated(self) -> None:
         self._engine_ready = True
         self.rebuild()
+        if self._volume_aabb is None:
+            # rebuild() returned early. Re-queue it so dimensions are fetched and rebuild() is retried after a short delay.
+            Logger.warning("BuildVolume: _volume_aabb is still None after engine created; re-triggering stack refresh.")
+            self._onStackChanged()
 
     def _onSettingChangeTimerFinished(self) -> None:
         if not self._global_container_stack:

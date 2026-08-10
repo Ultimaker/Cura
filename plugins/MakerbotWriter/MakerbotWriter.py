@@ -188,7 +188,7 @@ class MakerbotWriter(MeshWriter):
                 if not getattr(node, "_outside_buildarea", False):
                     if node.callDecoration(
                             "isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration(
-                            "isNonThumbnailVisibleMesh"):
+                            "isNonThumbnailVisibleMesh") and not node.callDecoration("isAssignedToDisabledExtruder"):
                         nodes.append(node)
 
         meta = dict()

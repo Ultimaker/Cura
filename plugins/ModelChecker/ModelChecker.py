@@ -1,18 +1,20 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2026 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
+from ModelChecker.ModelCheckerJob import ModelCheckerJob
+from cura.Settings.GlobalStack import GlobalStack
 
 import os
 
 from PyQt6.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty, QTimer
 
 from UM.Application import Application
+from UM.Backend.Backend import BackendState
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.Camera import Camera
 from UM.i18n import i18nCatalog
 from UM.PluginRegistry import PluginRegistry
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 
 catalog = i18nCatalog("cura")
 
@@ -21,7 +23,10 @@ class ModelChecker(QObject, Extension):
     onChanged = pyqtSignal()
     """Signal that gets emitted when anything changed that we need to check."""
 
-    def __init__(self):
+    onUpdated = pyqtSignal()
+    """Signal that gets emitted when a warning is computed."""
+
+    def __init__(self) -> None:
         super().__init__()
 
         self._button_view = None
@@ -30,25 +35,33 @@ class ModelChecker(QObject, Extension):
             lifetime = 0,
             title = catalog.i18nc("@info:title", "3D Model Assistant"),
             message_type = Message.MessageType.WARNING)
+        self._caution_message.actionTriggered.connect(self._onMessageActionTriggered)
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
         self._change_timer.setSingleShot(True)
-        self._change_timer.timeout.connect(self.onChanged)
+        self._change_timer.timeout.connect(self._startJob)
 
         Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
         Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
-    def _onChanged(self, *args, **kwargs):
-        # Ignore camera updates.
-        if len(args) == 0:
-            self._change_timer.start()
-            return
-        if not isinstance(args[0], Camera):
-            self._change_timer.start()
+        self._unhandled_slice = False
+        Application.getInstance().getBackend().backendStateChange.connect(self._onSliceState)
 
-    def _pluginsInitialized(self):
+        self._last_checker_job = None
+        self._current_warnings = {}
+
+    def _onSliceState(self, state: BackendState) -> None:
+        self._unhandled_slice |= (state == BackendState.Processing)
+        self._onChanged()
+
+    def _onChanged(self, *args, **kwargs) -> None:
+        if len(args) != 0 and isinstance(args[0], Camera):  # Ignore camera updates.
+            return
+        self._change_timer.start()
+
+    def _pluginsInitialized(self) -> None:
         """Called when plug-ins are initialized.
 
         This makes sure that we listen to changes of the material and that the
@@ -58,58 +71,15 @@ class ModelChecker(QObject, Extension):
         Application.getInstance().getMachineManager().rootMaterialChanged.connect(self.onChanged)
         self._createView()
 
-    def checkObjectsForShrinkage(self):
-        shrinkage_threshold = 100.5 #From what shrinkage percentage a warning will be issued about the model size.
-        warning_size_xy = 150 #The horizontal size of a model that would be too large when dealing with shrinking materials.
-        warning_size_z = 100 #The vertical size of a model that would be too large when dealing with shrinking materials.
+    def _onMessageActionTriggered(self, message: Message, message_action: str) -> None:
+        if message_action == "enable_support":
+            message.hide()
+            global_container_stack: GlobalStack = Application.getInstance().getGlobalContainerStack()
+            if not global_container_stack:
+                return
+            global_container_stack.setProperty("support_enable", "value", True)
 
-        # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
-        # has not done yet.
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack is None:
-            return False
-
-        material_shrinkage = self._getMaterialShrinkage()
-
-        warning_nodes = []
-
-        # Check node material shrinkage and bounding box size
-        for node in self.sliceableNodes():
-            node_extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if node_extruder_position is None:
-                continue
-
-            # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
-            # has not done yet.
-            try:
-                global_container_stack.extruderList[int(node_extruder_position)]
-            except IndexError:
-                Application.getInstance().callLater(lambda: self.onChanged.emit())
-                return False
-
-            if material_shrinkage > shrinkage_threshold:
-                bbox = node.getBoundingBox()
-                if bbox is not None and (bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z):
-                    warning_nodes.append(node)
-
-        self._caution_message.setText(catalog.i18nc(
-            "@info:status",
-            "<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
-            "<p>{model_names}</p>\n"
-            "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
-            "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-            ).format(model_names = ", ".join([n.getName() for n in warning_nodes])))
-
-        return len(warning_nodes) > 0
-
-    def sliceableNodes(self):
-        # Add all sliceable scene nodes to check
-        scene = Application.getInstance().getController().getScene()
-        for node in DepthFirstIterator(scene.getRoot()):
-            if node.callDecoration("isSliceable"):
-                yield node
-
-    def _createView(self):
+    def _createView(self) -> None:
         """Creates the view used by show popup.
 
         The view is saved because of the fairly aggressive garbage collection.
@@ -126,17 +96,27 @@ class ModelChecker(QObject, Extension):
 
         Logger.log("d", "Model checker view created.")
 
-    @pyqtProperty(bool, notify = onChanged)
-    def hasWarnings(self):
-        danger_shrinkage = self.checkObjectsForShrinkage()
-        return any((danger_shrinkage, )) #If any of the checks fail, show the warning button.
+    @pyqtProperty(bool, notify = onUpdated)
+    def hasWarnings(self) -> bool:
+        return any(self._current_warnings.values())
+
+    def _onCheckerJobFinished(self, *args):
+        if not self._last_checker_job:
+            return
+        self._current_warnings.update(self._last_checker_job.getWarnings())
+        self._last_checker_job = None
+        self.onUpdated.emit()
+
+    def _startJob(self) -> None:
+        self._caution_message.getActions().clear()
+
+        self._last_checker_job = ModelCheckerJob(self._caution_message, self._unhandled_slice)
+        self._last_checker_job.needsRetry.connect(lambda: self.onChanged.emit())
+        self._last_checker_job.finished.connect(self._onCheckerJobFinished)
+        self._last_checker_job.start()
+
+        self._unhandled_slice = False
 
     @pyqtSlot()
-    def showWarnings(self):
+    def showWarnings(self) -> None:
         self._caution_message.show()
-
-    def _getMaterialShrinkage(self) -> float:
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack is None:
-            return 100
-        return global_container_stack.getProperty("material_shrinkage_percentage", "value")

@@ -19,6 +19,7 @@ Copyright (c) 2025 GregValiant (Greg Foresi)
 from UM.Application import Application
 from ..Script import Script
 from UM.Message import Message
+from UM.Logger import Logger
 
 class AnnealingOrDrying(Script):
 
@@ -91,7 +92,7 @@ class AnnealingOrDrying(Script):
                     "description": "Hold the bed temp at the 'Bed Start Out Temperature' for this amount of time (in decimal hours).  When this time expires then the Annealing cool down will start.  This is also the 'Drying Time' used when 'Drying Filament'.",
                     "type": "float",
                     "default_value": 0.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
                 "dry_time":
@@ -100,7 +101,7 @@ class AnnealingOrDrying(Script):
                     "description": "Hold the bed temp at the 'Bed Start Out Temperature' for this amount of time (in decimal hours).  When this time expires the bed will shut off.",
                     "type": "float",
                     "default_value": 4.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "enabled": "enable_script and cycle_type == 'dry_cycle'"
                 },
                 "pause_cmd":
@@ -117,7 +118,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature to start at.  This is typically the bed temperature during the print but can be changed here.  This is also the temperature used when drying filament.",
                     "type": "int",
                     "value": 30,
-                    "unit": "Degrees ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 30,
                     "maximum_value": 110,
                     "maximum_value_warning": 100,
@@ -129,7 +130,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the lowest temperature to control the cool down.  This is the shut-off temperature for the build plate and (when applicable) the Heated Chamber.  The minimum value is 30",
                     "type": "int",
                     "default_value": 30,
-                    "unit": "Degrees ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 30,
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
@@ -139,7 +140,7 @@ class AnnealingOrDrying(Script):
                     "description": "Enter the temperature for the Build Volume (Heated Chamber).  This is typically the temperature during the print but can be changed here.",
                     "type": "int",
                     "value": 24,
-                    "unit": "Degrees ",
+                    "unit": "\u00b0C/F ",
                     "minimum_value": 0,
                     "maximum_value": 90,
                     "maximum_value_warning": 75,
@@ -167,10 +168,10 @@ class AnnealingOrDrying(Script):
                 "time_span":
                 {
                     "label": "Cool Down Time Span:",
-                    "description": "The total amount of time (in decimal hours) to control the cool down.  The build plate temperature will be dropped in 3° increments across this time span.  'Cool Down Time' starts at the end of the 'Hold Time' if you entered one.",
+                    "description": "The total amount of time (in decimal hours) to control the cool down.  The build plate temperature will be dropped in 3\u00b0 increments across this time span.  'Cool Down Time' starts at the end of the 'Hold Time' if you entered one.",
                     "type": "float",
                     "default_value": 1.0,
-                    "unit": "Decimal Hrs ",
+                    "unit": "Hrs ",
                     "minimum_value_warning": 0.25,
                     "enabled": "enable_script and cycle_type == 'anneal_cycle'"
                 },
@@ -203,7 +204,7 @@ class AnnealingOrDrying(Script):
                     "label": "Beep Duration",
                     "description": "The length of the buzzer sound.  Units are in milliseconds so 1000ms = 1 second.",
                     "type": "int",
-                    "unit": "milliseconds ",
+                    "unit": "msec ",
                     "default_value": 1000,
                     "enabled": "beep_when_done and enable_script"
                 },
@@ -240,7 +241,7 @@ class AnnealingOrDrying(Script):
         # If the shutoff temp is under 30° then exit as a safety precaution so the bed doesn't stay on.
         if lowest_temp < 30:
             data[0] += ";  Anneal or Dry Filament did not run.  Shutoff Temp < 30\n"
-            Message(title = "[Anneal or Dry Filament]", text = "The script did not run because the Shutoff Temp is less than 30°.").show()
+            Message(title = "[Anneal or Dry Filament]", text = "The script did not run because the Shutoff Temp is less than 30\u00b0.").show()
             return data
         extruders = self.global_stack.extruderList
         bed_temperature = int(self.getSettingValueByKey("startout_temp"))
@@ -304,7 +305,7 @@ class AnnealingOrDrying(Script):
             data = self._anneal_print(add_messages, data, bed_temperature, chamber_temp, heated_chamber, heating_zone, lowest_temp, max_x, max_y, max_z, park_xy, park_z, speed_travel)
         elif cycle_type == "dry_cycle":
             data = self._dry_filament_only(data, bed_temperature, chamber_temp, heated_chamber, heating_zone, max_y, max_z, speed_travel)
-        
+
         return data
 
     def _anneal_print(
@@ -325,7 +326,7 @@ class AnnealingOrDrying(Script):
         """
         The procedure disables the M140 (and M141) lines at the end of the print, and adds additional bed (and chamber) temperature commands to the end of the G-Code file.
         The bed is allowed to cool down over a period of time.
-                
+
         :param add_messages: Whether to include M117 and M118 messages for LCD and print server
         :param anneal_data: The G-code data to be modified with annealing commands
         :param bed_temperature: Starting bed temperature in degrees Celsius
@@ -471,9 +472,9 @@ class AnnealingOrDrying(Script):
 
     def _dry_filament_only(
             self,
+            drydata: str,
             bed_temperature: int,
             chamber_temp: int,
-            drydata: str,
             heated_chamber: bool,
             heating_zone: str,
             max_y: str,
@@ -483,7 +484,7 @@ class AnnealingOrDrying(Script):
         This procedure turns the bed on, homes the printer, parks the head.  After the time period the bed is turned off.
         There is no actual print in the generated gcode, just a couple of moves to get the nozzle out of the way, and the bed heat (and possibly chamber heat) control.
         It allows a user to use the bed to warm up and hopefully dry a filament roll.
-                
+
         :param bed_temperature: Bed temperature for drying in degrees Celsius
         :param chamber_temp: Chamber/build volume temperature for drying in degrees Celsius
         :param drydata: The G-code data to be replaced with filament drying commands
@@ -494,9 +495,14 @@ class AnnealingOrDrying(Script):
         :param speed_travel: Travel speed for positioning moves in mm/min as string
         :return: Modified G-code data containing only filament drying sequence
         """
+        machine_name = str(self.global_stack.getProperty("machine_name", "value"))
+        machine_gcode_flavor = str(self.global_stack.getProperty("machine_gcode_flavor", "value"))
+        active_machine = ""
+        if machine_gcode_flavor in ["Ultigcode", "Cheetah", "Griffin"] or "Ultimaker" in machine_name:
+            active_machine = "UM"
         for num in range(2, len(drydata)):
             drydata[num] = ""
-        drydata[0] = drydata[0].split("\n")[0] + "\n"
+
         add_messages = bool(self.getSettingValueByKey("add_messages"))
         pause_cmd = self.getSettingValueByKey("pause_cmd")
         if pause_cmd != "":
@@ -562,10 +568,36 @@ class AnnealingOrDrying(Script):
                 back_txt = lines[index].split(";")[1]
                 lines[index] = front_txt + str(" " * (30 - len(front_txt))) +";" +  back_txt
         drydata[1] = "\n".join(lines) + "\n"
-        dry_txt = "; Drying time ...................... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
-        dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "°\n"
+        dry_txt = "; Drying time ............... " + str(self.getSettingValueByKey("dry_time")) + " hrs\n"
+        dry_txt += "; Drying temperature ........ " + str(bed_temperature) + "\u00b0\n"
         if heated_chamber and heating_zone == "bed_chamber":
-            dry_txt += "; Chamber temperature ... " + str(chamber_temp) + "°\n"
+            dry_txt += "; Chamber temperature ....... " + str(chamber_temp) + "\u00b0\n"
         Message(title = "[Dry Filament]", text = dry_txt).show()
-        drydata[0] = "; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
+        # UM machines require the existing 'data[0]' with some alteration
+        if active_machine == "UM":
+            drydata[0] = self.prep_for_um_machines(drydata, bed_temperature, chamber_temp, heating_zone, dry_time)
+        drydata[0] += ";\n; <<< This is a filament drying file only. There is no actual print. >>>\n;\n" + dry_txt + ";\n"
         return drydata
+
+    def prep_for_um_machines(self, drydata: str, bed_temperature, chamber_temp, heating_zone: str, dry_time):
+        Message(title = "​⚠️⚠️⚠️ ​[Dry Filament]​ ⚠️⚠️⚠️​", text = f"Your printer appears to be a 'UltiMaker' printer.  'Dry Filament' might bring warnings up on the LCD screen (ex: for 'material compatibility').  You should be able to 'Ignore' them and the gcode should run.  In some cases, the machine may not want to run the gcode.  Experimenting may help get past that blockage.  Do not place anything on the Build Plate until the machine has settled down and the bed is heating.").show()
+        # This will alter the bed/chamber/hot end temperatures for drying
+        lines = drydata[0].split("\n")
+        for index, line in enumerate(lines):
+            if ";BUILD_PLATE.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";BUILD_PLATE.INITIAL_TEMPERATURE:{bed_temperature}"
+            if ";EXTRUDER_TRAIN.0.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";EXTRUDER_TRAIN.0.INITIAL_TEMPERATURE:40"
+            if ";EXTRUDER_TRAIN.1.INITIAL_TEMPERATURE:" in line:
+                lines[index] = f";EXTRUDER_TRAIN.1.INITIAL_TEMPERATURE:40"
+            if ";BUILD_VOLUME.TEMPERATURE:" in line:
+                if heating_zone == "bed_chamber":
+                    lines[index] = f";BUILD_VOLUME.TEMPERATURE:{chamber_temp}"
+            if ";PRINT.TIME:" in line:
+                lines[index] = f";PRINT.TIME:{dry_time}"
+        drydata[0] = "\n".join(lines)
+        # This line will tell the printer sto skip these processes.  Skipping requires the G28 to be added.
+        um_line = ";SKIP_PROCEDURES:PRE_PRINT_SETUP,PURGE_MATERIAL_MISP,LOAD_MATERIAL_MISP,UNLOAD_MATERIAL_MISP_0,UNLOAD_MATERIAL_MISP_1,PREPARE_MISP_MATERIALS,DEPRIME_FOR_MATERIAL_CHANGE_MISP,SEND_FOLLOW_COMMAND_MISP,BREAK_FAILED_WIZARD,LOADING_FAILURE_RECOVERY_WIZARD,START_COOLDOWN_HOTEND,SET_HOTEND_TEMPERATURE_WAIT\nG28 X Y Z"
+        lines.insert(len(lines)-2, um_line)
+        drydata[0] = "\n".join(lines)
+        return drydata[0]

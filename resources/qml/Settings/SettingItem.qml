@@ -25,7 +25,7 @@ Item
     property bool showLinkedSettingIcon: true
     property bool doDepthIndentation: true
     property bool doQualityUserSettingEmphasis: true
-    property var settingKey: definition.key //Used to detect each individual setting more easily in Squish GUI tests.
+    property var settingKey: definition ? definition.key : "" //Used to detect each individual setting more easily in Squish GUI tests.
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
@@ -57,6 +57,8 @@ Item
 
     function createTooltipText()
     {
+        if (!definition) return ""
+        
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
         var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
 
@@ -78,7 +80,7 @@ Item
             }
         }
 
-        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
+        var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition ? definition.label : "").arg(definition ? definition.description : "")
 
         if(!propertyProvider.isValueUsed)
         {
@@ -147,16 +149,16 @@ Item
             id: label
 
             anchors.left: parent.left
-            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition.depth - 1) * UM.Theme.getSize("default_margin").width)) : 0
+            anchors.leftMargin: doDepthIndentation ? Math.round(UM.Theme.getSize("thin_margin").width + ((definition ? definition.depth : 0) - 1) * UM.Theme.getSize("default_margin").width) : 0
             anchors.right: settingControls.left
             anchors.verticalCenter: parent.verticalCenter
 
-            text: definition.label
+            text: definition ? definition.label : ""
             elide: Text.ElideMiddle
             textFormat: Text.PlainText
 
             color: UM.Theme.getColor("setting_control_text")
-            opacity: (definition.visible) ? 1 : 0.5
+            opacity: (definition && definition.visible) ? 1 : 0.5
             // Emphasize the setting if it has a value in the user or quality profile
             font: base.doQualityUserSettingEmphasis && base.stackLevel !== undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
@@ -179,7 +181,7 @@ Item
             {
                 id: linkedSettingIcon;
 
-                visible: (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: (!definition || !definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
@@ -198,7 +200,7 @@ Item
                     if ((resolve !== "None") && (stackLevel !== 0))
                     {
                         // We come here if a setting has a resolve and the setting is not manually edited.
-                        tooltipText += " " + catalog.i18nc("@label", "This setting is resolved from conflicting extruder-specific values:") + " [" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "]."
+                        tooltipText += " " + catalog.i18nc("@label", "This setting is resolved from conflicting extruder-specific values:") + " [" + Cura.ExtruderManager.getInstanceExtruderValues(definition ? definition.key : "") + "]."
                     }
                     base.showTooltip(tooltipText)
                 }
@@ -280,11 +282,11 @@ Item
                     // If the setting does not have a limit_to_extruder property (or is -1), use the active stack.
                     if (globalPropertyProvider.properties.limit_to_extruder === null || globalPropertyProvider.properties.limit_to_extruder === "-1")
                     {
-                        return Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
+                        return definition && Cura.SettingInheritanceManager.settingsWithInheritanceWarning.indexOf(definition.key) >= 0
                     }
 
                     // Setting does have a limit_to_extruder property, so use that one instead.
-                    if (definition.key === undefined) {
+                    if (!definition || definition.key === undefined) {
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false
                     }
