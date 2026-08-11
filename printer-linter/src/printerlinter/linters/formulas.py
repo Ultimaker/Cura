@@ -41,6 +41,14 @@ FORMULA_NAMES = [
 
 DELIMITERS = [r'\+', '-', '=', '/', '\*', r'\(', r'\)', r'\[', r'\]', '{', '}', ' ', '^']
 
+# Python keywords and builtins that appear in Cura formulas and must never be
+# treated as potential typos of setting names or formula functions.
+PYTHON_KEYWORDS = {
+    'if', 'else', 'elif', 'not', 'in', 'and', 'or', 'is',
+    'True', 'False', 'None',
+    'for', 'while', 'return', 'lambda',
+}
+
 
 class Formulas(Linter):
     """Finds Typos in the definition files and their formulas."""
@@ -91,28 +99,47 @@ class Formulas(Linter):
                     if value in ("enable", "resolve", "value", "minimum_value_warning", "maximum_value_warning",
                             "maximum_value", "minimum_value"):
                         key_incorrect = self.checkValueIncorrect(key)
+                        key_correction = self._correct_formula if key_incorrect else None
                         if key_incorrect:
-                            found = self._appendCorrections(key, key)
-                        value_incorrect = self.checkValueIncorrect(value_dict[value])
-                        if value_incorrect:
-                            found = self._appendCorrections(key, value_dict[value])
-                        if key_incorrect or value_incorrect:
-
-                            if len(found.group().splitlines()) > 1:
-                                replacements = []
+                            key_found = self._appendCorrections(key, key)
+                            key_replacement_text = self._replacement_text
+                            if len(key_found.group().splitlines()) > 1:
+                                key_replacements = []
                             else:
-                                replacements = [Replacement(
+                                key_replacements = [Replacement(
                                     file=self._file,
-                                    offset=found.span(1)[0],
-                                    length=len(found.group()),
-                                    replacement_text=self._replacement_text)]
+                                    offset=key_found.span(0)[0],
+                                    length=len(key_found.group()),
+                                    replacement_text=key_replacement_text)]
                             yield Diagnostic(
                                 file=self._file,
                                 diagnostic_name="diagnostic-incorrect-formula",
-                                message=f"Given formula {found.group()} seems incorrect, Do you mean {self._correct_formula}? please correct the formula and try again.",
+                                message=f"Setting name '{key}' seems incorrect, did you mean '{key_correction}'?",
                                 level="Error",
-                                offset=found.span(0)[0],
-                                replacements=replacements
+                                offset=key_found.span(0)[0],
+                                replacements=key_replacements
+                            )
+
+                        value_incorrect = self.checkValueIncorrect(value_dict[value])
+                        value_correction = self._correct_formula if value_incorrect else None
+                        if value_incorrect:
+                            value_found = self._appendCorrections(key, value_dict[value])
+                            value_replacement_text = self._replacement_text
+                            if len(value_found.group().splitlines()) > 1:
+                                value_replacements = []
+                            else:
+                                value_replacements = [Replacement(
+                                    file=self._file,
+                                    offset=value_found.span(0)[0],
+                                    length=len(value_found.group()),
+                                    replacement_text=value_replacement_text)]
+                            yield Diagnostic(
+                                file=self._file,
+                                diagnostic_name="diagnostic-incorrect-formula",
+                                message=f"Value '{value_dict[value]}' for setting '{key}' seems incorrect, did you mean '{value_correction}'?",
+                                level="Error",
+                                offset=value_found.span(0)[0],
+                                replacements=value_replacements
                             )
 
         yield
@@ -179,8 +206,16 @@ class Formulas(Linter):
         for token in tokens:
             if '(' not in token and ')' not in token:
                 cleaned_token = re.sub(r'[^\w\s]', '', token)
+                # Skip empty tokens, pure numbers, and Python keywords — these
+                # are never setting-name typos and produce false positives
+                # (e.g. 'in' fuzzy-matches 'sin' with ratio exactly 0.8, which
+                # then corrupts every word containing 'in' such as 'infill').
+                if not cleaned_token or cleaned_token.isnumeric() or cleaned_token in PYTHON_KEYWORDS:
+                    continue
                 possible_matches = difflib.get_close_matches(cleaned_token, self._cura_correction_strings, n=1, cutoff=0.8)
                 if possible_matches:
-                    output = output.replace(cleaned_token, possible_matches[0])
+                    # Use word-boundary replacement so that a short token such
+                    # as 'if' cannot corrupt a longer word that contains it.
+                    output = re.sub(r'\b' + re.escape(cleaned_token) + r'\b', possible_matches[0], output)
         return output
 

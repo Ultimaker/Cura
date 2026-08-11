@@ -172,10 +172,6 @@ message SettingExtruder {
     int32 extruder = 2; //From which extruder stack the setting should inherit.
 }
 
-message GCodePrefix {
-    bytes data = 2; //Header string to be prepended before the rest of the g-code sent from the engine.
-}
-
 message SliceUUID {
     string slice_uuid = 1; //The UUID of the slice.
 }
