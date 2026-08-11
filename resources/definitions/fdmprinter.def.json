@@ -5439,10 +5439,10 @@
                 "support_tree_smooth_layers":
                 {
                     "label": "Branch Smoothing Layers",
-                    "description": "The branches of the support will be smoothed on an average on the given number of layers.",
+                    "description": "The branches of the support will be smoothed on an average on the given number of layers. Smoother branches have more inter-layer adhesion and will be be sturdier, but a very large value can bend the structure too close to the model and have it lose its consistency.",
                     "type": "int",
                     "minimum_value": "0",
-                    "maximum_value": "100",
+                    "maximum_value": "200",
                     "maximum_value_warning": "15",
                     "default_value": 0,
                     "limit_to_extruder": "support_infill_extruder_nr",
