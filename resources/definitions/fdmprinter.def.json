@@ -5439,7 +5439,7 @@
                 "support_tree_smooth_layers":
                 {
                     "label": "Branch Smoothing Layers",
-                    "description": "The branches of the support will be smoothed on an average on the given number of layers. Smoother branches have more inter-layer adhesion and will be be sturdier, but a very large value can bend the structure too close to the model and have it lose its consistency.",
+                    "description": "The positions of the tree support branches will be adjusted to smooth them over the specified number of layers using a rolling window average. This improves inter-layer adhesion and sturdiness, but an excessively high value may cause the structure to bend too close to the model or compromise its integrity.",
                     "type": "int",
                     "minimum_value": "0",
                     "maximum_value": "200",
