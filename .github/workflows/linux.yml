@@ -30,16 +30,15 @@ on:
       operating_system:
         description: 'OS'
         required: true
-        default: 'self-hosted-Ubuntu22-X64'
+        default: 'self-hosted-Ubuntu24-X64'
         type: choice
         options:
-          - ubuntu-22.04
-          - self-hosted-Ubuntu22-X64
+          - ubuntu-24.04
           - self-hosted-Ubuntu24-X64
 
 jobs:
   linux-installer:
-    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@CURA-13021-new-linux-runner
+    uses: ultimaker/cura-workflows/.github/workflows/cura-installer-linux.yml@main
     with:
       cura_conan_version: ${{ inputs.cura_conan_version }}
       package_overrides: ${{ inputs.package_overrides }}
