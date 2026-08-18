@@ -644,6 +644,8 @@ class CuraApplication(QtApplication):
 
             preferences.addPreference("local_file/%s" % key, os.path.expanduser("~/"))
 
+        preferences.addPreference("local_file/use_fixed_dialog_paths", False)
+
         preferences.setDefault("local_file/last_used_type", "text/x-gcode")
 
         self.applicationShuttingDown.connect(self.saveSettings)

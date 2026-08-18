@@ -1,6 +1,14 @@
 # Copyright (c) 2023 UltiMaker
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List, cast
+import os
+import platform
+import subprocess
+from typing import List, Optional, cast
+
+from UM.i18n import i18nCatalog
+from UM.Message import Message
+
+i18n_catalog = i18nCatalog("cura")
 
 from PyQt6.QtCore import QObject, QUrl, pyqtSignal, pyqtProperty
 from PyQt6.QtGui import QDesktopServices
@@ -19,6 +27,7 @@ from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
 from cura.Operations.SetParentOperation import SetParentOperation
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.MultiplyObjectsJob import MultiplyObjectsJob
 from cura.Settings.SetObjectExtruderOperation import SetObjectExtruderOperation
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -39,7 +48,60 @@ class CuraActions(QObject):
         self._operation_stack = Application.getInstance().getOperationStack()
         self._operation_stack.changed.connect(self._onUndoStackChanged)
 
+        Selection.selectionChanged.connect(self._onSelectionChanged)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self._onSceneChanged)
+
     undoStackChanged = pyqtSignal()
+    showFileLocationEnabledChanged = pyqtSignal()
+
+    def _onSelectionChanged(self) -> None:
+        self.showFileLocationEnabledChanged.emit()
+
+    def _onSceneChanged(self, _source: SceneNode) -> None:
+        self.showFileLocationEnabledChanged.emit()
+
+    def _getSelectedNodeFilePath(self) -> Optional[str]:
+        """Returns the source file path of the selected node if the selection is valid, or None."""
+        selected = Selection.getAllSelectedObjects()
+        if len(selected) != 1:
+            return None
+        node = selected[0]
+        if not isinstance(node, CuraSceneNode) or node.callDecoration("isGroup"):
+            return None
+        mesh_data = node.getMeshData()
+        if mesh_data is None:
+            return None
+        return mesh_data.getFileName() or None
+
+    @pyqtProperty(bool, notify = showFileLocationEnabledChanged)
+    def canShowFileLocation(self) -> bool:
+        """Returns True when exactly one model is selected and its source file is accessible."""
+        file_path = self._getSelectedNodeFilePath()
+        return file_path is not None and os.path.exists(file_path)
+
+    @pyqtSlot()
+    def showFileLocation(self) -> None:
+        """Reveal the source file of the selected model in the OS file manager."""
+        file_path = self._getSelectedNodeFilePath()
+        if file_path is None:
+            return
+        if not os.path.exists(file_path):
+            Logger.warning(f"Cannot show file location: file no longer exists: {file_path}")
+            Message(
+                i18n_catalog.i18nc("@info:status", "The source file could not be found. It may have been moved or deleted."),
+                title=i18n_catalog.i18nc("@info:title", "File Not Found"),
+                message_type=Message.MessageType.ERROR,
+            ).show()
+            return
+
+        system = platform.system()
+        if system == "Windows":
+            subprocess.Popen(["explorer", "/select," + os.path.normpath(file_path)])
+        elif system == "Darwin":
+            subprocess.Popen(["open", "-R", file_path])
+        else:
+            QDesktopServices.openUrl(QUrl.fromLocalFile(os.path.dirname(file_path)))
+
     @pyqtSlot()
     def openDocumentation(self) -> None:
         # Starting a web browser from a signal handler connected to a menu will crash on windows.

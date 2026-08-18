@@ -83,6 +83,7 @@ Item
     property alias copy: copyAction
     property alias cut: cutAction
     property alias exportProjectForSupport: exportProjectForSupportAction
+    property alias showFileLocation: showFileLocationAction
 
     readonly property bool copy_paste_enabled: {
         const all_enabled_packages = CuraApplication.getPackageManager().allEnabledPackages;
@@ -619,5 +620,13 @@ Item
             };
             UM.OutputDeviceManager.requestWriteToDevice("local_file", exportName, args)
         }
+    }
+
+    Action
+    {
+        id: showFileLocationAction
+        text: catalog.i18nc("@action:inmenu", "Show File Location")
+        enabled: CuraActions.canShowFileLocation
+        onTriggered: CuraActions.showFileLocation()
     }
 }
