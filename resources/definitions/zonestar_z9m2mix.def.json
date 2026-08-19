@@ -1,0 +1,26 @@
+{
+    "version": 2,
+    "name": "Z9M2 Mixed Multi Color",
+    "inherits": "zonestar_m2mix_base",
+    "metadata":
+    {
+        "visible": true,
+        "preferred_material": "generic_pla"
+    },
+    "overrides":
+    {
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_depth": { "default_value": 310 },
+        "machine_height": { "default_value": 400 },
+        "machine_max_acceleration_z": { "default_value": 100 },
+        "machine_max_feedrate_e": { "default_value": 60 },
+        "machine_max_feedrate_z": { "default_value": 16 },
+        "machine_max_jerk_e": { "default_value": 5.0 },
+        "machine_max_jerk_xy": { "default_value": 18 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_name": { "default_value": "Z9M2 Mixed Multi Color" },
+        "machine_start_gcode": { "default_value": "G28\nG1 Z15 F300\nM107\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0\nG1 X5 Y10 F1500 ; move to prime\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 Y250 E15 F600 ; prime nozzle\nG1 Y100 F5000 ; quick wipe\n" },
+        "machine_width": { "default_value": 310 },
+        "speed_print": { "value": 50.0 }
+    }
+}
