@@ -20,7 +20,21 @@ def getMetaData() -> Dict[str, Any]:
 def register(app: "Application") -> Dict[str, Any]:
     try:
         from .NavlibClient import NavlibClient
-        return { "tool": NavlibClient(app.getController().getScene(), app.getRenderer()) }
+        client = NavlibClient(app.getController().getScene(), app.getRenderer())
+
+        # Check for Linux-specific initialization failure
+        if hasattr(client, "_platform_system") and client._platform_system == "Linux":
+            if not hasattr(client, "_linux_spacenav_client") or \
+               client._linux_spacenav_client is None or \
+               not client._linux_spacenav_client.available:
+                Logger.warning("Failed to initialize LinuxSpacenavClient. 3Dconnexion plugin will be disabled on Linux.")
+                return {}  # Disable plugin on Linux due to internal init failure
+
+        # If pynavlib failed on non-Linux, it would likely raise an import error or similar,
+        # caught by the BaseException below.
+        # If on Linux and the above check passed, or on other platforms and NavlibClient init was successful.
+        return {"tool": client}
+
     except BaseException as exception:
-        Logger.warning(f"Unable to load 3Dconnexion library: {exception}")
-        return { }
+        Logger.warning(f"Unable to load or initialize 3Dconnexion client: {exception}")
+        return {}
