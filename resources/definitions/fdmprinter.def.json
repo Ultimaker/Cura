@@ -5672,6 +5672,81 @@
                     "enabled": "support_enable or support_meshes_present",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "support_wall_thickness":
+                        {
+                            "label": "Support Wall Thickness",
+                            "description": "The thickness the walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
+                            "default_value": 0.4,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "line_width",
+                            "maximum_value_warning": "10 * line_width",
+                            "maximum_value": "999999 * line_width",
+                            "type": "float",
+                            "unit": "mm",
+                            "value": "support_wall_count * support_line_width",
+                            "enabled": "support_enable or support_meshes_present",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "support_enlarged_wall_thickness":
+                {
+                    "label": "Support Enlarged Wall Thickness",
+                    "description": "The thickness of the walls with which to surround the support infill, when adhesion with the above/below layer is very low. Using larger or extra walls in this case will improve adhesion and make the branch sturdier.",
+                    "default_value": 0.4,
+                    "minimum_value": "support_wall_thickness",
+                    "maximum_value_warning": "10 * line_width",
+                    "maximum_value": "999999 * line_width",
+                    "type": "float",
+                    "unit": "mm",
+                    "value": "support_wall_thickness",
+                    "enabled": "support_enable or support_meshes_present",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_bottom_layers":
+                {
+                    "label": "Support Wall Unenlarged Bottom Layers",
+                    "description": "Number of layers, counted from the build-plate, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
+                    "default_value": 40,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_top_layers":
+                {
+                    "label": "Support Wall Unenlarged Top Layers",
+                    "description": "Number of layers, counted from the closest tip of the branches downwards, where support-walls will use the non-enlarged support wall thickness (not accounting for line-width smoothing).",
+                    "default_value": 40,
+                    "minimum_value": "0",
+                    "maximum_value": "999999",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "support_wall_thickness_layer_smooth":
+                {
+                    "label": "Support Wall Smooth Layer Width",
+                    "description": "Number of layers where the support wall line width transition is smoothed out over. (This may still create jumps when one area splits off from the other though.)",
+                    "default_value": 15,
+                    "minimum_value": "0",
+                    "maximum_value": "min(support_wall_thickness_bottom_layers, support_wall_thickness_top_layers)",
+                    "type": "int",
+                    "enabled": "(support_enable or support_meshes_present) and support_structure == 'tree'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
                 "support_infill_multiplier":
