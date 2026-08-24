@@ -49,6 +49,7 @@ class LayerPolygon:
         :param line_widths: array with line widths
         :param line_thicknesses: array with type as index and thickness as value
         :param line_feedrates: array with line feedrates
+        :parm print_attributes: array with the print attributes of each segment, e.g. overhanging or bridging
         """
 
         self._extruder = extruder
